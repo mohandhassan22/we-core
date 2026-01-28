@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ALL pdf</title>
+    <link rel="shortcut icon" href="img/we-core.png" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="style/pdf.css">
+</head>
+<body>
+    <!-- الهيدر -->
+    <header class="header">
+        <nav class="navbar">
+            <img src="img/we-core.png" alt="Team Warek" class="logo">
+            <div class="nav-links">
+                <a href="index.html"><i class="fa-solid fa-house-user"></i></a>
+            
+            </div>
+        </nav>
+    </header>
+
+    <!-- قسم النماذج -->
+    <section class="forms-section" id="forms">
+        <div class="search-bar">
+            <input type="text" id="searchInput" placeholder="ابحث عن نموذج...">
+            <button class="filter-btn" onclick="searchForms()">بحث</button>
+        </div>
+
+        <div class="filter-buttons">
+            <button class="filter-btn" onclick="filterForms('all')">الكل</button>
+            <button class="filter-btn" onclick="filterForms('mobile')">المحمول</button>
+            <button class="filter-btn" onclick="filterForms('landline')">الأرضي</button>
+            <button class="filter-btn"onclick="filterForms('Adsl')">Adsl</button>
+        </div>
+
+        <div class="forms-grid" id="formsContainer">
+            <!-- سيتم إضافة النماذج ديناميكيًا بواسطة الجافاسكريبت -->
+        </div>
+    </section>
+
+    <!-- الفوتر -->
+    <footer class="footer">
+        <p>powered by mohand</p>
+    </footer>
+    <script type="module" src="script/pdf.js"></script>
+    <script src="script/pdf.js"></script>
+      <script src="script/access-control.js"></script>
+</body>
+</html>

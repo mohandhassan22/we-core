@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WE-Core</title>
+
+    <link rel="shortcut icon" href="img/we-core.png" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            background: #f6f5f8;
+        }
+
+        /* Header */
+        .header {
+            background: #5a2d82;
+            text-align: center;
+            padding: 30px 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+        }
+
+        .logo {
+            width: 85px;
+            border-radius: 50%;
+            margin-bottom: 10px;
+        }
+
+        .main-title {
+            font-size: 26px;
+            font-weight: bold;
+            color: #5a2d82;
+        }
+
+        .sub-title {
+            font-size: 14px;
+            color: #efeded;
+            margin-top: 5px;
+        }
+
+        /* Text Area */
+        .note-box {
+            max-width: 800px;
+            margin: 25px auto 0;
+            padding: 0 20px;
+        }
+
+        .note-box textarea {
+            width: 100%;
+            min-height: 120px;
+            border-radius: 14px;
+            border: 1px solid #ddd;
+            padding: 15px;
+            font-size: 14px;
+            resize: vertical;
+            outline: none;
+        }
+
+        .note-box textarea:focus {
+            border-color: #7b3fe4;
+        }
+
+        /* Cards */
+        .container {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 25px;
+        }
+
+        .card-link {
+            text-decoration: none;
+        }
+
+        .card {
+            background: #fff;
+            border-radius: 18px;
+            padding: 30px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+            border-top: 5px solid #7b3fe4;
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-6px);
+        }
+
+        .icon {
+            font-size: 42px;
+            color: #7b3fe4;
+            margin-bottom: 15px;
+            transition: transform 0.3s ease, color 0.3s ease;
+            width: fit-content;
+        }
+
+        .card:hover .icon {
+            transform: scale(1.2);
+            color: #5a2d82;
+        }
+
+        .card h2 {
+            color: #5a2d82;
+            margin-bottom: 10px;
+        }
+
+        .card p {
+            color: #555;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+
+        .btn {
+            display: block;
+            text-align: center;
+            padding: 12px;
+            border-radius: 10px;
+            background: #7b3fe4;
+            color: #fff;
+            font-weight: 500;
+        }
+         footer {
+        text-align: center;
+        margin-top: 50px;
+        color: #777;
+        font-size: 14px;
+    }
+
+    footer span {
+        color: #5a2d82;
+        font-weight: 600;
+    }
+    </style>
+</head>
+
+<body>
+
+    <!-- Header -->
+    <div class="header">
+        <img src="img/we-core.png" alt="Logo" class="logo">
+        <div class="main-title">WE-Core</div>
+        <div class="sub-title">
+            Powered By Mohand Hassan – From Abassia Store
+             <br>
+            
+        </div>
+    </div>
+
+    <!-- Cards -->
+    <div class="container">
+        <div class="cards">
+
+            <a href="pdf.html" class="card-link">
+                <div class="card">
+                    <div class="icon">
+                        <i class="fa-solid fa-file-pdf"></i>
+                    </div>
+                    <h2>All PDF</h2>
+                    <p>جميع ملفات PDF الخاصة بالخدمات والعروض.</p>
+                    <div class="btn">View Details</div>
+                </div>
+            </a>
+
+            <a href="home.html" class="card-link">
+                <div class="card">
+                    <div class="icon">
+                        <i class="fa-solid fa-file-lines"></i>
+                    </div>
+                    <h2>All Info</h2>
+                    <p>معلومات Mobile و ADSL و Fixed كاملة.</p>
+                    <div class="btn">View Details</div>
+                </div>
+            </a>
+            <a href="WE pay.html" class="card-link">
+                <div class="card">
+                    <div class="icon">
+                        <i class="fa-solid fa-credit-card"></i>
+                    </div>
+                    <h2>WE-Pay</h2>
+                    <p>معلومات عن نظام الدفع الإلكتروني WE-Pay.</p>
+                    <div class="btn">View Details</div>
+                </div>
+            <a href="#" class="card-link">
+                <div class="card">
+                    <div class="icon">
+                        <i class="fa-solid fa-gamepad"></i>
+                    </div>
+                    <h2>Info Games</h2>
+                    <p>مجموعه الالعاب تساعد علي معرفه جميع الباقات و العروض </p>
+                    <div class="btn">View Details</div>
+                </div>
+            </a>
+            <a href="offer.html" class="card-link">
+                <div class="card">
+                    <div class="icon">
+                       <i class="fa-solid fa-gift"></i>
+                       </div>
+                    <h2>العروض</h2>
+                    <p>معلومات عروض WE</p>
+                    <div class="btn">View Details</div>
+                </div>
+            </a>
+            <a href="#" class="card-link">
+                <div class="card">
+                    <div class="icon">
+                       <i class="fa-solid fa-headset"></i>
+                       </div>
+                    <h2>Remady</h2>
+                    <p>جميع التكيت للموبيل </p>
+                    <div class="btn">View Details</div>
+                </div>
+            </a>
+
+        </div>
+         <footer>
+        Powered by <span>Mohand Hassan</span> – From <span>Abassia Store</span>
+    </footer>
+    </div>
+
+</body>
+</html>

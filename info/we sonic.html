@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WE SONIC</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f3ff 0%, #ffffff 50%, #f0e6ff 100%);
+            min-height: 100vh;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            background: linear-gradient(135deg, #7c3aed 0%, #a855f7 100%);
+            color: white;
+            padding: 40px 30px;
+            border-radius: 20px;
+            text-align: center;
+            margin-bottom: 40px;
+            box-shadow: 0 10px 30px rgba(124, 58, 237, 0.3);
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        header p {
+            font-size: 1.1em;
+            opacity: 0.95;
+        }
+
+        .section {
+            background: white;
+            padding: 30px;
+            margin-bottom: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(124, 58, 237, 0.1);
+            border: 2px solid #e9d5ff;
+        }
+
+        .section h2 {
+            color: #7c3aed;
+            margin-bottom: 20px;
+            font-size: 1.8em;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #e9d5ff;
+        }
+
+        .section h3 {
+            color: #a855f7;
+            margin-top: 25px;
+            margin-bottom: 15px;
+            font-size: 1.4em;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        th {
+            background: linear-gradient(135deg, #7c3aed 0%, #a855f7 100%);
+            color: white;
+            padding: 15px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 1.05em;
+        }
+
+        td {
+            padding: 15px;
+            text-align: center;
+            border-bottom: 1px solid #f3e8ff;
+        }
+
+        tr:hover {
+            background-color: #faf5ff;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        .price {
+            color: #7c3aed;
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+
+        .capacity {
+            color: #059669;
+            font-weight: bold;
+        }
+
+        .speed-badge {
+            background: linear-gradient(135deg, #a855f7 0%, #c084fc 100%);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            display: inline-block;
+            font-size: 0.9em;
+            margin-bottom: 10px;
+        }
+
+        .sonic-badge {
+            background: linear-gradient(135deg, #ec4899 0%, #f472b6 100%);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 20px;
+            display: inline-block;
+            font-size: 1em;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+
+        .note {
+            background: #faf5ff;
+            border-right: 4px solid #a855f7;
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            color: #581c87;
+        }
+
+        .feature-box {
+            background: linear-gradient(135deg, #faf5ff 0%, #f3e8ff 100%);
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 10px;
+            border: 2px solid #e9d5ff;
+        }
+
+        .feature-box h4 {
+            color: #7c3aed;
+            margin-bottom: 10px;
+            font-size: 1.2em;
+        }
+
+        .feature-box p {
+            color: #4c1d95;
+            margin: 5px 0;
+        }
+
+        .feature-list {
+            background: #fef3c7;
+            border-right: 4px solid #f59e0b;
+            padding: 15px 20px;
+            margin: 15px 0;
+            border-radius: 8px;
+        }
+
+        .feature-list ul {
+            margin-right: 20px;
+            color: #78350f;
+        }
+
+        .feature-list li {
+            margin: 8px 0;
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px;
+            color: #7c3aed;
+            font-size: 0.95em;
+            margin-top: 40px;
+        }
+
+        .highlight {
+            background: linear-gradient(135deg, #fdf4ff 0%, #fae8ff 100%);
+            padding: 25px;
+            border-radius: 12px;
+            border: 2px solid #e879f9;
+            margin: 20px 0;
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 1.8em;
+            }
+            
+            .section {
+                padding: 20px;
+            }
+            
+            table {
+                font-size: 0.85em;
+            }
+            
+            th, td {
+                padding: 10px 5px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🚀  WE SONIC 2026</h1>
+            <p>المصرية للاتصالات - دليلك الشامل لباقات الإنترنت المنزلي والباقات المخصصة للألعاب والبث</p>
+        </header>
+
+        <!-- باقات WE SONIC -->
+        <div class="section">
+            <h2>⚡ باقات WE SONIC (للألعاب والبث)</h2>
+            <div class="sonic-badge">🎮 مصممة خصيصاً لتجربة ألعاب وبث مباشر احترافية</div>
+            
+            <p style="color: #4c1d95; margin-bottom: 20px; font-size: 1.05em;">
+                <strong>باقات متميزة توفر:</strong> أقل زمن استجابة (Lag)، أعلى سرعة رفع (Upload)، وأفضل تجربة للألعاب والبث المباشر
+            </p>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>نوع الباقة</th>
+                        <th>السعر الشهري (جنيه)</th>
+                        <th>السرعة القصوى</th>
+                        <th>السعة الأساسية</th>
+                        <th>سعة الجيمنج/الستريمنج</th>
+                        <th>إجمالي السعة (تصل إلى)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>GAMERZ</strong></td>
+                        <td class="price">600</td>
+                        <td>80 ميجابت/ث</td>
+                        <td class="capacity">250 جيجابايت</td>
+                        <td class="capacity">125 جيجابايت<br><small>(تضاعف لـ 250)</small></td>
+                        <td class="capacity">500 جيجابايت</td>
+                    </tr>
+                    <tr>
+                        <td><strong>STREAMERZ</strong></td>
+                        <td class="price">600</td>
+                        <td>80 ميجابت/ث</td>
+                        <td class="capacity">200 جيجابايت</td>
+                        <td class="capacity">150 جيجابايت<br><small>(تضاعف لـ 300)</small></td>
+                        <td class="capacity">500 جيجابايت</td>
+                    </tr>
+                    <tr>
+                        <td><strong>PLUS</strong></td>
+                        <td class="price">1,200</td>
+                        <td>150 ميجابت/ث</td>
+                        <td class="capacity">500 جيجابايت</td>
+                        <td class="capacity">500 جيجابايت<br><small>(تضاعف لـ 1000)</small></td>
+                        <td class="capacity">1,500 جيجابايت</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="highlight">
+                <h3 style="color: #c026d3; margin-top: 0;">✨ مميزات باقات WE SONIC</h3>
+                
+                <div class="feature-list">
+                    <strong style="color: #ea580c;">🎯 مضاعفة الجيجابايت (2X):</strong>
+                    <p style="color: #7c2d12; margin-top: 8px;">يتم حساب استهلاك الجيمنج والستريمنج بنصف الاستهلاك الفعلي - كل 1 جيجا استهلاك فعلي يخصم 0.5 جيجا فقط من سعة الجيمنج/الستريمنج</p>
+                </div>
+
+                <div class="feature-list">
+                    <strong style="color: #ea580c;">⚡ أقصى سرعة للخط:</strong>
+                    <p style="color: #7c2d12; margin-top: 8px;">الحصول على أقصى سرعة ممكنة للخط أثناء اللعب لتجربة سلسة بدون تقطيع</p>
+                </div>
+
+                <div class="feature-list">
+                    <strong style="color: #ea580c;">🎵 موسيقى واجتماعات بلا حدود:</strong>
+                    <p style="color: #7c2d12; margin-top: 8px;">استخدام غير محدود لتطبيقات الموسيقى والاجتماعات:</p>
+                    <ul style="margin-top: 8px;">
+                        <li><strong>موسيقى:</strong> Spotify, Anghami, SoundCloud, Deezer</li>
+                        <li><strong>اجتماعات:</strong> Zoom, Teams, Google Meet</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="feature-box">
+                <h4>🎮 التطبيقات المشمولة في باقة GAMERZ:</h4>
+                <p>ألعاب مثل: PUBG, FIFA, Call of Duty, Valorant, League of Legends وغيرها</p>
+            </div>
+
+            <div class="feature-box">
+                <h4>📺 التطبيقات المشمولة في باقة STREAMERZ:</h4>
+                <p>منصات مثل: YouTube, Facebook, Instagram, Netflix, Shahid, OSN+</p>
+            </div>
+
+            <div class="feature-box">
+                <h4>🌟 باقة PLUS:</h4>
+                <p>تشمل جميع مميزات Gamerz و Streamerz بالإضافة إلى TikTok</p>
+            </div>
+        </div>
+
+        <!-- الباقات الشهرية الأساسية -->
+        <div class="section">
+            <h2>📦 باقات WE Space الشهرية (الأساسية)</h2>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>فئة الباقة</th>
+                        <th>السرعة القصوى</th>
+                        <th>سعات التحميل المتاحة</th>
+                        <th>الأسعار الشهرية (تبدأ من)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Super</strong></td>
+                        <td>30 ميجابت/ث</td>
+                        <td class="capacity">140GB, 200GB, 250GB, 400GB, 600GB, 1TB</td>
+                        <td class="price">210 - 1,360 جنيه</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Mega</strong></td>
+                        <td>70 ميجابت/ث</td>
+                        <td class="capacity">250GB, 600GB, 1TB</td>
+                        <td class="price">530 - 1,560 جنيه</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Ultra</strong></td>
+                        <td>100 ميجابت/ث</td>
+                        <td class="capacity">250GB, 600GB</td>
+                        <td class="price">700 - 1,230 جنيه</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Max</strong></td>
+                        <td>200 ميجابت/ث</td>
+                        <td class="capacity">1 تيرابايت</td>
+                        <td class="price">1,760 جنيه</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Max+</strong></td>
+                        <td>500 ميجابت/ث</td>
+                        <td class="capacity">1 تيرابايت</td>
+                        <td class="price">2,000 جنيه</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- سعات الشحن الإضافية -->
+        <div class="section">
+            <h2>🔋 سعات الشحن الإضافية (لكل الباقات)</h2>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>نوع الشحن</th>
+                        <th>السعة الإضافية</th>
+                        <th>السعر (جنيه)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>مرة واحدة / تلقائي</td>
+                        <td class="capacity">20 جيجابايت</td>
+                        <td class="price">52</td>
+                    </tr>
+                    <tr>
+                        <td>مرة واحدة / تلقائي</td>
+                        <td class="capacity">50 جيجابايت</td>
+                        <td class="price">105</td>
+                    </tr>
+                    <tr>
+                        <td>مرة واحدة / تلقائي</td>
+                        <td class="capacity">100 جيجابايت</td>
+                        <td class="price">170</td>
+                    </tr>
+                    <tr>
+                        <td>Giga Tank (مرة واحدة)</td>
+                        <td class="capacity">400 جيجابايت</td>
+                        <td class="price">420</td>
+                    </tr>
+                    <tr>
+                        <td>Giga Tank (مرة واحدة)</td>
+                        <td class="capacity">2,000 جيجابايت</td>
+                        <td class="price">1,625</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- خدمات إضافية -->
+        <div class="section">
+            <h2>✨ خدمات إضافية</h2>
+
+            <div class="feature-box">
+                <h4>🏥 خدمة شامل من فيزيتا</h4>
+                <p>اشتراك سنوي مجاني بخصومات طبية حتى 80%</p>
+                <p><strong>الشروط:</strong> متاحة من باقة 200GB فأعلى</p>
+            </div>
+
+            <div class="feature-box">
+                <h4>💰 خدمة سلفني</h4>
+                <p>5 جيجابايت مقابل 10 جنيهات صالحة لمدة يومين</p>
+            </div>
+
+            <div class="feature-box">
+                <h4>🎮 باقات Gaming إضافية</h4>
+                <p><strong>باقة PlayStation:</strong> 150GB بـ 75ج / 300GB بـ 150ج</p>
+                <p><strong>باقة Game On:</strong> 40GB بـ 30ج</p>
+            </div>
+        </div>
+
+        <div class="note">
+            <p><strong>⚠️ ملاحظات هامة:</strong></p>
+            <ul style="margin-right: 20px; margin-top: 10px;">
+                <li>جميع الأسعار لا تشمل ضريبة القيمة المضافة (14%)</li>
+                <li>يتم تجديد الباقات تلقائياً كل 30 يوماً في حال توفر رصيد</li>
+            </ul>
+        </div>
+
+         <footer>
+        Powered by <span>Mohand Hassan</span> – From <span>Abassia Store</span>
+    </footer>    </div>
+    </div>
+</body>
+</html>

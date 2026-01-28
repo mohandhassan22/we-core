@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>عرض WE Space للعملاء الجدد</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f3ff 0%, #ffffff 50%, #f0e6ff 100%);
+            min-height: 100vh;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        header {
+            background: linear-gradient(135deg, #7c3aed 0%, #a855f7 100%);
+            color: white;
+            padding: 40px 30px;
+            border-radius: 20px;
+            text-align: center;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(124, 58, 237, 0.3);
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .offer-badge {
+            background: linear-gradient(135deg, #f59e0b 0%, #fb923c 100%);
+            color: white;
+            padding: 15px 30px;
+            border-radius: 25px;
+            display: inline-block;
+            font-size: 1.3em;
+            font-weight: bold;
+            margin-top: 10px;
+            box-shadow: 0 5px 15px rgba(251, 146, 60, 0.4);
+        }
+
+        .main-offer {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            text-align: center;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 20px rgba(124, 58, 237, 0.1);
+            border: 3px solid #e9d5ff;
+        }
+
+        .main-offer h2 {
+            color: #7c3aed;
+            font-size: 2.2em;
+            margin-bottom: 20px;
+        }
+
+        .main-offer .highlight {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            padding: 20px;
+            border-radius: 12px;
+            margin: 20px 0;
+            border: 2px solid #fbbf24;
+        }
+
+        .main-offer .highlight p {
+            font-size: 1.5em;
+            color: #92400e;
+            font-weight: bold;
+        }
+
+        .terms-section {
+            background: white;
+            padding: 35px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 20px rgba(124, 58, 237, 0.1);
+            border: 2px solid #e9d5ff;
+        }
+
+        .terms-section h3 {
+            color: #7c3aed;
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #e9d5ff;
+        }
+
+        .terms-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .terms-list li {
+            background: linear-gradient(135deg, #faf5ff 0%, #f3e8ff 100%);
+            padding: 15px 20px;
+            margin: 12px 0;
+            border-radius: 10px;
+            border-right: 4px solid #a855f7;
+            color: #4c1d95;
+            position: relative;
+            padding-right: 50px;
+        }
+
+        .terms-list li::before {
+            content: "✓";
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: #7c3aed;
+            color: white;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .important-notice {
+            background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+            border: 3px solid #ef4444;
+            border-radius: 15px;
+            padding: 25px;
+            margin: 25px 0;
+            text-align: center;
+        }
+
+        .important-notice h4 {
+            color: #991b1b;
+            font-size: 1.4em;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .important-notice p {
+            color: #7f1d1d;
+            font-size: 1.1em;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .declaration-button {
+            display: inline-block;
+            background: linear-gradient(135deg, #dc2626 0%, #ef4444 100%);
+            color: white;
+            padding: 15px 40px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-size: 1.2em;
+            font-weight: bold;
+            box-shadow: 0 5px 20px rgba(220, 38, 38, 0.4);
+            transition: all 0.3s;
+        }
+
+        .declaration-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(220, 38, 38, 0.5);
+        }
+
+        .declaration-button i {
+            margin-left: 10px;
+        }
+
+        .payment-methods {
+            background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%);
+            padding: 20px;
+            border-radius: 12px;
+            margin-top: 20px;
+            border: 2px solid #38bdf8;
+        }
+
+        .payment-methods h4 {
+            color: #075985;
+            margin-bottom: 12px;
+            font-size: 1.1em;
+        }
+
+        .payment-methods p {
+            color: #0c4a6e;
+            line-height: 1.8;
+        }
+
+        .badge {
+            background: #7c3aed;
+            color: white;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.85em;
+            margin: 0 3px;
+            display: inline-block;
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px;
+            color: #7c3aed;
+            font-size: 0.95em;
+            margin-top: 30px;
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 1.8em;
+            }
+            
+            .main-offer h2 {
+                font-size: 1.6em;
+            }
+            
+            .main-offer .highlight p {
+                font-size: 1.2em;
+            }
+            
+            .offer-badge {
+                font-size: 1.1em;
+                padding: 12px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎉 عرض WE Space للعملاء الجدد</h1>
+            <div class="offer-badge">
+                ⚡ عرض خاص ولفترة محدودة
+            </div>
+        </header>
+
+        <div class="main-offer">
+            <h2>اشترك في باقات WE Space الشهرية</h2>
+            
+            <div class="highlight">
+                <p>🎁 احصل على ضعف الجيجابايتس (X2) لمدة 3 شهور</p>
+            </div>
+
+            <p style="color: #6b21a8; font-size: 1.2em; margin-top: 20px;">
+                استمتع بإنترنت أسرع وسعة أكبر مع باقات WE Space
+            </p>
+        </div>
+
+        <div class="terms-section">
+            <h3>📋 الشروط والأحكام</h3>
+            
+            <ul class="terms-list">
+                <li>
+                    <strong>العملاء المستهدفون:</strong> هذا العرض ساري للعملاء الجدد بدءًا من باقة سوبر 200 جيجابايت
+                </li>
+                
+                <li>
+                    <strong>ترحيل الباقة:</strong> لا يتم ترحيل الجيجابايتس الغير مستخدمة للشهر التالي
+                </li>
+                
+                <li>
+                    <strong>الشحن الإضافي:</strong> عند استهلاك الباقة، يمكنك شحن أي من الباقات الإضافية المتاحة لعملاء WE Space
+                </li>
+                
+                <li>
+                    <strong>الاستمرار في العرض:</strong> للاستمتاع بالعرض يجب تجديد الباقة في موعدها
+                </li>
+            </ul>
+
+            <div class="payment-methods">
+                <h4>💳 طرق الشحن المتاحة:</h4>
+                <p>
+                    <span class="badge">My WE</span>
+                    <span class="badge">my.te.eg</span>
+                    <span class="badge">فوري</span>
+                    <span class="badge">مصاري</span>
+                    <span class="badge">أمان</span>
+                    <span class="badge">ممكن</span>
+                    <span class="badge">خدماتي</span>
+                    <span class="badge">Bee</span>
+                    <span class="badge">سوبرباي</span>
+                    <span class="badge">خالص</span>
+                    <span class="badge">كاش كول</span>
+                    <span class="badge">فروع WE</span>
+                </p>
+            </div>
+        </div>
+
+        <div class="important-notice">
+            <h4>
+                <i class="fas fa-exclamation-triangle"></i>
+                تنبيه هام - إقرار الغرامة
+            </h4>
+            <p>
+                مع العلم أنه لازم العميل يمضي على إقرار الغرامة
+            </p>
+            <a href="http://127.0.0.1:5500/viewpdf.html?src=https%3A%2F%2Fdrive.google.com%2Ffile%2Fd%2F1T-tO_yRJqC5xXNJYCRGTJOYkwE5y3oDR%2Fpreview" 
+               class="declaration-button" 
+               target="_blank">
+                <i class="fas fa-file-signature"></i>
+                عرض وتوقيع إقرار الغرامة
+            </a>
+        </div>
+
+        <footer>
+            <p>📅 عرض WE Space للعملاء الجدد - 2026</p>
+            <p style="margin-top: 10px; color: #a855f7;">المصرية للاتصالات WE</p>
+        </footer>
+    </div>
+</body>
+</html>

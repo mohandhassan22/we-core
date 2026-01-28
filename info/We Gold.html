@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>We Gold</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* 
+   Main CSS Stylesheet for WE Gold Mobile Plans
+   Colors: White and Purple theme
+*/
+
+/* Global Styles and Variables */
+:root {
+    --primary-color: #7b4397;
+    --secondary-color: #a77bc7;
+    --light-purple: #f0ebf7;
+    --white: #ffffff;
+    --light-gray: #e0e0e0;
+    --dark-gray: #333333;
+    --box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    --border-radius: 8px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Cairo', sans-serif;
+    background-color: var(--light-purple);
+    color: var(--dark-gray);
+    line-height: 1.6;
+}
+
+.container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 15px;
+}
+
+/* Header Styles */
+header {
+    background-color: var(--primary-color);
+    color: var(--white);
+    padding: 20px 0;
+    box-shadow: var(--box-shadow);
+}
+
+header h1 {
+    text-align: center;
+    font-weight: 700;
+    font-size: 2rem;
+}
+
+/* Navigation Styles */
+nav {
+    background-color: var(--secondary-color);
+    padding: 10px 0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: var(--box-shadow);
+}
+
+.main-nav {
+    display: flex;
+    justify-content: space-around;
+    list-style: none;
+    flex-wrap: wrap;
+}
+
+.main-nav li {
+    margin: 5px 10px;
+}
+
+.main-nav a {
+    color: var(--white);
+    text-decoration: none;
+    font-weight: 600;
+    padding: 5px 10px;
+    border-radius: var(--border-radius);
+    transition: background-color 0.3s ease;
+}
+
+.main-nav a:hover {
+    background-color: var(--primary-color);
+}
+
+/* Main Content Styles */
+main {
+    padding: 30px 0;
+}
+
+.plan-section, .info-section {
+    background-color: var(--white);
+    border-radius: var(--border-radius);
+    margin-bottom: 30px;
+    box-shadow: var(--box-shadow);
+    overflow: hidden;
+}
+
+.section-header {
+    background-color: var(--primary-color);
+    color: var(--white);
+    padding: 15px 20px;
+    text-align: center;
+}
+
+.section-header h2 {
+    font-weight: 700;
+    font-size: 1.5rem;
+    margin-bottom: 5px;
+}
+
+.section-header p {
+    font-size: 1rem;
+    opacity: 0.9;
+}
+
+/* Table Styles */
+.table-container {
+    overflow-x: auto;
+    padding: 20px;
+}
+
+.pricing-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: center;
+}
+
+.pricing-table th, .pricing-table td {
+    padding: 12px 15px;
+    border: 1px solid var(--light-gray);
+}
+
+.pricing-table thead {
+    background-color: var(--primary-color);
+    color: var(--white);
+}
+
+.pricing-table th {
+    font-weight: 600;
+}
+
+.pricing-table th.details {
+    background-color: var(--secondary-color);
+}
+
+.pricing-table tbody tr:nth-child(even) {
+    background-color: var(--light-purple);
+}
+
+.pricing-table .feature {
+    background-color: var(--secondary-color);
+    color: var(--white);
+    font-weight: 600;
+    text-align: right;
+}
+
+/* Content Box Styles */
+.content-box {
+    padding: 20px;
+}
+
+.content-box ul, .content-box ol {
+    padding-right: 20px;
+    margin-bottom: 15px;
+}
+
+.content-box li {
+    margin-bottom: 10px;
+}
+
+.content-box h3 {
+    color: var(--primary-color);
+    margin: 20px 0 10px;
+    font-weight: 600;
+}
+
+.content-box h4 {
+    color: var(--secondary-color);
+    margin: 15px 0 10px;
+    font-weight: 600;
+}
+
+.highlight {
+    background-color: var(--light-purple);
+    padding: 10px;
+    border-right: 4px solid var(--primary-color);
+    margin-bottom: 15px;
+}
+
+.note {
+    background-color: var(--light-purple);
+    padding: 15px 20px;
+    margin: 0 20px 20px;
+    border-radius: var(--border-radius);
+    font-size: 0.9rem;
+}
+
+.note ul {
+    padding-right: 20px;
+}
+
+.note li {
+    margin-bottom: 5px;
+}
+
+/* Footer Styles */
+footer {
+    background-color: var(--primary-color);
+    color: var(--white);
+    padding: 30px 0;
+    text-align: center;
+}
+
+.logo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.circles {
+    display: flex;
+    margin-bottom: 10px;
+}
+
+.circle {
+    width: 30px;
+    height: 30px;
+    background-color: var(--secondary-color);
+    border-radius: 50%;
+    margin: 0 5px;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    .main-nav {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .main-nav li {
+        margin: 5px 0;
+        width: 100%;
+        text-align: center;
+    }
+    
+    .pricing-table {
+        font-size: 0.9rem;
+    }
+    
+    .pricing-table th, .pricing-table td {
+        padding: 8px 10px;
+    }
+    
+    .section-header h2 {
+        font-size: 1.3rem;
+    }
+}
+
+@media (max-width: 576px) {
+    header h1 {
+        font-size: 1.5rem;
+    }
+    
+    .pricing-table {
+        font-size: 0.8rem;
+    }
+    
+    .pricing-table th, .pricing-table td {
+        padding: 6px 8px;
+    }
+    
+    .section-header h2 {
+        font-size: 1.1rem;
+    }
+    
+    .circle {
+        width: 25px;
+        height: 25px;
+    }
+}
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>We Gold</h1>
+        </div>
+    </header>
+
+    <nav>
+        <div class="container">
+            <ul class="main-nav">
+                <li><a href="#we-gold-fbb">WE Gold FBB</a></li>
+                <li><a href="#we-gold-mobile">WE Gold Mobile</a></li>
+                <li><a href="#we-gold-5">WE Gold 5</a></li>
+                <li><a href="#adsi-package">ADSI Package</a></li>
+                <li><a href="#subscription">طرق الاشتراك</a></li>
+                <li><a href="#transfer">طرق التحويل</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main>
+        <div class="container">
+            <!-- WE Gold FBB Section -->
+            <section id="we-gold-fbb" class="plan-section">
+                <div class="section-header">
+                    <h2>الخطة التسعيرية لأنظمة WE Gold الشهري - أنظمة الدفع الآجل (الفاتورة): WE Gold FBB</h2>
+                    <p>(Mobile + Broadband)</p>
+                </div>
+
+                <div class="table-container">
+                    <table class="pricing-table">
+                        <thead>
+                            <tr>
+                                <th class="details">التفاصيل</th>
+                                <th>WE Gold 260</th>
+                                <th>WE Gold 525</th>
+                                <th>WE Gold 775</th>
+                                <th>WE Gold 1050</th>
+                                <th>WE Gold 1300</th>
+                                <th>WE Gold 2000</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="feature">الاستخدام</td>
+                                <td>قليل</td>
+                                <td>متوسط</td>
+                                <td>فوق متوسط</td>
+                                <td>كبير</td>
+                                <td>سوبر</td>
+                                <td>سوبر</td>
+                            </tr>
+                            <tr>
+                                <td class="feature">السعر</td>
+                                <td>260</td>
+                                <td>525</td>
+                                <td>775</td>
+                                <td>1050</td>
+                                <td>1300</td>
+                                <td>2000</td>
+                            </tr>
+                            <tr>
+                                <td class="feature">الدقائق والرسائل المحلية</td>
+                                <td>1,200</td>
+                                <td>3,700</td>
+                                <td>6,000</td>
+                                <td>8,000</td>
+                                <td>9,000</td>
+                                <td>10,000</td>
+                            </tr>
+                            <tr>
+                                <td class="feature">باقة الموبايل إنترنت</td>
+                                <td>5.5 جيجا</td>
+                                <td>20 جيجا</td>
+                                <td>30 جيجا</td>
+                                <td>65 جيجا</td>
+                                <td>70 جيجا</td>
+                                <td>130 جيجا</td>
+                            </tr>
+                            <tr>
+                                <td class="feature">باقة الإنترنت للمنزل</td>
+                                <td>سوبر 140 مجاناً</td>
+                                <td>سوبر 140 مجاناً</td>
+                                <td>سوبر 250 مجاناً</td>
+                                <td>سوبر 250 مجاناً</td>
+                                <td>سوبر 400 مجاناً</td>
+                                <td>سوبر 600 مجاناً</td>
+                            </tr>
+                            <tr>
+                                <td class="feature">خطوط العائلة</td>
+                                <td>2</td>
+                                <td>3</td>
+                                <td>4</td>
+                                <td>5</td>
+                                <td>6</td>
+                                <td>7</td>
+                            </tr>
+                            <tr>
+                                <td class="feature">مشاركة العائلة مع خطوط إضافية</td>
+                                <td>(مالك الخط + خط إضافي)</td>
+                                <td>(مالك الخط + 2 خطوط إضافية)</td>
+                                <td>(مالك الخط + 3 خطوط إضافية)</td>
+                                <td>(مالك الخط + 4 خطوط إضافية)</td>
+                                <td>(مالك الخط + 5 خطوط إضافية)</td>
+                                <td>(مالك الخط + 6 خطوط إضافية)</td>
+                            </tr>
+                            <tr>
+                                <td class="feature">إضافة خط أرضي</td>
+                                <td colspan="3">20 جنيه (20 جنيه و 35 جنيه و 65 جنيه)</td>
+                                <td colspan="3">20 أرضي مجاناً</td>
+                            </tr>
+                            <tr>
+                                <td class="feature">مكالمات دولية</td>
+                                <td>-</td>
+                                <td>25 دقيقة</td>
+                                <td>35 دقيقة</td>
+                                <td>45 دقيقة</td>
+                                <td>60 دقيقة</td>
+                                <td>75 دقيقة</td>
+                            </tr>
+                            <tr>
+                                <td class="feature">الإنترنت أثناء التجوال</td>
+                                <td>1 جيجابايتس</td>
+                                <td>1.5 جيجابايتس</td>
+                                <td>1.5 جيجابايتس</td>
+                                <td>2 جيجابايتس</td>
+                                <td>4 جيجابايتس</td>
+                                <td>6 جيجابايتس</td>
+                            </tr>
+                            <tr>
+                                <td class="feature">تطبيقات ترفيهية</td>
+                                <td colspan="6">-</td>
+                            </tr>
+                            <tr>
+                                <td class="feature">WE Flight (الاتصال أثناء الطيران)</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>4 دقائق (مرتين في السنة)</td>
+                                <td>6 دقائق (ثلاث مرات في السنة)</td>
+                            </tr>
+                            <tr>
+                                <td class="feature">نقاط WE Bonus الشهرية</td>
+                                <td>يحصل العميل على 1 نقطة مقابل كل 1 جنيه مدفوع (باستثناء الضرائب والأقساط)</td>
+                                <td>يحصل العميل على 1 نقطة مقابل كل 1 جنيه مدفوع (باستثناء الضرائب والأقساط)</td>
+                                <td>يحصل العميل على 1 نقطة مقابل كل 1 جنيه مدفوع (باستثناء الضرائب والأقساط)</td>
+                                <td>يحصل العميل على 1 نقطة مقابل كل 1 جنيه مدفوع (باستثناء الضرائب والأقساط)</td>
+                                <td>يحصل العميل على 2 نقطة مقابل كل 1 جنيه مدفوع (باستثناء الضرائب والأقساط)</td>
+                                <td>يحصل العميل على 2 نقطة مقابل كل 1 جنيه مدفوع (باستثناء الضرائب والأقساط)</td>
+                            </tr>
+                            <tr>
+                                <td class="feature">قسيمة شراء سنوية (بالجنيه المصري)</td>
+                                <td>-</td>
+                                <td>1,000 جنيه</td>
+                                <td>1,500 جنيه</td>
+                                <td>2,000 جنيه</td>
+                                <td>3,000 جنيه</td>
+                                <td>5,000 جنيه</td>
+                            </tr>
+                            <tr>
+                                <td class="feature">تقسيط هواتف</td>
+                                <td>5,000</td>
+                                <td>10,000</td>
+                                <td>15,000</td>
+                                <td>25,000</td>
+                                <td>25,000</td>
+                                <td>25,000</td>
+                            </tr>
+                            <tr>
+                                <td class="feature">إجمالي القيمة الشهرية بعد إضافة الضريبة</td>
+                                <td>333.50</td>
+                                <td>660</td>
+                                <td>968</td>
+                                <td>1306.80</td>
+                                <td>1614</td>
+                                <td>2477.30</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="note">
+                    <p>الضريبة: يتم إضافة ضريبة القيمة 0.67 جنيه و رسوم دمغة 10 جنيه و ضريبة القيمة المضافة 12.32%</p>
+                </div>
+            </section>
+
+            <!-- WE Gold Mobile Section -->
+            <section id="we-gold-mobile" class="plan-section">
+                <div class="section-header">
+                    <h2>الخطة التسعيرية لأنظمة WE Gold Mobile الشهري - أنظمة الدفع الآجل (الفاتورة بدون إنترنت أو خط أرضي)</h2>
+                    <p>(Stand Alone Plan)</p>
+                </div>
+
+                <div class="table-container">
+                    <table class="pricing-table">
+                        <thead>
+                            <tr>
+                                <th class="details">التفاصيل</th>
+                                <th>WE Gold 260</th>
+                                <th>WE Gold 525</th>
+                                <th>WE Gold 775</th>
+                                <th>WE Gold 1050</th>
+                                <th>WE Gold 1300</th>
+                                <th>WE Gold 2000</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="feature">السعر</td>
+                                <td>260</td>
+                                <td>525</td>
+                                <td>775</td>
+                                <td>1050</td>
+                                <td>1300</td>
+                                <td>2000</td>
+                            </tr>
+                            <tr>
+                                <td class="feature">الدقائق والرسائل المحلية</td>
+                                <td>1,200</td>
+                                <td>3,700</td>
+                                <td>6,000</td>
+                                <td>8,000</td>
+                                <td>9,000</td>
+                                <td>10,000</td>
+                            </tr>
+                            <tr>
+                                <td class="feature">باقة الموبايل إنترنت</td>
+                                <td>15 جيجا</td>
+                                <td>30 جيجا</td>
+                                <td>60 جيجا</td>
+                                <td>90 جيجا</td>
+                                <td>110 جيجا</td>
+                                <td>200 جيجا</td>
+                            </tr>
+                            <tr>
+                                <td class="feature">خطوط العائلة</td>
+                                <td>2</td>
+                                <td>3</td>
+                                <td>4</td>
+                                <td>5</td>
+                                <td>6</td>
+                                <td>7</td>
+                            </tr>
+                            <tr>
+                                <td class="feature">مشاركة العائلة مع خطوط إضافية</td>
+                                <td>(مالك الخط + خط إضافي)</td>
+                                <td>(مالك الخط + 2 خطوط إضافية)</td>
+                                <td>(مالك الخط + 3 خطوط إضافية)</td>
+                                <td>(مالك الخط + 4 خطوط إضافية)</td>
+                                <td>(مالك الخط + 5 خطوط إضافية)</td>
+                                <td>(مالك الخط + 6 خطوط إضافية)</td>
+                            </tr>
+                            <tr>
+                                <td class="feature">مكالمات دولية</td>
+                                <td>-</td>
+                                <td>25 دقيقة</td>
+                                <td>35 دقيقة</td>
+                                <td>45 دقيقة</td>
+                                <td>60 دقيقة</td>
+                                <td>75 دقيقة</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- WE Gold 5 Section -->
+            <section id="we-gold-5" class="plan-section">
+                <div class="section-header">
+                    <h2>الخطة التسعيرية لباقة WE Gold 5</h2>
+                </div>
+
+                <div class="table-container">
+                    <table class="pricing-table">
+                        <thead>
+                            <tr>
+                                <th class="details">التفاصيل</th>
+                                <th>WE Gold 5</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="feature">وحدات</td>
+                                <td>100</td>
+                            </tr>
+                            <tr>
+                                <td class="feature">موبايل إنترنت</td>
+                                <td>-</td>
+                            </tr>
+                            <tr>
+                                <td class="feature">سعر الدقيقة والرسالة خارج الباقة</td>
+                                <td>14 قرش</td>
+                            </tr>
+                            <tr>
+                                <td class="feature">سعر الميجابايت خارج الباقة</td>
+                                <td>200 ميجا / 5 جنيه</td>
+                            </tr>
+                            <tr>
+                                <td class="feature">سعر الدقيقة الدولية</td>
+                                <td>2.99 جنيه شاملة الضريبة</td>
+                            </tr>
+                            <tr>
+                                <td class="feature">سعر دقيقة الاستقبال التجوال لبعض الدول</td>
+                                <td>2 جنيه</td>
+                            </tr>
+                            <tr>
+                                <td class="feature">سرعة مخفضة بلا حدود الخاصة بالموبايل إنترنت</td>
+                                <td>10 جنيه</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="note">
+                    <ul>
+                        <li>الدقيقة و الرسالة لنفس الشبكة = 1 وحدة | الدقيقة للخط الأرضي = 1 وحدة</li>
+                        <li>الدقيقة و الرسالة للشبكات الأخرى = 5 وحدة | 1 وحدة = 1 ميجابايت.</li>
+                        <li>سعر إستقبال التجوال سارية معاداً في الـ hard to reach.</li>
+                        <li>ملحوظة: WE Gold 5 هي باقة مؤقتة يتم منحها لعملاء الـ MNP و يتم التحويل بعدها لباقة المراد التحويل إليها في خلال يوم عمل.</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- ADSI Package Section -->
+            <section id="adsi-package" class="plan-section">
+                <div class="section-header">
+                    <h2>باقات ADSI Package</h2>
+                </div>
+
+                <div class="table-container">
+                    <table class="pricing-table">
+                        <thead>
+                            <tr>
+                                <th class="details">ADSI Package</th>
+                                <th>WI Gold 260</th>
+                                <th>WI Gold 525</th>
+                                <th>WI Gold 725</th>
+                                <th>WI Gold 1050</th>
+                                <th>WI Gold 1300</th>
+                                <th>WI Gold 2000</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="feature">140 GB</td>
+                                <td>Free</td>
+                                <td>Free</td>
+                                <td>—</td>
+                                <td>—</td>
+                                <td>—</td>
+                                <td>—</td>
+                            </tr>
+                            <tr>
+                                <td class="feature">200 GB</td>
+                                <td>412.87</td>
+                                <td>738.82</td>
+                                <td>—</td>
+                                <td>—</td>
+                                <td>—</td>
+                                <td>—</td>
+                            </tr>
+                            <tr>
+                                <td class="feature">250 GB</td>
+                                <td>498.97</td>
+                                <td>824.92</td>
+                                <td>Free</td>
+                                <td>Free</td>
+                                <td>—</td>
+                                <td>—</td>
+                            </tr>
+                            <tr>
+                                <td class="feature">400 GB</td>
+                                <td>722.83</td>
+                                <td>1048.78</td>
+                                <td>1190.23</td>
+                                <td>1528.48</td>
+                                <td>Free</td>
+                                <td>—</td>
+                            </tr>
+                            <tr>
+                                <td class="feature">600 GB</td>
+                                <td>940.64</td>
+                                <td>1266.49</td>
+                                <td>1470.94</td>
+                                <td>1740.19</td>
+                                <td>1829.83</td>
+                                <td>Free</td>
+                            </tr>
+                            <tr>
+                                <td class="feature">MAX</td>
+                                <td>—</td>
+                                <td>—</td>
+                                <td>—</td>
+                                <td>—</td>
+                                <td>2983.62</td>
+                                <td>3227.11</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="note">
+                    <p>المصدر: <a href="http://www.wi-goldgold.com/#/wI.gold" target="_blank">www.wi-goldgold.com/#/wI.gold</a></p>
+                </div>
+            </section>
+
+            <!-- Subscription Methods Section -->
+            <section id="subscription" class="info-section">
+                <div class="section-header">
+                    <h2>طرق الاشتراك في باقات WE Gold للعملاء الجدد</h2>
+                </div>
+                <div class="content-box">
+                    <ul>
+                        <li>يمكن الاشتراك في باقات WE Gold من أي فرع من فروع WE.</li>
+                        <li>أو عن طريق حجز الرقم المفضل اون لاين عن طريق الموقع <a href="http://www.te.eg" target="_blank">www.te.eg</a> وطلب استكمال التفعيل من خلال زيارة منزلية.</li>
+                        <li>الزيارة المنزلية متاحة حالياً في القاهرة والجيزة والإسكندرية والشرقية فقط.</li>
+                        <li>إذا كان الحجز من خلال الـ website يجب على العميل استلام الخط في خلال 3 أيام وإلا يتم إلغاء الحجز.</li>
+                        <li>إذا كان الحجز عن طريق Tele-sales team أو Door to door team فمدة الحجز ستكون 20 يوم.</li>
+                        <li>سيتلقى العميل بريد إلكتروني أو رسالة قصيرة تحتوي على كود الحجز.</li>
+                        <li>ستقوم فريق Door to Door باستلام الطلب وسيتم الاتصال بالعميل للتأكد من البيانات وتحديد وقت الزيارة.</li>
+                        <li>سيقوم المندوب بزيارة العميل خلال 48 ساعة.</li>
+                        <li>سيتم طلب الـ ATP وإتباع خطوات تفاقد الخط مع التأكد من الـ ATPs.</li>
+                        <li>سيتم تسليم SIM Card للعميل أثناء الزيارة و يتم دفع ثمن الشريحة.</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Transfer Methods Section -->
+            <section id="transfer" class="info-section">
+                <div class="section-header">
+                    <h2>طرق التحويل إلى باقات WE Gold للعملاء الحاليين</h2>
+                </div>
+                <div class="content-box">
+                    <p class="highlight">ملحوظة: يمكن تغيير أي باقة WE Gold للباقة الأعلى أو الأقل عن طريق 111 ولكن بشرط ان يكون العميل دافع اي مبالغ مستحقة على الخط وليس لدية رقم مميز (Special Number).</p>
+                    
+                    <h3>إذا أراد عميل التحويل من Indigo إلى WE Gold:</h3>
+                    <h4>1. في حالة التحويل لباقة أعلى:</h4>
+                    <p>لا حاجة إلى إمضاء commitment form جديد. سيقوم العميل بالتحويل لباقة أعلى على WE Gold بشكل طبيعي.</p>
+                    
+                    <h4>2. في حالة التحويل لباقة أقل:</h4>
+                    <ul>
+                        <li>إذا تم دفع 12 فاتورة على Indigo، متاح للعميل التحويل لباقة أقل على WE Gold.</li>
+                        <li>إذا تم دفع أقل من 12 فاتورة على Indigo، غير متاح للعميل التحويل لباقة أقل على WE Gold بعد دفع 12 فاتورة على خطة Indigo و ذلك في حالة أن العميل قام بإمضاء commitment form على باقة Indigo.</li>
+                    </ul>
+                    
+                    <h3>التحويل من باقات الدفع الآجل:</h3>
+                    <h4>شروط التحويل من Indigo إلى Gold:</h4>
+                    <ol>
+                        <li>من خلال فروع WE و يقوم العميل بدفع المبالغ المستحقة في حالة وجود outstanding أو في حالة وجود unbilled يتم عمل Hotbill.</li>
+                        <li>و يتم إتباع الخطوات اللازمة بالنسبة لاشتراك الأرضي للتحويل لـ Gold.</li>
+                    </ol>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="logo">
+                <div class="circles">
+                    <div class="circle"></div>
+                    <div class="circle"></div>
+                    <div class="circle"></div>
+                </div>
+                <p>Powered by Mohand</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script25.js"></script>
+</body>
+</html>

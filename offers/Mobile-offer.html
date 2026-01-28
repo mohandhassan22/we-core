@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>عروض WE - المصرية للاتصالات</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f3ff 0%, #ffffff 50%, #f0e6ff 100%);
+            min-height: 100vh;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            background: linear-gradient(135deg, #7c3aed 0%, #a855f7 100%);
+            color: white;
+            padding: 40px 30px;
+            border-radius: 20px;
+            text-align: center;
+            margin-bottom: 40px;
+            box-shadow: 0 10px 30px rgba(124, 58, 237, 0.3);
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        header p {
+            font-size: 1.1em;
+            opacity: 0.95;
+        }
+
+        .offers-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .offer-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(124, 58, 237, 0.1);
+            border: 2px solid #e9d5ff;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .offer-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(124, 58, 237, 0.2);
+        }
+
+        .offer-header {
+            background: linear-gradient(135deg, #7c3aed 0%, #a855f7 100%);
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .offer-header h3 {
+            font-size: 1.5em;
+            margin-bottom: 10px;
+        }
+
+        .offer-badge {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 5px 15px;
+            border-radius: 20px;
+            display: inline-block;
+            font-size: 0.9em;
+        }
+
+        .offer-body {
+            padding: 25px;
+        }
+
+        .offer-highlight {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            margin-bottom: 20px;
+            border: 2px solid #fbbf24;
+        }
+
+        .offer-highlight p {
+            color: #92400e;
+            font-size: 1.3em;
+            font-weight: bold;
+        }
+
+        .offer-details {
+            color: #4c1d95;
+            margin-bottom: 20px;
+        }
+
+        .offer-details ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .offer-details li {
+            padding: 8px 0;
+            padding-right: 25px;
+            position: relative;
+        }
+
+        .offer-details li::before {
+            content: "✓";
+            position: absolute;
+            right: 0;
+            color: #7c3aed;
+            font-weight: bold;
+        }
+
+        .offer-button {
+            display: block;
+            background: linear-gradient(135deg, #7c3aed 0%, #a855f7 100%);
+            color: white;
+            text-align: center;
+            padding: 12px 20px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        .offer-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(124, 58, 237, 0.3);
+        }
+
+        .no-offers {
+            background: white;
+            padding: 60px 40px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 5px 20px rgba(124, 58, 237, 0.1);
+            border: 2px solid #e9d5ff;
+        }
+
+        .no-offers i {
+            font-size: 5em;
+            color: #c084fc;
+            margin-bottom: 20px;
+            opacity: 0.5;
+        }
+
+        .no-offers h2 {
+            color: #7c3aed;
+            font-size: 2em;
+            margin-bottom: 15px;
+        }
+
+        .no-offers p {
+            color: #6b21a8;
+            font-size: 1.1em;
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px;
+            color: #7c3aed;
+            font-size: 0.95em;
+            margin-top: 40px;
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 1.8em;
+            }
+            
+            .offers-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .no-offers i {
+                font-size: 3em;
+            }
+
+            .no-offers h2 {
+                font-size: 1.5em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎁 عروض WE</h1>
+            <p>احصل على أفضل العروض والخصومات من المصرية للاتصالات</p>
+        </header>
+
+        <!-- قسم العروض -->
+        <div id="offersContainer">
+            <!-- العروض ستظهر هنا -->
+        </div>
+
+        <!-- رسالة عدم وجود عروض -->
+        <div id="noOffersMessage" class="no-offers" style="display: none;">
+            <i class="fas fa-gift"></i>
+            <h2>لا توجد عروض حالياً</h2>
+            <p>نعمل على تقديم عروض جديدة ومميزة لك قريباً</p>
+            <p style="margin-top: 10px; font-size: 0.95em;">تابعنا للحصول على آخر العروض والتحديثات</p>
+        </div>
+
+        <footer>
+            <p>📅 عروض WE - 2026</p>
+            <p style="margin-top: 10px; color: #a855f7;">المصرية للاتصالات WE</p>
+        </footer>
+    </div>
+
+    <script>
+        // قائمة العروض - يمكنك تعديلها حسب الحاجة
+        const offers = [
+           
+        // يمكنك إضافة المزيد من العروض هنا
+            // أو حذف جميع العروض لعرض رسالة "لا توجد عروض"
+        ];
+
+        // دالة لعرض العروض
+        function displayOffers() {
+            const offersContainer = document.getElementById('offersContainer');
+            const noOffersMessage = document.getElementById('noOffersMessage');
+
+            // إذا لم يكن هناك عروض، اعرض رسالة "لا توجد عروض"
+            if (offers.length === 0) {
+                offersContainer.innerHTML = '';
+                noOffersMessage.style.display = 'block';
+                return;
+            }
+
+            // إخفاء رسالة "لا توجد عروض"
+            noOffersMessage.style.display = 'none';
+
+            // إنشاء HTML للعروض
+            let offersHTML = '<div class="offers-grid">';
+            
+            offers.forEach(offer => {
+                offersHTML += `
+                    <div class="offer-card">
+                        <div class="offer-header">
+                            <h3>${offer.title}</h3>
+                            <span class="offer-badge">${offer.badge}</span>
+                        </div>
+                        <div class="offer-body">
+                            <div class="offer-highlight">
+                                <p>🎁 ${offer.highlight}</p>
+                            </div>
+                            <div class="offer-details">
+                                <ul>
+                                    ${offer.details.map(detail => `<li>${detail}</li>`).join('')}
+                                </ul>
+                            </div>
+                            <a href="${offer.buttonLink}" class="offer-button">
+                                <i class="fas fa-arrow-left"></i> ${offer.buttonText}
+                            </a>
+                        </div>
+                    </div>
+                `;
+            });
+
+            offersHTML += '</div>';
+            offersContainer.innerHTML = offersHTML;
+        }
+
+        // عرض العروض عند تحميل الصفحة
+        window.addEventListener('load', displayOffers);
+    </script>
+</body>
+</html>
