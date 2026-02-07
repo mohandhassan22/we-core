@@ -20,20 +20,8 @@
                     },
                     // اسال استلام نقديه يظهر في الثلاثة عن طريق تكرار الإدخال لكل فئة
                     {
-                        title: "اسال استلام نقديه",
+                        title: "إيصال استلام نقديه",
                         category: "mobile",
-                        size: "200KB",
-                        link: "https://drive.google.com/file/d/15Lb6sYILbaEtM-lfpwHVeiCFB85P7znu/view"
-                    },
-                    {
-                        title: "اسال استلام نقديه",
-                        category: "landline",
-                        size: "200KB",
-                        link: "https://drive.google.com/file/d/15Lb6sYILbaEtM-lfpwHVeiCFB85P7znu/view"
-                    },
-                    {
-                        title: "اسال استلام نقديه",
-                        category: "Adsl",
                         size: "200KB",
                         link: "https://drive.google.com/file/d/15Lb6sYILbaEtM-lfpwHVeiCFB85P7znu/view"
                     },
@@ -286,3 +274,4 @@ function generateForms(category = 'all') {
         // التهيئة الأولية
 
         generateForms();
+
