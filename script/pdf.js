@@ -191,10 +191,9 @@
                         link:"https://drive.google.com/file/d/1Q6eGV4PgZh-3BlLT9-vA5koi7798Cwix/view"
                     },
                     {
-                        title:"طلب تنازل ع تلفون ارضي",
+                        title:"طلب تنازل ع تلفون ارضي,
                         category:"landline",
-                        link:"https://doc-0k-a0-apps-viewer.googleusercontent.com/viewer/secure/pdf/3nb9bdfcv3e2h2k1cmql0ee9cvc5lole/tr6v7tdc1dtsrj5201gk8paj04dabn67/1770748350000/drive/*/ACFrOgCuJ0Bv137LDa7WYywScyWzwOPMjkB8r3g0AGXtJhkXlTBBxp1h9sFd_SOkNvSKhbgD4kB053GcDT-6Vv__RVJF695TVTQ82De1U8vPcA28AUvqOHHeFMNNcEn5GHUSX28fX39f3Wc7Ohv6_Hfpcwiju3oiVpnAH6dXlEOZjboZ7eMutmCpAA8zpwA4EpfElfeU9HEgSkDtF086s-Ofxo1adI7daOO2QUS7JBin1JXYyRYSWKbTHiAD02oSoCMMuPIhoF24v8xLtSYPskJf_ft6AvK4MNZYv5Kbg-O9lhqTBDVANnT_YSJubOA5BSbKlEjiwVaE1cYFX8iLXPwuSP8PDX2yXOPIHgiBT_h8q1eOzcE68rEPLoidve-bdB3S9Ak8Ow5DImklWmd4F5ubb4tiH4Cu3L7ij8FKEg==?print=true
-                         "
+                        link:"https://doc-0k-a0-apps-viewer.googleusercontent.com/viewer/secure/pdf/3nb9bdfcv3e2h2k1cmql0ee9cvc5lole/tr6v7tdc1dtsrj5201gk8paj04dabn67/1770748350000/drive/*/ACFrOgCuJ0Bv137LDa7WYywScyWzwOPMjkB8r3g0AGXtJhkXlTBBxp1h9sFd_SOkNvSKhbgD4kB053GcDT-6Vv__RVJF695TVTQ82De1U8vPcA28AUvqOHHeFMNNcEn5GHUSX28fX39f3Wc7Ohv6_Hfpcwiju3oiVpnAH6dXlEOZjboZ7eMutmCpAA8zpwA4EpfElfeU9HEgSkDtF086s-Ofxo1adI7daOO2QUS7JBin1JXYyRYSWKbTHiAD02oSoCMMuPIhoF24v8xLtSYPskJf_ft6AvK4MNZYv5Kbg-O9lhqTBDVANnT_YSJubOA5BSbKlEjiwVaE1cYFX8iLXPwuSP8PDX2yXOPIHgiBT_h8q1eOzcE68rEPLoidve-bdB3S9Ak8Ow5DImklWmd4F5ubb4tiH4Cu3L7ij8FKEg==?print=true"
                     },
                     {
                         title:"طلب خواص و خدامات مضافه",
@@ -275,5 +274,6 @@ function generateForms(category = 'all') {
         // التهيئة الأولية
 
         generateForms();
+
 
 
