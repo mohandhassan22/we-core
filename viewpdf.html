@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>عرض النموذج</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
   <style>
     body{
       font-family:Tahoma, Arial, sans-serif;
@@ -18,7 +19,7 @@
       padding:12px
     }
     .container{
-      max-width:1000px;
+      max-width:1100px;
       margin:20px auto;
       padding:12px
     }
@@ -37,177 +38,123 @@
       text-decoration:none;
       border:none;
       cursor:pointer;
-      transition: background 0.3s;
+      transition:0.3s
     }
     .actions a:hover, .actions button:hover{
-      background:#8e24aa;
+      background:#8e24aa
     }
-    .actions a[disabled], .actions button[disabled]{
+    .actions button:disabled{
       background:#ccc;
-      cursor:not-allowed;
+      cursor:not-allowed
     }
     #viewerWrap{
       background:#fff;
       border:1px solid #ddd;
       border-radius:8px;
-      overflow:hidden;
+      overflow:hidden
     }
     iframe{
       width:100%;
-      height:calc(100vh - 140px);
+      height:calc(100vh - 160px);
       border:none;
-      display:block;
-    }
-    #missing{
-      text-align:center;
-      padding:40px;
-      color:#999;
+      display:none
     }
     .loading{
       text-align:center;
       padding:40px;
-      color:#6a1b9a;
+      color:#6a1b9a
     }
     .loading i{
       font-size:2em;
-      animation: spin 1s linear infinite;
+      animation: spin 1s linear infinite
     }
-    @keyframes spin {
-      from { transform: rotate(0deg); }
-      to { transform: rotate(360deg); }
+    @keyframes spin{
+      from{transform:rotate(0)}
+      to{transform:rotate(360deg)}
+    }
+    #error{
+      text-align:center;
+      padding:40px;
+      color:#999;
+      display:none
     }
   </style>
 </head>
+
 <body>
+
   <div class="header">
     <div class="container">
       <strong>عرض النموذج</strong>
     </div>
   </div>
+
   <div class="container">
+
     <div class="actions">
-      <a id="backBtn" href="pdf.html"><i class="fas fa-arrow-left"></i> العودة</a>
-      <button id="downloadBtn" type="button"><i class="fas fa-download"></i> تحميل</button>
-      <button id="printBtn" type="button"><i class="fas fa-print"></i> طباعة</button>
+      <a href="pdf.html"><i class="fas fa-arrow-right"></i> رجوع</a>
+      <button id="printBtn"><i class="fas fa-print"></i> طباعة</button>
     </div>
 
     <div id="viewerWrap">
-      <p id="missing" style="display:none">لم يتم تحديد ملف للعرض.</p>
-      <div id="loading" class="loading" style="display:none">
+      <div id="loading" class="loading">
         <i class="fas fa-spinner"></i>
         <p>جاري تحميل الملف...</p>
       </div>
-      <iframe id="pdfViewer" style="display:none"></iframe>
+
+      <p id="error">تعذر تحميل الملف. تأكد أن الملف متاح للعرض.</p>
+
+      <iframe id="pdfViewer"></iframe>
     </div>
+
   </div>
 
-  <script>
-    function getQuery(name){
-      const params = new URLSearchParams(window.location.search);
-      return params.get(name);
-    }
+<script>
+  function getQuery(name){
+    const params = new URLSearchParams(window.location.search);
+    return params.get(name);
+  }
 
-    // تحويل رابط Google Drive للعرض المباشر
-    function convertGoogleDriveUrl(url) {
-      // إذا كان الرابط من Google Drive
-      if (url.includes('drive.google.com')) {
-        // استخراج معرف الملف
-        let fileId = '';
-        
-        // نمط 1: https://drive.google.com/file/d/FILE_ID/view
-        const match1 = url.match(/\/file\/d\/([^\/]+)/);
-        if (match1) {
-          fileId = match1[1];
-        }
-        
-        // نمط 2: https://drive.google.com/open?id=FILE_ID
-        const match2 = url.match(/[?&]id=([^&]+)/);
-        if (match2) {
-          fileId = match2[1];
-        }
-        
-        if (fileId) {
-          // استخدام رابط المعاينة المباشرة
-          return `https://drive.google.com/file/d/${fileId}/preview`;
-        }
+  const src = getQuery('src');
+  const iframe = document.getElementById('pdfViewer');
+  const loading = document.getElementById('loading');
+  const error = document.getElementById('error');
+  const printBtn = document.getElementById('printBtn');
+
+  if(!src){
+    loading.style.display = 'none';
+    error.style.display = 'block';
+    printBtn.disabled = true;
+  }else{
+    const originalUrl = decodeURIComponent(src);
+
+    // Google Docs Viewer (نفس رابط googleusercontent)
+    const viewUrl =
+      `https://docs.google.com/gview?embedded=true&url=${encodeURIComponent(originalUrl)}`;
+
+    iframe.src = viewUrl;
+
+    iframe.onload = () => {
+      loading.style.display = 'none';
+      iframe.style.display = 'block';
+    };
+
+    iframe.onerror = () => {
+      loading.style.display = 'none';
+      error.style.display = 'block';
+    };
+
+    // الطباعة
+    printBtn.onclick = () => {
+      try{
+        iframe.contentWindow.focus();
+        iframe.contentWindow.print();
+      }catch{
+        window.open(viewUrl, '_blank');
       }
-      
-      return url;
-    }
+    };
+  }
+</script>
 
-    const src = getQuery('src');
-    const viewer = document.getElementById('pdfViewer');
-    const missing = document.getElementById('missing');
-    const loading = document.getElementById('loading');
-    const printBtn = document.getElementById('printBtn');
-    const downloadBtn = document.getElementById('downloadBtn');
-
-    if (!src) {
-      viewer.style.display = 'none';
-      missing.style.display = 'block';
-      printBtn.disabled = true;
-      downloadBtn.disabled = true;
-    } else {
-      const originalUrl = decodeURIComponent(src);
-      const viewUrl = convertGoogleDriveUrl(originalUrl);
-      
-      // عرض شاشة التحميل
-      loading.style.display = 'block';
-      
-      // تحميل الملف في iframe
-      viewer.src = viewUrl;
-      
-      // عند انتهاء التحميل
-      viewer.onload = function() {
-        loading.style.display = 'none';
-        viewer.style.display = 'block';
-      };
-
-      // في حالة فشل التحميل
-      viewer.onerror = function() {
-        loading.style.display = 'none';
-        missing.textContent = 'حدث خطأ في تحميل الملف. تأكد من أن الملف متاح للعرض.';
-        missing.style.display = 'block';
-      };
-
-      // زر الطباعة
-      printBtn.addEventListener('click', () => {
-        try {
-          // محاولة الطباعة من iframe
-          const iframeWindow = viewer.contentWindow;
-          if (iframeWindow) {
-            iframeWindow.focus();
-            iframeWindow.print();
-          } else {
-            // في حالة عدم القدرة على الوصول لـ iframe، فتح في نافذة جديدة
-            window.open(viewUrl, '_blank');
-          }
-        } catch(e) {
-          // إذا كان هناك مشكلة في CORS، فتح في نافذة جديدة
-          alert('سيتم فتح الملف في نافذة جديدة للطباعة');
-          window.open(viewUrl, '_blank');
-        }
-      });
-
-      // زر التحميل
-      downloadBtn.addEventListener('click', () => {
-        // تحويل الرابط لرابط تحميل مباشر
-        let downloadUrl = originalUrl;
-        
-        if (originalUrl.includes('drive.google.com')) {
-          const match = originalUrl.match(/\/file\/d\/([^\/]+)/);
-          if (match) {
-            const fileId = match[1];
-            downloadUrl = `https://drive.google.com/uc?export=download&id=${fileId}`;
-          }
-        }
-        
-        // فتح رابط التحميل
-        window.open(downloadUrl, '_blank');
-      });
-    }
-  </script>
 </body>
-
 </html>
-
