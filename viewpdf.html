@@ -8,10 +8,9 @@
 
   <style>
     body{
-      font-family:Tahoma, Arial, sans-serif;
       margin:0;
-      background:#f8f0ff;
-      color:#333
+      font-family:Tahoma, Arial, sans-serif;
+      background:#f4f4f4
     }
     .header{
       background:#6a1b9a;
@@ -19,138 +18,131 @@
       padding:12px
     }
     .container{
-      max-width:1100px;
-      margin:20px auto;
+      max-width:1200px;
+      margin:auto;
       padding:12px
     }
     .actions{
       display:flex;
-      gap:8px;
-      align-items:center;
       justify-content:flex-end;
-      margin-bottom:15px
+      gap:10px;
+      margin-bottom:10px
     }
-    .actions a, .actions button{
+    .actions a,.actions button{
       background:#6a1b9a;
       color:#fff;
-      padding:8px 12px;
-      border-radius:6px;
-      text-decoration:none;
       border:none;
+      padding:8px 14px;
+      border-radius:6px;
       cursor:pointer;
-      transition:0.3s
+      text-decoration:none
     }
-    .actions a:hover, .actions button:hover{
+    .actions a:hover,.actions button:hover{
       background:#8e24aa
-    }
-    .actions button:disabled{
-      background:#ccc;
-      cursor:not-allowed
-    }
-    #viewerWrap{
-      background:#fff;
-      border:1px solid #ddd;
-      border-radius:8px;
-      overflow:hidden
     }
     iframe{
       width:100%;
-      height:calc(100vh - 160px);
+      height:calc(100vh - 150px);
       border:none;
-      display:none
+      display:none;
+      background:#fff
     }
-    .loading{
+    .loading,.error{
       text-align:center;
       padding:40px;
-      color:#6a1b9a
+      color:#666
     }
     .loading i{
-      font-size:2em;
-      animation: spin 1s linear infinite
+      font-size:30px;
+      color:#6a1b9a;
+      animation:spin 1s linear infinite
     }
     @keyframes spin{
       from{transform:rotate(0)}
       to{transform:rotate(360deg)}
-    }
-    #error{
-      text-align:center;
-      padding:40px;
-      color:#999;
-      display:none
     }
   </style>
 </head>
 
 <body>
 
-  <div class="header">
-    <div class="container">
-      <strong>عرض النموذج</strong>
-    </div>
-  </div>
-
+<div class="header">
   <div class="container">
-
-    <div class="actions">
-      <a href="pdf.html"><i class="fas fa-arrow-right"></i> رجوع</a>
-      <button id="printBtn"><i class="fas fa-print"></i> طباعة</button>
-    </div>
-
-    <div id="viewerWrap">
-      <div id="loading" class="loading">
-        <i class="fas fa-spinner"></i>
-        <p>جاري تحميل الملف...</p>
-      </div>
-
-      <p id="error">تعذر تحميل الملف. تأكد أن الملف متاح للعرض.</p>
-
-      <iframe id="pdfViewer"></iframe>
-    </div>
-
+    <strong>عرض النموذج</strong>
   </div>
+</div>
+
+<div class="container">
+
+  <div class="actions">
+    <a href="pdf.html"><i class="fas fa-arrow-right"></i> رجوع</a>
+    <button id="printBtn"><i class="fas fa-print"></i> طباعة</button>
+  </div>
+
+  <div id="loading" class="loading">
+    <i class="fas fa-spinner"></i>
+    <p>جاري تحميل الملف...</p>
+  </div>
+
+  <div id="error" class="error" style="display:none">
+    تعذر عرض الملف – تأكد أن الملف متاح للعامة
+  </div>
+
+  <iframe id="viewer"></iframe>
+
+</div>
 
 <script>
   function getQuery(name){
-    const params = new URLSearchParams(window.location.search);
-    return params.get(name);
+    return new URLSearchParams(window.location.search).get(name);
   }
 
-  const src = getQuery('src');
-  const iframe = document.getElementById('pdfViewer');
-  const loading = document.getElementById('loading');
-  const error = document.getElementById('error');
-  const printBtn = document.getElementById('printBtn');
+  function driveToDirect(url){
+    if(url.includes("drive.google.com")){
+      const match = url.match(/\/d\/([^\/]+)/);
+      if(match){
+        return "https://drive.google.com/uc?export=download&id=" + match[1];
+      }
+    }
+    return url;
+  }
+
+  const src = getQuery("src");
+  const iframe = document.getElementById("viewer");
+  const loading = document.getElementById("loading");
+  const error = document.getElementById("error");
+  const printBtn = document.getElementById("printBtn");
 
   if(!src){
-    loading.style.display = 'none';
-    error.style.display = 'block';
-    printBtn.disabled = true;
+    loading.style.display="none";
+    error.style.display="block";
+    printBtn.disabled=true;
   }else{
     const originalUrl = decodeURIComponent(src);
+    const directPdf = driveToDirect(originalUrl);
 
-    // Google Docs Viewer (نفس رابط googleusercontent)
-    const viewUrl =
-      `https://docs.google.com/gview?embedded=true&url=${encodeURIComponent(originalUrl)}`;
+    const viewerUrl =
+      "https://docs.google.com/gview?embedded=true&url=" +
+      encodeURIComponent(directPdf);
 
-    iframe.src = viewUrl;
+    iframe.src = viewerUrl;
 
-    iframe.onload = () => {
-      loading.style.display = 'none';
-      iframe.style.display = 'block';
+    iframe.onload = ()=>{
+      loading.style.display="none";
+      iframe.style.display="block";
     };
 
-    iframe.onerror = () => {
-      loading.style.display = 'none';
-      error.style.display = 'block';
+    iframe.onerror = ()=>{
+      loading.style.display="none";
+      error.style.display="block";
     };
 
-    // الطباعة
-    printBtn.onclick = () => {
+    printBtn.onclick = ()=>{
       try{
         iframe.contentWindow.focus();
         iframe.contentWindow.print();
       }catch{
-        window.open(viewUrl, '_blank');
+        window.open(directPdf,"_blank");
       }
     };
   }
