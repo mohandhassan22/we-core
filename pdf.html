@@ -3,19 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ALL pdf</title>
+    <title>النماذج</title>
     <link rel="shortcut icon" href="img/we-core.png" type="image/x-icon">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="style/pdf.css">
+
 </head>
 <body>
     <!-- الهيدر -->
     <header class="header">
         <nav class="navbar">
-            <img src="img/we-core.png" alt="Team Warek" class="logo">
+            <a href="#" class="logo-wrapper">
+                <img src="img/we-core.png" alt="WE-Core" class="logo">
+                <div class="logo-text">
+                    <span class="logo-title">WE-Core</span>
+                    <span class="logo-sub">Powered by Mohand Hassan</span>
+                </div>
+            </a>
             <div class="nav-links">
-                <a href="index.html"><i class="fa-solid fa-house-user"></i></a>
-            
+                <a href="index.html">
+                    <i class="fa-solid fa-house-user"></i>
+                    الرئيسية
+                </a>
             </div>
         </nav>
     </header>
@@ -31,7 +40,7 @@
             <button class="filter-btn" onclick="filterForms('all')">الكل</button>
             <button class="filter-btn" onclick="filterForms('mobile')">المحمول</button>
             <button class="filter-btn" onclick="filterForms('landline')">الأرضي</button>
-            <button class="filter-btn"onclick="filterForms('Adsl')">Adsl</button>
+            <button class="filter-btn" onclick="filterForms('Adsl')">Adsl</button>
         </div>
 
         <div class="forms-grid" id="formsContainer">
@@ -43,8 +52,8 @@
     <footer class="footer">
         <p>powered by mohand</p>
     </footer>
+
     <script type="module" src="script/pdf.js"></script>
     <script src="script/pdf.js"></script>
 </body>
 </html>
-
