@@ -263,23 +263,6 @@
             border-radius: 50%;
             margin-bottom: 10px;
         }
-        .alert-box {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    background-color: #6a1b9a;
-    color: white;
-    padding: 15px 25px;
-    border-radius: 8px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-    font-size: 16px;
-    opacity: 1;
-    transition: opacity 0.5s ease;
-  }
-
-  .hide {
-    opacity: 0;
-  }
     </style>
 </head>
 
@@ -377,14 +360,73 @@
             </div>
         </footer>
     </div>
-    <div id="alert" class="alert-box">
-  سيتم إغلاق الرسالة خلال <span id="count">5</span> ثواني
+    <style>
+  body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+  }
+
+  /* الخلفية المعتمة */
+  .overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+  }
+
+  /* نافذة الرسالة */
+  .modal {
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    width: 350px;
+    text-align: center;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+    animation: fadeIn 0.4s ease;
+  }
+
+  .modal h3 {
+    margin-top: 0;
+    color: #4a148c;
+  }
+
+  .countdown {
+    margin-top: 15px;
+    font-weight: bold;
+    color: #d32f2f;
+  }
+
+  @keyframes fadeIn {
+    from { transform: scale(0.8); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+  }
+
+  .fade-out {
+    opacity: 0;
+    transition: opacity 0.5s ease;
+  }
+</style>
+</head>
+
+<body>
+
+<div id="overlay" class="overlay">
+  <div class="modal">
+    <h3>تم إضافة صفحة Remedy</h3>
+    <p>مع إضافة معظم التيكت المستخدمة</p>
+    <div class="countdown">
+      سيتم الإغلاق خلال <span id="count">10</span> ثواني
+    </div>
+  </div>
 </div>
 
 <script>
-  let timeLeft = 5;
+  let timeLeft = 10;
   const countElement = document.getElementById("count");
-  const alertBox = document.getElementById("alert");
+  const overlay = document.getElementById("overlay");
 
   const timer = setInterval(() => {
     timeLeft--;
@@ -392,10 +434,10 @@
 
     if (timeLeft <= 0) {
       clearInterval(timer);
-      alertBox.classList.add("hide");
+      overlay.classList.add("fade-out");
 
       setTimeout(() => {
-        alertBox.style.display = "none";
+        overlay.style.display = "none";
       }, 500);
     }
   }, 1000);
@@ -434,6 +476,7 @@
 </body>
 
 </html>
+
 
 
 
