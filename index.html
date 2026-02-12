@@ -7,93 +7,245 @@
 
 <link rel="shortcut icon" href="img/we-core.png">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
 
 <style>
+*{box-sizing:border-box;margin:0;padding:0;}
+
 body{
-    margin:0;
-    font-family:'Segoe UI',Tahoma,sans-serif;
-    background:#f6f5f8;
+    font-family:'Cairo',sans-serif;
+    background:#f0ecf8;
+    min-height:100vh;
 }
 
 /* ================= HEADER ================= */
 .header{
-    background:#5a2d82;
+    background:linear-gradient(135deg,#4a1a72 0%,#7b3fe4 100%);
     text-align:center;
-    padding:30px 20px;
+    padding:40px 20px 35px;
+    position:relative;
+    overflow:hidden;
 }
-.logo{width:85px;border-radius:50%;}
-.main-title{font-size:26px;font-weight:bold;color:#fff;}
-.sub-title{font-size:14px;color:#efeded;margin-top:5px;}
 
-/* ================= CARDS ================= */
-.container{max-width:900px;margin:40px auto;padding:20px;}
+.header::before{
+    content:'';
+    position:absolute;
+    top:-60px;right:-60px;
+    width:200px;height:200px;
+    border-radius:50%;
+    background:rgba(255,255,255,0.07);
+}
+
+.header::after{
+    content:'';
+    position:absolute;
+    bottom:-80px;left:-40px;
+    width:250px;height:250px;
+    border-radius:50%;
+    background:rgba(255,255,255,0.05);
+}
+
+.logo{
+    width:90px;
+    height:90px;
+    border-radius:50%;
+    border:4px solid rgba(255,255,255,0.35);
+    box-shadow:0 8px 25px rgba(0,0,0,0.25);
+    object-fit:cover;
+    position:relative;
+    z-index:1;
+}
+
+.main-title{
+    font-size:30px;
+    font-weight:900;
+    color:#fff;
+    margin-top:12px;
+    letter-spacing:1px;
+    position:relative;
+    z-index:1;
+}
+
+.sub-title{
+    font-size:13px;
+    color:rgba(255,255,255,0.75);
+    margin-top:6px;
+    position:relative;
+    z-index:1;
+}
+
+/* ================= GRID ================= */
+.container{
+    max-width:960px;
+    margin:40px auto;
+    padding:0 20px 60px;
+}
+
 .cards{
     display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
-    gap:25px;
+    grid-template-columns:repeat(auto-fit,minmax(270px,1fr));
+    gap:22px;
 }
+
+/* ================= CARD ================= */
 .card-link{text-decoration:none;}
+
 .card{
     background:#fff;
-    border-radius:18px;
-    padding:30px;
-    box-shadow:0 10px 25px rgba(0,0,0,0.08);
+    border-radius:20px;
+    padding:28px 24px 22px;
+    box-shadow:0 4px 20px rgba(90,45,130,0.10);
     border-top:5px solid #7b3fe4;
-    transition:0.3s;
+    transition:transform 0.28s ease, box-shadow 0.28s ease;
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+    cursor:pointer;
+    position:relative;
+    overflow:hidden;
 }
-.card:hover{transform:translateY(-6px);}
-.icon{font-size:42px;color:#7b3fe4;margin-bottom:15px;}
-.card h2{color:#5a2d82;}
-.card p{color:#555;font-size:14px;}
+
+.card::after{
+    content:'';
+    position:absolute;
+    bottom:-40px;left:-40px;
+    width:130px;height:130px;
+    border-radius:50%;
+    background:rgba(123,63,228,0.05);
+    transition:transform 0.4s ease;
+}
+
+.card:hover{
+    transform:translateY(-7px);
+    box-shadow:0 14px 36px rgba(90,45,130,0.18);
+}
+
+.card:hover::after{transform:scale(1.5);}
+
+.icon-wrap{
+    width:60px;
+    height:60px;
+    border-radius:16px;
+    background:linear-gradient(135deg,#ede3fc,#f5f0ff);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    margin-bottom:4px;
+}
+
+.icon-wrap i{
+    font-size:26px;
+    color:#7b3fe4;
+}
+
+.card h2{
+    color:#3d1a6e;
+    font-size:18px;
+    font-weight:700;
+}
+
+.card p{
+    color:#777;
+    font-size:13.5px;
+    line-height:1.7;
+    flex:1;
+}
+
 .btn{
-    display:block;
-    text-align:center;
-    padding:12px;
-    border-radius:10px;
-    background:#7b3fe4;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    padding:11px 16px;
+    border-radius:12px;
+    background:linear-gradient(135deg,#7b3fe4,#a066f5);
     color:#fff;
-    margin-top:15px;
+    font-family:'Cairo',sans-serif;
+    font-weight:700;
+    font-size:14px;
+    margin-top:6px;
+    transition:opacity 0.2s;
+    box-shadow:0 4px 12px rgba(123,63,228,0.30);
 }
+
+.btn:hover{opacity:0.9;}
+.btn i{font-size:13px;}
 
 /* ================= FOOTER ================= */
-footer{text-align:center;margin-top:50px;padding:20px;color:#777;}
-.footer-logo{width:50px;border-radius:50%;}
+footer{
+    text-align:center;
+    padding:24px 20px;
+    color:#999;
+    font-size:13px;
+    border-top:1px solid #e8e2f5;
+    background:#fff;
+}
 
-/* ================= Remedy Alert Modal ================= */
+.footer-logo{
+    width:42px;
+    border-radius:50%;
+    margin-bottom:8px;
+    opacity:0.85;
+}
+
+footer span{color:#7b3fe4;font-weight:700;}
+
+/* ================= REMEDY ALERT MODAL ================= */
 .overlay{
     position:fixed;
     inset:0;
-    background:rgba(0,0,0,0.5);
+    background:rgba(30,10,60,0.55);
     display:flex;
     justify-content:center;
     align-items:center;
     z-index:9999;
+    backdrop-filter:blur(3px);
 }
 
 .alert-modal{
     background:#fff;
-    padding:30px;
-    border-radius:15px;
+    padding:35px 30px;
+    border-radius:20px;
     width:90%;
-    max-width:400px;
+    max-width:380px;
     text-align:center;
-    box-shadow:0 10px 30px rgba(0,0,0,0.3);
+    box-shadow:0 20px 50px rgba(0,0,0,0.25);
     animation:alertFade 0.4s ease;
+    border-top:5px solid #7b3fe4;
 }
+
+.alert-modal .modal-icon{
+    width:64px;height:64px;
+    border-radius:50%;
+    background:linear-gradient(135deg,#ede3fc,#f5f0ff);
+    display:flex;align-items:center;justify-content:center;
+    margin:0 auto 16px;
+}
+
+.alert-modal .modal-icon i{font-size:28px;color:#7b3fe4;}
 
 .alert-modal h3{
-    color:#5a2d82;
-    margin-bottom:10px;
+    color:#3d1a6e;
+    font-size:18px;
+    font-weight:800;
+    margin-bottom:8px;
 }
 
+.alert-modal p{color:#666;font-size:14px;line-height:1.7;}
+
 .countdown{
-    margin-top:15px;
-    font-weight:bold;
+    display:inline-block;
+    margin-top:18px;
+    padding:8px 20px;
+    border-radius:30px;
+    background:#fef2f2;
     color:#d32f2f;
+    font-weight:700;
+    font-size:14px;
 }
 
 @keyframes alertFade{
-    from{transform:scale(0.8);opacity:0;}
+    from{transform:scale(0.85);opacity:0;}
     to{transform:scale(1);opacity:1;}
 }
 
@@ -102,32 +254,57 @@ footer{text-align:center;margin-top:50px;padding:20px;color:#777;}
     transition:opacity 0.5s;
 }
 
-/* ================= Coming Soon Modal ================= */
+/* ================= COMING SOON MODAL ================= */
 .coming-modal{
     display:none;
     position:fixed;
     inset:0;
-    background:rgba(0,0,0,0.5);
+    background:rgba(30,10,60,0.55);
     z-index:1000;
+    align-items:center;
+    justify-content:center;
+    backdrop-filter:blur(3px);
 }
+
+.coming-modal.active{display:flex;}
 
 .coming-content{
     background:#fff;
-    margin:15% auto;
-    padding:30px;
-    border-radius:15px;
+    padding:35px 30px;
+    border-radius:20px;
     width:90%;
-    max-width:400px;
+    max-width:380px;
     text-align:center;
+    box-shadow:0 20px 50px rgba(0,0,0,0.2);
+    animation:alertFade 0.35s ease;
+    border-top:5px solid #ff9800;
 }
 
+.coming-content i{font-size:50px;color:#ff9800;margin-bottom:16px;}
+.coming-content h3{color:#3d1a6e;font-size:18px;font-weight:800;margin-bottom:8px;}
+.coming-content p{color:#666;font-size:14px;line-height:1.7;}
+
 .modal-close{
-    background:#7b3fe4;
+    background:linear-gradient(135deg,#7b3fe4,#a066f5);
     color:#fff;
     border:none;
-    padding:10px 25px;
-    border-radius:8px;
+    padding:11px 30px;
+    border-radius:12px;
     cursor:pointer;
+    font-family:'Cairo',sans-serif;
+    font-weight:700;
+    font-size:14px;
+    margin-top:20px;
+    box-shadow:0 4px 12px rgba(123,63,228,0.30);
+    transition:opacity 0.2s;
+}
+
+.modal-close:hover{opacity:0.9;}
+
+/* ================= RESPONSIVE ================= */
+@media(max-width:480px){
+    .cards{grid-template-columns:1fr;}
+    .main-title{font-size:24px;}
 }
 </style>
 </head>
@@ -136,87 +313,88 @@ footer{text-align:center;margin-top:50px;padding:20px;color:#777;}
 
 <!-- HEADER -->
 <div class="header">
-    <img src="img/we-core.png" class="logo">
+    <img src="img/we-core.png" class="logo" alt="WE-Core Logo">
     <div class="main-title">WE-Core</div>
-    <div class="sub-title">
-        Powered By Mohand Hassan – From Abassia Store
-    </div>
+    <div class="sub-title">Powered By Mohand Hassan – From Abassia Store</div>
 </div>
 
 <!-- CARDS -->
 <div class="container">
 <div class="cards">
 
-<a href="pdf.html" class="card-link">
-<div class="card">
-<div class="icon"><i class="fa-solid fa-file-pdf"></i></div>
-<h2>All PDF</h2>
-<p>جميع ملفات PDF الخاصة بالخدمات والعروض.</p>
-<div class="btn">View Details</div>
-</div>
-</a>
+    <a href="pdf.html" class="card-link">
+    <div class="card">
+        <div class="icon-wrap"><i class="fa-solid fa-file-pdf"></i></div>
+        <h2>All PDF</h2>
+        <p>جميع ملفات PDF الخاصة بالخدمات والعروض.</p>
+        <div class="btn"><i class="fa-solid fa-arrow-left"></i> عرض التفاصيل</div>
+    </div>
+    </a>
 
-<a href="home.html" class="card-link">
-<div class="card">
-<div class="icon"><i class="fa-solid fa-file-lines"></i></div>
-<h2>All Info</h2>
-<p>معلومات Mobile و ADSL و Fixed كاملة.</p>
-<div class="btn">View Details</div>
-</div>
-</a>
+    <a href="home.html" class="card-link">
+    <div class="card">
+        <div class="icon-wrap"><i class="fa-solid fa-file-lines"></i></div>
+        <h2>All Info</h2>
+        <p>معلومات Mobile و ADSL و Fixed كاملة.</p>
+        <div class="btn"><i class="fa-solid fa-arrow-left"></i> عرض التفاصيل</div>
+    </div>
+    </a>
 
-<a href="remedy.html" class="card-link">
-<div class="card">
-<div class="icon"><i class="fa-solid fa-headset"></i></div>
-<h2>Remedy</h2>
-<p>جميع التكيت للموبيل</p>
-<div class="btn">View Details</div>
-</div>
-</a> 
- <a href="offer.html" class="card-link">
-<div class="card">
-<div class="icon"><i class="fa-solid fa-gift"></i>
-<h2>offer</h2>
-<p>all offer</p>
-<div class="btn">View Details</div>
-</div>
-</a>
-<a href="games.html" class="card-link">
-<div class="card">
-<div class="icon"><i class="fa-solid fa-gamepad"></i>
-<h2>info games</h2>
-<p>info games</p>
-<div class="btn">View Details</div>
-</div>
-</a>
+    <a href="remedy.html" class="card-link">
+    <div class="card">
+        <div class="icon-wrap"><i class="fa-solid fa-headset"></i></div>
+        <h2>Remedy</h2>
+        <p>جميع التيكت للموبيل.</p>
+        <div class="btn"><i class="fa-solid fa-arrow-left"></i> عرض التفاصيل</div>
+    </div>
+    </a>
+
+    <a href="offer.html" class="card-link">
+    <div class="card">
+        <div class="icon-wrap"><i class="fa-solid fa-gift"></i></div>
+        <h2>Offers</h2>
+        <p>جميع العروض المتاحة والباقات الحالية.</p>
+        <div class="btn"><i class="fa-solid fa-arrow-left"></i> عرض التفاصيل</div>
+    </div>
+    </a>
+
+    <a href="games.html" class="card-link">
+    <div class="card">
+        <div class="icon-wrap"><i class="fa-solid fa-gamepad"></i></div>
+        <h2>Info Games</h2>
+        <p>معلومات الألعاب والحزم المتوفرة.</p>
+        <div class="btn"><i class="fa-solid fa-arrow-left"></i> عرض التفاصيل</div>
+    </div>
+    </a>
 
 </div>
 
 <footer>
-<img src="img/we-core.png" class="footer-logo">
-<div>Powered by <span>Mohand Hassan</span> – From <span>Abassia Store</span></div>
+    <img src="img/we-core.png" class="footer-logo" alt="logo">
+    <div>Powered by <span>Mohand Hassan</span> – From <span>Abassia Store</span></div>
 </footer>
 </div>
 
 <!-- Remedy Alert -->
 <div id="overlay" class="overlay">
-<div class="alert-modal">
-<h3>تم إضافة صفحة Remedy</h3>
-<p>مع إضافة معظم التيكت المستخدمة</p>
-<div class="countdown">
-سيتم الإغلاق خلال <span id="count">5</span> ثواني
-</div>
-</div>
+    <div class="alert-modal">
+        <div class="modal-icon"><i class="fa-solid fa-circle-check"></i></div>
+        <h3>تم إضافة صفحة Remedy</h3>
+        <p>مع إضافة معظم التيكت المستخدمة</p>
+        <div class="countdown">
+            سيتم الإغلاق خلال <span id="count">5</span> ثواني
+        </div>
+    </div>
 </div>
 
 <!-- Coming Soon Modal -->
 <div id="comingSoonModal" class="coming-modal">
-<div class="coming-content">
-<i class="fa-solid fa-hourglass-half" style="font-size:50px;color:#ff9800;"></i>
-<h3>جاري العمل على هذه الصفحة</h3>
-<p>نعمل حالياً على توفير هذه الصفحة قريباً</p>
-<button class="modal-close" onclick="closeModal()">حسناً</button>
-</div>
+    <div class="coming-content">
+        <i class="fa-solid fa-hourglass-half"></i>
+        <h3>جاري العمل على هذه الصفحة</h3>
+        <p>نعمل حالياً على توفير هذه الصفحة قريباً</p>
+        <button class="modal-close" onclick="closeModal()">حسناً</button>
+    </div>
 </div>
 
 <script>
@@ -227,27 +405,23 @@ const overlay = document.getElementById("overlay");
 
 const timer = setInterval(()=>{
     timeLeft--;
-    countElement.textContent=timeLeft;
-
-    if(timeLeft<=0){
+    countElement.textContent = timeLeft;
+    if(timeLeft <= 0){
         clearInterval(timer);
         overlay.classList.add("fade-out");
-        setTimeout(()=>{ overlay.style.display="none"; },500);
+        setTimeout(()=>{ overlay.style.display="none"; }, 500);
     }
-},1000);
+}, 1000);
 
 /* ===== Coming Soon ===== */
 function showComingSoonModal(){
-    document.getElementById("comingSoonModal").style.display="block";
+    document.getElementById("comingSoonModal").classList.add("active");
 }
 
 function closeModal(){
-    document.getElementById("comingSoonModal").style.display="none";
+    document.getElementById("comingSoonModal").classList.remove("active");
 }
 </script>
 
 </body>
-    </html>
-
-
-
+</html>
