@@ -1,491 +1,234 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WE-Core</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WE-Core</title>
 
-    <link rel="shortcut icon" href="img/we-core.png" type="image/x-icon">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link rel="shortcut icon" href="img/we-core.png">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
-    <style>
-        body {
-            margin: 0;
-            font-family: 'Segoe UI', Tahoma, sans-serif;
-            background: #f6f5f8;
-        }
+<style>
+body{
+    margin:0;
+    font-family:'Segoe UI',Tahoma,sans-serif;
+    background:#f6f5f8;
+}
 
-        /* Header */
-        .header {
-            background: #5a2d82;
-            text-align: center;
-            padding: 30px 20px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
-        }
+/* ================= HEADER ================= */
+.header{
+    background:#5a2d82;
+    text-align:center;
+    padding:30px 20px;
+}
+.logo{width:85px;border-radius:50%;}
+.main-title{font-size:26px;font-weight:bold;color:#fff;}
+.sub-title{font-size:14px;color:#efeded;margin-top:5px;}
 
-        .logo {
-            width: 85px;
-            border-radius: 50%;
-            margin-bottom: 10px;
-        }
+/* ================= CARDS ================= */
+.container{max-width:900px;margin:40px auto;padding:20px;}
+.cards{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+    gap:25px;
+}
+.card-link{text-decoration:none;}
+.card{
+    background:#fff;
+    border-radius:18px;
+    padding:30px;
+    box-shadow:0 10px 25px rgba(0,0,0,0.08);
+    border-top:5px solid #7b3fe4;
+    transition:0.3s;
+}
+.card:hover{transform:translateY(-6px);}
+.icon{font-size:42px;color:#7b3fe4;margin-bottom:15px;}
+.card h2{color:#5a2d82;}
+.card p{color:#555;font-size:14px;}
+.btn{
+    display:block;
+    text-align:center;
+    padding:12px;
+    border-radius:10px;
+    background:#7b3fe4;
+    color:#fff;
+    margin-top:15px;
+}
 
-        .main-title {
-            font-size: 26px;
-            font-weight: bold;
-            color: #fff;
-        }
+/* ================= FOOTER ================= */
+footer{text-align:center;margin-top:50px;padding:20px;color:#777;}
+.footer-logo{width:50px;border-radius:50%;}
 
-        .sub-title {
-            font-size: 14px;
-            color: #efeded;
-            margin-top: 5px;
-        }
+/* ================= Remedy Alert Modal ================= */
+.overlay{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,0.5);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    z-index:9999;
+}
 
-        /* Text Area */
-        .note-box {
-            max-width: 800px;
-            margin: 25px auto 0;
-            padding: 0 20px;
-        }
+.alert-modal{
+    background:#fff;
+    padding:30px;
+    border-radius:15px;
+    width:90%;
+    max-width:400px;
+    text-align:center;
+    box-shadow:0 10px 30px rgba(0,0,0,0.3);
+    animation:alertFade 0.4s ease;
+}
 
-        .note-box textarea {
-            width: 100%;
-            min-height: 120px;
-            border-radius: 14px;
-            border: 1px solid #ddd;
-            padding: 15px;
-            font-size: 14px;
-            resize: vertical;
-            outline: none;
-        }
+.alert-modal h3{
+    color:#5a2d82;
+    margin-bottom:10px;
+}
 
-        .note-box textarea:focus {
-            border-color: #7b3fe4;
-        }
+.countdown{
+    margin-top:15px;
+    font-weight:bold;
+    color:#d32f2f;
+}
 
-        /* Cards */
-        .container {
-            max-width: 900px;
-            margin: 40px auto;
-            padding: 20px;
-        }
+@keyframes alertFade{
+    from{transform:scale(0.8);opacity:0;}
+    to{transform:scale(1);opacity:1;}
+}
 
-        .cards {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap: 25px;
-        }
+.fade-out{
+    opacity:0;
+    transition:opacity 0.5s;
+}
 
-        .card-link {
-            text-decoration: none;
-        }
+/* ================= Coming Soon Modal ================= */
+.coming-modal{
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,0.5);
+    z-index:1000;
+}
 
-        .card {
-            background: #fff;
-            border-radius: 18px;
-            padding: 30px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
-            border-top: 5px solid #7b3fe4;
-            transition: transform 0.3s ease;
-        }
+.coming-content{
+    background:#fff;
+    margin:15% auto;
+    padding:30px;
+    border-radius:15px;
+    width:90%;
+    max-width:400px;
+    text-align:center;
+}
 
-        .card:hover {
-            transform: translateY(-6px);
-        }
-
-        /* الكروت المطفية (بدون رابط) */
-        .card-disabled {
-            background: #f5f5f5;
-            border-top: 5px solid #ccc;
-            opacity: 0.6;
-            cursor: not-allowed;
-            position: relative;
-        }
-
-        .card-disabled:hover {
-            transform: none;
-        }
-
-        .card-disabled .icon {
-            color: #999;
-        }
-
-        .card-disabled h2 {
-            color: #999;
-        }
-
-        .card-disabled p {
-            color: #aaa;
-        }
-
-        .card-disabled .btn {
-            background: #ccc;
-            color: #888;
-        }
-
-        .card-disabled::after {
-            content: "قريباً";
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            background: #ff9800;
-            color: white;
-            padding: 5px 12px;
-            border-radius: 15px;
-            font-size: 12px;
-            font-weight: bold;
-        }
-
-        .icon {
-            font-size: 42px;
-            color: #7b3fe4;
-            margin-bottom: 15px;
-            transition: transform 0.3s ease, color 0.3s ease;
-            width: fit-content;
-        }
-
-        .card:hover .icon {
-            transform: scale(1.2);
-            color: #5a2d82;
-        }
-
-        .card h2 {
-            color: #5a2d82;
-            margin-bottom: 10px;
-        }
-
-        .card p {
-            color: #555;
-            font-size: 14px;
-            margin-bottom: 20px;
-        }
-
-        .btn {
-            display: block;
-            text-align: center;
-            padding: 12px;
-            border-radius: 10px;
-            background: #7b3fe4;
-            color: #fff;
-            font-weight: 500;
-        }
-
-        /* Modal للرسالة */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0,0,0,0.5);
-            animation: fadeIn 0.3s;
-        }
-
-        .modal-content {
-            background-color: #fff;
-            margin: 15% auto;
-            padding: 30px;
-            border-radius: 15px;
-            width: 90%;
-            max-width: 400px;
-            text-align: center;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-            animation: slideDown 0.3s;
-        }
-
-        .modal-content i {
-            font-size: 60px;
-            color: #ff9800;
-            margin-bottom: 20px;
-        }
-
-        .modal-content h3 {
-            color: #5a2d82;
-            margin-bottom: 15px;
-            font-size: 22px;
-        }
-
-        .modal-content p {
-            color: #666;
-            margin-bottom: 25px;
-            line-height: 1.6;
-        }
-
-        .modal-close {
-            background: #7b3fe4;
-            color: white;
-            border: none;
-            padding: 12px 30px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 16px;
-            font-weight: 500;
-            transition: background 0.3s;
-        }
-
-        .modal-close:hover {
-            background: #5a2d82;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        @keyframes slideDown {
-            from { 
-                transform: translateY(-50px);
-                opacity: 0;
-            }
-            to { 
-                transform: translateY(0);
-                opacity: 1;
-            }
-        }
-
-        footer {
-            text-align: center;
-            margin-top: 50px;
-            padding: 20px;
-            color: #777;
-            font-size: 14px;
-        }
-
-        footer span {
-            color: #5a2d82;
-            font-weight: 600;
-        }
-
-        .footer-logo {
-            width: 50px;
-            border-radius: 50%;
-            margin-bottom: 10px;
-        }
-  body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-  }
-
-  /* الخلفية المعتمة */
-  .overlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 9999;
-  }
-
-  /* نافذة الرسالة */
-  .modal {
-    background: white;
-    padding: 30px;
-    border-radius: 12px;
-    width: 350px;
-    text-align: center;
-    box-shadow: 0 5px 20px rgba(0,0,0,0.3);
-    animation: fadeIn 0.4s ease;
-  }
-
-  .modal h3 {
-    margin-top: 0;
-    color: #4a148c;
-  }
-
-  .countdown {
-    margin-top: 15px;
-    font-weight: bold;
-    color: #d32f2f;
-  }
-
-  @keyframes fadeIn {
-    from { transform: scale(0.8); opacity: 0; }
-    to { transform: scale(1); opacity: 1; }
-  }
-
-  .fade-out {
-    opacity: 0;
-    transition: opacity 0.5s ease;
-  }
-    </style>
+.modal-close{
+    background:#7b3fe4;
+    color:#fff;
+    border:none;
+    padding:10px 25px;
+    border-radius:8px;
+    cursor:pointer;
+}
+</style>
 </head>
 
 <body>
 
-    <!-- Header -->
-    <div class="header">
-        <img src="img/we-core.png" alt="Logo" class="logo">
-        <div class="main-title">WE-Core</div>
-        <div class="sub-title">
-            Powered By Mohand Hassan – From Abassia Store
-             <br>
-        </div>
+<!-- HEADER -->
+<div class="header">
+    <img src="img/we-core.png" class="logo">
+    <div class="main-title">WE-Core</div>
+    <div class="sub-title">
+        Powered By Mohand Hassan – From Abassia Store
     </div>
+</div>
 
-    <!-- Cards -->
-    <div class="container">
-        <div class="cards">
+<!-- CARDS -->
+<div class="container">
+<div class="cards">
 
-            <a href="pdf.html" class="card-link">
-                <div class="card">
-                    <div class="icon">
-                        <i class="fa-solid fa-file-pdf"></i>
-                    </div>
-                    <h2>All PDF</h2>
-                    <p>جميع ملفات PDF الخاصة بالخدمات والعروض.</p>
-                    <div class="btn">View Details</div>
-                </div>
-            </a>
+<a href="pdf.html" class="card-link">
+<div class="card">
+<div class="icon"><i class="fa-solid fa-file-pdf"></i></div>
+<h2>All PDF</h2>
+<p>جميع ملفات PDF الخاصة بالخدمات والعروض.</p>
+<div class="btn">View Details</div>
+</div>
+</a>
 
-            <a href="home.html" class="card-link">
-                <div class="card">
-                    <div class="icon">
-                        <i class="fa-solid fa-file-lines"></i>
-                    </div>
-                    <h2>All Info</h2>
-                    <p>معلومات Mobile و ADSL و Fixed كاملة.</p>
-                    <div class="btn">View Details</div>
-                </div>
-            </a>
+<a href="home.html" class="card-link">
+<div class="card">
+<div class="icon"><i class="fa-solid fa-file-lines"></i></div>
+<h2>All Info</h2>
+<p>معلومات Mobile و ADSL و Fixed كاملة.</p>
+<div class="btn">View Details</div>
+</div>
+</a>
 
-            <a href="we pay.html" class="card-link">
-                <div class="card">
-                    <div class="icon">
-                        <i class="fa-solid fa-credit-card"></i>
-                    </div>
-                    <h2>WE-Pay</h2>
-                    <p>معلومات عن نظام الدفع الإلكتروني WE-Pay.</p>
-                    <div class="btn">View Details</div>
-                </div>
-            </a>
+<a href="remedy.html" class="card-link">
+<div class="card">
+<div class="icon"><i class="fa-solid fa-headset"></i></div>
+<h2>Remedy</h2>
+<p>جميع التكيت للموبيل</p>
+<div class="btn">View Details</div>
+</div>
+</a>
 
-            <!-- الكرت المطفي - Info Games -->
-            <a href="Game.html" class="card-link">
-                <div class="card">
-                    <div class="icon">
-                 <i class="fa-solid fa-gamepad"></i>
-                    </div>
-                    <h2>Info Game</h2>
-                    <p>🕹🎮</p>
-                    <div class="btn">View Details</div>
-                </div>
-            </a>
-        
-            <a href="offer.html" class="card-link">
-                <div class="card">
-                    <div class="icon">
-                       <i class="fa-solid fa-gift"></i>
-                    </div>
-                    <h2>العروض</h2>
-                    <p>معلومات عروض WE</p>
-                    <div class="btn">View Details</div>
-                </div>
-            </a>
+</div>
 
-            <!-- الكرت المطفي - Remady -->
-            <a href="remedy.html" class="card-link">
-                <div class="card">
-                    <div class="icon">
-                     <i class="fa-solid fa-headset"></i>
-                    </div>
-                    <h2>Remady</h2>
-                    <p>جميع التكيت للموبيل</p>
-                    <div class="btn">View Details</div>
-                </div>
-            </a>
+<footer>
+<img src="img/we-core.png" class="footer-logo">
+<div>Powered by <span>Mohand Hassan</span> – From <span>Abassia Store</span></div>
+</footer>
+</div>
 
-            
-        </div>
-
-        <footer>
-            <img src="img/we-core.png" alt="Logo" class="footer-logo">
-            <div>
-                Powered by <span>Mohand Hassan</span> – From <span>Abassia Store</span>
-            </div>
-        </footer>
-    </div>
-    
+<!-- Remedy Alert -->
 <div id="overlay" class="overlay">
-  <div class="modal">
-    <h3>تم إضافة صفحة Remedy</h3>
-    <p>مع إضافة معظم التيكت المستخدمة</p>
-    <div class="countdown">
-      سيتم الإغلاق خلال <span id="count">10</span> ثواني
-    </div>
-  </div>
+<div class="alert-modal">
+<h3>تم إضافة صفحة Remedy</h3>
+<p>مع إضافة معظم التيكت المستخدمة</p>
+<div class="countdown">
+سيتم الإغلاق خلال <span id="count">10</span> ثواني
+</div>
+</div>
+</div>
+
+<!-- Coming Soon Modal -->
+<div id="comingSoonModal" class="coming-modal">
+<div class="coming-content">
+<i class="fa-solid fa-hourglass-half" style="font-size:50px;color:#ff9800;"></i>
+<h3>جاري العمل على هذه الصفحة</h3>
+<p>نعمل حالياً على توفير هذه الصفحة قريباً</p>
+<button class="modal-close" onclick="closeModal()">حسناً</button>
+</div>
 </div>
 
 <script>
-  let timeLeft = 10;
-  const countElement = document.getElementById("count");
-  const overlay = document.getElementById("overlay");
+/* ===== Remedy Countdown ===== */
+let timeLeft = 10;
+const countElement = document.getElementById("count");
+const overlay = document.getElementById("overlay");
 
-  const timer = setInterval(() => {
+const timer = setInterval(()=>{
     timeLeft--;
-    countElement.textContent = timeLeft;
+    countElement.textContent=timeLeft;
 
-    if (timeLeft <= 0) {
-      clearInterval(timer);
-      overlay.classList.add("fade-out");
-
-      setTimeout(() => {
-        overlay.style.display = "none";
-      }, 500);
+    if(timeLeft<=0){
+        clearInterval(timer);
+        overlay.classList.add("fade-out");
+        setTimeout(()=>{ overlay.style.display="none"; },500);
     }
-  }, 1000);
+},1000);
+
+/* ===== Coming Soon ===== */
+function showComingSoonModal(){
+    document.getElementById("comingSoonModal").style.display="block";
+}
+
+function closeModal(){
+    document.getElementById("comingSoonModal").style.display="none";
+}
 </script>
-    <!-- Modal للرسالة -->
-    <div id="comingSoonModal" class="modal">
-        <div class="modal-content">
-            <i class="fa-solid fa-hourglass-half"></i>
-            <h3>جاري العمل على هذه الصفحة</h3>
-            <p>نعمل حالياً على توفير هذه الصفحة قريباً<br>نشكرك على صبرك وتفهمك</p>
-            <p>Powered by <span>Mohand Hassan</span> – From <span>Abassia Store</span></p>
-            <button class="modal-close" onclick="closeModal()">حسناً</button>
-        </div>
-    </div>
-
-    <script>
-        // إظهار رسالة "قريباً"
-        function showComingSoonModal() {
-            document.getElementById('comingSoonModal').style.display = 'block';
-        }
-
-        // إغلاق الرسالة
-        function closeModal() {
-            document.getElementById('comingSoonModal').style.display = 'none';
-        }
-
-        // إغلاق الرسالة عند الضغط خارجها
-        window.onclick = function(event) {
-            const modal = document.getElementById('comingSoonModal');
-            if (event.target == modal) {
-                modal.style.display = 'none';
-            }
-        }
-    </script>
 
 </body>
-
-</html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    </html>
