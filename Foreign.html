@@ -1,866 +1,608 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>WE - \u0625\u062c\u0631\u0627\u0621\u0627\u062a \u0627\u0644\u062a\u0639\u0627\u0642\u062f \u0645\u0639 \u0627\u0644\u0639\u0645\u0644\u0627\u0621 \u0627\u0644\u0623\u062c\u0627\u0646\u0628</title>
-<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
-<style>
-  :root {
-    --purple: #5B2D8E;
-    --purple-dark: #3d1e62;
-    --purple-light: #7c3db5;
-    --purple-pale: #f3eeff;
-    --accent: #c084fc;
-    --gold: #f59e0b;
-    --white: #ffffff;
-    --gray-100: #f8f7ff;
-    --gray-200: #ede9f7;
-    --gray-600: #6b7280;
-    --gray-800: #1f1535;
-    --text: #1a0d33;
-    --shadow: 0 8px 32px rgba(91,45,142,0.15);
-    --shadow-lg: 0 20px 60px rgba(91,45,142,0.25);
-  }
-
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-
-  html { scroll-behavior: smooth; }
-
-  body {
-    font-family: 'Cairo', 'Tajawal', sans-serif;
-    background: var(--gray-100);
-    color: var(--text);
-    direction: rtl;
-    overflow-x: hidden;
-  }
-
-  /* ===== HERO ===== */
-  .hero {
-    background: linear-gradient(135deg, var(--purple-dark) 0%, var(--purple) 50%, var(--purple-light) 100%);
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    position: relative;
-    overflow: hidden;
-    padding: 60px 20px;
-  }
-
-  .hero::before {
-    content: '';
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: radial-gradient(ellipse at 30% 40%, rgba(192,132,252,0.15) 0%, transparent 60%),
-                radial-gradient(ellipse at 70% 60%, rgba(255,255,255,0.05) 0%, transparent 50%);
-    animation: bgPulse 8s ease-in-out infinite alternate;
-  }
-
-  @keyframes bgPulse {
-    0% { transform: scale(1) rotate(0deg); }
-    100% { transform: scale(1.1) rotate(5deg); }
-  }
-
-  .hero-circles {
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-  }
-
-  .hero-circle {
-    position: absolute;
-    border-radius: 50%;
-    border: 1px solid rgba(255,255,255,0.08);
-  }
-
-  .hero-circle:nth-child(1) { width: 300px; height: 300px; top: -100px; right: -100px; }
-  .hero-circle:nth-child(2) { width: 500px; height: 500px; bottom: -200px; left: -150px; }
-  .hero-circle:nth-child(3) { width: 200px; height: 200px; top: 30%; left: 10%; }
-
-  .we-logo-wrap {
-    position: relative;
-    z-index: 2;
-    margin-bottom: 32px;
-    animation: fadeDown 0.8s ease both;
-  }
-
-  .we-logo {
-    width: 100px;
-    height: 100px;
-    background: white;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 28px;
-    font-weight: 900;
-    color: var(--purple);
-    font-family: 'Cairo', sans-serif;
-    box-shadow: 0 8px 32px rgba(0,0,0,0.3);
-    margin: 0 auto;
-  }
-
-  .hero h1 {
-    position: relative;
-    z-index: 2;
-    font-size: clamp(2rem, 5vw, 3.5rem);
-    font-weight: 900;
-    color: white;
-    line-height: 1.3;
-    margin-bottom: 20px;
-    animation: fadeDown 0.8s 0.2s ease both;
-    text-shadow: 0 4px 20px rgba(0,0,0,0.3);
-  }
-
-  .hero p {
-    position: relative;
-    z-index: 2;
-    font-size: 1.1rem;
-    color: rgba(255,255,255,0.8);
-    margin-bottom: 40px;
-    animation: fadeDown 0.8s 0.4s ease both;
-  }
-
-  .hero-nav {
-    position: relative;
-    z-index: 2;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 12px;
-    justify-content: center;
-    animation: fadeDown 0.8s 0.6s ease both;
-  }
-
-  .hero-nav a {
-    background: rgba(255,255,255,0.12);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255,255,255,0.2);
-    color: white;
-    padding: 10px 20px;
-    border-radius: 50px;
-    text-decoration: none;
-    font-size: 0.9rem;
-    font-weight: 600;
-    transition: all 0.3s;
-  }
-
-  .hero-nav a:hover {
-    background: white;
-    color: var(--purple);
-    transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
-  }
-
-  @keyframes fadeDown {
-    from { opacity: 0; transform: translateY(-30px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  /* ===== NAVBAR ===== */
-  nav {
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    background: rgba(91,45,142,0.97);
-    backdrop-filter: blur(20px);
-    padding: 0 32px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    height: 64px;
-    box-shadow: 0 2px 20px rgba(91,45,142,0.4);
-  }
-
-  .nav-logo {
-    width: 44px;
-    height: 44px;
-    background: white;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 900;
-    color: var(--purple);
-    font-size: 14px;
-    font-family: 'Cairo', sans-serif;
-    flex-shrink: 0;
-  }
-
-  .nav-links {
-    display: flex;
-    gap: 6px;
-    list-style: none;
-    flex-wrap: wrap;
-    justify-content: center;
-  }
-
-  .nav-links a {
-    color: rgba(255,255,255,0.75);
-    text-decoration: none;
-    padding: 6px 14px;
-    border-radius: 30px;
-    font-size: 0.82rem;
-    font-weight: 600;
-    transition: all 0.2s;
-    white-space: nowrap;
-  }
-
-  .nav-links a:hover {
-    background: rgba(255,255,255,0.15);
-    color: white;
-  }
-
-  /* ===== LAYOUT ===== */
-  .container {
-    max-width: 1100px;
-    margin: 0 auto;
-    padding: 0 24px;
-  }
-
-  section {
-    padding: 80px 0;
-  }
-
-  .section-label {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    background: var(--purple-pale);
-    color: var(--purple);
-    padding: 6px 18px;
-    border-radius: 50px;
-    font-size: 0.82rem;
-    font-weight: 700;
-    margin-bottom: 16px;
-    border: 1px solid rgba(91,45,142,0.15);
-  }
-
-  .section-label .dot {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: var(--purple);
-  }
-
-  h2.section-title {
-    font-size: clamp(1.6rem, 3.5vw, 2.4rem);
-    font-weight: 900;
-    color: var(--purple-dark);
-    margin-bottom: 12px;
-    line-height: 1.3;
-  }
-
-  .section-subtitle {
-    color: var(--gray-600);
-    font-size: 1rem;
-    margin-bottom: 48px;
-    max-width: 600px;
-  }
-
-  /* ===== CARDS ===== */
-  .cards-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 24px;
-  }
-
-  .card {
-    background: white;
-    border-radius: 20px;
-    padding: 32px;
-    box-shadow: var(--shadow);
-    border: 1px solid rgba(91,45,142,0.08);
-    transition: all 0.3s ease;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 4px;
-    height: 100%;
-    background: linear-gradient(to bottom, var(--purple), var(--accent));
-    border-radius: 0 20px 20px 0;
-  }
-
-  .card:hover {
-    transform: translateY(-6px);
-    box-shadow: var(--shadow-lg);
-    border-color: rgba(91,45,142,0.2);
-  }
-
-  .card-icon {
-    width: 52px;
-    height: 52px;
-    background: var(--purple-pale);
-    border-radius: 14px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.5rem;
-    margin-bottom: 18px;
-  }
-
-  .card h3 {
-    font-size: 1.1rem;
-    font-weight: 700;
-    color: var(--purple-dark);
-    margin-bottom: 10px;
-  }
-
-  .card p {
-    color: var(--gray-600);
-    font-size: 0.92rem;
-    line-height: 1.8;
-  }
-
-  /* ===== NUMBERED LIST ===== */
-  .numbered-list {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-  }
-
-  .numbered-item {
-    display: flex;
-    gap: 20px;
-    align-items: flex-start;
-    background: white;
-    border-radius: 16px;
-    padding: 24px;
-    box-shadow: 0 2px 12px rgba(91,45,142,0.08);
-    border: 1px solid rgba(91,45,142,0.06);
-    transition: all 0.3s;
-  }
-
-  .numbered-item:hover {
-    transform: translateX(-4px);
-    box-shadow: var(--shadow);
-  }
-
-  .num-badge {
-    width: 40px;
-    height: 40px;
-    min-width: 40px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, var(--purple), var(--purple-light));
-    color: white;
-    font-weight: 800;
-    font-size: 1rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 4px 12px rgba(91,45,142,0.3);
-  }
-
-  .num-content h4 {
-    font-weight: 700;
-    color: var(--purple-dark);
-    margin-bottom: 4px;
-    font-size: 1rem;
-  }
-
-  .num-content p {
-    color: var(--gray-600);
-    font-size: 0.9rem;
-    line-height: 1.7;
-  }
-
-  /* ===== TABLE ===== */
-  .table-wrap {
-    background: white;
-    border-radius: 20px;
-    overflow: hidden;
-    box-shadow: var(--shadow);
-    border: 1px solid rgba(91,45,142,0.1);
-  }
-
-  table {
-    width: 100%;
-    border-collapse: collapse;
-  }
-
-  thead tr {
-    background: linear-gradient(135deg, var(--purple-dark), var(--purple));
-  }
-
-  thead th {
-    padding: 18px 24px;
-    color: white;
-    font-weight: 700;
-    font-size: 0.95rem;
-    text-align: right;
-  }
-
-  tbody tr {
-    border-bottom: 1px solid rgba(91,45,142,0.06);
-    transition: background 0.2s;
-  }
-
-  tbody tr:last-child { border-bottom: none; }
-
-  tbody tr:hover { background: var(--purple-pale); }
-
-  tbody tr:nth-child(even) { background: rgba(91,45,142,0.02); }
-  tbody tr:nth-child(even):hover { background: var(--purple-pale); }
-
-  td {
-    padding: 18px 24px;
-    color: var(--gray-800);
-    font-size: 0.92rem;
-    line-height: 1.7;
-    vertical-align: top;
-  }
-
-  td:first-child {
-    font-weight: 700;
-    color: var(--purple);
-    white-space: nowrap;
-  }
-
-  /* ===== BADGE / TAG ===== */
-  .tag {
-    display: inline-block;
-    background: var(--purple-pale);
-    color: var(--purple);
-    border: 1px solid rgba(91,45,142,0.2);
-    border-radius: 6px;
-    padding: 2px 10px;
-    font-size: 0.78rem;
-    font-weight: 700;
-    margin: 2px;
-  }
-
-  .tag.gold {
-    background: #fef3c7;
-    color: #92400e;
-    border-color: #fde68a;
-  }
-
-  /* ===== ALERT / NOTE ===== */
-  .alert {
-    border-radius: 14px;
-    padding: 20px 24px;
-    display: flex;
-    gap: 16px;
-    align-items: flex-start;
-    margin-bottom: 24px;
-  }
-
-  .alert.warning {
-    background: #fff7ed;
-    border: 1px solid #fed7aa;
-    color: #9a3412;
-  }
-
-  .alert.info {
-    background: var(--purple-pale);
-    border: 1px solid rgba(91,45,142,0.2);
-    color: var(--purple-dark);
-  }
-
-  .alert.success {
-    background: #f0fdf4;
-    border: 1px solid #86efac;
-    color: #166534;
-  }
-
-  .alert-icon { font-size: 1.4rem; flex-shrink: 0; margin-top: 2px; }
-
-  .alert p { font-size: 0.92rem; line-height: 1.7; }
-
-  .alert strong { font-weight: 700; }
-
-  /* ===== STEPS ===== */
-  .steps {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    gap: 0;
-  }
-
-  .step {
-    display: flex;
-    gap: 24px;
-    position: relative;
-    padding-bottom: 32px;
-  }
-
-  .step:last-child { padding-bottom: 0; }
-
-  .step-left {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    flex-shrink: 0;
-  }
-
-  .step-num {
-    width: 48px;
-    height: 48px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, var(--purple), var(--accent));
-    color: white;
-    font-weight: 800;
-    font-size: 1.1rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 4px 16px rgba(91,45,142,0.35);
-    z-index: 1;
-    flex-shrink: 0;
-  }
-
-  .step-line {
-    width: 2px;
-    flex: 1;
-    background: linear-gradient(to bottom, var(--accent), rgba(91,45,142,0.1));
-    margin-top: 8px;
-  }
-
-  .step:last-child .step-line { display: none; }
-
-  .step-body {
-    background: white;
-    border-radius: 16px;
-    padding: 24px;
-    flex: 1;
-    box-shadow: 0 2px 12px rgba(91,45,142,0.08);
-    border: 1px solid rgba(91,45,142,0.08);
-  }
-
-  .step-body h4 {
-    font-weight: 700;
-    color: var(--purple-dark);
-    margin-bottom: 8px;
-    font-size: 1rem;
-  }
-
-  .step-body p {
-    color: var(--gray-600);
-    font-size: 0.9rem;
-    line-height: 1.75;
-  }
-
-  /* ===== FAQ ===== */
-  .faq-list {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-  }
-
-  .faq-item {
-    background: white;
-    border-radius: 16px;
-    border: 1px solid rgba(91,45,142,0.1);
-    overflow: hidden;
-    transition: box-shadow 0.3s;
-  }
-
-  .faq-item:hover { box-shadow: var(--shadow); }
-
-  .faq-q {
-    padding: 20px 24px;
-    font-weight: 700;
-    color: var(--purple-dark);
-    cursor: pointer;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 16px;
-    font-size: 0.95rem;
-    user-select: none;
-  }
-
-  .faq-q .arrow {
-    width: 28px;
-    height: 28px;
-    border-radius: 50%;
-    background: var(--purple-pale);
-    color: var(--purple);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 0.85rem;
-    transition: transform 0.3s;
-    flex-shrink: 0;
-  }
-
-  .faq-item.open .faq-q .arrow { transform: rotate(180deg); }
-
-  .faq-a {
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height 0.4s ease, padding 0.3s;
-    border-top: 0 solid rgba(91,45,142,0.1);
-  }
-
-  .faq-item.open .faq-a {
-    max-height: 300px;
-    border-top-width: 1px;
-    padding: 20px 24px;
-  }
-
-  .faq-a p {
-    color: var(--gray-600);
-    font-size: 0.92rem;
-    line-height: 1.8;
-  }
-
-  /* ===== PASSPORT SECTION ===== */
-  .passport-card {
-    background: white;
-    border-radius: 20px;
-    padding: 36px;
-    box-shadow: var(--shadow);
-    border: 1px solid rgba(91,45,142,0.1);
-  }
-
-  .passport-rule {
-    display: flex;
-    align-items: flex-start;
-    gap: 16px;
-    padding: 16px 0;
-    border-bottom: 1px solid rgba(91,45,142,0.07);
-  }
-
-  .passport-rule:last-child { border-bottom: none; }
-
-  .rule-icon {
-    width: 36px;
-    height: 36px;
-    border-radius: 10px;
-    background: var(--purple-pale);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.1rem;
-    flex-shrink: 0;
-  }
-
-  .rule-text h4 {
-    font-weight: 700;
-    color: var(--purple-dark);
-    font-size: 0.95rem;
-    margin-bottom: 4px;
-  }
-
-  .rule-text p {
-    color: var(--gray-600);
-    font-size: 0.88rem;
-    line-height: 1.7;
-  }
-
-  /* ===== SECTION BG ALT ===== */
-  .bg-alt {
-    background: linear-gradient(135deg, var(--purple-pale) 0%, rgba(255,255,255,0.8) 100%);
-  }
-
-  .bg-dark {
-    background: linear-gradient(135deg, var(--purple-dark), var(--purple));
-    color: white;
-  }
-
-  .bg-dark h2.section-title,
-  .bg-dark .section-subtitle { color: white; }
-
-  .bg-dark .section-subtitle { color: rgba(255,255,255,0.75); }
-
-  /* ===== VISA EXAMPLES ===== */
-  .visa-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 24px;
-  }
-
-  .visa-card {
-    background: white;
-    border-radius: 20px;
-    overflow: hidden;
-    box-shadow: var(--shadow);
-    border: 1px solid rgba(91,45,142,0.1);
-    transition: all 0.3s;
-  }
-
-  .visa-card:hover {
-    transform: translateY(-4px);
-    box-shadow: var(--shadow-lg);
-  }
-
-  .visa-header {
-    background: linear-gradient(135deg, var(--purple), var(--purple-light));
-    padding: 20px 24px;
-    color: white;
-    font-weight: 700;
-    font-size: 1rem;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-
-  .visa-body {
-    padding: 24px;
-  }
-
-  .visa-row {
-    display: flex;
-    align-items: flex-start;
-    gap: 10px;
-    padding: 10px 0;
-    border-bottom: 1px solid rgba(91,45,142,0.06);
-    font-size: 0.9rem;
-  }
-
-  .visa-row:last-child { border-bottom: none; }
-
-  .visa-row .check { color: #16a34a; font-size: 1rem; flex-shrink: 0; margin-top: 2px; }
-  .visa-row p { color: var(--gray-600); line-height: 1.6; }
-
-  /* ===== FOOTER ===== */
-  footer {
-    background: var(--purple-dark);
-    color: white;
-    text-align: center;
-    padding: 40px 24px;
-  }
-
-  footer .we-logo-f {
-    width: 60px;
-    height: 60px;
-    background: white;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 900;
-    color: var(--purple);
-    font-size: 16px;
-    font-family: 'Cairo', sans-serif;
-    margin: 0 auto 20px;
-  }
-
-  footer p {
-    color: rgba(255,255,255,0.6);
-    font-size: 0.88rem;
-  }
-
-  footer .footer-divider {
-    width: 60px;
-    height: 2px;
-    background: rgba(255,255,255,0.2);
-    margin: 16px auto;
-  }
-
-  /* ===== RESPONSIVE ===== */
-  @media (max-width: 768px) {
-    nav { padding: 0 16px; }
-    .nav-links { display: none; }
-    section { padding: 60px 0; }
-    .step { flex-direction: column; }
-    .step-left { flex-direction: row; align-items: center; }
-    .step-line { width: 40px; height: 2px; flex: none; }
-    thead th, td { padding: 14px 16px; }
-  }
-
-  /* ===== ANIMATIONS ===== */
-  .reveal {
-    opacity: 0;
-    transform: translateY(24px);
-    transition: all 0.6s ease;
-  }
-
-  .reveal.visible {
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  /* Scroll to top button */
-  .scroll-top {
-    position: fixed;
-    bottom: 30px;
-    left: 30px;
-    width: 48px;
-    height: 48px;
-    background: var(--purple);
-    color: white;
-    border: none;
-    border-radius: 50%;
-    font-size: 1.2rem;
-    cursor: pointer;
-    box-shadow: 0 4px 16px rgba(91,45,142,0.4);
-    opacity: 0;
-    transform: translateY(20px);
-    transition: all 0.3s;
-    z-index: 999;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .scroll-top.show { opacity: 1; transform: translateY(0); }
-  .scroll-top:hover { background: var(--purple-dark); transform: translateY(-2px); }
-
-  /* Progress bar */
-  .progress-bar {
-    position: fixed;
-    top: 0;
-    right: 0;
-    height: 3px;
-    background: linear-gradient(90deg, var(--accent), var(--gold));
-    z-index: 200;
-    transition: width 0.1s;
-  }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إجراءات التعاقد مع العملاء الأجانب - WE</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800&display=swap');
+        
+        body {
+            font-family: 'Cairo', sans-serif;
+        }
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, #5B21B6 0%, #7C3AED 100%);
+        }
+        
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+        
+        .accordion-content.active {
+            max-height: 2000px;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #5B21B6 0%, #7C3AED 100%);
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 25px rgba(91, 33, 182, 0.3);
+        }
+    </style>
 </head>
-<body>
+<body class="bg-gray-50">
+    <!-- Header -->
+    <header class="gradient-bg text-white shadow-lg sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-6">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-4 space-x-reverse">
+                    <div class="bg-white rounded-full p-4 w-16 h-16 flex items-center justify-center">
+                        <img src="img/we-core.png" alt="WE Logo" class="w-12 h-12 object-contain">
+                    </div>
+                    <div>
+                        <h1 class="text-2xl md:text-3xl font-bold">إجراءات التعاقد مع العملاء الأجانب</h1>
+                        <p class="text-purple-200 text-sm">فريق WE-CORE - أكتوبر 2024</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
 
-<!-- Progress Bar -->
-<div class="progress-bar" id="progressBar"></div>
+    <!-- Navigation Tabs -->
+    <div class="bg-white shadow-md sticky top-24 z-40">
+        <div class="container mx-auto px-4">
+            <nav class="flex overflow-x-auto">
+                <button onclick="showTab('conditions')" class="tab-btn px-6 py-4 font-semibold text-purple-700 border-b-4 border-purple-700 whitespace-nowrap">
+                    شروط التعاقد
+                </button>
+                <button onclick="showTab('cases')" class="tab-btn px-6 py-4 font-semibold text-gray-600 hover:text-purple-700 border-b-4 border-transparent hover:border-purple-300 whitespace-nowrap">
+                    حالات التعاقد
+                </button>
+                <button onclick="showTab('passport')" class="tab-btn px-6 py-4 font-semibold text-gray-600 hover:text-purple-700 border-b-4 border-transparent hover:border-purple-300 whitespace-nowrap">
+                    تسجيل رقم الجواز
+                </button>
+                <button onclick="showTab('faq')" class="tab-btn px-6 py-4 font-semibold text-gray-600 hover:text-purple-700 border-b-4 border-transparent hover:border-purple-300 whitespace-nowrap">
+                    أسئلة شائعة
+                </button>
+                <button onclick="showTab('examples')" class="tab-btn px-6 py-4 font-semibold text-gray-600 hover:text-purple-700 border-b-4 border-transparent hover:border-purple-300 whitespace-nowrap">
+                    أمثلة للإقامات
+                </button>
+            </nav>
+        </div>
+    </div>
 
-<!-- HERO -->
-<section class="hero" id="top">
-  <div class="hero-circles">
-    <div class="hero-circle"></div>
-    <div class="hero-circle"></div>
-    <div class="hero-circle"></div>
-  </div>
-  <div class="we-logo-wrap">
-    <div class="we-logo">we</div>
-  </div>
-  <h1>\u0625\u062c\u0631\u0627\u0621\u0627\u062a \u0627\u0644\u062a\u0639\u0627\u0642\u062f \u0645\u0639 \u0627\u0644\u0639\u0645\u0644\u0627\u0621 \u0627\u0644\u0623\u062c\u0627\u0646\u0628</h1>
-  <p>Operation Development Team &nbsp;|&nbsp; \u0623\u0643\u062a\u0648\u0628\u0631 2024</p>
-  <nav class="hero-nav">
-    <a href="#conditions">\u0634\u0631\u0648\u0637 \u0627\u0644\u062a\u0639\u0627\u0642\u062f</a>
-    <a href="#cases">\u062d\u0627\u0644\u0627\u062a \u0627\u0644\u062a\u0639\u0627\u0642\u062f</a>
-    <a href="#passport">\u062a\u0633\u062c\u064a\u0644 \u0627\u0644\u0628\u0627\u0633\u0628\u0648\u0631</a>
-    <a href="#faq">\u0623\u0633\u0626\u0644\u0629 \u0634\u0627\u0626\u0639\u0629</a>
-    <a href="#examples">\u0623\u0645\u062b\u0644\u0629 \u0627\u0644\u0625\u0642\u0627\u0645\u0627\u062a</a>
-  </nav>
-</section>
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-8">
+        
+        <!-- Tab: شروط التعاقد -->
+        <div id="conditions" class="tab-content active">
+            <div class="bg-white rounded-lg shadow-lg p-8 mb-8">
+                <h2 class="text-3xl font-bold text-purple-800 mb-6">شروط شراء خط للعملاء الأجانب</h2>
+                
+                <div class="grid md:grid-cols-2 gap-6 mb-8">
+                    <div class="bg-purple-50 rounded-lg p-6 card-hover">
+                        <h3 class="text-xl font-bold text-purple-700 mb-4 flex items-center">
+                            <svg class="w-6 h-6 ml-2" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z"/>
+                                <path fill-rule="evenodd" d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3zm-3 4a1 1 0 100 2h.01a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3z"/>
+                            </svg>
+                            المستندات الإلزامية
+                        </h3>
+                        <ul class="space-y-3 text-gray-700">
+                            <li class="flex items-start">
+                                <span class="text-purple-600 ml-2">✓</span>
+                                <span>العقد (عربي أو إنجليزي حسب اختيار العميل)</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-purple-600 ml-2">✓</span>
+                                <span>جواز سفر ساري أو وثيقة اللجوء</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-purple-600 ml-2">✓</span>
+                                <span>بطاقة إقامة من الإدارة العامة للجوازات والهجرة</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-purple-600 ml-2">✓</span>
+                                <span>الاستمارة الإلزامية (للدبلوماسيين أو Multiple Entry)</span>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <div class="bg-purple-50 rounded-lg p-6 card-hover">
+                        <h3 class="text-xl font-bold text-purple-700 mb-4 flex items-center">
+                            <svg class="w-6 h-6 ml-2" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"/>
+                            </svg>
+                            سن التعاقد
+                        </h3>
+                        <div class="bg-red-100 border-r-4 border-red-500 text-red-700 p-4 rounded">
+                            <p class="font-bold text-lg">يحظر التعاقد مع العملاء الأجانب الذين تقل أعمارهم عن 15 عاماً</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bg-blue-50 rounded-lg p-6 card-hover">
+                    <h3 class="text-xl font-bold text-blue-700 mb-4">البيانات الإجبارية</h3>
+                    <div class="flex flex-wrap gap-4">
+                        <span class="bg-blue-200 text-blue-800 px-4 py-2 rounded-full font-semibold">تاريخ الميلاد</span>
+                        <span class="bg-blue-200 text-blue-800 px-4 py-2 rounded-full font-semibold">الجنسية</span>
+                        <span class="bg-blue-200 text-blue-800 px-4 py-2 rounded-full font-semibold">تاريخ انتهاء الإقامة</span>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-<!-- STICKY NAV -->
-<nav>
-  <div class="nav-logo">we</div>
-  <ul class="nav-links">
-    <li><a href="#conditions">\u0634\u0631\u0648\u0637 \u0627\u0644\u062a\u0639\u0627\u0642\u062f</a></li>
-    <li><a href="#cases">\u062d\u0627\u0644\u0627\u062a \u0627\u0644\u062a\u0639\u0627\u0642\u062f</a></li>
-    <li><a href="#passport">\u062a\u0633\u062c\u064a\u0644 \u0627\u0644\u0628\u0627\u0633\u0628\u0648\u0631</a></li>
-    <li><a href="#faq">\u0623\u0633\u0626\u0644\u0629 \u0634\u0627\u0626\u0639\u0629</a></li>
-    <li><a href="#examples">\u0623\u0645\u062b\u0644\u0629 \u0627\u0644\u0625\u0642\u0627\u0645\u0627\u062a</a></li>
-  </ul>
-</nav>
+        <!-- Tab: حالات التعاقد -->
+        <div id="cases" class="tab-content">
+            <div class="bg-white rounded-lg shadow-lg p-8 mb-8">
+                <h2 class="text-3xl font-bold text-purple-800 mb-6">حالات التعاقد المختلفة</h2>
+                
+                <div class="space-y-4">
+                    <!-- Accordion 1 -->
+                    <div class="border border-gray-200 rounded-lg overflow-hidden">
+                        <button onclick="toggleAccordion(this)" class="w-full bg-gradient-to-r from-purple-600 to-purple-700 text-white px-6 py-4 flex justify-between items-center hover:from-purple-700 hover:to-purple-800">
+                            <span class="font-bold text-lg">عميل أجنبي لديه تأشيرة بإقامة محددة المدة</span>
+                            <svg class="w-6 h-6 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                            </svg>
+                        </button>
+                        <div class="accordion-content bg-gray-50 px-6">
+                            <div class="py-4">
+                                <p class="text-gray-700 leading-relaxed mb-4">
+                                    تنص تعليمات الجهاز القومي لتنظيم الاتصالات على ربط مدة صلاحية شريحة المحمول (صوتية - بيانات) التي قام العميل بشرائها بتاريخ مدة الإقامة الخاصة به داخل جمهورية مصر العربية.
+                                </p>
+                                <div class="bg-green-100 border-r-4 border-green-500 p-4 rounded">
+                                    <p class="text-green-800 font-semibold">
+                                        ✓ يتم منح العميل مهلة 30 يوماً من تاريخ انتهاء الإقامة لتقديم مستند الإقامة الجديد
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-<!-- ===== SECTION 1: CONDITIONS ===== -->
-<section id="conditions">
-  <div class="container">
-    <div class="section-label"><span class="dot"></span> \u0623\u0648\u0644\u0627\u064b</div>
-    <h2 class="section-title">\u0634\u0631\u0648\u0637 \u0634\u0631\u0627\u0621 \u062e\u0637 \u0644\u0644\u0639\u0645\u0644\u0627\u0621 \u0627\u0644\u0623\u062c\u0627\u0646\u0628</h2>
-    <p class="section-subtitle">\u0627\u0644\u0645\u0633\u062a\u0646\u062f\u0627\u062a \u0627\u0644\u0625\u0644\u0632\u0627\u0645\u064a\u0629 \u0627\u0644\u062a\u064a \u064a\u
+                    <!-- Accordion 2 -->
+                    <div class="border border-gray-200 rounded-lg overflow-hidden">
+                        <button onclick="toggleAccordion(this)" class="w-full bg-gradient-to-r from-purple-600 to-purple-700 text-white px-6 py-4 flex justify-between items-center hover:from-purple-700 hover:to-purple-800">
+                            <span class="font-bold text-lg">عميل أجنبي ليس لديه تأشيرة بإقامة محددة</span>
+                            <svg class="w-6 h-6 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                            </svg>
+                        </button>
+                        <div class="accordion-content bg-gray-50 px-6">
+                            <div class="py-4">
+                                <div class="bg-orange-100 border-r-4 border-orange-500 p-4 rounded">
+                                    <p class="text-orange-800 font-semibold">
+                                        العملاء الأجانب دون إقامة ولهم جواز سفر ساري يمكنهم شراء خط واحد فقط مربوط بشهر واحد (30 يوم) من تاريخ الشراء بدون مهلة.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Accordion 3 -->
+                    <div class="border border-gray-200 rounded-lg overflow-hidden">
+                        <button onclick="toggleAccordion(this)" class="w-full bg-gradient-to-r from-purple-600 to-purple-700 text-white px-6 py-4 flex justify-between items-center hover:from-purple-700 hover:to-purple-800">
+                            <span class="font-bold text-lg">تأشيرة دخول متعددة المرات (Multiple Entry)</span>
+                            <svg class="w-6 h-6 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                            </svg>
+                        </button>
+                        <div class="accordion-content bg-gray-50 px-6">
+                            <div class="py-4">
+                                <p class="text-gray-700 leading-relaxed mb-4">
+                                    يقوم العميل عند التعاقد على الخط بملء استمارة إلزامية لتحديد المدة المطلوبة لتشغيل الخط.
+                                </p>
+                                <div class="bg-blue-100 border-r-4 border-blue-500 p-4 rounded">
+                                    <p class="text-blue-800 font-semibold">
+                                        ℹ️ يتم تسجيل ذلك التاريخ كتاريخ انتهاء الإقامة على ألا تتعدى تلك المدة تاريخ انتهاء صلاحية تأشيرة الدخول المتعددة مرات.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Accordion 4 -->
+                    <div class="border border-gray-200 rounded-lg overflow-hidden">
+                        <button onclick="toggleAccordion(this)" class="w-full bg-gradient-to-r from-purple-600 to-purple-700 text-white px-6 py-4 flex justify-between items-center hover:from-purple-700 hover:to-purple-800">
+                            <span class="font-bold text-lg">جواز هيئة الأمم المتحدة</span>
+                            <svg class="w-6 h-6 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                            </svg>
+                        </button>
+                        <div class="accordion-content bg-gray-50 px-6">
+                            <div class="py-4">
+                                <p class="text-gray-700 leading-relaxed">
+                                    يتم الاعتداد والتعاقد بموجب جواز السفر الصادر عن هيئة الأمم المتحدة بشرط أن يكون ساري (وبغض النظر عن الجنسية) ويجب إرفاق جواز السفر الخاص بالعميل بجانب جواز السفر الخاص بالأمم المتحدة وذلك في حالة عدم وجود الجنسية في جواز الأمم المتحدة فقط.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Accordion 5 -->
+                    <div class="border border-gray-200 rounded-lg overflow-hidden">
+                        <button onclick="toggleAccordion(this)" class="w-full bg-gradient-to-r from-purple-600 to-purple-700 text-white px-6 py-4 flex justify-between items-center hover:from-purple-700 hover:to-purple-800">
+                            <span class="font-bold text-lg">بطاقة اللجوء</span>
+                            <svg class="w-6 h-6 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                            </svg>
+                        </button>
+                        <div class="accordion-content bg-gray-50 px-6">
+                            <div class="py-4">
+                                <p class="text-gray-700 leading-relaxed">
+                                    يتم الالتزام بتاريخ الانتهاء المدون في صفحة بيانات صاحب بطاقة تسجيل اللجوء.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Accordion 6 -->
+                    <div class="border border-gray-200 rounded-lg overflow-hidden">
+                        <button onclick="toggleAccordion(this)" class="w-full bg-gradient-to-r from-purple-600 to-purple-700 text-white px-6 py-4 flex justify-between items-center hover:from-purple-700 hover:to-purple-800">
+                            <span class="font-bold text-lg">مواطني دول (ألمانيا - إيطاليا - فرنسا - بلجيكا - البرتغال) بدون جواز سفر</span>
+                            <svg class="w-6 h-6 transform transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                            </svg>
+                        </button>
+                        <div class="accordion-content bg-gray-50 px-6">
+                            <div class="py-4">
+                                <p class="text-gray-700 leading-relaxed mb-4">
+                                    يمكن شراء خط واحد فقط مربوط بشهر واحد (30 يوم) من تاريخ الشراء، بعد الاطلاع على الأصول يتم أخذ صور ملونة لبطاقة العميل الشخصية بجانب (صورة كارت الوصول لونه أصفر وبه صورة العميل) وذلك بشكل مؤقت لحين تعديل السيستم.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab: تسجيل رقم الجواز -->
+        <div id="passport" class="tab-content">
+            <div class="bg-white rounded-lg shadow-lg p-8 mb-8">
+                <h2 class="text-3xl font-bold text-purple-800 mb-6">كيفية تسجيل رقم جواز السفر على السيستم</h2>
+                
+                <div class="space-y-6">
+                    <div class="bg-yellow-50 border-r-4 border-yellow-500 p-6 rounded-lg">
+                        <h3 class="text-xl font-bold text-yellow-800 mb-3">⚠️ تنبيه هام</h3>
+                        <p class="text-yellow-700 font-semibold">
+                            يتم تسجيل رقم الباسبور من جواز السفر فقط. غير مسموح تسجيله من بطاقة الإقامة.
+                        </p>
+                    </div>
+
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div class="bg-purple-50 rounded-lg p-6 card-hover">
+                            <h3 class="text-xl font-bold text-purple-700 mb-4">📖 جواز السفر</h3>
+                            <ul class="space-y-2 text-gray-700">
+                                <li class="flex items-start">
+                                    <span class="text-purple-600 ml-2">•</span>
+                                    <span>رقم جواز السفر قد يحتوي على رموز رقمية و/أو أبجدية</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <span class="text-purple-600 ml-2">•</span>
+                                    <span>لا يجب أن يتعدى 9 رموز طبقاً للمعايير الدولية</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <span class="text-purple-600 ml-2">•</span>
+                                    <span>يتم مطابقة الرقم بالباركود في أسفل الجواز</span>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="bg-blue-50 rounded-lg p-6 card-hover">
+                            <h3 class="text-xl font-bold text-blue-700 mb-4">🆔 بطاقة اللجوء</h3>
+                            <p class="text-gray-700 leading-relaxed">
+                                يتم الالتزام بتسجيل الرقم الشخصي للاجئ بصورة صحيحة على السيستم، والمدون بين أقواس بجوار اسم اللاجئ. يتم تسجيل الرقم كاملاً بداية من <strong class="text-blue-700">555</strong> وذلك عند بيع خط تليفون محمول لعملاء أجانب باستخدام وثيقة لجوء سارية مستخرجة من المفوضية السامية للأمم المتحدة لشئون اللاجئين (UNHCR).
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="bg-gradient-to-r from-purple-100 to-blue-100 rounded-lg p-6">
+                        <h3 class="text-xl font-bold text-purple-800 mb-4">📝 أمثلة توضيحية</h3>
+                        <div class="space-y-4">
+                            <div class="bg-white rounded-lg p-4">
+                                <p class="font-semibold text-gray-800 mb-2">مثال 1: جواز سوري</p>
+                                <p class="text-gray-600">إذا كان رقم الجواز: <code class="bg-gray-200 px-2 py-1 rounded">N 200759</code></p>
+                                <p class="text-gray-600">وفي الباركود: <code class="bg-gray-200 px-2 py-1 rounded">200759XXX</code></p>
+                                <p class="text-green-600 font-semibold mt-2">✓ يتم التسجيل: <code class="bg-green-100 px-2 py-1 rounded">200759XXX</code> (بدون حرف N)</p>
+                            </div>
+                            
+                            <div class="bg-white rounded-lg p-4">
+                                <p class="font-semibold text-gray-800 mb-2">مثال 2: جواز كويتي</p>
+                                <p class="text-gray-600">إذا كان رقم الجواز: <code class="bg-gray-200 px-2 py-1 rounded">P062179</code></p>
+                                <p class="text-gray-600">وفي الباركود: <code class="bg-gray-200 px-2 py-1 rounded">P062179</code></p>
+                                <p class="text-green-600 font-semibold mt-2">✓ يتم التسجيل: <code class="bg-green-100 px-2 py-1 rounded">P062179XX</code> (مع حرف P)</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-gray-50 rounded-lg p-6">
+                        <h3 class="text-xl font-bold text-gray-800 mb-4">كيفية تسجيل الاسم</h3>
+                        <div class="bg-white border-r-4 border-purple-500 p-4 rounded">
+                            <p class="text-gray-700 mb-3">يُفضل كتابة الاسم باللغة العربية تجنباً للخطأ</p>
+                            <p class="text-gray-700 mb-2">في حالة الكتابة باللغة الإنجليزية:</p>
+                            <div class="bg-purple-50 p-3 rounded mt-2">
+                                <p class="font-mono"><strong>First name:</strong> عبدالله</p>
+                                <p class="font-mono"><strong>Last name:</strong> بن ناصر بن عبدالرحمن آل دحيم</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab: أسئلة شائعة -->
+        <div id="faq" class="tab-content">
+            <div class="bg-white rounded-lg shadow-lg p-8 mb-8">
+                <h2 class="text-3xl font-bold text-purple-800 mb-6">الأسئلة الشائعة</h2>
+                
+                <div class="space-y-4">
+                    <div class="border-r-4 border-purple-500 bg-purple-50 rounded-lg p-6">
+                        <h3 class="font-bold text-lg text-purple-800 mb-3">❓ في حالة عميل سوداني لديه ختم دخول فقط هل يتم إعطاؤه شهر من تاريخ ختم الدخول؟</h3>
+                        <p class="text-gray-700">✅ <strong>الإجابة:</strong> يمكنهم شراء خط واحد فقط مربوط بشهر واحد (30 يوم) من تاريخ الشراء.</p>
+                    </div>
+
+                    <div class="border-r-4 border-blue-500 bg-blue-50 rounded-lg p-6">
+                        <h3 class="font-bold text-lg text-blue-800 mb-3">❓ هل يتم العمل بالطابع المدون عليه تاريخ انتهاء الإقامة يدوياً؟</h3>
+                        <p class="text-gray-700">✅ <strong>الإجابة:</strong> نعم يتم اعتماده ولا توجد مشكلة.</p>
+                    </div>
+
+                    <div class="border-r-4 border-green-500 bg-green-50 rounded-lg p-6">
+                        <h3 class="font-bold text-lg text-green-800 mb-3">❓ هل يتم إضافة شهر توفيق الأوضاع من خلال السيستم أوتوماتيكياً؟</h3>
+                        <p class="text-gray-700">✅ <strong>الإجابة:</strong> نعم، يتم تسجيل تاريخ انتهاء الإقامة كما هو موضح في المستند، ويقوم السيستم بمنح العميل فترة 30 يوم لتوفيق الأوضاع تلقائياً.</p>
+                    </div>
+
+                    <div class="border-r-4 border-red-500 bg-red-50 rounded-lg p-6">
+                        <h3 class="font-bold text-lg text-red-800 mb-3">❓ هل توجد حالات إعفاء من بند الإقامة (مثل العملاء الذين تعدوا 60 عاماً)؟</h3>
+                        <p class="text-gray-700">❌ <strong>الإجابة:</strong> لا توجد حالات إعفاء تخص سن العميل الأجنبي ممن تعدى الـ 60 عاماً.</p>
+                    </div>
+
+                    <div class="border-r-4 border-yellow-500 bg-yellow-50 rounded-lg p-6">
+                        <h3 class="font-bold text-lg text-yellow-800 mb-3">❓ هل يوجد ما يمنع أن يقوم العميل بالتوقيع على العقود بلغته الأم؟</h3>
+                        <p class="text-gray-700">✅ <strong>الإجابة:</strong> لا يوجد ما يمنع من توقيع العميل بلغته الأصلية، مع التأكيد على كتابة اسم العميل بصورة واضحة مقروءة في العقد وعلى قواعد البيانات (وفقاً لجواز السفر) ويفضل أن يوقع العميل باللغة الإنجليزية.</p>
+                    </div>
+
+                    <div class="border-r-4 border-orange-500 bg-orange-50 rounded-lg p-6">
+                        <h3 class="font-bold text-lg text-orange-800 mb-3">❓ آلية العمل مع العميل الأجنبي (دفع مسبق) والذي يقل عمره عن 16 عام؟</h3>
+                        <p class="text-gray-700">❌ <strong>الإجابة:</strong> لا يتم التعاقد مع عميل يقل عمره عن 15 سنة.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab: أمثلة للإقامات -->
+        <div id="examples" class="tab-content">
+            <div class="bg-white rounded-lg shadow-lg p-8 mb-8">
+                <h2 class="text-3xl font-bold text-purple-800 mb-6">أمثلة لأنواع الإقامات وكيفية التعامل معها</h2>
+                
+                <div class="space-y-6">
+                    <!-- Single Entry Example -->
+                    <div class="border-2 border-purple-200 rounded-lg overflow-hidden">
+                        <div class="bg-gradient-to-r from-purple-600 to-purple-700 text-white px-6 py-4">
+                            <h3 class="text-xl font-bold">تأشيرة الدخول الفردية (Single Entry)</h3>
+                        </div>
+                        <div class="p-6 bg-purple-50">
+                            <div class="grid md:grid-cols-2 gap-6">
+                                <div>
+                                    <h4 class="font-bold text-purple-800 mb-3">الشروط:</h4>
+                                    <ul class="space-y-2 text-gray-700">
+                                        <li class="flex items-start">
+                                            <span class="text-green-600 ml-2">✓</span>
+                                            <span>يمكن التعاقد للحصول على 5 خطوط صوت و5 بيانات</span>
+                                        </li>
+                                        <li class="flex items-start">
+                                            <span class="text-green-600 ml-2">✓</span>
+                                            <span>يتم تسجيل انتهاء الإقامة بعد الفترة المحددة</span>
+                                        </li>
+                                        <li class="flex items-start">
+                                            <span class="text-green-600 ml-2">✓</span>
+                                            <span>يتم احتساب المدة من تاريخ ختم الدخول</span>
+                                        </li>
+                                        <li class="flex items-start">
+                                            <span class="text-green-600 ml-2">✓</span>
+                                            <span>البيانات المكتوبة بخط اليد يتم قبولها بشكل طبيعي</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="bg-white rounded-lg p-4">
+                                    <div class="text-center">
+                                        <div class="bg-purple-100 rounded p-4">
+                                            <svg class="w-16 h-16 mx-auto text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                                            </svg>
+                                            <p class="mt-2 font-semibold text-purple-800">Single Entry Visa</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Multiple Entry Example -->
+                    <div class="border-2 border-blue-200 rounded-lg overflow-hidden">
+                        <div class="bg-gradient-to-r from-blue-600 to-blue-700 text-white px-6 py-4">
+                            <h3 class="text-xl font-bold">تأشيرة الدخول المتعددة (Multiple Entry)</h3>
+                        </div>
+                        <div class="p-6 bg-blue-50">
+                            <div class="grid md:grid-cols-2 gap-6">
+                                <div>
+                                    <h4 class="font-bold text-blue-800 mb-3">الشروط:</h4>
+                                    <ul class="space-y-2 text-gray-700">
+                                        <li class="flex items-start">
+                                            <span class="text-green-600 ml-2">✓</span>
+                                            <span>يمكن التعاقد للحصول على 5 خطوط صوت و5 بيانات</span>
+                                        </li>
+                                        <li class="flex items-start">
+                                            <span class="text-green-600 ml-2">✓</span>
+                                            <span>يقوم العميل بملء استمارة إلزامية لتحديد المدة المطلوبة</span>
+                                        </li>
+                                        <li class="flex items-start">
+                                            <span class="text-orange-600 ml-2">⚠️</span>
+                                            <span>المدة لا تتعدى تاريخ انتهاء صلاحية التأشيرة المتعددة</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="bg-white rounded-lg p-4">
+                                    <div class="text-center">
+                                        <div class="bg-blue-100 rounded p-4">
+                                            <svg class="w-16 h-16 mx-auto text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                                            </svg>
+                                            <p class="mt-2 font-semibold text-blue-800">Multiple Entry Visa</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Entry Stamp Example -->
+                    <div class="border-2 border-green-200 rounded-lg overflow-hidden">
+                        <div class="bg-gradient-to-r from-green-600 to-green-700 text-white px-6 py-4">
+                            <h3 class="text-xl font-bold">ختم أو طابع الدخول</h3>
+                        </div>
+                        <div class="p-6 bg-green-50">
+                            <div class="space-y-4">
+                                <div class="bg-white rounded-lg p-4">
+                                    <h4 class="font-bold text-green-800 mb-3">الحالة الأولى: رسم تأشيرة منافذ</h4>
+                                    <div class="bg-orange-100 border-r-4 border-orange-500 p-3 rounded">
+                                        <p class="text-orange-800">خط واحد فقط مربوط بشهر واحد (30 يوم) من تاريخ الشراء</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="bg-white rounded-lg p-4">
+                                    <h4 class="font-bold text-green-800 mb-3">الحالة الثانية: ختم مدون عليه تاريخ الانتهاء</h4>
+                                    <div class="bg-green-100 border-r-4 border-green-500 p-3 rounded">
+                                        <p class="text-green-800">يمكن للعميل الحصول على 5 أرقام صوت وبيانات بشكل طبيعي</p>
+                                        <p class="text-green-700 mt-2 text-sm">✓ يتم العمل بالطابع المدون عليه تاريخ انتهاء الإقامة يدوياً</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="gradient-bg text-white py-8 mt-12">
+        <div class="container mx-auto px-4 text-center">
+            <div class="mb-4">
+                <div class="bg-white rounded-full p-4 w-20 h-20 mx-auto flex items-center justify-center mb-4">
+                    <img src="img/we-core.png" alt="WE Logo" class="w-16 h-16 object-contain">
+                </div>
+                <h3 class="text-xl font-bold">فريق WE-CORE</h3>
+                <p class="text-purple-200">أكتوبر 2024</p>
+            </div>
+            <div class="border-t border-purple-400 pt-4">
+                <p class="text-purple-200">© 2024 WE - جميع الحقوق محفوظة</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Tab functionality
+        function showTab(tabName) {
+            // Hide all tab contents
+            const tabContents = document.querySelectorAll('.tab-content');
+            tabContents.forEach(content => {
+                content.classList.remove('active');
+            });
+            
+            // Remove active state from all tab buttons
+            const tabButtons = document.querySelectorAll('.tab-btn');
+            tabButtons.forEach(btn => {
+                btn.classList.remove('text-purple-700', 'border-purple-700');
+                btn.classList.add('text-gray-600', 'border-transparent');
+            });
+            
+            // Show selected tab content
+            document.getElementById(tabName).classList.add('active');
+            
+            // Add active state to clicked tab button
+            event.target.classList.remove('text-gray-600', 'border-transparent');
+            event.target.classList.add('text-purple-700', 'border-purple-700');
+            
+            // Scroll to top of content
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Accordion functionality
+        function toggleAccordion(button) {
+            const content = button.nextElementSibling;
+            const icon = button.querySelector('svg');
+            
+            // Toggle active class
+            content.classList.toggle('active');
+            
+            // Rotate icon
+            if (content.classList.contains('active')) {
+                icon.style.transform = 'rotate(180deg)';
+            } else {
+                icon.style.transform = 'rotate(0deg)';
+            }
+        }
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Add animation on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Observe all cards
+        document.querySelectorAll('.card-hover').forEach(card => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(20px)';
+            card.style.transition = 'all 0.6s ease';
+            observer.observe(card);
+        });
+    </script>
+</body>
+</html>
