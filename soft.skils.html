@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>دورة المهارات الشخصية - Soft Skills Course</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800&display=swap');
+        
+        body {
+            font-family: 'Cairo', sans-serif;
+        }
+        
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        
+        .card-hover {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.9);
+            animation: fadeIn 0.3s ease;
+        }
+        
+        .modal.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal-content {
+            position: relative;
+            width: 90%;
+            max-width: 1200px;
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            animation: slideUp 0.4s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes slideUp {
+            from { 
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to { 
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .video-wrapper {
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 */
+            height: 0;
+            overflow: hidden;
+        }
+        
+        .video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        
+        .close-btn {
+            position: absolute;
+            top: -50px;
+            left: 0;
+            background: white;
+            color: #333;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1001;
+            transition: all 0.3s ease;
+        }
+        
+        .close-btn:hover {
+            background: #f44336;
+            color: white;
+            transform: rotate(90deg);
+        }
+        
+        .video-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(0,0,0,0.7);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .play-icon {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80px;
+            height: 80px;
+            background: rgba(255,255,255,0.9);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .card-hover:hover .play-icon {
+            transform: translate(-50%, -50%) scale(1.1);
+            background: rgba(255,255,255,1);
+        }
+        
+        .play-icon svg {
+            width: 40px;
+            height: 40px;
+            color: #667eea;
+            margin-right: -5px;
+        }
+        
+        .progress-bar {
+            height: 4px;
+            background: #e0e0e0;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            transition: width 0.3s ease;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Header -->
+    <header class="gradient-bg text-white shadow-2xl">
+        <div class="container mx-auto px-4 py-12">
+            <div class="text-center">
+                <div class="inline-block bg-white/20 backdrop-blur-sm rounded-full p-4 mb-4">
+                    <svg class="w-16 h-16 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
+                    </svg>
+                </div>
+                <h1 class="text-4xl md:text-5xl font-bold mb-3">دورة المهارات الشخصية</h1>
+                <p class="text-xl text-purple-100 mb-2">Soft Skills Course</p>
+                <p class="text-purple-200">طور مهاراتك الشخصية والمهنية</p>
+                <div class="mt-6 flex items-center justify-center gap-2 text-purple-100">
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M10 12a2 2 0 100-4 2 2 0 000 4z"/>
+                        <path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z"/>
+                    </svg>
+                    <span>4 فيديوهات تدريبية</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Progress Overview -->
+    <div class="container mx-auto px-4 -mt-8 relative z-10">
+        <div class="bg-white rounded-xl shadow-lg p-6 max-w-2xl mx-auto">
+            <div class="flex items-center justify-between mb-3">
+                <span class="font-semibold text-gray-700">تقدمك في الدورة</span>
+                <span class="text-purple-600 font-bold" id="progress-text">0 / 4</span>
+            </div>
+            <div class="progress-bar rounded-full">
+                <div class="progress-fill" id="progress-fill" style="width: 0%"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-12">
+        <div class="max-w-6xl mx-auto">
+            <div class="grid md:grid-cols-2 gap-8" id="videos-container">
+                <!-- Video cards will be inserted here by JavaScript -->
+            </div>
+        </div>
+    </main>
+
+    <!-- Video Modal -->
+    <div id="video-modal" class="modal">
+        <div class="modal-content">
+            <button class="close-btn" onclick="closeVideo()">✕</button>
+            <div class="bg-gradient-to-r from-purple-600 to-indigo-600 text-white p-6">
+                <h3 class="text-2xl font-bold" id="modal-title">عنوان الفيديو</h3>
+                <p class="text-purple-100 mt-2" id="modal-description">وصف الفيديو</p>
+            </div>
+            <div class="video-wrapper" id="video-container">
+                <!-- Video iframe will be inserted here -->
+            </div>
+            <div class="p-6 bg-gray-50">
+                <button onclick="markAsCompleted()" class="w-full bg-gradient-to-r from-green-500 to-green-600 text-white py-3 rounded-lg font-bold hover:from-green-600 hover:to-green-700 transition-all flex items-center justify-center gap-2">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                    </svg>
+                    تم المشاهدة
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="gradient-bg text-white py-8 mt-12">
+        <div class="container mx-auto px-4 text-center">
+            <div class="mb-4">
+                <div class="bg-white rounded-full p-4 w-20 h-20 mx-auto flex items-center justify-center mb-4">
+                    <img src="img/we-core.png" alt="WE Logo" class="w-16 h-16 object-contain">
+                </div>
+                <h3 class="text-xl font-bold">فريق WE-CORE</h3>
+                <p class="text-purple-200">برنامج تطوير المهارات الشخصية</p>
+            </div>
+            <div class="border-t border-purple-400 pt-4">
+                <p class="text-purple-200">© 2024 WE-CORE - جميع الحقوق محفوظة</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Video data - Replace these IDs with actual Google Drive video IDs
+        const videos = [
+            {
+                id: 1,
+                title: "الفيديو الأول - مقدمة في المهارات الشخصية",
+                description: "تعرف على أهمية المهارات الشخصية في الحياة المهنية",
+                driveId: "https://drive.google.com/file/d/1PZ_w7D0ZPCkzzSD2JP-NdVpKVXWB-EBy/view?usp=drive_link", // استبدل هذا برقم الفيديو الحقيقي
+                thumbnail: "https://images.unsplash.com/photo-1552664730-d307ca884978?w=800",
+                duration: "15 دقيقة",
+                completed: false
+            },
+            {
+                id: 2,
+                title: "الفيديو الثاني - مهارات التواصل الفعال",
+                description: "كيف تتواصل بفعالية مع الآخرين في بيئة العمل",
+                driveId: "https://drive.google.com/file/d/1UC1zWGDG1zK8pcVYOjaUJ1yIxb8YEerd/view?usp=drive_link", // استبدل هذا برقم الفيديو الحقيقي
+                thumbnail: "https://images.unsplash.com/photo-1573164713714-d95e436ab8d6?w=800",
+                duration: "20 دقيقة",
+                completed: false
+            },
+            {
+                id: 3,
+                title: "الفيديو الثالث - إدارة الوقت والأولويات",
+                description: "تعلم كيف تدير وقتك بكفاءة وتحدد أولوياتك",
+                driveId: "https://drive.google.com/file/d/1x9tC8U7ZXZB-7hNEaiJJjjdk9SNKeaCg/view?usp=drive_link", // استبدل هذا برقم الفيديو الحقيقي
+                thumbnail: "https://images.unsplash.com/photo-1551836022-d5d88e9218df?w=800",
+                duration: "18 دقيقة",
+                completed: false
+            },
+            {
+                id: 4,
+                title: "الفيديو الرابع - العمل الجماعي والقيادة",
+                description: "اكتسب مهارات القيادة والعمل ضمن فريق",
+                driveId: "https://drive.google.com/file/d/1FrIOJglBsFtYxTk26xv2HY9w7iX0u2nh/view?usp=drive_link", // استبدل هذا برقم الفيديو الحقيقي
+                thumbnail: "https://images.unsplash.com/photo-1521737711867-e3b97375f902?w=800",
+                duration: "22 دقيقة",
+                completed: false
+            }
+        ];
+
+        let currentVideoId = null;
+
+        // Load progress from localStorage
+        function loadProgress() {
+            const saved = localStorage.getItem('softSkillsProgress');
+            if (saved) {
+                const progress = JSON.parse(saved);
+                videos.forEach(video => {
+                    if (progress.includes(video.id)) {
+                        video.completed = true;
+                    }
+                });
+            }
+            updateProgress();
+        }
+
+        // Save progress to localStorage
+        function saveProgress() {
+            const completed = videos.filter(v => v.completed).map(v => v.id);
+            localStorage.setItem('softSkillsProgress', JSON.stringify(completed));
+            updateProgress();
+        }
+
+        // Update progress bar
+        function updateProgress() {
+            const completed = videos.filter(v => v.completed).length;
+            const total = videos.length;
+            const percentage = (completed / total) * 100;
+            
+            document.getElementById('progress-fill').style.width = percentage + '%';
+            document.getElementById('progress-text').textContent = `${completed} / ${total}`;
+        }
+
+        // Render video cards
+        function renderVideos() {
+            const container = document.getElementById('videos-container');
+            container.innerHTML = '';
+
+            videos.forEach(video => {
+                const card = document.createElement('div');
+                card.className = 'bg-white rounded-xl shadow-lg overflow-hidden card-hover cursor-pointer';
+                card.onclick = () => openVideo(video.id);
+                
+                card.innerHTML = `
+                    <div class="relative">
+                        <img src="${video.thumbnail}" alt="${video.title}" class="w-full h-56 object-cover">
+                        <div class="video-badge">
+                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M10 12a2 2 0 100-4 2 2 0 000 4z"/>
+                                <path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z"/>
+                            </svg>
+                            ${video.duration}
+                        </div>
+                        <div class="play-icon">
+                            <svg fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z"/>
+                            </svg>
+                        </div>
+                        ${video.completed ? `
+                            <div class="absolute bottom-2 right-2 bg-green-500 text-white px-3 py-1 rounded-full text-sm font-semibold flex items-center gap-1">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                </svg>
+                                تمت المشاهدة
+                            </div>
+                        ` : ''}
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-gray-800 mb-2">${video.title}</h3>
+                        <p class="text-gray-600">${video.description}</p>
+                        <div class="mt-4 flex items-center justify-between">
+                            <span class="text-purple-600 font-semibold flex items-center gap-2">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                </svg>
+                                شاهد الآن
+                            </span>
+                            <span class="text-gray-500 text-sm">الدرس ${video.id}</span>
+                        </div>
+                    </div>
+                `;
+                
+                container.appendChild(card);
+            });
+        }
+
+        // Open video in modal
+        function openVideo(videoId) {
+            const video = videos.find(v => v.id === videoId);
+            if (!video) return;
+
+            currentVideoId = videoId;
+            
+            document.getElementById('modal-title').textContent = video.title;
+            document.getElementById('modal-description').textContent = video.description;
+            
+            // Create embed URL for Google Drive video
+            const embedUrl = `https://drive.google.com/file/d/${video.driveId}/preview`;
+            
+            document.getElementById('video-container').innerHTML = `
+                <iframe src="${embedUrl}" allow="autoplay" allowfullscreen></iframe>
+            `;
+            
+            document.getElementById('video-modal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        // Close video modal
+        function closeVideo() {
+            document.getElementById('video-modal').classList.remove('active');
+            document.getElementById('video-container').innerHTML = '';
+            document.body.style.overflow = 'auto';
+            currentVideoId = null;
+        }
+
+        // Mark video as completed
+        function markAsCompleted() {
+            if (currentVideoId) {
+                const video = videos.find(v => v.id === currentVideoId);
+                if (video) {
+                    video.completed = true;
+                    saveProgress();
+                    renderVideos();
+                    closeVideo();
+                    
+                    // Show success message
+                    showSuccessMessage();
+                }
+            }
+        }
+
+        // Show success message
+        function showSuccessMessage() {
+            const message = document.createElement('div');
+            message.className = 'fixed top-24 left-1/2 transform -translate-x-1/2 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg z-50 flex items-center gap-2';
+            message.innerHTML = `
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                </svg>
+                <span>تم تسجيل المشاهدة بنجاح!</span>
+            `;
+            document.body.appendChild(message);
+            
+            setTimeout(() => {
+                message.remove();
+            }, 3000);
+        }
+
+        // Close modal when clicking outside
+        document.getElementById('video-modal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeVideo();
+            }
+        });
+
+        // Close modal with Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeVideo();
+            }
+        });
+
+        // Initialize
+        loadProgress();
+        renderVideos();
+    </script>
+</body>
+</html>
