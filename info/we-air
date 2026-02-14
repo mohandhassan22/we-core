@@ -1,0 +1,975 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WE Air – الإنترنت الهوائي مسبق الدفع</title>
+
+<link rel="shortcut icon" href="img/we-core.png">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+
+:root{
+    --purple-dark:#4a1a72;
+    --purple-main:#7b3fe4;
+    --purple-light:#a066f5;
+    --purple-bg:#f0ecf8;
+    --purple-pale:#ede3fc;
+    --text-dark:#3d1a6e;
+    --text-gray:#777;
+    --white:#fff;
+    --blue:#1565c0;
+    --green:#2e7d32;
+    --orange:#e65100;
+}
+
+body{
+    font-family:'Cairo',sans-serif;
+    background:var(--purple-bg);
+    min-height:100vh;
+}
+
+/* ================= HEADER ================= */
+.header{
+    background:linear-gradient(135deg,#4a1a72 0%,#7b3fe4 100%);
+    text-align:center;
+    padding:40px 20px 35px;
+    position:relative;
+    overflow:hidden;
+}
+
+.header::before{
+    content:'';
+    position:absolute;
+    top:-60px;right:-60px;
+    width:200px;height:200px;
+    border-radius:50%;
+    background:rgba(255,255,255,0.07);
+}
+
+.header::after{
+    content:'';
+    position:absolute;
+    bottom:-80px;left:-40px;
+    width:250px;height:250px;
+    border-radius:50%;
+    background:rgba(255,255,255,0.05);
+}
+
+.back-btn{
+    position:absolute;
+    top:20px;
+    left:20px;
+    z-index:2;
+    background:rgba(255,255,255,0.15);
+    border:1.5px solid rgba(255,255,255,0.3);
+    color:#fff;
+    border-radius:12px;
+    padding:8px 16px;
+    font-family:'Cairo',sans-serif;
+    font-size:13px;
+    font-weight:700;
+    cursor:pointer;
+    text-decoration:none;
+    display:flex;
+    align-items:center;
+    gap:6px;
+    transition:background 0.2s;
+}
+
+.back-btn:hover{background:rgba(255,255,255,0.25);}
+
+.logo{
+    width:90px;
+    height:90px;
+    border-radius:50%;
+    border:4px solid rgba(255,255,255,0.35);
+    box-shadow:0 8px 25px rgba(0,0,0,0.25);
+    object-fit:cover;
+    position:relative;
+    z-index:1;
+}
+
+.main-title{
+    font-size:30px;
+    font-weight:900;
+    color:#fff;
+    margin-top:12px;
+    letter-spacing:1px;
+    position:relative;
+    z-index:1;
+}
+
+.air-badge{
+    display:inline-block;
+    background:rgba(255,255,255,0.18);
+    border:1.5px solid rgba(255,255,255,0.35);
+    color:#fff;
+    font-size:12px;
+    font-weight:700;
+    padding:4px 16px;
+    border-radius:30px;
+    margin-top:8px;
+    letter-spacing:2px;
+    position:relative;
+    z-index:1;
+}
+
+.sub-title{
+    font-size:13px;
+    color:rgba(255,255,255,0.75);
+    margin-top:6px;
+    position:relative;
+    z-index:1;
+}
+
+/* ================= CONTAINER ================= */
+.container{
+    max-width:1100px;
+    margin:0 auto;
+    padding:36px 20px 60px;
+}
+
+/* ================= INTRO ================= */
+.intro-box{
+    background:#fff;
+    border-radius:20px;
+    padding:24px 28px;
+    margin-bottom:32px;
+    border-right:5px solid var(--purple-main);
+    box-shadow:0 4px 20px rgba(90,45,130,0.09);
+    display:flex;
+    gap:16px;
+    align-items:flex-start;
+}
+
+.intro-box .intro-icon{
+    width:52px;height:52px;
+    border-radius:14px;
+    background:linear-gradient(135deg,#ede3fc,#f5f0ff);
+    display:flex;align-items:center;justify-content:center;
+    flex-shrink:0;
+}
+
+.intro-box .intro-icon i{font-size:22px;color:var(--purple-main);}
+
+.intro-box p{
+    color:#555;
+    font-size:14px;
+    line-height:1.85;
+    padding-top:4px;
+}
+
+/* ================= SECTION TITLE ================= */
+.section-title{
+    font-size:17px;
+    font-weight:800;
+    color:var(--text-dark);
+    margin-bottom:18px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.section-title::after{
+    content:'';
+    flex:1;
+    height:2px;
+    background:linear-gradient(90deg,#d8c8f8,transparent);
+    border-radius:2px;
+}
+
+/* ================= PLANS GRID ================= */
+.plans-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+    gap:22px;
+    margin-bottom:36px;
+}
+
+/* ================= PLAN CARD ================= */
+.plan-card{
+    background:#fff;
+    border-radius:22px;
+    overflow:hidden;
+    box-shadow:0 4px 22px rgba(90,45,130,0.10);
+    transition:transform 0.28s ease, box-shadow 0.28s ease;
+    display:flex;
+    flex-direction:column;
+    position:relative;
+}
+
+.plan-card:hover{
+    transform:translateY(-7px);
+    box-shadow:0 16px 40px rgba(90,45,130,0.18);
+}
+
+/* Plan Variations */
+.plan-card.starter .plan-header{background:linear-gradient(135deg,#1a0a3e,#3b0fa0);}
+.plan-card.starter .plan-accent{background:#7b3fe4;}
+
+.plan-card.basic .plan-header{background:linear-gradient(135deg,#0a1a3e,#0f4fa0);}
+.plan-card.basic .plan-accent{background:#1565c0;}
+
+.plan-card.standard .plan-header{background:linear-gradient(135deg,#1a0a30,#6a1a9a);}
+.plan-card.standard .plan-accent{background:#ab47bc;}
+
+.plan-card.plus .plan-header{background:linear-gradient(135deg,#3e1a0a,#a04f0f);}
+.plan-card.plus .plan-accent{background:#ff6f00;}
+
+.plan-card.premium .plan-header{background:linear-gradient(135deg,#0a3e1a,#0fa04f);}
+.plan-card.premium .plan-accent{background:#00c853;}
+
+.plan-card.ultimate .plan-header{background:linear-gradient(135deg,#3e0a1a,#a00f4f);}
+.plan-card.ultimate .plan-accent{background:#d81b60;}
+.plan-card.ultimate .plan-badge{display:flex;}
+
+.plan-badge{
+    display:none;
+    position:absolute;
+    top:16px;
+    right:16px;
+    background:linear-gradient(135deg,#ffd54f,#ffab00);
+    color:#5d3900;
+    font-size:11px;
+    font-weight:900;
+    padding:4px 12px;
+    border-radius:20px;
+    letter-spacing:0.5px;
+    z-index:2;
+}
+
+.plan-header{
+    padding:26px 24px 22px;
+    position:relative;
+    overflow:hidden;
+    color:#fff;
+}
+
+.plan-header::before{
+    content:'';
+    position:absolute;
+    bottom:-50px;left:-50px;
+    width:160px;height:160px;
+    border-radius:50%;
+    background:rgba(255,255,255,0.06);
+}
+
+.plan-icon{
+    width:52px;height:52px;
+    border-radius:14px;
+    background:rgba(255,255,255,0.15);
+    display:flex;align-items:center;justify-content:center;
+    margin-bottom:14px;
+    position:relative;z-index:1;
+}
+
+.plan-icon i{font-size:22px;color:#fff;}
+
+.plan-name{
+    font-size:22px;
+    font-weight:900;
+    position:relative;z-index:1;
+    letter-spacing:1px;
+}
+
+.plan-price{
+    font-size:28px;
+    font-weight:900;
+    margin-top:8px;
+    position:relative;z-index:1;
+}
+
+.plan-price small{
+    font-size:14px;
+    font-weight:600;
+    opacity:0.8;
+}
+
+.plan-accent{
+    height:4px;
+    width:100%;
+}
+
+.plan-body{
+    padding:20px 22px 22px;
+    flex:1;
+    display:flex;
+    flex-direction:column;
+}
+
+/* Stats Row */
+.stats-row{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:10px;
+    margin-bottom:18px;
+}
+
+.stat-box{
+    background:var(--purple-bg);
+    border-radius:14px;
+    padding:16px;
+    text-align:center;
+}
+
+.stat-val{
+    font-size:22px;
+    font-weight:900;
+    color:var(--text-dark);
+    line-height:1.2;
+}
+
+.stat-label{
+    font-size:11px;
+    color:var(--text-gray);
+    margin-top:4px;
+    font-weight:600;
+}
+
+/* Feature List */
+.feature-list{
+    list-style:none;
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+    flex:1;
+}
+
+.feature-list li{
+    display:flex;
+    align-items:flex-start;
+    gap:10px;
+    font-size:13px;
+    color:#555;
+    line-height:1.6;
+}
+
+.feature-list li .fi{
+    width:22px;height:22px;
+    border-radius:7px;
+    display:flex;align-items:center;justify-content:center;
+    flex-shrink:0;
+    margin-top:1px;
+}
+
+.feature-list li .fi i{font-size:11px;}
+
+.fi-purple{background:#ede3fc;} .fi-purple i{color:var(--purple-main);}
+.fi-blue{background:#e3eefe;} .fi-blue i{color:#1565c0;}
+.fi-pink{background:#f5e3fe;} .fi-pink i{color:#8e24aa;}
+.fi-orange{background:#fff3e0;} .fi-orange i{color:#e65100;}
+.fi-green{background:#e3fee8;} .fi-green i{color:#2e7d32;}
+.fi-red{background:#ffebee;} .fi-red i{color:#c62828;}
+
+/* ================= EXTRA PACKAGES ================= */
+.extra-section{
+    background:#fff;
+    border-radius:20px;
+    padding:26px 28px;
+    margin-bottom:32px;
+    box-shadow:0 4px 20px rgba(90,45,130,0.09);
+}
+
+.extra-section h3{
+    font-size:17px;
+    font-weight:800;
+    color:var(--text-dark);
+    margin-bottom:10px;
+    display:flex;
+    align-items:center;
+    gap:8px;
+}
+
+.extra-section h3 i{
+    color:var(--purple-main);
+}
+
+.extra-note{
+    font-size:13px;
+    color:#777;
+    margin-bottom:18px;
+    line-height:1.7;
+}
+
+.extra-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+    gap:16px;
+}
+
+.extra-card{
+    background:var(--purple-bg);
+    border-radius:16px;
+    padding:18px 20px;
+    border-right:3px solid var(--purple-main);
+    transition:transform 0.2s, box-shadow 0.2s;
+}
+
+.extra-card:hover{
+    transform:translateY(-3px);
+    box-shadow:0 8px 20px rgba(90,45,130,0.12);
+}
+
+.extra-card h4{
+    font-size:15px;
+    font-weight:800;
+    color:var(--text-dark);
+    margin-bottom:8px;
+}
+
+.extra-card .extra-data{
+    font-size:24px;
+    font-weight:900;
+    color:var(--purple-main);
+    margin-bottom:6px;
+}
+
+.extra-card .extra-price{
+    font-size:16px;
+    font-weight:700;
+    color:#555;
+}
+
+/* ================= FEATURES BOX ================= */
+.features-box{
+    background:#fff;
+    border-radius:20px;
+    padding:26px 28px;
+    margin-bottom:32px;
+    box-shadow:0 4px 20px rgba(90,45,130,0.09);
+}
+
+.features-box h3{
+    font-size:17px;
+    font-weight:800;
+    color:var(--text-dark);
+    margin-bottom:18px;
+    display:flex;
+    align-items:center;
+    gap:8px;
+}
+
+.features-box h3 i{
+    color:var(--purple-main);
+}
+
+.features-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+    gap:16px;
+}
+
+.feature-card{
+    background:var(--purple-bg);
+    border-radius:16px;
+    padding:18px 20px;
+    display:flex;
+    align-items:flex-start;
+    gap:14px;
+}
+
+.feature-card .fcard-icon{
+    width:44px;height:44px;
+    border-radius:12px;
+    background:#fff;
+    display:flex;align-items:center;justify-content:center;
+    flex-shrink:0;
+}
+
+.feature-card .fcard-icon i{
+    font-size:18px;
+    color:var(--purple-main);
+}
+
+.feature-card .fcard-text h4{
+    font-size:14px;
+    font-weight:800;
+    color:var(--text-dark);
+    margin-bottom:4px;
+}
+
+.feature-card .fcard-text p{
+    font-size:12px;
+    color:#666;
+    line-height:1.6;
+}
+
+/* ================= MANAGEMENT SECTION ================= */
+.management-box{
+    background:linear-gradient(135deg,#4a1a72,#7b3fe4);
+    border-radius:20px;
+    padding:26px 28px;
+    margin-bottom:32px;
+    color:#fff;
+    box-shadow:0 6px 24px rgba(90,45,130,0.22);
+    position:relative;
+    overflow:hidden;
+}
+
+.management-box::before{
+    content:'4G';
+    position:absolute;
+    right:-20px;top:-20px;
+    font-size:140px;
+    font-weight:900;
+    color:rgba(255,255,255,0.06);
+    line-height:1;
+    letter-spacing:-4px;
+    pointer-events:none;
+    user-select:none;
+}
+
+.management-content{
+    position:relative;
+    z-index:1;
+}
+
+.management-content h3{
+    font-size:18px;
+    font-weight:900;
+    margin-bottom:16px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.management-content h3 i{
+    font-size:20px;
+}
+
+.management-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:14px;
+}
+
+.mgmt-item{
+    background:rgba(255,255,255,0.12);
+    border:1.5px solid rgba(255,255,255,0.25);
+    border-radius:14px;
+    padding:14px 16px;
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.mgmt-item i{
+    font-size:20px;
+    color:#fff;
+}
+
+.mgmt-item span{
+    font-size:13px;
+    font-weight:700;
+}
+
+/* ================= NOTE BOX ================= */
+.note-box{
+    background:#fff8e1;
+    border-radius:14px;
+    padding:14px 18px;
+    margin-bottom:28px;
+    display:flex;
+    align-items:center;
+    gap:12px;
+    border-right:4px solid #ff9800;
+    font-size:13px;
+    color:#5d4037;
+    font-weight:600;
+}
+
+.note-box i{color:#ff9800;font-size:18px;flex-shrink:0;}
+
+/* ================= FOOTER ================= */
+footer{
+    text-align:center;
+    padding:24px 20px;
+    color:#999;
+    font-size:13px;
+    border-top:1px solid #e8e2f5;
+    background:#fff;
+}
+
+.footer-logo{
+    width:42px;
+    border-radius:50%;
+    margin-bottom:8px;
+    opacity:0.85;
+}
+
+footer span{color:var(--purple-main);font-weight:700;}
+
+/* ================= RESPONSIVE ================= */
+@media(max-width:768px){
+    .plans-grid{grid-template-columns:1fr;}
+    .extra-grid{grid-template-columns:1fr;}
+    .features-grid{grid-template-columns:1fr;}
+    .management-grid{grid-template-columns:1fr;}
+    .main-title{font-size:24px;}
+    .intro-box{flex-direction:column;}
+}
+</style>
+</head>
+
+<body>
+
+<!-- HEADER -->
+<div class="header">
+    <a href="index.html" class="back-btn"><i class="fa-solid fa-arrow-right"></i> رجوع</a>
+    <img src="img/we-core.png" class="logo" alt="WE-Core Logo">
+    <div class="main-title">WE AIR</div>
+    <div class="air-badge">📡 الإنترنت الهوائي</div>
+    <div class="sub-title">Powered By Mohand Hassan – From Abassia Store</div>
+</div>
+
+<div class="container">
+
+    <!-- INTRO -->
+    <div class="intro-box">
+        <div class="intro-icon"><i class="fa-solid fa-wifi"></i></div>
+        <p>
+            تعتبر خدمة <strong>WE Air</strong> الخيار الأمثل للحصول على إنترنت منزلي عالي السرعة باستخدام شبكات الـ 4G أو 5G، <strong>دون الحاجة لخط أرضي</strong>، مع توفير باقات بسعات كبيرة تناسب كافة الاحتياجات من 40 جيجابايت وتصل إلى 500 جيجابايت.
+        </p>
+    </div>
+
+    <!-- MAIN PACKAGES -->
+    <div class="section-title"><i class="fa-solid fa-layer-group" style="color:var(--purple-main)"></i> باقات WE Air مسبق الدفع الأساسية</div>
+
+    <div class="plans-grid">
+
+        <!-- PLAN 250 -->
+        <div class="plan-card starter">
+            <div class="plan-header">
+                <div class="plan-icon"><i class="fa-solid fa-signal"></i></div>
+                <div class="plan-name">WE Air 250</div>
+                <div class="plan-price">250 <small>ج.م/شهر</small></div>
+            </div>
+            <div class="plan-accent"></div>
+            <div class="plan-body">
+                <div class="stats-row">
+                    <div class="stat-box">
+                        <div class="stat-val">40 جيجابايت</div>
+                        <div class="stat-label">السعة الشهرية</div>
+                    </div>
+                </div>
+
+                <ul class="feature-list">
+                    <li>
+                        <div class="fi fi-purple"><i class="fa-solid fa-wifi"></i></div>
+                        إنترنت هوائي بشبكة 4G/5G
+                    </li>
+                    <li>
+                        <div class="fi fi-purple"><i class="fa-solid fa-home"></i></div>
+                        بدون الحاجة لخط أرضي
+                    </li>
+                    <li>
+                        <div class="fi fi-purple"><i class="fa-solid fa-rocket"></i></div>
+                        سرعة عالية ومستقرة
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- PLAN 400 -->
+        <div class="plan-card basic">
+            <div class="plan-header">
+                <div class="plan-icon"><i class="fa-solid fa-tower-broadcast"></i></div>
+                <div class="plan-name">WE Air 400</div>
+                <div class="plan-price">400 <small>ج.م/شهر</small></div>
+            </div>
+            <div class="plan-accent"></div>
+            <div class="plan-body">
+                <div class="stats-row">
+                    <div class="stat-box">
+                        <div class="stat-val">105 جيجابايت</div>
+                        <div class="stat-label">السعة الشهرية</div>
+                    </div>
+                </div>
+
+                <ul class="feature-list">
+                    <li>
+                        <div class="fi fi-blue"><i class="fa-solid fa-wifi"></i></div>
+                        إنترنت هوائي بشبكة 4G/5G
+                    </li>
+                    <li>
+                        <div class="fi fi-blue"><i class="fa-solid fa-home"></i></div>
+                        بدون الحاجة لخط أرضي
+                    </li>
+                    <li>
+                        <div class="fi fi-blue"><i class="fa-solid fa-gauge-high"></i></div>
+                        سعة مثالية للاستخدام اليومي
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- PLAN 600 -->
+        <div class="plan-card standard">
+            <div class="plan-header">
+                <div class="plan-icon"><i class="fa-solid fa-network-wired"></i></div>
+                <div class="plan-name">WE Air 600</div>
+                <div class="plan-price">600 <small>ج.م/شهر</small></div>
+            </div>
+            <div class="plan-accent"></div>
+            <div class="plan-body">
+                <div class="stats-row">
+                    <div class="stat-box">
+                        <div class="stat-val">200 جيجابايت</div>
+                        <div class="stat-label">السعة الشهرية</div>
+                    </div>
+                </div>
+
+                <ul class="feature-list">
+                    <li>
+                        <div class="fi fi-pink"><i class="fa-solid fa-wifi"></i></div>
+                        إنترنت هوائي بشبكة 4G/5G
+                    </li>
+                    <li>
+                        <div class="fi fi-pink"><i class="fa-solid fa-users"></i></div>
+                        مناسبة للعائلات
+                    </li>
+                    <li>
+                        <div class="fi fi-pink"><i class="fa-solid fa-video"></i></div>
+                        مثالية للبث والمشاهدة
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- PLAN 900 -->
+        <div class="plan-card plus">
+            <div class="plan-header">
+                <div class="plan-icon"><i class="fa-solid fa-bolt"></i></div>
+                <div class="plan-name">WE Air 900</div>
+                <div class="plan-price">900 <small>ج.م/شهر</small></div>
+            </div>
+            <div class="plan-accent"></div>
+            <div class="plan-body">
+                <div class="stats-row">
+                    <div class="stat-box">
+                        <div class="stat-val">325 جيجابايت</div>
+                        <div class="stat-label">السعة الشهرية</div>
+                    </div>
+                </div>
+
+                <ul class="feature-list">
+                    <li>
+                        <div class="fi fi-orange"><i class="fa-solid fa-wifi"></i></div>
+                        إنترنت هوائي بشبكة 4G/5G
+                    </li>
+                    <li>
+                        <div class="fi fi-orange"><i class="fa-solid fa-star"></i></div>
+                        سعة كبيرة للاستخدام المكثف
+                    </li>
+                    <li>
+                        <div class="fi fi-orange"><i class="fa-solid fa-gamepad"></i></div>
+                        مثالية للألعاب والتحميل
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- PLAN 1100 -->
+        <div class="plan-card premium">
+            <div class="plan-header">
+                <div class="plan-icon"><i class="fa-solid fa-fire"></i></div>
+                <div class="plan-name">WE Air 1100</div>
+                <div class="plan-price">1100 <small>ج.م/شهر</small></div>
+            </div>
+            <div class="plan-accent"></div>
+            <div class="plan-body">
+                <div class="stats-row">
+                    <div class="stat-box">
+                        <div class="stat-val">400 جيجابايت</div>
+                        <div class="stat-label">السعة الشهرية</div>
+                    </div>
+                </div>
+
+                <ul class="feature-list">
+                    <li>
+                        <div class="fi fi-green"><i class="fa-solid fa-wifi"></i></div>
+                        إنترنت هوائي بشبكة 4G/5G
+                    </li>
+                    <li>
+                        <div class="fi fi-green"><i class="fa-solid fa-trophy"></i></div>
+                        سعة ضخمة 400 جيجابايت
+                    </li>
+                    <li>
+                        <div class="fi fi-green"><i class="fa-solid fa-infinity"></i></div>
+                        للاستخدام غير المحدود تقريباً
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- PLAN 1400 -->
+        <div class="plan-card ultimate">
+            <div class="plan-badge">⭐ الأكبر</div>
+            <div class="plan-header">
+                <div class="plan-icon"><i class="fa-solid fa-crown"></i></div>
+                <div class="plan-name">WE Air 1400</div>
+                <div class="plan-price">1400 <small>ج.م/شهر</small></div>
+            </div>
+            <div class="plan-accent"></div>
+            <div class="plan-body">
+                <div class="stats-row">
+                    <div class="stat-box">
+                        <div class="stat-val">500 جيجابايت</div>
+                        <div class="stat-label">السعة الشهرية</div>
+                    </div>
+                </div>
+
+                <ul class="feature-list">
+                    <li>
+                        <div class="fi fi-red"><i class="fa-solid fa-wifi"></i></div>
+                        إنترنت هوائي بشبكة 4G/5G
+                    </li>
+                    <li>
+                        <div class="fi fi-red"><i class="fa-solid fa-gem"></i></div>
+                        أكبر سعة متاحة 500 جيجا
+                    </li>
+                    <li>
+                        <div class="fi fi-red"><i class="fa-solid fa-rocket"></i></div>
+                        للعائلات الكبيرة والاستخدام الشامل
+                    </li>
+                    <li>
+                        <div class="fi fi-red"><i class="fa-solid fa-star"></i></div>
+                        الباقة الأشمل والأقوى
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- EXTRA PACKAGES -->
+    <div class="extra-section">
+        <h3><i class="fa-solid fa-plus-circle"></i> الباقات الإضافية (Extra)</h3>
+        <p class="extra-note">في حال نفاد سعة الباقة الأساسية قبل موعد التجديد، يمكنك الاشتراك في باقات إضافية صالحة لمدة 30 يوماً من تاريخ الاشتراك.</p>
+        
+        <div class="extra-grid">
+            <div class="extra-card">
+                <h4>WE Air 20</h4>
+                <div class="extra-data">3 جيجا</div>
+                <div class="extra-price">20 ج.م</div>
+            </div>
+
+            <div class="extra-card">
+                <h4>WE Air 60</h4>
+                <div class="extra-data">9.5 جيجا</div>
+                <div class="extra-price">60 ج.م</div>
+            </div>
+
+            <div class="extra-card">
+                <h4>WE Air 90</h4>
+                <div class="extra-data">12 جيجا</div>
+                <div class="extra-price">90 ج.م</div>
+            </div>
+
+            <div class="extra-card">
+                <h4>WE Air 130</h4>
+                <div class="extra-data">20 جيجا</div>
+                <div class="extra-price">130 ج.م</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- FEATURES -->
+    <div class="features-box">
+        <h3><i class="fa-solid fa-star"></i> معلومات ومميزات هامة</h3>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="fcard-icon"><i class="fa-solid fa-infinity"></i></div>
+                <div class="fcard-text">
+                    <h4>بدون حد أقصى</h4>
+                    <p>يمكنك الاشتراك في الباقات الإضافية أكثر من مرة حسب حاجتك</p>
+                </div>
+            </div>
+
+            <div class="feature-card">
+                <div class="fcard-icon"><i class="fa-solid fa-router"></i></div>
+                <div class="fcard-text">
+                    <h4>أجهزة الراوتر</h4>
+                    <p>تتوفر أجهزة الإنترنت الهوائي بالتقسيط لمدة تصل إلى 12 شهراً بدون فوائد لعملاء WE Gold</p>
+                </div>
+            </div>
+
+            <div class="feature-card">
+                <div class="fcard-icon"><i class="fa-solid fa-mobile-screen"></i></div>
+                <div class="fcard-text">
+                    <h4>طرق الإدارة</h4>
+                    <p>يمكنك متابعة استهلاكك أو الاشتراك في الباقات عبر تطبيق My WE أو صفحة إعدادات الراوتر</p>
+                </div>
+            </div>
+
+            <div class="feature-card">
+                <div class="fcard-icon"><i class="fa-solid fa-map-marker-alt"></i></div>
+                <div class="fcard-text">
+                    <h4>التغطية</h4>
+                    <p>تعمل الخدمة في المكان الذي يتم تحديده عند تفعيل الخدمة لضمان أفضل جودة</p>
+                </div>
+            </div>
+
+            <div class="feature-card">
+                <div class="fcard-icon"><i class="fa-solid fa-5"></i></div>
+                <div class="fcard-text">
+                    <h4>شبكة 4G/5G</h4>
+                    <p>استمتع بسرعات فائقة عبر شبكات الجيل الرابع والخامس</p>
+                </div>
+            </div>
+
+            <div class="feature-card">
+                <div class="fcard-icon"><i class="fa-solid fa-plug"></i></div>
+                <div class="fcard-text">
+                    <h4>سهل التركيب</h4>
+                    <p>لا يحتاج إلى تمديدات أو أسلاك، فقط وصّل وابدأ الاستخدام</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MANAGEMENT -->
+    <div class="management-box">
+        <div class="management-content">
+            <h3><i class="fa-solid fa-cog"></i> كيفية الاشتراك والإدارة</h3>
+            <div class="management-grid">
+                <div class="mgmt-item">
+                    <i class="fa-solid fa-mobile"></i>
+                    <span>تطبيق My WE - إدارة الحساب والشحن</span>
+                </div>
+                <div class="mgmt-item">
+                    <i class="fa-solid fa-globe"></i>
+                    <span>الموقع الإلكتروني - my.te.eg</span>
+                </div>
+                <div class="mgmt-item">
+                    <i class="fa-solid fa-building"></i>
+                    <span>الفروع - زيارة أقرب فرع WE</span>
+                </div>
+                <div class="mgmt-item">
+                    <i class="fa-solid fa-router"></i>
+                    <span>صفحة إعدادات الراوتر</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- NOTE -->
+    <div class="note-box">
+        <i class="fa-solid fa-triangle-exclamation"></i>
+        جميع الأسعار المذكورة لا تشمل ضريبة القيمة المضافة (VAT).
+    </div>
+
+</div>
+
+<!-- FOOTER -->
+<footer>
+    <img src="img/we-core.png" class="footer-logo" alt="logo">
+    <div>Powered by <span>Mohand Hassan</span> – From <span>Abassia Store</span></div>
+</footer>
+
+</body>
+</html>
