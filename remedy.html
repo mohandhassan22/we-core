@@ -33,6 +33,88 @@
       }
 
       /* ── HEADER ── */
+       /* الهيدر */
+        .header {
+            background: linear-gradient(135deg, #6a1b9a 0%, #9c27b0 100%);
+            color: white;
+            padding: 0;
+            box-shadow: 0 2px 14px rgba(106,27,154,0.35);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+            height: 68px;
+        }
+
+        /* اللوجو */
+        .logo-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+        }
+
+        .logo {
+            width: 54px;
+            height: 54px;
+            object-fit: contain;
+            /* mix-blend-mode: screen يجعل الأبيض شفافاً على الخلفية الملونة */
+            mix-blend-mode: screen;
+            filter: brightness(1.15) contrast(1.1);
+            transition: transform 0.25s ease, opacity 0.25s ease;
+        }
+
+        .logo-wrapper:hover .logo {
+            transform: scale(1.08);
+            opacity: 0.85;
+        }
+
+        .logo-text {
+            display: flex;
+            flex-direction: column;
+            line-height: 1.25;
+        }
+
+        .logo-title {
+            font-size: 17px;
+            font-weight: bold;
+            color: #fff;
+            letter-spacing: 0.4px;
+        }
+
+        .logo-sub {
+            font-size: 11px;
+            color: rgba(255,255,255,0.65);
+        }
+
+        /* زر الرئيسية */
+        .nav-links a {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            color: rgba(255,255,255,0.9);
+            text-decoration: none;
+            font-size: 14px;
+            padding: 8px 16px;
+            border-radius: 8px;
+            background: rgba(255,255,255,0.12);
+            border: 1px solid rgba(255,255,255,0.2);
+            transition: background 0.2s, border-color 0.2s;
+            margin-left: 0;
+        }
+
+        .nav-links a:hover {
+            background: rgba(255,255,255,0.22);
+            border-color: rgba(255,255,255,0.35);
+        }
       header {
         background: var(--purple);
         position: sticky;
