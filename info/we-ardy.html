@@ -1,0 +1,1074 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WE الأرضي – باقات مسبق الدفع</title>
+
+<link rel="shortcut icon" href="img/we-core.png">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+
+:root{
+    --purple-dark:#4a1a72;
+    --purple-main:#7b3fe4;
+    --purple-light:#a066f5;
+    --purple-bg:#f0ecf8;
+    --purple-pale:#ede3fc;
+    --text-dark:#3d1a6e;
+    --text-gray:#777;
+    --white:#fff;
+    --blue:#1565c0;
+    --green:#2e7d32;
+    --orange:#e65100;
+}
+
+body{
+    font-family:'Cairo',sans-serif;
+    background:var(--purple-bg);
+    min-height:100vh;
+}
+
+/* ================= HEADER ================= */
+.header{
+    background:linear-gradient(135deg,#4a1a72 0%,#7b3fe4 100%);
+    text-align:center;
+    padding:40px 20px 35px;
+    position:relative;
+    overflow:hidden;
+}
+
+.header::before{
+    content:'';
+    position:absolute;
+    top:-60px;right:-60px;
+    width:200px;height:200px;
+    border-radius:50%;
+    background:rgba(255,255,255,0.07);
+}
+
+.header::after{
+    content:'';
+    position:absolute;
+    bottom:-80px;left:-40px;
+    width:250px;height:250px;
+    border-radius:50%;
+    background:rgba(255,255,255,0.05);
+}
+
+.back-btn{
+    position:absolute;
+    top:20px;
+    left:20px;
+    z-index:2;
+    background:rgba(255,255,255,0.15);
+    border:1.5px solid rgba(255,255,255,0.3);
+    color:#fff;
+    border-radius:12px;
+    padding:8px 16px;
+    font-family:'Cairo',sans-serif;
+    font-size:13px;
+    font-weight:700;
+    cursor:pointer;
+    text-decoration:none;
+    display:flex;
+    align-items:center;
+    gap:6px;
+    transition:background 0.2s;
+}
+
+.back-btn:hover{background:rgba(255,255,255,0.25);}
+
+.logo{
+    width:90px;
+    height:90px;
+    border-radius:50%;
+    border:4px solid rgba(255,255,255,0.35);
+    box-shadow:0 8px 25px rgba(0,0,0,0.25);
+    object-fit:cover;
+    position:relative;
+    z-index:1;
+}
+
+.main-title{
+    font-size:30px;
+    font-weight:900;
+    color:#fff;
+    margin-top:12px;
+    letter-spacing:1px;
+    position:relative;
+    z-index:1;
+}
+
+.prepaid-badge{
+    display:inline-block;
+    background:rgba(255,255,255,0.18);
+    border:1.5px solid rgba(255,255,255,0.35);
+    color:#fff;
+    font-size:12px;
+    font-weight:700;
+    padding:4px 16px;
+    border-radius:30px;
+    margin-top:8px;
+    letter-spacing:2px;
+    position:relative;
+    z-index:1;
+}
+
+.sub-title{
+    font-size:13px;
+    color:rgba(255,255,255,0.75);
+    margin-top:6px;
+    position:relative;
+    z-index:1;
+}
+
+/* ================= CONTAINER ================= */
+.container{
+    max-width:1100px;
+    margin:0 auto;
+    padding:36px 20px 60px;
+}
+
+/* ================= INTRO ================= */
+.intro-box{
+    background:#fff;
+    border-radius:20px;
+    padding:24px 28px;
+    margin-bottom:32px;
+    border-right:5px solid var(--purple-main);
+    box-shadow:0 4px 20px rgba(90,45,130,0.09);
+    display:flex;
+    gap:16px;
+    align-items:flex-start;
+}
+
+.intro-box .intro-icon{
+    width:52px;height:52px;
+    border-radius:14px;
+    background:linear-gradient(135deg,#ede3fc,#f5f0ff);
+    display:flex;align-items:center;justify-content:center;
+    flex-shrink:0;
+}
+
+.intro-box .intro-icon i{font-size:22px;color:var(--purple-main);}
+
+.intro-box p{
+    color:#555;
+    font-size:14px;
+    line-height:1.85;
+    padding-top:4px;
+}
+
+/* ================= SECTION TITLE ================= */
+.section-title{
+    font-size:17px;
+    font-weight:800;
+    color:var(--text-dark);
+    margin-bottom:18px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.section-title::after{
+    content:'';
+    flex:1;
+    height:2px;
+    background:linear-gradient(90deg,#d8c8f8,transparent);
+    border-radius:2px;
+}
+
+/* ================= PLANS GRID ================= */
+.plans-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+    gap:22px;
+    margin-bottom:36px;
+}
+
+/* ================= PLAN CARD ================= */
+.plan-card{
+    background:#fff;
+    border-radius:22px;
+    overflow:hidden;
+    box-shadow:0 4px 22px rgba(90,45,130,0.10);
+    transition:transform 0.28s ease, box-shadow 0.28s ease;
+    display:flex;
+    flex-direction:column;
+    position:relative;
+}
+
+.plan-card:hover{
+    transform:translateY(-7px);
+    box-shadow:0 16px 40px rgba(90,45,130,0.18);
+}
+
+/* Plan Variations */
+.plan-card.basic .plan-header{background:linear-gradient(135deg,#1a0a3e,#3b0fa0);}
+.plan-card.basic .plan-accent{background:#7b3fe4;}
+
+.plan-card.standard .plan-header{background:linear-gradient(135deg,#0a1a3e,#0f4fa0);}
+.plan-card.standard .plan-accent{background:#1565c0;}
+
+.plan-card.premium .plan-header{background:linear-gradient(135deg,#1a0a30,#6a1a9a);}
+.plan-card.premium .plan-accent{background:#ab47bc;}
+
+.plan-header{
+    padding:26px 24px 22px;
+    position:relative;
+    overflow:hidden;
+    color:#fff;
+}
+
+.plan-header::before{
+    content:'';
+    position:absolute;
+    bottom:-50px;left:-50px;
+    width:160px;height:160px;
+    border-radius:50%;
+    background:rgba(255,255,255,0.06);
+}
+
+.plan-icon{
+    width:52px;height:52px;
+    border-radius:14px;
+    background:rgba(255,255,255,0.15);
+    display:flex;align-items:center;justify-content:center;
+    margin-bottom:14px;
+    position:relative;z-index:1;
+}
+
+.plan-icon i{font-size:22px;color:#fff;}
+
+.plan-name{
+    font-size:22px;
+    font-weight:900;
+    position:relative;z-index:1;
+    letter-spacing:1px;
+}
+
+.plan-price{
+    font-size:28px;
+    font-weight:900;
+    margin-top:8px;
+    position:relative;z-index:1;
+}
+
+.plan-price small{
+    font-size:14px;
+    font-weight:600;
+    opacity:0.8;
+}
+
+.plan-accent{
+    height:4px;
+    width:100%;
+}
+
+.plan-body{
+    padding:20px 22px 22px;
+    flex:1;
+    display:flex;
+    flex-direction:column;
+}
+
+/* Stats Row */
+.stats-row{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:10px;
+    margin-bottom:18px;
+}
+
+.stat-box{
+    background:var(--purple-bg);
+    border-radius:14px;
+    padding:14px 16px;
+    text-align:center;
+}
+
+.stat-val{
+    font-size:18px;
+    font-weight:900;
+    color:var(--text-dark);
+    line-height:1.3;
+}
+
+.stat-label{
+    font-size:11px;
+    color:var(--text-gray);
+    margin-top:4px;
+    font-weight:600;
+}
+
+/* Feature List */
+.feature-list{
+    list-style:none;
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+    margin-bottom:14px;
+    flex:1;
+}
+
+.feature-list li{
+    display:flex;
+    align-items:flex-start;
+    gap:10px;
+    font-size:13px;
+    color:#555;
+    line-height:1.6;
+}
+
+.feature-list li .fi{
+    width:22px;height:22px;
+    border-radius:7px;
+    display:flex;align-items:center;justify-content:center;
+    flex-shrink:0;
+    margin-top:1px;
+}
+
+.feature-list li .fi i{font-size:11px;}
+
+.fi-purple{background:#ede3fc;} .fi-purple i{color:var(--purple-main);}
+.fi-blue{background:#e3eefe;} .fi-blue i{color:#1565c0;}
+.fi-pink{background:#f5e3fe;} .fi-pink i{color:#8e24aa;}
+.fi-green{background:#e3fee8;} .fi-green i{color:#2e7d32;}
+
+/* Payment Options */
+.payment-options{
+    margin-top:14px;
+    padding-top:14px;
+    border-top:1px dashed #ead9ff;
+}
+
+.payment-label{
+    font-size:11.5px;
+    font-weight:700;
+    color:var(--text-dark);
+    margin-bottom:8px;
+    display:flex;
+    align-items:center;
+    gap:6px;
+}
+
+.payment-label i{color:var(--purple-main);font-size:12px;}
+
+.payment-chips{
+    display:flex;
+    flex-wrap:wrap;
+    gap:6px;
+}
+
+.payment-chip{
+    background:var(--purple-pale);
+    color:var(--purple-main);
+    font-size:11px;
+    font-weight:700;
+    padding:5px 12px;
+    border-radius:20px;
+}
+
+/* ================= EXTRA PACKAGES ================= */
+.extra-section{
+    background:#fff;
+    border-radius:20px;
+    padding:26px 28px;
+    margin-bottom:32px;
+    box-shadow:0 4px 20px rgba(90,45,130,0.09);
+}
+
+.extra-section h3{
+    font-size:17px;
+    font-weight:800;
+    color:var(--text-dark);
+    margin-bottom:10px;
+    display:flex;
+    align-items:center;
+    gap:8px;
+}
+
+.extra-section h3 i{
+    color:var(--purple-main);
+}
+
+.extra-note{
+    font-size:13px;
+    color:#777;
+    margin-bottom:18px;
+    line-height:1.7;
+}
+
+.extra-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+    gap:16px;
+    margin-bottom:24px;
+}
+
+.extra-card{
+    background:var(--purple-bg);
+    border-radius:16px;
+    padding:18px 20px;
+    border-right:3px solid var(--purple-main);
+}
+
+.extra-card h4{
+    font-size:14px;
+    font-weight:800;
+    color:var(--text-dark);
+    margin-bottom:6px;
+    display:flex;
+    align-items:center;
+    gap:6px;
+}
+
+.extra-card h4 i{
+    color:var(--purple-main);
+    font-size:13px;
+}
+
+.extra-card .extra-minutes{
+    font-size:20px;
+    font-weight:900;
+    color:var(--purple-main);
+    margin-bottom:6px;
+}
+
+.extra-card .extra-price{
+    font-size:15px;
+    font-weight:700;
+    color:#555;
+}
+
+.extra-card .extra-desc{
+    font-size:11px;
+    color:#777;
+    margin-top:6px;
+}
+
+/* ================= SERVICES SECTION ================= */
+.services-section{
+    background:#fff;
+    border-radius:20px;
+    padding:26px 28px;
+    margin-bottom:32px;
+    box-shadow:0 4px 20px rgba(90,45,130,0.09);
+}
+
+.services-section h3{
+    font-size:17px;
+    font-weight:800;
+    color:var(--text-dark);
+    margin-bottom:18px;
+    display:flex;
+    align-items:center;
+    gap:8px;
+}
+
+.services-section h3 i{
+    color:var(--purple-main);
+}
+
+.services-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+    gap:16px;
+}
+
+.service-card{
+    background:var(--purple-bg);
+    border-radius:16px;
+    padding:18px 20px;
+    display:flex;
+    align-items:flex-start;
+    gap:12px;
+}
+
+.service-card .scard-icon{
+    width:40px;height:40px;
+    border-radius:10px;
+    background:#fff;
+    display:flex;align-items:center;justify-content:center;
+    flex-shrink:0;
+}
+
+.service-card .scard-icon i{
+    font-size:16px;
+    color:var(--purple-main);
+}
+
+.service-card .scard-text h4{
+    font-size:13px;
+    font-weight:800;
+    color:var(--text-dark);
+    margin-bottom:4px;
+}
+
+.service-card .scard-text p{
+    font-size:11.5px;
+    color:#666;
+    line-height:1.6;
+}
+
+/* ================= INFO BOXES ================= */
+.info-section{
+    background:#fff;
+    border-radius:20px;
+    padding:26px 28px;
+    margin-bottom:32px;
+    box-shadow:0 4px 20px rgba(90,45,130,0.09);
+}
+
+.info-section h3{
+    font-size:17px;
+    font-weight:800;
+    color:var(--text-dark);
+    margin-bottom:16px;
+    display:flex;
+    align-items:center;
+    gap:8px;
+}
+
+.info-section h3 i{
+    color:var(--purple-main);
+}
+
+.info-list{
+    list-style:none;
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+}
+
+.info-list li{
+    display:flex;
+    align-items:flex-start;
+    gap:12px;
+    font-size:13px;
+    color:#555;
+    line-height:1.7;
+    padding:12px 16px;
+    background:var(--purple-bg);
+    border-radius:12px;
+}
+
+.info-list li .info-icon{
+    width:28px;height:28px;
+    border-radius:8px;
+    background:#fff;
+    display:flex;align-items:center;justify-content:center;
+    flex-shrink:0;
+}
+
+.info-list li .info-icon i{
+    font-size:13px;
+    color:var(--purple-main);
+}
+
+.info-list li strong{
+    color:var(--text-dark);
+    font-weight:800;
+}
+
+/* ================= MANAGEMENT SECTION ================= */
+.management-box{
+    background:linear-gradient(135deg,#4a1a72,#7b3fe4);
+    border-radius:20px;
+    padding:26px 28px;
+    margin-bottom:32px;
+    color:#fff;
+    box-shadow:0 6px 24px rgba(90,45,130,0.22);
+    position:relative;
+    overflow:hidden;
+}
+
+.management-box::before{
+    content:'WE';
+    position:absolute;
+    right:-20px;top:-20px;
+    font-size:120px;
+    font-weight:900;
+    color:rgba(255,255,255,0.06);
+    line-height:1;
+    letter-spacing:-4px;
+    pointer-events:none;
+    user-select:none;
+}
+
+.management-content{
+    position:relative;
+    z-index:1;
+}
+
+.management-content h3{
+    font-size:18px;
+    font-weight:900;
+    margin-bottom:16px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.management-content h3 i{
+    font-size:20px;
+}
+
+.management-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:14px;
+}
+
+.mgmt-item{
+    background:rgba(255,255,255,0.12);
+    border:1.5px solid rgba(255,255,255,0.25);
+    border-radius:14px;
+    padding:14px 16px;
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.mgmt-item i{
+    font-size:20px;
+    color:#fff;
+}
+
+.mgmt-item span{
+    font-size:13px;
+    font-weight:700;
+}
+
+/* ================= NOTE BOX ================= */
+.note-box{
+    background:#fff8e1;
+    border-radius:14px;
+    padding:14px 18px;
+    margin-bottom:28px;
+    display:flex;
+    align-items:center;
+    gap:12px;
+    border-right:4px solid #ff9800;
+    font-size:13px;
+    color:#5d4037;
+    font-weight:600;
+}
+
+.note-box i{color:#ff9800;font-size:18px;flex-shrink:0;}
+
+/* ================= FOOTER ================= */
+footer{
+    text-align:center;
+    padding:24px 20px;
+    color:#999;
+    font-size:13px;
+    border-top:1px solid #e8e2f5;
+    background:#fff;
+}
+
+.footer-logo{
+    width:42px;
+    border-radius:50%;
+    margin-bottom:8px;
+    opacity:0.85;
+}
+
+footer span{color:var(--purple-main);font-weight:700;}
+
+/* ================= RESPONSIVE ================= */
+@media(max-width:768px){
+    .plans-grid{grid-template-columns:1fr;}
+    .extra-grid{grid-template-columns:1fr;}
+    .services-grid{grid-template-columns:1fr;}
+    .management-grid{grid-template-columns:1fr;}
+    .main-title{font-size:24px;}
+    .intro-box{flex-direction:column;}
+}
+</style>
+</head>
+
+<body>
+
+<!-- HEADER -->
+<div class="header">
+    <a href="index.html" class="back-btn"><i class="fa-solid fa-arrow-right"></i> رجوع</a>
+    <img src="img/we-core.png" class="logo" alt="WE-Core Logo">
+    <div class="main-title">WE الأرضي</div>
+    <div class="prepaid-badge">📞 مسبق الدفع</div>
+    <div class="sub-title">Powered By Mohand Hassan – From Abassia Store</div>
+</div>
+
+<div class="container">
+
+    <!-- INTRO -->
+    <div class="intro-box">
+        <div class="intro-icon"><i class="fa-solid fa-phone"></i></div>
+        <p>
+            يقدم هذا الدليل تفاصيل شاملة ومبسطة عن <strong>باقات WE الأرضي مسبق الدفع</strong> مع أنظمة سداد مرنة (شهري، ربع سنوي، أو سنوي)، والباقات الإضافية (إكسترا)، والخدمات المضافة لتسهيل اختيار الأنسب لك.
+        </p>
+    </div>
+
+    <!-- MAIN PACKAGES -->
+    <div class="section-title"><i class="fa-solid fa-layer-group" style="color:var(--purple-main)"></i> باقات WE أرضي الأساسية</div>
+
+    <div class="plans-grid">
+
+        <!-- PLAN 35 -->
+        <div class="plan-card basic">
+            <div class="plan-header">
+                <div class="plan-icon"><i class="fa-solid fa-phone-volume"></i></div>
+                <div class="plan-name">أرضي WE 35</div>
+                <div class="plan-price">35 <small>ج.م/شهر</small></div>
+            </div>
+            <div class="plan-accent"></div>
+            <div class="plan-body">
+                <div class="stats-row">
+                    <div class="stat-box">
+                        <div class="stat-val">500 دقيقة</div>
+                        <div class="stat-label">محلي ومحافظات شهرياً</div>
+                    </div>
+                </div>
+
+                <ul class="feature-list">
+                    <li>
+                        <div class="fi fi-purple"><i class="fa-solid fa-check"></i></div>
+                        السعر شامل الضريبة: <strong>39.90 ج.م</strong>
+                    </li>
+                    <li>
+                        <div class="fi fi-purple"><i class="fa-solid fa-location-dot"></i></div>
+                        مكالمات محلية ومحافظات
+                    </li>
+                    <li>
+                        <div class="fi fi-purple"><i class="fa-solid fa-plus"></i></div>
+                        خاصية التتبع متاحة
+                    </li>
+                </ul>
+
+                <div class="payment-options">
+                    <div class="payment-label"><i class="fa-solid fa-calendar"></i> أنظمة السداد</div>
+                    <div class="payment-chips">
+                        <span class="payment-chip">شهري</span>
+                        <span class="payment-chip">ربع سنوي</span>
+                        <span class="payment-chip">سنوي</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PLAN 45 -->
+        <div class="plan-card standard">
+            <div class="plan-header">
+                <div class="plan-icon"><i class="fa-solid fa-phone"></i></div>
+                <div class="plan-name">أرضي WE 45</div>
+                <div class="plan-price">45 <small>ج.م/شهر</small></div>
+            </div>
+            <div class="plan-accent"></div>
+            <div class="plan-body">
+                <div class="stats-row">
+                    <div class="stat-box">
+                        <div class="stat-val">3500 دقيقة</div>
+                        <div class="stat-label">محلي / محافظات / موبايل WE شهرياً</div>
+                    </div>
+                </div>
+
+                <ul class="feature-list">
+                    <li>
+                        <div class="fi fi-blue"><i class="fa-solid fa-check"></i></div>
+                        السعر شامل الضريبة: <strong>51.80 ج.م</strong>
+                    </li>
+                    <li>
+                        <div class="fi fi-blue"><i class="fa-solid fa-mobile"></i></div>
+                        يشمل مكالمات موبايل WE
+                    </li>
+                    <li>
+                        <div class="fi fi-blue"><i class="fa-solid fa-plus"></i></div>
+                        خاصية التتبع متاحة
+                    </li>
+                </ul>
+
+                <div class="payment-options">
+                    <div class="payment-label"><i class="fa-solid fa-calendar"></i> أنظمة السداد</div>
+                    <div class="payment-chips">
+                        <span class="payment-chip">شهري</span>
+                        <span class="payment-chip">ربع سنوي</span>
+                        <span class="payment-chip">سنوي</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PLAN 75 -->
+        <div class="plan-card premium">
+            <div class="plan-header">
+                <div class="plan-icon"><i class="fa-solid fa-crown"></i></div>
+                <div class="plan-name">أرضي WE 75</div>
+                <div class="plan-price">75 <small>ج.م/شهر</small></div>
+            </div>
+            <div class="plan-accent"></div>
+            <div class="plan-body">
+                <div class="stats-row">
+                    <div class="stat-box">
+                        <div class="stat-val">3500 + 250 دقيقة</div>
+                        <div class="stat-label">محلي/محافظات/WE + جميع الشبكات</div>
+                    </div>
+                </div>
+
+                <ul class="feature-list">
+                    <li>
+                        <div class="fi fi-pink"><i class="fa-solid fa-check"></i></div>
+                        السعر شامل الضريبة: <strong>88.70 ج.م</strong>
+                    </li>
+                    <li>
+                        <div class="fi fi-pink"><i class="fa-solid fa-mobile-screen"></i></div>
+                        250 دقيقة لجميع الشبكات الأخرى
+                    </li>
+                    <li>
+                        <div class="fi fi-pink"><i class="fa-solid fa-star"></i></div>
+                        الباقة الأشمل
+                    </li>
+                    <li>
+                        <div class="fi fi-pink"><i class="fa-solid fa-plus"></i></div>
+                        خاصية التتبع متاحة
+                    </li>
+                </ul>
+
+                <div class="payment-options">
+                    <div class="payment-label"><i class="fa-solid fa-calendar"></i> أنظمة السداد</div>
+                    <div class="payment-chips">
+                        <span class="payment-chip">شهري</span>
+                        <span class="payment-chip">ربع سنوي</span>
+                        <span class="payment-chip">سنوي</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- EXTRA PACKAGES - LANDLINE -->
+    <div class="extra-section">
+        <h3><i class="fa-solid fa-plus-circle"></i> باقات إكسترا WE الإضافية</h3>
+        <p class="extra-note">في حال نفاد دقائق الباقة الأساسية، يمكنك الاشتراك في باقات إضافية صالحة لمدة 30 يوماً.</p>
+        
+        <h4 style="font-size:15px;font-weight:800;color:var(--text-dark);margin-bottom:14px;margin-top:20px;">
+            <i class="fa-solid fa-phone" style="color:var(--purple-main);margin-left:6px;"></i>
+            باقات إكسترا للأرضي والمحافظات
+        </h4>
+        <div class="extra-grid">
+            <div class="extra-card">
+                <h4><i class="fa-solid fa-box"></i> إكسترا 10</h4>
+                <div class="extra-minutes">250 دقيقة</div>
+                <div class="extra-price">11.4 ج.م شامل الضريبة</div>
+                <div class="extra-desc">محلي ومحافظات</div>
+            </div>
+
+            <div class="extra-card">
+                <h4><i class="fa-solid fa-box"></i> إكسترا 20</h4>
+                <div class="extra-minutes">700 دقيقة</div>
+                <div class="extra-price">22.8 ج.م شامل الضريبة</div>
+                <div class="extra-desc">محلي ومحافظات</div>
+            </div>
+        </div>
+
+        <h4 style="font-size:15px;font-weight:800;color:var(--text-dark);margin-bottom:14px;margin-top:24px;">
+            <i class="fa-solid fa-mobile-screen" style="color:var(--blue);margin-left:6px;"></i>
+            باقات إكسترا للموبايل
+        </h4>
+        <div class="extra-grid">
+            <div class="extra-card">
+                <h4><i class="fa-solid fa-mobile"></i> إكسترا موبايل 5</h4>
+                <div class="extra-minutes">100 دقيقة</div>
+                <div class="extra-price">6.16 ج.م شامل الضريبة</div>
+                <div class="extra-desc">لموبايل WE فقط</div>
+            </div>
+
+            <div class="extra-card">
+                <h4><i class="fa-solid fa-mobile"></i> إكسترا موبايل 15</h4>
+                <div class="extra-minutes">125 دقيقة</div>
+                <div class="extra-price">18.47 ج.م شامل الضريبة</div>
+                <div class="extra-desc">لجميع الشبكات</div>
+            </div>
+
+            <div class="extra-card">
+                <h4><i class="fa-solid fa-mobile"></i> إكسترا موبايل 25</h4>
+                <div class="extra-minutes">225 دقيقة</div>
+                <div class="extra-price">30.78 ج.م شامل الضريبة</div>
+                <div class="extra-desc">لجميع الشبكات</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SERVICES -->
+    <div class="services-section">
+        <h3><i class="fa-solid fa-cogs"></i> الخدمات المضافة والمميزة</h3>
+        
+        <h4 style="font-size:14px;font-weight:800;color:var(--text-dark);margin-bottom:12px;">خدمات التحكم والاتصال:</h4>
+        <div class="services-grid" style="margin-bottom:24px;">
+            <div class="service-card">
+                <div class="scard-icon"><i class="fa-solid fa-eye"></i></div>
+                <div class="scard-text">
+                    <h4>إظهار رقم الطالب</h4>
+                    <p>معرفة رقم المتصل</p>
+                </div>
+            </div>
+
+            <div class="service-card">
+                <div class="scard-icon"><i class="fa-solid fa-route"></i></div>
+                <div class="scard-text">
+                    <h4>خاصية التتبع</h4>
+                    <p>تحويل المكالمات الواردة للأرضي إلى موبايل أو رقم آخر</p>
+                </div>
+            </div>
+
+            <div class="service-card">
+                <div class="scard-icon"><i class="fa-solid fa-clock"></i></div>
+                <div class="scard-text">
+                    <h4>انتظار المكالمات</h4>
+                    <p>استقبال مكالمة أخرى أثناء التحدث</p>
+                </div>
+            </div>
+
+            <div class="service-card">
+                <div class="scard-icon"><i class="fa-solid fa-users"></i></div>
+                <div class="scard-text">
+                    <h4>مكالمة من عدة أطراف</h4>
+                    <p>إجراء مكالمة جماعية مع عدة أشخاص</p>
+                </div>
+            </div>
+
+            <div class="service-card">
+                <div class="scard-icon"><i class="fa-solid fa-ban"></i></div>
+                <div class="scard-text">
+                    <h4>عدم الإزعاج</h4>
+                    <p>منع استقبال المكالمات الواردة</p>
+                </div>
+            </div>
+
+            <div class="service-card">
+                <div class="scard-icon"><i class="fa-solid fa-shield"></i></div>
+                <div class="scard-text">
+                    <h4>المانع الكودي</h4>
+                    <p>التحكم في أنواع المكالمات الصادرة (مثل الدولي أو الموبايل)</p>
+                </div>
+            </div>
+        </div>
+
+        <h4 style="font-size:14px;font-weight:800;color:var(--text-dark);margin-bottom:12px;">خدمات الطوارئ والراحة:</h4>
+        <div class="services-grid">
+            <div class="service-card">
+                <div class="scard-icon"><i class="fa-solid fa-fire"></i></div>
+                <div class="scard-text">
+                    <h4>الخط الساخن</h4>
+                    <p>تحديد رقم للاتصال به مباشرة عند رفع السماعة في الطوارئ</p>
+                </div>
+            </div>
+
+            <div class="service-card">
+                <div class="scard-icon"><i class="fa-solid fa-bolt"></i></div>
+                <div class="scard-text">
+                    <h4>اختصار الأرقام</h4>
+                    <p>الوصول السريع للخدمات العامة</p>
+                </div>
+            </div>
+
+            <div class="service-card">
+                <div class="scard-icon"><i class="fa-solid fa-hand-holding-dollar"></i></div>
+                <div class="scard-text">
+                    <h4>خدمة سلفني</h4>
+                    <p>استلاف 40 وحدة مقابل 2 جنيه صالحة لمدة 30 يوماً (مرة واحدة في الشهر)</p>
+                </div>
+            </div>
+
+            <div class="service-card">
+                <div class="scard-icon"><i class="fa-solid fa-exchange"></i></div>
+                <div class="scard-text">
+                    <h4>تحويل الرصيد</h4>
+                    <p>إمكانية تحويل رصيد لرقم آخر</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CONSUMPTION INFO -->
+    <div class="info-section">
+        <h3><i class="fa-solid fa-info-circle"></i> معلومات هامة عن الاستهلاك والقطع</h3>
+        <ul class="info-list">
+            <li>
+                <div class="info-icon"><i class="fa-solid fa-exclamation"></i></div>
+                <div>
+                    <strong>خارج الباقة:</strong> في حال نفاد الدقائق، تتم المحاسبة بـ 3 قروش/دقيقة للمحلي و 14 قرش/دقيقة للشبكات الأخرى (يضاف 10 قروش رسوم فتح مكالمة).
+                </div>
+            </li>
+            <li>
+                <div class="info-icon"><i class="fa-solid fa-globe"></i></div>
+                <div>
+                    <strong>المكالمات الدولية:</strong> تبدأ الأسعار من 10 ج.م للدقيقة للمناطق العادية وتصل لـ 45 ج.م للمناطق الصعبة.
+                </div>
+            </li>
+            <li>
+                <div class="info-icon"><i class="fa-solid fa-calendar-day"></i></div>
+                <div>
+                    <strong>النظام الشهري:</strong> يتم إيقاف الخط في اليوم التالي لتاريخ التجديد إذا لم يتم السداد.
+                </div>
+            </li>
+            <li>
+                <div class="info-icon"><i class="fa-solid fa-calendar-week"></i></div>
+                <div>
+                    <strong>النظام الربع سنوي:</strong> استقبال فقط لمدة 3 أيام ثم إيقاف مؤقت.
+                </div>
+            </li>
+            <li>
+                <div class="info-icon"><i class="fa-solid fa-calendar"></i></div>
+                <div>
+                    <strong>النظام السنوي:</strong> استقبال فقط لمدة 7 أيام ثم إيقاف مؤقت.
+                </div>
+            </li>
+        </ul>
+    </div>
+
+    <!-- MANAGEMENT -->
+    <div class="management-box">
+        <div class="management-content">
+            <h3><i class="fa-solid fa-mobile-screen"></i> طرق الاشتراك والإدارة</h3>
+            <div class="management-grid">
+                <div class="mgmt-item">
+                    <i class="fa-solid fa-mobile"></i>
+                    <span>تطبيق My WE</span>
+                </div>
+                <div class="mgmt-item">
+                    <i class="fa-solid fa-globe"></i>
+                    <span>my.te.eg</span>
+                </div>
+                <div class="mgmt-item">
+                    <i class="fa-solid fa-headset"></i>
+                    <span>خدمة العملاء 111</span>
+                </div>
+                <div class="mgmt-item">
+                    <i class="fa-solid fa-building"></i>
+                    <span>فروع WE</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- NOTE -->
+    <div class="note-box">
+        <i class="fa-solid fa-triangle-exclamation"></i>
+        يمكنك متابعة استهلاكك، شحن رصيدك، أو الاشتراك في الباقات الإضافية عبر تطبيق My WE أو الموقع الإلكتروني.
+    </div>
+
+</div>
+
+<!-- FOOTER -->
+<footer>
+    <img src="img/we-core.png" class="footer-logo" alt="logo">
+    <div>Powered by <span>Mohand Hassan</span> – From <span>Abassia Store</span></div>
+</footer>
+
+</body>
+</html>
