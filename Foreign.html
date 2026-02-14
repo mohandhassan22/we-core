@@ -52,6 +52,26 @@
             transform: scale(1.05);
             box-shadow: 0 10px 25px rgba(91, 33, 182, 0.3);
         }
+        /* زر الرئيسية */
+        .nav-links a {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            color: rgba(255,255,255,0.9);
+            text-decoration: none;
+            font-size: 14px;
+            padding: 8px 16px;
+            border-radius: 8px;
+            background: rgba(255,255,255,0.12);
+            border: 1px solid rgba(255,255,255,0.2);
+            transition: background 0.2s, border-color 0.2s;
+            margin-left: 0;
+        }
+
+        .nav-links a:hover {
+            background: rgba(255,255,255,0.22);
+            border-color: rgba(255,255,255,0.35);
+        }
     </style>
 </head>
 <body class="bg-gray-50">
@@ -70,6 +90,12 @@
                 </div>
             </div>
         </div>
+         <div class="nav-links">
+                <a href="index.html">
+                    <i class="fa-solid fa-house-user"></i>
+                    الرئيسية
+                </a>
+            </div>
     </header>
 
     <!-- Navigation Tabs -->
