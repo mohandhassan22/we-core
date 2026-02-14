@@ -1,435 +1,849 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WE SONIC</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WE SONIC – باقات الإنترنت</title>
 
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #f5f3ff 0%, #ffffff 50%, #f0e6ff 100%);
-            min-height: 100vh;
-            padding: 20px;
-            line-height: 1.6;
-        }
+<link rel="shortcut icon" href="img/we-core.png">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
 
-        header {
-            background: linear-gradient(135deg, #7c3aed 0%, #a855f7 100%);
-            color: white;
-            padding: 40px 30px;
-            border-radius: 20px;
-            text-align: center;
-            margin-bottom: 40px;
-            box-shadow: 0 10px 30px rgba(124, 58, 237, 0.3);
-        }
+:root{
+    --purple-dark:#4a1a72;
+    --purple-main:#7b3fe4;
+    --purple-light:#a066f5;
+    --purple-bg:#f0ecf8;
+    --purple-pale:#ede3fc;
+    --text-dark:#3d1a6e;
+    --text-gray:#777;
+    --white:#fff;
+}
 
-        header h1 {
-            font-size: 2.5em;
-            margin-bottom: 10px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
-        }
+body{
+    font-family:'Cairo',sans-serif;
+    background:var(--purple-bg);
+    min-height:100vh;
+}
 
-        header p {
-            font-size: 1.1em;
-            opacity: 0.95;
-        }
+/* ================= HEADER ================= */
+.header{
+    background:linear-gradient(135deg,#4a1a72 0%,#7b3fe4 100%);
+    text-align:center;
+    padding:40px 20px 35px;
+    position:relative;
+    overflow:hidden;
+}
 
-        .section {
-            background: white;
-            padding: 30px;
-            margin-bottom: 30px;
-            border-radius: 15px;
-            box-shadow: 0 5px 20px rgba(124, 58, 237, 0.1);
-            border: 2px solid #e9d5ff;
-        }
+.header::before{
+    content:'';
+    position:absolute;
+    top:-60px;right:-60px;
+    width:200px;height:200px;
+    border-radius:50%;
+    background:rgba(255,255,255,0.07);
+}
 
-        .section h2 {
-            color: #7c3aed;
-            margin-bottom: 20px;
-            font-size: 1.8em;
-            padding-bottom: 10px;
-            border-bottom: 3px solid #e9d5ff;
-        }
+.header::after{
+    content:'';
+    position:absolute;
+    bottom:-80px;left:-40px;
+    width:250px;height:250px;
+    border-radius:50%;
+    background:rgba(255,255,255,0.05);
+}
 
-        .section h3 {
-            color: #a855f7;
-            margin-top: 25px;
-            margin-bottom: 15px;
-            font-size: 1.4em;
-        }
+.back-btn{
+    position:absolute;
+    top:20px;
+    left:20px;
+    z-index:2;
+    background:rgba(255,255,255,0.15);
+    border:1.5px solid rgba(255,255,255,0.3);
+    color:#fff;
+    border-radius:12px;
+    padding:8px 16px;
+    font-family:'Cairo',sans-serif;
+    font-size:13px;
+    font-weight:700;
+    cursor:pointer;
+    text-decoration:none;
+    display:flex;
+    align-items:center;
+    gap:6px;
+    transition:background 0.2s;
+}
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 20px 0;
-            background: white;
-            border-radius: 10px;
-            overflow: hidden;
-        }
+.back-btn:hover{background:rgba(255,255,255,0.25);}
 
-        th {
-            background: linear-gradient(135deg, #7c3aed 0%, #a855f7 100%);
-            color: white;
-            padding: 15px;
-            text-align: center;
-            font-weight: bold;
-            font-size: 1.05em;
-        }
+.logo{
+    width:90px;
+    height:90px;
+    border-radius:50%;
+    border:4px solid rgba(255,255,255,0.35);
+    box-shadow:0 8px 25px rgba(0,0,0,0.25);
+    object-fit:cover;
+    position:relative;
+    z-index:1;
+}
 
-        td {
-            padding: 15px;
-            text-align: center;
-            border-bottom: 1px solid #f3e8ff;
-        }
+.main-title{
+    font-size:30px;
+    font-weight:900;
+    color:#fff;
+    margin-top:12px;
+    letter-spacing:1px;
+    position:relative;
+    z-index:1;
+}
 
-        tr:hover {
-            background-color: #faf5ff;
-        }
+.sonic-badge{
+    display:inline-block;
+    background:rgba(255,255,255,0.18);
+    border:1.5px solid rgba(255,255,255,0.35);
+    color:#fff;
+    font-size:12px;
+    font-weight:700;
+    padding:4px 16px;
+    border-radius:30px;
+    margin-top:8px;
+    letter-spacing:2px;
+    position:relative;
+    z-index:1;
+}
 
-        tr:last-child td {
-            border-bottom: none;
-        }
+.sub-title{
+    font-size:13px;
+    color:rgba(255,255,255,0.75);
+    margin-top:6px;
+    position:relative;
+    z-index:1;
+}
 
-        .price {
-            color: #7c3aed;
-            font-weight: bold;
-            font-size: 1.1em;
-        }
+/* ================= CONTAINER ================= */
+.container{
+    max-width:980px;
+    margin:0 auto;
+    padding:36px 20px 60px;
+}
 
-        .capacity {
-            color: #059669;
-            font-weight: bold;
-        }
+/* ================= INTRO ================= */
+.intro-box{
+    background:#fff;
+    border-radius:20px;
+    padding:24px 28px;
+    margin-bottom:32px;
+    border-right:5px solid var(--purple-main);
+    box-shadow:0 4px 20px rgba(90,45,130,0.09);
+    display:flex;
+    gap:16px;
+    align-items:flex-start;
+}
 
-        .speed-badge {
-            background: linear-gradient(135deg, #a855f7 0%, #c084fc 100%);
-            color: white;
-            padding: 5px 15px;
-            border-radius: 20px;
-            display: inline-block;
-            font-size: 0.9em;
-            margin-bottom: 10px;
-        }
+.intro-box .intro-icon{
+    width:52px;height:52px;
+    border-radius:14px;
+    background:linear-gradient(135deg,#ede3fc,#f5f0ff);
+    display:flex;align-items:center;justify-content:center;
+    flex-shrink:0;
+}
 
-        .sonic-badge {
-            background: linear-gradient(135deg, #ec4899 0%, #f472b6 100%);
-            color: white;
-            padding: 8px 20px;
-            border-radius: 20px;
-            display: inline-block;
-            font-size: 1em;
-            margin-bottom: 15px;
-            font-weight: bold;
-        }
+.intro-box .intro-icon i{font-size:22px;color:var(--purple-main);}
 
-        .note {
-            background: #faf5ff;
-            border-right: 4px solid #a855f7;
-            padding: 15px 20px;
-            margin: 20px 0;
-            border-radius: 8px;
-            color: #581c87;
-        }
+.intro-box p{
+    color:#555;
+    font-size:14px;
+    line-height:1.85;
+    padding-top:4px;
+}
 
-        .feature-box {
-            background: linear-gradient(135deg, #faf5ff 0%, #f3e8ff 100%);
-            padding: 20px;
-            margin: 15px 0;
-            border-radius: 10px;
-            border: 2px solid #e9d5ff;
-        }
+/* ================= SECTION TITLE ================= */
+.section-title{
+    font-size:17px;
+    font-weight:800;
+    color:var(--text-dark);
+    margin-bottom:18px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
 
-        .feature-box h4 {
-            color: #7c3aed;
-            margin-bottom: 10px;
-            font-size: 1.2em;
-        }
+.section-title::after{
+    content:'';
+    flex:1;
+    height:2px;
+    background:linear-gradient(90deg,#d8c8f8,transparent);
+    border-radius:2px;
+}
 
-        .feature-box p {
-            color: #4c1d95;
-            margin: 5px 0;
-        }
+/* ================= PLANS GRID ================= */
+.plans-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(285px,1fr));
+    gap:22px;
+    margin-bottom:36px;
+}
 
-        .feature-list {
-            background: #fef3c7;
-            border-right: 4px solid #f59e0b;
-            padding: 15px 20px;
-            margin: 15px 0;
-            border-radius: 8px;
-        }
+/* ================= PLAN CARD ================= */
+.plan-card{
+    background:#fff;
+    border-radius:22px;
+    overflow:hidden;
+    box-shadow:0 4px 22px rgba(90,45,130,0.10);
+    transition:transform 0.28s ease, box-shadow 0.28s ease;
+    display:flex;
+    flex-direction:column;
+    position:relative;
+}
 
-        .feature-list ul {
-            margin-right: 20px;
-            color: #78350f;
-        }
+.plan-card:hover{
+    transform:translateY(-7px);
+    box-shadow:0 16px 40px rgba(90,45,130,0.18);
+}
 
-        .feature-list li {
-            margin: 8px 0;
-        }
+/* GAMERZ */
+.plan-card.gamerz .plan-header{background:linear-gradient(135deg,#1a0a3e,#3b0fa0);}
+.plan-card.gamerz .plan-accent{background:#7b3fe4;}
+.plan-card.gamerz .tag{background:rgba(123,63,228,0.15);color:#7b3fe4;}
 
-        footer {
-            text-align: center;
-            padding: 30px;
-            color: #7c3aed;
-            font-size: 0.95em;
-            margin-top: 40px;
-        }
+/* STREAMERZ */
+.plan-card.streamerz .plan-header{background:linear-gradient(135deg,#0a1a3e,#0f4fa0);}
+.plan-card.streamerz .plan-accent{background:#1565c0;}
+.plan-card.streamerz .tag{background:rgba(21,101,192,0.13);color:#1565c0;}
 
-        .highlight {
-            background: linear-gradient(135deg, #fdf4ff 0%, #fae8ff 100%);
-            padding: 25px;
-            border-radius: 12px;
-            border: 2px solid #e879f9;
-            margin: 20px 0;
-        }
+/* PLUS */
+.plan-card.plus .plan-header{background:linear-gradient(135deg,#1a0a30,#6a1a9a);}
+.plan-card.plus .plan-accent{background:#ab47bc;}
+.plan-card.plus .tag{background:rgba(171,71,188,0.13);color:#8e24aa;}
+.plan-card.plus .plan-badge{display:flex;}
 
-        @media (max-width: 768px) {
-            header h1 {
-                font-size: 1.8em;
-            }
-            
-            .section {
-                padding: 20px;
-            }
-            
-            table {
-                font-size: 0.85em;
-            }
-            
-            th, td {
-                padding: 10px 5px;
-            }
-        }
-    </style>
+.plan-badge{
+    display:none;
+    position:absolute;
+    top:16px;
+    right:16px;
+    background:linear-gradient(135deg,#ffd54f,#ffab00);
+    color:#5d3900;
+    font-size:11px;
+    font-weight:900;
+    padding:4px 12px;
+    border-radius:20px;
+    letter-spacing:0.5px;
+    z-index:2;
+}
+
+.plan-header{
+    padding:26px 24px 22px;
+    position:relative;
+    overflow:hidden;
+    color:#fff;
+}
+
+.plan-header::before{
+    content:'';
+    position:absolute;
+    bottom:-50px;left:-50px;
+    width:160px;height:160px;
+    border-radius:50%;
+    background:rgba(255,255,255,0.06);
+}
+
+.plan-icon{
+    width:52px;height:52px;
+    border-radius:14px;
+    background:rgba(255,255,255,0.15);
+    display:flex;align-items:center;justify-content:center;
+    margin-bottom:14px;
+    position:relative;z-index:1;
+}
+
+.plan-icon i{font-size:22px;color:#fff;}
+
+.plan-name{
+    font-size:22px;
+    font-weight:900;
+    position:relative;z-index:1;
+    letter-spacing:1px;
+}
+
+.plan-tagline{
+    font-size:12.5px;
+    color:rgba(255,255,255,0.7);
+    margin-top:4px;
+    position:relative;z-index:1;
+}
+
+.plan-accent{
+    height:4px;
+    width:100%;
+}
+
+.plan-body{
+    padding:20px 22px 22px;
+    flex:1;
+    display:flex;
+    flex-direction:column;
+    gap:0;
+}
+
+/* Stats Row */
+.stats-row{
+    display:grid;
+    grid-template-columns:1fr 1fr 1fr;
+    gap:8px;
+    margin-bottom:18px;
+}
+
+.stat-box{
+    background:var(--purple-bg);
+    border-radius:14px;
+    padding:12px 8px;
+    text-align:center;
+}
+
+.stat-val{
+    font-size:15px;
+    font-weight:900;
+    color:var(--text-dark);
+    line-height:1.2;
+}
+
+.stat-label{
+    font-size:10.5px;
+    color:var(--text-gray);
+    margin-top:3px;
+    font-weight:600;
+}
+
+/* Feature rows */
+.feature-list{
+    list-style:none;
+    display:flex;
+    flex-direction:column;
+    gap:9px;
+    flex:1;
+}
+
+.feature-list li{
+    display:flex;
+    align-items:flex-start;
+    gap:10px;
+    font-size:13px;
+    color:#555;
+    line-height:1.6;
+}
+
+.feature-list li .fi{
+    width:22px;height:22px;
+    border-radius:7px;
+    display:flex;align-items:center;justify-content:center;
+    flex-shrink:0;
+    margin-top:1px;
+}
+
+.feature-list li .fi i{font-size:11px;}
+
+.fi-purple{background:#ede3fc;} .fi-purple i{color:var(--purple-main);}
+.fi-blue{background:#e3eefe;} .fi-blue i{color:#1565c0;}
+.fi-pink{background:#f5e3fe;} .fi-pink i{color:#8e24aa;}
+.fi-green{background:#e3fee8;} .fi-green i{color:#2e7d32;}
+.fi-orange{background:#fff3e0;} .fi-orange i{color:#e65100;}
+
+/* App tags */
+.apps-section{
+    margin-top:14px;
+    padding-top:14px;
+    border-top:1px dashed #ead9ff;
+}
+
+.apps-label{
+    font-size:11.5px;
+    font-weight:700;
+    color:var(--text-dark);
+    margin-bottom:8px;
+    display:flex;
+    align-items:center;
+    gap:6px;
+}
+
+.apps-label i{color:var(--purple-main);font-size:12px;}
+
+.tags-wrap{
+    display:flex;
+    flex-wrap:wrap;
+    gap:6px;
+}
+
+.tag{
+    font-size:11px;
+    font-weight:700;
+    padding:4px 10px;
+    border-radius:20px;
+}
+
+/* ================= X2 BAND ================= */
+.x2-band{
+    background:linear-gradient(135deg,#4a1a72,#7b3fe4);
+    border-radius:18px;
+    padding:22px 24px;
+    margin-bottom:28px;
+    color:#fff;
+    display:flex;
+    align-items:center;
+    gap:20px;
+    box-shadow:0 6px 24px rgba(90,45,130,0.22);
+    position:relative;
+    overflow:hidden;
+}
+
+.x2-band::before{
+    content:'X2';
+    position:absolute;
+    left:-10px;top:-20px;
+    font-size:120px;
+    font-weight:900;
+    color:rgba(255,255,255,0.06);
+    line-height:1;
+    letter-spacing:-4px;
+    pointer-events:none;
+    user-select:none;
+}
+
+.x2-icon{
+    width:56px;height:56px;
+    border-radius:16px;
+    background:rgba(255,255,255,0.15);
+    display:flex;align-items:center;justify-content:center;
+    flex-shrink:0;
+}
+
+.x2-icon i{font-size:24px;color:#fff;}
+
+.x2-text h3{font-size:16px;font-weight:800;margin-bottom:6px;}
+.x2-text p{font-size:13px;color:rgba(255,255,255,0.8);line-height:1.7;}
+
+/* ================= EXTRAS ROW ================= */
+.extras-row{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:18px;
+    margin-bottom:28px;
+}
+
+.extra-card{
+    background:#fff;
+    border-radius:18px;
+    padding:20px 20px;
+    box-shadow:0 4px 18px rgba(90,45,130,0.08);
+    border-top:4px solid var(--purple-main);
+}
+
+.extra-card h3{
+    font-size:15px;
+    font-weight:800;
+    color:var(--text-dark);
+    margin-bottom:14px;
+    display:flex;
+    align-items:center;
+    gap:8px;
+}
+
+.extra-card h3 i{color:var(--purple-main);font-size:15px;}
+
+/* ================= TABLE ================= */
+.data-table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+.data-table thead tr{
+    background:linear-gradient(135deg,var(--purple-dark),var(--purple-main));
+}
+
+.data-table thead th{
+    color:#fff;
+    font-size:13px;
+    font-weight:700;
+    padding:11px 14px;
+    text-align:center;
+}
+
+.data-table thead th:first-child{border-radius:0 10px 0 0;}
+.data-table thead th:last-child{border-radius:10px 0 0 0;}
+
+.data-table tbody tr:nth-child(odd){background:#f8f5ff;}
+.data-table tbody tr:nth-child(even){background:#fff;}
+
+.data-table tbody td{
+    padding:10px 14px;
+    text-align:center;
+    font-size:13.5px;
+    font-weight:600;
+    color:var(--text-dark);
+    border-bottom:1px solid #eee;
+}
+
+.data-table tbody tr:last-child td{border-bottom:none;}
+
+/* ================= UNLIMITED SECTION ================= */
+.unlimited-box{
+    background:#fff;
+    border-radius:18px;
+    padding:22px 24px;
+    margin-bottom:28px;
+    box-shadow:0 4px 18px rgba(90,45,130,0.08);
+    border-top:4px solid #2e7d32;
+}
+
+.unlimited-box h3{
+    font-size:15px;font-weight:800;
+    color:var(--text-dark);
+    display:flex;align-items:center;gap:8px;
+    margin-bottom:14px;
+}
+
+.unlimited-box h3 i{color:#2e7d32;}
+
+.unlimited-apps{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+}
+
+.app-chip{
+    display:flex;
+    align-items:center;
+    gap:6px;
+    background:var(--purple-bg);
+    border-radius:30px;
+    padding:6px 14px;
+    font-size:12.5px;
+    font-weight:700;
+    color:var(--text-dark);
+}
+
+.app-chip i{color:var(--purple-main);font-size:12px;}
+
+/* ================= NOTE ================= */
+.note-box{
+    background:#fff8e1;
+    border-radius:14px;
+    padding:14px 18px;
+    margin-bottom:28px;
+    display:flex;
+    align-items:center;
+    gap:12px;
+    border-right:4px solid #ff9800;
+    font-size:13px;
+    color:#5d4037;
+    font-weight:600;
+}
+
+.note-box i{color:#ff9800;font-size:18px;flex-shrink:0;}
+
+/* ================= FOOTER ================= */
+footer{
+    text-align:center;
+    padding:24px 20px;
+    color:#999;
+    font-size:13px;
+    border-top:1px solid #e8e2f5;
+    background:#fff;
+}
+
+.footer-logo{
+    width:42px;
+    border-radius:50%;
+    margin-bottom:8px;
+    opacity:0.85;
+}
+
+footer span{color:var(--purple-main);font-weight:700;}
+
+/* ================= RESPONSIVE ================= */
+@media(max-width:600px){
+    .plans-grid{grid-template-columns:1fr;}
+    .extras-row{grid-template-columns:1fr;}
+    .stats-row{grid-template-columns:1fr 1fr;}
+    .x2-band{flex-direction:column;gap:14px;text-align:center;}
+    .main-title{font-size:24px;}
+    .intro-box{flex-direction:column;}
+}
+</style>
 </head>
+
 <body>
-    <div class="container">
-        <header>
-            <h1>🚀  WE SONIC 2026</h1>
-            <p>المصرية للاتصالات - دليلك الشامل لباقات الإنترنت المنزلي والباقات المخصصة للألعاب والبث</p>
-        </header>
 
-        <!-- باقات WE SONIC -->
-        <div class="section">
-            <h2>⚡ باقات WE SONIC (للألعاب والبث)</h2>
-            <div class="sonic-badge">🎮 مصممة خصيصاً لتجربة ألعاب وبث مباشر احترافية</div>
-            
-            <p style="color: #4c1d95; margin-bottom: 20px; font-size: 1.05em;">
-                <strong>باقات متميزة توفر:</strong> أقل زمن استجابة (Lag)، أعلى سرعة رفع (Upload)، وأفضل تجربة للألعاب والبث المباشر
-            </p>
+<!-- HEADER -->
+<div class="header">
+    <a href="index.html" class="back-btn"><i class="fa-solid fa-arrow-right"></i> رجوع</a>
+    <img src="img/we-core.png" class="logo" alt="WE-Core Logo">
+    <div class="main-title">WE SONIC</div>
+    <div class="sonic-badge">⚡ SONIC PACKAGES</div>
+    <div class="sub-title">Powered By Mohand Hassan – From Abassia Store</div>
+</div>
 
-            <table>
-                <thead>
-                    <tr>
-                        <th>نوع الباقة</th>
-                        <th>السعر الشهري (جنيه)</th>
-                        <th>السرعة القصوى</th>
-                        <th>السعة الأساسية</th>
-                        <th>سعة الجيمنج/الستريمنج</th>
-                        <th>إجمالي السعة (تصل إلى)</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><strong>GAMERZ</strong></td>
-                        <td class="price">600</td>
-                        <td>80 ميجابت/ث</td>
-                        <td class="capacity">250 جيجابايت</td>
-                        <td class="capacity">125 جيجابايت<br><small>(تضاعف لـ 250)</small></td>
-                        <td class="capacity">500 جيجابايت</td>
-                    </tr>
-                    <tr>
-                        <td><strong>STREAMERZ</strong></td>
-                        <td class="price">600</td>
-                        <td>80 ميجابت/ث</td>
-                        <td class="capacity">200 جيجابايت</td>
-                        <td class="capacity">150 جيجابايت<br><small>(تضاعف لـ 300)</small></td>
-                        <td class="capacity">500 جيجابايت</td>
-                    </tr>
-                    <tr>
-                        <td><strong>PLUS</strong></td>
-                        <td class="price">1,200</td>
-                        <td>150 ميجابت/ث</td>
-                        <td class="capacity">500 جيجابايت</td>
-                        <td class="capacity">500 جيجابايت<br><small>(تضاعف لـ 1000)</small></td>
-                        <td class="capacity">1,500 جيجابايت</td>
-                    </tr>
-                </tbody>
-            </table>
+<div class="container">
 
-            <div class="highlight">
-                <h3 style="color: #c026d3; margin-top: 0;">✨ مميزات باقات WE SONIC</h3>
-                
-                <div class="feature-list">
-                    <strong style="color: #ea580c;">🎯 مضاعفة الجيجابايت (2X):</strong>
-                    <p style="color: #7c2d12; margin-top: 8px;">يتم حساب استهلاك الجيمنج والستريمنج بنصف الاستهلاك الفعلي - كل 1 جيجا استهلاك فعلي يخصم 0.5 جيجا فقط من سعة الجيمنج/الستريمنج</p>
+    <!-- INTRO -->
+    <div class="intro-box">
+        <div class="intro-icon"><i class="fa-solid fa-bolt-lightning"></i></div>
+        <p>
+            باقات <strong>WE SONIC</strong> مصممة خصيصاً لعشاق الألعاب والبث المباشر، وتضمن أقصى سرعة ممكنة للخط مع أقل زمن استجابة (Lag) وأعلى سرعة رفع (Upload). تتيح هذه الباقات جيجابايت مخصصة للجيمنج أو الستريمنج أو كليهما، بالإضافة إلى سعة أساسية للاستخدام العام. عند استهلاك السعة المخصصة، يتم الاستهلاك تلقائياً من السعة الأساسية.
+        </p>
+    </div>
+
+    <!-- PLANS -->
+    <div class="section-title"><i class="fa-solid fa-layer-group" style="color:var(--purple-main)"></i> الباقات الرئيسية</div>
+
+    <div class="plans-grid">
+
+        <!-- GAMERZ -->
+        <div class="plan-card gamerz">
+            <div class="plan-header">
+                <div class="plan-icon"><i class="fa-solid fa-gamepad"></i></div>
+                <div class="plan-name">GAMERZ</div>
+                <div class="plan-tagline">للاعبين المحترفين – أقل Lag، أعلى أداء</div>
+            </div>
+            <div class="plan-accent"></div>
+            <div class="plan-body">
+                <div class="stats-row">
+                    <div class="stat-box">
+                        <div class="stat-val">250<br><small style="font-size:9px;font-weight:600;">جيجا</small></div>
+                        <div class="stat-label">سعة أساسية</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-val">250<br><small style="font-size:9px;font-weight:600;">جيجا</small></div>
+                        <div class="stat-label">جيمنج X2</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-val">500<br><small style="font-size:9px;font-weight:600;">جيجا</small></div>
+                        <div class="stat-label">الإجمالي</div>
+                    </div>
                 </div>
 
-                <div class="feature-list">
-                    <strong style="color: #ea580c;">⚡ أقصى سرعة للخط:</strong>
-                    <p style="color: #7c2d12; margin-top: 8px;">الحصول على أقصى سرعة ممكنة للخط أثناء اللعب لتجربة سلسة بدون تقطيع</p>
+                <ul class="feature-list">
+                    <li>
+                        <div class="fi fi-purple"><i class="fa-solid fa-upload"></i></div>
+                        سرعة رفع (Upload) حتى <strong>25 ميجابت/ثانية</strong>
+                    </li>
+                    <li>
+                        <div class="fi fi-purple"><i class="fa-solid fa-gauge-high"></i></div>
+                        أقصى سرعة للخط أثناء اللعب وأقل زمن استجابة ممكن
+                    </li>
+                    <li>
+                        <div class="fi fi-purple"><i class="fa-solid fa-arrows-rotate"></i></div>
+                        سعة جيمنج 125 جيجا تتضاعف إلى 250 جيجا بخاصية X2
+                    </li>
+                </ul>
+
+                <div class="apps-section">
+                    <div class="apps-label"><i class="fa-solid fa-gamepad"></i> الألعاب والتطبيقات المشمولة في X2</div>
+                    <div class="tags-wrap">
+                        <span class="tag">PUBG</span>
+                        <span class="tag">Asphalt 9</span>
+                        <span class="tag">Gameloft</span>
+                        <span class="tag">FIFA</span>
+                        <span class="tag">EA Sports</span>
+                        <span class="tag">EPIC</span>
+                        <span class="tag">Riot</span>
+                        <span class="tag">League of Legends</span>
+                        <span class="tag">Call of Duty</span>
+                        <span class="tag">Valorant</span>
+                        <span class="tag">وغيرها...</span>
+                    </div>
                 </div>
-
-                <div class="feature-list">
-                    <strong style="color: #ea580c;">🎵 موسيقى واجتماعات بلا حدود:</strong>
-                    <p style="color: #7c2d12; margin-top: 8px;">استخدام غير محدود لتطبيقات الموسيقى والاجتماعات:</p>
-                    <ul style="margin-top: 8px;">
-                        <li><strong>موسيقى:</strong> Spotify, Anghami, SoundCloud, Deezer</li>
-                        <li><strong>اجتماعات:</strong> Zoom, Teams, Google Meet</li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="feature-box">
-                <h4>🎮 التطبيقات المشمولة في باقة GAMERZ:</h4>
-                <p>ألعاب مثل: PUBG, FIFA, Call of Duty, Valorant, League of Legends وغيرها</p>
-            </div>
-
-            <div class="feature-box">
-                <h4>📺 التطبيقات المشمولة في باقة STREAMERZ:</h4>
-                <p>منصات مثل: YouTube, Facebook, Instagram, Netflix, Shahid, OSN+</p>
-            </div>
-
-            <div class="feature-box">
-                <h4>🌟 باقة PLUS:</h4>
-                <p>تشمل جميع مميزات Gamerz و Streamerz بالإضافة إلى TikTok</p>
             </div>
         </div>
 
-        <!-- الباقات الشهرية الأساسية -->
-        <div class="section">
-            <h2>📦 باقات WE Space الشهرية (الأساسية)</h2>
-            
-            <table>
-                <thead>
-                    <tr>
-                        <th>فئة الباقة</th>
-                        <th>السرعة القصوى</th>
-                        <th>سعات التحميل المتاحة</th>
-                        <th>الأسعار الشهرية (تبدأ من)</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><strong>Super</strong></td>
-                        <td>30 ميجابت/ث</td>
-                        <td class="capacity">140GB, 200GB, 250GB, 400GB, 600GB, 1TB</td>
-                        <td class="price">210 - 1,360 جنيه</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Mega</strong></td>
-                        <td>70 ميجابت/ث</td>
-                        <td class="capacity">250GB, 600GB, 1TB</td>
-                        <td class="price">530 - 1,560 جنيه</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Ultra</strong></td>
-                        <td>100 ميجابت/ث</td>
-                        <td class="capacity">250GB, 600GB</td>
-                        <td class="price">700 - 1,230 جنيه</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Max</strong></td>
-                        <td>200 ميجابت/ث</td>
-                        <td class="capacity">1 تيرابايت</td>
-                        <td class="price">1,760 جنيه</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Max+</strong></td>
-                        <td>500 ميجابت/ث</td>
-                        <td class="capacity">1 تيرابايت</td>
-                        <td class="price">2,000 جنيه</td>
-                    </tr>
-                </tbody>
-            </table>
+        <!-- STREAMERZ -->
+        <div class="plan-card streamerz">
+            <div class="plan-header">
+                <div class="plan-icon"><i class="fa-solid fa-circle-play"></i></div>
+                <div class="plan-name">STREAMERZ</div>
+                <div class="plan-tagline">للبث المباشر بجودة عالية بلا انقطاع</div>
+            </div>
+            <div class="plan-accent"></div>
+            <div class="plan-body">
+                <div class="stats-row">
+                    <div class="stat-box">
+                        <div class="stat-val">200<br><small style="font-size:9px;font-weight:600;">جيجا</small></div>
+                        <div class="stat-label">سعة أساسية</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-val">300<br><small style="font-size:9px;font-weight:600;">جيجا</small></div>
+                        <div class="stat-label">ستريمنج X2</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-val">500<br><small style="font-size:9px;font-weight:600;">جيجا</small></div>
+                        <div class="stat-label">الإجمالي</div>
+                    </div>
+                </div>
+
+                <ul class="feature-list">
+                    <li>
+                        <div class="fi fi-blue"><i class="fa-solid fa-upload"></i></div>
+                        سرعة رفع (Upload) حتى <strong>25 ميجابت/ثانية</strong>
+                    </li>
+                    <li>
+                        <div class="fi fi-blue"><i class="fa-solid fa-signal"></i></div>
+                        بث مستمر بجودة عالية بدون تقطع أو تأخير
+                    </li>
+                    <li>
+                        <div class="fi fi-blue"><i class="fa-solid fa-arrows-rotate"></i></div>
+                        سعة ستريمنج 150 جيجا تتضاعف إلى 300 جيجا بخاصية X2
+                    </li>
+                </ul>
+
+                <div class="apps-section">
+                    <div class="apps-label"><i class="fa-solid fa-play"></i> تطبيقات الستريمنج المشمولة في X2</div>
+                    <div class="tags-wrap">
+                        <span class="tag">Facebook</span>
+                        <span class="tag">YouTube</span>
+                        <span class="tag">Instagram</span>
+                        <span class="tag">Twitter / X</span>
+                        <span class="tag">Prime Video</span>
+                        <span class="tag">Apple TV</span>
+                        <span class="tag">Shahid</span>
+                        <span class="tag">OSN Plus</span>
+                        <span class="tag">Snapchat</span>
+                    </div>
+                </div>
+            </div>
         </div>
 
-        <!-- سعات الشحن الإضافية -->
-        <div class="section">
-            <h2>🔋 سعات الشحن الإضافية (لكل الباقات)</h2>
-            
-            <table>
+        <!-- PLUS -->
+        <div class="plan-card plus">
+            <div class="plan-badge">⭐ الأشمل</div>
+            <div class="plan-header">
+                <div class="plan-icon"><i class="fa-solid fa-crown"></i></div>
+                <div class="plan-name">PLUS</div>
+                <div class="plan-tagline">جيمنج + ستريمنج + TikTok + Netflix</div>
+            </div>
+            <div class="plan-accent"></div>
+            <div class="plan-body">
+                <div class="stats-row">
+                    <div class="stat-box">
+                        <div class="stat-val">500<br><small style="font-size:9px;font-weight:600;">جيجا</small></div>
+                        <div class="stat-label">سعة أساسية</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-val">1000<br><small style="font-size:9px;font-weight:600;">جيجا</small></div>
+                        <div class="stat-label">X2 جيمنج+ستريمنج</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-val">1500<br><small style="font-size:9px;font-weight:600;">جيجا</small></div>
+                        <div class="stat-label">الإجمالي</div>
+                    </div>
+                </div>
+
+                <ul class="feature-list">
+                    <li>
+                        <div class="fi fi-pink"><i class="fa-solid fa-upload"></i></div>
+                        سرعة رفع (Upload) حتى <strong>50 ميجابت/ثانية</strong>
+                    </li>
+                    <li>
+                        <div class="fi fi-pink"><i class="fa-solid fa-gamepad"></i></div>
+                        جميع مميزات باقة GAMERZ كاملة
+                    </li>
+                    <li>
+                        <div class="fi fi-pink"><i class="fa-solid fa-circle-play"></i></div>
+                        جميع مميزات باقة STREAMERZ كاملة
+                    </li>
+                    <li>
+                        <div class="fi fi-pink"><i class="fa-brands fa-tiktok"></i></div>
+                        يشمل إضافياً TikTok و Netflix
+                    </li>
+                    <li>
+                        <div class="fi fi-pink"><i class="fa-solid fa-arrows-rotate"></i></div>
+                        سعة مشتركة 500 جيجا تتضاعف إلى 1000 جيجا بخاصية X2
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- X2 Feature -->
+    <div class="x2-band">
+        <div class="x2-icon"><i class="fa-solid fa-bolt"></i></div>
+        <div class="x2-text">
+            <h3>خاصية X2 – ضاعف سعتك!</h3>
+            <p>تضاعف خاصية X2 السعة المخصصة للجيمنج والستريمنج تلقائياً دون المساس بالسعة الأساسية. يتم استهلاك السعة المخصصة أولاً، وعند انتهائها يبدأ الاستهلاك من السعة الأساسية.</p>
+        </div>
+    </div>
+
+    <!-- Unlimited Apps -->
+    <div class="unlimited-box">
+        <h3><i class="fa-solid fa-infinity"></i> موسيقى واجتماعات بلا حدود – لجميع الباقات</h3>
+        <div class="unlimited-apps">
+            <div class="app-chip"><i class="fa-brands fa-soundcloud"></i> SoundCloud</div>
+            <div class="app-chip"><i class="fa-solid fa-music"></i> Deezer</div>
+            <div class="app-chip"><i class="fa-solid fa-headphones"></i> Anghami</div>
+            <div class="app-chip"><i class="fa-brands fa-spotify"></i> Spotify</div>
+            <div class="app-chip"><i class="fa-brands fa-microsoft"></i> Microsoft Teams</div>
+            <div class="app-chip"><i class="fa-solid fa-video"></i> Zoom</div>
+            <div class="app-chip"><i class="fa-brands fa-google"></i> Google Meet</div>
+        </div>
+    </div>
+
+    <!-- Recharge Tables -->
+    <div class="section-title"><i class="fa-solid fa-battery-full" style="color:var(--purple-main)"></i> باقات الشحن الإضافية</div>
+    <p style="font-size:13px;color:#777;margin-bottom:18px;line-height:1.7;">يمكن متابعة الاستهلاك الشهري عبر الموقع الإلكتروني أو تطبيق My WE. عند انتهاء سعة التحميل يمكن طلب التجديد المبكر أو شحن سعات إضافية.</p>
+
+    <div class="extras-row">
+
+        <div class="extra-card">
+            <h3><i class="fa-solid fa-rotate"></i> سعات إضافية (مرة واحدة أو تجديد كل 30 يوم)</h3>
+            <table class="data-table">
                 <thead>
                     <tr>
-                        <th>نوع الشحن</th>
-                        <th>السعة الإضافية</th>
+                        <th>السعة (جيجابايت)</th>
                         <th>السعر (جنيه)</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>مرة واحدة / تلقائي</td>
-                        <td class="capacity">20 جيجابايت</td>
-                        <td class="price">52</td>
-                    </tr>
-                    <tr>
-                        <td>مرة واحدة / تلقائي</td>
-                        <td class="capacity">50 جيجابايت</td>
-                        <td class="price">105</td>
-                    </tr>
-                    <tr>
-                        <td>مرة واحدة / تلقائي</td>
-                        <td class="capacity">100 جيجابايت</td>
-                        <td class="price">170</td>
-                    </tr>
-                    <tr>
-                        <td>Giga Tank (مرة واحدة)</td>
-                        <td class="capacity">400 جيجابايت</td>
-                        <td class="price">420</td>
-                    </tr>
-                    <tr>
-                        <td>Giga Tank (مرة واحدة)</td>
-                        <td class="capacity">2,000 جيجابايت</td>
-                        <td class="price">1,625</td>
-                    </tr>
+                    <tr><td>20 جيجا</td><td>52 جنيه</td></tr>
+                    <tr><td>50 جيجا</td><td>105 جنيه</td></tr>
+                    <tr><td>100 جيجا</td><td>170 جنيه</td></tr>
                 </tbody>
             </table>
         </div>
 
-        <!-- خدمات إضافية -->
-        <div class="section">
-            <h2>✨ خدمات إضافية</h2>
-
-            <div class="feature-box">
-                <h4>🏥 خدمة شامل من فيزيتا</h4>
-                <p>اشتراك سنوي مجاني بخصومات طبية حتى 80%</p>
-                <p><strong>الشروط:</strong> متاحة من باقة 200GB فأعلى</p>
-            </div>
-
-            <div class="feature-box">
-                <h4>💰 خدمة سلفني</h4>
-                <p>5 جيجابايت مقابل 10 جنيهات صالحة لمدة يومين</p>
-            </div>
-
-            <div class="feature-box">
-                <h4>🎮 باقات Gaming إضافية</h4>
-                <p><strong>باقة PlayStation:</strong> 150GB بـ 75ج / 300GB بـ 150ج</p>
-                <p><strong>باقة Game On:</strong> 40GB بـ 30ج</p>
-            </div>
+        <div class="extra-card">
+            <h3><i class="fa-solid fa-gas-pump"></i> جيجا تانك (سعات كبيرة – مرة واحدة)</h3>
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>السعة (جيجابايت)</th>
+                        <th>السعر (جنيه)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>400 جيجا</td><td>420 جنيه</td></tr>
+                    <tr><td>2,000 جيجا</td><td>1,625 جنيه</td></tr>
+                </tbody>
+            </table>
         </div>
 
-        <div class="note">
-            <p><strong>⚠️ ملاحظات هامة:</strong></p>
-            <ul style="margin-right: 20px; margin-top: 10px;">
-                <li>جميع الأسعار لا تشمل ضريبة القيمة المضافة (14%)</li>
-                <li>يتم تجديد الباقات تلقائياً كل 30 يوماً في حال توفر رصيد</li>
-            </ul>
-        </div>
-
-         <footer>
-        Powered by <span>Mohand Hassan</span> – From <span>Abassia Store</span>
-    </footer>    </div>
     </div>
+
+    <!-- Note -->
+    <div class="note-box">
+        <i class="fa-solid fa-triangle-exclamation"></i>
+        جميع الأسعار المذكورة لا تشمل ضريبة القيمة المضافة (VAT).
+    </div>
+
+</div>
+
+<!-- FOOTER -->
+<footer>
+    <img src="img/we-core.png" class="footer-logo" alt="logo">
+    <div>Powered by <span>Mohand Hassan</span> – From <span>Abassia Store</span></div>
+</footer>
+
 </body>
 </html>
