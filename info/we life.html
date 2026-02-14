@@ -1,521 +1,1325 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>الدليل الشامل لباقات WE للإنترنت المنزلي 2026</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WE LIFE – باقات الإنترنت والترفيه</title>
 
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #f5f3ff 0%, #ffffff 50%, #f0e6ff 100%);
-            min-height: 100vh;
-            padding: 20px;
-            line-height: 1.6;
-        }
+<link rel="shortcut icon" href="img/we-core.png">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
 
-        .container {
-            max-width: 1300px;
-            margin: 0 auto;
-        }
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
 
-        header {
-            background: linear-gradient(135deg, #7c3aed 0%, #a855f7 100%);
-            color: white;
-            padding: 50px 30px;
-            border-radius: 20px;
-            text-align: center;
-            margin-bottom: 40px;
-            box-shadow: 0 10px 30px rgba(124, 58, 237, 0.3);
-        }
+:root{
+    --purple-dark:#4a1a72;
+    --purple-main:#7b3fe4;
+    --purple-light:#a066f5;
+    --purple-bg:#f0ecf8;
+    --purple-pale:#ede3fc;
+    --text-dark:#3d1a6e;
+    --text-gray:#777;
+    --white:#fff;
+    --gold:#ffd54f;
+    --gold-dark:#ffab00;
+}
 
-        header h1 {
-            font-size: 2.8em;
-            margin-bottom: 15px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
-        }
+body{
+    font-family:'Cairo',sans-serif;
+    background:var(--purple-bg);
+    min-height:100vh;
+}
 
-        header p {
-            font-size: 1.2em;
-            opacity: 0.95;
-        }
+/* ================= HEADER ================= */
+.header{
+    background:linear-gradient(135deg,#4a1a72 0%,#7b3fe4 100%);
+    text-align:center;
+    padding:40px 20px 35px;
+    position:relative;
+    overflow:hidden;
+}
 
-        .section {
-            background: white;
-            padding: 35px;
-            margin-bottom: 35px;
-            border-radius: 15px;
-            box-shadow: 0 5px 20px rgba(124, 58, 237, 0.1);
-            border: 2px solid #e9d5ff;
-        }
+.header::before{
+    content:'';
+    position:absolute;
+    top:-60px;right:-60px;
+    width:200px;height:200px;
+    border-radius:50%;
+    background:rgba(255,255,255,0.07);
+}
 
-        .section h2 {
-            color: #7c3aed;
-            margin-bottom: 25px;
-            font-size: 2em;
-            padding-bottom: 12px;
-            border-bottom: 3px solid #e9d5ff;
-        }
+.header::after{
+    content:'';
+    position:absolute;
+    bottom:-80px;left:-40px;
+    width:250px;height:250px;
+    border-radius:50%;
+    background:rgba(255,255,255,0.05);
+}
 
-        .section h3 {
-            color: #a855f7;
-            margin-top: 25px;
-            margin-bottom: 15px;
-            font-size: 1.4em;
-        }
+.back-btn{
+    position:absolute;
+    top:20px;
+    left:20px;
+    z-index:2;
+    background:rgba(255,255,255,0.15);
+    border:1.5px solid rgba(255,255,255,0.3);
+    color:#fff;
+    border-radius:12px;
+    padding:8px 16px;
+    font-family:'Cairo',sans-serif;
+    font-size:13px;
+    font-weight:700;
+    cursor:pointer;
+    text-decoration:none;
+    display:flex;
+    align-items:center;
+    gap:6px;
+    transition:background 0.2s;
+}
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 20px 0;
-            background: white;
-            border-radius: 10px;
-            overflow: hidden;
-        }
+.back-btn:hover{background:rgba(255,255,255,0.25);}
 
-        th {
-            background: linear-gradient(135deg, #7c3aed 0%, #a855f7 100%);
-            color: white;
-            padding: 15px 10px;
-            text-align: center;
-            font-weight: bold;
-            font-size: 1em;
-        }
+.logo{
+    width:90px;
+    height:90px;
+    border-radius:50%;
+    border:4px solid rgba(255,255,255,0.35);
+    box-shadow:0 8px 25px rgba(0,0,0,0.25);
+    object-fit:cover;
+    position:relative;
+    z-index:1;
+}
 
-        td {
-            padding: 15px 10px;
-            text-align: center;
-            border-bottom: 1px solid #f3e8ff;
-        }
+.main-title{
+    font-size:30px;
+    font-weight:900;
+    color:#fff;
+    margin-top:12px;
+    letter-spacing:1px;
+    position:relative;
+    z-index:1;
+}
 
-        tr:hover {
-            background-color: #faf5ff;
-        }
+.life-badge{
+    display:inline-block;
+    background:rgba(255,255,255,0.18);
+    border:1.5px solid rgba(255,255,255,0.35);
+    color:#fff;
+    font-size:12px;
+    font-weight:700;
+    padding:4px 16px;
+    border-radius:30px;
+    margin-top:8px;
+    letter-spacing:2px;
+    position:relative;
+    z-index:1;
+}
 
-        tr:last-child td {
-            border-bottom: none;
-        }
+.sub-title{
+    font-size:13px;
+    color:rgba(255,255,255,0.75);
+    margin-top:6px;
+    position:relative;
+    z-index:1;
+}
 
-        .price {
-            color: #7c3aed;
-            font-weight: bold;
-            font-size: 1.15em;
-        }
+/* ================= CONTAINER ================= */
+.container{
+    max-width:1100px;
+    margin:0 auto;
+    padding:36px 20px 60px;
+}
 
-        .capacity {
-            color: #059669;
-            font-weight: bold;
-        }
+/* ================= INTRO ================= */
+.intro-box{
+    background:#fff;
+    border-radius:20px;
+    padding:24px 28px;
+    margin-bottom:32px;
+    border-right:5px solid var(--purple-main);
+    box-shadow:0 4px 20px rgba(90,45,130,0.09);
+    display:flex;
+    gap:16px;
+    align-items:flex-start;
+}
 
-        .premium-badge {
-            background: linear-gradient(135deg, #fb923c 0%, #f97316 100%);
-            color: white;
-            padding: 8px 20px;
-            border-radius: 20px;
-            display: inline-block;
-            font-size: 1em;
-            margin-bottom: 15px;
-            font-weight: bold;
-        }
+.intro-box .intro-icon{
+    width:52px;height:52px;
+    border-radius:14px;
+    background:linear-gradient(135deg,#ede3fc,#f5f0ff);
+    display:flex;align-items:center;justify-content:center;
+    flex-shrink:0;
+}
 
-        .sonic-badge {
-            background: linear-gradient(135deg, #ec4899 0%, #f472b6 100%);
-            color: white;
-            padding: 8px 20px;
-            border-radius: 20px;
-            display: inline-block;
-            font-size: 1em;
-            margin-bottom: 15px;
-            font-weight: bold;
-        }
+.intro-box .intro-icon i{font-size:22px;color:var(--purple-main);}
 
-        .note {
-            background: #faf5ff;
-            border-right: 4px solid #a855f7;
-            padding: 15px 20px;
-            margin: 20px 0;
-            border-radius: 8px;
-            color: #581c87;
-        }
+.intro-box p{
+    color:#555;
+    font-size:14px;
+    line-height:1.85;
+    padding-top:4px;
+}
 
-        .feature-box {
-            background: linear-gradient(135deg, #faf5ff 0%, #f3e8ff 100%);
-            padding: 20px;
-            margin: 15px 0;
-            border-radius: 10px;
-            border: 2px solid #e9d5ff;
-        }
+/* ================= SECTION TITLE ================= */
+.section-title{
+    font-size:17px;
+    font-weight:800;
+    color:var(--text-dark);
+    margin-bottom:18px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
 
-        .feature-box h4 {
-            color: #7c3aed;
-            margin-bottom: 10px;
-            font-size: 1.2em;
-        }
+.section-title::after{
+    content:'';
+    flex:1;
+    height:2px;
+    background:linear-gradient(90deg,#d8c8f8,transparent);
+    border-radius:2px;
+}
 
-        .feature-box p {
-            color: #4c1d95;
-            margin: 5px 0;
-        }
+/* ================= PLANS GRID ================= */
+.plans-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+    gap:22px;
+    margin-bottom:36px;
+}
 
-        .feature-list {
-            background: #fef3c7;
-            border-right: 4px solid #f59e0b;
-            padding: 15px 20px;
-            margin: 15px 0;
-            border-radius: 8px;
-        }
+/* ================= PLAN CARD ================= */
+.plan-card{
+    background:#fff;
+    border-radius:22px;
+    overflow:hidden;
+    box-shadow:0 4px 22px rgba(90,45,130,0.10);
+    transition:transform 0.28s ease, box-shadow 0.28s ease;
+    display:flex;
+    flex-direction:column;
+    position:relative;
+}
 
-        .feature-list ul {
-            margin-right: 20px;
-            color: #78350f;
-        }
+.plan-card:hover{
+    transform:translateY(-7px);
+    box-shadow:0 16px 40px rgba(90,45,130,0.18);
+}
 
-        .feature-list li {
-            margin: 8px 0;
-        }
+/* Plan Variations */
+.plan-card.starter .plan-header{background:linear-gradient(135deg,#1a0a3e,#3b0fa0);}
+.plan-card.starter .plan-accent{background:#7b3fe4;}
+.plan-card.starter .tag{background:rgba(123,63,228,0.15);color:#7b3fe4;}
 
-        .highlight {
-            background: linear-gradient(135deg, #fdf4ff 0%, #fae8ff 100%);
-            padding: 25px;
-            border-radius: 12px;
-            border: 2px solid #e879f9;
-            margin: 20px 0;
-        }
+.plan-card.standard .plan-header{background:linear-gradient(135deg,#0a1a3e,#0f4fa0);}
+.plan-card.standard .plan-accent{background:#1565c0;}
+.plan-card.standard .tag{background:rgba(21,101,192,0.13);color:#1565c0;}
 
-        .gift-badge {
-            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-            color: white;
-            padding: 5px 12px;
-            border-radius: 15px;
-            font-size: 0.85em;
-            display: inline-block;
-            margin: 3px;
-        }
+.plan-card.premium .plan-header{background:linear-gradient(135deg,#1a0a30,#6a1a9a);}
+.plan-card.premium .plan-accent{background:#ab47bc;}
+.plan-card.premium .tag{background:rgba(171,71,188,0.13);color:#8e24aa;}
 
-        footer {
-            text-align: center;
-            padding: 30px;
-            color: #7c3aed;
-            font-size: 0.95em;
-            margin-top: 40px;
-        }
+.plan-card.deluxe .plan-header{background:linear-gradient(135deg,#3e1a0a,#a04f0f);}
+.plan-card.deluxe .plan-accent{background:#ff6f00;}
+.plan-card.deluxe .tag{background:rgba(255,111,0,0.13);color:#e65100;}
 
-        @media (max-width: 768px) {
-            header h1 {
-                font-size: 1.8em;
-            }
-            
-            .section {
-                padding: 20px;
-            }
-            
-            table {
-                font-size: 0.8em;
-            }
-            
-            th, td {
-                padding: 10px 5px;
-            }
-        }
-    </style>
+.plan-card.mega .plan-header{background:linear-gradient(135deg,#0a3e1a,#0fa04f);}
+.plan-card.mega .plan-accent{background:#00c853;}
+.plan-card.mega .tag{background:rgba(0,200,83,0.13);color:#00a344;}
+
+.plan-card.ultimate .plan-header{background:linear-gradient(135deg,#3e0a1a,#a00f4f);}
+.plan-card.ultimate .plan-accent{background:#d81b60;}
+.plan-card.ultimate .tag{background:rgba(216,27,96,0.13);color:#c2185b;}
+.plan-card.ultimate .plan-badge{display:flex;}
+
+.plan-badge{
+    display:none;
+    position:absolute;
+    top:16px;
+    right:16px;
+    background:linear-gradient(135deg,#ffd54f,#ffab00);
+    color:#5d3900;
+    font-size:11px;
+    font-weight:900;
+    padding:4px 12px;
+    border-radius:20px;
+    letter-spacing:0.5px;
+    z-index:2;
+}
+
+.plan-header{
+    padding:26px 24px 22px;
+    position:relative;
+    overflow:hidden;
+    color:#fff;
+}
+
+.plan-header::before{
+    content:'';
+    position:absolute;
+    bottom:-50px;left:-50px;
+    width:160px;height:160px;
+    border-radius:50%;
+    background:rgba(255,255,255,0.06);
+}
+
+.plan-icon{
+    width:52px;height:52px;
+    border-radius:14px;
+    background:rgba(255,255,255,0.15);
+    display:flex;align-items:center;justify-content:center;
+    margin-bottom:14px;
+    position:relative;z-index:1;
+}
+
+.plan-icon i{font-size:22px;color:#fff;}
+
+.plan-name{
+    font-size:22px;
+    font-weight:900;
+    position:relative;z-index:1;
+    letter-spacing:1px;
+}
+
+.plan-price{
+    font-size:28px;
+    font-weight:900;
+    margin-top:8px;
+    position:relative;z-index:1;
+}
+
+.plan-price small{
+    font-size:14px;
+    font-weight:600;
+    opacity:0.8;
+}
+
+.plan-accent{
+    height:4px;
+    width:100%;
+}
+
+.plan-body{
+    padding:20px 22px 22px;
+    flex:1;
+    display:flex;
+    flex-direction:column;
+    gap:0;
+}
+
+/* Stats Row */
+.stats-row{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:10px;
+    margin-bottom:18px;
+}
+
+.stat-box{
+    background:var(--purple-bg);
+    border-radius:14px;
+    padding:14px 10px;
+    text-align:center;
+}
+
+.stat-val{
+    font-size:16px;
+    font-weight:900;
+    color:var(--text-dark);
+    line-height:1.2;
+}
+
+.stat-label{
+    font-size:11px;
+    color:var(--text-gray);
+    margin-top:3px;
+    font-weight:600;
+}
+
+/* Feature List */
+.feature-list{
+    list-style:none;
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+    margin-bottom:14px;
+}
+
+.feature-list li{
+    display:flex;
+    align-items:flex-start;
+    gap:10px;
+    font-size:13px;
+    color:#555;
+    line-height:1.6;
+}
+
+.feature-list li .fi{
+    width:22px;height:22px;
+    border-radius:7px;
+    display:flex;align-items:center;justify-content:center;
+    flex-shrink:0;
+    margin-top:1px;
+}
+
+.feature-list li .fi i{font-size:11px;}
+
+.fi-purple{background:#ede3fc;} .fi-purple i{color:var(--purple-main);}
+.fi-blue{background:#e3eefe;} .fi-blue i{color:#1565c0;}
+.fi-pink{background:#f5e3fe;} .fi-pink i{color:#8e24aa;}
+.fi-green{background:#e3fee8;} .fi-green i{color:#2e7d32;}
+.fi-orange{background:#fff3e0;} .fi-orange i{color:#e65100;}
+.fi-red{background:#ffebee;} .fi-red i{color:#c62828;}
+.fi-teal{background:#e0f2f1;} .fi-teal i{color:#00897b;}
+
+/* Voucher Section */
+.voucher-section{
+    margin-top:14px;
+    padding-top:14px;
+    border-top:1px dashed #ead9ff;
+}
+
+.voucher-label{
+    font-size:11.5px;
+    font-weight:700;
+    color:var(--text-dark);
+    margin-bottom:8px;
+    display:flex;
+    align-items:center;
+    gap:6px;
+}
+
+.voucher-label i{color:#ff9800;font-size:12px;}
+
+.voucher-value{
+    display:inline-block;
+    background:linear-gradient(135deg,#fff3e0,#ffe0b2);
+    color:#e65100;
+    font-size:16px;
+    font-weight:900;
+    padding:8px 16px;
+    border-radius:12px;
+    margin-bottom:8px;
+}
+
+.voucher-places{
+    font-size:11px;
+    color:#777;
+    line-height:1.5;
+}
+
+/* Channels Section */
+.channels-section{
+    margin-top:14px;
+    padding-top:14px;
+    border-top:1px dashed #ead9ff;
+}
+
+.channels-label{
+    font-size:11.5px;
+    font-weight:700;
+    color:var(--text-dark);
+    margin-bottom:8px;
+    display:flex;
+    align-items:center;
+    gap:6px;
+}
+
+.channels-label i{color:var(--purple-main);font-size:12px;}
+
+.channel-items{
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+}
+
+.channel-item{
+    font-size:12px;
+    color:#555;
+    display:flex;
+    align-items:center;
+    gap:6px;
+}
+
+.channel-item i{
+    color:var(--purple-main);
+    font-size:10px;
+}
+
+/* Gift Section */
+.gift-badge{
+    display:inline-block;
+    background:linear-gradient(135deg,#e3f2fd,#bbdefb);
+    color:#1565c0;
+    font-size:11px;
+    font-weight:700;
+    padding:5px 12px;
+    border-radius:20px;
+    margin-top:6px;
+}
+
+.gift-badge i{
+    margin-left:4px;
+}
+
+/* ================= FEATURES BOX ================= */
+.features-box{
+    background:#fff;
+    border-radius:20px;
+    padding:26px 28px;
+    margin-bottom:32px;
+    box-shadow:0 4px 20px rgba(90,45,130,0.09);
+}
+
+.features-box h3{
+    font-size:17px;
+    font-weight:800;
+    color:var(--text-dark);
+    margin-bottom:16px;
+    display:flex;
+    align-items:center;
+    gap:8px;
+}
+
+.features-box h3 i{
+    color:var(--purple-main);
+}
+
+.features-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+    gap:16px;
+}
+
+.feature-card{
+    background:var(--purple-bg);
+    border-radius:16px;
+    padding:18px 20px;
+    display:flex;
+    align-items:flex-start;
+    gap:14px;
+}
+
+.feature-card .fcard-icon{
+    width:44px;height:44px;
+    border-radius:12px;
+    background:#fff;
+    display:flex;align-items:center;justify-content:center;
+    flex-shrink:0;
+}
+
+.feature-card .fcard-icon i{
+    font-size:18px;
+    color:var(--purple-main);
+}
+
+.feature-card .fcard-text h4{
+    font-size:14px;
+    font-weight:800;
+    color:var(--text-dark);
+    margin-bottom:4px;
+}
+
+.feature-card .fcard-text p{
+    font-size:12px;
+    color:#666;
+    line-height:1.6;
+}
+
+/* ================= STREAMING SERVICES ================= */
+.streaming-box{
+    background:#fff;
+    border-radius:20px;
+    padding:26px 28px;
+    margin-bottom:32px;
+    box-shadow:0 4px 20px rgba(90,45,130,0.09);
+    border-top:4px solid #2e7d32;
+}
+
+.streaming-box h3{
+    font-size:17px;
+    font-weight:800;
+    color:var(--text-dark);
+    margin-bottom:16px;
+    display:flex;
+    align-items:center;
+    gap:8px;
+}
+
+.streaming-box h3 i{
+    color:#2e7d32;
+}
+
+.streaming-apps{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+}
+
+.app-chip{
+    display:flex;
+    align-items:center;
+    gap:6px;
+    background:var(--purple-bg);
+    border-radius:30px;
+    padding:8px 16px;
+    font-size:13px;
+    font-weight:700;
+    color:var(--text-dark);
+}
+
+.app-chip i{
+    color:var(--purple-main);
+    font-size:14px;
+}
+
+/* ================= UNLIMITED SERVICES ================= */
+.unlimited-box{
+    background:#fff;
+    border-radius:20px;
+    padding:26px 28px;
+    margin-bottom:32px;
+    box-shadow:0 4px 20px rgba(90,45,130,0.09);
+    border-top:4px solid #1565c0;
+}
+
+.unlimited-box h3{
+    font-size:17px;
+    font-weight:800;
+    color:var(--text-dark);
+    margin-bottom:16px;
+    display:flex;
+    align-items:center;
+    gap:8px;
+}
+
+.unlimited-box h3 i{
+    color:#1565c0;
+}
+
+/* ================= IPTV PACKAGES ================= */
+.iptv-section{
+    background:#fff;
+    border-radius:20px;
+    padding:26px 28px;
+    margin-bottom:32px;
+    box-shadow:0 4px 20px rgba(90,45,130,0.09);
+}
+
+.iptv-section h3{
+    font-size:17px;
+    font-weight:800;
+    color:var(--text-dark);
+    margin-bottom:10px;
+    display:flex;
+    align-items:center;
+    gap:8px;
+}
+
+.iptv-section h3 i{
+    color:var(--purple-main);
+}
+
+.iptv-note{
+    font-size:13px;
+    color:#777;
+    margin-bottom:18px;
+    line-height:1.7;
+}
+
+.iptv-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+    gap:16px;
+}
+
+.iptv-card{
+    background:var(--purple-bg);
+    border-radius:16px;
+    padding:18px 20px;
+    border-right:3px solid var(--purple-main);
+}
+
+.iptv-card h4{
+    font-size:15px;
+    font-weight:800;
+    color:var(--text-dark);
+    margin-bottom:8px;
+}
+
+.iptv-card .iptv-price{
+    font-size:22px;
+    font-weight:900;
+    color:var(--purple-main);
+    margin-bottom:4px;
+}
+
+.iptv-card .iptv-price small{
+    font-size:12px;
+    font-weight:600;
+}
+
+/* ================= RECHARGE SECTION ================= */
+.recharge-section{
+    background:#fff;
+    border-radius:20px;
+    padding:26px 28px;
+    margin-bottom:32px;
+    box-shadow:0 4px 20px rgba(90,45,130,0.09);
+}
+
+.recharge-section h3{
+    font-size:17px;
+    font-weight:800;
+    color:var(--text-dark);
+    margin-bottom:10px;
+    display:flex;
+    align-items:center;
+    gap:8px;
+}
+
+.recharge-section h3 i{
+    color:var(--purple-main);
+}
+
+.recharge-note{
+    font-size:13px;
+    color:#777;
+    margin-bottom:18px;
+    line-height:1.7;
+}
+
+.data-table{
+    width:100%;
+    border-collapse:collapse;
+    margin-bottom:18px;
+}
+
+.data-table thead tr{
+    background:linear-gradient(135deg,var(--purple-dark),var(--purple-main));
+}
+
+.data-table thead th{
+    color:#fff;
+    font-size:13px;
+    font-weight:700;
+    padding:12px 14px;
+    text-align:center;
+}
+
+.data-table thead th:first-child{border-radius:0 10px 0 0;}
+.data-table thead th:last-child{border-radius:10px 0 0 0;}
+
+.data-table tbody tr:nth-child(odd){background:#f8f5ff;}
+.data-table tbody tr:nth-child(even){background:#fff;}
+
+.data-table tbody td{
+    padding:11px 14px;
+    text-align:center;
+    font-size:13.5px;
+    font-weight:600;
+    color:var(--text-dark);
+    border-bottom:1px solid #eee;
+}
+
+.data-table tbody tr:last-child td{border-bottom:none;}
+
+/* Payment Methods */
+.payment-methods{
+    background:var(--purple-bg);
+    border-radius:14px;
+    padding:16px 18px;
+    margin-top:16px;
+}
+
+.payment-methods h4{
+    font-size:13px;
+    font-weight:800;
+    color:var(--text-dark);
+    margin-bottom:10px;
+}
+
+.payment-methods p{
+    font-size:12px;
+    color:#666;
+    line-height:1.7;
+}
+
+/* ================= STB BOX INFO ================= */
+.stb-box{
+    background:linear-gradient(135deg,#4a1a72,#7b3fe4);
+    border-radius:20px;
+    padding:26px 28px;
+    margin-bottom:32px;
+    color:#fff;
+    box-shadow:0 6px 24px rgba(90,45,130,0.22);
+    position:relative;
+    overflow:hidden;
+}
+
+.stb-box::before{
+    content:'STB';
+    position:absolute;
+    left:-10px;top:-20px;
+    font-size:100px;
+    font-weight:900;
+    color:rgba(255,255,255,0.06);
+    line-height:1;
+    letter-spacing:-4px;
+    pointer-events:none;
+    user-select:none;
+}
+
+.stb-content{
+    position:relative;
+    z-index:1;
+}
+
+.stb-content h3{
+    font-size:18px;
+    font-weight:900;
+    margin-bottom:12px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.stb-content h3 i{
+    font-size:22px;
+}
+
+.stb-content p{
+    font-size:13px;
+    line-height:1.8;
+    color:rgba(255,255,255,0.9);
+    margin-bottom:16px;
+}
+
+.stb-price{
+    display:inline-block;
+    background:rgba(255,255,255,0.15);
+    border:1.5px solid rgba(255,255,255,0.3);
+    padding:10px 20px;
+    border-radius:12px;
+    font-size:20px;
+    font-weight:900;
+}
+
+.stb-price small{
+    font-size:13px;
+    font-weight:600;
+}
+
+/* ================= NOTE BOX ================= */
+.note-box{
+    background:#fff8e1;
+    border-radius:14px;
+    padding:14px 18px;
+    margin-bottom:28px;
+    display:flex;
+    align-items:center;
+    gap:12px;
+    border-right:4px solid #ff9800;
+    font-size:13px;
+    color:#5d4037;
+    font-weight:600;
+}
+
+.note-box i{color:#ff9800;font-size:18px;flex-shrink:0;}
+
+/* ================= FOOTER ================= */
+footer{
+    text-align:center;
+    padding:24px 20px;
+    color:#999;
+    font-size:13px;
+    border-top:1px solid #e8e2f5;
+    background:#fff;
+}
+
+.footer-logo{
+    width:42px;
+    border-radius:50%;
+    margin-bottom:8px;
+    opacity:0.85;
+}
+
+footer span{color:var(--purple-main);font-weight:700;}
+
+/* ================= RESPONSIVE ================= */
+@media(max-width:768px){
+    .plans-grid{grid-template-columns:1fr;}
+    .features-grid{grid-template-columns:1fr;}
+    .iptv-grid{grid-template-columns:1fr;}
+    .stats-row{grid-template-columns:1fr 1fr;}
+    .main-title{font-size:24px;}
+    .intro-box{flex-direction:column;}
+}
+</style>
 </head>
+
 <body>
-    <div class="container">
-        <header>
-            <h1>📱 WE - Life</h1>
-            <p>المصرية للاتصالات - دليلك الكامل لباقات الإنترنت المنزلي، الباقات المتكاملة، والباقات المخصصة</p>
-        </header>
 
-        <!-- باقات WE Life -->
-        <div class="section">
-            <h2>🌟 باقات WE Life (الباقات المتكاملة)</h2>
-            <div class="premium-badge">💎 باقات متكاملة: إنترنت + IPTV + منصات ترفيهية</div>
-            
-            <p style="color: #4c1d95; margin-bottom: 25px; font-size: 1.05em;">
-                <strong>باقات تجمع بين:</strong> الإنترنت المنزلي عالي السرعة، قنوات التلفزيون المباشرة (IPTV)، واشتراكات المنصات الترفيهية العالمية
-            </p>
+<!-- HEADER -->
+<div class="header">
+    <a href="index.html" class="back-btn"><i class="fa-solid fa-arrow-right"></i> رجوع</a>
+    <img src="img/we-core.png" class="logo" alt="WE-Core Logo">
+    <div class="main-title">WE LIFE</div>
+    <div class="life-badge">🎬 إنترنت + ترفيه متكامل</div>
+    <div class="sub-title">Powered By Mohand Hassan – From Abassia Store</div>
+</div>
 
-            <table>
-                <thead>
-                    <tr>
-                        <th>اسم الباقة</th>
-                        <th>السعر (جنيه)</th>
-                        <th>السرعة القصوى</th>
-                        <th>السعة الأساسية</th>
-                        <th>سعة الستريمنج الهدية</th>
-                        <th>قسائم الشراء</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><strong>WE Life 325</strong></td>
-                        <td class="price">325</td>
-                        <td>30 ميجابت/ث</td>
-                        <td class="capacity">200 جيجابايت</td>
-                        <td class="capacity">20 جيجابايت</td>
-                        <td class="price">200 جنيه</td>
-                    </tr>
-                    <tr>
-                        <td><strong>WE Life 700</strong></td>
-                        <td class="price">700</td>
-                        <td>70 ميجابت/ث</td>
-                        <td class="capacity">350 جيجابايت</td>
-                        <td class="capacity">50 جيجابايت</td>
-                        <td class="price">700 جنيه</td>
-                    </tr>
-                    <tr>
-                        <td><strong>WE Life 950</strong></td>
-                        <td class="price">950</td>
-                        <td>100 ميجابت/ث</td>
-                        <td class="capacity">500 جيجابايت</td>
-                        <td class="capacity">70 جيجابايت</td>
-                        <td class="price">950 جنيه</td>
-                    </tr>
-                    <tr>
-                        <td><strong>WE Life 1250</strong></td>
-                        <td class="price">1,250</td>
-                        <td>100 ميجابت/ث</td>
-                        <td class="capacity">750 جيجابايت</td>
-                        <td class="capacity">100 جيجابايت</td>
-                        <td class="price">1,250 جنيه</td>
-                    </tr>
-                    <tr>
-                        <td><strong>WE Life 1600</strong></td>
-                        <td class="price">1,600</td>
-                        <td>200 ميجابت/ث</td>
-                        <td class="capacity">1.2 تيرابايت</td>
-                        <td class="capacity">150 جيجابايت</td>
-                        <td class="price">1,600 جنيه</td>
-                    </tr>
-                    <tr>
-                        <td><strong>WE Life 2500</strong></td>
-                        <td class="price">2,500</td>
-                        <td>500 ميجابت/ث</td>
-                        <td class="capacity">2 تيرابايت</td>
-                        <td class="capacity">200 جيجابايت</td>
-                        <td class="price">2,500 جنيه</td>
-                    </tr>
-                </tbody>
-            </table>
+<div class="container">
 
-            <div class="highlight">
-                <h3 style="color: #c026d3; margin-top: 0;">🎬 القنوات والترفيه المشمول</h3>
-                
-                <div class="feature-box">
-                    <h4>📺 استهلاك غير محدود لقنوات IPTV المباشرة</h4>
-                    <p>قنوات beIN و OSN بدون الخصم من الباقة الأساسية</p>
-                </div>
+    <!-- INTRO -->
+    <div class="intro-box">
+        <div class="intro-icon"><i class="fa-solid fa-tv"></i></div>
+        <p>
+            باقات <strong>WE LIFE</strong> تجمع بين الإنترنت السريع والمحتوى الترفيهي المتكامل. استمتع بمشاهدة القنوات المباشرة، خدمات الستريمنج المجانية، وقسائم الشراء من أشهر المطاعم والعلامات التجارية. <strong>لا تستهلك من سعة الإنترنت الأساسية</strong> عند مشاهدة القنوات، مع إمكانية المشاهدة على أكثر من شاشة في نفس الوقت.
+        </p>
+    </div>
 
-                <div class="feature-box">
-                    <h4>🎥 المنصات المشمولة</h4>
-                    <p><span class="gift-badge">Netflix</span> <span class="gift-badge">WATCH IT</span> <span class="gift-badge">Prime Video</span> <span class="gift-badge">Apple TV</span> <span class="gift-badge">OSN+</span></p>
-                </div>
-
-                <div class="feature-box">
-                    <h4>🎁 خدمة beIN CONNECT</h4>
-                    <p>هدية مع جميع باقات WE Life</p>
-                </div>
-
-                <div class="feature-box">
-                    <h4>🍔 قسائم الشراء</h4>
-                    <p>يمكن استخدامها في: Chicken N Ribs, Butchers Burger, Tortina, Sharaf DG</p>
-                    <p style="font-size: 0.9em; margin-top: 8px; color: #7c3aed;">القيمة حسب فئة الباقة</p>
+    <!-- MAIN FEATURES -->
+    <div class="features-box">
+        <h3><i class="fa-solid fa-star"></i> المزايا الرئيسية لباقات WE LIFE</h3>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="fcard-icon"><i class="fa-solid fa-infinity"></i></div>
+                <div class="fcard-text">
+                    <h4>استهلاك غير محدود</h4>
+                    <p>لا تستهلك من سعة الإنترنت الأساسية عند مشاهدة القنوات</p>
                 </div>
             </div>
+            <div class="feature-card">
+                <div class="fcard-icon"><i class="fa-solid fa-tv"></i></div>
+                <div class="fcard-text">
+                    <h4>+180 قناة مباشرة</h4>
+                    <p>أكثر من 180 قناة مفتوحة في الباقات الأعلى</p>
+                </div>
+            </div>
+            <div class="feature-card">
+                <div class="fcard-icon"><i class="fa-solid fa-gift"></i></div>
+                <div class="fcard-text">
+                    <h4>سعة ستريمنج مجانية</h4>
+                    <p>سعة إضافية للستريمنج مع كل باقة</p>
+                </div>
+            </div>
+            <div class="feature-card">
+                <div class="fcard-icon"><i class="fa-solid fa-display"></i></div>
+                <div class="fcard-text">
+                    <h4>أكثر من شاشة</h4>
+                    <p>شاهد على أجهزة متعددة بنفس الحساب</p>
+                </div>
+            </div>
+            <div class="feature-card">
+                <div class="fcard-icon"><i class="fa-solid fa-broadcast-tower"></i></div>
+                <div class="fcard-text">
+                    <h4>beIN & OSN بلا حدود</h4>
+                    <p>استهلاك غير محدود لقنوات IPTV المباشرة</p>
+                </div>
+            </div>
+            <div class="feature-card">
+                <div class="fcard-icon"><i class="fa-solid fa-ticket"></i></div>
+                <div class="fcard-text">
+                    <h4>قسائم شراء</h4>
+                    <p>قسائم من مطاعم وعلامات تجارية شهيرة</p>
+                </div>
+            </div>
+        </div>
+    </div>
 
-            <div class="note">
-                <p><strong>📌 معلومات هامة عن WE Life:</strong></p>
-                <ul style="margin-right: 20px; margin-top: 10px;">
-                    <li><strong>جهاز Set Top Box (STB):</strong> مطلوب لتشغيل الخدمة على التلفزيون بسعر 1,350 جنيه (غير شامل الضريبة)</li>
-                    <li><strong>المشاهدة:</strong> تتيح المشاهدة على أكثر من شاشة من خلال حساب واحد</li>
+    <!-- STREAMING SERVICES -->
+    <div class="streaming-box">
+        <h3><i class="fa-solid fa-play-circle"></i> خدمات الستريمنج المجانية – لجميع الباقات</h3>
+        <div class="streaming-apps">
+            <div class="app-chip"><i class="fa-brands fa-netflix"></i> Netflix</div>
+            <div class="app-chip"><i class="fa-solid fa-film"></i> WATCH IT</div>
+            <div class="app-chip"><i class="fa-brands fa-amazon"></i> Prime Video</div>
+            <div class="app-chip"><i class="fa-brands fa-apple"></i> Apple TV</div>
+            <div class="app-chip"><i class="fa-solid fa-tv"></i> OSN</div>
+        </div>
+    </div>
+
+    <!-- UNLIMITED MUSIC & MEETINGS -->
+    <div class="unlimited-box">
+        <h3><i class="fa-solid fa-infinity"></i> موسيقى واجتماعات بلا حدود – لجميع الباقات</h3>
+        <div class="streaming-apps">
+            <div class="app-chip"><i class="fa-brands fa-soundcloud"></i> SoundCloud</div>
+            <div class="app-chip"><i class="fa-solid fa-music"></i> Deezer</div>
+            <div class="app-chip"><i class="fa-solid fa-headphones"></i> Anghami</div>
+            <div class="app-chip"><i class="fa-brands fa-spotify"></i> Spotify</div>
+            <div class="app-chip"><i class="fa-brands fa-microsoft"></i> Microsoft Teams</div>
+            <div class="app-chip"><i class="fa-solid fa-video"></i> Zoom</div>
+            <div class="app-chip"><i class="fa-brands fa-google"></i> Google Meet</div>
+        </div>
+    </div>
+
+    <!-- PLANS -->
+    <div class="section-title"><i class="fa-solid fa-layer-group" style="color:var(--purple-main)"></i> الباقات الرئيسية</div>
+
+    <div class="plans-grid">
+
+        <!-- PLAN 325 -->
+        <div class="plan-card starter">
+            <div class="plan-header">
+                <div class="plan-icon"><i class="fa-solid fa-rocket"></i></div>
+                <div class="plan-name">WE LIFE 325</div>
+                <div class="plan-price">325 <small>جنيه/شهر</small></div>
+            </div>
+            <div class="plan-accent"></div>
+            <div class="plan-body">
+                <div class="stats-row">
+                    <div class="stat-box">
+                        <div class="stat-val">200<br><small style="font-size:9px;font-weight:600;">جيجا</small></div>
+                        <div class="stat-label">سعة أساسية</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-val">20<br><small style="font-size:9px;font-weight:600;">جيجا</small></div>
+                        <div class="stat-label">ستريمنج مجاني</div>
+                    </div>
+                </div>
+
+                <ul class="feature-list">
+                    <li>
+                        <div class="fi fi-purple"><i class="fa-solid fa-infinity"></i></div>
+                        استهلاك غير محدود للقنوات المباشرة
+                    </li>
+                    <li>
+                        <div class="fi fi-purple"><i class="fa-solid fa-tv"></i></div>
+                        103 قناة مباشرة
+                    </li>
+                    <li>
+                        <div class="fi fi-purple"><i class="fa-solid fa-broadcast-tower"></i></div>
+                        beIN & OSN بلا حدود (IPTV)
+                    </li>
                 </ul>
+
+                <div class="voucher-section">
+                    <div class="voucher-label"><i class="fa-solid fa-gift"></i> قسيمة شراء</div>
+                    <div class="voucher-value">200 جنيه</div>
+                    <div class="voucher-places">Chicken N ribs, Butchers Burger</div>
+                </div>
             </div>
         </div>
 
-        <!-- باقات WE SONIC -->
-        <div class="section">
-            <h2>⚡ باقات WE SONIC (للألعاب والبث)</h2>
-            <div class="sonic-badge">🎮 مصممة خصيصاً لتجربة ألعاب وبث مباشر احترافية</div>
-            
-            <p style="color: #4c1d95; margin-bottom: 20px; font-size: 1.05em;">
-                <strong>باقات متميزة توفر:</strong> أقل زمن استجابة (Lag)، أعلى سرعة رفع (Upload)، وأفضل تجربة للألعاب والبث المباشر
+        <!-- PLAN 700 -->
+        <div class="plan-card standard">
+            <div class="plan-header">
+                <div class="plan-icon"><i class="fa-solid fa-bolt"></i></div>
+                <div class="plan-name">WE LIFE 700</div>
+                <div class="plan-price">700 <small>جنيه/شهر</small></div>
+            </div>
+            <div class="plan-accent"></div>
+            <div class="plan-body">
+                <div class="stats-row">
+                    <div class="stat-box">
+                        <div class="stat-val">350<br><small style="font-size:9px;font-weight:600;">جيجا</small></div>
+                        <div class="stat-label">سعة أساسية</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-val">50<br><small style="font-size:9px;font-weight:600;">جيجا</small></div>
+                        <div class="stat-label">ستريمنج مجاني</div>
+                    </div>
+                </div>
+
+                <ul class="feature-list">
+                    <li>
+                        <div class="fi fi-blue"><i class="fa-solid fa-infinity"></i></div>
+                        استهلاك غير محدود للقنوات المباشرة
+                    </li>
+                    <li>
+                        <div class="fi fi-blue"><i class="fa-solid fa-tv"></i></div>
+                        103 قناة مباشرة
+                    </li>
+                    <li>
+                        <div class="fi fi-blue"><i class="fa-solid fa-broadcast-tower"></i></div>
+                        beIN & OSN بلا حدود (IPTV)
+                    </li>
+                </ul>
+
+                <div class="voucher-section">
+                    <div class="voucher-label"><i class="fa-solid fa-gift"></i> قسيمة شراء</div>
+                    <div class="voucher-value">700 جنيه</div>
+                    <div class="voucher-places">Chicken N ribs, Butchers Burger, Rabbit, Tortina</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PLAN 950 -->
+        <div class="plan-card premium">
+            <div class="plan-header">
+                <div class="plan-icon"><i class="fa-solid fa-gem"></i></div>
+                <div class="plan-name">WE LIFE 950</div>
+                <div class="plan-price">950 <small>جنيه/شهر</small></div>
+            </div>
+            <div class="plan-accent"></div>
+            <div class="plan-body">
+                <div class="stats-row">
+                    <div class="stat-box">
+                        <div class="stat-val">500<br><small style="font-size:9px;font-weight:600;">جيجا</small></div>
+                        <div class="stat-label">سعة أساسية</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-val">70<br><small style="font-size:9px;font-weight:600;">جيجا</small></div>
+                        <div class="stat-label">ستريمنج مجاني</div>
+                    </div>
+                </div>
+
+                <ul class="feature-list">
+                    <li>
+                        <div class="fi fi-pink"><i class="fa-solid fa-tv"></i></div>
+                        103 قناة مباشرة + 42 قناة PREMIUM
+                    </li>
+                    <li>
+                        <div class="fi fi-pink"><i class="fa-solid fa-star"></i></div>
+                        beIN + قناة OSN ONE
+                    </li>
+                </ul>
+
+                <div class="voucher-section">
+                    <div class="voucher-label"><i class="fa-solid fa-gift"></i> قسيمة شراء</div>
+                    <div class="voucher-value">950 جنيه</div>
+                    <div class="voucher-places">Chicken N ribs, Butchers Burger, Rabbit, Tortina</div>
+                </div>
+
+                <div class="channels-section">
+                    <div class="gift-badge"><i class="fa-solid fa-gift"></i> beIN CONNECT هدية</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PLAN 1250 -->
+        <div class="plan-card deluxe">
+            <div class="plan-header">
+                <div class="plan-icon"><i class="fa-solid fa-fire"></i></div>
+                <div class="plan-name">WE LIFE 1250</div>
+                <div class="plan-price">1250 <small>جنيه/شهر</small></div>
+            </div>
+            <div class="plan-accent"></div>
+            <div class="plan-body">
+                <div class="stats-row">
+                    <div class="stat-box">
+                        <div class="stat-val">750<br><small style="font-size:9px;font-weight:600;">جيجا</small></div>
+                        <div class="stat-label">سعة أساسية</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-val">100<br><small style="font-size:9px;font-weight:600;">جيجا</small></div>
+                        <div class="stat-label">ستريمنج مجاني</div>
+                    </div>
+                </div>
+
+                <ul class="feature-list">
+                    <li>
+                        <div class="fi fi-orange"><i class="fa-solid fa-tv"></i></div>
+                        103 قناة + 42 PREMIUM + 18 قناة beIN
+                    </li>
+                    <li>
+                        <div class="fi fi-orange"><i class="fa-solid fa-star"></i></div>
+                        قناة OSN EL LAMMA
+                    </li>
+                </ul>
+
+                <div class="voucher-section">
+                    <div class="voucher-label"><i class="fa-solid fa-gift"></i> قسيمة شراء</div>
+                    <div class="voucher-value">1250 جنيه</div>
+                    <div class="voucher-places">Chicken N ribs, Butchers Burger, Rabbit, Tortina</div>
+                </div>
+
+                <div class="channels-section">
+                    <div class="gift-badge"><i class="fa-solid fa-gift"></i> beIN CONNECT هدية</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PLAN 1600 -->
+        <div class="plan-card mega">
+            <div class="plan-header">
+                <div class="plan-icon"><i class="fa-solid fa-trophy"></i></div>
+                <div class="plan-name">WE LIFE 1600</div>
+                <div class="plan-price">1600 <small>جنيه/شهر</small></div>
+            </div>
+            <div class="plan-accent"></div>
+            <div class="plan-body">
+                <div class="stats-row">
+                    <div class="stat-box">
+                        <div class="stat-val">1.2<br><small style="font-size:9px;font-weight:600;">تيرا</small></div>
+                        <div class="stat-label">سعة أساسية</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-val">150<br><small style="font-size:9px;font-weight:600;">جيجا</small></div>
+                        <div class="stat-label">ستريمنج مجاني</div>
+                    </div>
+                </div>
+
+                <ul class="feature-list">
+                    <li>
+                        <div class="fi fi-green"><i class="fa-solid fa-tv"></i></div>
+                        103 قناة + 42 PREMIUM + 35 قناة beIN
+                    </li>
+                    <li>
+                        <div class="fi fi-green"><i class="fa-solid fa-crown"></i></div>
+                        قناة OSN EL KUL
+                    </li>
+                </ul>
+
+                <div class="voucher-section">
+                    <div class="voucher-label"><i class="fa-solid fa-gift"></i> قسيمة شراء</div>
+                    <div class="voucher-value">1600 جنيه</div>
+                    <div class="voucher-places">Chicken N ribs, Butchers Burger, Rabbit, Tortina</div>
+                </div>
+
+                <div class="channels-section">
+                    <div class="gift-badge"><i class="fa-solid fa-gift"></i> beIN CONNECT هدية</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PLAN 2500 -->
+        <div class="plan-card ultimate">
+            <div class="plan-badge">⭐ الأشمل</div>
+            <div class="plan-header">
+                <div class="plan-icon"><i class="fa-solid fa-crown"></i></div>
+                <div class="plan-name">WE LIFE 2500</div>
+                <div class="plan-price">2500 <small>جنيه/شهر</small></div>
+            </div>
+            <div class="plan-accent"></div>
+            <div class="plan-body">
+                <div class="stats-row">
+                    <div class="stat-box">
+                        <div class="stat-val">2<br><small style="font-size:9px;font-weight:600;">تيرا</small></div>
+                        <div class="stat-label">سعة أساسية</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-val">200<br><small style="font-size:9px;font-weight:600;">جيجا</small></div>
+                        <div class="stat-label">ستريمنج مجاني</div>
+                    </div>
+                </div>
+
+                <ul class="feature-list">
+                    <li>
+                        <div class="fi fi-red"><i class="fa-solid fa-tv"></i></div>
+                        103 قناة + 42 PREMIUM + 35 قناة beIN
+                    </li>
+                    <li>
+                        <div class="fi fi-red"><i class="fa-solid fa-crown"></i></div>
+                        قناة OSN EL KUL
+                    </li>
+                    <li>
+                        <div class="fi fi-red"><i class="fa-solid fa-rocket"></i></div>
+                        سعة إنترنت ضخمة 2 تيرابايت
+                    </li>
+                </ul>
+
+                <div class="voucher-section">
+                    <div class="voucher-label"><i class="fa-solid fa-gift"></i> قسيمة شراء</div>
+                    <div class="voucher-value">2500 جنيه</div>
+                    <div class="voucher-places">Chicken N ribs, Butchers Burger, Rabbit, Tortina, Sharaf DG</div>
+                </div>
+
+                <div class="channels-section">
+                    <div class="gift-badge"><i class="fa-solid fa-gift"></i> beIN CONNECT هدية</div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- IPTV ADDITIONAL PACKAGES -->
+    <div class="iptv-section">
+        <h3><i class="fa-solid fa-plus-circle"></i> باقات IPTV الإضافية</h3>
+        <p class="iptv-note">متاحة لعملاء باقة 325 و 700 مقابل اشتراك منفصل</p>
+        <div class="iptv-grid">
+            <div class="iptv-card">
+                <h4>beIN PREMIUM + CONNECT</h4>
+                <div class="iptv-price">445 <small>جنيه/شهر</small></div>
+            </div>
+            <div class="iptv-card">
+                <h4>beIN TOGETHER</h4>
+                <div class="iptv-price">215 <small>جنيه/شهر</small></div>
+            </div>
+            <div class="iptv-card">
+                <h4>OSN EL KUL</h4>
+                <div class="iptv-price">385 <small>جنيه/شهر</small></div>
+            </div>
+            <div class="iptv-card">
+                <h4>OSN EL LAMA</h4>
+                <div class="iptv-price">275 <small>جنيه/شهر</small></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- STB BOX -->
+    <div class="stb-box">
+        <div class="stb-content">
+            <h3><i class="fa-solid fa-box"></i> جهاز Set Top Box (STB)</h3>
+            <p>
+                جهاز STB ضروري لتوصيل الإنترنت بجهاز التلفزيون والاستفادة من خدمات IPTV. في حال الرغبة في طلب أكثر من جهاز، يعتمد ذلك على إمكانية الخط، ويُفضل شراء جهاز Switch عند تشغيل أكثر من STB على نفس الخط.
             </p>
-
-            <table>
-                <thead>
-                    <tr>
-                        <th>نوع الباقة</th>
-                        <th>السعر (جنيه)</th>
-                        <th>السرعة القصوى</th>
-                        <th>السعة الأساسية</th>
-                        <th>سعة الجيمنج/الستريمنج</th>
-                        <th>إجمالي السعة</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><strong>GAMERZ</strong></td>
-                        <td class="price">600</td>
-                        <td>80 ميجابت/ث</td>
-                        <td class="capacity">250 جيجابايت</td>
-                        <td class="capacity">125 جيجابايت<br><small>(تضاعف لـ 250)</small></td>
-                        <td class="capacity">500 جيجابايت</td>
-                    </tr>
-                    <tr>
-                        <td><strong>STREAMERZ</strong></td>
-                        <td class="price">600</td>
-                        <td>80 ميجابت/ث</td>
-                        <td class="capacity">200 جيجابايت</td>
-                        <td class="capacity">150 جيجابايت<br><small>(تضاعف لـ 300)</small></td>
-                        <td class="capacity">500 جيجابايت</td>
-                    </tr>
-                    <tr>
-                        <td><strong>PLUS</strong></td>
-                        <td class="price">1,200</td>
-                        <td>150 ميجابت/ث</td>
-                        <td class="capacity">500 جيجابايت</td>
-                        <td class="capacity">500 جيجابايت<br><small>(تضاعف لـ 1000)</small></td>
-                        <td class="capacity">1,500 جيجابايت</td>
-                    </tr>
-                </tbody>
-            </table>
-
-            <div class="feature-list">
-                <strong style="color: #ea580c;">🎯 ميزة 2X:</strong>
-                <p style="color: #7c2d12; margin-top: 8px;">يتم حساب استهلاك الجيمنج والستريمنج بنصف الاستهلاك الفعلي</p>
-            </div>
-
-            <div class="feature-list">
-                <strong style="color: #ea580c;">🎵 موسيقى واجتماعات:</strong>
-                <p style="color: #7c2d12; margin-top: 8px;">استخدام غير محدود لتطبيقات Spotify, Zoom, Teams وغيرها</p>
-            </div>
+            <div class="stb-price">1350 <small>جنيه</small></div>
         </div>
+    </div>
 
-        <!-- باقات WE Space -->
-        <div class="section">
-            <h2>📦 باقات WE Space (الباقات الأساسية)</h2>
-            
-            <table>
-                <thead>
-                    <tr>
-                        <th>الفئة</th>
-                        <th>السرعة القصوى</th>
-                        <th>سعات التحميل</th>
-                        <th>الأسعار الشهرية (جنيه)</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><strong>Super</strong></td>
-                        <td>30 ميجابت/ث</td>
-                        <td class="capacity">140GB إلى 1TB</td>
-                        <td class="price">210 - 1,360</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Mega</strong></td>
-                        <td>70 ميجابت/ث</td>
-                        <td class="capacity">250GB إلى 1TB</td>
-                        <td class="price">530 - 1,560</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Ultra</strong></td>
-                        <td>100 ميجابت/ث</td>
-                        <td class="capacity">250GB, 600GB</td>
-                        <td class="price">700 - 1,230</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Max</strong></td>
-                        <td>200 ميجابت/ث</td>
-                        <td class="capacity">1 تيرابايت</td>
-                        <td class="price">1,760</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Max+</strong></td>
-                        <td>500 ميجابت/ث</td>
-                        <td class="capacity">1 تيرابايت</td>
-                        <td class="price">2,000</td>
-                    </tr>
-                </tbody>
-            </table>
+    <!-- RECHARGE PACKAGES -->
+    <div class="recharge-section">
+        <h3><i class="fa-solid fa-battery-full"></i> باقات الشحن الإضافية</h3>
+        <p class="recharge-note">يمكن متابعة الاستهلاك الشهري عبر الموقع الإلكتروني أو تطبيق My WE. عند انتهاء سعة التحميل يمكن طلب التجديد المبكر أو شحن سعات إضافية.</p>
+        
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>السعة (جيجابايت)</th>
+                    <th>السعر (جنيه)</th>
+                    <th>النوع</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>20 جيجا</td>
+                    <td>52 جنيه</td>
+                    <td>مرة واحدة أو تجديد</td>
+                </tr>
+                <tr>
+                    <td>50 جيجا</td>
+                    <td>105 جنيه</td>
+                    <td>مرة واحدة أو تجديد</td>
+                </tr>
+                <tr>
+                    <td>100 جيجا</td>
+                    <td>170 جنيه</td>
+                    <td>مرة واحدة أو تجديد</td>
+                </tr>
+                <tr>
+                    <td>400 جيجا</td>
+                    <td>420 جنيه</td>
+                    <td>جيجا تانك (مرة واحدة)</td>
+                </tr>
+                <tr>
+                    <td>2,000 جيجا</td>
+                    <td>1,625 جنيه</td>
+                    <td>جيجا تانك (مرة واحدة)</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="payment-methods">
+            <h4>طرق الشحن المتاحة:</h4>
+            <p>تطبيق الموبايل، الموقع الإلكتروني، فوري، مصاري، أمان، ممكن، خدماتي، Bee، سوبرباي، خالص، كاش كول، وجميع فروع WE.</p>
         </div>
+    </div>
 
-        <!-- سعات الشحن الإضافية -->
-        <div class="section">
-            <h2>🔋 سعات الشحن الإضافية (لكافة الباقات)</h2>
-            
-            <table>
-                <thead>
-                    <tr>
-                        <th>السعة</th>
-                        <th>السعر (جنيه)</th>
-                        <th>ملاحظات</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td class="capacity">20 جيجابايت</td>
-                        <td class="price">52</td>
-                        <td>مرة واحدة أو تجديد تلقائي</td>
-                    </tr>
-                    <tr>
-                        <td class="capacity">50 جيجابايت</td>
-                        <td class="price">105</td>
-                        <td>مرة واحدة أو تجديد تلقائي</td>
-                    </tr>
-                    <tr>
-                        <td class="capacity">100 جيجابايت</td>
-                        <td class="price">170</td>
-                        <td>مرة واحدة أو تجديد تلقائي</td>
-                    </tr>
-                    <tr>
-                        <td class="capacity">400 جيجابايت</td>
-                        <td class="price">420</td>
-                        <td>Giga Tank (مرة واحدة)</td>
-                    </tr>
-                    <tr>
-                        <td class="capacity">2,000 جيجابايت</td>
-                        <td class="price">1,625</td>
-                        <td>Giga Tank (مرة واحدة)</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+    <!-- NOTE -->
+    <div class="note-box">
+        <i class="fa-solid fa-triangle-exclamation"></i>
+        جميع الأسعار المذكورة لا تشمل ضريبة القيمة المضافة (VAT).
+    </div>
 
-        <!-- خدمات إضافية -->
-        <div class="section">
-            <h2>✨ خدمات إضافية ومعلومات عامة</h2>
+</div>
 
-            <div class="feature-box">
-                <h4>🏥 خدمة شامل</h4>
-                <p>اشتراك طبي مجاني بخصومات حتى 80%</p>
-                <p><strong>الشروط:</strong> متاحة من باقة 200GB فأعلى</p>
-            </div>
+<!-- FOOTER -->
+<footer>
+    <img src="img/we-core.png" class="footer-logo" alt="logo">
+    <div>Powered by <span>Mohand Hassan</span> – From <span>Abassia Store</span></div>
+</footer>
 
-            <div class="feature-box">
-                <h4>💰 خدمة سلفني</h4>
-                <p>5 جيجابايت مقابل 10 جنيهات صالحة لمدة يومين</p>
-            </div>
-
-            <div class="feature-box">
-                <h4>💳 طرق الشحن</h4>
-                <p>تطبيق WE My، الموقع الإلكتروني، فوري، أمان، مصاري، وجميع فروع WE</p>
-            </div>
-        </div>
-
-        <div class="note">
-            <p><strong>⚠️ ملاحظات هامة:</strong></p>
-            <ul style="margin-right: 20px; margin-top: 10px;">
-                <li><strong>ضريبة القيمة المضافة:</strong> جميع الأسعار المذكورة لا تشمل ضريبة القيمة المضافة (14%)</li>
-            </ul>
-        </div>
-
-         <footer>
-        Powered by <span>Mohand Hassan</span> – From <span>Abassia Store</span>
-    </footer>    </div>    </div>
 </body>
 </html>
