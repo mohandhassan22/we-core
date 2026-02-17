@@ -74,6 +74,33 @@ body{
     z-index:1;
 }
 
+/* User info bar */
+.user-bar{
+    background:rgba(255,255,255,0.15);
+    border-radius:12px;
+    padding:8px 16px;
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+    margin-top:12px;
+    position:relative;
+    z-index:1;
+}
+.user-bar span{color:#fff;font-size:13px;font-weight:600;}
+.logout-btn{
+    background:rgba(255,255,255,0.2);
+    border:1px solid rgba(255,255,255,0.3);
+    color:#fff;
+    border-radius:8px;
+    padding:4px 12px;
+    font-family:'Cairo',sans-serif;
+    font-size:12px;
+    font-weight:700;
+    cursor:pointer;
+    transition:background 0.2s;
+}
+.logout-btn:hover{background:rgba(255,255,255,0.3);}
+
 /* ================= GRID ================= */
 .container{
     max-width:960px;
@@ -190,69 +217,122 @@ footer{
 
 footer span{color:#7b3fe4;font-weight:700;}
 
-/* ================= REMEDY ALERT MODAL ================= */
-.overlay{
+/* ================= LOGIN MODAL ================= */
+.login-overlay{
     position:fixed;
     inset:0;
-    background:rgba(30,10,60,0.55);
+    background:rgba(30,10,60,0.60);
     display:flex;
     justify-content:center;
     align-items:center;
     z-index:9999;
-    backdrop-filter:blur(3px);
+    backdrop-filter:blur(4px);
 }
 
-.alert-modal{
+.login-modal{
     background:#fff;
-    padding:35px 30px;
-    border-radius:20px;
+    padding:38px 32px 30px;
+    border-radius:22px;
     width:90%;
-    max-width:380px;
+    max-width:390px;
     text-align:center;
-    box-shadow:0 20px 50px rgba(0,0,0,0.25);
-    animation:alertFade 0.4s ease;
+    box-shadow:0 24px 60px rgba(0,0,0,0.25);
+    animation:modalIn 0.4s cubic-bezier(0.34,1.56,0.64,1);
     border-top:5px solid #7b3fe4;
 }
 
-.alert-modal .modal-icon{
-    width:64px;height:64px;
+@keyframes modalIn{
+    from{transform:scale(0.80) translateY(20px);opacity:0;}
+    to{transform:scale(1) translateY(0);opacity:1;}
+}
+
+.login-modal .modal-logo{
+    width:72px;height:72px;
     border-radius:50%;
-    background:linear-gradient(135deg,#ede3fc,#f5f0ff);
-    display:flex;align-items:center;justify-content:center;
-    margin:0 auto 16px;
+    border:3px solid #ede3fc;
+    margin:0 auto 14px;
+    object-fit:cover;
 }
 
-.alert-modal .modal-icon i{font-size:28px;color:#7b3fe4;}
-
-.alert-modal h3{
+.login-modal h3{
     color:#3d1a6e;
-    font-size:18px;
-    font-weight:800;
-    margin-bottom:8px;
+    font-size:20px;
+    font-weight:900;
+    margin-bottom:4px;
 }
 
-.alert-modal p{color:#666;font-size:14px;line-height:1.7;}
+.login-modal .modal-sub{
+    color:#999;
+    font-size:13px;
+    margin-bottom:24px;
+}
 
-.countdown{
-    display:inline-block;
-    margin-top:18px;
-    padding:8px 20px;
-    border-radius:30px;
-    background:#fef2f2;
-    color:#d32f2f;
-    font-weight:700;
+.input-group{
+    position:relative;
+    margin-bottom:14px;
+    text-align:right;
+}
+
+.input-group i{
+    position:absolute;
+    right:14px;
+    top:50%;
+    transform:translateY(-50%);
+    color:#a066f5;
+    font-size:15px;
+}
+
+.input-group input{
+    width:100%;
+    padding:13px 42px 13px 14px;
+    border:2px solid #ede3fc;
+    border-radius:12px;
+    font-family:'Cairo',sans-serif;
     font-size:14px;
+    color:#3d1a6e;
+    outline:none;
+    transition:border-color 0.2s;
+    background:#faf8ff;
 }
 
-@keyframes alertFade{
-    from{transform:scale(0.85);opacity:0;}
-    to{transform:scale(1);opacity:1;}
+.input-group input:focus{
+    border-color:#7b3fe4;
+    background:#fff;
 }
 
-.fade-out{
-    opacity:0;
-    transition:opacity 0.5s;
+.input-group input::placeholder{color:#bbb;}
+
+.login-btn{
+    width:100%;
+    padding:13px;
+    border:none;
+    border-radius:12px;
+    background:linear-gradient(135deg,#7b3fe4,#a066f5);
+    color:#fff;
+    font-family:'Cairo',sans-serif;
+    font-weight:700;
+    font-size:15px;
+    cursor:pointer;
+    margin-top:6px;
+    box-shadow:0 6px 18px rgba(123,63,228,0.35);
+    transition:opacity 0.2s, transform 0.2s;
 }
+
+.login-btn:hover{opacity:0.9;transform:translateY(-1px);}
+.login-btn:active{transform:translateY(0);}
+.login-btn:disabled{opacity:0.6;cursor:not-allowed;transform:none;}
+
+.error-msg{
+    color:#d32f2f;
+    font-size:13px;
+    margin-top:10px;
+    background:#fef2f2;
+    padding:8px 12px;
+    border-radius:8px;
+    display:none;
+}
+
+.error-msg.show{display:block;}
 
 /* ================= COMING SOON MODAL ================= */
 .coming-modal{
@@ -276,7 +356,7 @@ footer span{color:#7b3fe4;font-weight:700;}
     max-width:380px;
     text-align:center;
     box-shadow:0 20px 50px rgba(0,0,0,0.2);
-    animation:alertFade 0.35s ease;
+    animation:modalIn 0.35s ease;
     border-top:5px solid #ff9800;
 }
 
@@ -301,6 +381,9 @@ footer span{color:#7b3fe4;font-weight:700;}
 
 .modal-close:hover{opacity:0.9;}
 
+/* hidden by default — shown after login */
+#mainContent{display:none;}
+
 /* ================= RESPONSIVE ================= */
 @media(max-width:480px){
     .cards{grid-template-columns:1fr;}
@@ -311,11 +394,46 @@ footer span{color:#7b3fe4;font-weight:700;}
 
 <body>
 
+<!-- LOGIN MODAL -->
+<div id="loginOverlay" class="login-overlay">
+    <div class="login-modal">
+        <img src="img/we-core.png" class="modal-logo" alt="WE-Core Logo" onerror="this.style.display='none'">
+        <h3>WE-Core</h3>
+        <div class="modal-sub">سجّل دخولك للمتابعة</div>
+
+        <div class="input-group">
+            <i class="fa-solid fa-envelope"></i>
+            <input type="email" id="emailInput" placeholder="البريد الإلكتروني" autocomplete="email">
+        </div>
+
+        <div class="input-group">
+            <i class="fa-solid fa-lock"></i>
+            <input type="password" id="passwordInput" placeholder="كلمة المرور" autocomplete="current-password">
+        </div>
+
+        <button class="login-btn" id="loginBtn" onclick="handleLogin()">
+            <i class="fa-solid fa-right-to-bracket"></i> تسجيل الدخول
+        </button>
+
+        <div class="error-msg" id="errorMsg"></div>
+    </div>
+</div>
+
+<!-- MAIN CONTENT (hidden until login) -->
+<div id="mainContent">
+
 <!-- HEADER -->
 <div class="header">
     <img src="img/we-core.png" class="logo" alt="WE-Core Logo">
     <div class="main-title">WE-Core</div>
     <div class="sub-title">Powered By Mohand Hassan – From Abassia Store</div>
+    <div class="user-bar">
+        <i class="fa-solid fa-user" style="color:#fff;font-size:13px;"></i>
+        <span id="userEmail">-</span>
+        <button class="logout-btn" onclick="handleLogout()">
+            <i class="fa-solid fa-right-from-bracket"></i> خروج
+        </button>
+    </div>
 </div>
 
 <!-- CARDS -->
@@ -384,22 +502,7 @@ footer span{color:#7b3fe4;font-weight:700;}
 </footer>
 </div>
 
-<!-- Remedy Alert -->
-<div id="overlay" class="overlay">
-    <div class="alert-modal">
-        <div class="modal-icon"><i class="fa-solid fa-circle-check"></i></div>
-        <h2>Update</h2>
-        <h3>تم إضافة صفحة Remedy</h3>
-        <p>مع إضافة معظم التيكت المستخدمة</p>
-        <h3>تم اضافه Ai Agent</h3>
-        <p>بساعده في معرفة الانظمة و معرفه العقود و مسارات ال Remedy</p>
-        <h3>تم اضافه كورس Soft-skils</h3>
-        <div class="countdown">
-            سيتم الإغلاق خلال <span id="count">5</span> ثواني
-        </div>
-    </div>
-</div>
-
+</div><!-- end mainContent -->
 
 <!-- Coming Soon Modal -->
 <div id="comingSoonModal" class="coming-modal">
@@ -411,41 +514,102 @@ footer span{color:#7b3fe4;font-weight:700;}
     </div>
 </div>
 
-<script>
-/* ===== Remedy Countdown ===== */
-let timeLeft = 5;
-const countElement = document.getElementById("count");
-const overlay = document.getElementById("overlay");
+<!-- Supabase SDK -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-const timer = setInterval(()=>{
-    timeLeft--;
-    countElement.textContent = timeLeft;
-    if(timeLeft <= 0){
-        clearInterval(timer);
-        overlay.classList.add("fade-out");
-        setTimeout(()=>{ overlay.style.display="none"; }, 500);
+<script>
+/* ===== Supabase Init ===== */
+const SUPABASE_URL  = 'https://iygwhapcpdmsasqlfelv.supabase.co';
+const SUPABASE_KEY  = 'sb_publishable_rD9naqrpu1dI-iwchAS0GQ_JkgGysqP';
+const { createClient } = supabase;
+const sb = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+/* ===== UI helpers ===== */
+const loginOverlay = document.getElementById('loginOverlay');
+const mainContent  = document.getElementById('mainContent');
+const userEmailEl  = document.getElementById('userEmail');
+const loginBtn     = document.getElementById('loginBtn');
+const errorMsg     = document.getElementById('errorMsg');
+
+function showError(msg){
+    errorMsg.textContent = msg;
+    errorMsg.classList.add('show');
+}
+function hideError(){
+    errorMsg.classList.remove('show');
+}
+
+function showApp(user){
+    loginOverlay.style.display = 'none';
+    mainContent.style.display  = 'block';
+    userEmailEl.textContent    = user.email;
+}
+
+/* ===== Check existing session on load ===== */
+(async ()=>{
+    const { data:{ session } } = await sb.auth.getSession();
+    if(session){
+        showApp(session.user);
     }
-}, 1000);
+})();
+
+/* ===== Login ===== */
+async function handleLogin(){
+    hideError();
+    const email    = document.getElementById('emailInput').value.trim();
+    const password = document.getElementById('passwordInput').value;
+
+    if(!email || !password){
+        showError('من فضلك أدخل البريد الإلكتروني وكلمة المرور');
+        return;
+    }
+
+    loginBtn.disabled   = true;
+    loginBtn.innerHTML  = '<i class="fa-solid fa-spinner fa-spin"></i> جاري الدخول...';
+
+    const { data, error } = await sb.auth.signInWithPassword({ email, password });
+
+    if(error){
+        loginBtn.disabled  = false;
+        loginBtn.innerHTML = '<i class="fa-solid fa-right-to-bracket"></i> تسجيل الدخول';
+        showError('البريد الإلكتروني أو كلمة المرور غير صحيحة');
+        return;
+    }
+
+    showApp(data.user);
+}
+
+/* allow Enter key */
+document.getElementById('passwordInput').addEventListener('keydown', e=>{
+    if(e.key==='Enter') handleLogin();
+});
+document.getElementById('emailInput').addEventListener('keydown', e=>{
+    if(e.key==='Enter') document.getElementById('passwordInput').focus();
+});
+
+/* ===== Logout ===== */
+async function handleLogout(){
+    await sb.auth.signOut();
+    mainContent.style.display  = 'none';
+    loginOverlay.style.display = 'flex';
+    document.getElementById('emailInput').value    = '';
+    document.getElementById('passwordInput').value = '';
+    loginBtn.disabled  = false;
+    loginBtn.innerHTML = '<i class="fa-solid fa-right-to-bracket"></i> تسجيل الدخول';
+    hideError();
+}
 
 /* ===== Coming Soon ===== */
 function showComingSoonModal(){
-    document.getElementById("comingSoonModal").classList.add("active");
+    document.getElementById('comingSoonModal').classList.add('active');
 }
-
 function closeModal(){
-    document.getElementById("comingSoonModal").classList.remove("active");
+    document.getElementById('comingSoonModal').classList.remove('active');
 }
-   
 
+/* ===== Chatbase ===== */
 (function(){if(!window.chatbase||window.chatbase("getState")!=="initialized"){window.chatbase=(...arguments)=>{if(!window.chatbase.q){window.chatbase.q=[]}window.chatbase.q.push(arguments)};window.chatbase=new Proxy(window.chatbase,{get(target,prop){if(prop==="q"){return target.q}return(...args)=>target(prop,...args)}})}const onLoad=function(){const script=document.createElement("script");script.src="https://www.chatbase.co/embed.min.js";script.id="sw8mK5pWZt9W0PA6VdFfp";script.domain="www.chatbase.co";document.body.appendChild(script)};if(document.readyState==="complete"){onLoad()}else{window.addEventListener("load",onLoad)}})();
 </script>
 
 </body>
 </html>
-
-
-
-
-
-
-
