@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>عرض بقات الشحن الإضافية - رمضان 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&family=Tajawal:wght@300;400;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --teal: #0ABFAA;
+    --teal-dark: #078A79;
+    --teal-light: #5EEADB;
+    --gold: #F0C040;
+    --gold-dim: #C9A030;
+    --dark: #030F0E;
+    --dark2: #071A18;
+    --purple: #7B2FBE;
+    --white: #FFFFFF;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Cairo', sans-serif;
+    background: var(--dark);
+    color: var(--white);
+    overflow-x: hidden;
+    direction: rtl;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      radial-gradient(1px 1px at 10% 10%, rgba(255,255,255,0.4) 0%, transparent 100%),
+      radial-gradient(1.5px 1.5px at 25% 40%, rgba(10,191,170,0.5) 0%, transparent 100%),
+      radial-gradient(1px 1px at 50% 5%, rgba(255,255,255,0.3) 0%, transparent 100%),
+      radial-gradient(2px 2px at 70% 20%, rgba(240,192,64,0.6) 0%, transparent 100%),
+      radial-gradient(1px 1px at 88% 55%, rgba(255,255,255,0.3) 0%, transparent 100%),
+      radial-gradient(1px 1px at 15% 80%, rgba(10,191,170,0.4) 0%, transparent 100%),
+      radial-gradient(1.5px 1.5px at 60% 90%, rgba(240,192,64,0.4) 0%, transparent 100%),
+      radial-gradient(1px 1px at 40% 70%, rgba(255,255,255,0.25) 0%, transparent 100%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* HERO */
+  .hero {
+    min-height: 80vh;
+    background:
+      radial-gradient(ellipse at 50% -10%, rgba(10,191,170,0.45) 0%, transparent 60%),
+      radial-gradient(ellipse at 0% 100%, rgba(240,192,64,0.1) 0%, transparent 50%),
+      linear-gradient(180deg, #030F0E 0%, #071A18 60%, #030F0E 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    position: relative;
+    padding: 3rem 1.5rem 5rem;
+    overflow: hidden;
+  }
+
+  /* Moon */
+  .moon {
+    position: absolute;
+    top: 30px; left: 50px;
+    width: 70px; height: 70px;
+    border-radius: 50%;
+    background: var(--gold);
+    box-shadow: 0 0 40px rgba(240,192,64,0.6), 0 0 80px rgba(240,192,64,0.25);
+    animation: moonGlow 3s ease-in-out infinite alternate;
+  }
+  .moon::after {
+    content: '';
+    position: absolute;
+    top: -6px; left: 12px;
+    width: 62px; height: 62px;
+    border-radius: 50%;
+    background: #071A18;
+  }
+  @keyframes moonGlow {
+    from { box-shadow: 0 0 30px rgba(240,192,64,0.5), 0 0 60px rgba(240,192,64,0.2); }
+    to   { box-shadow: 0 0 60px rgba(240,192,64,0.9), 0 0 120px rgba(240,192,64,0.4); }
+  }
+
+  /* Lanterns */
+  .lantern { position: absolute; top: 0; transform-origin: top center; animation: swing 4s ease-in-out infinite alternate; }
+  .lantern:nth-child(2) { right: 60px; }
+  .lantern:nth-child(3) { right: 155px; animation-delay: 1.2s; }
+  @keyframes swing {
+    from { transform: rotate(-7deg); }
+    to   { transform: rotate(7deg); }
+  }
+  .l-rope   { width: 2px; height: 60px; background: linear-gradient(var(--gold-dim), rgba(201,160,48,0.2)); margin: 0 auto; }
+  .l-top    { width: 28px; height: 8px; background: var(--gold-dim); border-radius: 4px; margin: 0 auto; }
+  .l-body   { width: 32px; height: 52px; background: linear-gradient(135deg, var(--gold), var(--teal-dark)); border-radius: 6px 6px 14px 14px; box-shadow: 0 0 18px rgba(10,191,170,0.6); margin: 0 auto; }
+  .l-bottom { width: 4px; height: 10px; background: var(--gold-dim); margin: 0 auto; border-radius: 2px; }
+
+  .badge {
+    background: linear-gradient(135deg, var(--teal-dark), var(--teal));
+    color: #030F0E;
+    font-weight: 800;
+    font-size: 0.8rem;
+    padding: 0.3rem 1.4rem;
+    border-radius: 50px;
+    letter-spacing: 2px;
+    margin-bottom: 1.2rem;
+    animation: fadeUp 0.5s ease both;
+  }
+
+  .hero-eyebrow {
+    font-family: 'Tajawal', sans-serif;
+    font-size: clamp(0.9rem, 2vw, 1.2rem);
+    font-weight: 300;
+    color: var(--teal-light);
+    letter-spacing: 5px;
+    margin-bottom: 0.4rem;
+    animation: fadeUp 0.6s ease 0.1s both;
+  }
+
+  .hero-title {
+    font-family: 'Tajawal', sans-serif;
+    font-size: clamp(2.5rem, 8vw, 6rem);
+    font-weight: 900;
+    line-height: 1;
+    background: linear-gradient(135deg, var(--gold) 0%, #FFF8D0 50%, var(--gold-dim) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 0.6rem;
+    animation: fadeUp 0.6s ease 0.15s both;
+  }
+
+  .hero-sub {
+    font-size: clamp(0.95rem, 2.5vw, 1.2rem);
+    color: rgba(255,255,255,0.6);
+    max-width: 540px;
+    line-height: 1.8;
+    margin-bottom: 2.5rem;
+    animation: fadeUp 0.6s ease 0.2s both;
+  }
+
+  .hero-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    background: rgba(10,191,170,0.1);
+    border: 1px solid rgba(10,191,170,0.35);
+    border-radius: 50px;
+    padding: 0.7rem 1.8rem;
+    color: var(--teal-light);
+    font-size: 0.95rem;
+    font-weight: 600;
+    animation: fadeUp 0.6s ease 0.25s both;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(25px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* LAYOUT */
+  .container { max-width: 1080px; margin: 0 auto; padding: 0 1.5rem; position: relative; z-index: 1; }
+  section { padding: 4rem 0; }
+  .divider { width: 100%; height: 1px; background: linear-gradient(90deg, transparent, rgba(10,191,170,0.25), transparent); }
+
+  .section-header { text-align: center; margin-bottom: 2.5rem; }
+  .section-title {
+    font-family: 'Tajawal', sans-serif;
+    font-size: clamp(1.6rem, 4vw, 2.5rem);
+    font-weight: 800;
+    color: var(--teal-light);
+  }
+  .section-line { width: 70px; height: 3px; background: linear-gradient(90deg, transparent, var(--teal), transparent); margin: 0.5rem auto 0; }
+
+  /* OFFER DESC */
+  .offer-desc {
+    background: linear-gradient(135deg, rgba(10,191,170,0.1), rgba(7,138,121,0.15));
+    border: 1px solid rgba(10,191,170,0.3);
+    border-radius: 20px;
+    padding: 2.5rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .offer-desc::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, var(--teal), transparent);
+  }
+  .offer-desc .big-icon { font-size: 3rem; margin-bottom: 1rem; display: block; }
+  .offer-desc p { font-size: 1.1rem; color: rgba(255,255,255,0.85); line-height: 1.9; max-width: 650px; margin: 0 auto; }
+  .offer-desc p strong { color: var(--teal-light); }
+  .offer-desc p .gold { color: var(--gold); }
+
+  /* PACKAGES GRID */
+  .packages-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 1.3rem;
+  }
+
+  .pkg-card {
+    background: linear-gradient(145deg, rgba(10,191,170,0.07), rgba(3,15,14,0.8));
+    border: 1px solid rgba(10,191,170,0.2);
+    border-radius: 18px;
+    padding: 1.8rem 1.5rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  .pkg-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, var(--teal), transparent);
+  }
+  .pkg-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 20px 50px rgba(10,191,170,0.15);
+  }
+
+  .pkg-card .pkg-name {
+    font-family: 'Tajawal', sans-serif;
+    font-size: 1.3rem;
+    font-weight: 800;
+    color: var(--teal-light);
+    margin-bottom: 0.5rem;
+  }
+  .pkg-card .pkg-size {
+    font-size: 2.2rem;
+    font-weight: 900;
+    color: var(--white);
+    line-height: 1;
+    margin-bottom: 0.2rem;
+  }
+  .pkg-card .pkg-size span { font-size: 1rem; font-weight: 400; color: rgba(255,255,255,0.5); }
+
+  .pkg-card .pkg-validity {
+    font-size: 0.82rem;
+    color: rgba(255,255,255,0.45);
+    margin-bottom: 1.2rem;
+  }
+
+  .price-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 0.5rem;
+  }
+  .price-box {
+    flex: 1;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(10,191,170,0.15);
+    border-radius: 10px;
+    padding: 0.6rem 0.5rem;
+  }
+  .price-box .plabel { font-size: 0.7rem; color: rgba(255,255,255,0.4); margin-bottom: 0.2rem; }
+  .price-box .pvalue { font-size: 1rem; font-weight: 700; color: var(--gold); }
+  .price-box.notax .pvalue { color: rgba(255,255,255,0.8); }
+
+  /* SUBSCRIPTION */
+  .sub-ways { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1.2rem; }
+  .sub-way {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(10,191,170,0.18);
+    border-radius: 16px;
+    padding: 1.8rem 1.2rem;
+    text-align: center;
+    transition: all 0.3s;
+    cursor: pointer;
+  }
+  .sub-way:hover { background: rgba(10,191,170,0.08); border-color: var(--teal); transform: scale(1.04); }
+  .sub-way .icon { font-size: 2.2rem; margin-bottom: 0.6rem; display: block; }
+  .sub-way .name { font-weight: 700; color: var(--teal-light); font-size: 0.95rem; }
+
+  /* TERMS */
+  .terms-list { display: flex; flex-direction: column; gap: 1rem; }
+  .term-card {
+    background: rgba(255,255,255,0.02);
+    border: 1px solid rgba(10,191,170,0.15);
+    border-right: 3px solid var(--teal);
+    border-radius: 0 14px 14px 0;
+    padding: 1.1rem 1.3rem;
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+    transition: background 0.25s;
+  }
+  .term-card:hover { background: rgba(10,191,170,0.06); }
+  .term-icon { font-size: 1.4rem; flex-shrink: 0; margin-top: 3px; }
+  .term-text { font-size: 0.93rem; color: rgba(255,255,255,0.8); line-height: 1.7; }
+  .term-text strong { color: var(--teal-light); display: block; margin-bottom: 0.2rem; }
+
+  /* DATE BANNER */
+  .date-banner {
+    background: linear-gradient(135deg, rgba(10,191,170,0.15), rgba(7,138,121,0.2));
+    border: 1px solid rgba(10,191,170,0.3);
+    border-radius: 16px;
+    padding: 1.5rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    text-align: center;
+    flex-wrap: wrap;
+  }
+  .date-banner .icon { font-size: 2rem; }
+  .date-banner .text { font-size: 1.1rem; color: rgba(255,255,255,0.8); }
+  .date-banner .text strong { color: var(--gold); font-size: 1.3rem; }
+
+  /* FOOTER */
+  footer {
+    background: linear-gradient(0deg, rgba(10,191,170,0.05), transparent);
+    border-top: 1px solid rgba(10,191,170,0.12);
+    text-align: center;
+    padding: 2.5rem 1.5rem;
+    position: relative; z-index: 1;
+  }
+  .footer-logo { font-family: 'Tajawal', sans-serif; font-size: 1.8rem; font-weight: 900; color: var(--teal); margin-bottom: 0.3rem; }
+  footer p { color: rgba(255,255,255,0.3); font-size: 0.85rem; }
+
+  .fade-in { opacity: 0; transform: translateY(20px); transition: opacity 0.7s ease, transform 0.7s ease; }
+  .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+  @media(max-width: 640px) {
+    .moon { width: 50px; height: 50px; left: 15px; top: 15px; }
+    .moon::after { width: 44px; height: 44px; top: -4px; left: 9px; }
+    .lantern { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="moon"></div>
+  <div class="lantern">
+    <div class="l-rope"></div><div class="l-top"></div><div class="l-body"></div><div class="l-bottom"></div>
+  </div>
+  <div class="lantern">
+    <div class="l-rope"></div><div class="l-top"></div><div class="l-body"></div><div class="l-bottom"></div>
+  </div>
+
+  <div class="badge">Ramadan Top-up Offer</div>
+  <div class="hero-eyebrow">عرض بقات الشحن الإضافية</div>
+  <h1 class="hero-title">رمضان كريم</h1>
+  <p class="hero-sub">اشحن جيجاباتيك بنفس السعر واستمتع بالإنترنت طوال الشهر الكريم</p>
+  <div class="hero-tag">📅 ساري حتى 20 مارس 2026</div>
+</div>
+
+<!-- OFFER DESC -->
+<div class="container">
+  <section class="fade-in">
+    <div class="section-header">
+      <h2 class="section-title">التعريف بالعرض</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="offer-desc">
+      <span class="big-icon">💡</span>
+      <p>
+        هو عرض متاح لفترة <strong>محدودة</strong> يمنح العملاء جيجابايت إضافية عند شحن بعض الباقات الإضافية بنفس السعر.<br>
+        يحصل العميل على هذه الجيجابايتس <span class="gold">تلقائياً</span> بمجرد إتمام عملية الشحن.
+      </p>
+    </div>
+  </section>
+</div>
+
+<div class="divider"></div>
+
+<!-- PACKAGES -->
+<div class="container">
+  <section class="fade-in">
+    <div class="section-header">
+      <h2 class="section-title">تفاصيل الباقات</h2>
+      <div class="section-line"></div>
+      <p style="color:rgba(255,255,255,0.4); margin-top:0.7rem; font-size:0.88rem;">جميع الباقات بصلاحية 30 يوم</p>
+    </div>
+    <div class="packages-grid">
+
+      <div class="pkg-card">
+        <div class="pkg-name">Top-up</div>
+        <div class="pkg-size">62 <span>GB</span></div>
+        <div class="pkg-validity">📅 30 يوم</div>
+        <div class="price-row">
+          <div class="price-box">
+            <div class="plabel">بالضريبة</div>
+            <div class="pvalue">119.70 LE</div>
+          </div>
+          <div class="price-box notax">
+            <div class="plabel">بدون ضريبة</div>
+            <div class="pvalue">105 LE</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="pkg-card">
+        <div class="pkg-name">Top-up</div>
+        <div class="pkg-size">125 <span>GB</span></div>
+        <div class="pkg-validity">📅 30 يوم</div>
+        <div class="price-row">
+          <div class="price-box">
+            <div class="plabel">بالضريبة</div>
+            <div class="pvalue">193.80 LE</div>
+          </div>
+          <div class="price-box notax">
+            <div class="plabel">بدون ضريبة</div>
+            <div class="pvalue">170 LE</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="pkg-card">
+        <div class="pkg-name">Giga Tank</div>
+        <div class="pkg-size">500 <span>GB</span></div>
+        <div class="pkg-validity">📅 30 يوم</div>
+        <div class="price-row">
+          <div class="price-box">
+            <div class="plabel">بالضريبة</div>
+            <div class="pvalue">478.80 LE</div>
+          </div>
+          <div class="price-box notax">
+            <div class="plabel">بدون ضريبة</div>
+            <div class="pvalue">420 LE</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="pkg-card">
+        <div class="pkg-name">Giga Tank</div>
+        <div class="pkg-size">5000 <span>GB</span></div>
+        <div class="pkg-validity">📅 30 يوم</div>
+        <div class="price-row">
+          <div class="price-box">
+            <div class="plabel">بالضريبة</div>
+            <div class="pvalue">3,705 LE</div>
+          </div>
+          <div class="price-box notax">
+            <div class="plabel">بدون ضريبة</div>
+            <div class="pvalue">3,250 LE</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+</div>
+
+<div class="divider"></div>
+
+<!-- SUBSCRIPTION -->
+<div class="container">
+  <section class="fade-in" style="text-align:center;">
+    <div class="section-header">
+      <h2 class="section-title">طريقة الاشتراك</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="sub-ways">
+      <div class="sub-way"><span class="icon">🔔</span><div class="name">اشتراك تلقائي بعد انتهاء الباقة</div></div>
+      <div class="sub-way"><span class="icon">🏪</span><div class="name">الفروع</div></div>
+      <div class="sub-way"><span class="icon">📱</span><div class="name">تطبيق My WE</div></div>
+      <div class="sub-way"><span class="icon">💳</span><div class="name">الدفع الإلكتروني</div></div>
+    </div>
+  </section>
+</div>
+
+<div class="divider"></div>
+
+<!-- TERMS -->
+<div class="container">
+  <section class="fade-in">
+    <div class="section-header">
+      <h2 class="section-title">الشروط والأحكام</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="terms-list">
+      <div class="term-card">
+        <span class="term-icon">🔄</span>
+        <div class="term-text">
+          <strong>عدم التجديد التلقائي</strong>
+          لا تُجدَّد الباقة تلقائياً بعد انتهاء فترة الاشتراك.
+        </div>
+      </div>
+      <div class="term-card">
+        <span class="term-icon">✅</span>
+        <div class="term-text">
+          <strong>صلاحية الباقة الأساسية</strong>
+          لا تُؤثر الباقات الإضافية على صلاحية الباقة الأساسية أو أي باقة أخرى.
+        </div>
+      </div>
+      <div class="term-card">
+        <span class="term-icon">📦</span>
+        <div class="term-text">
+          <strong>مدة العرض محدودة</strong>
+          العرض متاح على الباقات المحددة فقط لمدة واحدة.
+        </div>
+      </div>
+      <div class="term-card">
+        <span class="term-icon">👥</span>
+        <div class="term-text">
+          <strong>المشتركون في باقات أخرى</strong>
+          العملاء الذين تعذّر عليهم الحصول على العرض تلقائياً يمكنهم الاشتراك في باقات <strong>Ramadan Top-up</strong>.
+        </div>
+      </div>
+      <div class="term-card">
+        <span class="term-icon">📊</span>
+        <div class="term-text">
+          <strong>أولوية الاستهلاك</strong>
+          تتبع نفس أولوية الشحن — الباقات الإضافية الحالية أولى في الاستهلاك، تليها الباقة الأساسية وباقات الشحن الإضافية.
+        </div>
+      </div>
+      <div class="term-card">
+        <span class="term-icon">💰</span>
+        <div class="term-text">
+          <strong>رصيد الباقة الأساسية</strong>
+          يجب أن تكون الباقة الأساسية مفعّلة لاستفادة العميل من الجيجابايتس المتبقية في باقة <strong>Ramadan Top-up</strong>.
+        </div>
+      </div>
+      <div class="term-card">
+        <span class="term-icon">🔃</span>
+        <div class="term-text">
+          <strong>ترحيل الجيجابايتس</strong>
+          بعد انتهاء صلاحية الباقة لا يتم ترحيل أي جيجابايتس متبقية.
+        </div>
+      </div>
+      <div class="term-card">
+        <span class="term-icon">➕</span>
+        <div class="term-text">
+          <strong>شحن أكثر من مرة</strong>
+          يمكن للعميل الاشتراك في باقات شحن إضافية مع <strong>Ramadan Top-up</strong> في نفس الوقت سواء كانت تُجدَّد تلقائياً أو مرة واحدة.
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<div class="divider"></div>
+
+<!-- DATE BANNER -->
+<div class="container">
+  <section class="fade-in">
+    <div class="date-banner">
+      <span class="icon">📅</span>
+      <div class="text">
+        العرض ساري حتى <strong>20 مارس 2026</strong> — لا تفوّت الفرصة!
+      </div>
+    </div>
+  </section>
+</div>
+
+<footer>
+  <div class="footer-logo">WE Internet</div>
+  <p>عرض بقات الشحن الإضافية • رمضان 2026</p>
+  <p style="margin-top:0.4rem;">للاستفسار تواصل مع خدمة العملاء</p>
+</footer>
+
+<script>
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(el => { if (el.isIntersecting) el.target.classList.add('visible'); });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
