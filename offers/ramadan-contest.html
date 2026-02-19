@@ -1,0 +1,969 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مسابقة فوازير رمضان 2026 | WE</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #7B2CBF;
+            --primary-dark: #5A189A;
+            --secondary: #FF006E;
+            --accent: #FFB627;
+            --gold: #FFD700;
+            --bg: #F8F4FF;
+            --text: #1A1A2E;
+            --white: #FFFFFF;
+            --shadow: rgba(123, 44, 191, 0.15);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Cairo', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.8;
+            overflow-x: hidden;
+        }
+
+        .animated-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+            background: linear-gradient(135deg, #f8f4ff 0%, #fff 50%, #fef7ff 100%);
+        }
+
+        .star {
+            position: absolute;
+            font-size: 1.5rem;
+            opacity: 0.1;
+            animation: twinkle 3s ease-in-out infinite;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.1; transform: scale(1); }
+            50% { opacity: 0.3; transform: scale(1.2); }
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            padding: 3rem 0;
+            box-shadow: 0 10px 40px var(--shadow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: '🌙';
+            position: absolute;
+            font-size: 20rem;
+            opacity: 0.05;
+            top: -6rem;
+            right: -4rem;
+            animation: rotate 40s linear infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        h1 {
+            font-family: 'Amiri', serif;
+            font-size: 3.5rem;
+            font-weight: 700;
+            color: var(--white);
+            margin-bottom: 1rem;
+            text-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            animation: slideDown 0.8s ease-out;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .subtitle {
+            font-size: 1.4rem;
+            color: rgba(255, 255, 255, 0.95);
+            font-weight: 400;
+            animation: slideDown 0.8s ease-out 0.2s both;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .prize-section {
+            background: linear-gradient(135deg, var(--secondary) 0%, #D90059 100%);
+            color: var(--white);
+            padding: 3rem;
+            text-align: center;
+            margin: -3rem auto 3rem;
+            border-radius: 30px;
+            box-shadow: 0 20px 60px rgba(255, 0, 110, 0.4);
+            position: relative;
+            overflow: hidden;
+            animation: fadeInUp 1s ease-out 0.3s both;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .prize-section::before {
+            content: '🏆';
+            position: absolute;
+            font-size: 15rem;
+            opacity: 0.1;
+            top: -3rem;
+            left: -3rem;
+        }
+
+        .prize-amount {
+            font-size: 4rem;
+            font-weight: 900;
+            margin: 1rem 0;
+            text-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .prize-text {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        section {
+            background: var(--white);
+            border-radius: 25px;
+            padding: 3rem;
+            margin-bottom: 2.5rem;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+            animation: fadeInUp 1s ease-out both;
+            position: relative;
+            overflow: hidden;
+        }
+
+        section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 200px;
+            height: 200px;
+            background: linear-gradient(135deg, var(--primary) 0%, transparent 70%);
+            opacity: 0.03;
+            border-radius: 0 25px 0 100%;
+        }
+
+        h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        h2::before {
+            content: '';
+            width: 6px;
+            height: 50px;
+            background: linear-gradient(180deg, var(--secondary) 0%, var(--accent) 100%);
+            border-radius: 10px;
+        }
+
+        .details-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .detail-card {
+            background: linear-gradient(135deg, #f8f4ff 0%, #fff 100%);
+            padding: 2rem;
+            border-radius: 20px;
+            border: 2px solid rgba(123, 44, 191, 0.1);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .detail-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(123, 44, 191, 0.2);
+            border-color: var(--primary);
+        }
+
+        .detail-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .detail-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .detail-text {
+            font-size: 1.1rem;
+            color: var(--text);
+            line-height: 1.8;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 2rem;
+            overflow: hidden;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .comparison-table thead {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: var(--white);
+        }
+
+        .comparison-table th {
+            padding: 1.5rem;
+            font-size: 1.3rem;
+            font-weight: 700;
+            text-align: right;
+        }
+
+        .comparison-table td {
+            padding: 1.5rem;
+            border-bottom: 1px solid rgba(123, 44, 191, 0.1);
+            background: var(--white);
+        }
+
+        .comparison-table tr:hover td {
+            background: #f8f4ff;
+        }
+
+        .comparison-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .prize-breakdown {
+            background: linear-gradient(135deg, #fff8e1 0%, #fff 100%);
+            padding: 2.5rem;
+            border-radius: 20px;
+            border: 3px solid var(--gold);
+            margin-top: 2rem;
+        }
+
+        .prize-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            background: var(--white);
+            border-radius: 15px;
+            border-right: 5px solid var(--accent);
+            box-shadow: 0 3px 15px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .prize-item:hover {
+            transform: translateX(-5px);
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .prize-date {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .prize-value {
+            font-size: 1.5rem;
+            font-weight: 900;
+            color: var(--secondary);
+        }
+
+        .points-box {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .point-card {
+            text-align: center;
+            padding: 2.5rem 2rem;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: var(--white);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(123, 44, 191, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .point-card:hover {
+            transform: scale(1.05) rotate(2deg);
+        }
+
+        .point-value {
+            font-size: 3.5rem;
+            font-weight: 900;
+            margin-bottom: 0.5rem;
+        }
+
+        .point-label {
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        .steps-container {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .step {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            padding: 2rem;
+            background: linear-gradient(135deg, #f8f4ff 0%, #fff 100%);
+            border-radius: 20px;
+            border-right: 6px solid var(--accent);
+            transition: all 0.3s ease;
+        }
+
+        .step:hover {
+            transform: translateX(-10px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .step-number {
+            min-width: 70px;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            font-weight: 900;
+            color: var(--white);
+            background: linear-gradient(135deg, var(--secondary) 0%, var(--primary) 100%);
+            border-radius: 50%;
+            box-shadow: 0 5px 20px rgba(255, 0, 110, 0.3);
+        }
+
+        .step-content h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .step-content p {
+            font-size: 1.1rem;
+            color: var(--text);
+        }
+
+        .faq-item {
+            background: var(--white);
+            border: 2px solid rgba(123, 44, 191, 0.1);
+            border-radius: 15px;
+            margin-bottom: 1.5rem;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .faq-item:hover {
+            border-color: var(--primary);
+            box-shadow: 0 5px 20px rgba(123, 44, 191, 0.15);
+        }
+
+        .faq-question {
+            padding: 1.5rem 2rem;
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--primary);
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: linear-gradient(135deg, #f8f4ff 0%, #fff 100%);
+        }
+
+        .faq-question::after {
+            content: '▼';
+            font-size: 1rem;
+            transition: transform 0.3s ease;
+        }
+
+        .faq-question.active::after {
+            transform: rotate(180deg);
+        }
+
+        .faq-answer {
+            padding: 0 2rem;
+            max-height: 0;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .faq-answer.active {
+            padding: 1.5rem 2rem;
+            max-height: 500px;
+        }
+
+        .faq-answer p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: var(--text);
+        }
+
+        .cta-section {
+            text-align: center;
+            padding: 4rem 0;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 1.5rem 4rem;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--white);
+            background: linear-gradient(135deg, var(--secondary) 0%, var(--primary) 100%);
+            border: none;
+            border-radius: 50px;
+            text-decoration: none;
+            box-shadow: 0 10px 30px rgba(255, 0, 110, 0.4);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            animation: pulse-button 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse-button {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .cta-button:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 15px 40px rgba(255, 0, 110, 0.6);
+        }
+
+        footer {
+            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);
+            color: var(--white);
+            padding: 3rem 0;
+            text-align: center;
+            margin-top: 4rem;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .contact-info {
+            margin-top: 2rem;
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        .contact-item a {
+            color: var(--white);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .contact-item a:hover {
+            color: var(--accent);
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+
+            .subtitle {
+                font-size: 1.1rem;
+            }
+
+            h2 {
+                font-size: 2rem;
+            }
+
+            .prize-amount {
+                font-size: 3rem;
+            }
+
+            section {
+                padding: 2rem 1.5rem;
+            }
+
+            .details-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .step {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .comparison-table {
+                font-size: 0.9rem;
+            }
+
+            .comparison-table th,
+            .comparison-table td {
+                padding: 1rem;
+            }
+        }
+
+        .fade-in {
+            opacity: 0;
+            animation: fadeInUp 1s ease-out forwards;
+        }
+
+        .fade-in:nth-child(1) { animation-delay: 0.1s; }
+        .fade-in:nth-child(2) { animation-delay: 0.2s; }
+        .fade-in:nth-child(3) { animation-delay: 0.3s; }
+        .fade-in:nth-child(4) { animation-delay: 0.4s; }
+        .fade-in:nth-child(5) { animation-delay: 0.5s; }
+    </style>
+</head>
+<body>
+    <div class="animated-bg">
+        <span class="star" style="top: 10%; left: 20%;">✨</span>
+        <span class="star" style="top: 30%; left: 80%;">⭐</span>
+        <span class="star" style="top: 60%; left: 10%;">🌟</span>
+        <span class="star" style="top: 80%; left: 70%;">✨</span>
+        <span class="star" style="top: 20%; left: 50%;">⭐</span>
+    </div>
+
+    <header>
+        <div class="header-content">
+            <h1>🌙 عروض رمضان 2026 🌙</h1>
+            <p class="subtitle">مسابقة فوازير رمضان وجوائز</p>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="prize-section">
+            <p class="prize-text">الجائزة الكبرى</p>
+            <div class="prize-amount">20,000 جنيه مصري</div>
+            <p class="prize-text">🏆 اشترك الآن واربح 🏆</p>
+        </div>
+
+        <section class="fade-in">
+            <h2>📱 عن المسابقة</h2>
+            <div class="details-grid">
+                <div class="detail-card">
+                    <div class="detail-icon">🎬</div>
+                    <div class="detail-title">مسابقة كنوز</div>
+                    <div class="detail-text">مسابقة أسئلة دينية يومية لعملاء WE فقط، يجاوب العميل على أسئلة ويجمع نقاط للدخول في منافسة على جوائز نقدية.</div>
+                </div>
+                <div class="detail-card">
+                    <div class="detail-icon">🎭</div>
+                    <div class="detail-title">مسابقة فوازير رمضان</div>
+                    <div class="detail-text">مسابقة يومية عن المسلسلات العربية والعالمية خلال شهر رمضان، يجيب المشترك على الأسئلة ويجمع نقاط لزيادة فرص الفوز بالجائزة الكبرى.</div>
+                </div>
+            </div>
+        </section>
+
+        <section class="fade-in">
+            <h2>📝 كيفية الاشتراك</h2>
+            <div class="steps-container">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h3>كنوز</h3>
+                        <p>يرسل العميل رسالة تحتوي على رقم 1 إلى 2373 أو يشترك من الموقع عبر OTP</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h3>فوازير رمضان</h3>
+                        <p>للاشتراك أرسل الرقم 1 إلى 2304 وسيتم تفعيل الخدمة فوراً</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h3>ابدأ اللعب</h3>
+                        <p>أجب على الأسئلة اليومية واجمع النقاط لزيادة فرص الفوز</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="fade-in">
+            <h2>💰 سعر الخدمة والعروض</h2>
+            <div class="details-grid">
+                <div class="detail-card">
+                    <div class="detail-icon">🎁</div>
+                    <div class="detail-title">كنوز</div>
+                    <div class="detail-text">سعر الخدمة 3 جنيه يومياً يتم خصمها من رصيد الموبايل</div>
+                </div>
+                <div class="detail-card">
+                    <div class="detail-icon">🎉</div>
+                    <div class="detail-title">فوازير رمضان</div>
+                    <div class="detail-text">أول يوم مجاناً، ثم يتم خصم 5 جنيه يومياً بعد ذلك مع التجديد التلقائي</div>
+                </div>
+            </div>
+        </section>
+
+        <section class="fade-in">
+            <h2>❓ عدد الأسئلة يومياً</h2>
+            <div class="details-grid">
+                <div class="detail-card">
+                    <div class="detail-icon">📊</div>
+                    <div class="detail-title">كنوز</div>
+                    <div class="detail-text">5 أسئلة يومياً كحد أقصى</div>
+                </div>
+                <div class="detail-card">
+                    <div class="detail-icon">📈</div>
+                    <div class="detail-title">فوازير رمضان</div>
+                    <div class="detail-text">يجب الإجابة يومياً لزيادة النقاط</div>
+                </div>
+            </div>
+        </section>
+
+        <section class="fade-in">
+            <h2>🎯 احتساب النقاط</h2>
+            <div class="points-box">
+                <div class="point-card">
+                    <div class="point-value">20</div>
+                    <div class="point-label">نقطة للإجابة الصحيحة (كنوز)</div>
+                </div>
+                <div class="point-card">
+                    <div class="point-value">100</div>
+                    <div class="point-label">نقطة للإجابة الصحيحة (فوازير)</div>
+                </div>
+                <div class="point-card">
+                    <div class="point-value">5</div>
+                    <div class="point-label">نقاط للإجابة الخاطئة (كنوز)</div>
+                </div>
+                <div class="point-card">
+                    <div class="point-value">10</div>
+                    <div class="point-label">نقاط للإجابة الخاطئة (فوازير)</div>
+                </div>
+            </div>
+        </section>
+
+        <section class="fade-in">
+            <h2>🏆 تفاصيل الجوائز</h2>
+            <div class="prize-breakdown">
+                <h3 style="color: var(--primary); font-size: 1.8rem; margin-bottom: 2rem; text-align: center;">جوائز فوازير رمضان</h3>
+                <div class="prize-item">
+                    <div class="prize-date">يوم 25 فبراير 2026</div>
+                    <div class="prize-value">20,000 جنيه</div>
+                </div>
+                <div class="prize-item">
+                    <div class="prize-date">يوم 16 مارس 2026</div>
+                    <div class="prize-value">20,000 جنيه</div>
+                </div>
+                <div class="prize-item">
+                    <div class="prize-date">بعد 26 مارس 2026</div>
+                    <div class="prize-value">20,000 جنيه</div>
+                </div>
+                <div class="prize-item">
+                    <div class="prize-date">يوم 17 يونيو 2026</div>
+                    <div class="prize-value">20,000 جنيه</div>
+                </div>
+                <div class="prize-item" style="background: linear-gradient(135deg, var(--gold) 0%, #FFE55C 100%); border-right-color: var(--secondary);">
+                    <div class="prize-date" style="color: var(--primary-dark);">إجمالي الجوائز</div>
+                    <div class="prize-value" style="color: var(--primary-dark); font-size: 2rem;">80,000 جنيه مصري</div>
+                </div>
+            </div>
+        </section>
+
+        <section class="fade-in">
+            <h2>👥 العملاء المؤهلين</h2>
+            <div class="detail-card">
+                <div class="detail-icon">✅</div>
+                <div class="detail-title">من يمكنه الاشتراك؟</div>
+                <div class="detail-text" style="font-size: 1.2rem;">
+                    <strong>كنوز:</strong> عملاء WE فقط داخل مصر<br><br>
+                    <strong>فوازير رمضان:</strong> أي رقم WE، والنقاط تُحتسب لكل رقم على حدة
+                </div>
+            </div>
+        </section>
+
+        <section class="fade-in">
+            <h2>📊 مقارنة بين المسابقتين</h2>
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>التفاصيل</th>
+                        <th>مسابقة كنوز</th>
+                        <th>مسابقة فوازير رمضان</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>تعريف المسابقة</strong></td>
+                        <td>مسابقة أسئلة دينية يومية لعملاء WE فقط، يجاوب العميل على أسئلة ويجمع نقاط للدخول في منافسة على جوائز نقدية.</td>
+                        <td>هي مسابقة يومية عن المسلسلات العربية والعالمية خلال شهر رمضان، يجيب المشترك على الأسئلة ويجمع نقاط لزيادة فرص الفوز بالجائزة الكبرى.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>كيفية الاشتراك</strong></td>
+                        <td>يرسل العميل رسالة تحتوي على رقم 1 إلى 2373 أو يشترك من الموقع عبر OTP</td>
+                        <td>للاشتراك أرسل الرقم 1 إلى 2304 وسيتم تفعيل الخدمة فوراً</td>
+                    </tr>
+                    <tr>
+                        <td><strong>سعر الخدمة / العروض</strong></td>
+                        <td>سعر الخدمة 3 جنيه يومياً يتم خصمها من رصيد الموبايل</td>
+                        <td>أول يوم مجاناً، ثم يتم خصم 5 جنيه يومياً بعد ذلك مع التجديد التلقائي</td>
+                    </tr>
+                    <tr>
+                        <td><strong>عدد الأسئلة يومياً</strong></td>
+                        <td>5 أسئلة يومياً كحد أقصى</td>
+                        <td>يجب الإجابة يومياً لزيادة النقاط</td>
+                    </tr>
+                    <tr>
+                        <td><strong>احتساب النقاط</strong></td>
+                        <td>إجابة صحيحة 20 نقطة - إجابة خاطئة 5 نقاط (كل فرض يتم خصمه من الاشتراك يتحول إلى نقطة.)</td>
+                        <td>100 نقطة للإجابة الصحيحة و 10 نقاط للإجابة الخاطئة</td>
+                    </tr>
+                    <tr>
+                        <td><strong>الجوائز</strong></td>
+                        <td>الجائزة الكبرى هي 20,000 جنيه مصري</td>
+                        <td>20,000 جنيه يوم 25 فبراير 2026<br>20,000 جنيه يوم 16 مارس 2026<br>20,000 جنيه بعد 26 مارس 2026<br>20,000 جنيه يوم 17 يونيو 2026<br><strong>إجمالي الجوائز 80,000 جنيه مصري</strong></td>
+                    </tr>
+                    <tr>
+                        <td><strong>العملاء المؤهلين</strong></td>
+                        <td>عملاء WE فقط داخل مصر</td>
+                        <td>أي رقم WE، والنقاط تُحتسب لكل رقم على حدة.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>التواصل / شكاوى</strong></td>
+                        <td>يمكن التواصل عبر البريد الإلكتروني: support@wekonoz.com</td>
+                        <td>يمكن التواصل عبر البريد الإلكتروني: support@ngmaflam.com</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section class="fade-in">
+            <h2>❓ الأسئلة الشائعة</h2>
+            
+            <div class="faq-item">
+                <div class="faq-question">ما هي مسابقة فوازير رمضان؟</div>
+                <div class="faq-answer">
+                    <p>هي مسابقة يومية عن المسلسلات العربية والعالمية خلال شهر رمضان، يجيب المشترك على الأسئلة ويجمع نقاط لزيادة فرص الفوز بالجائزة الكبرى.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">كيف أشترك في الخدمة؟</div>
+                <div class="faq-answer">
+                    <p>للاشتراك أرسل الرقم 1 إلى 2304 وسيتم تفعيل الخدمة فوراً.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">هل يوجد عرض عند الاشتراك؟</div>
+                <div class="faq-answer">
+                    <p>نعم، بمجرد الاشتراك يحصل العميل على 20 وحدة هدية يمكن استخدامها دقائق أو رسائل أو إنترنت، ويتم إضافتها خلال مدة تصل إلى 3 أيام من تاريخ الاشتراك. كما يحصل العميل على 500 نقطة هدية ترحيبية.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">كم سعر الخدمة؟</div>
+                <div class="faq-answer">
+                    <p>أول يوم مجاناً، ثم يتم خصم 5 جنيه يومياً بعد ذلك مع التجديد التلقائي.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">هل يتم الخصم من الرصيد؟</div>
+                <div class="faq-answer">
+                    <p>نعم، يتم الخصم من رصيد الخط بعد انتهاء اليوم المجاني.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">كيف ألغي الاشتراك؟</div>
+                <div class="faq-answer">
+                    <p>لإلغاء الاشتراك أرسل UNSUB WV وسيتم إيقاف الخدمة فوراً.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">كيف أكسب في المسابقة؟</div>
+                <div class="faq-answer">
+                    <p>كل إجابة صحيحة تمنح نقاطاً، والمشترك صاحب أعلى عدد نقاط بنهاية المسابقة يفوز بالجائزة الكبرى.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">ما قيمة الجائزة؟</div>
+                <div class="faq-answer">
+                    <p>الجائزة الكبرى هي 20,000 جنيه مصري، مع إجمالي جوائز 80,000 جنيه مصري.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">متى سيتم إعلان الفائز؟</div>
+                <div class="faq-answer">
+                    <p>سيتم الإعلان عن الفائزين في التواريخ التالية: 25 فبراير، 16 مارس، 26 مارس، و17 يونيو 2026.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">كيف يستلم الفائز الجائزة؟</div>
+                <div class="faq-answer">
+                    <p>يتم تحويل قيمة الجائزة إلى محفظة WE الإلكترونية الخاصة بالفائز.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">هل يمكنني الفوز أكثر من مرة؟</div>
+                <div class="faq-answer">
+                    <p>لا يحق للفائز الفوز مرة أخرى إلا بعد مرور 12 شهر من تاريخ استلام الجائزة.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">هل يجب الاستمرار في الاشتراك طوال الشهر؟</div>
+                <div class="faq-answer">
+                    <p>الاستمرار في الاشتراك والإجابة على الأسئلة يومياً يزيد فرص الفوز.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">هل يمكن الاشتراك من أكثر من رقم؟</div>
+                <div class="faq-answer">
+                    <p>يمكن الاشتراك من أي رقم WE، ولكن يتم احتساب النقاط لكل رقم على حدة.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">ماذا يحدث إذا لم يتم الرد على اتصال إعلان الفوز؟</div>
+                <div class="faq-answer">
+                    <p>في حال عدم التواصل مع الفائز خلال 7 أيام يتم اختيار فائز بديل.</p>
+                </div>
+            </div>
+        </section>
+
+        <div class="cta-section">
+            <a href="sms:2304?body=1" class="cta-button">🚀 اشترك الآن في فوازير رمضان</a>
+            <br><br>
+            <a href="sms:2373?body=1" class="cta-button" style="background: linear-gradient(135deg, var(--accent) 0%, var(--primary) 100%);">⭐ اشترك الآن في كنوز</a>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <h3 style="font-size: 2rem; margin-bottom: 1rem;">تواصل معنا</h3>
+            <div class="contact-info">
+                <div class="contact-item">
+                    <span>📧</span>
+                    <span>فوازير رمضان: <a href="mailto:support@ngmaflam.com">support@ngmaflam.com</a></span>
+                </div>
+                <div class="contact-item">
+                    <span>📧</span>
+                    <span>كنوز: <a href="mailto:support@wekonoz.com">support@wekonoz.com</a></span>
+                </div>
+            </div>
+            <p style="margin-top: 2rem; opacity: 0.9;">© 2026 WE - جميع الحقوق محفوظة</p>
+        </div>
+    </footer>
+
+    <script>
+        document.querySelectorAll('.faq-question').forEach(question => {
+            question.addEventListener('click', () => {
+                const answer = question.nextElementSibling;
+                const isActive = question.classList.contains('active');
+                
+                document.querySelectorAll('.faq-question').forEach(q => {
+                    q.classList.remove('active');
+                    q.nextElementSibling.classList.remove('active');
+                });
+                
+                if (!isActive) {
+                    question.classList.add('active');
+                    answer.classList.add('active');
+                }
+            });
+        });
+
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('section, .detail-card, .step, .faq-item').forEach(el => {
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>

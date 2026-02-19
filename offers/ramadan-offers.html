@@ -1,0 +1,998 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>عروض رمضان 2026 - الشحن والتجديد | WE</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #7B2CBF;
+            --primary-dark: #5A189A;
+            --secondary: #FF006E;
+            --accent: #FFB627;
+            --green: #06D6A0;
+            --bg: #F8F4FF;
+            --text: #1A1A2E;
+            --white: #FFFFFF;
+            --shadow: rgba(123, 44, 191, 0.15);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Cairo', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.8;
+            overflow-x: hidden;
+        }
+
+        .animated-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: linear-gradient(135deg, #f8f4ff 0%, #fff 50%, #fef7ff 100%);
+        }
+
+        .star {
+            position: absolute;
+            font-size: 1.5rem;
+            opacity: 0.1;
+            animation: twinkle 3s ease-in-out infinite;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.1; transform: scale(1); }
+            50% { opacity: 0.3; transform: scale(1.2); }
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            padding: 3rem 0;
+            box-shadow: 0 10px 40px var(--shadow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: '🌙';
+            position: absolute;
+            font-size: 20rem;
+            opacity: 0.05;
+            top: -6rem;
+            right: -4rem;
+            animation: rotate 40s linear infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        h1 {
+            font-family: 'Amiri', serif;
+            font-size: 3.5rem;
+            font-weight: 700;
+            color: var(--white);
+            margin-bottom: 1rem;
+            text-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            animation: slideDown 0.8s ease-out;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .subtitle {
+            font-size: 1.4rem;
+            color: rgba(255, 255, 255, 0.95);
+            font-weight: 400;
+            animation: slideDown 0.8s ease-out 0.2s both;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
+
+        .offers-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .offer-card {
+            background: var(--white);
+            border-radius: 25px;
+            padding: 0;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            transition: all 0.3s ease;
+            animation: fadeInUp 1s ease-out both;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .offer-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+        }
+
+        .offer-header {
+            padding: 2.5rem;
+            color: var(--white);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .offer-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: pulse 3s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.1); opacity: 0.8; }
+        }
+
+        .charging-offer {
+            background: linear-gradient(135deg, var(--secondary) 0%, #D90059 100%);
+        }
+
+        .renewal-offer {
+            background: linear-gradient(135deg, var(--green) 0%, #05B385 100%);
+        }
+
+        .offer-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .offer-title {
+            font-size: 2.5rem;
+            font-weight: 900;
+            margin-bottom: 0.5rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .offer-code {
+            font-size: 2rem;
+            font-weight: 700;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 0.5rem 1.5rem;
+            border-radius: 50px;
+            display: inline-block;
+            margin-top: 1rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .offer-body {
+            padding: 2.5rem;
+        }
+
+        .offer-description {
+            font-size: 1.2rem;
+            color: var(--text);
+            line-height: 1.8;
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background: linear-gradient(135deg, #f8f4ff 0%, #fff 100%);
+            border-radius: 15px;
+            border-right: 5px solid var(--primary);
+        }
+
+        .benefits-list {
+            list-style: none;
+            margin: 2rem 0;
+        }
+
+        .benefits-list li {
+            padding: 1rem 1.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #f8f4ff 0%, #fff 100%);
+            border-radius: 15px;
+            border-right: 4px solid var(--accent);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .benefits-list li:hover {
+            transform: translateX(-5px);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .benefits-list li::before {
+            content: '✓';
+            font-size: 1.5rem;
+            font-weight: 900;
+            color: var(--green);
+            background: rgba(6, 214, 160, 0.1);
+            width: 35px;
+            height: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .how-to-section {
+            background: var(--white);
+            border-radius: 25px;
+            padding: 3rem;
+            margin-bottom: 3rem;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+        }
+
+        h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        h2::before {
+            content: '';
+            width: 6px;
+            height: 50px;
+            background: linear-gradient(180deg, var(--secondary) 0%, var(--accent) 100%);
+            border-radius: 10px;
+        }
+
+        .steps-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .step-card {
+            text-align: center;
+            padding: 2rem;
+            background: linear-gradient(135deg, #f8f4ff 0%, #fff 100%);
+            border-radius: 20px;
+            border: 2px solid rgba(123, 44, 191, 0.1);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .step-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary);
+            box-shadow: 0 15px 40px rgba(123, 44, 191, 0.2);
+        }
+
+        .step-number {
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            font-weight: 900;
+            color: var(--white);
+            background: linear-gradient(135deg, var(--secondary) 0%, var(--primary) 100%);
+            border-radius: 50%;
+            margin: 0 auto 1.5rem;
+            box-shadow: 0 5px 20px rgba(255, 0, 110, 0.3);
+        }
+
+        .step-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .step-description {
+            font-size: 1.1rem;
+            color: var(--text);
+            line-height: 1.8;
+        }
+
+        .comparison-section {
+            background: var(--white);
+            border-radius: 25px;
+            padding: 3rem;
+            margin-bottom: 3rem;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+        }
+
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .comparison-card {
+            background: linear-gradient(135deg, #f8f4ff 0%, #fff 100%);
+            border-radius: 20px;
+            padding: 2rem;
+            border: 2px solid rgba(123, 44, 191, 0.1);
+        }
+
+        .comparison-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 3px solid var(--accent);
+        }
+
+        .comparison-item {
+            padding: 1rem 0;
+            border-bottom: 1px solid rgba(123, 44, 191, 0.1);
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+        }
+
+        .comparison-item:last-child {
+            border-bottom: none;
+        }
+
+        .comparison-item strong {
+            color: var(--primary);
+            min-width: 120px;
+            font-size: 1.1rem;
+        }
+
+        .faq-section {
+            background: var(--white);
+            border-radius: 25px;
+            padding: 3rem;
+            margin-bottom: 3rem;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+        }
+
+        .faq-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .faq-column h3 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--secondary);
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .faq-item {
+            background: linear-gradient(135deg, #f8f4ff 0%, #fff 100%);
+            border: 2px solid rgba(123, 44, 191, 0.1);
+            border-radius: 15px;
+            margin-bottom: 1.5rem;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .faq-item:hover {
+            border-color: var(--primary);
+            box-shadow: 0 5px 20px rgba(123, 44, 191, 0.15);
+        }
+
+        .faq-question {
+            padding: 1.5rem;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--primary);
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .faq-question::after {
+            content: '▼';
+            font-size: 0.9rem;
+            transition: transform 0.3s ease;
+        }
+
+        .faq-question.active::after {
+            transform: rotate(180deg);
+        }
+
+        .faq-answer {
+            padding: 0 1.5rem;
+            max-height: 0;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .faq-answer.active {
+            padding: 1.5rem;
+            max-height: 1000px;
+        }
+
+        .faq-answer p, .faq-answer ul {
+            font-size: 1.05rem;
+            line-height: 1.8;
+            color: var(--text);
+        }
+
+        .faq-answer ul {
+            list-style: none;
+            margin-top: 1rem;
+        }
+
+        .faq-answer li {
+            padding: 0.5rem 0;
+            padding-right: 1.5rem;
+            position: relative;
+        }
+
+        .faq-answer li::before {
+            content: '•';
+            color: var(--accent);
+            font-weight: 900;
+            font-size: 1.5rem;
+            position: absolute;
+            right: 0;
+        }
+
+        .cta-section {
+            text-align: center;
+            padding: 4rem 0;
+            background: linear-gradient(135deg, rgba(123, 44, 191, 0.05) 0%, rgba(255, 0, 110, 0.05) 100%);
+            border-radius: 30px;
+            margin: 3rem 0;
+        }
+
+        .cta-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+            margin-top: 2rem;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 1.5rem 3rem;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--white);
+            border: none;
+            border-radius: 50px;
+            text-decoration: none;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-button::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .cta-button:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .btn-charging {
+            background: linear-gradient(135deg, var(--secondary) 0%, #D90059 100%);
+        }
+
+        .btn-renewal {
+            background: linear-gradient(135deg, var(--green) 0%, #05B385 100%);
+        }
+
+        footer {
+            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);
+            color: var(--white);
+            padding: 3rem 0;
+            text-align: center;
+            margin-top: 4rem;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .footer-content img {
+            max-width: 200px;
+            margin-bottom: 2rem;
+            filter: brightness(0) invert(1);
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+
+            .subtitle {
+                font-size: 1.1rem;
+            }
+
+            h2 {
+                font-size: 2rem;
+            }
+
+            .offers-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .comparison-grid,
+            .faq-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .offer-title {
+                font-size: 2rem;
+            }
+
+            .offer-code {
+                font-size: 1.5rem;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .cta-button {
+                width: 100%;
+                max-width: 300px;
+            }
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, #fff8e1 0%, #fff 100%);
+            border: 3px solid var(--accent);
+            border-radius: 20px;
+            padding: 2rem;
+            margin: 2rem 0;
+            text-align: center;
+        }
+
+        .highlight-box strong {
+            color: var(--secondary);
+            font-size: 1.3rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="animated-bg">
+        <span class="star" style="top: 10%; left: 20%;">✨</span>
+        <span class="star" style="top: 30%; left: 80%;">⭐</span>
+        <span class="star" style="top: 60%; left: 10%;">🌟</span>
+        <span class="star" style="top: 80%; left: 70%;">✨</span>
+        <span class="star" style="top: 20%; left: 50%;">⭐</span>
+    </div>
+
+    <header>
+        <div class="header-content">
+            <h1>🌙 عروض رمضان 2026 🌙</h1>
+            <p class="subtitle">عروض الشحن والتجديد من WE</p>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Main Offers Cards -->
+        <div class="offers-grid">
+            <!-- Charging Offer -->
+            <div class="offer-card">
+                <div class="offer-header charging-offer">
+                    <div class="offer-icon">🔋</div>
+                    <h2 class="offer-title">عرض الشحن</h2>
+                    <div class="offer-code">اتصل بـ *501#</div>
+                </div>
+                <div class="offer-body">
+                    <div class="offer-description">
+                        <strong>احصل على ميجابايتس مجانية مع كل شحن!</strong><br>
+                        عند الاتصال بـ *501# قبل كل عملية شحن في حالة الشحن بـ 10 جنيه أو أكثر
+                    </div>
+                    <ul class="benefits-list">
+                        <li>300x ضعف الشحنة عند الشحن عبر MyWE App أو E-Care</li>
+                        <li>200x ضعف الشحنة عند الشحن بالطرق الأخرى</li>
+                        <li>صالحة للاستخدام لمدة 7 أيام</li>
+                        <li>متاح لجميع عملاء الدفع المسبق</li>
+                        <li>لا يوجد حد أقصى للاستفادة من العرض</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Renewal Offer -->
+            <div class="offer-card">
+                <div class="offer-header renewal-offer">
+                    <div class="offer-icon">🔄</div>
+                    <h2 class="offer-title">عرض التجديد</h2>
+                    <div class="offer-code">اتصل بـ *701#</div>
+                </div>
+                <div class="offer-body">
+                    <div class="offer-description">
+                        <strong>احصل على ضعف باقتك عند التجديد!</strong><br>
+                        عند الاتصال بـ *701# قبل التجديد يحصل العميل على ضعف باقة الكنترول
+                    </div>
+                    <ul class="benefits-list">
+                        <li>ضعف باقة الكنترول عند التجديد</li>
+                        <li>صالحة للاستخدام لمدة 7 أيام</li>
+                        <li>متاح لجميع عملاء الدفع المسبق</li>
+                        <li>يشمل عملاء Kix و Tazbeet</li>
+                        <li>يمكن الاستفادة مع عروض الشحن</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- How to Get Offers -->
+        <div class="how-to-section">
+            <h2>📱 كيفية الحصول على العروض</h2>
+            <div class="steps-container">
+                <div class="step-card">
+                    <div class="step-number">1</div>
+                    <h3 class="step-title">للشحن</h3>
+                    <p class="step-description">اتصل بـ *501# قبل كل عملية شحن للاشتراك في عرض الشحن</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-number">2</div>
+                    <h3 class="step-title">للتجديد</h3>
+                    <p class="step-description">اتصل بـ *701# قبل التجديد للاشتراك في عرض التجديد</p>
+                </div>
+                <div class="step-card">
+                    <div class="step-number">3</div>
+                    <h3 class="step-title">اشحن أو جدد</h3>
+                    <p class="step-description">قم بعملية الشحن أو التجديد واحصل على الميجابايتس الإضافية فوراً</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Comparison Section -->
+        <div class="comparison-section">
+            <h2>⚖️ مقارنة بين العروض</h2>
+            <div class="comparison-grid">
+                <div class="comparison-card">
+                    <h3 class="comparison-title">🔋 عرض الشحن</h3>
+                    <div class="comparison-item">
+                        <strong>الكود:</strong>
+                        <span>*501#</span>
+                    </div>
+                    <div class="comparison-item">
+                        <strong>الفئات:</strong>
+                        <span>10 جنيه أو أكثر</span>
+                    </div>
+                    <div class="comparison-item">
+                        <strong>المميزات:</strong>
+                        <span>300x عبر MyWE/E-Care أو 200x بالطرق الأخرى</span>
+                    </div>
+                    <div class="comparison-item">
+                        <strong>الصلاحية:</strong>
+                        <span>7 أيام</span>
+                    </div>
+                    <div class="comparison-item">
+                        <strong>العملاء:</strong>
+                        <span>جميع عملاء الدفع المسبق (ما عدا خطوط الطلاب والبيانات)</span>
+                    </div>
+                </div>
+
+                <div class="comparison-card">
+                    <h3 class="comparison-title">🔄 عرض التجديد</h3>
+                    <div class="comparison-item">
+                        <strong>الكود:</strong>
+                        <span>*701#</span>
+                    </div>
+                    <div class="comparison-item">
+                        <strong>الفئات:</strong>
+                        <span>جميع باقات الكنترول</span>
+                    </div>
+                    <div class="comparison-item">
+                        <strong>المميزات:</strong>
+                        <span>ضعف باقة الكنترول</span>
+                    </div>
+                    <div class="comparison-item">
+                        <strong>الصلاحية:</strong>
+                        <span>7 أيام</span>
+                    </div>
+                    <div class="comparison-item">
+                        <strong>العملاء:</strong>
+                        <span>الحاليين والجدد + Kix + Tazbeet</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Important Notes -->
+        <div class="highlight-box">
+            <h3 style="font-size: 2rem; margin-bottom: 1rem; color: var(--primary);">⏰ مدة العروض</h3>
+            <p style="font-size: 1.3rem;"><strong>خلال شهر رمضان فقط</strong></p>
+        </div>
+
+        <!-- FAQ Section -->
+        <div class="faq-section">
+            <h2>❓ الأسئلة الشائعة</h2>
+            <div class="faq-grid">
+                <!-- Charging FAQs -->
+                <div class="faq-column">
+                    <h3>🔋 عرض الشحن</h3>
+                    
+                    <div class="faq-item">
+                        <div class="faq-question">ما هو عرض الشحن؟</div>
+                        <div class="faq-answer">
+                            <p>عند الاتصال بـ *501# قبل كل عملية شحن في حالة الشحن بـ 10 جنيه أو أكثر، يحصل العميل على ميجابايتس مجانية صالحة لمدة 7 أيام.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question">كيف أحصل على العرض؟</div>
+                        <div class="faq-answer">
+                            <p>يتوجب الاتصال بـ *501# قبل كل شحنة للاشتراك في العرض.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question">ما هي طرق الشحن المتاحة؟</div>
+                        <div class="faq-answer">
+                            <p>العرض متاح على جميع طرق الشحن:</p>
+                            <ul>
+                                <li>300x ضعف الشحنة عبر MyWE App أو E-Care</li>
+                                <li>200x ضعف الشحنة بالطرق الأخرى</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question">من هم العملاء المؤهلين؟</div>
+                        <div class="faq-answer">
+                            <p>العرض متاح لجميع عملاء الدفع المسبق ما عدا خطوط الطلاب وخطوط البيانات بشرط الاتصال بـ *501# قبل الشحن.</p>
+                            <p>العرض ساري على الخطوط الـ Barred و suspended.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question">ما هي صلاحية الميجابايتس؟</div>
+                        <div class="faq-answer">
+                            <p>الميجابايتس صالحة لمدة 7 أيام لصاحب عملية الشحن.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question">ما هي أولوية الاستهلاك؟</div>
+                        <div class="faq-answer">
+                            <ul>
+                                <li>الميجابايتس المهداة في عرض الشحن</li>
+                                <li>الباقات الإضافية</li>
+                                <li>الباقة الأساسية</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question">هل يمكن ترحيل أو تحويل الوحدات؟</div>
+                        <div class="faq-answer">
+                            <p>لا يتم ترحيل الباقي من ميجابايتس العرض.<br>
+                            لا يمكن تحويل ميجابايتس العرض.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question">هل يمكن الاستفادة أكثر من مرة؟</div>
+                        <div class="faq-answer">
+                            <p>نعم، لا يوجد حد أقصى للاستفادة بعرض الشحن.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question">هل يمكن الجمع مع عروض أخرى؟</div>
+                        <div class="faq-answer">
+                            <p>يمكن الاستفادة بالعرض مع عروض تجديد الكنترول.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Renewal FAQs -->
+                <div class="faq-column">
+                    <h3>🔄 عرض التجديد</h3>
+                    
+                    <div class="faq-item">
+                        <div class="faq-question">ما هو عرض التجديد؟</div>
+                        <div class="faq-answer">
+                            <p>عند الاتصال بـ *701# قبل التجديد، يحصل العميل على ضعف باقته عند تجديد باقة كنترول صالحة للاستخدام لمدة 7 أيام.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question">كيف أحصل على العرض؟</div>
+                        <div class="faq-answer">
+                            <p>يتوجب الاتصال بـ *701# قبل التجديد للاشتراك في العرض.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question">ما هي طرق الاستفادة؟</div>
+                        <div class="faq-answer">
+                            <p>العرض متاح على جميع أنواع التجديد (التطبيق أو جميع الطرق الأخرى).</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question">من هم العملاء المؤهلين؟</div>
+                        <div class="faq-answer">
+                            <ul>
+                                <li>العملاء الحاليين والجدد</li>
+                                <li>عملاء Kix و Tazbeet</li>
+                                <li>الخطوط الـ Barred و suspended</li>
+                            </ul>
+                            <p>العملاء الجدد يحصلون على العرض دون الحاجة للاشتراك.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question">متى يمكن الاستفادة؟</div>
+                        <div class="faq-answer">
+                            <p>يمكن الاستفادة بالعرض عند تجديد باقة الكنترول أو التحويل لأي من الباقات المتاح عليها العرض خلال مدة العرض.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question">ما هي صلاحية الميجابايتس؟</div>
+                        <div class="faq-answer">
+                            <p>الميجابايتس صالحة لمدة 7 أيام.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question">ما هي أولوية الاستهلاك؟</div>
+                        <div class="faq-answer">
+                            <ul>
+                                <li>الميجابايتس المهداة في عرض التجديد</li>
+                                <li>الباقات الإضافية</li>
+                                <li>الباقة الأساسية</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question">هل يمكن ترحيل أو تحويل الوحدات؟</div>
+                        <div class="faq-answer">
+                            <p>لا يتم ترحيل الباقي من ميجابايتس العرض.<br>
+                            لا يمكن تحويل ميجابايتس العرض.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question">هل يمكن الجمع مع عروض أخرى؟</div>
+                        <div class="faq-answer">
+                            <p>يمكن الاستفادة بالعرض مع عروض الشحن.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CTA Section -->
+        <div class="cta-section">
+            <h2 style="color: var(--primary); margin-bottom: 1rem;">🎁 ابدأ الآن واستفد من العروض</h2>
+            <p style="font-size: 1.2rem; color: var(--text); margin-bottom: 2rem;">اتصل بالكود المناسب قبل الشحن أو التجديد</p>
+            <div class="cta-buttons">
+                <a href="tel:*501%23" class="cta-button btn-charging">
+                    <span style="position: relative; z-index: 1;">🔋 عرض الشحن *501#</span>
+                </a>
+                <a href="tel:*701%23" class="cta-button btn-renewal">
+                    <span style="position: relative; z-index: 1;">🔄 عرض التجديد *701#</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <img src="we-core.png" alt="WE Logo">
+            <p style="opacity: 0.9;">© 2026 WE - جميع الحقوق محفوظة</p>
+        </div>
+    </footer>
+
+    <script>
+        // FAQ Accordion
+        document.querySelectorAll('.faq-question').forEach(question => {
+            question.addEventListener('click', () => {
+                const answer = question.nextElementSibling;
+                const isActive = question.classList.contains('active');
+                
+                // Toggle current FAQ
+                if (isActive) {
+                    question.classList.remove('active');
+                    answer.classList.remove('active');
+                } else {
+                    question.classList.add('active');
+                    answer.classList.add('active');
+                }
+            });
+        });
+
+        // Smooth scroll animation
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.offer-card, .step-card, .comparison-card, .faq-item').forEach(el => {
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>

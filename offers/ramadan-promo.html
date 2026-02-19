@@ -1,0 +1,945 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>عرض Ramadan Promo - جيجابايتس مجانية | WE</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #7B2CBF;
+            --primary-dark: #5A189A;
+            --secondary: #FF006E;
+            --accent: #FFB627;
+            --gold: #FFD700;
+            --green: #06D6A0;
+            --bg: #F8F4FF;
+            --text: #1A1A2E;
+            --white: #FFFFFF;
+            --shadow: rgba(123, 44, 191, 0.15);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Cairo', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.8;
+            overflow-x: hidden;
+        }
+
+        .animated-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: linear-gradient(135deg, #f8f4ff 0%, #fff 50%, #fef7ff 100%);
+        }
+
+        .star {
+            position: absolute;
+            font-size: 1.5rem;
+            opacity: 0.1;
+            animation: twinkle 3s ease-in-out infinite;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.1; transform: scale(1); }
+            50% { opacity: 0.3; transform: scale(1.2); }
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            padding: 3rem 0;
+            box-shadow: 0 10px 40px var(--shadow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: '📱';
+            position: absolute;
+            font-size: 20rem;
+            opacity: 0.05;
+            top: -6rem;
+            right: -4rem;
+            animation: rotate 40s linear infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        h1 {
+            font-family: 'Amiri', serif;
+            font-size: 3.5rem;
+            font-weight: 700;
+            color: var(--white);
+            margin-bottom: 1rem;
+            text-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            animation: slideDown 0.8s ease-out;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .subtitle {
+            font-size: 1.4rem;
+            color: rgba(255, 255, 255, 0.95);
+            font-weight: 400;
+            animation: slideDown 0.8s ease-out 0.2s both;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
+
+        .hero-section {
+            background: linear-gradient(135deg, var(--secondary) 0%, #D90059 100%);
+            color: var(--white);
+            padding: 4rem;
+            text-align: center;
+            margin: -3rem auto 3rem;
+            border-radius: 30px;
+            box-shadow: 0 20px 60px rgba(255, 0, 110, 0.4);
+            position: relative;
+            overflow: hidden;
+            animation: fadeInUp 1s ease-out 0.3s both;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero-section::before {
+            content: '🎁';
+            position: absolute;
+            font-size: 15rem;
+            opacity: 0.1;
+            top: -3rem;
+            left: -3rem;
+        }
+
+        .hero-title {
+            font-size: 3rem;
+            font-weight: 900;
+            margin-bottom: 1rem;
+        }
+
+        .hero-subtitle {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .hero-highlight {
+            font-size: 2.5rem;
+            font-weight: 900;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 1rem 2rem;
+            border-radius: 20px;
+            display: inline-block;
+        }
+
+        section {
+            background: var(--white);
+            border-radius: 25px;
+            padding: 3rem;
+            margin-bottom: 2.5rem;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+            animation: fadeInUp 1s ease-out both;
+        }
+
+        h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        h2::before {
+            content: '';
+            width: 6px;
+            height: 50px;
+            background: linear-gradient(180deg, var(--secondary) 0%, var(--accent) 100%);
+            border-radius: 10px;
+        }
+
+        .pricing-table {
+            overflow-x: auto;
+            margin-top: 2rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 700px;
+        }
+
+        thead {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: var(--white);
+        }
+
+        th {
+            padding: 1.5rem;
+            font-size: 1.3rem;
+            font-weight: 700;
+            text-align: center;
+        }
+
+        td {
+            padding: 1.5rem;
+            text-align: center;
+            border-bottom: 1px solid rgba(123, 44, 191, 0.1);
+            background: var(--white);
+            font-size: 1.1rem;
+        }
+
+        tbody tr:hover td {
+            background: #f8f4ff;
+        }
+
+        tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .data-highlight {
+            font-size: 1.8rem;
+            font-weight: 900;
+            color: var(--secondary);
+        }
+
+        .price-range {
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .customer-types {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .customer-card {
+            background: linear-gradient(135deg, #f8f4ff 0%, #fff 100%);
+            padding: 2.5rem;
+            border-radius: 20px;
+            border: 3px solid;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .customer-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .we-gold-card {
+            border-color: var(--gold);
+        }
+
+        .prepaid-card {
+            border-color: var(--green);
+        }
+
+        .customer-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+        }
+
+        .customer-title {
+            font-size: 2rem;
+            font-weight: 900;
+            margin-bottom: 1rem;
+        }
+
+        .customer-desc {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+        }
+
+        .benefits-list {
+            list-style: none;
+        }
+
+        .benefits-list li {
+            padding: 0.8rem 0;
+            padding-right: 2rem;
+            position: relative;
+            font-size: 1.05rem;
+        }
+
+        .benefits-list li::before {
+            content: '✓';
+            position: absolute;
+            right: 0;
+            color: var(--green);
+            font-weight: 900;
+            font-size: 1.3rem;
+        }
+
+        .info-box {
+            background: linear-gradient(135deg, #fff8e1 0%, #fff 100%);
+            border: 3px solid var(--accent);
+            border-radius: 20px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+
+        .info-box h3 {
+            color: var(--primary);
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .info-box p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+
+        .warning-box {
+            background: linear-gradient(135deg, #ffe0e0 0%, #fff 100%);
+            border: 3px solid var(--secondary);
+            border-radius: 20px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+
+        .warning-box h3 {
+            color: var(--secondary);
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .dates-box {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .date-card {
+            text-align: center;
+            padding: 2rem;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: var(--white);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(123, 44, 191, 0.3);
+        }
+
+        .date-label {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            opacity: 0.9;
+        }
+
+        .date-value {
+            font-size: 2rem;
+            font-weight: 900;
+        }
+
+        .faq-section {
+            background: var(--white);
+            border-radius: 25px;
+            padding: 3rem;
+            margin-bottom: 3rem;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+        }
+
+        .faq-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .faq-column h3 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--secondary);
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .faq-item {
+            background: linear-gradient(135deg, #f8f4ff 0%, #fff 100%);
+            border: 2px solid rgba(123, 44, 191, 0.1);
+            border-radius: 15px;
+            margin-bottom: 1.5rem;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .faq-item:hover {
+            border-color: var(--primary);
+            box-shadow: 0 5px 20px rgba(123, 44, 191, 0.15);
+        }
+
+        .faq-question {
+            padding: 1.5rem;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--primary);
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .faq-question::after {
+            content: '▼';
+            font-size: 0.9rem;
+            transition: transform 0.3s ease;
+        }
+
+        .faq-question.active::after {
+            transform: rotate(180deg);
+        }
+
+        .faq-answer {
+            padding: 0 1.5rem;
+            max-height: 0;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .faq-answer.active {
+            padding: 1.5rem;
+            max-height: 2000px;
+        }
+
+        .faq-answer p, .faq-answer ul {
+            font-size: 1.05rem;
+            line-height: 1.8;
+            color: var(--text);
+        }
+
+        .faq-answer ul {
+            list-style: none;
+            margin-top: 1rem;
+        }
+
+        .faq-answer li {
+            padding: 0.5rem 0;
+            padding-right: 1.5rem;
+            position: relative;
+        }
+
+        .faq-answer li::before {
+            content: '•';
+            color: var(--accent);
+            font-weight: 900;
+            font-size: 1.5rem;
+            position: absolute;
+            right: 0;
+        }
+
+        .brands-section {
+            text-align: center;
+            padding: 2rem;
+            background: linear-gradient(135deg, rgba(123, 44, 191, 0.05) 0%, rgba(255, 0, 110, 0.05) 100%);
+            border-radius: 20px;
+            margin: 2rem 0;
+        }
+
+        .brands-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+        }
+
+        .brands-list {
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: var(--secondary);
+        }
+
+        footer {
+            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);
+            color: var(--white);
+            padding: 3rem 0;
+            text-align: center;
+            margin-top: 4rem;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .footer-content img {
+            max-width: 200px;
+            margin-bottom: 2rem;
+            filter: brightness(0) invert(1);
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+
+            .subtitle {
+                font-size: 1.1rem;
+            }
+
+            h2 {
+                font-size: 2rem;
+            }
+
+            .hero-title {
+                font-size: 2rem;
+            }
+
+            .hero-subtitle {
+                font-size: 1.2rem;
+            }
+
+            .hero-highlight {
+                font-size: 1.8rem;
+            }
+
+            .customer-types {
+                grid-template-columns: 1fr;
+            }
+
+            .faq-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .pricing-table {
+                font-size: 0.9rem;
+            }
+
+            th, td {
+                padding: 1rem;
+            }
+        }
+
+        .note-important {
+            background: linear-gradient(135deg, #e8f5e9 0%, #fff 100%);
+            border-right: 5px solid var(--green);
+            padding: 1.5rem;
+            border-radius: 15px;
+            margin: 1.5rem 0;
+            font-size: 1.1rem;
+        }
+
+        .note-important strong {
+            color: var(--green);
+        }
+    </style>
+</head>
+<body>
+    <div class="animated-bg">
+        <span class="star" style="top: 10%; left: 20%;">✨</span>
+        <span class="star" style="top: 30%; left: 80%;">⭐</span>
+        <span class="star" style="top: 60%; left: 10%;">🌟</span>
+        <span class="star" style="top: 80%; left: 70%;">✨</span>
+        <span class="star" style="top: 20%; left: 50%;">⭐</span>
+    </div>
+
+    <header>
+        <div class="header-content">
+            <h1>🌙 Ramadan Promo 2026 🌙</h1>
+            <p class="subtitle">جيجابايتس مجانية مع شراء جهازك الجديد</p>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="hero-section">
+            <h2 class="hero-title">احصل على جيجابايتس مجانية</h2>
+            <p class="hero-subtitle">عند شراء أجهزة Apple أو Samsung أو Xiaomi</p>
+            <div class="hero-highlight">حتى 2 تيرابايت مجاناً! 🎁</div>
+        </div>
+
+        <!-- Dates Section -->
+        <section>
+            <h2>📅 مواعيد العرض</h2>
+            <div class="dates-box">
+                <div class="date-card">
+                    <div class="date-label">بداية العرض</div>
+                    <div class="date-value">19 فبراير 2026</div>
+                </div>
+                <div class="date-card">
+                    <div class="date-label">نهاية العرض</div>
+                    <div class="date-value">31 مارس 2026</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Brands Section -->
+        <div class="brands-section">
+            <h3 class="brands-title">الأجهزة المشمولة في العرض</h3>
+            <div class="brands-list">Apple 🍎 | Samsung 📱 | Xiaomi 📲</div>
+        </div>
+
+        <!-- Pricing Table -->
+        <section>
+            <h2>💰 الجيجابايتس المجانية حسب سعر الجهاز</h2>
+            <div class="pricing-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>الجيجابايتس الشهرية</th>
+                            <th>سعر الجهاز</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><span class="data-highlight">7 جيجابايت</span></td>
+                            <td><span class="price-range">من 5,000 إلى 10,999 جنيه</span></td>
+                        </tr>
+                        <tr>
+                            <td><span class="data-highlight">17 جيجابايت</span></td>
+                            <td><span class="price-range">من 10,000 إلى 25,999 جنيه</span></td>
+                        </tr>
+                        <tr>
+                            <td><span class="data-highlight">40 جيجابايت</span></td>
+                            <td><span class="price-range">من 26,000 إلى 34,999 جنيه</span></td>
+                        </tr>
+                        <tr>
+                            <td><span class="data-highlight">60 جيجابايت</span></td>
+                            <td><span class="price-range">من 35,000 إلى 55,499 جنيه</span></td>
+                        </tr>
+                        <tr>
+                            <td><span class="data-highlight">100 جيجابايت</span></td>
+                            <td><span class="price-range">من 55,500 إلى 68,999 جنيه</span></td>
+                        </tr>
+                        <tr>
+                            <td><span class="data-highlight">120 جيجابايت</span></td>
+                            <td><span class="price-range">من 69,000 إلى 94,999 جنيه</span></td>
+                        </tr>
+                        <tr>
+                            <td><span class="data-highlight">170 جيجابايت</span></td>
+                            <td><span class="price-range">من 95,000 إلى 120,000 جنيه</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- Customer Types -->
+        <section>
+            <h2>👥 العملاء المؤهلون</h2>
+            <div class="customer-types">
+                <!-- WE GOLD -->
+                <div class="customer-card we-gold-card">
+                    <div class="customer-icon">👑</div>
+                    <h3 class="customer-title" style="color: var(--gold);">عملاء WE GOLD</h3>
+                    <p class="customer-desc">العملاء الحاليين والجدد مؤهلون للحصول على الجيجابايتس المجانية</p>
+                    <ul class="benefits-list">
+                        <li>جيجابايتس مجانية شهرياً</li>
+                        <li>تجديد تلقائي مع الفاتورة</li>
+                        <li>حتى 12 مرة في السنة</li>
+                        <li>التقسيط متاح</li>
+                    </ul>
+                    <div class="note-important">
+                        <strong>ملحوظة:</strong> التقسيط متاح فقط لعملاء WE GOLD
+                    </div>
+                </div>
+
+                <!-- Prepaid -->
+                <div class="customer-card prepaid-card">
+                    <div class="customer-icon">💳</div>
+                    <h3 class="customer-title" style="color: var(--green);">عملاء الدفع المسبق</h3>
+                    <p class="customer-desc">عند الشحن بحد أدنى 40 جنيه أو أكثر شهرياً</p>
+                    <ul class="benefits-list">
+                        <li>جيجابايتس مجانية كل شهر</li>
+                        <li>صالحة لمدة 28 يوم</li>
+                        <li>حتى 12 مرة في السنة</li>
+                        <li>للعملاء الحاليين والجدد</li>
+                    </ul>
+                    <div class="note-important">
+                        <strong>شرط:</strong> الشحن بحد أدنى 40 جنيه شهرياً
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Not Eligible -->
+        <section>
+            <h2>⚠️ العملاء غير المؤهلين</h2>
+            <div class="warning-box">
+                <h3>لا يمكن الاستفادة من العرض لـ:</h3>
+                <ul class="benefits-list">
+                    <li>عملاء Indigo</li>
+                    <li>عملاء Student Lines</li>
+                    <li>عملاء Data SIM</li>
+                    <li>عملاء Takaful</li>
+                </ul>
+                <p style="margin-top: 1rem;"><strong>ملحوظة:</strong> يمكن لعملاء Indigo الحصول على العرض عند التحويل إلى WE GOLD.</p>
+            </div>
+        </section>
+
+        <!-- FAQ Section -->
+        <div class="faq-section">
+            <h2>❓ الأسئلة الشائعة</h2>
+            <div class="faq-grid">
+                <!-- WE GOLD FAQs -->
+                <div class="faq-column">
+                    <h3>👑 عملاء WE GOLD</h3>
+                    
+                    <div class="faq-item">
+                        <div class="faq-question">ما هو عرض Ramadan Promo؟</div>
+                        <div class="faq-answer">
+                            <p>عبارة عن جيجابايتس مجانية يحصل عليها العميل عند شراء أي جهاز من فئات Apple أو Samsung أو Xiaomi. يمكن الحصول على حتى 2 تيرابايت مجاناً!</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question">من هم العملاء المؤهلون؟</div>
+                        <div class="faq-answer">
+                            <p>عملاء WE GOLD الحاليين والجدد مؤهلون للحصول على العرض (الجيجابايتس المجانية) عند شراء أي من فئات Apple أو Samsung أو Xiaomi.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question">ما هي صلاحية الجيجابايتس؟</div>
+                        <div class="faq-answer">
+                            <p>الجيجابايتس المجانية صالحة حتى ميعاد تجديد الفاتورة وسيتم تجديد الجيجابايتس تلقائياً مع ميعاد تجديد الفاتورة بحد أقصى 12 مرة في السنة.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question">ما هي أولوية الاستهلاك؟</div>
+                        <div class="faq-answer">
+                            <p><strong>للموبايل:</strong></p>
+                            <ul>
+                                <li>Nitro (إن وجد)</li>
+                                <li>الباقة المرحلة</li>
+                                <li>الباقة الأساسية موبايل إنترنت</li>
+                                <li>الجيجابايتس المجانية الخاصة بعرض Ramadan</li>
+                                <li>الباقة الأساسية الدقائق</li>
+                            </ul>
+                            <p><strong>للإنترنت المنزلي و WE Air:</strong></p>
+                            <ul>
+                                <li>Nitro (إن وجد)</li>
+                                <li>الباقة الأساسية موبايل إنترنت</li>
+                                <li>الباقة المرحلة</li>
+                                <li>الجيجابايتس المجانية الخاصة بعرض Ramadan</li>
+                                <li>الباقة الأساسية دقائق</li>
+                                <li>الباقة الأساسية إنترنت منزلي</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question">متى يخسر العميل العرض؟</div>
+                        <div class="faq-answer">
+                            <ul>
+                                <li>في حالة التحويل من WE GOLD إلى الدفع المسبق</li>
+                                <li>في حالة طلب استرجاع جهاز Apple أو Samsung أو Xiaomi</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question">هل يمكن ترحيل أو تحويل الجيجابايتس؟</div>
+                        <div class="faq-answer">
+                            <p>لا، لا يمكن ترحيل الجيجابايتس المجانية الخاصة بالعرض.<br>
+                            لا يمكن تحويل الجيجابايتس المجانية إلى خط آخر.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question">ماذا يحدث إذا أصبح الخط استقبال فقط؟</div>
+                        <div class="faq-answer">
+                            <p>لن يستطيع العميل الاستفادة من العرض مؤقتاً حتى يتم دفع الفاتورة.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Prepaid FAQs -->
+                <div class="faq-column">
+                    <h3>💳 عملاء الدفع المسبق</h3>
+                    
+                    <div class="faq-item">
+                        <div class="faq-question">من هم العملاء المؤهلون؟</div>
+                        <div class="faq-answer">
+                            <p>عملاء الدفع المسبق (عند الشحن بحد أدنى 40 جنيه أو أكثر شهرياً). العملاء الحاليين والجدد مؤهلون للحصول على العرض.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question">من هم العملاء غير المؤهلين؟</div>
+                        <div class="faq-answer">
+                            <ul>
+                                <li>عملاء Student Lines</li>
+                                <li>عملاء Data SIM</li>
+                                <li>عملاء Takaful</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question">ما هي صلاحية الجيجابايتس؟</div>
+                        <div class="faq-answer">
+                            <p>الجيجابايتس المجانية كل شهر صالحة لمدة 28 يوم (بحد أقصى 12 مرة في السنة).</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question">ما هي أولوية الاستهلاك؟</div>
+                        <div class="faq-answer">
+                            <p>أولوية الاستهلاك لعملاء الدفع المسبق للموبايل:</p>
+                            <ul>
+                                <li>Nitro (إن وجد)</li>
+                                <li>الباقة الأساسية</li>
+                                <li>الجيجابايتس المجانية الخاصة بعرض Ramadan</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question">متى يخسر العميل العرض؟</div>
+                        <div class="faq-answer">
+                            <ul>
+                                <li>في حالة التحويل من الدفع المسبق إلى WE GOLD أو أي باقة غير مؤهلة</li>
+                                <li>في حالة طلب إرجاع الجهاز (يخسر العرض لكن لا يخسر الجيجابايتس في هذا الشهر)</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question">هل يمكن ترحيل أو تحويل الجيجابايتس؟</div>
+                        <div class="faq-answer">
+                            <p>لا، لا يمكن ترحيل الجيجابايتس المجانية الخاصة بالعرض.<br>
+                            لا يمكن تحويل الجيجابايتس المجانية إلى خط آخر.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question">ماذا يحدث إذا أصبح الخط استقبال فقط؟</div>
+                        <div class="faq-answer">
+                            <p>لن يستطيع العميل الاستفادة من العرض مؤقتاً حتى يقوم بالشحن.</p>
+                        </div>
+                    </div>
+
+                    <div class="faq-item">
+                        <div class="faq-question">كيف يتم إضافة العرض؟</div>
+                        <div class="faq-answer">
+                            <div class="info-box">
+                                <h3>ملحوظة هامة</h3>
+                                <p>سيتم إضافة العرض فقط لعملاء WE GOLD وعملاء الدفع المسبق من خلال CVM في خلال 24 ساعة وليس من خلال Agent.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Important Notes -->
+        <section>
+            <h2>📌 ملاحظات هامة</h2>
+            <div class="info-box">
+                <h3>✅ تطبيق الشروط والأحكام</h3>
+                <p>تطبيق الشروط والأحكام الحالية الخاصة بالتقسيط لباقات WE GOLD.</p>
+            </div>
+            <div class="info-box">
+                <h3>⏱️ مدة إضافة العرض</h3>
+                <p>سيتم إضافة العرض فقط لعملاء WE GOLD وعملاء الدفع المسبق من خلال CVM في خلال 24 ساعة وليس من خلال Agent.</p>
+            </div>
+            <div class="warning-box">
+                <h3>⚠️ حالات فقدان العرض</h3>
+                <p><strong>لعملاء WE GOLD:</strong></p>
+                <ul class="benefits-list">
+                    <li>التحويل من WE GOLD إلى الدفع المسبق</li>
+                    <li>طلب استرجاع الجهاز</li>
+                </ul>
+                <p><strong>لعملاء الدفع المسبق:</strong></p>
+                <ul class="benefits-list">
+                    <li>التحويل من الدفع المسبق إلى WE GOLD أو باقة غير مؤهلة</li>
+                    <li>طلب إرجاع الجهاز</li>
+                </ul>
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <img src="we-core.png" alt="WE Logo">
+            <p style="opacity: 0.9;">© 2026 WE - جميع الحقوق محفوظة</p>
+        </div>
+    </footer>
+
+    <script>
+        // FAQ Accordion
+        document.querySelectorAll('.faq-question').forEach(question => {
+            question.addEventListener('click', () => {
+                const answer = question.nextElementSibling;
+                const isActive = question.classList.contains('active');
+                
+                if (isActive) {
+                    question.classList.remove('active');
+                    answer.classList.remove('active');
+                } else {
+                    question.classList.add('active');
+                    answer.classList.add('active');
+                }
+            });
+        });
+
+        // Smooth scroll animation
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('section, .customer-card, .faq-item').forEach(el => {
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>
