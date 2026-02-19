@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>عرض رمضان على محفظة WE Pay - 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&family=Tajawal:wght@300;400;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --purple: #7B2FBE;
+    --purple-dark: #3D0A6B;
+    --purple-mid: #9B45D5;
+    --purple-light: #C084F5;
+    --gold: #F0C040;
+    --gold-dim: #C9A030;
+    --green: #2ECC71;
+    --dark: #080012;
+    --dark2: #120020;
+    --white: #FFFFFF;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Cairo', sans-serif;
+    background: var(--dark);
+    color: var(--white);
+    overflow-x: hidden;
+    direction: rtl;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      radial-gradient(1px 1px at 8% 10%, rgba(255,255,255,0.5) 0%, transparent 100%),
+      radial-gradient(1.5px 1.5px at 22% 38%, rgba(123,47,190,0.6) 0%, transparent 100%),
+      radial-gradient(1px 1px at 45% 6%, rgba(255,255,255,0.35) 0%, transparent 100%),
+      radial-gradient(2px 2px at 70% 18%, rgba(240,192,64,0.6) 0%, transparent 100%),
+      radial-gradient(1px 1px at 90% 50%, rgba(255,255,255,0.3) 0%, transparent 100%),
+      radial-gradient(1px 1px at 14% 78%, rgba(123,47,190,0.4) 0%, transparent 100%),
+      radial-gradient(1.5px 1.5px at 58% 88%, rgba(240,192,64,0.4) 0%, transparent 100%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* HERO */
+  .hero {
+    min-height: 85vh;
+    background:
+      radial-gradient(ellipse at 50% -5%, rgba(123,47,190,0.65) 0%, transparent 60%),
+      radial-gradient(ellipse at 0% 100%, rgba(240,192,64,0.1) 0%, transparent 50%),
+      linear-gradient(180deg, #080012 0%, #120020 60%, #080012 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    position: relative;
+    padding: 3rem 1.5rem 5rem;
+    overflow: hidden;
+  }
+
+  .wallet-deco {
+    position: absolute;
+    bottom: 50px; right: 60px;
+    font-size: 8rem;
+    opacity: 0.05;
+    animation: float 4s ease-in-out infinite alternate;
+  }
+  @keyframes float { from{transform:translateY(0)} to{transform:translateY(-12px)} }
+
+  .moon {
+    position: absolute;
+    top: 30px; left: 50px;
+    width: 70px; height: 70px;
+    border-radius: 50%;
+    background: var(--gold);
+    box-shadow: 0 0 40px rgba(240,192,64,0.6), 0 0 80px rgba(240,192,64,0.25);
+    animation: moonGlow 3s ease-in-out infinite alternate;
+  }
+  .moon::after {
+    content: '';
+    position: absolute;
+    top: -6px; left: 12px;
+    width: 62px; height: 62px;
+    border-radius: 50%;
+    background: #120020;
+  }
+  @keyframes moonGlow {
+    from { box-shadow: 0 0 30px rgba(240,192,64,0.5), 0 0 60px rgba(240,192,64,0.2); }
+    to   { box-shadow: 0 0 60px rgba(240,192,64,0.9), 0 0 120px rgba(240,192,64,0.4); }
+  }
+
+  .lantern { position: absolute; top: 0; transform-origin: top center; animation: swing 4s ease-in-out infinite alternate; }
+  .lantern:nth-child(2) { right: 60px; }
+  .lantern:nth-child(3) { right: 155px; animation-delay: 1.2s; }
+  @keyframes swing { from{transform:rotate(-7deg)} to{transform:rotate(7deg)} }
+  .l-rope   { width:2px;height:60px;background:linear-gradient(var(--gold-dim),rgba(201,160,48,0.2));margin:0 auto; }
+  .l-top    { width:28px;height:8px;background:var(--gold-dim);border-radius:4px;margin:0 auto; }
+  .l-body   { width:32px;height:52px;background:linear-gradient(135deg,var(--gold),var(--purple-dark));border-radius:6px 6px 14px 14px;box-shadow:0 0 18px rgba(123,47,190,0.7);margin:0 auto; }
+  .l-bottom { width:4px;height:10px;background:var(--gold-dim);margin:0 auto;border-radius:2px; }
+
+  .badge {
+    background: linear-gradient(135deg, var(--purple-dark), var(--purple));
+    color: var(--white);
+    font-weight: 800;
+    font-size: 0.8rem;
+    padding: 0.3rem 1.4rem;
+    border-radius: 50px;
+    letter-spacing: 2px;
+    margin-bottom: 1.2rem;
+    animation: fadeUp 0.5s ease both;
+    border: 1px solid rgba(192,132,245,0.3);
+  }
+
+  .hero-eyebrow {
+    font-family: 'Tajawal', sans-serif;
+    font-size: clamp(0.9rem, 2vw, 1.2rem);
+    font-weight: 300;
+    color: var(--purple-light);
+    letter-spacing: 5px;
+    margin-bottom: 0.4rem;
+    animation: fadeUp 0.6s ease 0.1s both;
+  }
+
+  .hero-title {
+    font-family: 'Tajawal', sans-serif;
+    font-size: clamp(2.5rem, 8vw, 6rem);
+    font-weight: 900;
+    line-height: 1;
+    background: linear-gradient(135deg, var(--gold) 0%, #FFF8D0 50%, var(--gold-dim) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 0.5rem;
+    animation: fadeUp 0.6s ease 0.15s both;
+  }
+
+  .hero-brand {
+    font-family: 'Tajawal', sans-serif;
+    font-size: clamp(1.4rem, 4vw, 2.5rem);
+    font-weight: 900;
+    color: var(--purple-light);
+    letter-spacing: 2px;
+    margin-bottom: 1rem;
+    animation: fadeUp 0.6s ease 0.2s both;
+  }
+
+  .hero-sub {
+    font-size: clamp(0.95rem, 2.5vw, 1.1rem);
+    color: rgba(255,255,255,0.6);
+    max-width: 560px;
+    line-height: 1.8;
+    margin-bottom: 2.5rem;
+    animation: fadeUp 0.6s ease 0.22s both;
+  }
+
+  /* 3 promo types */
+  .promo-types {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    justify-content: center;
+    animation: fadeUp 0.6s ease 0.28s both;
+  }
+  .promo-pill {
+    background: rgba(123,47,190,0.15);
+    border: 1px solid rgba(192,132,245,0.3);
+    border-radius: 50px;
+    padding: 0.6rem 1.4rem;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--purple-light);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .promo-pill .num {
+    background: var(--purple);
+    color: var(--white);
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    font-weight: 900;
+  }
+
+  @keyframes fadeUp {
+    from { opacity:0; transform:translateY(25px); }
+    to   { opacity:1; transform:translateY(0); }
+  }
+
+  /* LAYOUT */
+  .container { max-width: 1080px; margin: 0 auto; padding: 0 1.5rem; position: relative; z-index: 1; }
+  section { padding: 4rem 0; }
+  .divider { width:100%; height:1px; background:linear-gradient(90deg,transparent,rgba(123,47,190,0.3),transparent); }
+
+  .section-header { text-align: center; margin-bottom: 2.5rem; }
+  .section-title {
+    font-family: 'Tajawal', sans-serif;
+    font-size: clamp(1.5rem, 3.5vw, 2.3rem);
+    font-weight: 800;
+    color: var(--gold);
+  }
+  .section-subtitle {
+    font-size: 0.9rem;
+    color: rgba(255,255,255,0.4);
+    margin-top: 0.3rem;
+  }
+  .section-line { width:70px; height:3px; background:linear-gradient(90deg,transparent,var(--purple-mid),transparent); margin:0.5rem auto 0; }
+
+  /* SEGMENT TABS */
+  .seg-tabs {
+    display: flex;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(123,47,190,0.2);
+    border-radius: 50px;
+    padding: 4px;
+    margin-bottom: 2rem;
+    width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .seg-tab {
+    padding: 0.5rem 1.5rem;
+    border-radius: 50px;
+    cursor: pointer;
+    font-family: 'Cairo', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: rgba(255,255,255,0.5);
+    transition: all 0.25s;
+    border: none;
+    background: transparent;
+  }
+  .seg-tab.active {
+    background: var(--purple);
+    color: var(--white);
+  }
+
+  /* PROMO SECTION CARDS */
+  .promo-section {
+    background: rgba(255,255,255,0.02);
+    border: 1px solid rgba(123,47,190,0.25);
+    border-radius: 24px;
+    overflow: hidden;
+    margin-bottom: 2rem;
+  }
+
+  .promo-header {
+    background: linear-gradient(135deg, var(--purple-dark), var(--purple));
+    padding: 1.5rem 2rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  .promo-header .pnum {
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 50%;
+    width: 36px; height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Tajawal', sans-serif;
+    font-weight: 900;
+    font-size: 1rem;
+    flex-shrink: 0;
+  }
+  .promo-header h3 {
+    font-family: 'Tajawal', sans-serif;
+    font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+    font-weight: 800;
+  }
+  .promo-header .ptag {
+    margin-right: auto;
+    background: rgba(240,192,64,0.2);
+    border: 1px solid rgba(240,192,64,0.4);
+    border-radius: 50px;
+    padding: 0.2rem 0.8rem;
+    font-size: 0.75rem;
+    color: var(--gold);
+    white-space: nowrap;
+  }
+
+  .promo-body { padding: 2rem; }
+
+  /* MEGABYTES SECTION */
+  .mega-highlight {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    background: linear-gradient(135deg, rgba(123,47,190,0.15), rgba(61,10,107,0.2));
+    border: 1px solid rgba(123,47,190,0.3);
+    border-radius: 16px;
+    padding: 1.8rem 2rem;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+  }
+  .mega-num {
+    font-family: 'Tajawal', sans-serif;
+    font-size: 3.5rem;
+    font-weight: 900;
+    color: var(--gold);
+    line-height: 1;
+    white-space: nowrap;
+  }
+  .mega-num span { font-size: 1.2rem; color: rgba(255,255,255,0.5); }
+  .mega-info { flex: 1; min-width: 200px; }
+  .mega-info p { font-size: 1rem; color: rgba(255,255,255,0.8); line-height: 1.7; margin-bottom: 0.5rem; }
+  .mega-badge {
+    display: inline-block;
+    background: rgba(240,192,64,0.12);
+    border: 1px solid rgba(240,192,64,0.3);
+    border-radius: 8px;
+    padding: 0.2rem 0.8rem;
+    font-size: 0.82rem;
+    color: var(--gold);
+    font-weight: 700;
+  }
+
+  /* VOUCHER TABLE */
+  .table-wrapper {
+    border: 1px solid rgba(123,47,190,0.25);
+    border-radius: 16px;
+    overflow: hidden;
+    margin-bottom: 1.5rem;
+  }
+  table { width:100%; border-collapse:collapse; }
+  thead tr { background: linear-gradient(135deg, var(--purple-dark), var(--purple)); }
+  thead th { padding:0.9rem 1.2rem; font-size:0.95rem; font-weight:700; color:var(--white); text-align:center; }
+  tbody tr { border-bottom:1px solid rgba(123,47,190,0.15); transition:background 0.2s; }
+  tbody tr:last-child { border-bottom:none; }
+  tbody tr:hover { background:rgba(123,47,190,0.08); }
+  td { padding:0.85rem 1.2rem; text-align:center; font-size:0.93rem; color:rgba(255,255,255,0.85); }
+  .voucher-val { color: var(--gold); font-weight:800; font-size:1.05rem; }
+  .ops-range  { color: var(--purple-light); font-weight:700; }
+
+  /* STORES */
+  .stores-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+  .store-card {
+    background: rgba(123,47,190,0.1);
+    border: 1px solid rgba(123,47,190,0.2);
+    border-radius: 12px;
+    padding: 1rem;
+    text-align: center;
+    transition: all 0.25s;
+  }
+  .store-card:hover { background: rgba(123,47,190,0.2); border-color: var(--purple); }
+  .store-card .s-icon { font-size: 1.8rem; margin-bottom: 0.4rem; display: block; }
+  .store-card .s-name { font-size: 0.88rem; font-weight: 700; color: var(--purple-light); }
+  .store-card .s-note { font-size: 0.75rem; color: rgba(255,255,255,0.4); margin-top: 0.2rem; }
+
+  /* TERMS LIST */
+  .terms-list { display:flex; flex-direction:column; gap:0.8rem; }
+  .term-row {
+    display: flex;
+    gap: 0.8rem;
+    align-items: flex-start;
+    font-size: 0.9rem;
+    color: rgba(255,255,255,0.78);
+    line-height: 1.65;
+  }
+  .term-row::before {
+    content: '✦';
+    color: var(--purple-light);
+    font-size: 0.65rem;
+    margin-top: 5px;
+    flex-shrink: 0;
+  }
+  .term-row strong { color: var(--gold); }
+
+  /* DONATION SECTION */
+  .donation-highlight {
+    background: linear-gradient(135deg, rgba(46,204,113,0.08), rgba(8,0,18,0.6));
+    border: 1px solid rgba(46,204,113,0.2);
+    border-radius: 16px;
+    padding: 1.8rem 2rem;
+    text-align: center;
+    margin-bottom: 2rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .donation-highlight::before {
+    content:'';
+    position:absolute;
+    top:0;left:0;right:0;
+    height:3px;
+    background:linear-gradient(90deg,transparent,var(--green),transparent);
+  }
+  .donation-highlight .big-icon { font-size:3rem; display:block; margin-bottom:0.8rem; }
+  .donation-highlight p { font-size:1.1rem; color:rgba(255,255,255,0.85); line-height:1.9; max-width:600px; margin:0 auto; }
+  .donation-highlight p strong { color: var(--green); }
+  .donation-highlight p .gold { color: var(--gold); }
+
+  /* CHARITIES GRID */
+  .charities-header {
+    font-family:'Tajawal',sans-serif;
+    font-size:1.1rem;
+    font-weight:700;
+    color:var(--purple-light);
+    margin-bottom:1rem;
+    text-align:center;
+  }
+  .charities-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 0.7rem;
+  }
+  .charity-item {
+    background: rgba(255,255,255,0.02);
+    border: 1px solid rgba(123,47,190,0.15);
+    border-radius: 10px;
+    padding: 0.7rem 1rem;
+    font-size: 0.85rem;
+    color: rgba(255,255,255,0.75);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: background 0.2s;
+  }
+  .charity-item:hover { background: rgba(123,47,190,0.1); color: var(--white); }
+  .charity-item::before { content:'🤲'; font-size:0.85rem; flex-shrink:0; }
+
+  /* INFO CARDS ROW */
+  .info-row { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:1rem; margin-bottom:1.5rem; }
+  .info-card {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(123,47,190,0.2);
+    border-radius: 14px;
+    padding: 1.2rem;
+    text-align: center;
+    transition: background 0.25s;
+  }
+  .info-card:hover { background: rgba(123,47,190,0.08); }
+  .info-card .ic-icon { font-size:1.8rem; margin-bottom:0.5rem; display:block; }
+  .info-card .ic-label { font-size:0.78rem; color:rgba(255,255,255,0.4); margin-bottom:0.2rem; }
+  .info-card .ic-val  { font-size:0.95rem; font-weight:700; color:var(--gold); }
+
+  /* COMPLAINT BOX */
+  .complaint-box {
+    background: rgba(255,255,255,0.02);
+    border: 1px solid rgba(123,47,190,0.2);
+    border-right: 3px solid var(--purple-mid);
+    border-radius: 0 14px 14px 0;
+    padding: 1.2rem 1.5rem;
+    margin-top: 1.5rem;
+  }
+  .complaint-box .cb-title { font-size:0.95rem; font-weight:700; color:var(--purple-light); margin-bottom:0.5rem; }
+  .complaint-box p { font-size:0.88rem; color:rgba(255,255,255,0.7); line-height:1.7; }
+  .complaint-box a { color:var(--purple-light); text-decoration:none; direction:ltr; display:inline-block; }
+
+  /* FOOTER */
+  footer {
+    background:linear-gradient(0deg,rgba(123,47,190,0.06),transparent);
+    border-top:1px solid rgba(123,47,190,0.15);
+    text-align:center;
+    padding:2.5rem 1.5rem;
+    position:relative; z-index:1;
+  }
+  .footer-logo { font-family:'Tajawal',sans-serif; font-size:1.8rem; font-weight:900; color:var(--purple-mid); margin-bottom:0.3rem; }
+  footer p { color:rgba(255,255,255,0.3); font-size:0.83rem; }
+
+  .fade-in { opacity:0; transform:translateY(20px); transition:opacity 0.7s ease,transform 0.7s ease; }
+  .fade-in.visible { opacity:1; transform:translateY(0); }
+
+  /* SCROLL NAV */
+  .scroll-nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(8,0,18,0.9);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(123,47,190,0.2);
+    padding: 0.8rem 1.5rem;
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+  .nav-btn {
+    background: rgba(123,47,190,0.12);
+    border: 1px solid rgba(123,47,190,0.25);
+    color: rgba(255,255,255,0.65);
+    padding: 0.4rem 1.1rem;
+    border-radius: 50px;
+    cursor: pointer;
+    font-family: 'Cairo', sans-serif;
+    font-size: 0.82rem;
+    font-weight: 600;
+    transition: all 0.2s;
+    text-decoration: none;
+    display: inline-block;
+  }
+  .nav-btn:hover { background: var(--purple); color: var(--white); border-color: var(--purple); }
+
+  @media(max-width:640px){
+    .moon{width:50px;height:50px;left:15px;top:15px;}
+    .moon::after{width:44px;height:44px;top:-4px;left:9px;}
+    .lantern{display:none;}
+    .promo-header{flex-wrap:wrap;}
+    .mega-num{font-size:2.5rem;}
+    table{font-size:0.82rem;}
+    td,thead th{padding:0.65rem 0.7rem;}
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="moon"></div>
+  <div class="wallet-deco">👛</div>
+  <div class="lantern">
+    <div class="l-rope"></div><div class="l-top"></div><div class="l-body"></div><div class="l-bottom"></div>
+  </div>
+  <div class="lantern">
+    <div class="l-rope"></div><div class="l-top"></div><div class="l-body"></div><div class="l-bottom"></div>
+  </div>
+
+  <div class="badge">WE PAY RAMADAN 2026 PROMOTION</div>
+  <div class="hero-eyebrow">عروض رمضان الحصرية</div>
+  <h1 class="hero-title">رمضان كريم</h1>
+  <div class="hero-brand">محفظة WE Pay</div>
+  <p class="hero-sub">ثلاثة عروض حصرية للعملاء الجدد والحاليين بمناسبة شهر رمضان الكريم — ابتداءً من 20 فبراير 2026</p>
+  <div class="promo-types">
+    <div class="promo-pill"><span class="num">1</span>عرض الميجابيتس</div>
+    <div class="promo-pill"><span class="num">2</span>قسائم الشراء</div>
+    <div class="promo-pill"><span class="num">3</span>مبادرة التبرعات</div>
+  </div>
+</div>
+
+<!-- STICKY NAV -->
+<div class="scroll-nav">
+  <a class="nav-btn" href="#megabytes">📶 الميجابيتس</a>
+  <a class="nav-btn" href="#vouchers">🎟️ قسائم الشراء</a>
+  <a class="nav-btn" href="#donations">❤️ التبرعات</a>
+</div>
+
+<!-- ====== SECTION 1: MEGABYTES ====== -->
+<div class="container" id="megabytes">
+  <section class="fade-in">
+    <div class="section-header">
+      <h2 class="section-title">1. عرض الميجابيتس</h2>
+      <div class="section-line"></div>
+      <p class="section-subtitle">للعملاء الجدد فقط</p>
+    </div>
+
+    <div class="promo-section">
+      <div class="promo-header">
+        <div class="pnum">١</div>
+        <h3>عرض الميجابيتس للعملاء الجدد</h3>
+        <span class="ptag">جدد فقط</span>
+      </div>
+      <div class="promo-body">
+
+        <div class="mega-highlight">
+          <div class="mega-num">3,250 <span>ميجابيت</span></div>
+          <div class="mega-info">
+            <p>يحصل مشتركو <strong>WE Pay الجدد</strong> على باقة ميجابيتس مجانية لمرة واحدة فقط.</p>
+            <span class="mega-badge">📅 صالحة لمدة 28 يوم</span>
+          </div>
+        </div>
+
+        <div class="info-row">
+          <div class="info-card">
+            <span class="ic-icon">👤</span>
+            <div class="ic-label">المستفيدون</div>
+            <div class="ic-val">عملاء WE Pay الجدد فقط</div>
+          </div>
+          <div class="info-card">
+            <span class="ic-icon">📅</span>
+            <div class="ic-label">صلاحية الباقة</div>
+            <div class="ic-val">28 يوم</div>
+          </div>
+          <div class="info-card">
+            <span class="ic-icon">🔁</span>
+            <div class="ic-label">التجديد</div>
+            <div class="ic-val">لا تُجدَّد</div>
+          </div>
+          <div class="info-card">
+            <span class="ic-icon">📤</span>
+            <div class="ic-label">ترحيل المتبقي</div>
+            <div class="ic-val">لا يُرحَّل</div>
+          </div>
+        </div>
+
+        <div class="terms-list">
+          <div class="term-row">يحصل العميل الجديد المشترك في محفظة WE Pay على الباقة <strong>مرة واحدة فقط</strong>.</div>
+          <div class="term-row">الباقة متاحة لجميع عملاء <strong>أنظمة الدفع المسبق والفاتورة وخطوط الداتا</strong> الحاليين والجدد.</div>
+          <div class="term-row">في حالة الاستخدام يتم خصم <strong>1 ميجابايت من الباقة لكل ميجابايت استخدام</strong>.</div>
+          <div class="term-row">أولوية الاستهلاك: <strong>الباقة الجديدة أولاً ثم الباقة الأساسية</strong>.</div>
+          <div class="term-row">تتحمل الشركة المصرية للاتصالات <strong>ضريبة القيمة المضافة</strong> على الباقة المجانية.</div>
+          <div class="term-row">بعد استهلاك 100% من الباقة تكون المحاسبة خارج الباقة <strong>وفقاً للباقة الأساسية</strong>.</div>
+          <div class="term-row">العرض ساري حتى <strong>نهاية رمضان 2026</strong>.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<div class="divider"></div>
+
+<!-- ====== SECTION 2: VOUCHERS ====== -->
+<div class="container" id="vouchers">
+  <section class="fade-in">
+    <div class="section-header">
+      <h2 class="section-title">2. عرض قسائم الشراء</h2>
+      <div class="section-line"></div>
+      <p class="section-subtitle">للعملاء الجدد والحاليين</p>
+    </div>
+
+    <div class="promo-section">
+      <div class="promo-header">
+        <div class="pnum">٢</div>
+        <h3>قسائم الشراء من متاجر مختارة</h3>
+        <span class="ptag">جدد وحاليون</span>
+      </div>
+      <div class="promo-body">
+
+        <p style="color:rgba(255,255,255,0.7);margin-bottom:1.5rem;font-size:0.95rem;line-height:1.7;">
+          عند القيام بمعاملات مالية على WE Pay يحصل العميل على قسيمة شراء من المتاجر المشاركة وفقاً لعدد العمليات الأسبوعية:
+        </p>
+
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>عدد العمليات / الأسبوع</th>
+                <th>قسيمة الشراء</th>
+                <th>المتاجر المتاحة</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="ops-range">من 4 إلى 9 عمليات</td>
+                <td class="voucher-val">100 جنيه</td>
+                <td style="color:rgba(255,255,255,0.6);font-size:0.85rem;">كازيون ماركت فقط</td>
+              </tr>
+              <tr>
+                <td class="ops-range">من 10 إلى 19 عملية</td>
+                <td class="voucher-val">200 جنيه</td>
+                <td style="color:rgba(255,255,255,0.6);font-size:0.85rem;">مونجيني – خير زمان – تاون تيم</td>
+              </tr>
+              <tr>
+                <td class="ops-range">20 عملية أو أكثر</td>
+                <td class="voucher-val">300 جنيه</td>
+                <td style="color:rgba(255,255,255,0.6);font-size:0.85rem;">مونجيني – خير زمان – تاون تيم</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="stores-grid">
+          <div class="store-card">
+            <span class="s-icon">🍰</span>
+            <div class="s-name">مونجيني</div>
+            <div class="s-note">قسائم 200 و 300 ج</div>
+          </div>
+          <div class="store-card">
+            <span class="s-icon">🛒</span>
+            <div class="s-name">خير زمان</div>
+            <div class="s-note">قسائم 200 و 300 ج</div>
+          </div>
+          <div class="store-card">
+            <span class="s-icon">👗</span>
+            <div class="s-name">Town Team</div>
+            <div class="s-note">قسائم 200 و 300 ج</div>
+          </div>
+          <div class="store-card">
+            <span class="s-icon">🏪</span>
+            <div class="s-name">كازيون ماركت</div>
+            <div class="s-note">قسيمة 100 ج فقط</div>
+          </div>
+        </div>
+
+        <div class="info-row">
+          <div class="info-card">
+            <span class="ic-icon">💳</span>
+            <div class="ic-label">الحد الأدنى للمعاملة</div>
+            <div class="ic-val">100 جنيه</div>
+          </div>
+          <div class="info-card">
+            <span class="ic-icon">🎟️</span>
+            <div class="ic-label">مرات الاستفادة</div>
+            <div class="ic-val">مرة واحدة فقط</div>
+          </div>
+          <div class="info-card">
+            <span class="ic-icon">⏱️</span>
+            <div class="ic-label">وصول كود القسيمة</div>
+            <div class="ic-val">خلال 72 ساعة</div>
+          </div>
+          <div class="info-card">
+            <span class="ic-icon">📅</span>
+            <div class="ic-label">صلاحية القسيمة</div>
+            <div class="ic-val">7 أيام من الإرسال</div>
+          </div>
+        </div>
+
+        <div class="terms-list">
+          <div class="term-row">الحد الأدنى لقيمة المعاملة المالية الواحدة على المحفظة <strong>100 جنيه</strong>.</div>
+          <div class="term-row">العمليات التالية تُحتسب كمعاملة واحدة فقط: <strong>تحويل الأموال، خدمات WE (إنترنت أرضي، خط أرضي، موبايل WE)، إيداع الأموال أو شحن المحفظة من الفروع أو الحساب البنكي (ACH) أو (AVL)</strong>.</div>
+          <div class="term-row">قسيمة 100 جنيه لـ <strong>كازيون ماركت فقط</strong>، وقسائم 200 و 300 جنيه لـ <strong>مونجيني – خير زمان – تاون تيم فقط</strong>.</div>
+          <div class="term-row">يحصل العميل على كود القسيمة <strong>خلال 72 ساعة</strong> من انتهاء الأسبوع.</div>
+          <div class="term-row">يحصل العميل على القسيمة <strong>مرة واحدة فقط</strong> طوال فترة العرض.</div>
+          <div class="term-row">القسائم سارية <strong>7 أيام</strong> من تاريخ الإرسال.</div>
+          <div class="term-row">العرض ساري حتى <strong>نهاية رمضان 2026</strong>.</div>
+        </div>
+
+        <div class="complaint-box">
+          <div class="cb-title">📞 في حالة شكوى عدم استلام القسيمة</div>
+          <p>يتم تلقي الشكوى واتباع نفس إجراءات الـ Ticketing System الخاصة بعروض WE Bonus عبر:<br>
+          <a href="https://dsq.freshdesk.com/" target="_blank">🔗 https://dsq.freshdesk.com/</a><br><br>
+          في حال استحقاق العميل للعرض ولم تصل الرسالة، يتم إعادة إرسالها بعد التأكد من مرور 72 ساعة على انتهاء أسبوع المعاملات.<br>
+          في حال عدم الاستحقاق، يتم إبلاغ العميل بذلك. لتصحيح كود خاطئ يتم الرجوع إلى سيستم شركة <strong>D-squares</strong>.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<div class="divider"></div>
+
+<!-- ====== SECTION 3: DONATIONS ====== -->
+<div class="container" id="donations">
+  <section class="fade-in">
+    <div class="section-header">
+      <h2 class="section-title">3. مبادرة التبرعات</h2>
+      <div class="section-line"></div>
+      <p class="section-subtitle">WE تضاعف تبرعك في رمضان</p>
+    </div>
+
+    <div class="promo-section">
+      <div class="promo-header" style="background:linear-gradient(135deg,#1a5c35,#2ECC71);">
+        <div class="pnum">٣</div>
+        <h3>مبادرة التبرعات من WE Pay</h3>
+        <span class="ptag" style="background:rgba(255,255,255,0.15);border-color:rgba(255,255,255,0.3);color:#fff;">رمضان كريم</span>
+      </div>
+      <div class="promo-body">
+
+        <div class="donation-highlight">
+          <span class="big-icon">❤️</span>
+          <p>
+            كل تبرع من خلال <strong>WE Pay</strong> هيتضاعف في رمضان!<br>
+            كل <span class="gold">جنيه</span> يتبرع به العميل من خلال المحفظة،<br>
+            <strong>WE ستدفع مثله طوال شهر رمضان.</strong>
+          </p>
+        </div>
+
+        <div class="charities-header">🤲 جهات التبرع المتاحة على المحفظة</div>
+        <div class="charities-grid">
+          <div class="charity-item">صناع الخير للتنمية</div>
+          <div class="charity-item">بنك الطعام المصري</div>
+          <div class="charity-item">جمعية دار الأورمان</div>
+          <div class="charity-item">مصر الخير</div>
+          <div class="charity-item">جمعية رسالة</div>
+          <div class="charity-item">مؤسسة مرقاه</div>
+          <div class="charity-item">معاً لحياة أفضل</div>
+          <div class="charity-item">وزارة الأوقاف</div>
+          <div class="charity-item">مستشفى عين شمس</div>
+          <div class="charity-item">مؤسسة مكافحة سرطان الثدي</div>
+          <div class="charity-item">مستشفى أورام الأطفال 57357</div>
+          <div class="charity-item">مؤسسة بهية</div>
+          <div class="charity-item">مستشفى 25 يناير</div>
+          <div class="charity-item">جمعية مركز الأورام</div>
+          <div class="charity-item">معهد الأورام 500500</div>
+          <div class="charity-item">معهد الكبد</div>
+          <div class="charity-item">أصدقاء المبادرة ضد السرطان 57357</div>
+          <div class="charity-item">بنك الشفاء</div>
+          <div class="charity-item">مؤسسة مجدي يعقوب للقلب</div>
+          <div class="charity-item">بنك الكساء</div>
+          <div class="charity-item">بيت الزكاة</div>
+          <div class="charity-item">تحيا مصر</div>
+          <div class="charity-item">أبو الريش الياباني</div>
+          <div class="charity-item">مدينة زويل</div>
+          <div class="charity-item">مستشفى أهل مصر للحروق</div>
+          <div class="charity-item">معهد الأورام 777</div>
+          <div class="charity-item">مستشفى الناس</div>
+          <div class="charity-item">جمعية الهلال الأحمر المصري</div>
+          <div class="charity-item">جمعية مسجد د. مصطفى محمود</div>
+          <div class="charity-item">مؤسسة أصدقاء مرضى الجذام</div>
+          <div class="charity-item">مبادرة حياة كريمة</div>
+          <div class="charity-item">مؤسسة صناع الحياة مصر</div>
+          <div class="charity-item">شفاء الأورمان</div>
+          <div class="charity-item">مؤسسة الزهروان للتنمية</div>
+          <div class="charity-item">مؤسسة باقيات صالحات</div>
+          <div class="charity-item">مؤسسة واحد من الناس</div>
+          <div class="charity-item">مؤسسة مرسال</div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+</div>
+
+<div class="divider"></div>
+
+<footer>
+  <div class="footer-logo">WE Pay</div>
+  <p>عرض رمضان 2026 على محفظة WE Pay • ابتداءً من 20 فبراير 2026</p>
+  <p style="margin-top:0.3rem;">المؤلف: Mona Abdelkerem | المراجع: Ahmed Abdelhamid | الإصدار 2</p>
+</footer>
+
+<script>
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(el => { if(el.isIntersecting) el.target.classList.add('visible'); });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
