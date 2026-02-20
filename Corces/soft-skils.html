@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>دورة المهارات الشخصية - Soft Skills Course</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800&display=swap');
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Cairo', sans-serif;
+            background-color: #f9fafb;
+            color: #1f2937;
+        }
+
+        /* Utilities */
+        .container { width: 100%; margin-left: auto; margin-right: auto; padding-left: 1rem; padding-right: 1rem; max-width: 1280px; }
+        .text-center { text-align: center; }
+        .relative { position: relative; }
+        .absolute { position: absolute; }
+        .fixed { position: fixed; }
+        .flex { display: flex; }
+        .inline-block { display: inline-block; }
+        .grid { display: grid; }
+        .hidden { display: none; }
+        .w-full { width: 100%; }
+        .h-full { height: 100%; }
+        .overflow-hidden { overflow: hidden; }
+        .cursor-pointer { cursor: pointer; }
+        .z-10 { z-index: 10; }
+        .z-50 { z-index: 50; }
+
+        /* Gradient */
+        .gradient-bg { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+
+        /* Header */
+        header { color: white; box-shadow: 0 25px 50px rgba(0,0,0,0.25); }
+        header .inner { padding: 3rem 1rem; }
+        .header-icon-wrap {
+            display: inline-flex; align-items: center; justify-content: center;
+            background: rgba(255,255,255,0.2); backdrop-filter: blur(4px);
+            border-radius: 9999px; padding: 1rem; margin-bottom: 1rem;
+        }
+        .header-icon-wrap svg { width: 4rem; height: 4rem; color: white; }
+        .header-title { font-size: 2.5rem; font-weight: 800; margin-bottom: 0.75rem; }
+        .header-subtitle { font-size: 1.25rem; color: #e9d5ff; margin-bottom: 0.5rem; }
+        .header-desc { color: #c4b5fd; }
+        .header-meta { margin-top: 1.5rem; display: flex; align-items: center; justify-content: center; gap: 0.5rem; color: #e9d5ff; font-size: 1rem; }
+        .header-meta svg { width: 1.25rem; height: 1.25rem; }
+
+        /* Progress card */
+        .progress-card {
+            background: white; border-radius: 0.75rem;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            padding: 1.5rem; max-width: 42rem; margin: -2rem auto 0; position: relative; z-index: 10;
+        }
+        .progress-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.75rem; }
+        .progress-label { font-weight: 600; color: #374151; }
+        .progress-count { color: #7c3aed; font-weight: 700; }
+        .progress-bar { height: 4px; background: #e5e7eb; border-radius: 9999px; overflow: hidden; }
+        .progress-fill { height: 100%; background: linear-gradient(90deg, #667eea 0%, #764ba2 100%); transition: width 0.4s ease; }
+
+        /* Main */
+        main { padding: 3rem 1rem; }
+        .videos-grid { display: grid; grid-template-columns: 1fr; gap: 2rem; max-width: 72rem; margin: 0 auto; }
+        @media (min-width: 768px) { .videos-grid { grid-template-columns: 1fr 1fr; } }
+
+        /* Video card */
+        .video-card {
+            background: white; border-radius: 0.75rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            overflow: hidden; cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .video-card:hover { transform: translateY(-10px) scale(1.02); box-shadow: 0 20px 60px rgba(0,0,0,0.2); }
+        .card-thumb { position: relative; }
+        .card-thumb img { width: 100%; height: 14rem; object-fit: cover; display: block; }
+        .video-badge {
+            position: absolute; top: 10px; right: 10px;
+            background: rgba(0,0,0,0.7); color: white;
+            padding: 5px 10px; border-radius: 20px; font-size: 12px;
+            display: flex; align-items: center; gap: 5px;
+        }
+        .video-badge svg { width: 1rem; height: 1rem; }
+        .play-icon {
+            position: absolute; top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80px; height: 80px;
+            background: rgba(255,255,255,0.9); border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            transition: all 0.3s ease; cursor: pointer;
+        }
+        .video-card:hover .play-icon { transform: translate(-50%, -50%) scale(1.1); background: white; }
+        .play-icon svg { width: 40px; height: 40px; color: #667eea; margin-right: -5px; }
+        .completed-badge {
+            position: absolute; bottom: 8px; right: 8px;
+            background: #22c55e; color: white;
+            padding: 4px 12px; border-radius: 9999px; font-size: 0.875rem;
+            font-weight: 600; display: flex; align-items: center; gap: 4px;
+        }
+        .completed-badge svg { width: 1rem; height: 1rem; }
+        .card-body { padding: 1.5rem; }
+        .card-title { font-size: 1.25rem; font-weight: 700; color: #1f2937; margin-bottom: 0.5rem; }
+        .card-desc { color: #6b7280; }
+        .card-footer { margin-top: 1rem; display: flex; align-items: center; justify-content: space-between; }
+        .watch-btn { color: #7c3aed; font-weight: 600; display: flex; align-items: center; gap: 0.5rem; }
+        .watch-btn svg { width: 1.25rem; height: 1.25rem; }
+        .lesson-num { color: #9ca3af; font-size: 0.875rem; }
+
+        /* Modal */
+        .modal {
+            display: none; position: fixed; z-index: 1000;
+            left: 0; top: 0; width: 100%; height: 100%;
+            background-color: rgba(0,0,0,0.9);
+            animation: fadeIn 0.3s ease;
+            align-items: center; justify-content: center;
+        }
+        .modal.active { display: flex; }
+        .modal-content {
+            position: relative; width: 90%; max-width: 1200px;
+            background: white; border-radius: 20px; overflow: hidden;
+            animation: slideUp 0.4s ease;
+        }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(50px); } to { opacity: 1; transform: translateY(0); } }
+
+        .close-btn {
+            position: absolute; top: -50px; left: 0;
+            background: white; color: #333; border: none;
+            width: 40px; height: 40px; border-radius: 50%; cursor: pointer;
+            font-size: 24px; display: flex; align-items: center; justify-content: center;
+            z-index: 1001; transition: all 0.3s ease;
+        }
+        .close-btn:hover { background: #ef4444; color: white; transform: rotate(90deg); }
+
+        .modal-header { background: linear-gradient(90deg, #7c3aed, #4f46e5); color: white; padding: 1.5rem; }
+        .modal-title { font-size: 1.5rem; font-weight: 700; }
+        .modal-desc { color: #ddd6fe; margin-top: 0.5rem; }
+
+        .video-wrapper { position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; }
+        .video-wrapper iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; }
+
+        .modal-footer { padding: 1.5rem; background: #f9fafb; }
+        .complete-btn {
+            width: 100%; background: linear-gradient(90deg, #22c55e, #16a34a);
+            color: white; border: none; padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem; font-weight: 700; font-size: 1rem;
+            cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 0.5rem;
+            transition: all 0.3s ease; font-family: 'Cairo', sans-serif;
+        }
+        .complete-btn:hover { background: linear-gradient(90deg, #16a34a, #15803d); }
+        .complete-btn svg { width: 1.25rem; height: 1.25rem; }
+
+        /* Footer */
+        footer { color: white; padding: 2rem 0; margin-top: 3rem; }
+        .footer-logo-wrap {
+            background: white; border-radius: 9999px;
+            width: 5rem; height: 5rem; margin: 0 auto 1rem;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .footer-logo-wrap img { width: 4rem; height: 4rem; object-fit: contain; }
+        .footer-title { font-size: 1.25rem; font-weight: 700; }
+        .footer-subtitle { color: #c4b5fd; }
+        .footer-divider { border-top: 1px solid #a78bfa; padding-top: 1rem; margin-top: 1rem; }
+        .footer-copy { color: #c4b5fd; }
+
+        /* Toast */
+        .toast {
+            position: fixed; top: 6rem; left: 50%; transform: translateX(-50%);
+            background: #22c55e; color: white; padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem; box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            z-index: 9999; display: flex; align-items: center; gap: 0.5rem;
+            font-family: 'Cairo', sans-serif; font-size: 1rem;
+            animation: toastIn 0.3s ease;
+        }
+        .toast svg { width: 1.25rem; height: 1.25rem; }
+        @keyframes toastIn { from { opacity: 0; top: 4rem; } to { opacity: 1; top: 6rem; } }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="gradient-bg">
+        <div class="container">
+            <div class="inner text-center">
+                <div class="header-icon-wrap">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
+                    </svg>
+                </div>
+                <h1 class="header-title">دورة المهارات الشخصية</h1>
+                <p class="header-subtitle">Soft Skills Course</p>
+                <p class="header-desc">طور مهاراتك الشخصية والمهنية</p>
+                <div class="header-meta">
+                    <svg fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M10 12a2 2 0 100-4 2 2 0 000 4z"/>
+                        <path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z"/>
+                    </svg>
+                    <span>4 فيديوهات تدريبية</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Progress Overview -->
+    <div class="container">
+        <div class="progress-card">
+            <div class="progress-header">
+                <span class="progress-label">تقدمك في الدورة</span>
+                <span class="progress-count" id="progress-text">0 / 4</span>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress-fill" style="width: 0%"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main>
+        <div class="container">
+            <div class="videos-grid" id="videos-container">
+                <!-- Video cards will be inserted here by JavaScript -->
+            </div>
+        </div>
+    </main>
+
+    <!-- Video Modal -->
+    <div id="video-modal" class="modal">
+        <div class="modal-content">
+            <button class="close-btn" onclick="closeVideo()">✕</button>
+            <div class="modal-header">
+                <h3 class="modal-title" id="modal-title">عنوان الفيديو</h3>
+                <p class="modal-desc" id="modal-description">وصف الفيديو</p>
+            </div>
+            <div class="video-wrapper" id="video-container">
+                <!-- Video iframe will be inserted here -->
+            </div>
+            <div class="modal-footer">
+                <button onclick="markAsCompleted()" class="complete-btn">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                    </svg>
+                    تم المشاهدة
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="gradient-bg">
+        <div class="container text-center">
+            <div style="margin-bottom:1rem;">
+                <div class="footer-logo-wrap">
+                    <img src="img/we-core.png" alt="WE Logo">
+                </div>
+                <h3 class="footer-title">فريق WE-CORE</h3>
+                <p class="footer-subtitle">برنامج تطوير المهارات الشخصية</p>
+            </div>
+            <div class="footer-divider">
+                <p class="footer-copy">© 2026 WE-CORE - جميع الحقوق محفوظة</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Video data - Replace these IDs with actual Google Drive video IDs
+        const videos = [
+            {
+                id: 1,
+                title: "الفيديو الأول - مقدمة في المهارات الشخصية",
+                description: "تعرف على أهمية المهارات الشخصية في الحياة المهنية",
+                driveId: "1PZ_w7D0ZPCkzzSD2JP-NdVpKVXWB-EBy", // استبدل هذا برقم الفيديو الحقيقي
+                thumbnail: "https://images.unsplash.com/photo-1552664730-d307ca884978?w=800",
+                duration: "15 دقيقة",
+                completed: false
+            },
+            {
+                id: 2,
+                title: "الفيديو الثاني - مهارات التواصل الفعال",
+                description: "كيف تتواصل بفعالية مع الآخرين في بيئة العمل",
+                driveId: "1UC1zWGDG1zK8pcVYOjaUJ1yIxb8YEerd", // استبدل هذا برقم الفيديو الحقيقي
+                thumbnail: "https://images.unsplash.com/photo-1573164713714-d95e436ab8d6?w=800",
+                duration: "20 دقيقة",
+                completed: false
+            },
+            {
+                id: 3,
+                title: "الفيديو الثالث - إدارة الوقت والأولويات",
+                description: "تعلم كيف تدير وقتك بكفاءة وتحدد أولوياتك",
+                driveId: "1x9tC8U7ZXZB-7hNEaiJJjjdk9SNKeaCg", // استبدل هذا برقم الفيديو الحقيقي
+                thumbnail: "https://images.unsplash.com/photo-1551836022-d5d88e9218df?w=800",
+                duration: "18 دقيقة",
+                completed: false
+            },
+            {
+                id: 4,
+                title: "الفيديو الرابع - العمل الجماعي والقيادة",
+                description: "اكتسب مهارات القيادة والعمل ضمن فريق",
+                driveId: "1FrIOJglBsFtYxTk26xv2HY9w7iX0u2nh", // استبدل هذا برقم الفيديو الحقيقي
+                thumbnail: "https://images.unsplash.com/photo-1521737711867-e3b97375f902?w=800",
+                duration: "22 دقيقة",
+                completed: false
+            }
+        ];
+
+        let currentVideoId = null;
+
+        // Load progress from localStorage
+        function loadProgress() {
+            const saved = localStorage.getItem('softSkillsProgress');
+            if (saved) {
+                const progress = JSON.parse(saved);
+                videos.forEach(video => {
+                    if (progress.includes(video.id)) {
+                        video.completed = true;
+                    }
+                });
+            }
+            updateProgress();
+        }
+
+        // Save progress to localStorage
+        function saveProgress() {
+            const completed = videos.filter(v => v.completed).map(v => v.id);
+            localStorage.setItem('softSkillsProgress', JSON.stringify(completed));
+            updateProgress();
+        }
+
+        // Update progress bar
+        function updateProgress() {
+            const completed = videos.filter(v => v.completed).length;
+            const total = videos.length;
+            const percentage = (completed / total) * 100;
+            
+            document.getElementById('progress-fill').style.width = percentage + '%';
+            document.getElementById('progress-text').textContent = `${completed} / ${total}`;
+        }
+
+        // Render video cards
+        function renderVideos() {
+            const container = document.getElementById('videos-container');
+            container.innerHTML = '';
+
+            videos.forEach(video => {
+                const card = document.createElement('div');
+                card.className = 'video-card';
+                card.onclick = () => openVideo(video.id);
+                
+                card.innerHTML = `
+                    <div class="card-thumb">
+                        <img src="${video.thumbnail}" alt="${video.title}">
+                        <div class="video-badge">
+                            <svg fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M10 12a2 2 0 100-4 2 2 0 000 4z"/>
+                                <path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z"/>
+                            </svg>
+                            ${video.duration}
+                        </div>
+                        <div class="play-icon">
+                            <svg fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z"/>
+                            </svg>
+                        </div>
+                        ${video.completed ? `
+                            <div class="completed-badge">
+                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                </svg>
+                                تمت المشاهدة
+                            </div>
+                        ` : ''}
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title">${video.title}</h3>
+                        <p class="card-desc">${video.description}</p>
+                        <div class="card-footer">
+                            <span class="watch-btn">
+                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                </svg>
+                                شاهد الآن
+                            </span>
+                            <span class="lesson-num">الدرس ${video.id}</span>
+                        </div>
+                    </div>
+                `;
+                
+                container.appendChild(card);
+            });
+        }
+
+        // Open video in modal
+        function openVideo(videoId) {
+            const video = videos.find(v => v.id === videoId);
+            if (!video) return;
+
+            currentVideoId = videoId;
+            
+            document.getElementById('modal-title').textContent = video.title;
+            document.getElementById('modal-description').textContent = video.description;
+            
+            // Extract the file ID from a full Google Drive URL or use as-is if already an ID
+            let fileId = video.driveId;
+            const match = video.driveId.match(/\/file\/d\/([a-zA-Z0-9_-]+)/);
+            if (match) {
+                fileId = match[1];
+            }
+            
+            const embedUrl = `https://drive.google.com/file/d/${fileId}/preview`;
+            
+            document.getElementById('video-container').innerHTML = `
+                <iframe src="${embedUrl}" allowfullscreen></iframe>
+            `;
+            
+            document.getElementById('video-modal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        // Close video modal
+        function closeVideo() {
+            document.getElementById('video-modal').classList.remove('active');
+            document.getElementById('video-container').innerHTML = '';
+            document.body.style.overflow = 'auto';
+            currentVideoId = null;
+        }
+
+        // Mark video as completed
+        function markAsCompleted() {
+            if (currentVideoId) {
+                const video = videos.find(v => v.id === currentVideoId);
+                if (video) {
+                    video.completed = true;
+                    saveProgress();
+                    renderVideos();
+                    closeVideo();
+                    
+                    // Show success message
+                    showSuccessMessage();
+                }
+            }
+        }
+
+        // Show success message
+        function showSuccessMessage() {
+            const message = document.createElement('div');
+            message.className = 'toast';
+            message.innerHTML = `
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                </svg>
+                <span>تم تسجيل المشاهدة بنجاح!</span>
+            `;
+            document.body.appendChild(message);
+            
+            setTimeout(() => {
+                message.remove();
+            }, 3000);
+        }
+
+        // Close modal when clicking outside
+        document.getElementById('video-modal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeVideo();
+            }
+        });
+
+        // Close modal with Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeVideo();
+            }
+        });
+
+        // Initialize
+        loadProgress();
+        renderVideos();
+    </script>
+</body>
+</html>
