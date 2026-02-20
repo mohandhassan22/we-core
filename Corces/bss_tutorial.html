@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BSS Tutorial – مكتبة الفيديوهات</title>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --purple:     #5b1f82;
+  --purple-mid: #7c3aad;
+  --purple-lt:  #9f6ec7;
+  --purple-bg:  #f3edf9;
+  --purple-xs:  #faf7fd;
+  --gold:       #c9a84c;
+  --gold-lt:    #f0d878;
+  --dark:       #0f0f14;
+  --dark2:      #1a1a24;
+  --dark3:      #23232f;
+  --card-bg:    #1e1e2a;
+  --text:       #e8e4f0;
+  --text-dim:   #9990b0;
+  --radius:     14px;
+  --r-sm:       8px;
+}
+
+*{margin:0;padding:0;box-sizing:border-box;}
+
+body {
+  font-family:'Tajawal',sans-serif;
+  background: var(--dark);
+  color: var(--text);
+  line-height:1.7;
+  direction:rtl;
+  min-height:100vh;
+}
+
+/* ─── HEADER ─── */
+header {
+  background: linear-gradient(135deg,#3a0e5e 0%,#5b1f82 50%,#7c3aad 100%);
+  padding:0 24px;
+  position:sticky;top:0;z-index:300;
+  box-shadow:0 2px 30px rgba(0,0,0,0.5);
+}
+.header-inner {
+  max-width:1300px;margin:0 auto;
+  display:flex;align-items:center;justify-content:space-between;
+  gap:16px;min-height:68px;
+}
+.brand{display:flex;align-items:center;gap:14px;}
+.logo-circle {
+  width:46px;height:46px;background:white;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-weight:900;font-size:.95rem;color:var(--purple);
+  flex-shrink:0;box-shadow:0 2px 12px rgba(0,0,0,0.3);
+}
+.brand-text h1{font-size:1.2rem;font-weight:800;color:white;line-height:1.1;}
+.brand-text p{font-size:.75rem;color:rgba(255,255,255,.65);}
+.header-search {
+  display:flex;align-items:center;gap:10px;
+  background:rgba(255,255,255,.1);
+  border:1px solid rgba(255,255,255,.18);
+  border-radius:30px;padding:7px 16px;
+  flex:1;max-width:360px;
+}
+.header-search input {
+  background:none;border:none;outline:none;
+  color:white;font-family:'Tajawal',sans-serif;
+  font-size:.9rem;width:100%;
+}
+.header-search input::placeholder{color:rgba(255,255,255,.45);}
+.header-search svg{color:rgba(255,255,255,.5);flex-shrink:0;}
+
+/* ─── HERO ─── */
+.hero {
+  background:linear-gradient(180deg,#2a0d45 0%,var(--dark) 100%);
+  text-align:center;padding:56px 24px 40px;
+  position:relative;overflow:hidden;
+}
+.hero::before {
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse 60% 80% at 50% 0%,rgba(124,58,173,0.3) 0%,transparent 70%);
+  pointer-events:none;
+}
+.hero h2{font-size:2rem;font-weight:900;color:white;margin-bottom:10px;}
+.hero h2 span{color:var(--gold-lt);}
+.hero p{color:var(--text-dim);font-size:.95rem;max-width:520px;margin:0 auto;}
+.stats{display:flex;gap:32px;justify-content:center;margin-top:28px;flex-wrap:wrap;}
+.stat{text-align:center;}
+.stat-n{font-size:1.8rem;font-weight:900;color:var(--gold-lt);}
+.stat-l{font-size:.78rem;color:var(--text-dim);}
+
+/* ─── MAIN ─── */
+.page{max-width:1300px;margin:0 auto;padding:36px 24px 80px;}
+
+/* ─── VIEW: FOLDERS GRID ─── */
+#view-folders{}
+.section-label{
+  font-size:.78rem;font-weight:700;letter-spacing:2px;
+  color:var(--purple-lt);text-transform:uppercase;margin-bottom:16px;
+}
+.folders-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(240px,1fr));
+  gap:20px;
+}
+.folder-card {
+  background:var(--card-bg);
+  border-radius:var(--radius);
+  border:1px solid rgba(255,255,255,.07);
+  padding:24px 20px;
+  cursor:pointer;
+  transition:all .25s ease;
+  position:relative;overflow:hidden;
+}
+.folder-card::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(124,58,173,.15) 0%,transparent 60%);
+  opacity:0;transition:opacity .25s;
+}
+.folder-card:hover{
+  transform:translateY(-5px);
+  border-color:rgba(124,58,173,.5);
+  box-shadow:0 12px 40px rgba(91,31,130,.35);
+}
+.folder-card:hover::before{opacity:1;}
+.folder-icon{
+  width:52px;height:52px;
+  background:linear-gradient(135deg,var(--purple) 0%,var(--purple-mid) 100%);
+  border-radius:12px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.5rem;margin-bottom:14px;
+  box-shadow:0 4px 16px rgba(91,31,130,.4);
+}
+.folder-name{font-size:1rem;font-weight:700;color:white;margin-bottom:6px;line-height:1.3;}
+.folder-count{
+  font-size:.8rem;color:var(--text-dim);
+  display:flex;align-items:center;gap:5px;
+}
+.folder-count svg{opacity:.5;}
+.folder-arrow{
+  position:absolute;bottom:16px;left:16px;
+  width:28px;height:28px;
+  background:rgba(255,255,255,.08);
+  border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  transition:all .25s;
+}
+.folder-card:hover .folder-arrow{background:var(--purple);transform:translateX(-3px);}
+
+/* ─── VIEW: VIDEOS ─── */
+#view-videos{display:none;}
+.back-btn{
+  display:inline-flex;align-items:center;gap:8px;
+  background:rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:30px;padding:8px 18px;
+  color:white;font-family:'Tajawal',sans-serif;
+  font-size:.88rem;font-weight:600;
+  cursor:pointer;margin-bottom:28px;
+  transition:all .2s;
+}
+.back-btn:hover{background:rgba(255,255,255,.14);}
+.folder-title-bar{
+  display:flex;align-items:center;gap:14px;
+  margin-bottom:28px;
+}
+.folder-title-bar .icon{
+  width:44px;height:44px;
+  background:linear-gradient(135deg,var(--purple) 0%,var(--purple-mid) 100%);
+  border-radius:10px;display:flex;align-items:center;justify-content:center;
+  font-size:1.3rem;flex-shrink:0;
+}
+.folder-title-bar h2{font-size:1.4rem;font-weight:800;color:white;}
+.folder-title-bar span{font-size:.85rem;color:var(--text-dim);}
+
+.videos-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
+  gap:18px;
+}
+.video-card{
+  background:var(--card-bg);
+  border-radius:var(--radius);
+  border:1px solid rgba(255,255,255,.07);
+  overflow:hidden;
+  cursor:pointer;
+  transition:all .25s;
+}
+.video-card:hover{
+  border-color:rgba(201,168,76,.4);
+  box-shadow:0 8px 32px rgba(0,0,0,.4);
+  transform:translateY(-3px);
+}
+.video-thumb{
+  position:relative;
+  background:linear-gradient(135deg,#1a0a2e 0%,#2d1050 100%);
+  aspect-ratio:16/9;
+  display:flex;align-items:center;justify-content:center;
+  overflow:hidden;
+}
+.video-thumb .play-btn{
+  width:52px;height:52px;
+  background:rgba(201,168,76,.9);
+  border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  transition:all .25s;
+  box-shadow:0 4px 20px rgba(201,168,76,.4);
+}
+.video-card:hover .play-btn{background:var(--gold);transform:scale(1.1);}
+.play-btn svg{margin-right:-3px;}
+.video-num{
+  position:absolute;bottom:8px;right:8px;
+  background:rgba(0,0,0,.7);
+  color:white;font-size:.72rem;font-weight:700;
+  padding:3px 8px;border-radius:20px;
+}
+.video-info{padding:14px 16px;}
+.video-title{
+  font-size:.92rem;font-weight:700;color:white;
+  margin-bottom:4px;line-height:1.4;
+}
+.video-meta{font-size:.78rem;color:var(--text-dim);}
+
+/* ─── MODAL PLAYER ─── */
+.modal-overlay{
+  display:none;position:fixed;inset:0;z-index:1000;
+  background:rgba(0,0,0,.88);
+  backdrop-filter:blur(8px);
+  align-items:center;justify-content:center;
+  padding:20px;
+}
+.modal-overlay.open{display:flex;}
+.modal-box{
+  background:var(--dark2);
+  border-radius:18px;
+  border:1px solid rgba(255,255,255,.1);
+  width:100%;max-width:900px;
+  box-shadow:0 30px 80px rgba(0,0,0,.7);
+  animation:popIn .3s cubic-bezier(.34,1.56,.64,1) both;
+  overflow:hidden;
+}
+@keyframes popIn{from{opacity:0;transform:scale(.9)} to{opacity:1;transform:scale(1)}}
+.modal-header{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:16px 22px;
+  border-bottom:1px solid rgba(255,255,255,.07);
+}
+.modal-title{font-size:1rem;font-weight:700;color:white;flex:1;margin-left:12px;}
+.modal-close{
+  width:34px;height:34px;
+  background:rgba(255,255,255,.1);
+  border:none;border-radius:50%;
+  color:white;font-size:1.2rem;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  transition:background .2s;flex-shrink:0;
+}
+.modal-close:hover{background:rgba(255,100,100,.3);}
+.modal-player{
+  position:relative;padding-bottom:56.25%;height:0;
+  background:#000;
+}
+.modal-player iframe{
+  position:absolute;inset:0;width:100%;height:100%;border:none;
+}
+.modal-nav{
+  display:flex;gap:10px;padding:16px 22px;
+  justify-content:space-between;align-items:center;
+  border-top:1px solid rgba(255,255,255,.07);
+}
+.nav-video-btn{
+  display:flex;align-items:center;gap:8px;
+  background:rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:8px;padding:8px 14px;
+  color:white;font-family:'Tajawal',sans-serif;
+  font-size:.85rem;cursor:pointer;transition:all .2s;
+  flex:1;max-width:200px;
+}
+.nav-video-btn:hover{background:rgba(124,58,173,.3);}
+.nav-video-btn.disabled{opacity:.3;pointer-events:none;}
+.nav-label{text-align:center;font-size:.8rem;color:var(--text-dim);}
+
+/* ─── EMPTY SEARCH ─── */
+.empty-state{
+  text-align:center;padding:60px 20px;color:var(--text-dim);
+}
+.empty-state svg{opacity:.3;margin-bottom:16px;}
+.empty-state p{font-size:.95rem;}
+
+/* ─── RESPONSIVE ─── */
+@media(max-width:640px){
+  .hero h2{font-size:1.4rem;}
+  .folders-grid{grid-template-columns:1fr 1fr;}
+  .videos-grid{grid-template-columns:1fr;}
+  .header-search{display:none;}
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="header-inner">
+    <div class="brand">
+      <div class="logo-circle">we</div>
+      <div class="brand-text">
+        <h1>BSS Tutorial</h1>
+        <p>مكتبة تدريبية – فريق WE-CORE</p>
+      </div>
+    </div>
+    <div class="header-search">
+      <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <input type="text" id="searchInput" placeholder="ابحث عن فيديو..." oninput="handleSearch()">
+    </div>
+  </div>
+</header>
+
+<!-- HERO -->
+<div class="hero">
+  <h2>مكتبة <span>BSS Tutorial</span></h2>
+  <p>جميع الفيديوهات التدريبية منظمة في مكان واحد — اضغط على أي فولدر لعرض الفيديوهات</p>
+  <div class="stats">
+    <div class="stat"><div class="stat-n" id="totalFolders">0</div><div class="stat-l">فولدر</div></div>
+    <div class="stat"><div class="stat-n" id="totalVideos">0</div><div class="stat-l">فيديو</div></div>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="page">
+
+  <!-- VIEW: FOLDERS -->
+  <div id="view-folders">
+    <div class="section-label">📁 الفولدرات</div>
+    <div class="folders-grid" id="foldersGrid"></div>
+  </div>
+
+  <!-- VIEW: VIDEOS -->
+  <div id="view-videos">
+    <button class="back-btn" onclick="showFolders()">
+      <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></svg>
+      رجوع للفولدرات
+    </button>
+    <div class="folder-title-bar">
+      <div class="icon" id="currentFolderIcon">📁</div>
+      <div>
+        <h2 id="currentFolderName"></h2>
+        <span id="currentFolderCount"></span>
+      </div>
+    </div>
+    <div class="videos-grid" id="videosGrid"></div>
+  </div>
+
+</div>
+
+<!-- MODAL PLAYER -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeModalOutside(event)">
+  <div class="modal-box">
+    <div class="modal-header">
+      <button class="modal-close" onclick="closeModal()">✕</button>
+      <div class="modal-title" id="modalTitle"></div>
+    </div>
+    <div class="modal-player">
+      <iframe id="videoFrame" allowfullscreen allow="autoplay"></iframe>
+    </div>
+    <div class="modal-nav">
+      <button class="nav-video-btn" id="btnPrev" onclick="navigateVideo(-1)">
+        <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></svg>
+        الفيديو السابق
+      </button>
+      <div class="nav-label" id="navLabel"></div>
+      <button class="nav-video-btn" id="btnNext" onclick="navigateVideo(1)" style="flex-direction:row-reverse">
+        الفيديو التالي
+        <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg>
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ════════════════════════════════════════════════════════════
+//  📂 DATA – ضيف هنا فولدراتك وفيديوهاتك
+//  طريقة الحصول على ID الفيديو:
+//    افتح الفيديو في Drive → شارك → انسخ اللينك
+//    اللينك: https://drive.google.com/file/d/FILE_ID/view
+//    خد الـ FILE_ID فقط
+//
+//  طريقة الحصول على ID الفولدر:
+//    افتح الفولدر في Drive → انسخ من URL
+//    https://drive.google.com/drive/folders/FOLDER_ID
+// ════════════════════════════════════════════════════════════
+
+const FOLDERS = [
+  {
+    id: "folder-1",
+    name: "WE-Mix",
+    icon: "📘",
+    driveId: "1OlL0a1Oq9lWGcrQiLnQugiuDk9sVTVK6",  // ← ضع ID الفولدر هنا
+    videos: [
+      { id:"v1", title:"Careat We Mix", fileId:"103mKavKduCQgkzWmgIE-FT3REnGmwJzr" },
+      { id:"v2", title:"Cancelled We Mix", fileId:"1RgW-W0A3Qj_zFrZp4e8rt53-PpUUUDkv" },
+      { id:"v3", title:"Find we mix number ", fileId:"1Md8aARJsrcxFy2yI_jvIcBzOgwX3xUj7" },
+      { id:"v4", title:"renewal", fileId:"1nlRs3p3HOZqMKVVPkvNaHq3v1538pSGz" },
+      { id:"v5", title:"we mix Top Up.mp4", fileId:"1SyQoQDomTddu6tmualCgoJp-hlODKj4A" },
+    ]
+  },
+  {
+    id: "folder-2",
+    name: "WE-Gold",
+    icon: "📝",
+    driveId: "FOLDER_ID_2",
+    videos: [
+    
+    ]
+  },
+  {
+    id: "folder-3",
+    name: "Fixed & Adsl",
+    icon: "📦",
+    driveId: "FOLDER_ID_3",
+    videos: [
+    
+    ]
+  },
+  {
+    id: "folder-4",
+    name: "Ramedy",
+    icon: "💳",
+    driveId: "FOLDER_ID_4",
+    videos: [
+     
+    ]
+  },
+  {
+    id: "folder-5",
+    name: "WE life",
+    icon: "🌍",
+    driveId: "FOLDER_ID_5",
+    videos: [
+    
+    ]
+  },
+  {
+    id: "folder-6",
+    name: "We Mix",
+    icon: "🎧",
+    driveId: "FOLDER_ID_6",
+    videos: [
+      
+    ]
+  },
+];
+
+// ══════════════════════════════════════════
+//  STATE
+// ══════════════════════════════════════════
+let currentFolder = null;
+let currentVideoIdx = 0;
+let currentVideos = [];
+
+// ══════════════════════════════════════════
+//  INIT
+// ══════════════════════════════════════════
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('totalFolders').textContent = FOLDERS.length;
+  const total = FOLDERS.reduce((s,f) => s + f.videos.length, 0);
+  document.getElementById('totalVideos').textContent = total;
+  renderFolders(FOLDERS);
+});
+
+// ══════════════════════════════════════════
+//  RENDER FOLDERS
+// ══════════════════════════════════════════
+function renderFolders(folders) {
+  const grid = document.getElementById('foldersGrid');
+  if (!folders.length) {
+    grid.innerHTML = `<div class="empty-state"><svg width="64" height="64" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg><p>لا توجد نتائج</p></div>`;
+    return;
+  }
+  grid.innerHTML = folders.map(folder => `
+    <div class="folder-card" onclick="openFolder('${folder.id}')">
+      <div class="folder-icon">${folder.icon}</div>
+      <div class="folder-name">${folder.name}</div>
+      <div class="folder-count">
+        <svg width="13" height="13" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M15 10l4.553-2.069A1 1 0 0121 8.87V15.5a1 1 0 01-1.447.894L15 14M3 8a2 2 0 012-2h8a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V8z"/></svg>
+        ${folder.videos.length} فيديو
+      </div>
+      <div class="folder-arrow">
+        <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg>
+      </div>
+    </div>
+  `).join('');
+}
+
+// ══════════════════════════════════════════
+//  OPEN FOLDER
+// ══════════════════════════════════════════
+function openFolder(folderId) {
+  const folder = FOLDERS.find(f => f.id === folderId);
+  if (!folder) return;
+  currentFolder = folder;
+  currentVideos = folder.videos;
+
+  document.getElementById('view-folders').style.display = 'none';
+  document.getElementById('view-videos').style.display = 'block';
+  document.getElementById('currentFolderIcon').textContent = folder.icon;
+  document.getElementById('currentFolderName').textContent = folder.name;
+  document.getElementById('currentFolderCount').textContent = folder.videos.length + ' فيديو';
+
+  renderVideos(folder.videos);
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// ══════════════════════════════════════════
+//  RENDER VIDEOS
+// ══════════════════════════════════════════
+function renderVideos(videos) {
+  const grid = document.getElementById('videosGrid');
+  grid.innerHTML = videos.map((v, idx) => `
+    <div class="video-card" onclick="openVideo(${idx})">
+      <div class="video-thumb">
+        <div class="play-btn">
+          <svg width="20" height="20" fill="white" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+        </div>
+        <div class="video-num">${idx + 1} / ${videos.length}</div>
+      </div>
+      <div class="video-info">
+        <div class="video-title">${v.title}</div>
+        <div class="video-meta">اضغط للمشاهدة</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+// ══════════════════════════════════════════
+//  SHOW FOLDERS
+// ══════════════════════════════════════════
+function showFolders() {
+  document.getElementById('view-folders').style.display = 'block';
+  document.getElementById('view-videos').style.display = 'none';
+  document.getElementById('searchInput').value = '';
+  renderFolders(FOLDERS);
+  const total = FOLDERS.reduce((s,f) => s + f.videos.length, 0);
+  document.getElementById('totalFolders').textContent = FOLDERS.length;
+  document.getElementById('totalVideos').textContent = total;
+}
+
+// ══════════════════════════════════════════
+//  OPEN VIDEO (MODAL)
+// ══════════════════════════════════════════
+function openVideo(idx) {
+  currentVideoIdx = idx;
+  const video = currentVideos[idx];
+  document.getElementById('modalTitle').textContent = video.title;
+
+  // Google Drive embed URL
+  const embedUrl = `https://drive.google.com/file/d/${video.fileId}/preview`;
+  document.getElementById('videoFrame').src = embedUrl;
+
+  // Nav buttons
+  document.getElementById('btnPrev').classList.toggle('disabled', idx === 0);
+  document.getElementById('btnNext').classList.toggle('disabled', idx === currentVideos.length - 1);
+  document.getElementById('navLabel').textContent = `${idx + 1} من ${currentVideos.length}`;
+
+  document.getElementById('modalOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+// ══════════════════════════════════════════
+//  NAVIGATE VIDEO
+// ══════════════════════════════════════════
+function navigateVideo(dir) {
+  const newIdx = currentVideoIdx + dir;
+  if (newIdx < 0 || newIdx >= currentVideos.length) return;
+  openVideo(newIdx);
+}
+
+// ══════════════════════════════════════════
+//  CLOSE MODAL
+// ══════════════════════════════════════════
+function closeModal() {
+  document.getElementById('modalOverlay').classList.remove('open');
+  document.getElementById('videoFrame').src = '';
+  document.body.style.overflow = '';
+}
+function closeModalOutside(e) {
+  if (e.target === document.getElementById('modalOverlay')) closeModal();
+}
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+// ══════════════════════════════════════════
+//  SEARCH
+// ══════════════════════════════════════════
+function handleSearch() {
+  const q = document.getElementById('searchInput').value.trim().toLowerCase();
+
+  // If we're in folder view, search folders
+  const folderView = document.getElementById('view-folders');
+  const videoView  = document.getElementById('view-videos');
+
+  if (videoView.style.display === 'block') {
+    // Search within current folder videos
+    if (!q) { renderVideos(currentVideos); return; }
+    const filtered = currentVideos.filter(v => v.title.toLowerCase().includes(q));
+    renderVideos(filtered);
+    return;
+  }
+
+  if (!q) { renderFolders(FOLDERS); return; }
+  const filtered = FOLDERS.filter(f =>
+    f.name.toLowerCase().includes(q) ||
+    f.videos.some(v => v.title.toLowerCase().includes(q))
+  );
+  renderFolders(filtered);
+}
+</script>
+</body>
+</html>
