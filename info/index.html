@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WE-Core</title>
+<link rel="shortcut icon" href="img/we-core.png">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Cairo',sans-serif;background:#f0ecf8;min-height:100vh;}
+
+/* HEADER */
+.header{background:linear-gradient(135deg,#4a1a72 0%,#7b3fe4 100%);text-align:center;padding:40px 20px 35px;position:relative;overflow:hidden;}
+.header::before{content:'';position:absolute;top:-60px;right:-60px;width:200px;height:200px;border-radius:50%;background:rgba(255,255,255,0.07);}
+.header::after{content:'';position:absolute;bottom:-80px;left:-40px;width:250px;height:250px;border-radius:50%;background:rgba(255,255,255,0.05);}
+.logo{width:90px;height:90px;border-radius:50%;border:4px solid rgba(255,255,255,0.35);box-shadow:0 8px 25px rgba(0,0,0,0.25);object-fit:cover;position:relative;z-index:1;}
+.main-title{font-size:30px;font-weight:900;color:#fff;margin-top:12px;letter-spacing:1px;position:relative;z-index:1;}
+.sub-title{font-size:13px;color:rgba(255,255,255,0.75);margin-top:6px;position:relative;z-index:1;}
+.user-bar{background:rgba(255,255,255,0.15);border-radius:12px;padding:8px 16px;display:inline-flex;align-items:center;gap:10px;margin-top:12px;position:relative;z-index:1;}
+.user-bar span{color:#fff;font-size:13px;font-weight:700;}
+.logout-btn{background:rgba(255,255,255,0.2);border:1px solid rgba(255,255,255,0.35);color:#fff;border-radius:8px;padding:4px 12px;font-family:'Cairo',sans-serif;font-size:12px;font-weight:700;cursor:pointer;transition:background 0.2s;}
+.logout-btn:hover{background:rgba(255,255,255,0.3);}
+
+/* GRID */
+.container{max-width:960px;margin:40px auto;padding:0 20px 60px;}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:22px;}
+
+/* CARD */
+.card-link{text-decoration:none;}
+.card{background:#fff;border-radius:20px;padding:28px 24px 22px;box-shadow:0 4px 20px rgba(90,45,130,0.10);border-top:5px solid #7b3fe4;transition:transform 0.28s,box-shadow 0.28s;display:flex;flex-direction:column;gap:10px;cursor:pointer;position:relative;overflow:hidden;}
+.card::after{content:'';position:absolute;bottom:-40px;left:-40px;width:130px;height:130px;border-radius:50%;background:rgba(123,63,228,0.05);transition:transform 0.4s;}
+.card:hover{transform:translateY(-7px);box-shadow:0 14px 36px rgba(90,45,130,0.18);}
+.card:hover::after{transform:scale(1.5);}
+.icon-wrap{width:60px;height:60px;border-radius:16px;background:linear-gradient(135deg,#ede3fc,#f5f0ff);display:flex;align-items:center;justify-content:center;margin-bottom:4px;}
+.icon-wrap i{font-size:26px;color:#7b3fe4;}
+.card h2{color:#3d1a6e;font-size:18px;font-weight:700;}
+.card p{color:#777;font-size:13.5px;line-height:1.7;flex:1;}
+.btn{display:flex;align-items:center;justify-content:center;gap:8px;padding:11px 16px;border-radius:12px;background:linear-gradient(135deg,#7b3fe4,#a066f5);color:#fff;font-family:'Cairo',sans-serif;font-weight:700;font-size:14px;margin-top:6px;transition:opacity 0.2s;box-shadow:0 4px 12px rgba(123,63,228,0.30);}
+.btn:hover{opacity:0.9;}
+
+/* FOOTER */
+footer{text-align:center;padding:24px 20px;color:#999;font-size:13px;border-top:1px solid #e8e2f5;background:#fff;}
+.footer-logo{width:42px;border-radius:50%;margin-bottom:8px;opacity:0.85;}
+footer span{color:#7b3fe4;font-weight:700;}
+
+/* LOGIN OVERLAY */
+.login-overlay{position:fixed;inset:0;background:rgba(30,10,60,0.65);display:flex;justify-content:center;align-items:center;z-index:9999;backdrop-filter:blur(5px);}
+.login-modal{background:#fff;padding:40px 32px 32px;border-radius:22px;width:90%;max-width:390px;text-align:center;box-shadow:0 24px 60px rgba(0,0,0,0.28);animation:popIn 0.4s cubic-bezier(0.34,1.56,0.64,1);border-top:5px solid #7b3fe4;}
+@keyframes popIn{from{transform:scale(0.82) translateY(18px);opacity:0;}to{transform:scale(1) translateY(0);opacity:1;}}
+.modal-logo{width:74px;height:74px;border-radius:50%;border:3px solid #ede3fc;margin:0 auto 14px;object-fit:cover;}
+.login-modal h3{color:#3d1a6e;font-size:21px;font-weight:900;margin-bottom:4px;}
+.login-modal .sub{color:#aaa;font-size:13px;margin-bottom:26px;}
+
+.field{position:relative;margin-bottom:14px;}
+.field i{position:absolute;right:14px;top:50%;transform:translateY(-50%);color:#b08af0;font-size:15px;pointer-events:none;}
+.field input{width:100%;padding:13px 44px 13px 14px;border:2px solid #ede3fc;border-radius:12px;font-family:'Cairo',sans-serif;font-size:14px;color:#3d1a6e;outline:none;background:#faf8ff;transition:border-color 0.2s;direction:ltr;text-align:right;}
+.field input:focus{border-color:#7b3fe4;background:#fff;}
+.field input::placeholder{color:#ccc;direction:rtl;}
+
+.login-btn{width:100%;padding:13px;border:none;border-radius:12px;background:linear-gradient(135deg,#7b3fe4,#a066f5);color:#fff;font-family:'Cairo',sans-serif;font-weight:700;font-size:15px;cursor:pointer;margin-top:4px;box-shadow:0 6px 18px rgba(123,63,228,0.32);transition:opacity 0.2s,transform 0.15s;}
+.login-btn:hover{opacity:0.9;transform:translateY(-1px);}
+.login-btn:disabled{opacity:0.55;cursor:not-allowed;transform:none;}
+
+.err{color:#c62828;font-size:13px;margin-top:12px;background:#fff5f5;padding:9px 13px;border-radius:10px;border:1px solid #ffcdd2;display:none;}
+.err.show{display:block;}
+
+/* COMING SOON */
+.coming-modal{display:none;position:fixed;inset:0;background:rgba(30,10,60,0.55);z-index:1000;align-items:center;justify-content:center;backdrop-filter:blur(3px);}
+.coming-modal.active{display:flex;}
+.coming-content{background:#fff;padding:35px 30px;border-radius:20px;width:90%;max-width:380px;text-align:center;box-shadow:0 20px 50px rgba(0,0,0,0.2);animation:popIn 0.35s ease;border-top:5px solid #ff9800;}
+.coming-content i{font-size:50px;color:#ff9800;margin-bottom:16px;}
+.coming-content h3{color:#3d1a6e;font-size:18px;font-weight:800;margin-bottom:8px;}
+.coming-content p{color:#666;font-size:14px;line-height:1.7;}
+.modal-close{background:linear-gradient(135deg,#7b3fe4,#a066f5);color:#fff;border:none;padding:11px 30px;border-radius:12px;cursor:pointer;font-family:'Cairo',sans-serif;font-weight:700;font-size:14px;margin-top:20px;box-shadow:0 4px 12px rgba(123,63,228,0.30);transition:opacity 0.2s;}
+.modal-close:hover{opacity:0.9;}
+
+#app{display:none;}
+@media(max-width:480px){.cards{grid-template-columns:1fr;}.main-title{font-size:24px;}}
+</style>
+</head>
+<body>
+
+<!-- ===== LOGIN ===== -->
+<div id="loginOverlay" class="login-overlay">
+  <div class="login-modal">
+    <img src="img/we-core.png" class="modal-logo" alt="logo" onerror="this.style.display='none'">
+    <h3>WE-Core</h3>
+    <div class="sub">سجّل دخولك للمتابعة</div>
+
+    <div class="field">
+      <i class="fa-solid fa-user"></i>
+      <input id="uname" type="text" placeholder="اسم المستخدم" autocomplete="username">
+    </div>
+    <div class="field">
+      <i class="fa-solid fa-lock"></i>
+      <input id="upass" type="password" placeholder="كلمة المرور" autocomplete="current-password">
+    </div>
+
+    <button class="login-btn" id="loginBtn" onclick="doLogin()">
+      <i class="fa-solid fa-right-to-bracket"></i> تسجيل الدخول
+    </button>
+    <div class="err" id="errMsg"></div>
+  </div>
+</div>
+
+<!-- ===== APP ===== -->
+<div id="app">
+
+  <div class="header">
+    <img src="img/we-core.png" class="logo" alt="WE-Core Logo">
+    <div class="main-title">WE-Core</div>
+    <div class="sub-title">Powered By Mohand Hassan – From Abassia Store</div>
+    <div class="user-bar">
+      <i class="fa-solid fa-circle-user" style="color:#fff;"></i>
+      <span id="showUser">-</span>
+      <button class="logout-btn" onclick="doLogout()">
+        <i class="fa-solid fa-right-from-bracket"></i> خروج
+      </button>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="cards">
+
+      <a href="pdf.html" class="card-link"><div class="card">
+        <div class="icon-wrap"><i class="fa-solid fa-file-pdf"></i></div>
+        <h2>All PDF</h2>
+        <p>جميع ملفات PDF الخاصة بالخدمات والعروض.</p>
+        <div class="btn"><i class="fa-solid fa-arrow-left"></i> عرض التفاصيل</div>
+      </div></a>
+
+      <a href="home.html" class="card-link"><div class="card">
+        <div class="icon-wrap"><i class="fa-solid fa-file-lines"></i></div>
+        <h2>All Info</h2>
+        <p>معلومات Mobile و ADSL و Fixed كاملة.</p>
+        <div class="btn"><i class="fa-solid fa-arrow-left"></i> عرض التفاصيل</div>
+      </div></a>
+
+      <a href="remedy.html" class="card-link"><div class="card">
+        <div class="icon-wrap"><i class="fa-solid fa-headset"></i></div>
+        <h2>Remedy</h2>
+        <p>جميع التيكت للموبيل.</p>
+        <div class="btn"><i class="fa-solid fa-arrow-left"></i> عرض التفاصيل</div>
+      </div></a>
+
+      <a href="Tutorial.html" class="card-link"><div class="card">
+        <div class="icon-wrap"><i class="fa-solid fa-graduation-cap"></i></div>
+        <h2>Courses</h2>
+        <p>BSS Tutorial</p>
+        <div class="btn"><i class="fa-solid fa-arrow-left"></i> عرض التفاصيل</div>
+      </div></a>
+
+      <a href="offer.html" class="card-link"><div class="card">
+        <div class="icon-wrap"><i class="fa-solid fa-gift"></i></div>
+        <h2>Offers</h2>
+        <p>جميع العروض المتاحة والباقات الحالية.</p>
+        <div class="btn"><i class="fa-solid fa-arrow-left"></i> عرض التفاصيل</div>
+      </div></a>
+      
+      <a href="we pay.html" class="card-link"><div class="card">
+        <div class="icon-wrap"><i class="fa-solid fa-wallet"></i></div>
+        <h2>we pay</h2>
+        <p></p>
+        <div class="btn"><i class="fa-solid fa-arrow-left"></i> عرض التفاصيل</div>
+      </div></a>
+
+      <a href="games.html" class="card-link"><div class="card">
+        <div class="icon-wrap"><i class="fa-solid fa-gamepad"></i></div>
+        <h2>Info Games</h2>
+        <p>معلومات الألعاب والحزم المتوفرة.</p>
+        <div class="btn"><i class="fa-solid fa-arrow-left"></i> عرض التفاصيل</div>
+      </div></a>
+
+    </div>
+
+    <footer>
+      <img src="img/we-core.png" class="footer-logo" alt="logo">
+      <div>Powered by <span>Mohand Hassan</span> – From <span>Abassia Store</span></div>
+    </footer>
+  </div>
+</div>
+
+<!-- Coming Soon -->
+<div id="comingSoonModal" class="coming-modal">
+  <div class="coming-content">
+    <i class="fa-solid fa-hourglass-half"></i>
+    <h3>جاري العمل على هذه الصفحة</h3>
+    <p>نعمل حالياً على توفير هذه الصفحة قريباً</p>
+    <button class="modal-close" onclick="closeModal()">حسناً</button>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const sb = supabase.createClient(
+  'https://iygwhapcpdmsasqlfelv.supabase.co',
+  'sb_publishable_rD9naqrpu1dI-iwchAS0GQ_JkgGysqP'
+);
+
+const $ = id => document.getElementById(id);
+const showErr = msg => { $('errMsg').textContent=msg; $('errMsg').classList.add('show'); };
+const hideErr = ()  => $('errMsg').classList.remove('show');
+
+/* session محفوظة في localStorage */
+function openApp(username) {
+  $('loginOverlay').style.display = 'none';
+  $('app').style.display = 'block';
+  $('showUser').textContent = username;
+}
+
+/* check saved session */
+const savedUser = localStorage.getItem('we_user');
+if (savedUser) openApp(savedUser);
+
+/* login */
+async function doLogin() {
+  hideErr();
+  const username = $('uname').value.trim();
+  const password = $('upass').value;
+
+  if (!username || !password) {
+    showErr('من فضلك أدخل اسم المستخدم وكلمة المرور');
+    return;
+  }
+
+  const btn = $('loginBtn');
+  btn.disabled = true;
+  btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> جاري الدخول...';
+
+  /* استعلام من جدول we_users */
+  const { data, error } = await sb
+    .from('we_users')
+    .select('username')
+    .eq('username', username)
+    .eq('password', password)
+    .single();
+
+  if (error || !data) {
+    btn.disabled = false;
+    btn.innerHTML = '<i class="fa-solid fa-right-to-bracket"></i> تسجيل الدخول';
+    showErr('اسم المستخدم أو كلمة المرور غير صحيحة');
+    return;
+  }
+
+  localStorage.setItem('we_user', data.username);
+  openApp(data.username);
+}
+
+/* enter key */
+$('upass').addEventListener('keydown', e => { if(e.key==='Enter') doLogin(); });
+$('uname').addEventListener('keydown', e => { if(e.key==='Enter') $('upass').focus(); });
+
+/* logout */
+function doLogout() {
+  localStorage.removeItem('we_user');
+  $('app').style.display = 'none';
+  $('loginOverlay').style.display = 'flex';
+  $('uname').value = '';
+  $('upass').value = '';
+  $('loginBtn').disabled = false;
+  $('loginBtn').innerHTML = '<i class="fa-solid fa-right-to-bracket"></i> تسجيل الدخول';
+  hideErr();
+}
+
+function showComingSoonModal() { $('comingSoonModal').classList.add('active'); }
+function closeModal() { $('comingSoonModal').classList.remove('active'); }
+
+(function(){if(!window.chatbase||window.chatbase("getState")!=="initialized"){window.chatbase=(...arguments)=>{if(!window.chatbase.q){window.chatbase.q=[]}window.chatbase.q.push(arguments)};window.chatbase=new Proxy(window.chatbase,{get(target,prop){if(prop==="q"){return target.q}return(...args)=>target(prop,...args)}})}const onLoad=function(){const script=document.createElement("script");script.src="https://www.chatbase.co/embed.min.js";script.id="sw8mK5pWZt9W0PA6VdFfp";script.domain="www.chatbase.co";document.body.appendChild(script)};if(document.readyState==="complete"){onLoad()}else{window.addEventListener("load",onLoad)}})();
+</script>
+
+</body>
+</html>
+
+
