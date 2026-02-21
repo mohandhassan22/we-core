@@ -344,16 +344,38 @@ function doLogout() {
 function showComingSoonModal() { $('comingSoonModal').classList.add('active'); }
 function closeModal() { $('comingSoonModal').classList.remove('active'); }
 </script>
-<!-- WE-Core AI Assistant Widget -->
-<div id="we-core-ai-widget" style="position: fixed; bottom: 20px; right: 20px; z-index: 10000;">
+<!-- WE-Core AI Assistant Smart Widget -->
+<div id="we-core-ai-container" style="position: fixed; bottom: 20px; right: 20px; z-index: 10000; transition: all 0.3s ease;">
     <iframe 
+        id="we-core-ai-iframe"
         src="https://ais-dev-e3ylyvl7xbjphsj7dvsnh5-120312414699.europe-west2.run.app?widget=true" 
-        style="border: none; width: 400px; height: 650px; background: transparent;"
+        style="border: none; width: 80px; height: 80px; background: transparent; transition: all 0.3s ease;"
         allow="microphone; camera"
     ></iframe>
 </div>
+
+<script>
+    // استماع لرسائل الذكاء الاصطناعي لتغيير حجم الإطار
+    window.addEventListener('message', function(event) {
+        const container = document.getElementById('we-core-ai-container');
+        const iframe = document.getElementById('we-core-ai-iframe');
+        
+        if (event.data.type === 'WIDGET_STATE_CHANGE') {
+            if (event.data.isOpen) {
+                // حجم الشات وهو مفتوح
+                iframe.style.width = '400px';
+                iframe.style.height = '650px';
+            } else {
+                // حجم الزر فقط وهو مغلق
+                iframe.style.width = '80px';
+                iframe.style.height = '80px';
+            }
+        }
+    });
+</script>
 </body>
 </html>
+
 
 
 
