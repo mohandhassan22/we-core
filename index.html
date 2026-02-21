@@ -243,7 +243,7 @@ footer span{color:#7b3fe4;font-weight:700;}
           <div class="team-avatar"><i class="fa-solid fa-user-tie"></i></div>
           <div class="team-info">
             <div class="name">أ. محمود عبد القادر</div>
-            <div class="role">فريق العمل</div>
+            <div class="role">مشرف على التطوير</div>
           </div>
         </div>
       </div>
@@ -288,7 +288,7 @@ function openApp(username) {
 
 /* check saved session */
 const savedUser = localStorage.getItem('we_user');
-if (savedUser) openApp(savedUser);
+if (savedUser) { openApp(savedUser); openAboutModal(); }
 
 /* login */
 async function doLogin() {
