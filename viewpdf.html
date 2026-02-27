@@ -41,13 +41,8 @@
       font-family:Tahoma, Arial, sans-serif;
       font-size:14px;
     }
-    .actions a:hover, .actions button:hover{
-      background:#8e24aa;
-    }
-    .actions a[disabled], .actions button[disabled]{
-      background:#ccc;
-      cursor:not-allowed;
-    }
+    .actions a:hover, .actions button:hover{ background:#8e24aa; }
+    .actions button[disabled]{ background:#ccc; cursor:not-allowed; }
     #viewerWrap{
       background:#fff;
       border:1px solid #ddd;
@@ -78,10 +73,6 @@
       from { transform: rotate(0deg); }
       to { transform: rotate(360deg); }
     }
-
-    @media print {
-      * { display: none !important; }
-    }
   </style>
 </head>
 <body>
@@ -99,7 +90,7 @@
 
     <div id="viewerWrap">
       <p id="missing" style="display:none">لم يتم تحديد ملف للعرض.</p>
-      <div id="loading" class="loading" style="display:none">
+      <div id="loading" class="loading">
         <i class="fas fa-spinner"></i>
         <p>جاري تحميل الملف...</p>
       </div>
@@ -109,110 +100,139 @@
 
   <script>
     function getQuery(name){
-      const params = new URLSearchParams(window.location.search);
-      return params.get(name);
+      return new URLSearchParams(window.location.search).get(name);
     }
 
-    function convertGoogleDriveUrl(url) {
-      if (url.includes('drive.google.com')) {
-        let fileId = '';
-        const match1 = url.match(/\/file\/d\/([^\/]+)/);
-        if (match1) fileId = match1[1];
-        const match2 = url.match(/[?&]id=([^&]+)/);
-        if (match2) fileId = match2[1];
-        if (fileId) {
-          return `https://drive.google.com/file/d/${fileId}/preview`;
-        }
-      }
+    // استخراج File ID من رابط Google Drive
+    function getFileId(url) {
+      const match = url.match(/\/file\/d\/([^\/\?&]+)/);
+      return match ? match[1] : null;
+    }
+
+    // رابط العرض داخل الصفحة
+    function getPreviewUrl(url) {
+      const id = getFileId(url);
+      if (id) return `https://drive.google.com/file/d/${id}/preview`;
       return url;
     }
 
+    // رابط التحميل المباشر
     function getDownloadUrl(url) {
-      if (url.includes('drive.google.com')) {
-        const match = url.match(/\/file\/d\/([^\/]+)/);
-        if (match) {
-          return `https://drive.google.com/uc?export=download&id=${match[1]}`;
-        }
+      const id = getFileId(url);
+      if (id) return `https://drive.google.com/uc?export=download&id=${id}`;
+      return url;
+    }
+
+    // رابط الطباعة عبر Google Docs Viewer (يدعم الطباعة)
+    function getPrintUrl(url) {
+      const id = getFileId(url);
+      if (id) {
+        // Google Drive يوفر رابط مباشر للطباعة
+        return `https://drive.google.com/file/d/${id}/preview?print=true`;
       }
       return url;
     }
 
-    // ===== الطباعة: فتح نافذة جديدة تحتوي فقط على الـ PDF =====
-    function printPDF(url) {
-      // الطريقة 1: فتح نافذة جديدة بـ iframe وطباعتها مباشرة
-      const printWindow = window.open('', '_blank', 'width=900,height=700');
-      if (!printWindow) {
-        // إذا منع المتصفح الـ popup، نفتح الرابط مباشرة
-        window.open(url, '_blank');
+    // فتح نافذة الطباعة
+    function openPrintWindow(fileId) {
+      // نفتح نافذة جديدة بصفحة HTML بسيطة تحمل الـ PDF وتطبعه تلقائياً
+      const printUrl = `https://drive.google.com/file/d/${fileId}/preview`;
+      
+      const printWin = window.open('', '_blank', 'width=900,height=700,scrollbars=yes');
+      if (!printWin) {
+        alert('المتصفح منع فتح النافذة. يرجى السماح بالـ Popups لهذا الموقع.');
         return;
       }
 
-      printWindow.document.write(`
-        <!DOCTYPE html>
-        <html>
-        <head>
-          <title>طباعة</title>
-          <style>
-            * { margin: 0; padding: 0; box-sizing: border-box; }
-            body { background: #fff; }
-            iframe {
-              width: 100vw;
-              height: 100vh;
-              border: none;
-              display: block;
-            }
-            .toolbar {
-              position: fixed;
-              top: 0;
-              left: 0;
-              right: 0;
-              z-index: 9999;
-              background: #6a1b9a;
-              padding: 8px;
-              display: flex;
-              gap: 10px;
-              justify-content: center;
-            }
-            .toolbar button {
-              background: #fff;
-              color: #6a1b9a;
-              border: none;
-              padding: 7px 18px;
-              border-radius: 6px;
-              cursor: pointer;
-              font-size: 14px;
-              font-weight: bold;
-              font-family: Tahoma, Arial, sans-serif;
-            }
-            .toolbar button.close {
-              background: #f44336;
-              color: #fff;
-            }
-            .iframe-wrap {
-              margin-top: 48px;
-              height: calc(100vh - 48px);
-            }
-            @media print {
-              .toolbar { display: none !important; }
-              .iframe-wrap { margin-top: 0; height: 100vh; }
-              iframe { width: 100vw; height: 100vh; }
-            }
-          </style>
-        </head>
-        <body>
-          <div class="toolbar">
-            <button onclick="window.print()">🖨️ طباعة الآن</button>
-            <button class="close" onclick="window.close()">✕ إغلاق</button>
-          </div>
-          <div class="iframe-wrap">
-            <iframe src="${url}" onload=""></iframe>
-          </div>
-        </body>
-        </html>
-      `);
-      printWindow.document.close();
+      printWin.document.write(`<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <title>طباعة</title>
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { font-family: Tahoma, sans-serif; background:#fff; }
+    
+    #toolbar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      background: #6a1b9a;
+      padding: 10px;
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      z-index: 9999;
+    }
+    #toolbar button {
+      padding: 8px 20px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-family: Tahoma, sans-serif;
+      font-size: 14px;
+      font-weight: bold;
+    }
+    .btn-print { background: #fff; color: #6a1b9a; }
+    .btn-print:hover { background: #f3e5ff; }
+    .btn-close { background: #f44336; color: #fff; }
+    .btn-close:hover { background: #c62828; }
+
+    #msg {
+      text-align: center;
+      padding: 15px;
+      margin-top: 55px;
+      color: #666;
+      font-size: 13px;
     }
 
+    #pdfFrame {
+      position: fixed;
+      top: 50px; left: 0; right: 0; bottom: 0;
+      width: 100%;
+      height: calc(100vh - 50px);
+      border: none;
+    }
+
+    @media print {
+      #toolbar { display: none !important; }
+      #msg { display: none !important; }
+      #pdfFrame {
+        position: fixed !important;
+        top: 0 !important;
+        width: 100vw !important;
+        height: 100vh !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="toolbar">
+    <button class="btn-print" onclick="startPrint()">🖨️ طباعة الآن</button>
+    <button class="btn-close" onclick="window.close()">✕ إغلاق</button>
+  </div>
+  <iframe id="pdfFrame" src="${printUrl}"></iframe>
+
+  <script>
+    function startPrint() {
+      // نحاول نطبع من iframe
+      var frame = document.getElementById('pdfFrame');
+      try {
+        frame.contentWindow.focus();
+        frame.contentWindow.print();
+      } catch(e) {
+        // CORS منع الطباعة من iframe، نستخدم طريقة بديلة
+        // نفتح رابط التحميل في تاب جديد للطباعة اليدوية
+        window.open('https://drive.google.com/uc?export=download&id=${fileId}', '_blank');
+        alert('تم فتح الملف للتحميل. بعد فتحه اضغط Ctrl+P للطباعة.');
+      }
+    }
+  <\/script>
+</body>
+</html>`);
+      printWin.document.close();
+    }
+
+    // =================== التهيئة ===================
     const src = getQuery('src');
     const viewer = document.getElementById('pdfViewer');
     const missing = document.getElementById('missing');
@@ -221,16 +241,16 @@
     const downloadBtn = document.getElementById('downloadBtn');
 
     if (!src) {
-      viewer.style.display = 'none';
+      loading.style.display = 'none';
       missing.style.display = 'block';
       printBtn.disabled = true;
       downloadBtn.disabled = true;
     } else {
       const originalUrl = decodeURIComponent(src);
-      const viewUrl = convertGoogleDriveUrl(originalUrl);
+      const fileId = getFileId(originalUrl);
+      const previewUrl = getPreviewUrl(originalUrl);
 
-      loading.style.display = 'block';
-      viewer.src = viewUrl;
+      viewer.src = previewUrl;
 
       viewer.onload = function() {
         loading.style.display = 'none';
@@ -239,13 +259,17 @@
 
       viewer.onerror = function() {
         loading.style.display = 'none';
-        missing.textContent = 'حدث خطأ في تحميل الملف. تأكد من أن الملف متاح للعرض.';
+        missing.textContent = 'حدث خطأ في تحميل الملف.';
         missing.style.display = 'block';
       };
 
-      // زر الطباعة: يفتح نافذة جديدة مخصصة للطباعة
+      // زر الطباعة
       printBtn.addEventListener('click', () => {
-        printPDF(viewUrl);
+        if (fileId) {
+          openPrintWindow(fileId);
+        } else {
+          alert('لا يمكن تحديد الملف للطباعة.');
+        }
       });
 
       // زر التحميل
