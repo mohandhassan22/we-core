@@ -79,66 +79,8 @@
       to { transform: rotate(360deg); }
     }
 
-    /* ======= صفحة الطباعة ======= */
-    #printOverlay {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: #fff;
-      z-index: 9999;
-      flex-direction: column;
-    }
-    #printOverlay.active {
-      display: flex;
-    }
-    #printOverlay iframe {
-      flex: 1;
-      width: 100%;
-      border: none;
-    }
-    #printToolbar {
-      display: flex;
-      gap: 10px;
-      align-items: center;
-      justify-content: center;
-      padding: 10px;
-      background: #6a1b9a;
-    }
-    #printToolbar button {
-      background: #fff;
-      color: #6a1b9a;
-      border: none;
-      padding: 8px 18px;
-      border-radius: 6px;
-      cursor: pointer;
-      font-family: Tahoma, Arial, sans-serif;
-      font-size: 14px;
-      font-weight: bold;
-    }
-    #printToolbar button:hover {
-      background: #f3e5ff;
-    }
-    #printToolbar .close-btn {
-      background: #f44336;
-      color: #fff;
-    }
-    #printToolbar .close-btn:hover {
-      background: #d32f2f;
-    }
-
     @media print {
-      /* إخفاء كل شيء عدا الـ iframe في overlay */
-      body > * { display: none !important; }
-      #printOverlay {
-        display: block !important;
-        position: fixed !important;
-        inset: 0 !important;
-      }
-      #printToolbar { display: none !important; }
-      #printOverlay iframe {
-        width: 100vw !important;
-        height: 100vh !important;
-      }
+      * { display: none !important; }
     }
   </style>
 </head>
@@ -165,22 +107,12 @@
     </div>
   </div>
 
-  <!-- طبقة الطباعة المخصصة -->
-  <div id="printOverlay">
-    <div id="printToolbar">
-      <button onclick="doPrint()"><i class="fas fa-print"></i> طباعة الآن</button>
-      <button class="close-btn" onclick="closePrint()"><i class="fas fa-times"></i> إغلاق</button>
-    </div>
-    <iframe id="printFrame"></iframe>
-  </div>
-
   <script>
     function getQuery(name){
       const params = new URLSearchParams(window.location.search);
       return params.get(name);
     }
 
-    // تحويل رابط Google Drive للعرض المباشر
     function convertGoogleDriveUrl(url) {
       if (url.includes('drive.google.com')) {
         let fileId = '';
@@ -195,7 +127,6 @@
       return url;
     }
 
-    // استخراج رابط التحميل المباشر
     function getDownloadUrl(url) {
       if (url.includes('drive.google.com')) {
         const match = url.match(/\/file\/d\/([^\/]+)/);
@@ -206,14 +137,88 @@
       return url;
     }
 
+    // ===== الطباعة: فتح نافذة جديدة تحتوي فقط على الـ PDF =====
+    function printPDF(url) {
+      // الطريقة 1: فتح نافذة جديدة بـ iframe وطباعتها مباشرة
+      const printWindow = window.open('', '_blank', 'width=900,height=700');
+      if (!printWindow) {
+        // إذا منع المتصفح الـ popup، نفتح الرابط مباشرة
+        window.open(url, '_blank');
+        return;
+      }
+
+      printWindow.document.write(`
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <title>طباعة</title>
+          <style>
+            * { margin: 0; padding: 0; box-sizing: border-box; }
+            body { background: #fff; }
+            iframe {
+              width: 100vw;
+              height: 100vh;
+              border: none;
+              display: block;
+            }
+            .toolbar {
+              position: fixed;
+              top: 0;
+              left: 0;
+              right: 0;
+              z-index: 9999;
+              background: #6a1b9a;
+              padding: 8px;
+              display: flex;
+              gap: 10px;
+              justify-content: center;
+            }
+            .toolbar button {
+              background: #fff;
+              color: #6a1b9a;
+              border: none;
+              padding: 7px 18px;
+              border-radius: 6px;
+              cursor: pointer;
+              font-size: 14px;
+              font-weight: bold;
+              font-family: Tahoma, Arial, sans-serif;
+            }
+            .toolbar button.close {
+              background: #f44336;
+              color: #fff;
+            }
+            .iframe-wrap {
+              margin-top: 48px;
+              height: calc(100vh - 48px);
+            }
+            @media print {
+              .toolbar { display: none !important; }
+              .iframe-wrap { margin-top: 0; height: 100vh; }
+              iframe { width: 100vw; height: 100vh; }
+            }
+          </style>
+        </head>
+        <body>
+          <div class="toolbar">
+            <button onclick="window.print()">🖨️ طباعة الآن</button>
+            <button class="close" onclick="window.close()">✕ إغلاق</button>
+          </div>
+          <div class="iframe-wrap">
+            <iframe src="${url}" onload=""></iframe>
+          </div>
+        </body>
+        </html>
+      `);
+      printWindow.document.close();
+    }
+
     const src = getQuery('src');
     const viewer = document.getElementById('pdfViewer');
     const missing = document.getElementById('missing');
     const loading = document.getElementById('loading');
     const printBtn = document.getElementById('printBtn');
     const downloadBtn = document.getElementById('downloadBtn');
-    const printOverlay = document.getElementById('printOverlay');
-    const printFrame = document.getElementById('printFrame');
 
     if (!src) {
       viewer.style.display = 'none';
@@ -224,9 +229,7 @@
       const originalUrl = decodeURIComponent(src);
       const viewUrl = convertGoogleDriveUrl(originalUrl);
 
-      // عرض شاشة التحميل
       loading.style.display = 'block';
-
       viewer.src = viewUrl;
 
       viewer.onload = function() {
@@ -240,37 +243,16 @@
         missing.style.display = 'block';
       };
 
-      // ===== زر الطباعة: يفتح overlay داخل نفس الصفحة =====
+      // زر الطباعة: يفتح نافذة جديدة مخصصة للطباعة
       printBtn.addEventListener('click', () => {
-        // تحميل الـ PDF في iframe الطباعة
-        printFrame.src = viewUrl;
-        printOverlay.classList.add('active');
+        printPDF(viewUrl);
       });
 
-      // ===== زر التحميل =====
+      // زر التحميل
       downloadBtn.addEventListener('click', () => {
         window.open(getDownloadUrl(originalUrl), '_blank');
       });
     }
-
-    // طباعة من داخل الـ overlay
-    function doPrint() {
-      // محاولة الطباعة من iframe
-      try {
-        printFrame.contentWindow.focus();
-        printFrame.contentWindow.print();
-      } catch(e) {
-        // إذا منع CORS نستخدم window.print مع إخفاء باقي الصفحة
-        window.print();
-      }
-    }
-
-    // إغلاق الـ overlay
-    function closePrint() {
-      printOverlay.classList.remove('active');
-      printFrame.src = '';
-    }
   </script>
 </body>
-  </html>
-  
+</html>
