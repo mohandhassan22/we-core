@@ -206,7 +206,7 @@ footer span{color:#7b3fe4;font-weight:700;}
         <p>جميع العروض المتاحة والباقات الحالية.</p>
         <div class="btn"><i class="fa-solid fa-arrow-left"></i> عرض التفاصيل</div>
       </div></a>
-      
+
       <a href="we pay.html" class="card-link"><div class="card">
         <div class="icon-wrap"><i class="fa-solid fa-wallet"></i></div>
         <h2>we pay</h2>
@@ -221,8 +221,6 @@ footer span{color:#7b3fe4;font-weight:700;}
         <div class="btn"><i class="fa-solid fa-arrow-left"></i> عرض التفاصيل</div>
       </div></a>
 
-      <!-- WE QUIZ CARD - NEW -->
-      
     </div>
 
     <footer>
@@ -242,7 +240,7 @@ footer span{color:#7b3fe4;font-weight:700;}
     </div>
     <div class="about-body">
 
-      <!-- 🔥 UPDATE BANNER - WE QUIZ -->
+      <!-- UPDATE BANNER - WE QUIZ -->
       <div class="update-banner">
         <div class="update-banner-header">
           <div class="update-icon"><i class="fa-solid fa-trophy"></i></div>
@@ -316,22 +314,18 @@ const $ = id => document.getElementById(id);
 const showErr = msg => { $('errMsg').textContent=msg; $('errMsg').classList.add('show'); };
 const hideErr = ()  => $('errMsg').classList.remove('show');
 
-/* ===== About Modal: تظهر مرة واحدة بس ===== */
-const ABOUT_VERSION = 'we_about_v2'; // غيّر الرقم لما تعمل تحديث جديد عشان تظهر تاني
-function openAboutModal() { $('aboutModal').classList.add('active'); }
-function closeAboutModal() {
-  $('aboutModal').classList.remove('active');
-  localStorage.setItem(ABOUT_VERSION, 'seen'); // احفظ إن المستخدم شافها
-}
+/* ===== About Modal ===== */
+function openAboutModal()  { $('aboutModal').classList.add('active'); }
 
+/* تغلق النافذة بس - بدون حفظ في localStorage عشان تظهر كل refresh */
+function closeAboutModal() { $('aboutModal').classList.remove('active'); }
+
+/* فتح التطبيق + النافذة تظهر كل مرة */
 function openApp(username) {
   $('loginOverlay').style.display = 'none';
   $('app').style.display = 'block';
   $('showUser').textContent = username;
-  // هتفتح النافذة بس لو المستخدم لسه مشفهاش
-  if (!localStorage.getItem(ABOUT_VERSION)) {
-    openAboutModal();
-  }
+  openAboutModal(); // تظهر دايماً عند كل فتح أو refresh
 }
 
 /* check saved session */
@@ -342,57 +336,22 @@ if (savedUser) { openApp(savedUser); }
 async function doLogin() {
   hideErr();
   const username = $('uname').value.trim();
-  const password = $('upass').value;
-
-  if (!username || !password) {
-    showErr('من فضلك أدخل اسم المستخدم وكلمة المرور');
-    return;
-  }
+  const password = $('upass').value.trim();
+  if (!username || !password) { showErr('من فضلك أدخل اسم المستخدم وكلمة المرور'); return; }
 
   const btn = $('loginBtn');
   btn.disabled = true;
-  btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> جاري الدخول...';
+  btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> جاري التحقق...';
 
-  const { data, error } = await sb
-    .from('we_users')
-    .select('username')
-    .eq('username', username)
-    .eq('password', password)
-    .single();
+  try {
+    const { data, error } = await sb
+      .from('users')
+      .select('username')
+      .eq('username', username)
+      .eq('password', password)
+      .single();
 
-  if (error || !data) {
-    btn.disabled = false;
-    btn.innerHTML = '<i class="fa-solid fa-right-to-bracket"></i> تسجيل الدخول';
-    showErr('اسم المستخدم أو كلمة المرور غير صحيحة');
-    return;
-  }
-
-  localStorage.setItem('we_user', data.username);
-  openApp(data.username);
-}
-
-/* enter key */
-$('upass').addEventListener('keydown', e => { if(e.key==='Enter') doLogin(); });
-$('uname').addEventListener('keydown', e => { if(e.key==='Enter') $('upass').focus(); });
-
-/* logout */
-function doLogout() {
-  localStorage.removeItem('we_user');
-  $('app').style.display = 'none';
-  $('loginOverlay').style.display = 'flex';
-  $('uname').value = '';
-  $('upass').value = '';
-  $('loginBtn').disabled = false;
-  $('loginBtn').innerHTML = '<i class="fa-solid fa-right-to-bracket"></i> تسجيل الدخول';
-  hideErr();
-}
-
-function showComingSoonModal() { $('comingSoonModal').classList.add('active'); }
-function closeModal() { $('comingSoonModal').classList.remove('active'); }
-
-/*ai*/
-(function(){if(!window.chatbase||window.chatbase("getState")!=="initialized"){window.chatbase=(...arguments)=>{if(!window.chatbase.q){window.chatbase.q=[]}window.chatbase.q.push(arguments)};window.chatbase=new Proxy(window.chatbase,{get(target,prop){if(prop==="q"){return target.q}return(...args)=>target(prop,...args)}})}const onLoad=function(){const script=document.createElement("script");script.src="https://www.chatbase.co/embed.min.js";script.id="VTjG-NoP2C6PiurfAF8VP";script.domain="www.chatbase.co";document.body.appendChild(script)};if(document.readyState==="complete"){onLoad()}else{window.addEventListener("load",onLoad)}})();
+    if (error || 
 </script>
 </body>
 </html>
-
