@@ -44,22 +44,22 @@ const ActiveUsersWidget = (() => {
   const STYLES = `
     #we-active-users-corner {
       position: fixed;
-      bottom: 20px;
-      right: 20px;
+      bottom: 16px;
+      left: 16px;
       z-index: 9999;
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 5px;
       background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
       border: 1px solid rgba(255, 107, 53, 0.3);
       border-radius: 50px;
-      padding: 10px 18px;
+      padding: 6px 12px;
       box-shadow: 0 4px 20px rgba(0,0,0,0.3), 0 0 0 1px rgba(255,107,53,0.1);
       cursor: default;
       font-family: 'Cairo', sans-serif;
       transition: all 0.3s ease;
       animation: slideInCorner 0.5s ease forwards;
-      min-width: 120px;
+      min-width: 80px;
     }
 
     #we-active-users-corner:hover {
@@ -73,8 +73,8 @@ const ActiveUsersWidget = (() => {
     }
 
     .we-active-dot {
-      width: 10px;
-      height: 10px;
+      width: 7px;
+      height: 7px;
       background: #4ade80;
       border-radius: 50%;
       flex-shrink: 0;
@@ -90,7 +90,7 @@ const ActiveUsersWidget = (() => {
 
     .we-active-text {
       color: #e2e8f0;
-      font-size: 13px;
+      font-size: 11px;
       font-weight: 500;
       white-space: nowrap;
     }
@@ -98,12 +98,12 @@ const ActiveUsersWidget = (() => {
     .we-active-count {
       color: #fb923c;
       font-weight: 700;
-      font-size: 15px;
+      font-size: 12px;
     }
 
     .we-active-label {
       color: #94a3b8;
-      font-size: 11px;
+      font-size: 10px;
     }
 
     /* Dark mode support */
