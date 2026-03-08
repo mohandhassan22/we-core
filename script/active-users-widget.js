@@ -22,8 +22,8 @@ const ActiveUsersWidget = (() => {
   // =====================
   const CONFIG = {
     // 🔴 ضع هنا بيانات Supabase بتاعتك
-    supabaseUrl: 'YOUR_SUPABASE_URL',       // مثال: https://xxxx.supabase.co
-    supabaseKey: 'YOUR_SUPABASE_ANON_KEY',  // Anon Public Key من Supabase Dashboard
+    supabaseUrl: 'https://iygwhapcpdmsasqlfelv.supabase.co',
+    supabaseKey: 'sb_publishable_rD9naqrpu1dI-iwchAS0GQ_JkgGysqP',
 
     // اسم الـ channel في Supabase Realtime
     channelName: 'we-core-presence',
@@ -32,7 +32,7 @@ const ActiveUsersWidget = (() => {
     fallbackInterval: 5000,
 
     // وين الـ Widget يظهر؟ 'corner' | 'inline'
-    position: 'corner',
+    position: 'inline',
 
     // الـ Element اللي هيتضاف فيه لو position = 'inline'
     containerId: 'active-users-widget',
@@ -358,3 +358,4 @@ const ActiveUsersWidget = (() => {
   return { init };
 
 })();
+      
