@@ -1,0 +1,923 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>عرض رومنج العمرة 5X — WE</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&family=Tajawal:wght@300;400;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #C9A84C;
+    --gold-light: #F0D080;
+    --gold-dark: #8B6914;
+    --green: #1A6B3C;
+    --green-light: #2D9A5A;
+    --green-dark: #0D3D22;
+    --cream: #FDF8EE;
+    --dark: #0A1A0F;
+    --text: #1C2B20;
+    --shadow: rgba(10,26,15,0.3);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Cairo', sans-serif;
+    background: var(--dark);
+    color: var(--cream);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Background Pattern */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: 
+      radial-gradient(ellipse 80% 60% at 50% -10%, rgba(201,168,76,0.15) 0%, transparent 60%),
+      url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23C9A84C' fill-opacity='0.04'%3E%3Cpath d='M30 0 L60 30 L30 60 L0 30Z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* HEADER */
+  header {
+    position: relative;
+    z-index: 10;
+    text-align: center;
+    padding: 50px 20px 40px;
+    border-bottom: 1px solid rgba(201,168,76,0.2);
+  }
+
+  .company-tag {
+    display: inline-block;
+    font-size: 11px;
+    letter-spacing: 3px;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 16px;
+    font-family: 'Tajawal', sans-serif;
+    opacity: 0.8;
+  }
+
+  .mosque-icon {
+    font-size: 52px;
+    display: block;
+    margin: 0 auto 16px;
+    filter: drop-shadow(0 0 20px rgba(201,168,76,0.6));
+    animation: glow-pulse 3s ease-in-out infinite;
+  }
+
+  @keyframes glow-pulse {
+    0%, 100% { filter: drop-shadow(0 0 15px rgba(201,168,76,0.4)); }
+    50% { filter: drop-shadow(0 0 35px rgba(201,168,76,0.9)); }
+  }
+
+  h1 {
+    font-size: clamp(28px, 6vw, 52px);
+    font-weight: 900;
+    background: linear-gradient(135deg, var(--gold-light), var(--gold), var(--gold-dark));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    line-height: 1.2;
+    margin-bottom: 8px;
+  }
+
+  .subtitle {
+    font-size: clamp(14px, 2.5vw, 18px);
+    color: rgba(253,248,238,0.6);
+    font-weight: 300;
+  }
+
+  /* BADGE */
+  .x5-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: linear-gradient(135deg, var(--gold-dark), var(--gold), var(--gold-light));
+    color: var(--dark);
+    font-size: 14px;
+    font-weight: 900;
+    padding: 8px 22px;
+    border-radius: 50px;
+    margin-top: 18px;
+    box-shadow: 0 4px 24px rgba(201,168,76,0.4);
+    animation: badge-shimmer 2.5s ease-in-out infinite;
+  }
+
+  @keyframes badge-shimmer {
+    0%, 100% { box-shadow: 0 4px 24px rgba(201,168,76,0.4); }
+    50% { box-shadow: 0 4px 40px rgba(201,168,76,0.8); }
+  }
+
+  /* MAIN CONTENT */
+  main {
+    position: relative;
+    z-index: 5;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 40px 16px 60px;
+  }
+
+  /* TABS */
+  .tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 36px;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(201,168,76,0.15);
+    border-radius: 16px;
+    padding: 8px;
+    flex-wrap: wrap;
+  }
+
+  .tab-btn {
+    flex: 1;
+    min-width: 120px;
+    padding: 12px 16px;
+    border: none;
+    background: transparent;
+    color: rgba(253,248,238,0.5);
+    font-family: 'Cairo', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+  }
+
+  .tab-btn.active {
+    background: linear-gradient(135deg, var(--green), var(--green-light));
+    color: var(--cream);
+    box-shadow: 0 4px 20px rgba(26,107,60,0.5);
+  }
+
+  .tab-btn:not(.active):hover {
+    background: rgba(201,168,76,0.08);
+    color: var(--gold-light);
+  }
+
+  /* PANELS */
+  .panel { display: none; animation: fadeIn 0.4s ease; }
+  .panel.active { display: block; }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* INTRO PANEL */
+  .intro-card {
+    background: linear-gradient(135deg, rgba(26,107,60,0.15), rgba(201,168,76,0.08));
+    border: 1px solid rgba(201,168,76,0.25);
+    border-radius: 20px;
+    padding: 36px 32px;
+    margin-bottom: 28px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .intro-card::before {
+    content: '✦';
+    position: absolute;
+    top: -10px;
+    left: -10px;
+    font-size: 100px;
+    color: rgba(201,168,76,0.04);
+    line-height: 1;
+  }
+
+  .intro-card h2 {
+    font-size: 22px;
+    color: var(--gold-light);
+    margin-bottom: 14px;
+    font-weight: 700;
+  }
+
+  .intro-card p {
+    font-size: 16px;
+    line-height: 1.9;
+    color: rgba(253,248,238,0.8);
+  }
+
+  .eligibility-banner {
+    background: linear-gradient(135deg, var(--green-dark), var(--green));
+    border: 1px solid rgba(201,168,76,0.3);
+    border-radius: 16px;
+    padding: 24px 28px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .eligibility-icon { font-size: 36px; }
+
+  .eligibility-banner h3 { font-size: 17px; color: var(--gold-light); margin-bottom: 4px; }
+  .eligibility-banner p { font-size: 14px; color: rgba(253,248,238,0.75); }
+
+  /* PACKAGES PANEL */
+  .packages-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+  }
+
+  .package-card {
+    background: linear-gradient(160deg, rgba(26,107,60,0.12), rgba(10,26,15,0.8));
+    border: 1px solid rgba(201,168,76,0.2);
+    border-radius: 20px;
+    padding: 28px 24px;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.35s ease;
+    cursor: default;
+  }
+
+  .package-card:hover {
+    transform: translateY(-6px);
+    border-color: rgba(201,168,76,0.6);
+    box-shadow: 0 16px 50px rgba(201,168,76,0.15);
+  }
+
+  .package-card.featured {
+    border-color: var(--gold);
+    background: linear-gradient(160deg, rgba(201,168,76,0.12), rgba(26,107,60,0.15));
+  }
+
+  .featured-badge {
+    position: absolute;
+    top: 14px;
+    left: 14px;
+    background: linear-gradient(135deg, var(--gold), var(--gold-light));
+    color: var(--dark);
+    font-size: 11px;
+    font-weight: 900;
+    padding: 4px 12px;
+    border-radius: 50px;
+  }
+
+  .package-type {
+    display: inline-block;
+    font-size: 12px;
+    color: var(--gold);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+    font-weight: 700;
+  }
+
+  .package-card h3 {
+    font-size: 26px;
+    font-weight: 900;
+    color: var(--cream);
+    margin-bottom: 4px;
+  }
+
+  .price {
+    font-size: 38px;
+    font-weight: 900;
+    color: var(--gold-light);
+    line-height: 1;
+    margin-bottom: 20px;
+  }
+
+  .price span {
+    font-size: 16px;
+    font-weight: 400;
+    color: rgba(253,248,238,0.5);
+  }
+
+  .quota-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(201,168,76,0.1);
+  }
+
+  .quota-row:last-child { border-bottom: none; }
+
+  .quota-label {
+    font-size: 13px;
+    color: rgba(253,248,238,0.55);
+  }
+
+  .quota-value {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--cream);
+  }
+
+  .quota-value.highlight {
+    color: var(--gold-light);
+    font-size: 18px;
+  }
+
+  .quota-value del {
+    color: rgba(253,248,238,0.3);
+    font-size: 13px;
+    font-weight: 400;
+    margin-left: 6px;
+  }
+
+  .subscribe-btn {
+    width: 100%;
+    margin-top: 22px;
+    padding: 13px;
+    border: none;
+    border-radius: 12px;
+    background: linear-gradient(135deg, var(--green), var(--green-light));
+    color: white;
+    font-family: 'Cairo', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  .subscribe-btn:hover {
+    background: linear-gradient(135deg, var(--green-light), var(--green));
+    box-shadow: 0 8px 25px rgba(26,107,60,0.5);
+    transform: translateY(-2px);
+  }
+
+  .code-display {
+    display: inline-block;
+    background: rgba(201,168,76,0.1);
+    border: 1px solid rgba(201,168,76,0.3);
+    color: var(--gold-light);
+    font-size: 18px;
+    font-weight: 900;
+    padding: 6px 16px;
+    border-radius: 8px;
+    font-family: monospace;
+    letter-spacing: 1px;
+    margin-top: 14px;
+  }
+
+  /* MODAL */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.75);
+    backdrop-filter: blur(8px);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+
+  .modal-overlay.open { display: flex; }
+
+  .modal {
+    background: linear-gradient(160deg, var(--green-dark), var(--dark));
+    border: 1px solid rgba(201,168,76,0.4);
+    border-radius: 24px;
+    padding: 36px 32px;
+    max-width: 440px;
+    width: 100%;
+    text-align: center;
+    animation: modalIn 0.3s ease;
+    position: relative;
+  }
+
+  @keyframes modalIn {
+    from { opacity: 0; transform: scale(0.9) translateY(20px); }
+    to { opacity: 1; transform: scale(1) translateY(0); }
+  }
+
+  .modal-close {
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    background: rgba(255,255,255,0.08);
+    border: none;
+    color: var(--cream);
+    font-size: 18px;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+
+  .modal-close:hover { background: rgba(255,255,255,0.15); }
+
+  .modal-icon { font-size: 52px; margin-bottom: 14px; }
+  .modal h3 { font-size: 22px; font-weight: 900; color: var(--gold-light); margin-bottom: 8px; }
+  .modal p { font-size: 14px; color: rgba(253,248,238,0.65); margin-bottom: 24px; }
+
+  .modal-code {
+    font-size: 40px;
+    font-weight: 900;
+    color: var(--gold);
+    font-family: monospace;
+    letter-spacing: 2px;
+    background: rgba(201,168,76,0.08);
+    border: 2px dashed rgba(201,168,76,0.4);
+    border-radius: 12px;
+    padding: 16px 24px;
+    margin-bottom: 20px;
+    display: block;
+  }
+
+  .modal-note { font-size: 13px; color: rgba(253,248,238,0.45); }
+
+  /* HOW TO PANEL */
+  .how-section { margin-bottom: 32px; }
+  .how-section h2 { font-size: 20px; color: var(--gold-light); margin-bottom: 20px; font-weight: 700; }
+
+  .steps-list {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .step-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(201,168,76,0.1);
+    border-radius: 14px;
+    padding: 18px 20px;
+    transition: all 0.25s ease;
+  }
+
+  .step-item:hover {
+    border-color: rgba(201,168,76,0.3);
+    background: rgba(201,168,76,0.04);
+  }
+
+  .step-num {
+    min-width: 36px;
+    height: 36px;
+    background: linear-gradient(135deg, var(--green), var(--green-light));
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    font-weight: 900;
+    color: white;
+    flex-shrink: 0;
+  }
+
+  .step-text h4 { font-size: 15px; font-weight: 700; color: var(--cream); margin-bottom: 4px; }
+  .step-text p { font-size: 13px; color: rgba(253,248,238,0.55); line-height: 1.6; }
+
+  .channel-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 14px;
+    margin-top: 20px;
+  }
+
+  .channel-card {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(201,168,76,0.12);
+    border-radius: 14px;
+    padding: 20px 14px;
+    text-align: center;
+    transition: all 0.25s ease;
+  }
+
+  .channel-card:hover {
+    border-color: rgba(201,168,76,0.4);
+    transform: translateY(-3px);
+  }
+
+  .channel-card .ch-icon { font-size: 30px; margin-bottom: 10px; }
+  .channel-card h4 { font-size: 14px; font-weight: 700; color: var(--cream); margin-bottom: 4px; }
+  .channel-card p { font-size: 12px; color: rgba(253,248,238,0.45); }
+
+  /* TERMS PANEL */
+  .terms-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .term-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    background: rgba(255,255,255,0.02);
+    border-right: 3px solid var(--gold-dark);
+    border-radius: 0 12px 12px 0;
+    padding: 16px 18px;
+  }
+
+  .term-icon { font-size: 20px; flex-shrink: 0; margin-top: 1px; }
+  .term-text { font-size: 14px; color: rgba(253,248,238,0.75); line-height: 1.7; }
+  .term-text strong { color: var(--gold-light); font-weight: 700; }
+
+  /* FAQ */
+  .faq-item {
+    border: 1px solid rgba(201,168,76,0.15);
+    border-radius: 14px;
+    margin-bottom: 12px;
+    overflow: hidden;
+  }
+
+  .faq-q {
+    width: 100%;
+    background: rgba(255,255,255,0.03);
+    border: none;
+    color: var(--cream);
+    font-family: 'Cairo', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    padding: 18px 20px;
+    text-align: right;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    transition: background 0.2s;
+  }
+
+  .faq-q:hover { background: rgba(201,168,76,0.06); }
+
+  .faq-arrow {
+    font-size: 18px;
+    color: var(--gold);
+    transition: transform 0.3s;
+    flex-shrink: 0;
+  }
+
+  .faq-q.open .faq-arrow { transform: rotate(180deg); }
+
+  .faq-a {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.35s ease, padding 0.35s ease;
+    font-size: 14px;
+    color: rgba(253,248,238,0.65);
+    line-height: 1.8;
+    padding: 0 20px;
+    background: rgba(26,107,60,0.05);
+  }
+
+  .faq-a.open {
+    max-height: 200px;
+    padding: 16px 20px;
+  }
+
+  /* FOOTER */
+  footer {
+    position: relative;
+    z-index: 5;
+    text-align: center;
+    padding: 28px 20px;
+    border-top: 1px solid rgba(201,168,76,0.12);
+    font-size: 12px;
+    color: rgba(253,248,238,0.3);
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 500px) {
+    .tabs { gap: 4px; }
+    .tab-btn { font-size: 12px; padding: 10px 8px; min-width: 80px; }
+    .modal { padding: 28px 20px; }
+    .package-card { padding: 22px 18px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <span class="company-tag">WE — المصرية للاتصالات</span>
+  <span class="mosque-icon">🕌</span>
+  <h1>عرض رومنج العمرة</h1>
+  <p class="subtitle">استمتع بتجربة اتصال لا تُنسى في الأراضي المقدسة</p>
+  <div class="x5-badge">⚡ 5 أضعاف الباقة الأصلية</div>
+</header>
+
+<!-- MAIN -->
+<main>
+
+  <!-- TABS -->
+  <div class="tabs" role="tablist">
+    <button class="tab-btn active" onclick="showPanel('intro')" role="tab">🏠 نظرة عامة</button>
+    <button class="tab-btn" onclick="showPanel('packages')" role="tab">📦 الباقات</button>
+    <button class="tab-btn" onclick="showPanel('howto')" role="tab">📲 طريقة الاشتراك</button>
+    <button class="tab-btn" onclick="showPanel('terms')" role="tab">📋 الشروط</button>
+  </div>
+
+  <!-- INTRO PANEL -->
+  <div id="panel-intro" class="panel active">
+    <div class="intro-card">
+      <h2>🌟 ما هو عرض رومنج العمرة؟</h2>
+      <p>
+        احصل على <strong style="color:var(--gold-light)">5 أضعاف</strong> باقات الإنترنت عند التجوال في المملكة العربية السعودية أثناء أداء العمرة. 
+        العرض متاح لجميع عملاء WE المصرية للاتصالات بأسعار مميزة وبدون أي رسوم إضافية خارج الباقة المشترك بها.
+      </p>
+    </div>
+
+    <div class="eligibility-banner">
+      <div class="eligibility-icon">👥</div>
+      <div>
+        <h3>من يستطيع الاشتراك؟</h3>
+        <p>جميع عملاء الأفراد — سواء كانوا على الدفع المسبق (كارت) أو الفاتورة</p>
+      </div>
+    </div>
+
+    <div style="margin-top:28px">
+      <div class="how-section">
+        <h2>❓ أسئلة شائعة</h2>
+        <div>
+          <div class="faq-item">
+            <button class="faq-q" onclick="toggleFaq(this)">
+              هل يمكنني الاشتراك في الباقة أكثر من مرة؟
+              <span class="faq-arrow">▼</span>
+            </button>
+            <div class="faq-a">
+              نعم! يمكنك الاشتراك في الباقة أكثر من مرة خلال فترة العرض. ما إن تنتهي باقتك الحالية، يمكنك تجديدها بنفس الكود.
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-q" onclick="toggleFaq(this)">
+              هل الميجابايتس غير المستخدمة تُرحَّل؟
+              <span class="faq-arrow">▼</span>
+            </button>
+            <div class="faq-a">
+              لا، لا يوجد ترحيل للميجابايتس غير المستخدمة بعد انتهاء مدة الباقة.
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-q" onclick="toggleFaq(this)">
+              هل العرض متاح خارج السعودية؟
+              <span class="faq-arrow">▼</span>
+            </button>
+            <div class="faq-a">
+              لا. العرض ساري داخل المملكة العربية السعودية فقط. عند السفر لدول أخرى تطبق أسعار التجوال المعتادة.
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-q" onclick="toggleFaq(this)">
+              ما التوقيت المعتمد لصلاحية الباقة؟
+              <span class="faq-arrow">▼</span>
+            </button>
+            <div class="faq-a">
+              صلاحية الباقات تعمل بتوقيت مصر (GMT+2).
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PACKAGES PANEL -->
+  <div id="panel-packages" class="panel">
+    <div class="packages-grid">
+
+      <!-- Daily -->
+      <div class="package-card">
+        <div class="package-type">يومية</div>
+        <h3>باقة اليوم</h3>
+        <div class="price">60 <span>جنيه</span></div>
+
+        <div class="quota-row">
+          <span class="quota-label">الكوتا الأصلية</span>
+          <span class="quota-value"><del>50 MB</del></span>
+        </div>
+        <div class="quota-row">
+          <span class="quota-label">كوتا عرض 5X ✨</span>
+          <span class="quota-value highlight">250 MB</span>
+        </div>
+        <div class="quota-row">
+          <span class="quota-label">الصلاحية</span>
+          <span class="quota-value">يوم واحد</span>
+        </div>
+
+        <div style="text-align:center">
+          <div class="code-display">*300#</div>
+        </div>
+
+        <button class="subscribe-btn" onclick="openModal('باقة اليوم', '*300#', '250 MB', '60 جنيه')">
+          📲 اشترك الآن
+        </button>
+      </div>
+
+      <!-- Weekly 1500 -->
+      <div class="package-card featured">
+        <div class="featured-badge">الأكثر طلباً</div>
+        <div class="package-type">أسبوعية</div>
+        <h3>باقة أسبوع</h3>
+        <div class="price">300 <span>جنيه</span></div>
+
+        <div class="quota-row">
+          <span class="quota-label">الكوتا الأصلية</span>
+          <span class="quota-value"><del>1,500 MB</del></span>
+        </div>
+        <div class="quota-row">
+          <span class="quota-label">كوتا عرض 5X ✨</span>
+          <span class="quota-value highlight">7,500 MB</span>
+        </div>
+        <div class="quota-row">
+          <span class="quota-label">الصلاحية</span>
+          <span class="quota-value">7 أيام</span>
+        </div>
+
+        <div style="text-align:center">
+          <div class="code-display">*301#</div>
+        </div>
+
+        <button class="subscribe-btn" onclick="openModal('باقة أسبوع — 7,500 MB', '*301#', '7,500 MB', '300 جنيه')">
+          📲 اشترك الآن
+        </button>
+      </div>
+
+      <!-- Weekly 5000 -->
+      <div class="package-card">
+        <div class="package-type">أسبوعية بلس</div>
+        <h3>باقة أسبوع +</h3>
+        <div class="price">500 <span>جنيه</span></div>
+
+        <div class="quota-row">
+          <span class="quota-label">الكوتا الأصلية</span>
+          <span class="quota-value"><del>5,000 MB</del></span>
+        </div>
+        <div class="quota-row">
+          <span class="quota-label">كوتا عرض 5X ✨</span>
+          <span class="quota-value highlight">25,000 MB</span>
+        </div>
+        <div class="quota-row">
+          <span class="quota-label">الصلاحية</span>
+          <span class="quota-value">7 أيام</span>
+        </div>
+
+        <div style="text-align:center">
+          <div class="code-display">*302#</div>
+        </div>
+
+        <button class="subscribe-btn" onclick="openModal('باقة أسبوع+ — 25,000 MB', '*302#', '25,000 MB', '500 جنيه')">
+          📲 اشترك الآن
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- HOW TO PANEL -->
+  <div id="panel-howto" class="panel">
+    <div class="how-section">
+      <h2>📲 طرق الاشتراك</h2>
+      <div class="channel-cards">
+        <div class="channel-card">
+          <div class="ch-icon">📞</div>
+          <h4>الكود المختصر</h4>
+          <p>اتصل بالكود المخصص للباقة مباشرةً</p>
+        </div>
+        <div class="channel-card">
+          <div class="ch-icon">📱</div>
+          <h4>القنوات الرقمية</h4>
+          <p>تطبيق WE أو الموقع الإلكتروني</p>
+        </div>
+        <div class="channel-card">
+          <div class="ch-icon">🎧</div>
+          <h4>خدمة العملاء</h4>
+          <p>اتصل بخدمة العملاء للمساعدة في الاشتراك</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="how-section">
+      <h2>🚀 خطوات الاشتراك بالكود</h2>
+      <div class="steps-list">
+        <div class="step-item">
+          <div class="step-num">1</div>
+          <div class="step-text">
+            <h4>اختر الباقة المناسبة</h4>
+            <p>يومية 60 جنيه (*300#) | أسبوعية 300 جنيه (*301#) | أسبوعية+ 500 جنيه (*302#)</p>
+          </div>
+        </div>
+        <div class="step-item">
+          <div class="step-num">2</div>
+          <div class="step-text">
+            <h4>تأكد من الرصيد (دفع مسبق)</h4>
+            <p>يلزم وجود رصيد كافٍ في محفظتك قبل الاشتراك إذا كنت من عملاء الكارت</p>
+          </div>
+        </div>
+        <div class="step-item">
+          <div class="step-num">3</div>
+          <div class="step-text">
+            <h4>اطلب الكود وأكد الاشتراك</h4>
+            <p>اضغط زر الاتصال وانتظر رسالة تأكيد الاشتراك من WE</p>
+          </div>
+        </div>
+        <div class="step-item">
+          <div class="step-num">4</div>
+          <div class="step-text">
+            <h4>استمتع بالإنترنت في الأراضي المقدسة</h4>
+            <p>تبدأ الباقة فور وصولك للسعودية واتصال شبكتك بالشبكات المحلية</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TERMS PANEL -->
+  <div id="panel-terms" class="panel">
+    <div class="terms-list">
+      <div class="term-item">
+        <span class="term-icon">🇸🇦</span>
+        <div class="term-text"><strong>نطاق العرض:</strong> العرض ساري داخل المملكة العربية السعودية فقط. لا ينطبق على أي دولة أخرى.</div>
+      </div>
+      <div class="term-item">
+        <span class="term-icon">💰</span>
+        <div class="term-text"><strong>بعد انتهاء الباقة أو خارجها:</strong> تُطبَّق الأسعار المعلنة لدولة التجوال بعد انتهاء الباقة أو خارج حدودها أو بعد انتهاء فترة العرض.</div>
+      </div>
+      <div class="term-item">
+        <span class="term-icon">🚫</span>
+        <div class="term-text"><strong>لا ترحيل:</strong> لا يوجد ترحيل للميجابايتس غير المستخدمة بعد انتهاء مدة الباقة.</div>
+      </div>
+      <div class="term-item">
+        <span class="term-icon">⏰</span>
+        <div class="term-text"><strong>التوقيت:</strong> تعمل صلاحية جميع الباقات بتوقيت <strong>مصر</strong> (GMT+2).</div>
+      </div>
+      <div class="term-item">
+        <span class="term-icon">🔄</span>
+        <div class="term-text"><strong>تعدد الاشتراكات:</strong> يمكن الاشتراك في الباقة أكثر من مرة خلال فترة العرض.</div>
+      </div>
+      <div class="term-item">
+        <span class="term-icon">👥</span>
+        <div class="term-text"><strong>الأهلية:</strong> العرض متاح لجميع عملاء الأفراد (دفع مسبق وفاتورة). يشترط توفر رصيد كافٍ لعملاء الدفع المسبق.</div>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal(null, true)">✕</button>
+    <div class="modal-icon">📡</div>
+    <h3 id="modal-title">الباقة</h3>
+    <p id="modal-quota">الكوتا</p>
+    <span class="modal-code" id="modal-code">*300#</span>
+    <p class="modal-note">اتصل بالكود أعلاه من هاتفك لتفعيل الباقة فوراً</p>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <p>B7 Smart Village، كم 28 طريق مصر الإسكندرية الصحراوي، الجيزة 12577</p>
+  <p style="margin-top:6px">© 2025 WE — المصرية للاتصالات — جميع الحقوق محفوظة</p>
+</footer>
+
+<script>
+  function showPanel(name) {
+    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('panel-' + name).classList.add('active');
+    event.currentTarget.classList.add('active');
+  }
+
+  function toggleFaq(btn) {
+    const answer = btn.nextElementSibling;
+    const isOpen = btn.classList.contains('open');
+    // close all
+    document.querySelectorAll('.faq-q').forEach(q => q.classList.remove('open'));
+    document.querySelectorAll('.faq-a').forEach(a => a.classList.remove('open'));
+    if (!isOpen) {
+      btn.classList.add('open');
+      answer.classList.add('open');
+    }
+  }
+
+  function openModal(title, code, quota, price) {
+    document.getElementById('modal-title').textContent = title;
+    document.getElementById('modal-code').textContent = code;
+    document.getElementById('modal-quota').textContent = 'كوتا 5X: ' + quota + ' | السعر: ' + price;
+    document.getElementById('modalOverlay').classList.add('open');
+  }
+
+  function closeModal(e, force) {
+    if (force || (e && e.target === document.getElementById('modalOverlay'))) {
+      document.getElementById('modalOverlay').classList.remove('open');
+    }
+  }
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closeModal(null, true);
+  });
+</script>
+
+</body>
+</html>

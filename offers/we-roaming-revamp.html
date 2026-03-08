@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WE — تطوير باقات التجوال الجديدة</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&family=Tajawal:wght@300;400;700;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --red:#E4002B;--red-d:#A80020;--red-l:#FF6080;
+  --green:#1A6B3C;--green-l:#2D9A5A;--green-d:#0D3D22;
+  --gold:#C9A84C;--gold-l:#F0D080;--gold-d:#8B6914;
+  --dark:#080D0A;--dark2:#0F1611;--dark3:#162019;
+  --cream:#F2EFE8;--muted:rgba(242,239,232,0.52);
+  --border:rgba(242,239,232,0.07);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Cairo',sans-serif;background:var(--dark);color:var(--cream);min-height:100vh;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
+  background:
+    radial-gradient(ellipse 90% 55% at 50% -5%,rgba(201,168,76,0.12) 0%,transparent 65%),
+    radial-gradient(ellipse 40% 40% at 90% 80%,rgba(26,107,60,0.06) 0%,transparent 50%),
+    url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23C9A84C' fill-opacity='0.022'%3E%3Cpath d='M40 0L80 40L40 80L0 40Z'/%3E%3C/g%3E%3C/svg%3E")
+}
+
+/* ═══ HEADER ═══ */
+header{position:relative;z-index:10;text-align:center;padding:52px 20px 44px;border-bottom:1px solid rgba(201,168,76,0.14)}
+.we-logo{display:inline-flex;align-items:center;gap:12px;margin-bottom:22px}
+.we-mark{font-size:46px;font-weight:900;color:var(--red);letter-spacing:-2px;line-height:1;filter:drop-shadow(0 0 22px rgba(228,0,43,0.55))}
+.we-div{width:2px;height:36px;background:var(--border)}
+.we-sub{font-size:12px;color:var(--muted);letter-spacing:1.5px;line-height:1.55;text-align:right;font-family:'Tajawal',sans-serif}
+h1{font-size:clamp(26px,5.5vw,50px);font-weight:900;background:linear-gradient(135deg,var(--gold-l),var(--gold),var(--gold-d));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1.2;margin-bottom:8px}
+.subtitle{font-size:clamp(13px,1.8vw,16px);color:var(--muted);font-weight:300;margin-bottom:18px}
+.header-chips{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-top:4px}
+.chip{display:inline-flex;align-items:center;gap:6px;background:rgba(26,107,60,0.14);border:1px solid rgba(26,107,60,0.3);border-radius:50px;padding:6px 14px;font-size:12px;font-weight:700;color:var(--green-l)}
+.chip .dot{width:7px;height:7px;border-radius:50%;background:var(--green-l);animation:pulse 1.8s infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(1.5)}}
+.launch-banner{display:inline-flex;align-items:center;gap:10px;background:linear-gradient(135deg,rgba(228,0,43,0.15),rgba(228,0,43,0.08));border:1px solid rgba(228,0,43,0.3);border-radius:12px;padding:10px 20px;margin-top:16px;font-size:13px;font-weight:700;color:#FF8099}
+.launch-banner .ldate{color:white;font-weight:900}
+
+/* ═══ MAIN ═══ */
+main{position:relative;z-index:5;max-width:1200px;margin:0 auto;padding:36px 16px 70px}
+
+/* ═══ TABS ═══ */
+.tabs{display:flex;gap:6px;margin-bottom:32px;background:rgba(255,255,255,0.02);border:1px solid rgba(201,168,76,0.1);border-radius:16px;padding:6px;flex-wrap:wrap}
+.tab-btn{flex:1;min-width:100px;padding:11px 12px;border:none;background:transparent;color:var(--muted);font-family:'Cairo',sans-serif;font-size:13px;font-weight:600;border-radius:10px;cursor:pointer;transition:all .3s}
+.tab-btn.active{background:linear-gradient(135deg,var(--green-d),var(--green));color:var(--cream);box-shadow:0 4px 18px rgba(26,107,60,0.45)}
+.tab-btn:not(.active):hover{background:rgba(201,168,76,0.06);color:var(--gold-l)}
+.panel{display:none;animation:fadeIn .35s ease}
+.panel.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+
+/* ═══ SECTION TITLE ═══ */
+.sec-t{font-size:11px;font-weight:700;color:var(--gold);letter-spacing:2.5px;text-transform:uppercase;margin-bottom:18px;display:flex;align-items:center;gap:10px}
+.sec-t::after{content:'';flex:1;height:1px;background:rgba(201,168,76,0.14)}
+
+/* ═══ INTRO ═══ */
+.intro-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;margin-bottom:28px}
+.icard{background:var(--dark2);border:1px solid var(--border);border-radius:18px;padding:24px 22px}
+.icard.gold{border-color:rgba(201,168,76,0.25)}
+.icard.green{border-color:rgba(26,107,60,0.28)}
+.icard h3{font-size:16px;font-weight:700;color:var(--gold-l);margin-bottom:10px}
+.icard p{font-size:13px;color:var(--muted);line-height:1.8}
+.country-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.ctag{display:inline-flex;align-items:center;gap:5px;background:rgba(26,107,60,0.15);border:1px solid rgba(26,107,60,0.28);border-radius:50px;padding:5px 12px;font-size:12px;font-weight:700;color:var(--green-l)}
+
+/* ═══ COMPARE ═══ */
+.compare-wrap{display:grid;grid-template-columns:1fr auto 1fr;gap:12px;align-items:start;margin-bottom:32px}
+@media(max-width:650px){.compare-wrap{grid-template-columns:1fr;}.arrow-mid{display:none!important}}
+.comp-col h3{font-size:13px;font-weight:700;text-align:center;padding:11px;border-radius:12px 12px 0 0}
+.comp-col.old h3{background:rgba(228,0,43,0.13);color:#FF8099;border:1px solid rgba(228,0,43,0.22);border-bottom:none}
+.comp-col.new h3{background:rgba(26,107,60,0.18);color:var(--green-l);border:1px solid rgba(26,107,60,0.28);border-bottom:none}
+.comp-table{width:100%;border-collapse:collapse;font-size:12px}
+.comp-table th{color:var(--muted);font-weight:600;padding:7px 10px;background:rgba(255,255,255,0.025);text-align:right;font-size:11px}
+.comp-table td{padding:9px 10px;border-bottom:1px solid var(--border);color:var(--cream)}
+.comp-table tr:last-child td{border-bottom:none}
+.comp-col.old .comp-table{border:1px solid rgba(228,0,43,0.18);border-radius:0 0 12px 12px;overflow:hidden}
+.comp-col.new .comp-table{border:1px solid rgba(26,107,60,0.22);border-radius:0 0 12px 12px;overflow:hidden}
+.comp-col.old tr:hover td{background:rgba(228,0,43,0.04)}
+.comp-col.new tr:hover td{background:rgba(26,107,60,0.05)}
+.cbadge{font-family:monospace;font-size:12px;font-weight:900;color:var(--gold-l);background:rgba(201,168,76,0.1);border:1px solid rgba(201,168,76,0.22);padding:2px 7px;border-radius:5px}
+.cprice{font-weight:900}
+.cprice.old-p{color:#FF8099}
+.cprice.new-p{color:#6FD49A}
+.arrow-mid{display:flex;align-items:center;justify-content:center;padding-top:42px;font-size:30px;color:var(--gold);opacity:.6}
+.country-note{background:rgba(228,0,43,0.07);border:1px solid rgba(228,0,43,0.18);border-radius:12px;padding:14px 18px;margin-bottom:20px;font-size:13px;color:#FF8099;display:flex;align-items:flex-start;gap:10px}
+.country-note-text strong{color:white;display:block;margin-bottom:3px}
+
+/* ═══ NEW PACKAGES ═══ */
+.pkg-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(265px,1fr));gap:18px}
+.pcard{background:linear-gradient(155deg,rgba(26,107,60,0.1),var(--dark2));border:1px solid rgba(201,168,76,0.16);border-radius:20px;padding:26px 22px;transition:all .3s;cursor:default;position:relative;overflow:hidden}
+.pcard:hover{transform:translateY(-5px);border-color:rgba(201,168,76,0.45);box-shadow:0 14px 44px rgba(201,168,76,0.1)}
+.pcard.feat{border-color:var(--gold)}
+.feat-bar{position:absolute;top:0;left:0;right:0;background:linear-gradient(135deg,var(--gold-d),var(--gold));color:var(--dark);font-size:11px;font-weight:900;text-align:center;padding:5px;letter-spacing:1px}
+.pcard-inner{margin-top:0}.pcard.feat .pcard-inner{margin-top:20px}
+.ptype{font-size:10px;color:var(--gold);letter-spacing:2.5px;text-transform:uppercase;font-weight:700;margin-bottom:6px}
+.pname{font-size:22px;font-weight:900;color:var(--cream);margin-bottom:2px}
+.pprice{font-size:36px;font-weight:900;color:var(--gold-l);line-height:1;margin-bottom:18px}
+.pprice sup{font-size:13px;font-weight:400;color:var(--muted)}
+.qblock{background:rgba(255,255,255,0.03);border-radius:11px;padding:12px 13px;margin-bottom:13px}
+.qrow{display:flex;justify-content:space-between;align-items:center;padding:5px 0}
+.qrow+.qrow{border-top:1px solid rgba(255,255,255,0.05)}
+.ql{font-size:11px;color:var(--muted)}
+.qv{font-size:13px;font-weight:700;color:var(--cream)}
+.qv.big{font-size:15px;color:var(--gold-l)}
+.pcode{display:flex;align-items:center;justify-content:space-between;background:rgba(201,168,76,0.06);border:1px dashed rgba(201,168,76,0.26);border-radius:9px;padding:9px 13px;margin-bottom:13px}
+.pcode span{font-size:11px;color:var(--muted)}
+.pcode strong{font-family:monospace;font-size:20px;font-weight:900;color:var(--gold-l);letter-spacing:1px}
+.sbtn{width:100%;padding:12px;border:none;border-radius:10px;background:linear-gradient(135deg,var(--green-d),var(--green-l));color:white;font-family:'Cairo',sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:all .25s;display:flex;align-items:center;justify-content:center;gap:7px}
+.sbtn:hover{box-shadow:0 8px 22px rgba(26,107,60,0.45);transform:translateY(-2px)}
+
+/* ═══ COUNTRY BROWSER ═══ */
+.search-row{display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap}
+.sinput{flex:1;min-width:180px;background:var(--dark2);border:1px solid var(--border);border-radius:11px;padding:10px 15px;color:var(--cream);font-family:'Cairo',sans-serif;font-size:13px;outline:none;transition:border-color .2s}
+.sinput::placeholder{color:var(--muted)}
+.sinput:focus{border-color:rgba(201,168,76,0.38)}
+.sselect{background:var(--dark2);border:1px solid var(--border);border-radius:11px;padding:10px 13px;color:var(--cream);font-family:'Cairo',sans-serif;font-size:12px;outline:none;cursor:pointer;transition:border-color .2s}
+.sselect:focus{border-color:rgba(201,168,76,0.38)}
+.ctry-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px}
+.ctry-card{background:var(--dark2);border:1px solid var(--border);border-radius:15px;padding:16px;cursor:pointer;transition:all .25s}
+.ctry-card:hover{border-color:rgba(201,168,76,0.32);transform:translateY(-2px);background:var(--dark3)}
+.ctry-head{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.ctry-flag{font-size:26px;line-height:1}
+.ctry-ar{font-size:15px;font-weight:700;color:var(--cream)}
+.ctry-en{font-size:11px;color:var(--muted)}
+.btype{display:inline-block;font-size:10px;font-weight:700;padding:3px 9px;border-radius:50px;letter-spacing:1px;margin-bottom:8px}
+.btype.allin{background:rgba(26,107,60,0.18);border:1px solid rgba(26,107,60,0.32);color:var(--green-l)}
+.btype.data{background:rgba(201,168,76,0.1);border:1px solid rgba(201,168,76,0.28);color:var(--gold-l)}
+.btype.new-bundle{background:rgba(26,107,60,0.24);border:1px solid rgba(26,107,60,0.4);color:#7EE8A2}
+.mini-t{width:100%;font-size:11px;border-collapse:collapse}
+.mini-t th{color:var(--muted);font-weight:600;padding:3px 6px;text-align:right}
+.mini-t td{padding:4px 6px;border-bottom:1px solid rgba(255,255,255,0.04);color:var(--cream);font-size:11px}
+.mini-t tr:last-child td{border-bottom:none}
+.code-sm{font-family:monospace;font-weight:900;color:var(--gold-l);font-size:11px}
+.empty-st{text-align:center;padding:60px 20px;color:var(--muted);grid-column:1/-1}
+.empty-st .eicon{font-size:44px;display:block;margin-bottom:12px}
+
+/* ═══ TERMS ═══ */
+.terms-list{display:flex;flex-direction:column;gap:10px}
+.titem{display:flex;align-items:flex-start;gap:12px;background:var(--dark2);border:1px solid var(--border);border-right:3px solid var(--gold-d);border-radius:0 13px 13px 0;padding:14px 15px}
+.ticon{font-size:18px;flex-shrink:0;margin-top:1px}
+.tbody{font-size:13px;color:var(--muted);line-height:1.75}
+.tbody strong{color:var(--cream);display:block;margin-bottom:2px;font-weight:700}
+
+/* ═══ HOW TO ═══ */
+.how-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:13px}
+.hcard{background:var(--dark2);border:1px solid var(--border);border-radius:14px;padding:20px 15px;text-align:center;transition:all .25s}
+.hcard:hover{border-color:rgba(201,168,76,0.28);transform:translateY(-3px)}
+.hnum{width:35px;height:35px;background:linear-gradient(135deg,var(--green-d),var(--green-l));border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:900;color:white;margin:0 auto 11px}
+.hcard h4{font-size:13px;font-weight:700;color:var(--cream);margin-bottom:5px}
+.hcard p{font-size:11px;color:var(--muted);line-height:1.65}
+
+/* ═══ MODAL ═══ */
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.82);backdrop-filter:blur(14px);z-index:999;align-items:center;justify-content:center;padding:16px}
+.overlay.open{display:flex}
+.modal{background:linear-gradient(155deg,var(--green-d),var(--dark));border:1px solid rgba(201,168,76,0.32);border-radius:22px;padding:34px 28px;max-width:400px;width:100%;text-align:center;animation:popIn .3s cubic-bezier(.34,1.56,.64,1);position:relative}
+@keyframes popIn{from{opacity:0;transform:scale(0.84)}to{opacity:1;transform:scale(1)}}
+.mx{position:absolute;top:13px;left:13px;background:rgba(255,255,255,0.07);border:none;color:var(--cream);font-size:15px;width:30px;height:30px;border-radius:50%;cursor:pointer;transition:background .2s}
+.mx:hover{background:rgba(255,255,255,0.13)}
+.memoji{font-size:44px;margin-bottom:11px}
+.modal h3{font-size:18px;font-weight:900;color:var(--gold-l);margin-bottom:5px}
+.minfo{font-size:12px;color:var(--muted);margin-bottom:20px}
+.dial{font-size:38px;font-weight:900;color:var(--gold-l);font-family:monospace;letter-spacing:2px;background:rgba(201,168,76,0.07);border:2px dashed rgba(201,168,76,0.32);border-radius:12px;padding:14px 22px;display:block;margin-bottom:14px}
+.mnote{font-size:11px;color:rgba(242,239,232,0.32)}
+
+/* ═══ COUNTRY DETAIL MODAL ═══ */
+.cmodal{background:var(--dark2);border:1px solid rgba(201,168,76,0.26);border-radius:22px;padding:28px 24px;max-width:560px;width:100%;max-height:88vh;overflow-y:auto;animation:popIn .3s cubic-bezier(.34,1.56,.64,1);position:relative}
+.cmodal::-webkit-scrollbar{width:4px}.cmodal::-webkit-scrollbar-track{background:transparent}.cmodal::-webkit-scrollbar-thumb{background:rgba(201,168,76,0.3);border-radius:2px}
+.chead{display:flex;align-items:center;gap:12px;margin-bottom:20px}
+.cflag{font-size:36px}
+.cnames h2{font-size:20px;font-weight:900;color:var(--cream);margin-bottom:2px}
+.cnames p{font-size:12px;color:var(--muted)}
+.csection{margin-bottom:20px}
+.csection-t{font-size:11px;font-weight:700;color:var(--gold);letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid rgba(201,168,76,0.1)}
+.cbundle{background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:11px;padding:12px 14px;margin-bottom:9px}
+.cbundle-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.cbundle-name{font-size:14px;font-weight:700;color:var(--cream)}
+.cbundle-price{font-size:18px;font-weight:900;color:var(--gold-l)}
+.cbundle-price span{font-size:11px;font-weight:400;color:var(--muted)}
+.cbundle-details{display:flex;flex-wrap:wrap;gap:8px}
+.cdetail{font-size:11px;color:var(--muted);display:flex;align-items:center;gap:4px}
+.cdetail strong{color:var(--cream);font-weight:700}
+
+/* ═══ FOOTER ═══ */
+footer{position:relative;z-index:5;text-align:center;padding:26px 20px;border-top:1px solid var(--border);font-size:11px;color:rgba(242,239,232,0.22);line-height:1.9}
+footer .we-f{color:var(--red);font-weight:700}
+
+@media(max-width:480px){
+  .tabs{gap:4px}.tab-btn{font-size:11px;padding:9px 8px;min-width:75px}
+  .modal{padding:26px 18px}.pcard{padding:20px 16px}
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="we-logo">
+    <span class="we-mark">WE</span>
+    <div class="we-div"></div>
+    <div class="we-sub">المصرية<br>للاتصالات</div>
+  </div>
+  <h1>تطوير باقات التجوال</h1>
+  <p class="subtitle">باقات موبايل إنترنت تجوال جديدة تحل محل الباقات الحالية</p>
+  <div class="header-chips">
+    <div class="chip"><span class="dot"></span>متاح للأفراد</div>
+    <div class="chip">📱 دفع مسبق وفاتورة</div>
+    <div class="chip">🌍 6 دول مستهدفة</div>
+  </div>
+  <div class="launch-banner">
+    🚀 تاريخ الإطلاق: <span class="ldate">الخميس 5 مارس 2026</span>
+  </div>
+</header>
+
+<main>
+  <!-- TABS -->
+  <div class="tabs" role="tablist">
+    <button class="tab-btn active" onclick="showTab('overview',this)">🏠 نظرة عامة</button>
+    <button class="tab-btn" onclick="showTab('compare',this)">🔄 المقارنة</button>
+    <button class="tab-btn" onclick="showTab('new',this)">✨ الباقات الجديدة</button>
+    <button class="tab-btn" onclick="showTab('countries',this)">🌍 الدول</button>
+    <button class="tab-btn" onclick="showTab('howto',this)">📲 الاشتراك</button>
+    <button class="tab-btn" onclick="showTab('terms',this)">📋 الشروط</button>
+  </div>
+
+  <!-- ══════ OVERVIEW ══════ -->
+  <div id="tab-overview" class="panel active">
+    <div class="sec-t">ما الجديد؟</div>
+    <div class="intro-cards">
+      <div class="icard gold">
+        <h3>🔄 ما هي باقات التجوال الجديدة؟</h3>
+        <p>باقات موبايل إنترنت تجوال محدّثة مخصصة لـ 6 دول فقط، تحلّ محلّ الباقات الحالية بسعة أكبر وأسعار مناسبة لجميع عملاء الأفراد.</p>
+      </div>
+      <div class="icard green">
+        <h3>🌍 الدول المشمولة بالباقات الجديدة</h3>
+        <p>الباقات الجديدة متاحة حصرياً للدول التالية:</p>
+        <div class="country-row">
+          <span class="ctag">🇸🇦 السعودية</span>
+          <span class="ctag">🇦🇪 الإمارات</span>
+          <span class="ctag">🇶🇦 قطر</span>
+          <span class="ctag">🇰🇼 الكويت</span>
+          <span class="ctag">🇹🇷 تركيا</span>
+          <span class="ctag">🇺🇸 أمريكا</span>
+        </div>
+      </div>
+      <div class="icard">
+        <h3>👥 من يستفيد؟</h3>
+        <p>جميع عملاء الموبايل للأفراد — سواء على الدفع المسبق (كارت) أو الفاتورة — يمكنهم الاشتراك في الباقات الجديدة.</p>
+      </div>
+      <div class="icard" style="border-color:rgba(228,0,43,0.25)">
+        <h3 style="color:#FF8099">⚠️ الباقات التي ستُلغى</h3>
+        <p>الباقات الحالية للسعودية والإمارات (50MB يومي - 1000MB شهري - 3000MB شهري)، وكذلك باقات قطر والكويت وتركيا وأمريكا (30MB يومي - 300MB أسبوعي - 1500MB أسبوعي) لن تكون متاحة للاشتراك بعد الآن.</p>
+      </div>
+    </div>
+
+    <div class="sec-t">ملخص التغيير</div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px">
+      <div class="icard" style="border-color:rgba(26,107,60,0.28);display:flex;align-items:center;gap:14px">
+        <div style="font-size:36px;flex-shrink:0">📦</div>
+        <div><div style="font-size:13px;color:var(--muted);margin-bottom:4px">الباقات الجديدة</div><div style="font-size:22px;font-weight:900;color:var(--green-l)">3 باقات</div><div style="font-size:11px;color:var(--muted)">يومية × أسبوعيتان</div></div>
+      </div>
+      <div class="icard" style="border-color:rgba(201,168,76,0.28);display:flex;align-items:center;gap:14px">
+        <div style="font-size:36px;flex-shrink:0">🌍</div>
+        <div><div style="font-size:13px;color:var(--muted);margin-bottom:4px">الدول المشمولة</div><div style="font-size:22px;font-weight:900;color:var(--gold-l)">6 دول</div><div style="font-size:11px;color:var(--muted)">خليج + تركيا + أمريكا</div></div>
+      </div>
+      <div class="icard" style="border-color:rgba(26,107,60,0.28);display:flex;align-items:center;gap:14px">
+        <div style="font-size:36px;flex-shrink:0">💰</div>
+        <div><div style="font-size:13px;color:var(--muted);margin-bottom:4px">أقل سعر</div><div style="font-size:22px;font-weight:900;color:var(--green-l)">60 ج</div><div style="font-size:11px;color:var(--muted)">للباقة اليومية 50 MB</div></div>
+      </div>
+      <div class="icard" style="border-color:rgba(201,168,76,0.28);display:flex;align-items:center;gap:14px">
+        <div style="font-size:36px;flex-shrink:0">📅</div>
+        <div><div style="font-size:13px;color:var(--muted);margin-bottom:4px">الإطلاق</div><div style="font-size:22px;font-weight:900;color:var(--gold-l)">5 مارس</div><div style="font-size:11px;color:var(--muted)">2026</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════ COMPARE ══════ -->
+  <div id="tab-compare" class="panel">
+    <div class="sec-t">مقارنة الباقات</div>
+
+    <!-- Group 1: Saudi + UAE -->
+    <div style="margin-bottom:28px">
+      <div class="country-note">
+        <span>🇸🇦🇦🇪</span>
+        <div class="country-note-text">
+          <strong>السعودية والإمارات</strong>
+          الباقات الشهرية الحالية ستُلغى وتحلّ محلّها الباقات الأسبوعية الجديدة
+        </div>
+      </div>
+      <div class="compare-wrap">
+        <div class="comp-col old">
+          <h3>❌ الباقات الحالية</h3>
+          <table class="comp-table">
+            <tr><th>الباقة</th><th>الكوتا</th><th>السعر</th><th>الكود</th></tr>
+            <tr><td>يومية</td><td>50 MB</td><td class="cprice old-p">20 ج</td><td><span class="cbadge">*300#</span></td></tr>
+            <tr><td>شهرية</td><td>1,000 MB</td><td class="cprice old-p">150 ج</td><td><span class="cbadge">*301#</span></td></tr>
+            <tr><td>شهرية</td><td>3,000 MB</td><td class="cprice old-p">300 ج</td><td><span class="cbadge">*302#</span></td></tr>
+          </table>
+        </div>
+        <div class="arrow-mid">→</div>
+        <div class="comp-col new">
+          <h3>✅ الباقات الجديدة</h3>
+          <table class="comp-table">
+            <tr><th>الباقة</th><th>الكوتا</th><th>السعر</th><th>الكود</th></tr>
+            <tr><td>يومية</td><td>50 MB</td><td class="cprice new-p">60 ج</td><td><span class="cbadge">*300#</span></td></tr>
+            <tr><td>أسبوعية</td><td>1,500 MB</td><td class="cprice new-p">300 ج</td><td><span class="cbadge">*301#</span></td></tr>
+            <tr><td>أسبوعية</td><td>5,000 MB</td><td class="cprice new-p">500 ج</td><td><span class="cbadge">*302#</span></td></tr>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Group 2: Qatar, Kuwait, Turkey, USA -->
+    <div>
+      <div class="country-note">
+        <span>🇶🇦🇰🇼🇹🇷🇺🇸</span>
+        <div class="country-note-text">
+          <strong>قطر — الكويت — تركيا — أمريكا</strong>
+          الباقات الحالية ستُلغى وتحلّ محلّها الباقات الجديدة بسعة أكبر بكثير
+        </div>
+      </div>
+      <div class="compare-wrap">
+        <div class="comp-col old">
+          <h3>❌ الباقات الحالية</h3>
+          <table class="comp-table">
+            <tr><th>الباقة</th><th>الكوتا</th><th>السعر</th><th>الكود</th></tr>
+            <tr><td>يومية</td><td>30 MB</td><td class="cprice old-p">30 ج</td><td><span class="cbadge">*303#</span></td></tr>
+            <tr><td>أسبوعية</td><td>300 MB</td><td class="cprice old-p">150 ج</td><td><span class="cbadge">*304#</span></td></tr>
+            <tr><td>أسبوعية</td><td>1,500 MB</td><td class="cprice old-p">350 ج</td><td><span class="cbadge">*305#</span></td></tr>
+          </table>
+        </div>
+        <div class="arrow-mid">→</div>
+        <div class="comp-col new">
+          <h3>✅ الباقات الجديدة</h3>
+          <table class="comp-table">
+            <tr><th>الباقة</th><th>الكوتا</th><th>السعر</th><th>الكود</th></tr>
+            <tr><td>يومية</td><td>50 MB</td><td class="cprice new-p">60 ج</td><td><span class="cbadge">*300#</span></td></tr>
+            <tr><td>أسبوعية</td><td>1,500 MB</td><td class="cprice new-p">300 ج</td><td><span class="cbadge">*301#</span></td></tr>
+            <tr><td>أسبوعية</td><td>5,000 MB</td><td class="cprice new-p">500 ج</td><td><span class="cbadge">*302#</span></td></tr>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════ NEW PACKAGES ══════ -->
+  <div id="tab-new" class="panel">
+    <div class="sec-t">الباقات الجديدة — تسري على 6 دول</div>
+    <div class="pkg-grid">
+      <!-- Daily -->
+      <div class="pcard">
+        <div class="pcard-inner">
+          <div class="ptype">يومية</div>
+          <div class="pname">باقة اليوم</div>
+          <div class="pprice">60 <sup>جنيه</sup></div>
+          <div class="qblock">
+            <div class="qrow"><span class="ql">الكوتا</span><span class="qv big">50 MB</span></div>
+            <div class="qrow"><span class="ql">الصلاحية</span><span class="qv">24 ساعة</span></div>
+            <div class="qrow"><span class="ql">الدول</span><span class="qv" style="font-size:11px">🇸🇦🇦🇪🇶🇦🇰🇼🇹🇷🇺🇸</span></div>
+          </div>
+          <div class="pcode"><span>كود الاشتراك</span><strong>*300#</strong></div>
+          <button class="sbtn" onclick="openModal('باقة اليوم','50 MB — 60 جنيه','*300#')">📲 اشترك الآن</button>
+        </div>
+      </div>
+      <!-- Weekly 1500 -->
+      <div class="pcard feat">
+        <div class="feat-bar">⭐ الأكثر طلباً</div>
+        <div class="pcard-inner">
+          <div class="ptype">أسبوعية</div>
+          <div class="pname">باقة الأسبوع</div>
+          <div class="pprice">300 <sup>جنيه</sup></div>
+          <div class="qblock">
+            <div class="qrow"><span class="ql">الكوتا</span><span class="qv big">1,500 MB</span></div>
+            <div class="qrow"><span class="ql">الصلاحية</span><span class="qv">7 أيام</span></div>
+            <div class="qrow"><span class="ql">الدول</span><span class="qv" style="font-size:11px">🇸🇦🇦🇪🇶🇦🇰🇼🇹🇷🇺🇸</span></div>
+          </div>
+          <div class="pcode"><span>كود الاشتراك</span><strong>*301#</strong></div>
+          <button class="sbtn" onclick="openModal('باقة الأسبوع','1,500 MB — 300 جنيه','*301#')">📲 اشترك الآن</button>
+        </div>
+      </div>
+      <!-- Weekly 5000 -->
+      <div class="pcard">
+        <div class="pcard-inner">
+          <div class="ptype">أسبوعية بلس</div>
+          <div class="pname">باقة الأسبوع+</div>
+          <div class="pprice">500 <sup>جنيه</sup></div>
+          <div class="qblock">
+            <div class="qrow"><span class="ql">الكوتا</span><span class="qv big">5,000 MB</span></div>
+            <div class="qrow"><span class="ql">الصلاحية</span><span class="qv">7 أيام</span></div>
+            <div class="qrow"><span class="ql">الدول</span><span class="qv" style="font-size:11px">🇸🇦🇦🇪🇶🇦🇰🇼🇹🇷🇺🇸</span></div>
+          </div>
+          <div class="pcode"><span>كود الاشتراك</span><strong>*302#</strong></div>
+          <button class="sbtn" onclick="openModal('باقة الأسبوع+','5,000 MB — 500 جنيه','*302#')">📲 اشترك الآن</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════ COUNTRIES ══════ -->
+  <div id="tab-countries" class="panel">
+    <div class="sec-t">تصفح الدول والباقات</div>
+    <div class="search-row">
+      <input class="sinput" type="text" placeholder="🔍  ابحث عن دولة..." id="countrySearch" oninput="filterCountries()" />
+      <select class="sselect" id="bundleFilter" onchange="filterCountries()">
+        <option value="">كل أنواع الباقات</option>
+        <option value="new">الباقات الجديدة (6 دول)</option>
+        <option value="allin">All-in-One</option>
+        <option value="data">Data Only</option>
+      </select>
+    </div>
+    <div class="ctry-grid" id="ctryGrid"></div>
+  </div>
+
+  <!-- ══════ HOW TO ══════ -->
+  <div id="tab-howto" class="panel">
+    <div class="sec-t">طرق الاشتراك</div>
+    <div class="how-grid" style="margin-bottom:28px">
+      <div class="hcard"><div class="hnum">1</div><h4>اختر باقتك</h4><p>يومية 60 ج أو أسبوعية 300 ج أو 500 ج حسب احتياجك ومدة سفرك</p></div>
+      <div class="hcard"><div class="hnum">2</div><h4>اطلب الكود</h4><p>اتصل بالكود المخصص للباقة مباشرةً (*300# أو *301# أو *302#)</p></div>
+      <div class="hcard"><div class="hnum">3</div><h4>القنوات الرقمية</h4><p>يمكن الاشتراك أيضاً عبر تطبيق WE أو الموقع الإلكتروني للشركة</p></div>
+      <div class="hcard"><div class="hnum">4</div><h4>خدمة العملاء</h4><p>تواصل مع خدمة عملاء WE للمساعدة في الاشتراك أو الاستفسار</p></div>
+    </div>
+    <div class="sec-t">تذكّر</div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px">
+      <div class="icard" style="border-color:rgba(228,0,43,0.22)"><p style="color:var(--cream);font-size:13px">⚠️ عملاء الدفع المسبق يحتاجون <strong style="color:var(--gold-l)">رصيداً كافياً</strong> قبل الاشتراك</p></div>
+      <div class="icard" style="border-color:rgba(26,107,60,0.28)"><p style="color:var(--cream);font-size:13px">✅ عملاء الفاتورة يشتركون مباشرةً <strong style="color:var(--green-l)">بدون قيود رصيد</strong></p></div>
+      <div class="icard"><p style="color:var(--cream);font-size:13px">📍 الباقات تعمل فقط <strong style="color:var(--gold-l)">داخل الدول المحددة</strong> (السعودية، الإمارات، قطر، الكويت، تركيا، أمريكا)</p></div>
+    </div>
+  </div>
+
+  <!-- ══════ TERMS ══════ -->
+  <div id="tab-terms" class="panel">
+    <div class="sec-t">الشروط والأحكام</div>
+    <div class="terms-list">
+      <div class="titem"><span class="ticon">🔄</span><div class="tbody"><strong>إلغاء الباقات الحالية</strong>الباقات الحالية لن تكون متاحة للاشتراك مرة أخرى بعد تاريخ الإطلاق.</div></div>
+      <div class="titem"><span class="ticon">✅</span><div class="tbody"><strong>استكمال الاشتراكات القائمة</strong>العملاء المشتركون حالياً في الباقات التي ستُلغى يستكملون اشتراكهم بشكل طبيعي حتى ميعاد التجديد أو انتهاء السعة، ثم لن تتوفر للاشتراك مجدداً.</div></div>
+      <div class="titem"><span class="ticon">⏰</span><div class="tbody"><strong>توقيت الصلاحية</strong>صلاحية الباقات تعمل بتوقيت مصر (GMT+2) بغض النظر عن موقعك.</div></div>
+      <div class="titem"><span class="ticon">🚫</span><div class="tbody"><strong>لا ترحيل</strong>لا يوجد ترحيل للميجابايتس غير المستخدمة بعد انتهاء مدة الباقة.</div></div>
+      <div class="titem"><span class="ticon">💰</span><div class="tbody"><strong>المحاسبة بعد انتهاء الباقة</strong>يتم المحاسبة وفقاً للأسعار المعلنة بعد انتهاء صلاحية الباقة أو استهلاك الميجابايتس المخصصة.</div></div>
+      <div class="titem"><span class="ticon">🌍</span><div class="tbody"><strong>نطاق الخدمة</strong>الباقات الجديدة تعمل حصرياً في: السعودية — الإمارات — قطر — الكويت — تركيا — الولايات المتحدة الأمريكية.</div></div>
+      <div class="titem"><span class="ticon">👥</span><div class="tbody"><strong>الأهلية</strong>جميع عملاء موبايل الأفراد (دفع مسبق وفاتورة). يشترط توفر رصيد كافٍ لعملاء الدفع المسبق.</div></div>
+    </div>
+  </div>
+</main>
+
+<!-- SUBSCRIBE MODAL -->
+<div class="overlay" id="subOverlay" onclick="handleOverlay(event,'sub')">
+  <div class="modal">
+    <button class="mx" onclick="closeModal('sub')">✕</button>
+    <div class="memoji">📡</div>
+    <h3 id="m-title">الباقة</h3>
+    <p class="minfo" id="m-info">—</p>
+    <strong class="dial" id="m-code">*300#</strong>
+    <p class="mnote">اتصل بالكود من هاتفك لتفعيل الباقة فوراً</p>
+  </div>
+</div>
+
+<!-- COUNTRY DETAIL MODAL -->
+<div class="overlay" id="ctryOverlay" onclick="handleOverlay(event,'ctry')">
+  <div class="cmodal" id="ctryModal">
+    <button class="mx" onclick="closeModal('ctry')">✕</button>
+    <div id="ctryModalContent"></div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <p><span class="we-f">WE</span> — المصرية للاتصالات</p>
+  <p>B7 Smart Village، كم 28 طريق مصر–الإسكندرية الصحراوي، الجيزة 12577</p>
+  <p style="margin-top:6px">© 2026 المصرية للاتصالات — جميع الحقوق محفوظة</p>
+</footer>
+
+<script>
+// ══════ TAB SWITCHING ══════
+function showTab(name, btn){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+name).classList.add('active');
+  btn.classList.add('active');
+}
+
+// ══════ MODALS ══════
+function openModal(title, info, code){
+  document.getElementById('m-title').textContent = title;
+  document.getElementById('m-info').textContent = info;
+  document.getElementById('m-code').textContent = code;
+  document.getElementById('subOverlay').classList.add('open');
+}
+function closeModal(type){
+  document.getElementById(type==='sub'?'subOverlay':'ctryOverlay').classList.remove('open');
+}
+function handleOverlay(e,type){
+  const id = type==='sub'?'subOverlay':'ctryOverlay';
+  if(e.target===document.getElementById(id)) closeModal(type);
+}
+document.addEventListener('keydown', e=>{ if(e.key==='Escape'){ closeModal('sub'); closeModal('ctry'); }});
+
+// ══════ COUNTRY DATA ══════
+const FLAGS = {
+  'Saudi Arabia':'🇸🇦','United Arab Emirates':'🇦🇪','Qatar':'🇶🇦','Kuwait':'🇰🇼',
+  'Turkey':'🇹🇷','United States of America':'🇺🇸','Czech Republic':'🇨🇿','Denmark':'🇩🇰',
+  'France':'🇫🇷','United Kingdom':'🇬🇧','Ghana':'🇬🇭','Germany':'🇩🇪','Greece':'🇬🇷',
+  'New Zealand':'🇳🇿','South Africa':'🇿🇦','Hungary':'🇭🇺','Ireland':'🇮🇪','Italy':'🇮🇹',
+  'Russia':'🇷🇺','China':'🇨🇳','Netherlands':'🇳🇱','Poland':'🇵🇱','Sweden':'🇸🇪',
+  'Austria':'🇦🇹','Romania':'🇷🇴','Spain':'🇪🇸','Portugal':'🇵🇹','Albania':'🇦🇱',
+  'Mauritius':'🇲🇺','Sudan':'🇸🇩','Mozambique':'🇲🇿','Libya':'🇱🇾','Niger':'🇳🇪',
+  'Malawi ':'🇲🇼','Guinea':'🇬🇳','india':'🇮🇳','Singapore':'🇸🇬','Uzbekistan':'🇺🇿',
+  'Thailand':'🇹🇭','Armenia':'🇦🇲','Montenegro':'🇲🇪','Bahrain':'🇧🇭','Oman':'🇴🇲',
+  'Iraq':'🇮🇶','Jordan':'🇯🇴','Morocco ':'🇲🇦','Algeria':'🇩🇿','Canada':'🇨🇦',
+  'Croatia':'🇭🇷','Malta':'🇲🇹','Rwanda':'🇷🇼','Slovakia':'🇸🇰','Zambia':'🇿🇲',
+  'Swaziland':'🇸🇿','Benin':'🇧🇯',"Congo people's republic":'🇨🇬','Cameroon':'🇨🇲',
+  'Liberia':'🇱🇷','Luxembourg':'🇱🇺','Brazil':'🇧🇷','Hong kong':'🇭🇰','indonesia':'🇮🇩',
+  'Azerbaijan':'🇦🇿','Belgium':'🇧🇪','Cyprus':'🇨🇾','Liechtenstein':'🇱🇮',
+  'Congo The Democratic Republic':'🇨🇩','Tanzania':'🇹🇿','Bulgaria':'🇧🇬','Slovenia':'🇸🇮'
+};
+
+// Countries with NEW bundles
+const NEW_BUNDLE_COUNTRIES = ['Saudi Arabia','United Arab Emirates','Qatar','Kuwait','Turkey','United States of America'];
+
+// All-in-One bundle countries (from Excel sheet1 - unique countries with *306/*307/*308)
+const ALLIN_COUNTRIES = {
+  'Czech Republic':'التشيك','Denmark':'الدنمارك','France':'فرنسا','United Kingdom':'المملكة المتحدة',
+  'United States of America':'الولايات المتحدة الأمريكية','Ghana':'غانا','United Arab Emirates':'الإمارات',
+  'Germany':'المانيا','Greece':'اليونان','New Zealand':'نيوزيلاندا','South Africa':'جنوب أفريقيا',
+  'Qatar':'قطر','Hungary':'المجر','Ireland':'إيرلندا','Italy':'إيطاليا','Russia':'روسيا',
+  'China':'الصين','Netherlands':'هولندا','Poland':'بولندا','Sweden':'السويد','Austria':'النمسا',
+  'Turkey':'تركيا','Kuwait':'الكويت','Romania':'رومانيا','Spain':'إسبانيا','Portugal':'البرتغال',
+  'Albania':'ألبانيا','Saudi Arabia':'السعودية','Croatia':'كرواتيا','Malta':'مالطا',
+  'Slovakia':'سلوفاكيا','Luxembourg':'لوكسمبورغ','Mauritius':'موريشيوس','Sudan':'السودان',
+  'Mozambique':'موزمبيق','Libya':'ليبيا','Niger':'النيجر','Malawi ':'مالاوى','Guinea':'غينيا',
+  'india':'الهند','Singapore':'سنغافورة','Uzbekistan':'أوزبيكستان','Thailand':'تايلاند',
+  'Armenia':'أرمينيا','Montenegro':'الجبل الأسود','Bahrain':'البحرين','Oman':'عمان',
+  'Iraq':'العراق','Jordan':'الأردن','Morocco ':'المغرب','Algeria':'الجزائر','Canada':'كندا',
+  'Rwanda':'رواندا','Zambia':'زامبيا','Swaziland':'سوازيلاند','Benin':'بنين',
+  "Congo people's republic":'جمهورية الكونغو الشعبية','Cameroon':'الكاميرون',
+  'Liberia':'ليبيريا','Brazil':'البرازيل'
+};
+
+// Data-only bundle countries (from Excel sheet2 - unique countries NOT in new bundle)
+const DATA_COUNTRIES = {
+  'South Africa':'جنوب افريقيا','Ghana':'غانا','Mozambique':'موزمبيق','Tanzania':'تانزانيا',
+  'Congo The Democratic Republic':'جمهورية الكونغو الديمقراطية','China':'الصين',
+  'Hong kong':'هونج كونج','indonesia':'إندونيسيا','New Zealand':'نيوزيلاندا',
+  'Uzbekistan':'أوزبيكستان','Russia':'روسيا','Armenia':'أرمينيا','Azerbaijan':'أزاربيدجان',
+  'Belgium':'بلجيكا','Cyprus':'قبرص','Denmark':'الدنمارك','France':'فرنسا','Germany':'المانيا',
+  'Greece':'اليونان','Liechtenstein':'ليشتنشتاين','Hungary':'المجر','Ireland':'إيرلندا',
+  'Netherlands':'هولندا','Romania':'رومانيا','Spain':'أسبانيا','Sweden':'السويد',
+  'Italy':'إيطاليا','Poland':'بولاندا','Portugal':'البرتغال','Morocco ':'المغرب',
+  'Austria':'النمسا','Albania':'ألبانيا','Iraq':'العراق','Jordan':'الأردن','Canada':'كندا',
+  'Thailand':'تايلاند','Bulgaria':'بلغاريا','Malta':'مالطة','Slovakia':'سلوفاكيا',
+  'Slovenia':'سلوفينيا','Benin':'بنين','Luxembourg':'لوكسومبورج'
+};
+
+// Build unified country list
+function buildCountries(){
+  const map = {};
+  
+  NEW_BUNDLE_COUNTRIES.forEach(en => {
+    const ar = ALLIN_COUNTRIES[en] || en;
+    if(!map[en]) map[en]={en,ar,types:[]};
+    map[en].types.push('new');
+    map[en].newBundles=[
+      {name:'يومية',quota:'50 MB',price:'60',code:'*300#',validity:'يوم'},
+      {name:'أسبوعية',quota:'1,500 MB',price:'300',code:'*301#',validity:'7 أيام'},
+      {name:'أسبوعية+',quota:'5,000 MB',price:'500',code:'*302#',validity:'7 أيام'}
+    ];
+  });
+
+  Object.entries(ALLIN_COUNTRIES).forEach(([en,ar])=>{
+    if(!map[en]) map[en]={en,ar,types:[]};
+    else map[en].ar=ar;
+    if(!map[en].types.includes('allin')) map[en].types.push('allin');
+    map[en].allinBundles=[
+      {name:'يومية',calls_out:5,calls_in:10,internet:25,sms:5,price:50,code:'*306#'},
+      {name:'أسبوعية',calls_out:10,calls_in:120,internet:500,sms:60,price:300,code:'*307#'},
+      {name:'أسبوعية+',calls_out:20,calls_in:140,internet:1000,sms:120,price:500,code:'*308#'}
+    ];
+  });
+
+  Object.entries(DATA_COUNTRIES).forEach(([en,ar])=>{
+    if(!map[en]) map[en]={en,ar,types:[]};
+    else map[en].ar=ar;
+    if(!map[en].types.includes('data')) map[en].types.push('data');
+    // Check if new bundle country for data
+    if(NEW_BUNDLE_COUNTRIES.includes(en)){
+      map[en].dataBundles=[
+        {name:'يومية',quota:50,price:60,code:'*300#'},
+        {name:'شهرية',quota:1500,price:300,code:'*301#'},
+        {name:'شهرية+',quota:5000,price:500,code:'*302#'}
+      ];
+    } else {
+      map[en].dataBundles=[
+        {name:'يومية',quota:30,price:30,code:'*303#'},
+        {name:'أسبوعية',quota:300,price:150,code:'*304#'},
+        {name:'أسبوعية+',quota:1500,price:350,code:'*305#'}
+      ];
+    }
+  });
+
+  return Object.values(map).sort((a,b)=>{
+    // New bundle countries first
+    const an = a.types.includes('new')?0:1;
+    const bn = b.types.includes('new')?0:1;
+    return an-bn || a.ar.localeCompare(b.ar,'ar');
+  });
+}
+
+const COUNTRIES = buildCountries();
+let filteredCountries = [...COUNTRIES];
+
+function renderCountries(list){
+  const grid = document.getElementById('ctryGrid');
+  if(list.length===0){
+    grid.innerHTML='<div class="empty-st"><span class="eicon">🔍</span>لا توجد نتائج مطابقة</div>';
+    return;
+  }
+  grid.innerHTML = list.map(c=>{
+    const flag = FLAGS[c.en] || '🌍';
+    const badges = c.types.map(t=>{
+      if(t==='new') return '<span class="btype new-bundle">✨ الباقات الجديدة</span>';
+      if(t==='allin') return '<span class="btype allin">All-in-One</span>';
+      if(t==='data') return '<span class="btype data">Data Only</span>';
+      return '';
+    }).join(' ');
+    
+    // Mini bundles preview
+    let miniRows = '';
+    if(c.newBundles){
+      miniRows = c.newBundles.map(b=>`
+        <tr><td>${b.name}</td><td>${b.quota}</td><td>${b.price} ج</td><td><span class="code-sm">${b.code}</span></td></tr>
+      `).join('');
+    } else if(c.allinBundles){
+      miniRows = c.allinBundles.map(b=>`
+        <tr><td>${b.name}</td><td>${b.internet?b.internet+'MB':'—'}</td><td>${b.price} ج</td><td><span class="code-sm">${b.code}</span></td></tr>
+      `).join('');
+    } else if(c.dataBundles){
+      miniRows = c.dataBundles.map(b=>`
+        <tr><td>${b.name}</td><td>${b.quota} MB</td><td>${b.price} ج</td><td><span class="code-sm">${b.code}</span></td></tr>
+      `).join('');
+    }
+    
+    return `
+    <div class="ctry-card" onclick="openCountry('${c.en}')">
+      <div class="ctry-head">
+        <span class="ctry-flag">${flag}</span>
+        <div><div class="ctry-ar">${c.ar}</div><div class="ctry-en">${c.en}</div></div>
+      </div>
+      <div>${badges}</div>
+      <table class="mini-t" style="margin-top:10px">
+        <tr><th>الباقة</th><th>الإنترنت</th><th>السعر</th><th>الكود</th></tr>
+        ${miniRows}
+      </table>
+    </div>`;
+  }).join('');
+}
+
+function filterCountries(){
+  const q = document.getElementById('countrySearch').value.trim().toLowerCase();
+  const f = document.getElementById('bundleFilter').value;
+  filteredCountries = COUNTRIES.filter(c=>{
+    const matchQ = !q || c.ar.includes(q) || c.en.toLowerCase().includes(q);
+    const matchF = !f || c.types.includes(f);
+    return matchQ && matchF;
+  });
+  renderCountries(filteredCountries);
+}
+
+function openCountry(en){
+  const c = COUNTRIES.find(x=>x.en===en);
+  if(!c) return;
+  const flag = FLAGS[en]||'🌍';
+  
+  let sectionsHTML = '';
+  
+  if(c.newBundles){
+    sectionsHTML += `<div class="csection">
+      <div class="csection-t">✨ الباقات الجديدة (إنترنت تجوال)</div>
+      ${c.newBundles.map(b=>`
+        <div class="cbundle">
+          <div class="cbundle-head">
+            <div class="cbundle-name">${b.name} — ${b.quota}</div>
+            <div class="cbundle-price">${b.price} <span>جنيه</span></div>
+          </div>
+          <div class="cbundle-details">
+            <div class="cdetail">⏱ الصلاحية: <strong>${b.validity}</strong></div>
+            <div class="cdetail">📲 الكود: <strong style="color:var(--gold-l);font-family:monospace">${b.code}</strong></div>
+          </div>
+        </div>
+      `).join('')}
+    </div>`;
+  }
+  
+  if(c.allinBundles){
+    sectionsHTML += `<div class="csection">
+      <div class="csection-t">📦 باقات All-in-One (مكالمات + إنترنت + SMS)</div>
+      ${c.allinBundles.map(b=>`
+        <div class="cbundle">
+          <div class="cbundle-head">
+            <div class="cbundle-name">${b.name}</div>
+            <div class="cbundle-price">${b.price} <span>جنيه</span></div>
+          </div>
+          <div class="cbundle-details">
+            ${b.internet?`<div class="cdetail">📶 إنترنت: <strong>${b.internet} MB</strong></div>`:''}
+            <div class="cdetail">📞 مكالمات صادرة: <strong>${b.calls_out} ج/د</strong></div>
+            <div class="cdetail">📥 مكالمات واردة: <strong>${b.calls_in} ج/د</strong></div>
+            <div class="cdetail">✉️ SMS: <strong>${b.sms}</strong></div>
+            <div class="cdetail">📲 الكود: <strong style="color:var(--gold-l);font-family:monospace">${b.code}</strong></div>
+          </div>
+        </div>
+      `).join('')}
+    </div>`;
+  }
+  
+  if(c.dataBundles && !c.newBundles){
+    sectionsHTML += `<div class="csection">
+      <div class="csection-t">📶 باقات إنترنت فقط (Data Only)</div>
+      ${c.dataBundles.map(b=>`
+        <div class="cbundle">
+          <div class="cbundle-head">
+            <div class="cbundle-name">${b.name} — ${b.quota} MB</div>
+            <div class="cbundle-price">${b.price} <span>جنيه</span></div>
+          </div>
+          <div class="cbundle-details">
+            <div class="cdetail">📲 الكود: <strong style="color:var(--gold-l);font-family:monospace">${b.code}</strong></div>
+          </div>
+        </div>
+      `).join('')}
+    </div>`;
+  }
+  
+  document.getElementById('ctryModalContent').innerHTML = `
+    <div class="chead">
+      <span class="cflag">${flag}</span>
+      <div class="cnames"><h2>${c.ar}</h2><p>${c.en}</p></div>
+    </div>
+    ${sectionsHTML}
+  `;
+  document.getElementById('ctryOverlay').classList.add('open');
+}
+
+// Init
+renderCountries(COUNTRIES);
+</script>
+</body>
+</html>
