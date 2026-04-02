@@ -80,7 +80,7 @@ async function listFolders() {
 // ─── تخمين التصنيف من اسم الفولدر أو الملف ───
 function detectCategory(folderOrFile) {
   const n = (folderOrFile || "").toLowerCase();
-  if (n.includes("Mobile") || n.includes("sim") || n.includes("mnp"))   return "Mobile";
+  if (n.includes("mobile") || n.includes("sim") || n.includes("mnp"))   return "Mobile";
   if (n.includes("Land")   || n.includes("fixed") || n.includes("ardy")) return "Landline";
   if (n.includes("Adsl")   || n.includes("internet") || n.includes("dsl")) return "Adsl";
   return "all";
