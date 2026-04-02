@@ -1,33 +1,31 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>عرض النموذج</title>
   <link rel="shortcut icon" href="img/we-core.png" type="image/x-icon">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
-  <!-- PDF.js من CDN -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.4.168/pdf.min.mjs" type="module"></script>
-
   <style>
     :root {
-      --purple      : #6a1b9a;
-      --purple-light: #8e24aa;
-      --purple-bg   : #f8f0ff;
-      --toolbar-h   : 56px;
+      --purple: #6a1b9a;
+      --purple-bg: #f8f0ff;
+      --toolbar-h: 56px;
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
     body {
       font-family: Tahoma, Arial, sans-serif;
       background: var(--purple-bg);
-      color: #333;
       min-height: 100vh;
     }
 
-    /* ── Toolbar ── */
     .toolbar {
       position: sticky;
       top: 0;
@@ -36,12 +34,12 @@
       background: var(--purple);
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 10px;
       padding: 0 16px;
       box-shadow: 0 2px 8px rgba(0,0,0,.3);
     }
 
-    .toolbar .title {
+    .title {
       flex: 1;
       color: #fff;
       font-size: 15px;
@@ -49,7 +47,6 @@
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
-      direction: rtl;
     }
 
     .tb-btn {
@@ -62,322 +59,90 @@
       padding: 7px 14px;
       border-radius: 6px;
       cursor: pointer;
-      font-family: Tahoma, Arial, sans-serif;
       font-size: 13px;
       text-decoration: none;
-      white-space: nowrap;
-      transition: background .2s;
-    }
-    .tb-btn:hover  { background: rgba(255,255,255,.28); }
-    .tb-btn.danger { border-color: #f48fb1; color: #f48fb1; }
-
-    /* page controls */
-    .page-ctrl {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      color: #fff;
-      font-size: 13px;
-      background: rgba(0,0,0,.2);
-      border-radius: 6px;
-      padding: 4px 10px;
-    }
-    .page-ctrl button {
-      background: none;
-      border: none;
-      color: #fff;
-      cursor: pointer;
-      font-size: 14px;
-      padding: 2px 6px;
-      border-radius: 4px;
-      transition: background .2s;
-    }
-    .page-ctrl button:hover    { background: rgba(255,255,255,.2); }
-    .page-ctrl button:disabled { opacity: .35; cursor: default; }
-
-    /* zoom */
-    .zoom-ctrl {
-      display: flex;
-      align-items: center;
-      gap: 4px;
-      color: #fff;
-      font-size: 13px;
-    }
-    .zoom-ctrl button {
-      background: rgba(255,255,255,.15);
-      border: 1px solid rgba(255,255,255,.3);
-      color: #fff;
-      width: 28px;
-      height: 28px;
-      border-radius: 4px;
-      cursor: pointer;
-      font-size: 16px;
-      line-height: 1;
-      transition: background .2s;
-    }
-    .zoom-ctrl button:hover { background: rgba(255,255,255,.28); }
-    #zoomVal { min-width: 42px; text-align: center; }
-
-    /* ── Canvas area ── */
-    #viewerArea {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 24px 16px 40px;
-      gap: 12px;
-      min-height: calc(100vh - var(--toolbar-h));
     }
 
-    .page-wrapper {
-      position: relative;
-      box-shadow: 0 4px 20px rgba(0,0,0,.18);
-      border-radius: 4px;
-      overflow: hidden;
-      background: #fff;
-      line-height: 0;
+    .tb-btn:hover {
+      background: rgba(255,255,255,.28);
     }
-    .page-wrapper canvas { display: block; }
 
-    /* ── States ── */
-    #statusBox {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 14px;
-      padding: 60px 20px;
-      color: var(--purple);
-      font-size: 15px;
-      text-align: center;
+    #viewerContainer {
+      height: calc(100vh - var(--toolbar-h));
+      width: 100%;
     }
-    #statusBox i     { font-size: 2.4em; }
-    #statusBox.error { color: #c62828; }
 
-    /* progress bar */
-    #progressBar {
-      width: 260px;
-      height: 6px;
-      background: rgba(106,27,154,.15);
-      border-radius: 3px;
-      overflow: hidden;
-    }
-    #progressFill {
+    #pdfFrame {
+      width: 100%;
       height: 100%;
-      background: var(--purple);
-      border-radius: 3px;
-      width: 0%;
-      transition: width .3s;
+      border: none;
+      background: #fff;
     }
 
-    /* ── Print styles ── */
     @media print {
-      .toolbar  { display: none !important; }
-      body      { background: #fff; }
-      #viewerArea { padding: 0; gap: 0; }
-      .page-wrapper {
-        box-shadow: none;
-        border-radius: 0;
-        page-break-after: always;
-        break-after: page;
+      .toolbar {
+        display: none !important;
       }
-      .page-wrapper:last-child { page-break-after: auto; break-after: auto; }
+
+      #viewerContainer {
+        height: 100vh;
+      }
     }
   </style>
 </head>
 <body>
 
-  <!-- ── Toolbar ── -->
   <div class="toolbar">
-    <a class="tb-btn" href="pdf.html" id="backBtn">
+    <a class="tb-btn" href="pdf.html">
       <i class="fas fa-arrow-right"></i> رجوع
     </a>
 
-    <span class="title" id="docTitle">النموذج</span>
+    <span class="title" id="docTitle">جاري التحميل...</span>
 
-    <!-- صفحات -->
-    <div class="page-ctrl">
-      <button id="prevBtn" disabled title="الصفحة السابقة"><i class="fas fa-chevron-right"></i></button>
-      <span id="pageNum">0</span>/<span id="pageCount">0</span>
-      <button id="nextBtn" disabled title="الصفحة التالية"><i class="fas fa-chevron-left"></i></button>
-    </div>
+    <button class="tb-btn" onclick="printPDF()">
+      <i class="fas fa-print"></i> طباعة
+    </button>
 
-    <!-- zoom -->
-    <div class="zoom-ctrl">
-      <button id="zoomOut" title="تصغير">−</button>
-      <span id="zoomVal">100%</span>
-      <button id="zoomIn"  title="تكبير">+</button>
-    </div>
-
-    <button class="tb-btn" id="printBtn"><i class="fas fa-print"></i> طباعة</button>
-    <button class="tb-btn" id="downloadBtn"><i class="fas fa-download"></i> تحميل</button>
+    <button class="tb-btn" onclick="downloadPDF()">
+      <i class="fas fa-download"></i> تحميل
+    </button>
   </div>
 
-  <!-- ── Viewer ── -->
-  <div id="viewerArea">
-    <div id="statusBox">
-      <i class="fas fa-spinner fa-spin"></i>
-      <p>جاري تحميل الملف…</p>
-      <div id="progressBar"><div id="progressFill"></div></div>
-    </div>
+  <div id="viewerContainer">
+    <iframe id="pdfFrame"></iframe>
   </div>
 
-<script type="module">
-  // ─── PDF.js setup ───
-  const { pdfjsLib } = globalThis;
-  // لو المكتبة اتحملت كـ module من cdnjs لازم نحدد worker
-  import * as PDFJS from "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.4.168/pdf.min.mjs";
-  PDFJS.GlobalWorkerOptions.workerSrc =
-    "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.4.168/pdf.worker.min.mjs";
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const fileUrl = params.get("src");
 
-  // ─── helpers ───
-  function q(id) { return document.getElementById(id); }
+    const frame = document.getElementById("pdfFrame");
+    const title = document.getElementById("docTitle");
 
-  const statusBox   = q("statusBox");
-  const viewerArea  = q("viewerArea");
-  const progressFill= q("progressFill");
-  const pageNumEl   = q("pageNum");
-  const pageCountEl = q("pageCount");
-  const prevBtn     = q("prevBtn");
-  const nextBtn     = q("nextBtn");
-  const zoomVal     = q("zoomVal");
-  const docTitle    = q("docTitle");
-  const printBtn    = q("printBtn");
-  const downloadBtn = q("downloadBtn");
+    if (fileUrl) {
+      frame.src = fileUrl;
 
-  // ─── URL param ───
-  const src = new URLSearchParams(location.search).get("src");
-  if (!src) {
-    statusBox.classList.add("error");
-    statusBox.innerHTML = `<i class="fas fa-exclamation-triangle"></i><p>لم يتم تحديد ملف.</p>`;
-    throw new Error("no src");
-  }
+      const fileName = fileUrl.split("/").pop().split("?")[0];
+      title.textContent = decodeURIComponent(fileName).replace(/\.pdf$/i, "");
+    } else {
+      title.textContent = "لم يتم العثور على الملف";
+    }
 
-  const fileUrl = decodeURIComponent(src);
-
-  // اسم الملف في الـ toolbar
-  const rawName = fileUrl.split("/").pop().split("?")[0];
-  docTitle.textContent = decodeURIComponent(rawName).replace(/\.pdf$/i, "");
-
-  // ─── state ───
-  let pdfDoc    = null;
-  let scale     = 1.4;
-  let allPages  = [];        // { canvas, rendered }
-  const ZOOM_STEP = 0.2;
-  const ZOOM_MIN  = 0.5;
-  const ZOOM_MAX  = 3.0;
-
-  // ─── load PDF ───
-  async function loadPDF() {
-    try {
-      const loadingTask = PDFJS.getDocument({
-        url            : fileUrl,
-        withCredentials: false,
-      });
-
-      loadingTask.onProgress = ({ loaded, total }) => {
-        if (total) progressFill.style.width = Math.round(loaded / total * 100) + "%";
+    function printPDF() {
+      const printWindow = window.open(fileUrl, "_blank");
+      printWindow.onload = function () {
+        printWindow.print();
       };
-
-      pdfDoc = await loadingTask.promise;
-      const count = pdfDoc.numPages;
-      pageCountEl.textContent = count;
-
-      // إخفاء status وعرض الـ canvas
-      statusBox.style.display = "none";
-
-      // رندر كل الصفحات
-      for (let i = 1; i <= count; i++) {
-        const wrapper = document.createElement("div");
-        wrapper.className = "page-wrapper";
-        wrapper.id = `page-${i}`;
-        const canvas = document.createElement("canvas");
-        wrapper.appendChild(canvas);
-        viewerArea.appendChild(wrapper);
-        allPages.push({ wrapper, canvas, num: i, rendered: false });
-      }
-
-      // رندر الصفحات بالتتابع
-      for (const p of allPages) await renderPage(p);
-
-      updatePageUI();
-      updateBtns();
-
-    } catch (err) {
-      console.error(err);
-      statusBox.classList.add("error");
-      statusBox.innerHTML = `
-        <i class="fas fa-exclamation-circle"></i>
-        <p>حدث خطأ أثناء تحميل الملف.</p>
-        <small style="opacity:.7">${err.message}</small>`;
     }
-  }
 
-  async function renderPage({ canvas, num }) {
-    const page     = await pdfDoc.getPage(num);
-    const viewport = page.getViewport({ scale });
-    canvas.width   = viewport.width;
-    canvas.height  = viewport.height;
-    await page.render({ canvasContext: canvas.getContext("2d"), viewport }).promise;
-  }
-
-  // ─── zoom ───
-  async function reRender() {
-    zoomVal.textContent = Math.round(scale * 100) + "%";
-    for (const p of allPages) await renderPage(p);
-  }
-
-  q("zoomIn").onclick = () => {
-    if (scale < ZOOM_MAX) { scale = Math.min(ZOOM_MAX, +(scale + ZOOM_STEP).toFixed(1)); reRender(); }
-  };
-  q("zoomOut").onclick = () => {
-    if (scale > ZOOM_MIN) { scale = Math.max(ZOOM_MIN, +(scale - ZOOM_STEP).toFixed(1)); reRender(); }
-  };
-
-  // ─── page nav (scroll-based) ───
-  function updatePageUI() {
-    if (!allPages.length) return;
-    // أي صفحة ظاهرة في المنتصف؟
-    const mid = window.innerHeight / 2;
-    let current = 1;
-    for (const p of allPages) {
-      const rect = p.wrapper.getBoundingClientRect();
-      if (rect.top <= mid) current = p.num;
+    function downloadPDF() {
+      const a = document.createElement("a");
+      a.href = fileUrl;
+      a.download = "";
+      a.target = "_blank";
+      a.click();
     }
-    pageNumEl.textContent = current;
-  }
+  </script>
 
-  function updateBtns() {
-    if (!pdfDoc) return;
-    const cur = +pageNumEl.textContent;
-    prevBtn.disabled = cur <= 1;
-    nextBtn.disabled = cur >= pdfDoc.numPages;
-  }
-
-  window.addEventListener("scroll", () => { updatePageUI(); updateBtns(); });
-
-  prevBtn.onclick = () => scrollToPage(+pageNumEl.textContent - 1);
-  nextBtn.onclick = () => scrollToPage(+pageNumEl.textContent + 1);
-
-  function scrollToPage(n) {
-    const p = allPages[n - 1];
-    if (p) p.wrapper.scrollIntoView({ behavior: "smooth", block: "start" });
-  }
-
-  // ─── طباعة ───
-  // بنعمل طباعة للصفحة نفسها — الـ CSS @media print بيخفي الـ toolbar
-  printBtn.onclick = () => window.print();
-
-  // ─── تحميل ───
-  downloadBtn.onclick = () => {
-    const a = document.createElement("a");
-    a.href     = fileUrl;
-    a.download = rawName;
-    a.target   = "_blank";
-    a.click();
-  };
-
-  // ─── start ───
-  loadPDF();
-</script>
 </body>
 </html>
