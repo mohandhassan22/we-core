@@ -12,33 +12,48 @@ const BUCKET_NAME = "ALL FORM";
 // استخدام Google Translate عبر MyMemory Translate API الذي يدعم Google
 const TRANSLATE_API = "https://api.mymemory.translated.net/get";
 
-// ─── قاموس الترجمة الخاص (للمصطلحات التقنية والشائعة الخاصة) ───
+// ─── قاموس الترجمة (ترجمات طبيعية وقصيرة) ───
 const customDictionary = {
-  // الخدمات الرئيسية
-  "mobile": "خدمة الهاتف المحمول",
+  "mobile": "الهاتف المحمول",
   "landline": "الخدمة الأرضية",
   "adsl": "خدمة الإنترنت",
-  "sim": "شريحة الهاتف",
+  "sim": "شريحة",
   "mnp": "نقل الرقم",
-  "postpaid": "باقات مفوترة",
-  "prepaid": "باقات مسبقة الدفع",
+  "postpaid": "مفوتر",
+  "prepaid": "مسبق الدفع",
   "roaming": "التجوال الدولي",
-  "data": "حزم البيانات",
-  "voice": "خدمة الصوت",
-  "sms": "الرسائل النصية",
-  "home_broadband": "خدمة الإنترنت المنزلي",
-  "iptv": "خدمة التلفاز الرقمي",
-  "vod": "الفيديو عند الطلب",
-  "complaint": "شكوى العميل",
+  "data": "الإنترنت",
+  "voice": "الاتصالات",
+  "sms": "الرسائل نصية",
+  "home_broadband": "الإنترنت المنزلي",
+  "iptv": "التلفاز الرقمي",
+  "vod": "الفيديو بالطلب",
+  "complaint": "شكوى",
   "inquiry": "استفسار",
   "application_form": "نموذج الاشتراك",
-  "termination": "إلغاء الخدمة",
-  "suspension": "إيقاف الخدمة",
-  "upgrade": "ترقية الخدمة",
-  "downgrade": "تخفيض الخدمة",
+  "termination": "إلغاء",
+  "suspension": "إيقاف",
+  "upgrade": "ترقية",
+  "downgrade": "تخفيض",
   "reactivation": "إعادة تفعيل",
   "new_customer": "عميل جديد",
-  "existing_customer": "عميل حالي"
+  "existing_customer": "عميل حالي",
+  "form": "نموذج",
+  "activation": "تفعيل",
+  "deactivation": "إلغاء",
+  "cancellation": "إلغاء",
+  "transfer": "نقل",
+  "registration": "تسجيل",
+  "payment": "دفع",
+  "bill": "فاتورة",
+  "contract": "عقد",
+  "terms": "الشروط",
+  "policy": "سياسة",
+  "customer": "عميل",
+  "service": "خدمة",
+  "download": "تحميل",
+  "upload": "رفع",
+  "support": "دعم"
 };
 
 // ─── cache الترجمة ───
@@ -72,29 +87,70 @@ function saveCache() {
   );
 }
 
-// ─── تنظيف اسم الملف ───
-function cleanFilename(name) {
-  return name
-    .replace(/\.pdf$/i, "")
-    .replace(/[-_]/g, " ")
-    .replace(/\s+/g, " ")
-    .trim();
-}
-
-// ─── تقسيم النص إلى كلمات وترجمة ذكية ───
-function smartTranslate(text) {
+// ─── تنظيف وتحضير النص للترجمة ───
+function cleanAndPrepareText(text) {
   if (!text) return "";
   
-  const cleanText = cleanFilename(text).toLowerCase();
-  const words = cleanText.split(/\s+/);
+  let cleaned = text
+    .replace(/\.pdf$/i, "")      // إزالة امتداد PDF
+    .replace(/[-_]/g, " ")       // تحويل الشرطات إلى مسافات
+    .replace(/([a-z])([A-Z])/g, "$1 $2")  // فصل CamelCase
+    .replace(/\s+/g, " ")        // تنظيف المسافات
+    .trim();
   
-  // ترجمة كل كلمة من القاموس أو الاحتفاظ بها
+  return cleaned;
+}
+
+function cleanFilename(name) {
+  return cleanAndPrepareText(name);
+}
+
+// ─── ترجمة ذكية من القاموس ───
+function smartTranslateFromDict(text) {
+  if (!text) return "";
+  
+  const cleanText = cleanAndPrepareText(text).toLowerCase();
+  
+  // البحث عن تطابق كامل
+  if (customDictionary[cleanText]) {
+    return customDictionary[cleanText];
+  }
+  
+  // تقسيم والبحث عن كل كلمة
+  const words = cleanText.split(/\s+/);
   const translatedWords = words.map(word => {
     const normalized = word.toLowerCase().trim();
+    if (!normalized) return "";
     return customDictionary[normalized] || word;
-  });
+  }).filter(w => w);
   
   return translatedWords.join(" ");
+}
+
+// ─── تحسين الترجمات وتصحيحها ───
+function improveTranslation(translated) {
+  if (!translated) return "";
+  
+  let result = translated.trim();
+  
+  // تنظيف المسافات الزائدة
+  result = result.replace(/\s+/g, " ");
+  
+  // إصلاح مشاكل شائعة
+  result = result.replace(/ال\s+ال/g, "ال");        // إزالة "ال" المكررة
+  result = result.replace(/\s+ال\s+/g, " ال ");   // تصحيح مسافات "ال"
+  result = result.replace(/،\s+/g, "، ");         // تصحيح الفواصل
+  
+  // إزالة الكلمات الحشو المترجمة خطأ
+  result = result.replace(/\bthe\b/gi, "");
+  result = result.replace(/\ba\b/gi, "");
+  result = result.replace(/\band\b/gi, "و");
+  result = result.replace(/\bor\b/gi, "أو");
+  
+  // تنظيف النواتج المتكررة
+  result = result.replace(/\s\s+/g, " ").trim();
+  
+  return result;
 }
 
 // ─── معالجة خاصة للترجمات - تحسين الجودة ───
@@ -109,42 +165,39 @@ function postProcessTranslation(original, translated) {
   // تصحيح التشكيل الشائع
   result = result.replace(/ال ال/g, "ال");
   
-  // إضافة "ال" التعريف حيث يلزم
-  if (result && !result.startsWith("ال")) {
-    // للكلمات المفردة التي تحتاج تعريف
-    const wordsNeedingAl = ["خدمة", "نموذج", "طلب", "استمارة", "شكوى"];
-    for (const word of wordsNeedingAl) {
-      if (result === word || result.endsWith(" " + word)) {
-        result = result.replace(word, "ال" + word);
-        break;
-      }
+  // إصلاح الترجمات الناقصة
+  const wordsNeedingAl = ["خدمة", "نموذج", "طلب", "استمارة", "شكوى"];
+  for (const word of wordsNeedingAl) {
+    if (result === word && !result.startsWith("ال")) {
+      result = "ال" + result;
+      break;
     }
   }
   
   return result;
 }
 
-// ─── ترجمة اسم واحد (محسّنة) ───
+// ─── ترجمة اسم واحد (محسّنة جداً) ───
 async function translateOne(text) {
   try {
-    const cleanText = cleanFilename(text);
+    if (!text) return "";
 
     // التحقق من الكاش أولاً
     if (translationCache[text]) {
       return translationCache[text];
     }
 
-    // محاولة الترجمة الذكية من القاموس أولاً
-    const smartTranslated = smartTranslate(cleanText);
-    
-    // إذا وجدنا ترجمة في القاموس، استخدمها مباشرة
-    if (smartTranslated !== cleanText.toLowerCase()) {
-      translationCache[text] = smartTranslated;
+    const cleanText = cleanAndPrepareText(text);
+
+    // محاولة الترجمة من القاموس أولاً (الطريقة الأسرع والأدق)
+    const dictTranslation = smartTranslateFromDict(cleanText);
+    if (dictTranslation && dictTranslation !== cleanText.toLowerCase()) {
+      translationCache[text] = dictTranslation;
       saveCache();
-      return smartTranslated;
+      return dictTranslation;
     }
 
-    // استخدام Google Translate API (MyMemory)
+    // استخدام API للترجمة
     const encodedText = encodeURIComponent(cleanText);
     const res = await fetch(
       `${TRANSLATE_API}?q=${encodedText}&langpair=en|ar`
@@ -160,7 +213,13 @@ async function translateOne(text) {
     let translated = data?.responseData?.translatedText || cleanText;
     
     // معالجة ما بعد الترجمة
+    translated = improveTranslation(translated);
     translated = postProcessTranslation(cleanText, translated);
+
+    // إذا كانت النتيجة النهائية فارغة أو لم تتغير، استخدم القاموس
+    if (!translated || translated === cleanText.toLowerCase()) {
+      translated = smartTranslateFromDict(cleanText) || cleanText;
+    }
 
     // حفظ في الكاش
     translationCache[text] = translated;
@@ -172,8 +231,8 @@ async function translateOne(text) {
   } catch (error) {
     console.error("Translation error:", error);
     
-    // Fallback: استخدام الترجمة الذكية من القاموس
-    const fallback = smartTranslate(cleanFilename(text));
+    // Fallback: استخدام القاموس أو النص الأصلي
+    const fallback = smartTranslateFromDict(cleanAndPrepareText(text)) || cleanAndPrepareText(text);
     translationCache[text] = fallback;
     saveCache();
     
