@@ -21,13 +21,13 @@ const customDictionary = {
     "all": "الكل",
     "form": "نموذج",
     "service": "خدمة",
-    "complaint": "شكوى"
+    "complaint": "شكوى",
     "customer": "عميل",
     "request": "طلب",
     "transfer ownership": "نقل ملكيه",
-    "cancel":"الغاء",
-    "subscription":"اشتراك",
-    "transfer":"نقل"
+    "cancel": "الغاء",
+    "subscription": "اشتراك",
+    "transfer": "نقل"
     
 
 };
