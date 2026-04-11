@@ -11,6 +11,7 @@ const BUCKET_NAME = "ALL FORM";
 // ─── Google Translate API (أقوى وأدق) ───
 // استخدام Google Translate عبر MyMemory Translate API الذي يدعم Google
 // قاموس ترجمة يدوي للمصطلحات المتكررة لضمان الدقة
+// 1. قاموس الترجمة اليدوي (Manual Dictionary)
 const manualTranslations = {
   "mobile": "موبايل",
   "sim": "شريحة",
@@ -24,23 +25,45 @@ const manualTranslations = {
   "all": "الكل"
 };
 
-// دالة محسنة للترجمة تعتمد على القاموس اليدوي أولاً ثم الـ API
+/**
+ * دالة الترجمة: تبحث في القاموس أولاً، ثم تستخدم API خارجي
+ * @param {string} text - النص المراد ترجمته
+ */
 async function translateOne(text) {
-  const lowerText = text.toLowerCase();
+  if (!text) return "";
   
-  // 1. البحث في القاموس اليدوي أولاً
+  const lowerText = text.toLowerCase().trim();
+
+  // أولاً: التحقق من وجود الكلمة في القاموس اليدوي
   if (manualTranslations[lowerText]) {
     return manualTranslations[lowerText];
   }
 
-  // 2. إذا لم يوجد، نستخدم MyMemory API
+  // ثانياً: إذا لم توجد، يتم الاستعلام من MyMemory API
   try {
     const url = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=en|ar`;
-    const res = await fetch(url);
-    if (!res.ok) throw new Error("network");
-    const data = await res.json();
-    const translated = data?.responseData?.translatedText;
-// ─── رابط API bucket ───
+    const response = await fetch(url);
+    
+    if (!response.ok) throw new Error("Network response was not ok");
+    
+    const data = await response.json();
+    return data?.responseData?.translatedText || text; // إرجاع النص الأصلي في حال فشل الترجمة
+  } catch (error) {
+    console.error("Translation Error:", error);
+    return text; // في حال حدوث خطأ في الشبكة، نعيد النص الأصلي
+  }
+}
+
+// --- أمثلة على الاستخدام ---
+
+// استخدام داخل دالة async
+(async () => {
+  const res1 = await translateOne("mobile");
+  console.log("النتيجة 1 (قاموس):", res1); // مخرجات: موبايل
+
+  const res2 = await translateOne("Smart Phone");
+  console.log("النتيجة 2 (API):", res2); // مخرجات: هاتف ذكي
+})();// ─── رابط API bucket ───
 function bucketApiUrl() {
   return `${SUPABASE_URL}/storage/v1/object/list/${encodeURIComponent(BUCKET_NAME)}`;
 }
