@@ -10,57 +10,36 @@ const BUCKET_NAME = "ALL FORM";
 
 // ─── Google Translate API (أقوى وأدق) ───
 // استخدام Google Translate عبر MyMemory Translate API الذي يدعم Google
-const TRANSLATE_API = "https://api.mymemory.translated.net/get";
-
-// ─── قاموس الترجمة (ترجمات طبيعية وقصيرة) ───
-const customDictionary = {
-  "mobile": "الهاتف المحمول",
-  "landline": "الخدمة الأرضية",
-  "adsl": "خدمة الإنترنت",
+// قاموس ترجمة يدوي للمصطلحات المتكررة لضمان الدقة
+const manualTranslations = {
+  "mobile": "موبايل",
   "sim": "شريحة",
-  "mnp": "نقل الرقم",
-  "postpaid": "مفوتر",
-  "prepaid": "مسبق الدفع",
-  "roaming": "التجوال الدولي",
-  "data": "الإنترنت",
-  "voice": "الاتصالات",
-  "sms": "الرسائل نصية",
-  "home_broadband": "الإنترنت المنزلي",
-  "iptv": "التلفاز الرقمي",
-  "vod": "الفيديو بالطلب",
-  "complaint": "شكوى",
-  "inquiry": "استفسار",
-  "application_form": "نموذج الاشتراك",
-  "termination": "إلغاء",
-  "suspension": "إيقاف",
-  "upgrade": "ترقية",
-  "downgrade": "تخفيض",
-  "reactivation": "إعادة تفعيل",
-  "new_customer": "عميل جديد",
-  "existing_customer": "عميل حالي",
-  "form": "نموذج",
-  "activation": "تفعيل",
-  "deactivation": "إلغاء",
-  "cancellation": "إلغاء",
-  "transfer": "نقل",
-  "registration": "تسجيل",
-  "payment": "دفع",
-  "bill": "فاتورة",
-  "contract": "عقد",
-  "terms": "الشروط",
-  "policy": "سياسة",
-  "customer": "عميل",
-  "service": "خدمة",
-  "download": "تحميل",
-  "upload": "رفع",
-  "support": "دعم"
+  "mnp": "تحويل رقم",
+  "landline": "خط أرضي",
+  "fixed": "ثابت",
+  "ardy": "أرضي",
+  "adsl": "إنترنت منزلي",
+  "internet": "إنترنت",
+  "dsl": "دي إس إل",
+  "all": "الكل"
 };
 
-// ─── cache الترجمة ───
-const translationCache = JSON.parse(
-  localStorage.getItem("translationCache") || "{}"
-);
+// دالة محسنة للترجمة تعتمد على القاموس اليدوي أولاً ثم الـ API
+async function translateOne(text) {
+  const lowerText = text.toLowerCase();
+  
+  // 1. البحث في القاموس اليدوي أولاً
+  if (manualTranslations[lowerText]) {
+    return manualTranslations[lowerText];
+  }
 
+  // 2. إذا لم يوجد، نستخدم MyMemory API
+  try {
+    const url = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=en|ar`;
+    const res = await fetch(url);
+    if (!res.ok) throw new Error("network");
+    const data = await res.json();
+    const translated = data?.responseData?.translatedText;
 // ─── رابط API bucket ───
 function bucketApiUrl() {
   return `${SUPABASE_URL}/storage/v1/object/list/${encodeURIComponent(BUCKET_NAME)}`;
