@@ -10,7 +10,7 @@ const TRANSLATE_API = "https://api.mymemory.translated.net/get";
 // 1. القاموس اليدوي والكلمات المفتاحية
 const customDictionary = {
     "mobile": "موبايل",
-    "sim": "شريحة",
+    "sim card": "شريحة",
     "mnp": "تحويل رقم",
     "landline": "خط أرضي",
     "fixed": "ثابت",
@@ -22,6 +22,14 @@ const customDictionary = {
     "form": "نموذج",
     "service": "خدمة",
     "complaint": "شكوى"
+    "customer": "عميل",
+    "request": "طلب",
+    "transfer ownership": "نقل ملكيه",
+    "cancel":"الغاء",
+    "subscription":"اشتراك",
+    "transfer":"نقل",
+    
+
 };
 
 // 2. إدارة الكاش (Cache Management)
