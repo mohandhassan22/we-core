@@ -1,5 +1,5 @@
 // ========================================
-//  WE-Core · pdf.js (نسخة مصححة)
+//  WE-Core · pdf.js (النسخة النهائية المصححة)
 // ========================================
 
 const SUPABASE_URL = "https://dfbzovrwaxrzsskbvmfs.supabase.co";
@@ -7,7 +7,7 @@ const SUPABASE_ANON = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFz
 const BUCKET_NAME = "ALL FORM";
 const TRANSLATE_API = "https://api.mymemory.translated.net/get";
 
-// 1. القاموس اليدوي والكلمات المفتاحية
+// 1. القاموس اليدوي - تم إصلاح الفواصل المفقودة هنا
 const customDictionary = {
     "mobile": "موبايل",
     "sim card": "شريحة",
@@ -24,22 +24,20 @@ const customDictionary = {
     "complaint": "شكوى",
     "customer": "عميل",
     "request": "طلب",
-    "transfer ownership": "نقل ملكيه",
-    "cancel": "الغاء",
+    "transfer ownership": "نقل ملكية",
+    "cancel": "إلغاء",
     "subscription": "اشتراك",
     "transfer": "نقل"
-    
-
 };
 
-// 2. إدارة الكاش (Cache Management)
+// 2. إدارة الكاش
 let translationCache = JSON.parse(localStorage.getItem("translationCache")) || {};
 
 function saveCache() {
     localStorage.setItem("translationCache", JSON.stringify(translationCache));
 }
 
-// 3. تنظيف النصوص
+// 3. تنظيف النصوص (إزالة الامتداد والشرطات)
 function cleanAndPrepareText(text) {
     if (!text) return "";
     return text
@@ -50,50 +48,50 @@ function cleanAndPrepareText(text) {
         .trim();
 }
 
-// 4. منطق الترجمة الذكي
+// 4. منطق الترجمة الذكي (القاموس أولاً)
 function smartTranslateFromDict(text) {
     const cleanText = cleanAndPrepareText(text).toLowerCase();
     
-    // محاولة تطابق كامل
+    // محاولة تطابق كامل للمصطلح (مثل: transfer ownership)
     if (customDictionary[cleanText]) return customDictionary[cleanText];
 
-    // ترجمة كلمة بكلمة
+    // ترجمة كلمة بكلمة إذا لم يوجد تطابق كامل
     const words = cleanText.split(/\s+/);
     const translatedWords = words.map(word => customDictionary[word] || word);
     
     return translatedWords.join(" ");
 }
 
-// تحسين جودة اللغة العربية
+// تحسين جودة اللغة العربية (إضافة ال التعريف وتنظيف المسافات)
 function postProcessTranslation(translated) {
     if (!translated) return "";
     let res = translated.replace(/\s+/g, " ").trim();
     res = res.replace(/ال\s+ال/g, "ال");
-    // إضافة "ال" التعريف لبعض الكلمات إذا كانت وحيدة
-    const needsAL = ["خدمة", "نموذج", "طلب", "استمارة"];
+    
+    const needsAL = ["خدمة", "نموذج", "طلب", "استمارة", "شكوى"];
     if (needsAL.includes(res)) res = "ال" + res;
+    
     return res;
 }
 
-// 5. دالة الترجمة الرئيسية (الموحدة)
+// 5. دالة الترجمة الرئيسية
 async function translateOne(text) {
     if (!text) return "";
-    
-    // 1. فحص الكاش
     if (translationCache[text]) return translationCache[text];
 
     const cleaned = cleanAndPrepareText(text);
 
     try {
-        // 2. فحص القاموس اليدوي
         const dictResult = smartTranslateFromDict(cleaned);
+        // إذا نجح القاموس في ترجمة أي كلمة
         if (dictResult !== cleaned.toLowerCase()) {
-            translationCache[text] = postProcessTranslation(dictResult);
+            const final = postProcessTranslation(dictResult);
+            translationCache[text] = final;
             saveCache();
-            return translationCache[text];
+            return final;
         }
 
-        // 3. استخدام API
+        // استخدام API كحل أخير
         const url = `${TRANSLATE_API}?q=${encodeURIComponent(cleaned)}&langpair=en|ar`;
         const res = await fetch(url);
         if (!res.ok) throw new Error("API Error");
@@ -108,11 +106,11 @@ async function translateOne(text) {
 
     } catch (error) {
         console.error("Translation fail:", error);
-        return cleaned; // العودة للنص المنظف في حال الخطأ
+        return cleaned; 
     }
 }
 
-// 6. التعامل مع Supabase Storage
+// 6. التعامل مع Supabase
 function bucketApiUrl() {
     return `${SUPABASE_URL}/storage/v1/object/list/${encodeURIComponent(BUCKET_NAME)}`;
 }
@@ -141,7 +139,7 @@ async function listFiles(prefix = "") {
         });
         if (!res.ok) return [];
         const data = await res.json();
-        return data.filter(f => f.name.toLowerCase().endsWith(".pdf"));
+        return data.filter(f => f.name && f.name.toLowerCase().endsWith(".pdf"));
     } catch (err) {
         return [];
     }
@@ -155,22 +153,29 @@ async function listFolders() {
             body: JSON.stringify({ prefix: "", limit: 100 }),
         });
         const data = await res.json();
-        return data.filter(f => f.id === null && !f.name.includes(".")).map(f => f.name);
+        // المجلدات في Supabase تأتي بـ id: null
+        return data.filter(f => f.id === null && f.name && !f.name.includes(".")).map(f => f.name);
     } catch { return []; }
 }
 
-// 7. UI و العرض
+// 7. التصنيف وتوليد الكروت
 function detectCategory(name) {
-    const n = name.toLowerCase();
+    const n = (name || "").toLowerCase();
     if (n.includes("mobile") || n.includes("sim")) return "Mobile";
-    if (n.includes("land") || n.includes("fixed")) return "Landline";
-    if (n.includes("adsl") || n.includes("internet")) return "Adsl";
+    if (n.includes("land") || n.includes("fixed") || n.includes("ardy")) return "Landline";
+    if (n.includes("adsl") || n.includes("internet") || n.includes("dsl")) return "Adsl";
     return "all";
 }
 
 function renderCards(forms) {
     const container = document.getElementById("formsContainer");
     if (!container) return;
+    
+    if (forms.length === 0) {
+        container.innerHTML = "<p class='no-results'>لا توجد نماذج متاحة</p>";
+        return;
+    }
+
     container.innerHTML = forms.map(form => `
         <div class="form-card" data-category="${form.category}">
             <div class="form-header">
@@ -185,50 +190,57 @@ function renderCards(forms) {
     `).join("");
 }
 
-// 8. التشغيل الابتدائي
+// 8. التشغيل الرئيسي
 async function init() {
     const container = document.getElementById("formsContainer");
-    if (container) container.innerHTML = "<p>جاري التحميل...</p>";
+    if (container) container.innerHTML = "<div class='loader'>جاري تحميل النماذج...</div>";
 
-    const rawForms = [];
-    const folders = await listFolders();
-    
-    // جلب الملفات من الفولدرات والجذر
-    const allTasks = [...folders, ""].map(async (folder) => {
-        const files = await listFiles(folder);
-        files.forEach(f => {
-            rawForms.push({
-                filename: f.name,
-                category: detectCategory(folder || f.name),
-                size: (f.metadata?.size / 1024).toFixed(1) + " KB",
-                link: publicUrl(folder, f.name)
+    try {
+        const rawForms = [];
+        const folders = await listFolders();
+        
+        // جلب الملفات من المجلدات والجذر بالتوازي
+        const folderTasks = [...folders, ""].map(async (folder) => {
+            const files = await listFiles(folder);
+            files.forEach(f => {
+                rawForms.push({
+                    filename: f.name,
+                    category: detectCategory(folder || f.name),
+                    size: f.metadata ? (f.metadata.size / 1024).toFixed(1) + " KB" : "",
+                    link: publicUrl(folder, f.name)
+                });
             });
         });
-    });
 
-    await Promise.all(allTasks);
+        await Promise.all(folderTasks);
 
-    // ترجمة الأسماء
-    for (let form of rawForms) {
-        form.title = await translateOne(form.filename);
+        // ترجمة العناوين
+        for (let form of rawForms) {
+            form.title = await translateOne(form.filename);
+        }
+
+        renderCards(rawForms);
+
+    } catch (error) {
+        console.error("Init error:", error);
+        if (container) container.innerHTML = "<p>حدث خطأ أثناء تحميل البيانات.</p>";
     }
-
-    renderCards(rawForms);
 }
 
-// البحث والفلترة (وظائف عالمية)
+// وظائف البحث والفلترة العالمية
 window.filterForms = (category) => {
     document.querySelectorAll(".form-card").forEach(card => {
-        card.style.display = (category === "all" || card.dataset.category === category) ? "" : "none";
+        card.style.display = (category === "all" || card.dataset.category === category) ? "block" : "none";
     });
 };
 
 window.searchForms = () => {
-    const term = document.getElementById("searchInput").value.toLowerCase();
+    const term = document.getElementById("searchInput")?.value.toLowerCase() || "";
     document.querySelectorAll(".form-card").forEach(card => {
         const title = card.querySelector("h3").textContent.toLowerCase();
-        card.style.display = title.includes(term) ? "" : "none";
+        card.style.display = title.includes(term) ? "block" : "none";
     });
 };
 
+// انطلاق الكود
 init();
