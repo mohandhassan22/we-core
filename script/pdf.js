@@ -27,7 +27,7 @@ const customDictionary = {
     "transfer ownership": "نقل ملكيه",
     "cancel":"الغاء",
     "subscription":"اشتراك",
-    "transfer":"نقل",
+    "transfer":"نقل"
     
 
 };
