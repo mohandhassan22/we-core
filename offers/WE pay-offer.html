@@ -202,6 +202,7 @@
             }
         }
     </style>
+<script src="../script/active-users-widget.js"></script>
 </head>
 <body>
     <div class="container">
@@ -293,6 +294,14 @@
         // عرض العروض عند تحميل الصفحة
         window.addEventListener('load', displayOffers);
     </script>
+
+<script>
+  window.addEventListener('load', function() {
+    if (typeof ActiveUsersWidget !== 'undefined') {
+      ActiveUsersWidget.init({ position: 'corner' });
+    }
+  });
+</script>
 </body>
 
 </html>

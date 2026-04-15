@@ -196,6 +196,7 @@
         .note-box { margin: 12px 14px; }
     }
     </style>
+<script src="../script/active-users-widget.js"></script>
 </head>
 <body>
 
@@ -552,5 +553,13 @@
     فريق WE-CORE © 2024 WE – جميع الحقوق محفوظة
 </footer>
 
+
+<script>
+  window.addEventListener('load', function() {
+    if (typeof ActiveUsersWidget !== 'undefined') {
+      ActiveUsersWidget.init({ position: 'corner' });
+    }
+  });
+</script>
 </body>
 </html>

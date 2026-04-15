@@ -49,6 +49,7 @@ header { background: linear-gradient(135deg,#3a0e5e 0%,#5b1f82 50%,#7c3aad 100%)
 .modal-player { position:relative; padding-bottom:56.25%; height:0; }
 .modal-player iframe { position:absolute; inset:0; width:100%; height:100%; border:none; }
 </style>
+<script src="../script/active-users-widget.js"></script>
 </head>
 <body>
 
@@ -178,6 +179,14 @@ function showFolders() {
 }
 
 document.addEventListener('DOMContentLoaded', loadLibrary);
+</script>
+
+<script>
+  window.addEventListener('load', function() {
+    if (typeof ActiveUsersWidget !== 'undefined') {
+      ActiveUsersWidget.init({ position: 'corner' });
+    }
+  });
 </script>
 </body>
 </html>

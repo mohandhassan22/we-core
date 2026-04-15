@@ -369,6 +369,7 @@
             .grid { grid-template-columns: 1fr; gap: 1rem; }
         }
     </style>
+<script src="../script/active-users-widget.js"></script>
 </head>
 <body>
 
@@ -539,5 +540,13 @@
 
         fetchVideos();
     </script>
+
+<script>
+  window.addEventListener('load', function() {
+    if (typeof ActiveUsersWidget !== 'undefined') {
+      ActiveUsersWidget.init({ position: 'corner' });
+    }
+  });
+</script>
 </body>
 </html>

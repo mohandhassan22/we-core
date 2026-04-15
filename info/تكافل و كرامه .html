@@ -127,6 +127,7 @@
             margin: 20px auto;
         }
     </style>
+<script src="../script/active-users-widget.js"></script>
 </head>
 <body>
     <div class="container">
@@ -255,5 +256,13 @@
             <p>Powered by Mohand</p>
         </div>
     </div>
+
+<script>
+  window.addEventListener('load', function() {
+    if (typeof ActiveUsersWidget !== 'undefined') {
+      ActiveUsersWidget.init({ position: 'corner' });
+    }
+  });
+</script>
 </body>
 </html>

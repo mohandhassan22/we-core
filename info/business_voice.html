@@ -102,6 +102,7 @@ footer span{color:#7b3fe4;font-weight:700;}
   .package-card.featured::after{display:none;}
 }
 </style>
+<script src="../script/active-users-widget.js"></script>
 </head>
 <body>
 
@@ -240,5 +241,13 @@ footer span{color:#7b3fe4;font-weight:700;}
   <div>Powered by <span>Mohand Hassan</span> – From <span>Abassia Store</span></div>
 </footer>
 
+
+<script>
+  window.addEventListener('load', function() {
+    if (typeof ActiveUsersWidget !== 'undefined') {
+      ActiveUsersWidget.init({ position: 'corner' });
+    }
+  });
+</script>
 </body>
 </html>

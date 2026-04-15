@@ -168,6 +168,7 @@
         .section-head { padding: 12px 14px; }
     }
     </style>
+<script src="../script/active-users-widget.js"></script>
 </head>
 <body>
 
@@ -407,6 +408,14 @@
     جميع الحقوق محفوظة © 2024 WE
 </footer>
 
+
+<script>
+  window.addEventListener('load', function() {
+    if (typeof ActiveUsersWidget !== 'undefined') {
+      ActiveUsersWidget.init({ position: 'corner' });
+    }
+  });
+</script>
 </body>
 </html>
 

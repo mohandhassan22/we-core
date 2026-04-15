@@ -192,6 +192,7 @@ footer .we-f{color:var(--red);font-weight:700}
   .modal{padding:26px 18px}.pcard{padding:20px 16px}
 }
 </style>
+<script src="../script/active-users-widget.js"></script>
 </head>
 <body>
 
@@ -742,6 +743,14 @@ function openCountry(en){
 
 // Init
 renderCountries(COUNTRIES);
+</script>
+
+<script>
+  window.addEventListener('load', function() {
+    if (typeof ActiveUsersWidget !== 'undefined') {
+      ActiveUsersWidget.init({ position: 'corner' });
+    }
+  });
 </script>
 </body>
 </html>

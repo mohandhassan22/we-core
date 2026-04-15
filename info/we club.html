@@ -88,6 +88,7 @@
             padding-right: 20px;
         }
     </style>
+<script src="../script/active-users-widget.js"></script>
 </head>
 <body>
     <header>
@@ -292,5 +293,13 @@
             <p>Powered by Mohand</p>
         </div>
     </footer>
+
+<script>
+  window.addEventListener('load', function() {
+    if (typeof ActiveUsersWidget !== 'undefined') {
+      ActiveUsersWidget.init({ position: 'corner' });
+    }
+  });
+</script>
 </body>
 </html>

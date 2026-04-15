@@ -83,6 +83,7 @@
             }
         }
     </style>
+<script src="script/active-users-widget.js"></script>
 </head>
 <body>
     <section class="page_404">
@@ -106,6 +107,14 @@
         </div>
     </section>
 <script src="script/access-control.js"></script>
+
+<script>
+  window.addEventListener('load', function() {
+    if (typeof ActiveUsersWidget !== 'undefined') {
+      ActiveUsersWidget.init({ position: 'corner' });
+    }
+  });
+</script>
 </body>
 
 </html>

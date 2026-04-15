@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="style/pdf.css">
 
+<script src="script/active-users-widget.js"></script>
 </head>
 <body>
     <!-- الهيدر -->
@@ -57,6 +58,14 @@
 
     <script type="module" src="script/pdf.js"></script>
     <script src="script/pdf.js"></script>
+
+<script>
+  window.addEventListener('load', function() {
+    if (typeof ActiveUsersWidget !== 'undefined') {
+      ActiveUsersWidget.init({ position: 'corner' });
+    }
+  });
+</script>
 </body>
 </html>
 

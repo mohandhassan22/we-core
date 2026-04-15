@@ -1,3 +1,11 @@
+<script src="../script/active-users-widget.js"></script>
 <script src="../script/auth.js"></script>
 429: Too Many Requests
 For more on scraping GitHub and how it may affect your rights, please review our Terms of Service (https://docs.github.com/en/site-policy/github-terms/github-terms-of-service).
+<script>
+  window.addEventListener('load', function() {
+    if (typeof ActiveUsersWidget !== 'undefined') {
+      ActiveUsersWidget.init({ position: 'corner' });
+    }
+  });
+</script>

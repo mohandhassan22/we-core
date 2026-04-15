@@ -594,6 +594,7 @@
     .package-card { padding: 22px 18px; }
   }
 </style>
+<script src="../script/active-users-widget.js"></script>
 </head>
 <body>
 
@@ -921,5 +922,13 @@
   });
 </script>
 
+
+<script>
+  window.addEventListener('load', function() {
+    if (typeof ActiveUsersWidget !== 'undefined') {
+      ActiveUsersWidget.init({ position: 'corner' });
+    }
+  });
+</script>
 </body>
 </html>

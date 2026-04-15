@@ -75,6 +75,7 @@
             border-color: rgba(255,255,255,0.35);
         }
     </style>
+<script src="../script/active-users-widget.js"></script>
 </head>
 <body class="bg-gray-50">
     <!-- Header -->
@@ -685,5 +686,13 @@
             observer.observe(card);
         });
     </script>
+
+<script>
+  window.addEventListener('load', function() {
+    if (typeof ActiveUsersWidget !== 'undefined') {
+      ActiveUsersWidget.init({ position: 'corner' });
+    }
+  });
+</script>
 </body>
 </html>

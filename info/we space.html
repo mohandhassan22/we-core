@@ -178,6 +178,7 @@
             }
         }
     </style>
+<script src="../script/active-users-widget.js"></script>
 </head>
 <body>
     <div class="container">
@@ -441,5 +442,13 @@
        <footer>
         Powered by <span>Mohand Hassan</span> – From <span>Abassia Store</span>
     </footer>    </div>
+
+<script>
+  window.addEventListener('load', function() {
+    if (typeof ActiveUsersWidget !== 'undefined') {
+      ActiveUsersWidget.init({ position: 'corner' });
+    }
+  });
+</script>
 </body>
 </html>

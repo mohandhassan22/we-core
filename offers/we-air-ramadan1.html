@@ -345,6 +345,7 @@
     td,thead th{padding:0.65rem 0.6rem;}
   }
 </style>
+<script src="../script/active-users-widget.js"></script>
 </head>
 <body>
 
@@ -559,6 +560,14 @@
     entries.forEach(el => { if(el.isIntersecting) el.target.classList.add('visible'); });
   }, { threshold: 0.1 });
   document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+</script>
+
+<script>
+  window.addEventListener('load', function() {
+    if (typeof ActiveUsersWidget !== 'undefined') {
+      ActiveUsersWidget.init({ position: 'corner' });
+    }
+  });
 </script>
 </body>
 </html>

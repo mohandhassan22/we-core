@@ -580,6 +580,7 @@
         .fade-in:nth-child(4) { animation-delay: 0.4s; }
         .fade-in:nth-child(5) { animation-delay: 0.5s; }
     </style>
+<script src="../script/active-users-widget.js"></script>
 </head>
 <body>
     <div class="animated-bg">
@@ -967,5 +968,13 @@
             observer.observe(el);
         });
     </script>
+
+<script>
+  window.addEventListener('load', function() {
+    if (typeof ActiveUsersWidget !== 'undefined') {
+      ActiveUsersWidget.init({ position: 'corner' });
+    }
+  });
+</script>
 </body>
 </html>

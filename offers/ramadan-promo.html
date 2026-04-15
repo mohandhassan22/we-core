@@ -573,6 +573,7 @@
             color: var(--green);
         }
     </style>
+<script src="../script/active-users-widget.js"></script>
 </head>
 <body>
     <div class="animated-bg">
@@ -943,5 +944,13 @@
             observer.observe(el);
         });
     </script>
+
+<script>
+  window.addEventListener('load', function() {
+    if (typeof ActiveUsersWidget !== 'undefined') {
+      ActiveUsersWidget.init({ position: 'corner' });
+    }
+  });
+</script>
 </body>
 </html>

@@ -79,6 +79,7 @@ footer span{color:#7b3fe4;font-weight:700;}
 #app{display:none;}
 @media(max-width:480px){.cards{grid-template-columns:1fr;}.main-title{font-size:24px;}}
 </style>
+<script src="../script/active-users-widget.js"></script>
 </head>
 <body>
 
@@ -270,6 +271,14 @@ function closeModal() { $('comingSoonModal').classList.remove('active'); }
 (function(){if(!window.chatbase||window.chatbase("getState")!=="initialized"){window.chatbase=(...arguments)=>{if(!window.chatbase.q){window.chatbase.q=[]}window.chatbase.q.push(arguments)};window.chatbase=new Proxy(window.chatbase,{get(target,prop){if(prop==="q"){return target.q}return(...args)=>target(prop,...args)}})}const onLoad=function(){const script=document.createElement("script");script.src="https://www.chatbase.co/embed.min.js";script.id="sw8mK5pWZt9W0PA6VdFfp";script.domain="www.chatbase.co";document.body.appendChild(script)};if(document.readyState==="complete"){onLoad()}else{window.addEventListener("load",onLoad)}})();
 </script>
 
+
+<script>
+  window.addEventListener('load', function() {
+    if (typeof ActiveUsersWidget !== 'undefined') {
+      ActiveUsersWidget.init({ position: 'corner' });
+    }
+  });
+</script>
 </body>
 </html>
 

@@ -158,6 +158,7 @@
             color: #6a0dad;
         }
     </style>
+<script src="../script/active-users-widget.js"></script>
 </head>
 <body>
     <div class="container">
@@ -299,5 +300,13 @@
     <footer>
         Powered by Mohand
     </footer>
+
+<script>
+  window.addEventListener('load', function() {
+    if (typeof ActiveUsersWidget !== 'undefined') {
+      ActiveUsersWidget.init({ position: 'corner' });
+    }
+  });
+</script>
 </body>
 </html>

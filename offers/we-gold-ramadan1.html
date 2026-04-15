@@ -511,6 +511,7 @@
     transform: translateY(0);
   }
 </style>
+<script src="../script/active-users-widget.js"></script>
 </head>
 <body>
 
@@ -703,6 +704,14 @@
   }, { threshold: 0.1 });
 
   document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+</script>
+
+<script>
+  window.addEventListener('load', function() {
+    if (typeof ActiveUsersWidget !== 'undefined') {
+      ActiveUsersWidget.init({ position: 'corner' });
+    }
+  });
 </script>
 </body>
 </html>

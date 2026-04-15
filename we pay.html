@@ -232,6 +232,7 @@
             }
         }
     </style>
+<script src="script/active-users-widget.js"></script>
 </head>
 <body>
     <div class="container">
@@ -473,5 +474,13 @@
             <p style="margin-top: 10px; color: #a855f7;">المصرية للاتصالات WE - خدمة المحفظة الإلكترونية WE Pay</p>
         </footer>
     </div>
+
+<script>
+  window.addEventListener('load', function() {
+    if (typeof ActiveUsersWidget !== 'undefined') {
+      ActiveUsersWidget.init({ position: 'corner' });
+    }
+  });
+</script>
 </body>
 </html>
