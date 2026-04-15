@@ -4,15 +4,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-
-<!-- Open Graph / Facebook -->
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://we-core.com/">
 <meta property="og:title" content="WE-Core | المنصة المتكاملة لفريق العمل">
 <meta property="og:description" content="تجمع WE-Core كل ما يحتاجه فريق العمل من فورمات، معلومات، وعروض في مكان واحد.">
 <meta property="og:image" content="img/we-core.png">
 
-<!-- Twitter -->
 <meta property="twitter:card" content="summary_large_image">
 <meta property="twitter:title" content="WE-Core | المنصة المتكاملة لفريق العمل">
 <meta property="twitter:description" content="تجمع WE-Core كل ما يحتاجه فريق العمل من فورمات، معلومات، وعروض في مكان واحد.">
@@ -32,10 +29,15 @@ body{font-family:'Cairo',sans-serif;background:#f0ecf8;min-height:100vh;}
 .logo{width:90px;height:90px;border-radius:50%;border:4px solid rgba(255,255,255,0.35);box-shadow:0 8px 25px rgba(0,0,0,0.25);object-fit:cover;position:relative;z-index:1;}
 .main-title{font-size:30px;font-weight:900;color:#fff;margin-top:12px;letter-spacing:1px;position:relative;z-index:1;}
 .sub-title{font-size:13px;color:rgba(255,255,255,0.75);margin-top:6px;position:relative;z-index:1;}
-.user-bar{background:rgba(255,255,255,0.15);border-radius:12px;padding:8px 16px;display:inline-flex;align-items:center;gap:10px;margin-top:12px;position:relative;z-index:1;}
+
+/* Header actions bar */
+.header-actions{display:flex;align-items:center;justify-content:center;gap:10px;margin-top:14px;flex-wrap:wrap;position:relative;z-index:1;}
+.user-bar{background:rgba(255,255,255,0.15);border-radius:12px;padding:8px 16px;display:inline-flex;align-items:center;gap:10px;}
 .user-bar span{color:#fff;font-size:13px;font-weight:700;}
 .logout-btn{background:rgba(255,255,255,0.2);border:1px solid rgba(255,255,255,0.35);color:#fff;border-radius:8px;padding:4px 12px;font-family:'Cairo',sans-serif;font-size:12px;font-weight:700;cursor:pointer;transition:background 0.2s;}
 .logout-btn:hover{background:rgba(255,255,255,0.3);}
+.about-header-btn{background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.35);color:#fff;border-radius:8px;padding:6px 14px;font-family:'Cairo',sans-serif;font-size:12px;font-weight:700;cursor:pointer;transition:background 0.2s;display:inline-flex;align-items:center;gap:6px;}
+.about-header-btn:hover{background:rgba(255,255,255,0.25);}
 
 /* GRID */
 .container{max-width:960px;margin:40px auto;padding:0 20px 60px;}
@@ -139,7 +141,7 @@ footer span{color:#7b3fe4;font-weight:700;}
 .modal-close:hover{opacity:0.9;}
 
 #app{display:none;}
-@media(max-width:480px){.cards{grid-template-columns:1fr;}.main-title{font-size:24px;}}
+@media(max-width:480px){.cards{grid-template-columns:1fr;}.main-title{font-size:24px;}.header-actions{gap:8px;}}
 </style>
 </head>
 <body>
@@ -174,11 +176,16 @@ footer span{color:#7b3fe4;font-weight:700;}
     <img src="img/we-core.png" class="logo" alt="WE-Core Logo">
     <div class="main-title">WE-Core</div>
     <div class="sub-title">Powered By Mohand Hassan – From Abassia Store</div>
-    <div class="user-bar">
-      <i class="fa-solid fa-circle-user" style="color:#fff;"></i>
-      <span id="showUser">-</span>
-      <button class="logout-btn" onclick="doLogout()">
-        <i class="fa-solid fa-right-from-bracket"></i> خروج
+    <div class="header-actions">
+      <div class="user-bar">
+        <i class="fa-solid fa-circle-user" style="color:#fff;"></i>
+        <span id="showUser">-</span>
+        <button class="logout-btn" onclick="doLogout()">
+          <i class="fa-solid fa-right-from-bracket"></i> خروج
+        </button>
+      </div>
+      <button class="about-header-btn" onclick="openAboutModal()">
+        <i class="fa-solid fa-circle-info"></i> من نحن
       </button>
     </div>
   </div>
@@ -286,7 +293,7 @@ footer span{color:#7b3fe4;font-weight:700;}
       </div>
 
       <button class="about-close-btn" onclick="closeAboutModal()">
-        <i class="fa-solid fa-rocket"></i> ابدأ الاستخدام
+        <i class="fa-solid fa-xmark"></i> إغلاق
       </button>
     </div>
   </div>
@@ -303,14 +310,9 @@ footer span{color:#7b3fe4;font-weight:700;}
 </div>
 
 <!-- ===== SCRIPTS ===== -->
-
-<!-- 1) Active Users Widget - يجب تحميله أولاً -->
 <script src="script/active-users-widget.js"></script>
-
-<!-- 2) Supabase SDK -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-<!-- 3) Chatbase - منفصل تماماً -->
 <script>
 (function(){
   if(!window.chatbase || window.chatbase("getState") !== "initialized"){
@@ -337,41 +339,31 @@ footer span{color:#7b3fe4;font-weight:700;}
 })();
 </script>
 
-<!-- 4) الكود الرئيسي للتطبيق -->
 <script>
   const $ = id => document.getElementById(id);
   const showErr = msg => { $('errMsg').textContent = msg; $('errMsg').classList.add('show'); };
   const hideErr = () => $('errMsg').classList.remove('show');
 
-  // =====================
-  // Supabase Client
-  // =====================
   const sb = supabase.createClient(
     'https://iygwhapcpdmsasqlfelv.supabase.co',
     'sb_publishable_rD9naqrpu1dI-iwchAS0GQ_JkgGysqP'
   );
 
   // =====================
-  // About Modal
+  // About Modal — يفتح بس من زرار الهيدر
   // =====================
   function openAboutModal()  { $('aboutModal').classList.add('active'); }
   function closeAboutModal() { $('aboutModal').classList.remove('active'); }
 
   // =====================
-  // فتح التطبيق
+  // فتح التطبيق — بدون localStorage
   // =====================
   function openApp(username) {
     $('loginOverlay').style.display = 'none';
     $('app').style.display = 'block';
     $('showUser').textContent = username;
-    openAboutModal();
+    // مش بيفتح about modal تلقائياً
   }
-
-  // =====================
-  // تحقق من جلسة محفوظة
-  // =====================
-  const savedUser = localStorage.getItem('we_user');
-  if (savedUser) { openApp(savedUser); }
 
   // =====================
   // تسجيل الدخول
@@ -404,19 +396,16 @@ footer span{color:#7b3fe4;font-weight:700;}
       return;
     }
 
-    localStorage.setItem('we_user', data.username);
     openApp(data.username);
   }
 
-  // Enter key
   $('upass').addEventListener('keydown', e => { if(e.key === 'Enter') doLogin(); });
   $('uname').addEventListener('keydown', e => { if(e.key === 'Enter') $('upass').focus(); });
 
   // =====================
-  // تسجيل الخروج
+  // تسجيل الخروج — يرجع لشاشة اللوجين
   // =====================
   function doLogout() {
-    localStorage.removeItem('we_user');
     $('app').style.display = 'none';
     $('loginOverlay').style.display = 'flex';
     $('uname').value = '';
@@ -426,21 +415,12 @@ footer span{color:#7b3fe4;font-weight:700;}
     hideErr();
   }
 
-  // =====================
-  // Coming Soon Modal
-  // =====================
   function showComingSoonModal() { $('comingSoonModal').classList.add('active'); }
   function closeModal()          { $('comingSoonModal').classList.remove('active'); }
 
-  // =====================
-  // Active Users Widget
-  // يشتغل بدون تسجيل دخول - يسجل الجهاز تلقائياً
-  // =====================
   window.addEventListener('load', function() {
     if (typeof ActiveUsersWidget !== 'undefined') {
-      ActiveUsersWidget.init({
-        position: 'corner'
-      });
+      ActiveUsersWidget.init({ position: 'corner' });
     }
   });
 </script>
