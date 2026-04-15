@@ -2,69 +2,539 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Curces Soft - الدورات التدريبية</title>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        /* تنسيقات سريعة لتظهر الفيديوهات بشكل مرتب */
-        body { font-family: sans-serif; background-color: #f4f4f4; padding: 20px; }
-        .video-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
-        .video-card { background: white; padding: 15px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-        iframe { width: 100%; height: 200px; border: none; border-radius: 4px; }
-        h3 { font-size: 1.1em; color: #333; margin-top: 10px; }
-        .folder-tag { color: #666; font-size: 0.9em; display: block; margin-top: 5px; }
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --bg: #0D0F14;
+            --surface: #151820;
+            --surface2: #1C202C;
+            --surface3: #232838;
+            --border: rgba(255,255,255,0.07);
+            --border-hover: rgba(255,255,255,0.14);
+            --gold: #C9A84C;
+            --gold-light: #E8C97A;
+            --gold-dim: rgba(201,168,76,0.12);
+            --gold-dim2: rgba(201,168,76,0.06);
+            --text-primary: #F0EDE6;
+            --text-secondary: #8A8F9E;
+            --text-muted: #555B6E;
+            --radius: 14px;
+            --radius-sm: 8px;
+        }
+
+        body {
+            font-family: 'Cairo', sans-serif;
+            background: var(--bg);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* ── Background Texture ── */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background:
+                radial-gradient(ellipse 80% 50% at 20% -10%, rgba(201,168,76,0.08) 0%, transparent 60%),
+                radial-gradient(ellipse 60% 40% at 80% 110%, rgba(201,168,76,0.05) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* ── Header ── */
+        header {
+            position: relative;
+            z-index: 10;
+            padding: 2.5rem 2rem 2rem;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .logo-area { display: flex; align-items: center; gap: 14px; }
+
+        .logo-icon {
+            width: 44px; height: 44px;
+            background: var(--gold-dim);
+            border: 1px solid rgba(201,168,76,0.3);
+            border-radius: 10px;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .logo-icon svg { width: 22px; height: 22px; }
+
+        .logo-text h1 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            letter-spacing: 0.01em;
+            line-height: 1.2;
+        }
+        .logo-text span {
+            font-size: 0.78rem;
+            font-weight: 400;
+            color: var(--gold);
+            letter-spacing: 0.05em;
+        }
+
+        /* ── Filter Bar ── */
+        .filter-bar {
+            position: relative;
+            z-index: 10;
+            padding: 1.25rem 2rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            overflow-x: auto;
+            border-bottom: 1px solid var(--border);
+            scrollbar-width: none;
+        }
+        .filter-bar::-webkit-scrollbar { display: none; }
+
+        .filter-label {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            white-space: nowrap;
+            margin-left: 4px;
+        }
+
+        .filter-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 14px;
+            border-radius: 100px;
+            border: 1px solid var(--border);
+            background: transparent;
+            color: var(--text-secondary);
+            font-family: 'Cairo', sans-serif;
+            font-size: 0.82rem;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.2s;
+            direction: rtl;
+        }
+        .filter-btn:hover {
+            border-color: var(--border-hover);
+            color: var(--text-primary);
+            background: var(--surface2);
+        }
+        .filter-btn.active {
+            background: var(--gold-dim);
+            border-color: rgba(201,168,76,0.4);
+            color: var(--gold-light);
+        }
+
+        /* ── Stats Bar ── */
+        .stats-bar {
+            position: relative;
+            z-index: 10;
+            padding: 1rem 2rem;
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            border-bottom: 1px solid var(--border);
+        }
+        .stat-item {
+            display: flex;
+            align-items: baseline;
+            gap: 6px;
+        }
+        .stat-num {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--gold-light);
+        }
+        .stat-text {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+        }
+        .stat-divider {
+            width: 1px;
+            height: 16px;
+            background: var(--border);
+        }
+
+        /* ── Main Grid ── */
+        main {
+            position: relative;
+            z-index: 10;
+            padding: 2rem;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.25rem;
+        }
+
+        /* ── Video Card ── */
+        .video-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            overflow: hidden;
+            transition: transform 0.22s, border-color 0.22s, box-shadow 0.22s;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+        }
+        .video-card:hover {
+            transform: translateY(-3px);
+            border-color: rgba(201,168,76,0.25);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.35), 0 0 0 1px rgba(201,168,76,0.1);
+        }
+
+        .video-thumb {
+            position: relative;
+            width: 100%;
+            padding-bottom: 56.25%;
+            background: var(--surface2);
+            overflow: hidden;
+        }
+        .video-thumb iframe {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* Play overlay shown before user interacts */
+        .play-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(13,15,20,0.45);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.2s;
+            z-index: 2;
+        }
+        .play-overlay:hover { opacity: 0; pointer-events: none; }
+        .play-btn {
+            width: 48px; height: 48px;
+            background: rgba(201,168,76,0.9);
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .play-btn svg { margin-right: -2px; }
+
+        .card-body {
+            padding: 1rem 1.1rem 1.1rem;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .card-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 3px 10px;
+            border-radius: 100px;
+            background: var(--gold-dim2);
+            border: 1px solid rgba(201,168,76,0.15);
+            color: var(--gold);
+            font-size: 0.72rem;
+            font-weight: 500;
+            width: fit-content;
+        }
+
+        .card-title {
+            font-size: 0.92rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            line-height: 1.5;
+        }
+
+        .card-footer {
+            margin-top: auto;
+            padding-top: 8px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .card-footer span {
+            font-size: 0.72rem;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .watch-btn {
+            font-family: 'Cairo', sans-serif;
+            font-size: 0.75rem;
+            padding: 4px 12px;
+            border-radius: 100px;
+            border: 1px solid rgba(201,168,76,0.3);
+            background: var(--gold-dim);
+            color: var(--gold-light);
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .watch-btn:hover { background: rgba(201,168,76,0.2); }
+
+        /* ── Loading & Empty States ── */
+        .state-box {
+            grid-column: 1 / -1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 5rem 2rem;
+            gap: 1rem;
+            color: var(--text-muted);
+        }
+        .spinner {
+            width: 36px; height: 36px;
+            border: 2px solid var(--border);
+            border-top-color: var(--gold);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        .state-box p { font-size: 0.9rem; }
+
+        /* ── Search ── */
+        .search-wrap {
+            position: relative;
+            flex: 1;
+            max-width: 260px;
+        }
+        .search-wrap svg {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            pointer-events: none;
+        }
+        #search-input {
+            width: 100%;
+            background: var(--surface2);
+            border: 1px solid var(--border);
+            border-radius: 100px;
+            padding: 7px 34px 7px 14px;
+            color: var(--text-primary);
+            font-family: 'Cairo', sans-serif;
+            font-size: 0.82rem;
+            outline: none;
+            transition: border-color 0.2s;
+            direction: rtl;
+        }
+        #search-input:focus { border-color: rgba(201,168,76,0.35); }
+        #search-input::placeholder { color: var(--text-muted); }
+
+        /* ── Skeleton Cards ── */
+        .skeleton {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            overflow: hidden;
+        }
+        .skel-thumb {
+            width: 100%; padding-bottom: 56.25%;
+            background: linear-gradient(90deg, var(--surface2) 25%, var(--surface3) 50%, var(--surface2) 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.4s infinite;
+        }
+        .skel-body { padding: 1rem; display: flex; flex-direction: column; gap: 8px; }
+        .skel-line {
+            height: 10px; border-radius: 5px;
+            background: linear-gradient(90deg, var(--surface2) 25%, var(--surface3) 50%, var(--surface2) 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.4s infinite;
+        }
+        @keyframes shimmer { to { background-position: -200% 0; } }
+
+        /* ── Responsive ── */
+        @media (max-width: 640px) {
+            header { padding: 1.5rem 1.25rem 1.25rem; }
+            main { padding: 1.25rem; }
+            .filter-bar, .stats-bar { padding-right: 1.25rem; padding-left: 1.25rem; }
+            .grid { grid-template-columns: 1fr; gap: 1rem; }
+        }
     </style>
 </head>
 <body>
 
-    <h1>دورات Soft Skills</h1>
-    <div id="video-list" class="video-container">جاري تحميل الفيديوهات...</div>
+    <!-- Header -->
+    <header>
+        <div class="logo-area">
+            <div class="logo-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#C9A84C" stroke-width="1.8" stroke-linecap="round">
+                    <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
+                    <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
+                </svg>
+            </div>
+            <div class="logo-text">
+                <h1>Curces Soft</h1>
+                <span>دورات المهارات الناعمة</span>
+            </div>
+        </div>
+        <div class="search-wrap">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+            </svg>
+            <input id="search-input" type="text" placeholder="ابحث عن دورة..." oninput="filterCards()">
+        </div>
+    </header>
+
+    <!-- Filter Bar -->
+    <div class="filter-bar" id="filter-bar">
+        <span class="filter-label">الأقسام:</span>
+        <button class="filter-btn active" data-folder="all" onclick="setFilter('all', this)">الكل</button>
+    </div>
+
+    <!-- Stats Bar -->
+    <div class="stats-bar" id="stats-bar" style="display:none;">
+        <div class="stat-item">
+            <span class="stat-num" id="stat-count">0</span>
+            <span class="stat-text">دورة</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-item">
+            <span class="stat-num" id="stat-folders">0</span>
+            <span class="stat-text">قسم</span>
+        </div>
+    </div>
+
+    <!-- Main -->
+    <main>
+        <div class="grid" id="video-list">
+            <!-- Skeleton placeholders -->
+            <div class="skeleton"><div class="skel-thumb"></div><div class="skel-body"><div class="skel-line" style="width:40%"></div><div class="skel-line" style="width:90%"></div><div class="skel-line" style="width:65%"></div></div></div>
+            <div class="skeleton"><div class="skel-thumb"></div><div class="skel-body"><div class="skel-line" style="width:35%"></div><div class="skel-line" style="width:80%"></div><div class="skel-line" style="width:50%"></div></div></div>
+            <div class="skeleton"><div class="skel-thumb"></div><div class="skel-body"><div class="skel-line" style="width:45%"></div><div class="skel-line" style="width:75%"></div><div class="skel-line" style="width:60%"></div></div></div>
+        </div>
+    </main>
 
     <script>
-        // 1. إعداد الاتصال بـ Supabase
-        // استبدل هذه القيم ببيانات مشروعك الخاصة (Project URL & API Key)
-        const SUPABASE_URL = 'https://iygwhapcpdmsasqlfelv.supabase.co'; 
-        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml5Z3doYXBjcGRtc2FzcWxmZWx2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzEzNDk5MDQsImV4cCI6MjA4NjkyNTkwNH0.jqU1fEc9kBkXcCfazH6aTnS2XWWzPv0bbixHZgjtrnQ'; 
+        const SUPABASE_URL = 'https://iygwhapcpdmsasqlfelv.supabase.co';
+        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml5Z3doYXBjcGRtc2FzcWxmZWx2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzEzNDk5MDQsImV4cCI6MjA4NjkyNTkwNH0.jqU1fEc9kBkXcCfazH6aTnS2XWWzPv0bbixHZgjtrnQ';
         const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-        // 2. دالة جلب البيانات من جدول "Curces Soft"
+        let allData = [];
+        let activeFilter = 'all';
+        let searchQuery = '';
+
+        function folderColor(name) {
+            const colors = ['#C9A84C','#7A9FD4','#7DC48B','#C47AB4','#D47A7A','#7AC4BD'];
+            let h = 0;
+            for (let i = 0; i < (name||'').length; i++) h = (h * 31 + name.charCodeAt(i)) & 0xffff;
+            return colors[h % colors.length];
+        }
+
+        function buildCard(v) {
+            const folder = v['folder-name'] || 'عام';
+            const color = folderColor(folder);
+            const card = document.createElement('div');
+            card.className = 'video-card';
+            card.dataset.folder = folder;
+            card.dataset.title = (v.title || '').toLowerCase();
+            card.innerHTML = `
+                <div class="video-thumb">
+                    <iframe
+                        src="https://drive.google.com/file/d/${v.file_id}/preview"
+                        allow="autoplay"
+                        allowfullscreen
+                        loading="lazy">
+                    </iframe>
+                    <div class="play-overlay">
+                        <div class="play-btn">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><polygon points="5,3 19,12 5,21"/></svg>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <span class="card-tag" style="color:${color};background:${color}18;border-color:${color}30;">
+                        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2z"/></svg>
+                        ${folder}
+                    </span>
+                    <p class="card-title">${v.title || 'بدون عنوان'}</p>
+                    <div class="card-footer">
+                        <span>
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12,6 12,12 16,14"/></svg>
+                            فيديو تدريبي
+                        </span>
+                        <button class="watch-btn" onclick="this.closest('.video-card').querySelector('.play-overlay').style.opacity=0">مشاهدة</button>
+                    </div>
+                </div>`;
+            return card;
+        }
+
+        function buildFilters(data) {
+            const folders = [...new Set(data.map(v => v['folder-name']).filter(Boolean))];
+            const bar = document.getElementById('filter-bar');
+            folders.forEach(f => {
+                const btn = document.createElement('button');
+                btn.className = 'filter-btn';
+                btn.dataset.folder = f;
+                btn.textContent = f;
+                btn.onclick = () => setFilter(f, btn);
+                bar.appendChild(btn);
+            });
+            document.getElementById('stat-count').textContent = data.length;
+            document.getElementById('stat-folders').textContent = folders.length;
+            document.getElementById('stats-bar').style.display = 'flex';
+        }
+
+        function setFilter(folder, btn) {
+            activeFilter = folder;
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            applyFilters();
+        }
+
+        function filterCards() {
+            searchQuery = document.getElementById('search-input').value.toLowerCase();
+            applyFilters();
+        }
+
+        function applyFilters() {
+            const cards = document.querySelectorAll('.video-card');
+            cards.forEach(card => {
+                const matchFolder = activeFilter === 'all' || card.dataset.folder === activeFilter;
+                const matchSearch = !searchQuery || card.dataset.title.includes(searchQuery);
+                card.style.display = matchFolder && matchSearch ? '' : 'none';
+            });
+        }
+
         async function fetchVideos() {
             try {
-                const { data, error } = await supabaseClient
-                    .from('Curces Soft') // التعديل: اسم الجدول كما في الصورة بالمسافة
-                    .select('*');
-
+                const { data, error } = await supabaseClient.from('Curces Soft').select('*');
                 if (error) throw error;
 
-                const videoList = document.getElementById('video-list');
-                videoList.innerHTML = ''; // مسح رسالة التحميل
+                allData = data;
+                const list = document.getElementById('video-list');
+                list.innerHTML = '';
 
-                if (data.length === 0) {
-                    videoList.innerHTML = '<p>لا توجد فيديوهات حالياً في هذا القسم.</p>';
+                if (!data.length) {
+                    list.innerHTML = '<div class="state-box"><p>لا توجد دورات متاحة حالياً.</p></div>';
                     return;
                 }
 
-                data.forEach(v => {
-                    const card = document.createElement('div');
-                    card.className = 'video-card';
-                    
-                    // التعديلات بناءً على صور قاعدة البيانات:
-                    // اسم العمود لـ Google Drive ID هو file_id
-                    // اسم العمود للقسم هو folder-name
-                    card.innerHTML = `
-                        <iframe src="https://drive.google.com/file/d/${v.file_id}/preview"></iframe>
-                        <h3>${v.title}</h3>
-                        <span class="folder-tag">القسم: ${v['folder-name']}</span>
-                    `;
-                    videoList.appendChild(card);
-                });
-
+                buildFilters(data);
+                data.forEach(v => list.appendChild(buildCard(v)));
             } catch (err) {
-                console.error('Error:', err);
-                document.getElementById('video-list').innerHTML = 'حدث خطأ أثناء تحميل البيانات.';
+                console.error(err);
+                document.getElementById('video-list').innerHTML =
+                    '<div class="state-box"><p>حدث خطأ أثناء تحميل البيانات. تحقق من الاتصال وأعد المحاولة.</p></div>';
             }
         }
 
-        // تشغيل الدالة عند فتح الصفحة
         fetchVideos();
     </script>
 </body>
