@@ -356,21 +356,21 @@ footer span{color:#7b3fe4;font-weight:700;}
   function closeAboutModal() { $('aboutModal').classList.remove('active'); }
 
   // =====================
-  // فتح التطبيق — مع localStorage
+  // فتح التطبيق — مع sessionStorage (إلغاء localStorage)
   // =====================
   function openApp(username, password) {
     if (username && password) {
-        localStorage.setItem('we_user', username);
-        localStorage.setItem('we_pass', password);
+        sessionStorage.setItem('we_user', username);
+        sessionStorage.setItem('we_pass', password);
     }
     $('loginOverlay').style.display = 'none';
     $('app').style.display = 'block';
     $('showUser').textContent = username;
   }
 
-  // التحقق من وجود جلسة مسجلة
-  const savedUser = localStorage.getItem('we_user');
-  const savedPass = localStorage.getItem('we_pass');
+  // التحقق من وجود جلسة في التبويب الحالي فقط
+  const savedUser = sessionStorage.getItem('we_user');
+  const savedPass = sessionStorage.getItem('we_pass');
   if (savedUser && savedPass) {
     openApp(savedUser, savedPass);
   }
@@ -416,8 +416,8 @@ footer span{color:#7b3fe4;font-weight:700;}
   // تسجيل الخروج — يرجع لشاشة اللوجين
   // =====================
   function doLogout() {
-    localStorage.removeItem('we_user');
-    localStorage.removeItem('we_pass');
+    sessionStorage.removeItem('we_user');
+    sessionStorage.removeItem('we_pass');
     $('app').style.display = 'none';
     $('loginOverlay').style.display = 'flex';
     $('uname').value = '';
