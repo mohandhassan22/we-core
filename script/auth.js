@@ -39,7 +39,7 @@
     // 3. Validate against Supabase
     try {
         // Use direct fetch for speed and to avoid SDK overhead on every page
-        const response = await fetch(`${SB_URL}/rest/v1/we_users?username=eq.${encodeURIComponent(savedUser)}&password=eq.${encodeURIComponent(savedPass)}&select=username`, {
+        const response = await fetch(`${SB_URL}/rest/v1/profiles?username=eq.${encodeURIComponent(savedUser)}&password=eq.${encodeURIComponent(savedPass)}&select=username`, {
             headers: {
                 'apikey': SB_KEY,
                 'Authorization': `Bearer ${SB_KEY}`
