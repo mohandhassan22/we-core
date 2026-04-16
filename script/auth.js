@@ -1,11 +1,10 @@
 /**
- * WE-Core Authentication Guard (V4 - SessionStorage Only)
+ * WE-Core Authentication Guard (V7 - Secure Validation)
  * This script ensures that the user is logged in before accessing any page.
- * It uses sessionStorage so data is cleared when the tab/browser is closed.
+ * It validates BOTH username and password against Supabase to prevent bypass.
  */
 
 (async function() {
-    // 1. Configuration
     const SB_URL = 'https://iygwhapcpdmsasqlfelv.supabase.co';
     const SB_KEY = 'sb_publishable_rD9naqrpu1dI-iwchAS0GQ_JkgGysqP';
     
@@ -14,14 +13,10 @@
 
     if (isLoginPage) return;
 
-    // 2. Immediate hide to prevent flash of content
+    // 1. Immediate hide to prevent flash of content
     if (document.documentElement) {
         document.documentElement.style.display = 'none';
     }
-
-    // 3. Check for session in sessionStorage (Clears on tab close)
-    const savedUser = sessionStorage.getItem('we_user');
-    const savedPass = sessionStorage.getItem('we_pass');
 
     async function redirectToLogin() {
         const depth = (path.match(/\//g) || []).length - 1;
@@ -32,13 +27,18 @@
         window.location.replace(rootPath);
     }
 
+    // 2. Check for session in sessionStorage
+    const savedUser = sessionStorage.getItem('we_user');
+    const savedPass = sessionStorage.getItem('we_pass');
+
     if (!savedUser || !savedPass) {
         redirectToLogin();
         return;
     }
 
-    // 4. Validate against Supabase
+    // 3. Validate against Supabase
     try {
+        // Use direct fetch for speed and to avoid SDK overhead on every page
         const response = await fetch(`${SB_URL}/rest/v1/we_users?username=eq.${encodeURIComponent(savedUser)}&password=eq.${encodeURIComponent(savedPass)}&select=username`, {
             headers: {
                 'apikey': SB_KEY,
@@ -59,6 +59,7 @@
         }
     } catch (error) {
         console.error('Auth validation error:', error);
+        // On network error, it's safer to redirect to login
         redirectToLogin();
     }
 })();
