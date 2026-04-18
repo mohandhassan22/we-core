@@ -1,7 +1,7 @@
 /**
- * WE-Core Authentication Guard (V8 - Robust Validation)
+ * WE-Core Authentication Guard (V9 - Final Fix)
  * This script ensures that the user is logged in before accessing any page.
- * It uses Supabase SDK for secure and robust validation of credentials.
+ * It uses the official Supabase SDK methods to avoid URL encoding issues.
  */
 
 (async function() {
@@ -13,7 +13,7 @@
 
     if (isLoginPage) return;
 
-    // 1. Immediate hide to prevent flash of content
+    // 1. Immediate hide
     if (document.documentElement) {
         document.documentElement.style.display = 'none';
     }
@@ -27,7 +27,6 @@
         window.location.replace(rootPath);
     }
 
-    // 2. Check for session in sessionStorage
     const savedUser = sessionStorage.getItem('we_user');
     const savedPass = sessionStorage.getItem('we_pass');
 
@@ -36,9 +35,8 @@
         return;
     }
 
-    // 3. Validate against Supabase using the official SDK for robustness
     try {
-        // Load Supabase SDK dynamically if not already present
+        // Load SDK if not present
         if (typeof supabase === 'undefined') {
             await new Promise((resolve, reject) => {
                 const script = document.createElement('script');
@@ -49,8 +47,10 @@
             });
         }
 
+        // Initialize client
         const sb = supabase.createClient(SB_URL, SB_KEY);
         
+        // Use SDK query builder instead of fetch to handle special characters correctly
         const { data, error } = await sb
             .from('profiles')
             .select('username')
@@ -59,17 +59,15 @@
             .maybeSingle();
 
         if (data && !error) {
-            // Valid session, show the page
+            // Success
             document.documentElement.style.display = '';
         } else {
-            // Invalid session or error
-            console.error('Auth validation failed:', error);
-            sessionStorage.removeItem('we_user');
-            sessionStorage.removeItem('we_pass');
+            console.error('Auth check failed');
+            sessionStorage.clear();
             redirectToLogin();
         }
     } catch (error) {
-        console.error('Critical Auth Error:', error);
+        console.error('Auth system error:', error);
         redirectToLogin();
     }
 })();
