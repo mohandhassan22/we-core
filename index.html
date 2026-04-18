@@ -265,9 +265,8 @@ footer span{color:#7b3fe4;font-weight:700;}
     const { data, error } = await sb
       .from('profiles')
       .select('username')
-      .eq('username', username)
-      .eq('password', password)
-      .single();
+      .match({ username: username, password: password })
+      .maybeSingle();
 
     if (error || !data) {
       btn.disabled = false;
