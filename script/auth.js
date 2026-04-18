@@ -1,7 +1,7 @@
 /**
- * WE-Core Authentication Guard (V7 - Secure Validation)
+ * WE-Core Authentication Guard (V8 - Robust Validation)
  * This script ensures that the user is logged in before accessing any page.
- * It validates BOTH username and password against Supabase to prevent bypass.
+ * It uses Supabase SDK for secure and robust validation of credentials.
  */
 
 (async function() {
@@ -36,30 +36,40 @@
         return;
     }
 
-    // 3. Validate against Supabase
+    // 3. Validate against Supabase using the official SDK for robustness
     try {
-        // Use direct fetch for speed and to avoid SDK overhead on every page
-        const response = await fetch(`${SB_URL}/rest/v1/profiles?username=eq.${encodeURIComponent(savedUser)}&password=eq.${encodeURIComponent(savedPass)}&select=username`, {
-            headers: {
-                'apikey': SB_KEY,
-                'Authorization': `Bearer ${SB_KEY}`
-            }
-        });
-        
-        const data = await response.json();
+        // Load Supabase SDK dynamically if not already present
+        if (typeof supabase === 'undefined') {
+            await new Promise((resolve, reject) => {
+                const script = document.createElement('script');
+                script.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2';
+                script.onload = resolve;
+                script.onerror = reject;
+                document.head.appendChild(script);
+            });
+        }
 
-        if (data && data.length > 0) {
+        const sb = supabase.createClient(SB_URL, SB_KEY);
+        
+        const { data, error } = await sb
+            .from('profiles')
+            .select('username')
+            .eq('username', savedUser)
+            .eq('password', savedPass)
+            .maybeSingle();
+
+        if (data && !error) {
             // Valid session, show the page
             document.documentElement.style.display = '';
         } else {
-            // Invalid session
+            // Invalid session or error
+            console.error('Auth validation failed:', error);
             sessionStorage.removeItem('we_user');
             sessionStorage.removeItem('we_pass');
             redirectToLogin();
         }
     } catch (error) {
-        console.error('Auth validation error:', error);
-        // On network error, it's safer to redirect to login
+        console.error('Critical Auth Error:', error);
         redirectToLogin();
     }
 })();
