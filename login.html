@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WE-Core | تسجيل الدخول</title>
+<link rel="shortcut icon" href="img/we-core.png">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Cairo',sans-serif;background:#f0ecf8;min-height:100vh;display:flex;justify-content:center;align-items:center;padding:20px;}
+
+.login-modal{background:#fff;padding:40px 32px 32px;border-radius:22px;width:100%;max-width:390px;text-align:center;box-shadow:0 24px 60px rgba(0,0,0,0.15);border-top:5px solid #7b3fe4;animation:popIn 0.4s ease;}
+@keyframes popIn{from{transform:scale(0.95);opacity:0;}to{transform:scale(1);opacity:1;}}
+.modal-logo{width:80px;height:80px;border-radius:50%;border:3px solid #ede3fc;margin:0 auto 16px;object-fit:cover;}
+h3{color:#3d1a6e;font-size:24px;font-weight:900;margin-bottom:6px;}
+.sub{color:#aaa;font-size:14px;margin-bottom:28px;}
+
+.field{position:relative;margin-bottom:16px;}
+.field i{position:absolute;right:14px;top:50%;transform:translateY(-50%);color:#b08af0;font-size:16px;pointer-events:none;}
+.field input{width:100%;padding:14px 44px 14px 14px;border:2px solid #ede3fc;border-radius:12px;font-family:'Cairo',sans-serif;font-size:15px;color:#3d1a6e;outline:none;background:#faf8ff;transition:border-color 0.2s;direction:ltr;text-align:right;}
+.field input:focus{border-color:#7b3fe4;background:#fff;}
+.field input::placeholder{color:#ccc;direction:rtl;}
+
+.login-btn{width:100%;padding:14px;border:none;border-radius:12px;background:linear-gradient(135deg,#7b3fe4,#a066f5);color:#fff;font-family:'Cairo',sans-serif;font-weight:700;font-size:16px;cursor:pointer;margin-top:6px;box-shadow:0 6px 18px rgba(123,63,228,0.3);transition:all 0.2s;}
+.login-btn:hover{opacity:0.9;transform:translateY(-1px);}
+.login-btn:disabled{opacity:0.6;cursor:not-allowed;transform:none;}
+
+.err{color:#c62828;font-size:13px;margin-top:14px;background:#fff5f5;padding:10px 14px;border-radius:10px;border:1px solid #ffcdd2;display:none;}
+.err.show{display:block;}
+
+footer{position:fixed;bottom:20px;text-align:center;color:#999;font-size:13px;}
+footer span{color:#7b3fe4;font-weight:700;}
+</style>
+</head>
+<body>
+
+<div class="login-modal">
+    <img src="img/we-core.png" class="modal-logo" alt="WE-Core">
+    <h3>WE-Core</h3>
+    <p class="sub">سجّل دخولك للمتابعة</p>
+
+    <div class="field">
+        <i class="fa-solid fa-user"></i>
+        <input id="uname" type="text" placeholder="اسم المستخدم" autocomplete="off">
+    </div>
+    <div class="field">
+        <i class="fa-solid fa-lock"></i>
+        <input id="upass" type="password" placeholder="كلمة المرور">
+    </div>
+
+    <button class="login-btn" id="loginBtn" onclick="doLogin()">
+        <i class="fa-solid fa-right-to-bracket"></i> تسجيل الدخول
+    </button>
+    <div class="err" id="errMsg"></div>
+</div>
+
+<footer>
+    Powered by <span>Mohand Hassan</span> · Abassia Store
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+(function() {
+    const $ = id => document.getElementById(id);
+    const showErr = msg => { $('errMsg').textContent = msg; $('errMsg').classList.add('show'); };
+    const hideErr = () => $('errMsg').classList.remove('show');
+
+    const sb = supabase.createClient(
+        'https://iygwhapcpdmsasqlfelv.supabase.co',
+        'sb_publishable_rD9naqrpu1dI-iwchAS0GQ_JkgGysqP'
+    );
+
+    window.doLogin = async function() {
+        hideErr();
+        const username = $('uname').value.trim();
+        const password = $('upass').value;
+
+        if (!username || !password) {
+            showErr('من فضلك أدخل اسم المستخدم وكلمة المرور');
+            return;
+        }
+
+        const btn = $('loginBtn');
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> جاري التحقق...';
+
+        try {
+            // Using match filter to handle special characters more robustly
+            const { data, error } = await sb
+                .from('profiles')
+                .select('username')
+                .match({ username: username, password: password })
+                .maybeSingle();
+
+            if (error || !data) {
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fa-solid fa-right-to-bracket"></i> تسجيل الدخول';
+                showErr('اسم المستخدم أو كلمة المرور غير صحيحة');
+                return;
+            }
+
+            // Success: Store in sessionStorage and redirect
+            sessionStorage.setItem('we_user', data.username);
+            sessionStorage.setItem('we_pass', password);
+            window.location.replace('index.html');
+
+        } catch (e) {
+            console.error(e);
+            btn.disabled = false;
+            btn.innerHTML = '<i class="fa-solid fa-right-to-bracket"></i> تسجيل الدخول';
+            showErr('حدث خطأ في الاتصال، حاول مرة أخرى');
+        }
+    };
+
+    $('upass').addEventListener('keydown', e => { if(e.key === 'Enter') doLogin(); });
+    $('uname').addEventListener('keydown', e => { if(e.key === 'Enter') $('upass').focus(); });
+})();
+</script>
+
+</body>
+</html>

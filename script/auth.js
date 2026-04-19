@@ -1,7 +1,6 @@
 /**
- * WE-Core Authentication Guard (V10 - RPC Security)
+ * WE-Core Authentication Guard (V11 - Separate Login Page)
  * This script ensures that the user is logged in before accessing any page.
- * It uses a secure RPC call to avoid URL encoding issues with special characters.
  */
 
 (async function() {
@@ -9,22 +8,26 @@
     const SB_KEY = 'sb_publishable_rD9naqrpu1dI-iwchAS0GQ_JkgGysqP';
     
     const path = window.location.pathname;
-    const isLoginPage = path.endsWith('index.html') || path === '/' || path.endsWith('.icu/') || path === '';
+    const isLoginPage = path.endsWith('login.html');
 
     if (isLoginPage) return;
 
-    // 1. Immediate hide
+    // 1. Immediate hide to prevent flash
     if (document.documentElement) {
         document.documentElement.style.display = 'none';
     }
 
-    async function redirectToLogin() {
-        const depth = (path.match(/\//g) || []).length - 1;
-        let rootPath = 'index.html';
-        if (depth > 0) {
-            rootPath = '../'.repeat(depth) + 'index.html';
+    function getLoginPath() {
+        const depth = (path.split('/').length - (path.endsWith('/') ? 2 : 1)) - (window.location.hostname.includes('github.io') ? 1 : 0);
+        // Fallback simple check
+        if (path.includes('/info/') || path.includes('/offers/') || path.includes('/Corces/')) {
+            return '../login.html';
         }
-        window.location.replace(rootPath);
+        return 'login.html';
+    }
+
+    async function redirectToLogin() {
+        window.location.replace(getLoginPath());
     }
 
     const savedUser = sessionStorage.getItem('we_user');
@@ -47,14 +50,8 @@
             });
         }
 
-        // Initialize client
         const sb = supabase.createClient(SB_URL, SB_KEY);
         
-        /**
-         * IMPORTANT: We are using a direct query here but we will try a different approach 
-         * to avoid the 400 error by using POST body if possible, or simple filter.
-         * If the 400 persists, the only way is to use a Supabase Function (RPC).
-         */
         const { data, error } = await sb
             .from('profiles')
             .select('username')
@@ -62,13 +59,11 @@
             .maybeSingle();
 
         if (data && !error) {
-            // Success
+            // Success: show page and ensure app div is visible if it exists
             document.documentElement.style.display = '';
+            const appDiv = document.getElementById('app');
+            if (appDiv) appDiv.style.display = 'block';
         } else {
-            // If the match fails, try one last time with a more robust check or redirect
-            console.error('Auth check failed or error 400 encountered');
-            // To prevent blocking the user if it's just a 400 error during a valid session, 
-            // we check if we can at least find the user. But for security, we redirect.
             sessionStorage.clear();
             redirectToLogin();
         }
