@@ -54,33 +54,54 @@ footer span{color:#7b3fe4;font-weight:700;}
     const $ = id => document.getElementById(id);
     const showErr = msg => { $('errMsg').textContent = msg; $('errMsg').classList.add('show'); };
     const hideErr = () => $('errMsg').classList.remove('show');
-    const sb = supabase.createClient('https://iygwhapcpdmsasqlfelv.supabase.co', 'sb_publishable_rD9naqrpu1dI-iwchAS0GQ_JkgGysqP');
+    
+    const sb = supabase.createClient(
+        'https://iygwhapcpdmsasqlfelv.supabase.co',
+        'sb_publishable_rD9naqrpu1dI-iwchAS0GQ_JkgGysqP'
+    );
 
     window.doLogin = async function() {
         hideErr();
         const username = $('uname').value.trim();
         const password = $('upass').value;
         if (!username || !password) { showErr('من فضلك أدخل اسم المستخدم وكلمة المرور'); return; }
+        
         const btn = $('loginBtn');
         btn.disabled = true;
         btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> جاري التحقق...';
+
         try {
-            // Using RPC to handle special characters securely in POST body
-            const { data, error } = await sb.rpc('check_user_login', { p_username: username, p_password: password });
-            if (error || !data || data.length === 0) {
-                btn.disabled = false;
-                btn.innerHTML = '<i class="fa-solid fa-right-to-bracket"></i> تسجيل الدخول';
-                showErr('اسم المستخدم أو كلمة المرور غير صحيحة');
-                return;
+            // 1. Get Email from Edge Function using username
+            const { data: emailData, error: emailErr } = await sb.functions.invoke('get-private-videos', {
+                body: { action: 'get_email', username: username }
+            });
+
+            if (emailErr || !emailData?.email) {
+                throw new Error('User not found');
             }
-            sessionStorage.setItem('we_user', data[0].username);
-            sessionStorage.setItem('we_pass', password);
+
+            // 2. Login with Supabase Auth
+            const { data, error } = await sb.auth.signInWithPassword({
+                email: emailData.email,
+                password: password
+            });
+
+            if (error || !data.session) {
+                throw new Error('Invalid credentials');
+            }
+
+            // 3. Save Token in Cookies for Edge Function
+            const token = data.session.access_token;
+            document.cookie = `sb-access-token=${token}; path=/; max-age=86400; SameSite=Lax; Secure`;
+            
+            sessionStorage.setItem('we_user', username);
             window.location.replace('index.html');
+
         } catch (e) {
             console.error(e);
             btn.disabled = false;
             btn.innerHTML = '<i class="fa-solid fa-right-to-bracket"></i> تسجيل الدخول';
-            showErr('حدث خطأ في الاتصال، حاول مرة أخرى');
+            showErr('اسم المستخدم أو كلمة المرور غير صحيحة');
         }
     };
     $('upass').addEventListener('keydown', e => { if(e.key === 'Enter') doLogin(); });

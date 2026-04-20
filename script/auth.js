@@ -1,6 +1,5 @@
 /**
- * WE-Core Authentication Guard (V12 - RPC Integration)
- * This script ensures that the user is logged in before accessing any page.
+ * WE-Core Authentication Guard (V15 - Edge Function & Auth Compatible)
  */
 (async function() {
     const SB_URL = 'https://iygwhapcpdmsasqlfelv.supabase.co';
@@ -8,15 +7,34 @@
     const path = window.location.pathname;
     const isLoginPage = path.endsWith('login.html');
     if (isLoginPage) return;
+    
     if (document.documentElement) { document.documentElement.style.display = 'none'; }
+    
     function getLoginPath() {
         if (path.includes('/info/') || path.includes('/offers/') || path.includes('/Corces/')) { return '../login.html'; }
         return 'login.html';
     }
-    async function redirectToLogin() { window.location.replace(getLoginPath()); }
+    
+    async function redirectToLogin() { 
+        sessionStorage.clear();
+        document.cookie = "sb-access-token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+        window.location.replace(getLoginPath()); 
+    }
+
+    function getCookie(name) {
+        const value = `; ${document.cookie}`;
+        const parts = value.split(`; ${name}=`);
+        if (parts.length === 2) return parts.pop().split(';').shift();
+    }
+
     const savedUser = sessionStorage.getItem('we_user');
-    const savedPass = sessionStorage.getItem('we_pass');
-    if (!savedUser || !savedPass) { redirectToLogin(); return; }
+    const savedToken = getCookie('sb-access-token');
+
+    if (!savedUser || !savedToken) {
+        redirectToLogin();
+        return;
+    }
+
     try {
         if (typeof supabase === 'undefined') {
             await new Promise((resolve, reject) => {
@@ -28,14 +46,16 @@
             });
         }
         const sb = supabase.createClient(SB_URL, SB_KEY);
-        // Validate using RPC to handle special characters securely
-        const { data, error } = await sb.rpc('check_user_login', { p_username: savedUser, p_password: savedPass });
-        if (data && data.length > 0 && !error) {
+        
+        // Verify token with Supabase Auth
+        const { data: { user }, error } = await sb.auth.getUser(savedToken);
+
+        if (user && !error) {
             document.documentElement.style.display = '';
             const appDiv = document.getElementById('app');
             if (appDiv) appDiv.style.display = 'block';
+            window.dispatchEvent(new CustomEvent('authSuccess', { detail: { user: savedUser, token: savedToken } }));
         } else {
-            sessionStorage.clear();
             redirectToLogin();
         }
     } catch (error) {
