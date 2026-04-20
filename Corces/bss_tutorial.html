@@ -1,192 +1,213 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<script src="../script/auth.js?v=12.0.1"></script>
+    <script src="../script/auth.js?v=12.0.1"></script>
 
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>BSS Tutorial – مكتبة الفيديوهات</title>
-<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BSS Tutorial – مكتبة الفيديوهات الآمنة</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-<style>
-:root {
-  --purple:     #5b1f82;
-  --purple-mid: #7c3aad;
-  --purple-lt:  #9f6ec7;
-  --purple-bg:  #f3edf9;
-  --purple-xs:  #faf7fd;
-  --gold:       #c9a84c;
-  --gold-lt:    #f0d878;
-  --dark:       #0f0f14;
-  --dark2:      #1a1a24;
-  --dark3:      #23232f;
-  --card-bg:    #1e1e2a;
-  --text:       #e8e4f0;
-  --text-dim:   #9990b0;
-  --radius:     14px;
-}
-*{margin:0;padding:0;box-sizing:border-box;}
-body { font-family:'Tajawal',sans-serif; background: var(--dark); color: var(--text); direction:rtl; min-height:100vh; }
-header { background: linear-gradient(135deg,#3a0e5e 0%,#5b1f82 50%,#7c3aad 100%); padding:20px 24px; box-shadow:0 2px 30px rgba(0,0,0,0.5); position:sticky; top:0; z-index:100; }
-.header-inner { max-width:1200px; margin:0 auto; display:flex; align-items:center; gap:15px; }
-.logo-circle { width:40px; height:40px; background:white; border-radius:50%; display:flex; align-items:center; justify-content:center; color:var(--purple); font-weight:bold; }
-.hero { text-align:center; padding:50px 20px; background:linear-gradient(180deg,#2a0d45 0%,var(--dark) 100%); }
-.hero h2 span { color:var(--gold-lt); }
-.stats { display:flex; gap:30px; justify-content:center; margin-top:20px; }
-.stat-n { font-size:1.5rem; font-weight:900; color:var(--gold-lt); display:block; }
-.page { max-width:1200px; margin:0 auto; padding:40px 20px; }
-.folders-grid, .videos-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(250px,1fr)); gap:20px; }
-.folder-card, .video-card { background:var(--card-bg); border-radius:var(--radius); padding:20px; border:1px solid rgba(255,255,255,0.1); cursor:pointer; transition:0.3s; }
-.folder-card:hover { transform:translateY(-5px); border-color:var(--purple-lt); }
-.folder-icon { font-size:2rem; margin-bottom:10px; display:block; }
-.video-thumb { aspect-ratio:16/9; background:#000; border-radius:8px; display:flex; align-items:center; justify-content:center; margin-bottom:10px; font-size:1.5rem; }
-.back-btn { background:rgba(255,255,255,0.1); border:none; color:white; padding:10px 20px; border-radius:30px; cursor:pointer; margin-bottom:20px; font-family:inherit; }
-.modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.9); z-index:1000; align-items:center; justify-content:center; padding:20px; }
-.modal-overlay.open { display:flex; }
-.modal-box { width:100%; max-width:800px; background:var(--dark2); border-radius:15px; overflow:hidden; }
-.modal-header { padding:15px; display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid rgba(255,255,255,0.1); }
-.modal-player { position:relative; padding-bottom:56.25%; height:0; }
-.modal-player iframe { position:absolute; inset:0; width:100%; height:100%; border:none; }
-</style>
-<script src="../script/active-users-widget.js"></script>
+    <style>
+        :root {
+            --purple:      #5b1f82;
+            --purple-mid:  #7c3aad;
+            --purple-lt:   #9f6ec7;
+            --purple-bg:   #f3edf9;
+            --dark:        #0f0f14;
+            --dark2:       #1a1a24;
+            --card-bg:     #1e1e2a;
+            --text:        #e8e4f0;
+            --gold-lt:     #f0d878;
+            --radius:      14px;
+        }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { font-family:'Tajawal',sans-serif; background: var(--dark); color: var(--text); direction:rtl; min-height:100vh; }
+        header { background: linear-gradient(135deg,#3a0e5e 0%,#5b1f82 50%,#7c3aad 100%); padding:20px 24px; position:sticky; top:0; z-index:100; }
+        .header-inner { max-width:1200px; margin:0 auto; display:flex; align-items:center; gap:15px; }
+        .logo-circle { width:40px; height:40px; background:white; border-radius:50%; display:flex; align-items:center; justify-content:center; color:var(--purple); font-weight:bold; }
+        .hero { text-align:center; padding:50px 20px; background:linear-gradient(180deg,#2a0d45 0%,var(--dark) 100%); }
+        .hero h2 span { color:var(--gold-lt); }
+        .stats { display:flex; gap:30px; justify-content:center; margin-top:20px; }
+        .stat-n { font-size:1.5rem; font-weight:900; color:var(--gold-lt); display:block; }
+        .page { max-width:1200px; margin:0 auto; padding:40px 20px; }
+        .folders-grid, .videos-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(250px,1fr)); gap:20px; }
+        .folder-card, .video-card { background:var(--card-bg); border-radius:var(--radius); padding:20px; border:1px solid rgba(255,255,255,0.1); cursor:pointer; transition:0.3s; }
+        .folder-card:hover, .video-card:hover { transform:translateY(-5px); border-color:var(--purple-lt); }
+        .folder-icon { font-size:2rem; margin-bottom:10px; display:block; }
+        .video-thumb { aspect-ratio:16/9; background:#000; border-radius:8px; display:flex; align-items:center; justify-content:center; margin-bottom:10px; font-size:1.5rem; color: var(--purple-lt); }
+        .back-btn { background:rgba(255,255,255,0.1); border:none; color:white; padding:10px 20px; border-radius:30px; cursor:pointer; margin-bottom:20px; }
+        
+        /* Modal Styles */
+        .modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.9); z-index:1000; align-items:center; justify-content:center; padding:20px; }
+        .modal-overlay.open { display:flex; }
+        .modal-box { width:100%; max-width:900px; background:var(--dark2); border-radius:15px; overflow:hidden; }
+        .modal-header { padding:15px; display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid rgba(255,255,255,0.1); }
+        .modal-player { width: 100%; background: #000; }
+        video { width: 100%; display: block; outline: none; }
+    </style>
 </head>
 <body>
 
 <header>
-  <div class="header-inner">
-    <div class="logo-circle">WE</div>
-    <div><h1>BSS Tutorial</h1></div>
-  </div>
+    <div class="header-inner">
+        <div class="logo-circle">WE</div>
+        <h1>BSS Tutorial</h1>
+    </div>
 </header>
 
 <div class="hero">
-  <h2>مكتبة فيديوهات <span>BSS</span></h2>
-  <div class="stats">
-    <div class="stat"><span class="stat-n" id="totalFolders">0</span><span>فولدر</span></div>
-    <div class="stat"><span class="stat-n" id="totalVideos">0</span><span>فيديو</span></div>
-  </div>
+    <h2>مكتبة فيديوهات <span>BSS</span> الآمنة</h2>
+    <div class="stats">
+        <div class="stat"><span class="stat-n" id="totalFolders">0</span><span>قسم</span></div>
+        <div class="stat"><span class="stat-n" id="totalVideos">0</span><span>فيديو</span></div>
+    </div>
 </div>
 
 <div class="page">
-  <div id="view-folders">
-    <h3 style="margin-bottom:20px;">الأقسام الرئيسية:</h3>
-    <div class="folders-grid" id="foldersGrid"></div>
-  </div>
+    <div id="view-folders">
+        <h3 style="margin-bottom:20px;">الأقسام المتاحة لك:</h3>
+        <div class="folders-grid" id="foldersGrid"></div>
+    </div>
 
-  <div id="view-videos" style="display:none;">
-    <button class="back-btn" onclick="showFolders()">← رجوع</button>
-    <h2 id="currentFolderName" style="margin-bottom:20px;"></h2>
-    <div class="videos-grid" id="videosGrid"></div>
-  </div>
+    <div id="view-videos" style="display:none;">
+        <button class="back-btn" onclick="showFolders()">← العودة للأقسام</button>
+        <h2 id="currentFolderName" style="margin-bottom:20px;"></h2>
+        <div class="videos-grid" id="videosGrid"></div>
+    </div>
 </div>
 
 <div class="modal-overlay" id="modalOverlay">
-  <div class="modal-box">
-    <div class="modal-header">
-      <span id="modalTitle"></span>
-      <button onclick="closeModal()" style="background:none; border:none; color:white; font-size:1.5rem; cursor:pointer;">✕</button>
+    <div class="modal-box">
+        <div class="modal-header">
+            <span id="modalTitle"></span>
+            <button onclick="closeModal()" style="background:none; border:none; color:white; font-size:1.5rem; cursor:pointer;">✕</button>
+        </div>
+        <div class="modal-player">
+            <video id="mainVideoPlayer" controls controlsList="nodownload"></video>
+        </div>
     </div>
-    <div class="modal-player">
-      <iframe id="videoFrame" allowfullscreen></iframe>
-    </div>
-  </div>
 </div>
 
 <script>
-// الإعدادات - تم تغيير اسم المتغير لتجنب التعارض
-const SB_URL = 'https://iygwhapcpdmsasqlfelv.supabase.co';
-const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml5Z3doYXBjcGRtc2FzcWxmZWx2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzEzNDk5MDQsImV4cCI6MjA4NjkyNTkwNH0.jqU1fEc9kBkXcCfazH6aTnS2XWWzPv0bbixHZgjtrnQ';
+    // 1. الإعدادات الأساسية
+    const SB_URL = 'https://iygwhapcpdmsasqlfelv.supabase.co';
+    const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml5Z3doYXBjcGRtc2FzcWxmZWx2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzEzNDk5MDQsImV4cCI6MjA4NjkyNTkwNH0.jqU1fEc9kBkXcCfazH6aTnS2XWWzPv0bbixHZgjtrnQ';
 
-// تعريف العميل باسم مختلف تماماً عن الكلمة المحجوزة
-const supabaseClient = supabase.createClient(SB_URL, SB_KEY);
+    const supabaseClient = supabase.createClient(SB_URL, SB_KEY);
 
-let FOLDERS_DATA = [];
-let currentFolderVideos = [];
+    let FOLDERS_DATA = [];
+    let currentFolderVideos = [];
 
-async function loadLibrary() {
-  try {
-    const { data, error } = await supabaseClient
-      .from('Videos')
-      .select('*');
+    // 2. جلب قائمة الفيديوهات من الـ Edge Function
+    async function loadLibrary() {
+        try {
+            const { data, error } = await supabaseClient.functions.invoke('hyper-task', {
+                body: { action: 'get_videos' }
+            });
 
-    if (error) throw error;
+            if (error) throw error;
 
-    // تجميع البيانات
-    const grouped = data.reduce((acc, row) => {
-      const fName = row['folder-name'] || 'أخرى';
-      let folder = acc.find(f => f.name === fName);
-      if (!folder) {
-        folder = { name: fName, videos: [] };
-        acc.push(folder);
-      }
-      folder.videos.push({ title: row.title, fileId: row.file_id });
-      return acc;
-    }, []);
+            // تنظيم البيانات القادمة من الفانكشن (Grouping)
+            const grouped = data.reduce((acc, file) => {
+                const folderName = file.folder || 'غير مصنف';
+                let folder = acc.find(f => f.name === folderName);
+                if (!folder) {
+                    folder = { name: folderName, videos: [] };
+                    acc.push(folder);
+                }
+                folder.videos.push(file);
+                return acc;
+            }, []);
 
-    FOLDERS_DATA = grouped;
-    renderFolders();
-    
-    document.getElementById('totalFolders').textContent = FOLDERS_DATA.length;
-    document.getElementById('totalVideos').textContent = data.length;
-  } catch (err) {
-    console.error("خطأ:", err.message);
-  }
-}
+            FOLDERS_DATA = grouped;
+            renderFolders();
 
-function renderFolders() {
-  const grid = document.getElementById('foldersGrid');
-  grid.innerHTML = FOLDERS_DATA.map((f, i) => `
-    <div class="folder-card" onclick="openFolder(${i})">
-      <span class="folder-icon">📁</span>
-      <h3>${f.name}</h3>
-      <p>${f.videos.length} فيديو</p>
-    </div>
-  `).join('');
-}
+            document.getElementById('totalFolders').textContent = FOLDERS_DATA.length;
+            document.getElementById('totalVideos').textContent = data.length;
 
-function openFolder(idx) {
-  const folder = FOLDERS_DATA[idx];
-  currentFolderVideos = folder.videos;
-  document.getElementById('view-folders').style.display = 'none';
-  document.getElementById('view-videos').style.display = 'block';
-  document.getElementById('currentFolderName').textContent = folder.name;
-  
-  const grid = document.getElementById('videosGrid');
-  grid.innerHTML = currentFolderVideos.map((v, vIdx) => `
-    <div class="video-card" onclick="playVideo(${vIdx})">
-      <div class="video-thumb">▶</div>
-      <h4>${v.title}</h4>
-    </div>
-  `).join('');
-}
-
-function playVideo(idx) {
-  const video = currentFolderVideos[idx];
-  document.getElementById('modalTitle').textContent = video.title;
-  document.getElementById('videoFrame').src = `https://drive.google.com/file/d/${video.fileId}/preview`;
-  document.getElementById('modalOverlay').classList.add('open');
-}
-
-function closeModal() {
-  document.getElementById('modalOverlay').classList.remove('open');
-  document.getElementById('videoFrame').src = '';
-}
-
-function showFolders() {
-  document.getElementById('view-folders').style.display = 'block';
-  document.getElementById('view-videos').style.display = 'none';
-}
-
-document.addEventListener('DOMContentLoaded', loadLibrary);
-</script>
-
-<script>
-  window.addEventListener('load', function() {
-    if (typeof ActiveUsersWidget !== 'undefined') {
-      ActiveUsersWidget.init({ position: 'corner' });
+        } catch (err) {
+            console.error("فشل التحميل:", err.message);
+            alert("فشل في جلب البيانات، تأكد من تسجيل الدخول.");
+        }
     }
-  });
+
+    // 3. عرض المجلدات في الواجهة
+    function renderFolders() {
+        const grid = document.getElementById('foldersGrid');
+        grid.innerHTML = FOLDERS_DATA.map((f, i) => `
+            <div class="folder-card" onclick="openFolder(${i})">
+                <span class="folder-icon">📂</span>
+                <h3>${f.name}</h3>
+                <p>${f.videos.length} فيديو تعليمي</p>
+            </div>
+        `).join('');
+    }
+
+    // 4. فتح مجلد معين
+    function openFolder(idx) {
+        const folder = FOLDERS_DATA[idx];
+        currentFolderVideos = folder.videos;
+        
+        document.getElementById('view-folders').style.display = 'none';
+        document.getElementById('view-videos').style.display = 'block';
+        document.getElementById('currentFolderName').textContent = folder.name;
+        
+        const grid = document.getElementById('videosGrid');
+        grid.innerHTML = currentFolderVideos.map((v, vIdx) => `
+            <div class="video-card" onclick="prepareVideo(${vIdx})">
+                <div class="video-thumb">▶</div>
+                <h4>${v.title}</h4>
+            </div>
+        `).join('');
+    }
+
+    // 5. جلب رابط موقت وتشغيل الفيديو
+    async function prepareVideo(idx) {
+        const video = currentFolderVideos[idx];
+        document.getElementById('modalTitle').textContent = "جاري التحميل...";
+        
+        try {
+            // نطلب من الفانكشن رابط موقت (Signed URL)
+            const { data, error } = await supabaseClient.functions.invoke('hyper-task', {
+                body: { 
+                    action: 'get_single_url',
+                    path: video.path 
+                }
+            });
+
+            if (error) throw error;
+
+            // تشغيل الفيديو بالرابط الموقت
+            const player = document.getElementById('mainVideoPlayer');
+            player.src = data.url;
+            document.getElementById('modalTitle').textContent = video.title;
+            document.getElementById('modalOverlay').classList.add('open');
+            player.play();
+
+        } catch (err) {
+            console.error("خطأ في جلب الرابط:", err.message);
+            alert("عفواً، لا تملك صلاحية لمشاهدة هذا الفيديو أو انتهت جلستك.");
+        }
+    }
+
+    // 6. وظائف المساعدة
+    function closeModal() {
+        const player = document.getElementById('mainVideoPlayer');
+        player.pause();
+        player.src = "";
+        document.getElementById('modalOverlay').classList.remove('open');
+    }
+
+    function showFolders() {
+        document.getElementById('view-folders').style.display = 'block';
+        document.getElementById('view-videos').style.display = 'none';
+    }
+
+    // التنفيذ عند تحميل الصفحة
+    document.addEventListener('DOMContentLoaded', loadLibrary);
 </script>
+
 </body>
 </html>
