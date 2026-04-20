@@ -64,8 +64,10 @@ footer span{color:#7b3fe4;font-weight:700;}
 
     async function loadVideos() {
         try {
-            const { data, error } = await sb.functions.invoke('get-private-videos', {
-                body: { action: 'get_videos' }
+            const token = sessionStorage.getItem('sb-access-token');
+            const { data, error } = await sb.functions.invoke('hyper-task', {
+                body: { action: 'get_videos' },
+                headers: token ? { Authorization: `Bearer ${token}` } : {}
             });
             if (error) throw error;
             
@@ -106,8 +108,10 @@ footer span{color:#7b3fe4;font-weight:700;}
 
     window.playVideo = async function(videoPath) {
         try {
-            const { data, error } = await sb.functions.invoke('get-private-videos', {
-                body: { action: 'get_single_url', path: videoPath }
+            const token = sessionStorage.getItem('sb-access-token');
+            const { data, error } = await sb.functions.invoke('hyper-task', {
+                body: { action: 'get_single_url', path: videoPath },
+                headers: token ? { Authorization: `Bearer ${token}` } : {}
             });
             if (error || !data.url) throw error;
             
