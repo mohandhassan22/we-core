@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <script src="/script/auth.js?v=15.0.1"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BSS Tutorial – مكتبة الفيديوهات</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        :root {
+            --purple:        #6d28d9;
+            --purple-mid:    #7c3aed;
+            --purple-lt:     #a78bfa;
+            --purple-pale:   #ede9fe;
+            --purple-xpale:  #f5f3ff;
+            --white:         #ffffff;
+            --bg:            #f8f7ff;
+            --card:          #ffffff;
+            --text:          #1e1b4b;
+            --text-dim:      #7c6fa0;
+            --border:        #e0d9f7;
+            --border-hover:  #a78bfa;
+            --radius:        18px;
+            --shadow-sm:     0 2px 8px rgba(109,40,217,0.08);
+            --shadow-md:     0 8px 24px rgba(109,40,217,0.12);
+            --shadow-lg:     0 20px 48px rgba(109,40,217,0.16);
+        }
+
+        * { margin:0; padding:0; box-sizing:border-box; }
+
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            direction: rtl;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image: radial-gradient(circle, rgba(109,40,217,0.06) 1px, transparent 1px);
+            background-size: 28px 28px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        body::after {
+            content: '';
+            position: fixed;
+            width: 800px; height: 800px;
+            background: radial-gradient(circle, rgba(167,139,250,0.12) 0%, transparent 70%);
+            top: -250px; left: -250px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* ── HEADER ── */
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 200;
+            background: rgba(255,255,255,0.9);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1.5px solid var(--border);
+            box-shadow: 0 2px 16px rgba(109,40,217,0.07);
+        }
+        .header-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 28px;
+            height: 66px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .header-logo {
+            width: 40px; height: 40px;
+            border-radius: 50%;
+            border: 2.5px solid var(--purple-lt);
+            box-shadow: 0 0 0 4px var(--purple-pale);
+        }
+        .header-title {
+            font-size: 1.2rem;
+            font-weight: 900;
+            color: var(--purple);
+        }
+        .header-sep { width:1px; height:20px; background:var(--border); margin:0 2px; }
+        .header-sub { font-size:0.82rem; color:var(--text-dim); font-weight:500; }
+        .header-pill {
+            margin-right: auto;
+            background: var(--purple-xpale);
+            border: 1.5px solid var(--purple-pale);
+            color: var(--purple-mid);
+            font-size: 0.7rem;
+            font-weight: 800;
+            padding: 4px 12px;
+            border-radius: 20px;
+            letter-spacing: 0.06em;
+        }
+
+        /* ── HERO ── */
+        .hero {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            padding: 64px 20px 56px;
+            overflow: hidden;
+        }
+        .hero-wave {
+            position: absolute;
+            bottom: 0; left:0; right:0;
+            height: 50px;
+            background: var(--bg);
+            clip-path: ellipse(55% 100% at 50% 100%);
+        }
+        .hero-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: var(--purple-xpale);
+            border: 1.5px solid var(--purple-pale);
+            color: var(--purple-mid);
+            font-size: 0.78rem;
+            font-weight: 700;
+            letter-spacing: 0.06em;
+            padding: 5px 14px;
+            border-radius: 20px;
+            margin-bottom: 20px;
+        }
+        .hero h2 {
+            font-size: clamp(2rem, 5vw, 3rem);
+            font-weight: 900;
+            color: var(--text);
+            line-height: 1.2;
+            margin-bottom: 32px;
+            letter-spacing: -0.02em;
+        }
+        .hero h2 em {
+            font-style: normal;
+            background: linear-gradient(135deg, var(--purple-mid) 0%, var(--purple-lt) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .stats-bar {
+            display: inline-flex;
+            align-items: center;
+            background: var(--white);
+            border: 1.5px solid var(--border);
+            border-radius: 50px;
+            padding: 6px 8px;
+            gap: 4px;
+            box-shadow: var(--shadow-sm);
+        }
+        .stat-pill {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 20px;
+            border-radius: 40px;
+            transition: background 0.2s;
+            cursor: default;
+        }
+        .stat-pill:hover { background: var(--purple-xpale); }
+        .stat-n { font-size:1.5rem; font-weight:900; color:var(--purple-mid); }
+        .stat-lbl { font-size:0.85rem; color:var(--text-dim); font-weight:600; }
+        .stat-divider { width:1px; height:32px; background:var(--border); }
+
+        /* ── PAGE ── */
+        .page {
+            position: relative;
+            z-index: 1;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px 80px;
+        }
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 24px;
+        }
+        .section-tag {
+            font-size: 0.72rem;
+            font-weight: 800;
+            letter-spacing: 0.1em;
+            color: var(--purple-mid);
+            background: var(--purple-xpale);
+            border: 1.5px solid var(--purple-pale);
+            padding: 4px 12px;
+            border-radius: 20px;
+        }
+        .section-line { flex:1; height:1.5px; background:var(--border); }
+
+        /* ── FOLDERS ── */
+        .folders-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px,1fr));
+            gap: 16px;
+        }
+        .folder-card {
+            background: var(--card);
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius);
+            padding: 30px 22px 24px;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.3s cubic-bezier(0.34,1.56,0.64,1);
+            box-shadow: var(--shadow-sm);
+            position: relative;
+            overflow: hidden;
+        }
+        .folder-card::before {
+            content:'';
+            position:absolute;
+            inset:0;
+            background: linear-gradient(135deg, rgba(109,40,217,0.04) 0%, transparent 60%);
+            opacity:0;
+            transition: opacity 0.3s;
+        }
+        .folder-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            border-color: var(--border-hover);
+            box-shadow: var(--shadow-lg), 0 0 0 4px var(--purple-pale);
+        }
+        .folder-card:hover::before { opacity:1; }
+        .folder-icon-wrap {
+            width: 68px; height: 68px;
+            background: var(--purple-xpale);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            margin: 0 auto 16px;
+            border: 2px solid var(--purple-pale);
+            transition: all 0.3s;
+        }
+        .folder-card:hover .folder-icon-wrap {
+            background: var(--purple-pale);
+            transform: scale(1.1) rotate(-4deg);
+        }
+        .folder-card h3 { font-size:1rem; font-weight:800; color:var(--text); margin-bottom:8px; }
+        .folder-count {
+            display: inline-block;
+            background: var(--purple-xpale);
+            color: var(--purple-mid);
+            font-size: 0.78rem;
+            font-weight: 700;
+            padding: 3px 12px;
+            border-radius: 20px;
+            border: 1px solid var(--purple-pale);
+        }
+
+        /* ── VIDEOS ── */
+        .videos-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(270px,1fr));
+            gap: 16px;
+        }
+        .video-card {
+            background: var(--card);
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius);
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.34,1.56,0.64,1);
+            box-shadow: var(--shadow-sm);
+        }
+        .video-card:hover {
+            transform: translateY(-7px);
+            border-color: var(--border-hover);
+            box-shadow: var(--shadow-lg), 0 0 0 4px var(--purple-pale);
+        }
+        .video-thumb {
+            aspect-ratio: 16/9;
+            background: linear-gradient(135deg, var(--purple-xpale) 0%, #ddd6fe 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .video-thumb::before {
+            content:'';
+            position:absolute;
+            inset:0;
+            background: radial-gradient(circle at 50% 60%, rgba(124,58,237,0.1) 0%, transparent 65%);
+        }
+        .play-circle {
+            width: 54px; height: 54px;
+            background: var(--purple-mid);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 1.15rem;
+            box-shadow: 0 8px 24px rgba(124,58,237,0.35);
+            transition: all 0.25s cubic-bezier(0.34,1.56,0.64,1);
+            position: relative; z-index:1;
+            padding-right: 3px;
+        }
+        .video-card:hover .play-circle {
+            transform: scale(1.15);
+            box-shadow: 0 12px 32px rgba(124,58,237,0.5);
+        }
+        .video-info {
+            padding: 14px 16px 16px;
+            border-top: 1.5px solid var(--border);
+        }
+        .video-info h4 { font-size:0.9rem; font-weight:700; color:var(--text); line-height:1.45; }
+
+        /* ── NAV BAR ── */
+        .nav-bar { display:flex; align-items:center; gap:14px; margin-bottom:28px; flex-wrap:wrap; }
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            background: var(--white);
+            border: 1.5px solid var(--border);
+            color: var(--purple-mid);
+            padding: 9px 20px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 0.88rem;
+            font-weight: 700;
+            transition: all 0.2s;
+            box-shadow: var(--shadow-sm);
+        }
+        .back-btn:hover { background:var(--purple-xpale); border-color:var(--border-hover); }
+        .folder-title-badge {
+            font-size: 1rem;
+            font-weight: 900;
+            color: var(--purple);
+            background: var(--purple-xpale);
+            border: 1.5px solid var(--purple-pale);
+            padding: 6px 18px;
+            border-radius: 30px;
+        }
+
+        /* ── MODAL ── */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(30,27,75,0.7);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .modal-overlay.open { display:flex; }
+        .modal-box {
+            width: 100%;
+            max-width: 1000px;
+            background: var(--white);
+            border-radius: 22px;
+            overflow: hidden;
+            border: 1.5px solid var(--border);
+            box-shadow: 0 40px 80px rgba(30,27,75,0.25);
+            animation: modalIn 0.28s cubic-bezier(0.34,1.56,0.64,1);
+        }
+        @keyframes modalIn {
+            from { opacity:0; transform:scale(0.92) translateY(16px); }
+            to   { opacity:1; transform:scale(1) translateY(0); }
+        }
+        .modal-header {
+            padding: 16px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 14px;
+            border-bottom: 1.5px solid var(--border);
+            background: var(--purple-xpale);
+        }
+        .modal-header strong { font-size:0.95rem; font-weight:800; color:var(--purple); flex:1; }
+        .modal-close {
+            background: var(--white);
+            border: 1.5px solid var(--border);
+            color: var(--text-dim);
+            width: 34px; height: 34px;
+            border-radius: 50%;
+            font-size: 1.3rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            line-height:1;
+        }
+        .modal-close:hover { background:#fee2e2; border-color:#fca5a5; color:#dc2626; }
+        .modal-body { background:#000; line-height:0; }
+        video { width:100%; display:block; max-height:80vh; }
+
+        /* ── LOADING ── */
+        .loading-msg { grid-column:1/-1; padding:60px 20px; text-align:center; color:var(--text-dim); }
+        .spinner {
+            width:38px; height:38px;
+            border:3px solid var(--purple-pale);
+            border-top-color: var(--purple-mid);
+            border-radius:50%;
+            animation:spin 0.8s linear infinite;
+            margin:0 auto 14px;
+        }
+        @keyframes spin { to { transform:rotate(360deg); } }
+        @keyframes fadeUp {
+            from { opacity:0; transform:translateY(18px); }
+            to   { opacity:1; transform:translateY(0); }
+        }
+        .folder-card, .video-card { animation: fadeUp 0.35s ease both; }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="header-inner">
+        <img src="/img/we-core.png" class="header-logo" alt="WE Core">
+        <span class="header-title">BSS Tutorial</span>
+        <div class="header-sep"></div>
+        <span class="header-sub">مكتبة الفيديوهات</span>
+        <span class="header-pill">WE CORE</span>
+    </div>
+</header>
+
+<div class="hero">
+    <div class="hero-chip">📚 مكتبة التدريب</div>
+    <h2>فيديوهات تدريب <em>BSS</em></h2>
+    <div class="stats-bar">
+        <div class="stat-pill">
+            <span class="stat-n" id="totalFolders">0</span>
+            <span class="stat-lbl">قسم</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-pill">
+            <span class="stat-n" id="totalVideos">0</span>
+            <span class="stat-lbl">فيديو</span>
+        </div>
+    </div>
+    <div class="hero-wave"></div>
+</div>
+
+<div class="page">
+
+    <div id="view-folders">
+        <div class="section-header">
+            <span class="section-tag">الأقسام</span>
+            <div class="section-line"></div>
+        </div>
+        <div class="folders-grid" id="foldersGrid">
+            <div class="loading-msg">
+                <div class="spinner"></div>
+                جاري تحميل الأقسام...
+            </div>
+        </div>
+    </div>
+
+    <div id="view-videos" style="display:none;">
+        <div class="nav-bar">
+            <button class="back-btn" onclick="showFolders()">← العودة للأقسام</button>
+            <span class="folder-title-badge" id="currentFolderName"></span>
+        </div>
+        <div class="section-header">
+            <span class="section-tag">الفيديوهات</span>
+            <div class="section-line"></div>
+        </div>
+        <div class="videos-grid" id="videosGrid"></div>
+    </div>
+
+</div>
+
+<div class="modal-overlay" id="modalOverlay">
+    <div class="modal-box">
+        <div class="modal-header">
+            <strong id="modalTitle">اسم الفيديو</strong>
+            <button class="modal-close" onclick="closeModal()" title="إغلاق">&times;</button>
+        </div>
+        <div class="modal-body">
+            <video id="mainPlayer" controls controlsList="nodownload" oncontextmenu="return false;"></video>
+        </div>
+    </div>
+</div>
+
+<script>
+    const SB_URL = 'https://iygwhapcpdmsasqlfelv.supabase.co';
+    const SB_KEY = 'sb_publishable_rD9naqrpu1dI-iwchAS0GQ_JkgGysqP';
+    const supabaseClient = supabase.createClient(SB_URL, SB_KEY);
+    let FOLDERS_DATA = [];
+    let currentFolderVideos = [];
+
+    async function loadLibrary() {
+        try {
+            const token = sessionStorage.getItem('sb-access-token');
+            const { data, error } = await supabaseClient.functions.invoke('hyper-task', {
+                body: { action: 'get_videos' },
+                headers: token ? { Authorization: `Bearer ${token}` } : {}
+            });
+            if (error) throw error;
+            const grouped = data.reduce((acc, file) => {
+                const folderName = file.folder || 'عام';
+                let folder = acc.find(f => f.name === folderName);
+                if (!folder) { folder = { name: folderName, videos: [] }; acc.push(folder); }
+                folder.videos.push(file);
+                return acc;
+            }, []);
+            FOLDERS_DATA = grouped;
+            renderFolders();
+            document.getElementById('totalFolders').textContent = FOLDERS_DATA.length;
+            document.getElementById('totalVideos').textContent = data.length;
+        } catch (err) {
+            console.error("Load Error:", err.message);
+            document.getElementById('foldersGrid').innerHTML =
+                `<div class="loading-msg" style="color:#dc2626">⚠️ حدث خطأ أثناء تحميل البيانات.<br>تأكد من تسجيل الدخول وصلاحية الاتصال.</div>`;
+        }
+    }
+
+    function renderFolders() {
+        const grid = document.getElementById('foldersGrid');
+        if (!FOLDERS_DATA.length) {
+            grid.innerHTML = `<div class="loading-msg">لا توجد فيديوهات متاحة حالياً.</div>`;
+            return;
+        }
+        grid.innerHTML = FOLDERS_DATA.map((f, i) => `
+            <div class="folder-card" onclick="openFolder(${i})" style="animation-delay:${i*0.05}s">
+                <div class="folder-icon-wrap">📂</div>
+                <h3>${f.name}</h3>
+                <span class="folder-count">${f.videos.length} فيديو</span>
+            </div>
+        `).join('');
+    }
+
+    function openFolder(idx) {
+        const folder = FOLDERS_DATA[idx];
+        currentFolderVideos = folder.videos;
+        document.getElementById('view-folders').style.display = 'none';
+        document.getElementById('view-videos').style.display = 'block';
+        document.getElementById('currentFolderName').textContent = folder.name;
+        const grid = document.getElementById('videosGrid');
+        grid.innerHTML = currentFolderVideos.map((v, vIdx) => `
+            <div class="video-card" onclick="playVideo(${vIdx})" style="animation-delay:${vIdx*0.05}s">
+                <div class="video-thumb">
+                    <div class="play-circle">▶</div>
+                </div>
+                <div class="video-info">
+                    <h4>${v.title}</h4>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    async function playVideo(idx) {
+        const video = currentFolderVideos[idx];
+        document.getElementById('modalTitle').textContent = "جاري جلب الرابط الآمن...";
+        document.getElementById('modalOverlay').classList.add('open');
+        try {
+            const token = sessionStorage.getItem('sb-access-token');
+            const { data, error } = await supabaseClient.functions.invoke('hyper-task', {
+                body: { action: 'get_single_url', path: video.path },
+                headers: token ? { Authorization: `Bearer ${token}` } : {}
+            });
+            if (error) throw error;
+            const player = document.getElementById('mainPlayer');
+            player.src = data.url;
+            document.getElementById('modalTitle').textContent = video.title;
+            player.play();
+        } catch (err) {
+            console.error("Play Error:", err.message);
+            closeModal();
+            alert("عفواً، لا يمكن تشغيل هذا الفيديو حالياً.");
+        }
+    }
+
+    function closeModal() {
+        const player = document.getElementById('mainPlayer');
+        player.pause();
+        player.src = "";
+        document.getElementById('modalOverlay').classList.remove('open');
+    }
+
+    function showFolders() {
+        document.getElementById('view-folders').style.display = 'block';
+        document.getElementById('view-videos').style.display = 'none';
+    }
+
+    document.getElementById('modalOverlay').addEventListener('click', function(e) {
+        if (e.target === this) closeModal();
+    });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+    document.addEventListener('DOMContentLoaded', loadLibrary);
+</script>
+<script src="/script/active-users-widget.js"></script>
+</body>
+</html>
