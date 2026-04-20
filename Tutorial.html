@@ -1,138 +1,199 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>WE-Core | BSS Tutorials</title>
-<link rel="shortcut icon" href="img/we-core.png">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
-<style>
-*{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:'Cairo',sans-serif;background:#f0ecf8;min-height:100vh;}
-.header{background:linear-gradient(135deg,#4a1a72 0%,#7b3fe4 100%);text-align:center;padding:30px 20px;position:relative;overflow:hidden;}
-.back-btn{position:absolute;right:20px;top:20px;color:#fff;text-decoration:none;font-size:14px;font-weight:700;display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.15);padding:8px 15px;border-radius:10px;transition:0.2s;z-index:10;}
-.back-btn:hover{background:rgba(255,255,255,0.25);}
-.main-title{font-size:26px;font-weight:900;color:#fff;margin-top:10px;}
-.container{max-width:1100px;margin:30px auto;padding:0 20px 60px;}
-.loading{text-align:center;padding:50px;color:#7b3fe4;font-size:18px;font-weight:700;}
-.folder-section{margin-bottom:40px;}
-.folder-title{background:#fff;padding:15px 20px;border-radius:15px;color:#3d1a6e;font-size:19px;font-weight:900;margin-bottom:20px;display:flex;align-items:center;gap:12px;box-shadow:0 4px 15px rgba(90,45,130,0.08);border-right:6px solid #7b3fe4;}
-.folder-title i{color:#7b3fe4;font-size:22px;}
-.video-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:25px;}
-.video-card{background:#fff;border-radius:18px;padding:18px;box-shadow:0 4px 15px rgba(0,0,0,0.05);transition:0.3s;cursor:pointer;display:flex;flex-direction:column;gap:15px;border:1px solid #eee;position:relative;overflow:hidden;}
-.video-card:hover{transform:translateY(-8px);box-shadow:0 15px 35px rgba(123,63,228,0.18);border-color:#7b3fe4;}
-.video-thumb{width:100%;aspect-ratio:16/9;background:linear-gradient(135deg,#f8f5ff,#ede3fc);border-radius:12px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;}
-.video-thumb i{font-size:45px;color:#b08af0;transition:0.3s;z-index:1;}
-.video-card:hover .video-thumb i{color:#7b3fe4;transform:scale(1.15);}
-.video-info h3{font-size:16px;color:#3d1a6e;font-weight:700;line-height:1.5;height:48px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;}
-.video-tag{font-size:11px;background:#f0ecf8;color:#7b3fe4;padding:4px 10px;border-radius:20px;font-weight:700;align-self:flex-start;}
-.player-overlay{position:fixed;inset:0;background:rgba(15,5,30,0.92);z-index:10000;display:none;justify-content:center;align-items:center;padding:20px;backdrop-filter:blur(8px);animation:fadeIn 0.3s ease;}
-@keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
-.player-overlay.active{display:flex;}
-.player-container{width:100%;max-width:960px;background:#000;border-radius:24px;overflow:hidden;position:relative;box-shadow:0 30px 70px rgba(0,0,0,0.6);border:1px solid rgba(255,255,255,0.1);}
-.close-player{position:absolute;top:20px;left:20px;color:#fff;font-size:28px;cursor:pointer;transition:0.2s;z-index:10001;background:rgba(0,0,0,0.5);width:45px;height:45px;display:flex;align-items:center;justify-content:center;border-radius:50%;}
-.close-player:hover{background:#ff6b35;transform:rotate(90deg);}
-.video-wrapper{position:relative;padding-bottom:56.25%;height:0;}
-.video-wrapper video{position:absolute;top:0;left:0;width:100%;height:100%;border:none;background:#000;}
-footer{text-align:center;padding:30px 20px;color:#999;font-size:14px;border-top:1px solid #e8e2f5;background:#fff;}
-footer span{color:#7b3fe4;font-weight:700;}
-#app { display: none; }
-</style>
-<script src="script/auth.js?v=15.0.1"></script>
-</head>
-<body>
-<div id="app">
-    <div class="header">
-        <a href="index.html" class="back-btn"><i class="fa-solid fa-arrow-right"></i> الرجوع للرئيسية</a>
-        <div class="main-title">BSS Tutorials</div>
-    </div>
-    <div class="container" id="contentArea">
-        <div class="loading" id="loader"><i class="fa-solid fa-spinner fa-spin"></i> جاري تحميل الفيديوهات...</div>
-    </div>
-    <footer>Powered by <span>Mohand Hassan</span> · Abassia Store</footer>
-</div>
-<div class="player-overlay" id="playerOverlay" onclick="closePlayer()">
-    <i class="fa-solid fa-xmark close-player" onclick="closePlayer()"></i>
-    <div class="player-container" onclick="event.stopPropagation()"><div class="video-wrapper" id="videoWrapper"></div></div>
-</div>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script>
-(function() {
-    const $ = id => document.getElementById(id);
-    const sb = supabase.createClient('https://iygwhapcpdmsasqlfelv.supabase.co', 'sb_publishable_rD9naqrpu1dI-iwchAS0GQ_JkgGysqP');
+<script src="script/auth.js?v=12.0.1"></script>
 
-    async function loadVideos() {
-        try {
-            const token = sessionStorage.getItem('sb-access-token');
-            const { data, error } = await sb.functions.invoke('hyper-task', {
-                body: { action: 'get_videos' },
-                headers: token ? { Authorization: `Bearer ${token}` } : {}
-            });
-            if (error) throw error;
-            
-            // Filter only BSS related folders
-            const bssVideos = data.filter(v => v.folder === 'Bss Features' || v.folder === 'Fixed & Adsl');
-            renderVideos(bssVideos);
-        } catch (e) {
-            console.error(e);
-            $('contentArea').innerHTML = '<div class="loading" style="color:#c62828">حدث خطأ أثناء جلب البيانات من Edge Function</div>';
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WE-Core</title>
+        <link rel="shortcut icon" href="img/we-core.png" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            background: #f6f5f8;
         }
+
+        /* Header */
+        .header {
+            background: #5a2d82;
+            text-align: center;
+            padding: 30px 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+        }
+
+        .logo {
+            width: 85px;
+            border-radius: 50%;
+            margin-bottom: 10px;
+        }
+
+        .main-title {
+            font-size: 26px;
+            font-weight: bold;
+            color: #5a2d82;
+        }
+
+        .sub-title {
+            font-size: 14px;
+            color: #efeded;
+            margin-top: 5px;
+        }
+
+        /* Text Area */
+        .note-box {
+            max-width: 800px;
+            margin: 25px auto 0;
+            padding: 0 20px;
+        }
+
+        .note-box textarea {
+            width: 100%;
+            min-height: 120px;
+            border-radius: 14px;
+            border: 1px solid #ddd;
+            padding: 15px;
+            font-size: 14px;
+            resize: vertical;
+            outline: none;
+        }
+
+        .note-box textarea:focus {
+            border-color: #7b3fe4;
+        }
+
+        /* Cards */
+        .container {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 25px;
+        }
+
+        .card-link {
+            text-decoration: none;
+        }
+
+        .card {
+            background: #fff;
+            border-radius: 18px;
+            padding: 30px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+            border-top: 5px solid #7b3fe4;
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-6px);
+        }
+
+        .icon {
+            font-size: 42px;
+            color: #7b3fe4;
+            margin-bottom: 15px;
+            transition: transform 0.3s ease, color 0.3s ease;
+            width: fit-content;
+        }
+
+        .card:hover .icon {
+            transform: scale(1.2);
+            color: #5a2d82;
+        }
+
+        .card h2 {
+            color: #5a2d82;
+            margin-bottom: 10px;
+        }
+
+        .card p {
+            color: #555;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+
+        .btn {
+            display: block;
+            text-align: center;
+            padding: 12px;
+            border-radius: 10px;
+            background: #7b3fe4;
+            color: #fff;
+            font-weight: 500;
+        }
+          footer {
+        text-align: center;
+        margin-top: 50px;
+        color: #777;
+        font-size: 14px;
     }
 
-    function renderVideos(videos) {
-        const area = $('contentArea');
-        area.innerHTML = '';
-        if (!videos || videos.length === 0) {
-            area.innerHTML = '<div class="loading">لا توجد فيديوهات متاحة حالياً</div>';
-            return;
-        }
-        const groups = {};
-        videos.forEach(v => {
-            const folder = v.folder || 'عام';
-            if (!groups[folder]) groups[folder] = [];
-            groups[folder].push(v);
-        });
-        Object.keys(groups).sort().forEach(folder => {
-            const section = document.createElement('div');
-            section.className = 'folder-section';
-            let html = `<div class="folder-title"><i class="fa-solid fa-folder-open"></i><span>${folder}</span></div><div class="video-grid">`;
-            groups[folder].sort((a, b) => a.title.localeCompare(b.title)).forEach(v => {
-                html += `<div class="video-card" onclick="playVideo('${v.path}')"><div class="video-thumb"><i class="fa-solid fa-play"></i></div><div class="video-info"><div class="video-tag">BSS Tutorial</div><h3>${v.title}</h3></div></div>`;
-            });
-            html += `</div>`;
-            section.innerHTML = html;
-            area.appendChild(section);
-        });
+    footer span {
+        color: #5a2d82;
+        font-weight: 600;
     }
-
-    window.playVideo = async function(videoPath) {
-        try {
-            const token = sessionStorage.getItem('sb-access-token');
-            const { data, error } = await sb.functions.invoke('hyper-task', {
-                body: { action: 'get_single_url', path: videoPath },
-                headers: token ? { Authorization: `Bearer ${token}` } : {}
-            });
-            if (error || !data.url) throw error;
-            
-            $('videoWrapper').innerHTML = `<video src="${data.url}" controls autoplay class="video-player"></video>`;
-            $('playerOverlay').classList.add('active');
-            document.body.style.overflow = 'hidden';
-        } catch (e) {
-            alert('فشل في جلب رابط الفيديو، تأكد من صلاحية الجلسة');
-        }
-    };
-
-    window.closePlayer = function() {
-        $('playerOverlay').classList.remove('active');
-        $('videoWrapper').innerHTML = '';
-        document.body.style.overflow = '';
-    };
-
-    window.addEventListener('authSuccess', () => loadVideos());
-    if (document.documentElement.style.display !== 'none') loadVideos();
-})();
-</script>
+    </style>
 <script src="script/active-users-widget.js"></script>
+</head>
+
+<body>
+
+    <!-- Header -->
+    <div class="header">
+        <img src="img/we-core.png" alt="Logo" class="logo">
+        <div class="main-title">WE-Core</div>
+        <div class="sub-title">
+            Powered By Mohand Hassan – From Abassia Store
+             <br>
+            
+        </div>
+    </div>
+
+    <!-- Cards -->
+    <div class="container">
+        <div class="cards">
+
+            <a href="Corces/Bss-tutorial.html" class="card-link">
+                <div class="card">
+                    <div class="icon">
+                        <i class="fa-solid fa-wifi"></i>
+                    </div>
+                     <h2>Bss - tutorial</h2>
+                    <p> </p>
+                    <div class="btn">View Details</div>
+                </div>
+            </a>
+
+            <a href="corces/Foreign.html" class="card-link">
+                <div class="card">
+                    <div class="icon">
+                        <i class="fa-solid fa-wifi"></i>
+                    </div>
+                    <h2>Foreidn</h2>
+                    <p>طريقه المعامله مع العملاء الاجانب</p>
+                    <div class="btn">View Details</div>
+                </div>
+            </a>
+           
+        </div>
+         <footer>
+        Powered by <span>Mohand Hassan</span> – From <span>Abassia Store</span>
+    </footer>
+    </div>
+
+
+<script>
+  window.addEventListener('load', function() {
+    if (typeof ActiveUsersWidget !== 'undefined') {
+      ActiveUsersWidget.init({ position: 'corner' });
+    }
+  });
+</script>
 </body>
 </html>
