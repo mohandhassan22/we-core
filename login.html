@@ -65,16 +65,32 @@ footer span{color:#7b3fe4;font-weight:700;}
         btn.disabled = true;
         btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> جاري التحقق...';
         try {
-            // Using RPC to handle special characters securely in POST body
-            const { data, error } = await sb.rpc('check_user_login', { p_username: username, p_password: password });
-            if (error || !data || data.length === 0) {
+            // Step 1: Get email from username using Edge Function
+            const EDGE_FUNCTION_URL = 'https://iygwhapcpdmsasqlfelv.supabase.co/functions/v1/auth-handler';
+            const getEmailResponse = await fetch(EDGE_FUNCTION_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ action: 'get_email', username: username })
+            });
+            const emailResult = await getEmailResponse.json();
+            if (!emailResult.email) {
                 btn.disabled = false;
                 btn.innerHTML = '<i class="fa-solid fa-right-to-bracket"></i> تسجيل الدخول';
-                showErr('اسم المستخدم أو كلمة المرور غير صحيحة');
+                showErr('اسم المستخدم غير موجود');
                 return;
             }
-            sessionStorage.setItem('we_user', data[0].username);
-            sessionStorage.setItem('we_pass', password);
+            const email = emailResult.email;
+            // Step 2: Sign in using Supabase Auth with email and password
+            const { data: authData, error: authError } = await sb.auth.signInWithPassword({ email: email, password: password });
+            if (authError || !authData.session) {
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fa-solid fa-right-to-bracket"></i> تسجيل الدخول';
+                showErr('كلمة المرور غير صحيحة');
+                console.error('Auth error:', authError);
+                return;
+            }
+            // Success - save username and redirect
+            sessionStorage.setItem('we_user', username);
             window.location.replace('index.html');
         } catch (e) {
             console.error(e);

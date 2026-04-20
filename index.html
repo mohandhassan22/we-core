@@ -147,8 +147,15 @@ footer span{color:#7b3fe4;font-weight:700;}
 (function() {
   const $ = id => document.getElementById(id);
   const savedUser = sessionStorage.getItem('we_user');
-  if (savedUser) { $('app').style.display = 'block'; $('showUser').textContent = savedUser; }
-  window.doLogout = function() { sessionStorage.clear(); location.href = 'login.html'; };
+  if (!savedUser) { window.location.replace('login.html'); return; }
+  $('app').style.display = 'block';
+  $('showUser').textContent = savedUser;
+  window.doLogout = async function() { 
+    const sb = supabase.createClient('https://iygwhapcpdmsasqlfelv.supabase.co', 'sb_publishable_rD9naqrpu1dI-iwchAS0GQ_JkgGysqP');
+    await sb.auth.signOut();
+    sessionStorage.clear();
+    location.href = 'login.html';
+  };
   window.openAboutModal = () => $('aboutModal').classList.add('active');
   window.closeAboutModal = () => $('aboutModal').classList.remove('active');
   window.addEventListener('load', function() { if (typeof ActiveUsersWidget !== 'undefined') { ActiveUsersWidget.init({ position: 'corner' }); } });

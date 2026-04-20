@@ -1,23 +1,35 @@
 /**
- * WE-Core Authentication Guard (V12 - RPC Integration)
+ * WE-Core Authentication Guard (V14 - Edge Functions)
  * This script ensures that the user is logged in before accessing any page.
  */
+
 (async function() {
     const SB_URL = 'https://iygwhapcpdmsasqlfelv.supabase.co';
     const SB_KEY = 'sb_publishable_rD9naqrpu1dI-iwchAS0GQ_JkgGysqP';
+    
     const path = window.location.pathname;
-    const isLoginPage = path.endsWith('login.html');
+    const isLoginPage = path.includes('login.html') || path.endsWith('.icu/');
+
     if (isLoginPage) return;
-    if (document.documentElement) { document.documentElement.style.display = 'none'; }
-    function getLoginPath() {
-        if (path.includes('/info/') || path.includes('/offers/') || path.includes('/Corces/')) { return '../login.html'; }
-        return 'login.html';
+
+    // 1. Immediate hide
+    if (document.documentElement) {
+        document.documentElement.style.display = 'none';
     }
-    async function redirectToLogin() { window.location.replace(getLoginPath()); }
+
+    async function redirectToLogin() {
+        window.location.replace('login.html');
+    }
+
     const savedUser = sessionStorage.getItem('we_user');
-    const savedPass = sessionStorage.getItem('we_pass');
-    if (!savedUser || !savedPass) { redirectToLogin(); return; }
+
+    if (!savedUser) {
+        redirectToLogin();
+        return;
+    }
+
     try {
+        // Load SDK if not present
         if (typeof supabase === 'undefined') {
             await new Promise((resolve, reject) => {
                 const script = document.createElement('script');
@@ -27,15 +39,19 @@
                 document.head.appendChild(script);
             });
         }
+
+        // Initialize client
         const sb = supabase.createClient(SB_URL, SB_KEY);
-        // Validate using RPC to handle special characters securely
-        const { data, error } = await sb.rpc('check_user_login', { p_username: savedUser, p_password: savedPass });
-        if (data && data.length > 0 && !error) {
+        
+        // Check if user has an active session
+        const { data: { session }, error: sessionError } = await sb.auth.getSession();
+        
+        if (session && !sessionError) {
+            // User has a valid session
             document.documentElement.style.display = '';
-            const appDiv = document.getElementById('app');
-            if (appDiv) appDiv.style.display = 'block';
         } else {
-            sessionStorage.clear();
+            // No valid session
+            console.log('No active session found');
             redirectToLogin();
         }
     } catch (error) {
