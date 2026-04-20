@@ -72,7 +72,7 @@ footer span{color:#7b3fe4;font-weight:700;}
 
         try {
             // 1. Get Email from Edge Function using username
-            const { data: emailData, error: emailErr } = await sb.functions.invoke('get-private-videos', {
+            const { data: emailData, error: emailErr } = await sb.functions.invoke('hyper-task', {
                 body: { action: 'get_email', username: username }
             });
 
