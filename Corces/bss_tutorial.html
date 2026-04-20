@@ -161,8 +161,13 @@
     async function loadLibrary() {
         try {
             console.log("Connecting to hyper-task...");
+            
+            // جلب التوكن من sessionStorage أو الكوكيز
+            const token = sessionStorage.getItem('sb-access-token');
+            
             const { data, error } = await supabaseClient.functions.invoke('hyper-task', {
-                body: { action: 'get_videos' }
+                body: { action: 'get_videos' },
+                headers: token ? { Authorization: `Bearer ${token}` } : {}
             });
 
             if (error) throw error;
@@ -229,12 +234,16 @@
         modalTitle.textContent = "جاري جلب الرابط الآمن...";
         
         try {
+            // جلب التوكن
+            const token = sessionStorage.getItem('sb-access-token');
+
             // طلب الرابط الموقت من السيرفر
             const { data, error } = await supabaseClient.functions.invoke('hyper-task', {
                 body: { 
                     action: 'get_single_url',
                     path: video.path 
-                }
+                },
+                headers: token ? { Authorization: `Bearer ${token}` } : {}
             });
 
             if (error) throw error;

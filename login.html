@@ -92,9 +92,13 @@ footer span{color:#7b3fe4;font-weight:700;}
 
             // 3. Save Token in Cookies for Edge Function
             const token = data.session.access_token;
+            // حفظ التوكن في الكوكيز ليكون متاحاً للـ Edge Function
             document.cookie = `sb-access-token=${token}; path=/; max-age=86400; SameSite=Lax; Secure`;
             
+            // تخزين بيانات الجلسة
             sessionStorage.setItem('we_user', username);
+            sessionStorage.setItem('sb-access-token', token);
+            
             window.location.replace('index.html');
 
         } catch (e) {
