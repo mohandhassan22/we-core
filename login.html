@@ -66,7 +66,7 @@ footer span{color:#7b3fe4;font-weight:700;}
         btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> جاري التحقق...';
         try {
             // Step 1: Get email from username using Edge Function
-            const EDGE_FUNCTION_URL = 'https://iygwhapcpdmsasqlfelv.supabase.co/functions/v1/auth-handler';
+            const EDGE_FUNCTION_URL = 'https://iygwhapcpdmsasqlfelv.supabase.co/functions/v1/hyper-task';
             const getEmailResponse = await fetch(EDGE_FUNCTION_URL, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
