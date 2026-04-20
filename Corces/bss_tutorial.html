@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <script src="../script/auth.js?v=12.0.1"></script>
+    <script src="../script/auth.js?v=15.0.1"></script>
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BSS Tutorial – مكتبة الفيديوهات الآمنة</title>
+    <title>BSS Tutorial – مكتبة الفيديوهات</title>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+    
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
     <style>
@@ -14,7 +15,6 @@
             --purple:      #5b1f82;
             --purple-mid:  #7c3aad;
             --purple-lt:   #9f6ec7;
-            --purple-bg:   #f3edf9;
             --dark:        #0f0f14;
             --dark2:       #1a1a24;
             --card-bg:     #1e1e2a;
@@ -24,28 +24,83 @@
         }
         * { margin:0; padding:0; box-sizing:border-box; }
         body { font-family:'Tajawal',sans-serif; background: var(--dark); color: var(--text); direction:rtl; min-height:100vh; }
-        header { background: linear-gradient(135deg,#3a0e5e 0%,#5b1f82 50%,#7c3aad 100%); padding:20px 24px; position:sticky; top:0; z-index:100; }
+        
+        header { 
+            background: linear-gradient(135deg,#3a0e5e 0%,#5b1f82 50%,#7c3aad 100%); 
+            padding:20px 24px; 
+            position:sticky; 
+            top:0; 
+            z-index:100;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+        }
         .header-inner { max-width:1200px; margin:0 auto; display:flex; align-items:center; gap:15px; }
         .logo-circle { width:40px; height:40px; background:white; border-radius:50%; display:flex; align-items:center; justify-content:center; color:var(--purple); font-weight:bold; }
+        
         .hero { text-align:center; padding:50px 20px; background:linear-gradient(180deg,#2a0d45 0%,var(--dark) 100%); }
         .hero h2 span { color:var(--gold-lt); }
         .stats { display:flex; gap:30px; justify-content:center; margin-top:20px; }
         .stat-n { font-size:1.5rem; font-weight:900; color:var(--gold-lt); display:block; }
-        .page { max-width:1200px; margin:0 auto; padding:40px 20px; }
-        .folders-grid, .videos-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(250px,1fr)); gap:20px; }
-        .folder-card, .video-card { background:var(--card-bg); border-radius:var(--radius); padding:20px; border:1px solid rgba(255,255,255,0.1); cursor:pointer; transition:0.3s; }
-        .folder-card:hover, .video-card:hover { transform:translateY(-5px); border-color:var(--purple-lt); }
-        .folder-icon { font-size:2rem; margin-bottom:10px; display:block; }
-        .video-thumb { aspect-ratio:16/9; background:#000; border-radius:8px; display:flex; align-items:center; justify-content:center; margin-bottom:10px; font-size:1.5rem; color: var(--purple-lt); }
-        .back-btn { background:rgba(255,255,255,0.1); border:none; color:white; padding:10px 20px; border-radius:30px; cursor:pointer; margin-bottom:20px; }
         
-        /* Modal Styles */
-        .modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.9); z-index:1000; align-items:center; justify-content:center; padding:20px; }
+        .page { max-width:1200px; margin:0 auto; padding:40px 20px; }
+        .folders-grid, .videos-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:20px; }
+        
+        .folder-card, .video-card { 
+            background:var(--card-bg); 
+            border-radius:var(--radius); 
+            padding:25px; 
+            border:1px solid rgba(255,255,255,0.05); 
+            cursor:pointer; 
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+        .folder-card:hover, .video-card:hover { 
+            transform:translateY(-8px); 
+            border-color:var(--purple-lt); 
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+        }
+        .folder-icon { font-size:3rem; margin-bottom:15px; display:block; }
+        .video-thumb { 
+            aspect-ratio:16/9; 
+            background:#000; 
+            border-radius:10px; 
+            display:flex; 
+            align-items:center; 
+            justify-content:center; 
+            margin-bottom:15px; 
+            font-size:2rem; 
+            color: var(--purple-lt);
+            border: 1px solid #333;
+        }
+        
+        .back-btn { 
+            background:var(--purple-mid); 
+            border:none; 
+            color:white; 
+            padding:12px 25px; 
+            border-radius:30px; 
+            cursor:pointer; 
+            margin-bottom:25px; 
+            font-family: inherit;
+            transition: 0.2s;
+        }
+        .back-btn:hover { background: var(--purple-lt); }
+
+        /* Modal Player */
+        .modal-overlay { 
+            display:none; 
+            position:fixed; 
+            inset:0; 
+            background:rgba(0,0,0,0.95); 
+            z-index:1000; 
+            align-items:center; 
+            justify-content:center; 
+            padding:20px; 
+        }
         .modal-overlay.open { display:flex; }
-        .modal-box { width:100%; max-width:900px; background:var(--dark2); border-radius:15px; overflow:hidden; }
-        .modal-header { padding:15px; display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid rgba(255,255,255,0.1); }
-        .modal-player { width: 100%; background: #000; }
-        video { width: 100%; display: block; outline: none; }
+        .modal-box { width:100%; max-width:1000px; background:var(--dark2); border-radius:20px; overflow:hidden; box-shadow: 0 0 50px rgba(0,0,0,1); }
+        .modal-header { padding:20px; display:flex; justify-content:space-between; align-items:center; background: #23232f; }
+        .modal-body { width: 100%; background: #000; line-height: 0; }
+        video { width: 100%; display: block; max-height: 80vh; }
     </style>
 </head>
 <body>
@@ -58,7 +113,7 @@
 </header>
 
 <div class="hero">
-    <h2>مكتبة فيديوهات <span>BSS</span> الآمنة</h2>
+    <h2>مكتبة فيديوهات <span>BSS</span></h2>
     <div class="stats">
         <div class="stat"><span class="stat-n" id="totalFolders">0</span><span>قسم</span></div>
         <div class="stat"><span class="stat-n" id="totalVideos">0</span><span>فيديو</span></div>
@@ -67,13 +122,15 @@
 
 <div class="page">
     <div id="view-folders">
-        <h3 style="margin-bottom:20px;">الأقسام المتاحة لك:</h3>
-        <div class="folders-grid" id="foldersGrid"></div>
+        <h3 style="margin-bottom:25px; color: var(--text-dim);">اختر القسم:</h3>
+        <div class="folders-grid" id="foldersGrid">
+            <p>جاري تحميل الأقسام...</p>
+        </div>
     </div>
 
     <div id="view-videos" style="display:none;">
         <button class="back-btn" onclick="showFolders()">← العودة للأقسام</button>
-        <h2 id="currentFolderName" style="margin-bottom:20px;"></h2>
+        <h2 id="currentFolderName" style="margin-bottom:25px; color: var(--gold-lt);"></h2>
         <div class="videos-grid" id="videosGrid"></div>
     </div>
 </div>
@@ -81,17 +138,17 @@
 <div class="modal-overlay" id="modalOverlay">
     <div class="modal-box">
         <div class="modal-header">
-            <span id="modalTitle"></span>
-            <button onclick="closeModal()" style="background:none; border:none; color:white; font-size:1.5rem; cursor:pointer;">✕</button>
+            <strong id="modalTitle">اسم الفيديو</strong>
+            <button onclick="closeModal()" style="background:none; border:none; color:white; font-size:1.8rem; cursor:pointer;">&times;</button>
         </div>
-        <div class="modal-player">
-            <video id="mainVideoPlayer" controls controlsList="nodownload"></video>
+        <div class="modal-body">
+            <video id="mainPlayer" controls controlsList="nodownload" oncontextmenu="return false;"></video>
         </div>
     </div>
 </div>
 
 <script>
-    // 1. الإعدادات الأساسية
+    // الإعدادات المحدثة
     const SB_URL = 'https://iygwhapcpdmsasqlfelv.supabase.co';
     const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml5Z3doYXBjcGRtc2FzcWxmZWx2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzEzNDk5MDQsImV4cCI6MjA4NjkyNTkwNH0.jqU1fEc9kBkXcCfazH6aTnS2XWWzPv0bbixHZgjtrnQ';
 
@@ -100,18 +157,19 @@
     let FOLDERS_DATA = [];
     let currentFolderVideos = [];
 
-    // 2. جلب قائمة الفيديوهات من الـ Edge Function
+    // جلب البيانات من الـ Edge Function باسمها الصحيح hyper-task
     async function loadLibrary() {
         try {
+            console.log("Connecting to hyper-task...");
             const { data, error } = await supabaseClient.functions.invoke('hyper-task', {
                 body: { action: 'get_videos' }
             });
 
             if (error) throw error;
 
-            // تنظيم البيانات القادمة من الفانكشن (Grouping)
+            // تنظيم المجلدات
             const grouped = data.reduce((acc, file) => {
-                const folderName = file.folder || 'غير مصنف';
+                const folderName = file.folder || 'عام';
                 let folder = acc.find(f => f.name === folderName);
                 if (!folder) {
                     folder = { name: folderName, videos: [] };
@@ -128,24 +186,26 @@
             document.getElementById('totalVideos').textContent = data.length;
 
         } catch (err) {
-            console.error("فشل التحميل:", err.message);
-            alert("فشل في جلب البيانات، تأكد من تسجيل الدخول.");
+            console.error("Load Error:", err.message);
+            document.getElementById('foldersGrid').innerHTML = `<p style="color:#ff6b6b">حدث خطأ أثناء تحميل البيانات. تأكد من تسجيل الدخول وصلاحية الفانكشن.</p>`;
         }
     }
 
-    // 3. عرض المجلدات في الواجهة
     function renderFolders() {
         const grid = document.getElementById('foldersGrid');
+        if (FOLDERS_DATA.length === 0) {
+            grid.innerHTML = "<p>لا توجد فيديوهات متاحة حالياً.</p>";
+            return;
+        }
         grid.innerHTML = FOLDERS_DATA.map((f, i) => `
             <div class="folder-card" onclick="openFolder(${i})">
                 <span class="folder-icon">📂</span>
                 <h3>${f.name}</h3>
-                <p>${f.videos.length} فيديو تعليمي</p>
+                <p style="color: var(--text-dim)">${f.videos.length} فيديو</p>
             </div>
         `).join('');
     }
 
-    // 4. فتح مجلد معين
     function openFolder(idx) {
         const folder = FOLDERS_DATA[idx];
         currentFolderVideos = folder.videos;
@@ -156,20 +216,20 @@
         
         const grid = document.getElementById('videosGrid');
         grid.innerHTML = currentFolderVideos.map((v, vIdx) => `
-            <div class="video-card" onclick="prepareVideo(${vIdx})">
+            <div class="video-card" onclick="playVideo(${vIdx})">
                 <div class="video-thumb">▶</div>
                 <h4>${v.title}</h4>
             </div>
         `).join('');
     }
 
-    // 5. جلب رابط موقت وتشغيل الفيديو
-    async function prepareVideo(idx) {
+    async function playVideo(idx) {
         const video = currentFolderVideos[idx];
-        document.getElementById('modalTitle').textContent = "جاري التحميل...";
+        const modalTitle = document.getElementById('modalTitle');
+        modalTitle.textContent = "جاري جلب الرابط الآمن...";
         
         try {
-            // نطلب من الفانكشن رابط موقت (Signed URL)
+            // طلب الرابط الموقت من السيرفر
             const { data, error } = await supabaseClient.functions.invoke('hyper-task', {
                 body: { 
                     action: 'get_single_url',
@@ -179,22 +239,20 @@
 
             if (error) throw error;
 
-            // تشغيل الفيديو بالرابط الموقت
-            const player = document.getElementById('mainVideoPlayer');
+            const player = document.getElementById('mainPlayer');
             player.src = data.url;
-            document.getElementById('modalTitle').textContent = video.title;
+            modalTitle.textContent = video.title;
             document.getElementById('modalOverlay').classList.add('open');
             player.play();
 
         } catch (err) {
-            console.error("خطأ في جلب الرابط:", err.message);
-            alert("عفواً، لا تملك صلاحية لمشاهدة هذا الفيديو أو انتهت جلستك.");
+            console.error("Play Error:", err.message);
+            alert("عفواً، لا يمكن تشغيل هذا الفيديو حالياً.");
         }
     }
 
-    // 6. وظائف المساعدة
     function closeModal() {
-        const player = document.getElementById('mainVideoPlayer');
+        const player = document.getElementById('mainPlayer');
         player.pause();
         player.src = "";
         document.getElementById('modalOverlay').classList.remove('open');
@@ -205,7 +263,6 @@
         document.getElementById('view-videos').style.display = 'none';
     }
 
-    // التنفيذ عند تحميل الصفحة
     document.addEventListener('DOMContentLoaded', loadLibrary);
 </script>
 
