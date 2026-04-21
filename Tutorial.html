@@ -2,198 +2,376 @@
 <html lang="ar" dir="rtl">
 <head>
 <script src="script/auth.js?v=12.0.1"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WE-Core</title>
+<link rel="shortcut icon" href="img/we-core.png" type="image/x-icon">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+<style>
+    :root {
+        --purple:       #6d28d9;
+        --purple-mid:   #7c3aed;
+        --purple-lt:    #a78bfa;
+        --purple-pale:  #ede9fe;
+        --purple-xpale: #f5f3ff;
+        --white:        #ffffff;
+        --bg:           #f8f7ff;
+        --text:         #1e1b4b;
+        --text-mid:     #4c1d95;
+        --text-dim:     #7c6fa0;
+        --border:       #e0d9f7;
+        --border-h:     #a78bfa;
+        --radius:       20px;
+        --shadow-sm:    0 2px 8px rgba(109,40,217,0.08);
+        --shadow-md:    0 8px 24px rgba(109,40,217,0.13);
+        --shadow-lg:    0 20px 48px rgba(109,40,217,0.17);
+    }
 
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WE-Core</title>
-        <link rel="shortcut icon" href="img/we-core.png" type="image/x-icon">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    * { margin:0; padding:0; box-sizing:border-box; }
 
-    <style>
-        body {
-            margin: 0;
-            font-family: 'Segoe UI', Tahoma, sans-serif;
-            background: #f6f5f8;
-        }
+    body {
+        font-family: 'Tajawal', sans-serif;
+        background: var(--bg);
+        color: var(--text);
+        min-height: 100vh;
+        direction: rtl;
+        overflow-x: hidden;
+    }
 
-        /* Header */
-        .header {
-            background: #5a2d82;
-            text-align: center;
-            padding: 30px 20px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
-        }
+    /* dot grid */
+    body::before {
+        content:'';
+        position:fixed; inset:0;
+        background-image: radial-gradient(circle, rgba(109,40,217,0.06) 1px, transparent 1px);
+        background-size: 28px 28px;
+        pointer-events: none;
+        z-index: 0;
+    }
+    /* ambient blob */
+    body::after {
+        content:'';
+        position:fixed;
+        width:700px; height:700px;
+        background: radial-gradient(circle, rgba(167,139,250,0.13) 0%, transparent 70%);
+        top:-200px; left:-200px;
+        pointer-events:none;
+        z-index:0;
+    }
 
-        .logo {
-            width: 85px;
-            border-radius: 50%;
-            margin-bottom: 10px;
-        }
+    /* ── HEADER ── */
+    header {
+        position: sticky;
+        top:0; z-index:100;
+        background: rgba(255,255,255,0.9);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border-bottom: 1.5px solid var(--border);
+        box-shadow: 0 2px 16px rgba(109,40,217,0.07);
+    }
+    .header-inner {
+        max-width: 960px;
+        margin: 0 auto;
+        padding: 0 28px;
+        height: 66px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+    .header-logo {
+        width: 40px; height: 40px;
+        border-radius: 50%;
+        border: 2.5px solid var(--purple-lt);
+        box-shadow: 0 0 0 4px var(--purple-pale);
+    }
+    .header-title {
+        font-size: 1.25rem;
+        font-weight: 900;
+        color: var(--purple);
+    }
+    .header-sep { width:1px; height:20px; background:var(--border); margin:0 2px; }
+    .header-sub { font-size:0.8rem; color:var(--text-dim); font-weight:500; }
 
-        .main-title {
-            font-size: 26px;
-            font-weight: bold;
-            color: #5a2d82;
-        }
-
-        .sub-title {
-            font-size: 14px;
-            color: #efeded;
-            margin-top: 5px;
-        }
-
-        /* Text Area */
-        .note-box {
-            max-width: 800px;
-            margin: 25px auto 0;
-            padding: 0 20px;
-        }
-
-        .note-box textarea {
-            width: 100%;
-            min-height: 120px;
-            border-radius: 14px;
-            border: 1px solid #ddd;
-            padding: 15px;
-            font-size: 14px;
-            resize: vertical;
-            outline: none;
-        }
-
-        .note-box textarea:focus {
-            border-color: #7b3fe4;
-        }
-
-        /* Cards */
-        .container {
-            max-width: 900px;
-            margin: 40px auto;
-            padding: 20px;
-        }
-
-        .cards {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap: 25px;
-        }
-
-        .card-link {
-            text-decoration: none;
-        }
-
-        .card {
-            background: #fff;
-            border-radius: 18px;
-            padding: 30px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
-            border-top: 5px solid #7b3fe4;
-            transition: transform 0.3s ease;
-        }
-
-        .card:hover {
-            transform: translateY(-6px);
-        }
-
-        .icon {
-            font-size: 42px;
-            color: #7b3fe4;
-            margin-bottom: 15px;
-            transition: transform 0.3s ease, color 0.3s ease;
-            width: fit-content;
-        }
-
-        .card:hover .icon {
-            transform: scale(1.2);
-            color: #5a2d82;
-        }
-
-        .card h2 {
-            color: #5a2d82;
-            margin-bottom: 10px;
-        }
-
-        .card p {
-            color: #555;
-            font-size: 14px;
-            margin-bottom: 20px;
-        }
-
-        .btn {
-            display: block;
-            text-align: center;
-            padding: 12px;
-            border-radius: 10px;
-            background: #7b3fe4;
-            color: #fff;
-            font-weight: 500;
-        }
-          footer {
+    /* ── HERO ── */
+    .hero {
+        position: relative;
+        z-index:1;
         text-align: center;
-        margin-top: 50px;
-        color: #777;
-        font-size: 14px;
+        padding: 60px 20px 52px;
+        overflow: hidden;
+    }
+    .hero-wave {
+        position:absolute;
+        bottom:0; left:0; right:0;
+        height:50px;
+        background:var(--bg);
+        clip-path: ellipse(55% 100% at 50% 100%);
+    }
+    .hero-avatar {
+        width: 88px; height: 88px;
+        border-radius: 50%;
+        border: 3px solid var(--white);
+        box-shadow: 0 0 0 5px var(--purple-pale), var(--shadow-md);
+        margin-bottom: 20px;
+        animation: floatAvatar 3.5s ease-in-out infinite;
+    }
+    @keyframes floatAvatar {
+        0%,100% { transform:translateY(0); }
+        50%      { transform:translateY(-7px); }
+    }
+    .hero-chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: var(--purple-xpale);
+        border: 1.5px solid var(--purple-pale);
+        color: var(--purple-mid);
+        font-size: 0.75rem;
+        font-weight: 700;
+        letter-spacing: 0.06em;
+        padding: 5px 14px;
+        border-radius: 20px;
+        margin-bottom: 16px;
+    }
+    .hero h1 {
+        font-size: clamp(2rem, 5vw, 3rem);
+        font-weight: 900;
+        color: var(--text);
+        letter-spacing: -0.02em;
+        line-height: 1.15;
+        margin-bottom: 10px;
+    }
+    .hero h1 em {
+        font-style: normal;
+        background: linear-gradient(135deg, var(--purple-mid) 0%, var(--purple-lt) 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+    .hero-sub {
+        font-size: 0.9rem;
+        color: var(--text-dim);
+        font-weight: 500;
+        margin-top: 4px;
     }
 
-    footer span {
-        color: #5a2d82;
-        font-weight: 600;
+    /* ── SECTION HEADER ── */
+    .section-header {
+        display:flex; align-items:center; gap:10px;
+        margin-bottom: 28px;
     }
-    </style>
+    .section-tag {
+        font-size: 0.72rem;
+        font-weight: 800;
+        letter-spacing: 0.1em;
+        color: var(--purple-mid);
+        background: var(--purple-xpale);
+        border: 1.5px solid var(--purple-pale);
+        padding: 4px 12px;
+        border-radius: 20px;
+    }
+    .section-line { flex:1; height:1.5px; background:var(--border); }
+
+    /* ── CARDS GRID ── */
+    .container {
+        position: relative;
+        z-index:1;
+        max-width: 960px;
+        margin: 0 auto;
+        padding: 0 24px 80px;
+    }
+    .cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+        gap: 20px;
+    }
+
+    .card-link { text-decoration: none; }
+
+    .card {
+        background: var(--white);
+        border: 1.5px solid var(--border);
+        border-radius: var(--radius);
+        padding: 28px 24px 22px;
+        box-shadow: var(--shadow-sm);
+        transition: all 0.3s cubic-bezier(0.34,1.56,0.64,1);
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        position: relative;
+        overflow: hidden;
+        animation: fadeUp 0.4s ease both;
+    }
+    .card::before {
+        content:'';
+        position:absolute;
+        top:0; right:0;
+        width:80px; height:80px;
+        background: radial-gradient(circle at top right, rgba(109,40,217,0.06), transparent 70%);
+        pointer-events:none;
+    }
+    .card:hover {
+        transform: translateY(-8px) scale(1.02);
+        border-color: var(--border-h);
+        box-shadow: var(--shadow-lg), 0 0 0 4px var(--purple-pale);
+    }
+
+    .card-icon-wrap {
+        width: 56px; height: 56px;
+        background: var(--purple-xpale);
+        border: 2px solid var(--purple-pale);
+        border-radius: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.4rem;
+        color: var(--purple-mid);
+        transition: all 0.3s cubic-bezier(0.34,1.56,0.64,1);
+        margin-bottom: 4px;
+    }
+    .card:hover .card-icon-wrap {
+        background: var(--purple-pale);
+        transform: scale(1.1) rotate(-5deg);
+        color: var(--purple);
+    }
+
+    .card h2 {
+        font-size: 1.05rem;
+        font-weight: 800;
+        color: var(--text);
+        line-height: 1.3;
+    }
+    .card p {
+        font-size: 0.83rem;
+        color: var(--text-dim);
+        font-weight: 400;
+        line-height: 1.55;
+        flex:1;
+    }
+
+    .card-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 7px;
+        padding: 10px 0;
+        border-radius: 12px;
+        background: var(--purple-mid);
+        color: #fff;
+        font-size: 0.85rem;
+        font-weight: 700;
+        font-family: inherit;
+        transition: all 0.2s;
+        box-shadow: 0 4px 14px rgba(124,58,237,0.3);
+        margin-top: 4px;
+    }
+    .card:hover .card-btn {
+        background: var(--purple);
+        box-shadow: 0 6px 20px rgba(124,58,237,0.4);
+        gap: 10px;
+    }
+    .card-btn i { font-size:0.75rem; transition:transform 0.2s; }
+    .card:hover .card-btn i { transform: translateX(-3px); }
+
+    /* ── FOOTER ── */
+    footer {
+        position: relative;
+        z-index:1;
+        text-align: center;
+        padding: 28px 20px;
+        font-size: 0.82rem;
+        color: var(--text-dim);
+        border-top: 1.5px solid var(--border);
+        background: var(--white);
+    }
+    footer strong { color: var(--purple-mid); font-weight: 800; }
+
+    @keyframes fadeUp {
+        from { opacity:0; transform:translateY(20px); }
+        to   { opacity:1; transform:translateY(0); }
+    }
+    .card:nth-child(1) { animation-delay: 0.05s; }
+    .card:nth-child(2) { animation-delay: 0.10s; }
+    .card:nth-child(3) { animation-delay: 0.15s; }
+    .card:nth-child(4) { animation-delay: 0.20s; }
+</style>
 <script src="script/active-users-widget.js"></script>
 </head>
-
 <body>
 
-    <!-- Header -->
-    <div class="header">
-        <img src="img/we-core.png" alt="Logo" class="logo">
-        <div class="main-title">WE-Core</div>
-        <div class="sub-title">
-            Powered By Mohand Hassan – From Abassia Store
-             <br>
-            
-        </div>
+<!-- HEADER -->
+<header>
+    <div class="header-inner">
+        <img src="img/we-core.png" class="header-logo" alt="WE Core">
+        <span class="header-title">WE-Core</span>
+        <div class="header-sep"></div>
+        <span class="header-sub">بوابة التدريب الداخلي</span>
     </div>
+</header>
 
-    <!-- Cards -->
-    <div class="container">
-        <div class="cards">
+<!-- HERO -->
+<div class="hero">
+    <img src="img/we-core.png" class="hero-avatar" alt="WE Core">
+    <div class="hero-chip">🎓 منصة التدريب</div>
+    <h1><em>WE-Core</em></h1>
+    <div class="hero-sub">Powered by Mohand Hassan — Abassia Store</div>
+    <div class="hero-wave"></div>
+</div>
 
-            <a href="Corces/bss_tutorial.html" class="card-link">
-                <div class="card">
-                   <div class="icon"><i class="fa-solid fa-graduation-cap"></i></div>
-                    </div>
-                     <h2>Bss - tutorial</h2>
-                    <p> </p>
-                    <div class="btn">View Details</div>
-                </div>
-            </a>
-            <a href="Corces/soft-skils.html" class="card-link">
-                <div class="card">
-                   <div class="icon"><i class="fa-solid fa-graduation-cap"></i></div>
-                    </div>
-                     <h2>soft-skils</h2>
-                    <p> </p>
-                    <div class="btn">View Details</div>
-                </div>
-            </a>
-
-            <a href="Corces/Foreign.html" class="card-link">
-                <div class="card">
-                    <div class="icon">
-                      <i class="fa-solid fa-graduation-cap"></i>
-                    </div>
-                    <h2>Foreidn</h2>
-                    <div class="btn">View Details</div>
-                </div>
-            </a>
-           
-        </div>
-         <footer>
-        Powered by <span>Mohand Hassan</span> – From <span>Abassia Store</span>
-    </footer>
+<!-- CARDS -->
+<div class="container">
+    <div class="section-header">
+        <span class="section-tag">الأقسام المتاحة</span>
+        <div class="section-line"></div>
     </div>
+    <div class="cards">
 
+        <a href="Corces/bss_tutorial.html" class="card-link">
+            <div class="card">
+                <div class="card-icon-wrap">
+                    <i class="fa-solid fa-graduation-cap"></i>
+                </div>
+                <h2>BSS Tutorial</h2>
+                <p>فيديوهات تدريبية تغطي أساسيات وميزات BSS بشكل تفصيلي</p>
+                <div class="card-btn">
+                    عرض التفاصيل <i class="fa-solid fa-arrow-left"></i>
+                </div>
+            </div>
+        </a>
+
+        <a href="Corces/soft-skils.html" class="card-link">
+            <div class="card">
+                <div class="card-icon-wrap">
+                    <i class="fa-solid fa-brain"></i>
+                </div>
+                <h2>Soft Skills</h2>
+                <p>كورسات لتطوير المهارات الشخصية والتواصل الفعّال في بيئة العمل</p>
+                <div class="card-btn">
+                    عرض التفاصيل <i class="fa-solid fa-arrow-left"></i>
+                </div>
+            </div>
+        </a>
+
+        <a href="Corces/Foreign.html" class="card-link">
+            <div class="card">
+                <div class="card-icon-wrap">
+                    <i class="fa-solid fa-earth-africa"></i>
+                </div>
+                <h2>Foreign</h2>
+                <p>محتوى تدريبي متخصص في الخدمات الدولية وباقات الـ Roaming</p>
+                <div class="card-btn">
+                    عرض التفاصيل <i class="fa-solid fa-arrow-left"></i>
+                </div>
+            </div>
+        </a>
+
+    </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+    Powered by <strong>Mohand Hassan</strong> — <strong>Abassia Store</strong>
+</footer>
 
 <script>
   window.addEventListener('load', function() {
