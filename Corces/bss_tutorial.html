@@ -400,6 +400,7 @@
         .modal-close:hover { background:#fee2e2; border-color:#fca5a5; color:#dc2626; }
         .modal-body { background:#000; line-height:0; }
         video { width:100%; display:block; max-height:80vh; }
+        .modal-body iframe { width:100%; height:560px; border:none; display:block; background:#000; }
 
         /* ── LOADING ── */
         .loading-msg { grid-column:1/-1; padding:60px 20px; text-align:center; color:var(--text-dim); }
@@ -484,7 +485,7 @@
             <button class="modal-close" onclick="closeModal()" title="إغلاق">&times;</button>
         </div>
         <div class="modal-body">
-            <video id="mainPlayer" controls controlsList="nodownload" oncontextmenu="return false;"></video>
+            <iframe id="mainPlayer" allowfullscreen allow="autoplay"></iframe>
         </div>
     </div>
 </div>
@@ -563,14 +564,13 @@
         try {
             const token = sessionStorage.getItem('sb-access-token');
             const { data, error } = await supabaseClient.functions.invoke('hyper-task', {
-                body: { action: 'get_single_url', path: video.path },
+                body: { action: 'get_single_url', file_id: video.file_id },
                 headers: token ? { Authorization: `Bearer ${token}` } : {}
             });
             if (error) throw error;
             const player = document.getElementById('mainPlayer');
             player.src = data.url;
             document.getElementById('modalTitle').textContent = video.title;
-            player.play();
         } catch (err) {
             console.error("Play Error:", err.message);
             closeModal();
@@ -580,7 +580,6 @@
 
     function closeModal() {
         const player = document.getElementById('mainPlayer');
-        player.pause();
         player.src = "";
         document.getElementById('modalOverlay').classList.remove('open');
     }
