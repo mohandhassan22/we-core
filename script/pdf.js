@@ -121,16 +121,16 @@ function renderCards(forms) {
     return;
   }
   container.innerHTML = forms.map(form => `
-    
-      
-        
-        ${form.title}
-      
-      ${form.size}
-      
+    <div class="form-card" data-category="${form.category}">
+      <div class="card-icon"><i class="fa-solid fa-file-pdf"></i></div>
+      <div class="card-info">
+        <h3>${form.title}</h3>
+        <span class="file-size">${form.size}</span>
+      </div>
+      <a href="viewpdf.html?src=${encodeURIComponent(`${SUPABASE_URL}/storage/v1/object/authenticated/${BUCKET_NAME}/${form.fullPath}`)}" class="form-btn">
          عرض النموذج
-      
-    `).join("");
+      </a>
+    </div>`).join("");
 }
 
 async function init() {

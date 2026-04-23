@@ -5,14 +5,14 @@
     const SB_URL = 'https://iygwhapcpdmsasqlfelv.supabase.co';
     const SB_KEY = 'sb_publishable_rD9naqrpu1dI-iwchAS0GQ_JkgGysqP';
     const path = window.location.pathname;
-    const isLoginPage = path.endsWith('login.html') || path.endsWith('index.html') || path === '/' || path === '';
+    const isLoginPage = path.endsWith('login.html');
     if (isLoginPage) return;
     
     if (document.documentElement) { document.documentElement.style.display = 'none'; }
     
     function getLoginPath() {
-        if (path.includes('/info/') || path.includes('/offers/') || path.includes('/Corces/')) { return '../index.html'; }
-        return 'index.html';
+        if (path.includes('/info/') || path.includes('/offers/') || path.includes('/Corces/')) { return '../login.html'; }
+        return 'login.html';
     }
     
     async function redirectToLogin() { 

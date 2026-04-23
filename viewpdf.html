@@ -319,15 +319,29 @@
       titleEl.textContent = fileName.replace(/\.pdf$/i, "");
       document.title = fileName.replace(/\.pdf$/i, "") + " | WE-Core";
 
-      // إضافة التوكن للرابط إذا كان متاحاً (اختياري حسب إعدادات Supabase Storage)
+      // إضافة التوكن للرابط 
       const token = getCookie('sb-access-token');
-      if (token && !fileUrl.includes('token=')) {
-          // ملاحظة: Supabase Storage Public URLs لا تدعم التوكن مباشرة في الرابط، 
-          // ولكن إذا كنت تستخدم Signed URLs فيجب جلبها أولاً.
-          // هنا سنبقي الرابط كما هو ولكن نضمن أن المستخدم مسجل دخول عبر auth.js
+      if (token && fileUrl.includes('/authenticated/')) {
+          fetch(fileUrl, {
+              headers: { "Authorization": `Bearer ${token}` }
+          })
+          .then(res => {
+              if(!res.ok) throw new Error("Failed to fetch PDF");
+              return res.blob();
+          })
+          .then(blob => {
+              const objUrl = URL.createObjectURL(blob);
+              frame.src = objUrl;
+          })
+          .catch(err => {
+              console.error(err);
+              loading.classList.add("hidden");
+              titleEl.textContent = "خطأ في تحميل النموذج";
+          });
+      } else {
+          frame.src = fileUrl;
       }
 
-      frame.src = fileUrl;
       frame.onload = () => {
         setTimeout(() => loading.classList.add("hidden"), 400);
       };
