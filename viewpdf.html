@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<script src="script/auth.js?v=12.0.1"></script>
+  <script src="script/auth.js?v=15.0.1"></script>
 
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -301,8 +301,15 @@
   </div>
 
   <script>
+    // وظيفة لجلب الكوكيز
+    function getCookie(name) {
+        const value = `; ${document.cookie}`;
+        const parts = value.split(`; ${name}=`);
+        if (parts.length === 2) return parts.pop().split(';').shift();
+    }
+
     const params  = new URLSearchParams(window.location.search);
-    const fileUrl = params.get("src");
+    let fileUrl = params.get("src");
     const frame   = document.getElementById("pdfFrame");
     const titleEl = document.getElementById("docTitle");
     const loading = document.getElementById("loadingScreen");
@@ -311,6 +318,14 @@
       const fileName = decodeURIComponent(fileUrl.split("/").pop().split("?")[0]);
       titleEl.textContent = fileName.replace(/\.pdf$/i, "");
       document.title = fileName.replace(/\.pdf$/i, "") + " | WE-Core";
+
+      // إضافة التوكن للرابط إذا كان متاحاً (اختياري حسب إعدادات Supabase Storage)
+      const token = getCookie('sb-access-token');
+      if (token && !fileUrl.includes('token=')) {
+          // ملاحظة: Supabase Storage Public URLs لا تدعم التوكن مباشرة في الرابط، 
+          // ولكن إذا كنت تستخدم Signed URLs فيجب جلبها أولاً.
+          // هنا سنبقي الرابط كما هو ولكن نضمن أن المستخدم مسجل دخول عبر auth.js
+      }
 
       frame.src = fileUrl;
       frame.onload = () => {
