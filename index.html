@@ -193,7 +193,7 @@
 
                 // 3. تخزين الـ Token في الكوكيز فقط
                 const token = auth.session.access_token;
-                document.cookie = `sb-access-token=${token}; path=/; max-age=604800; SameSite=Lax; Secure`;
+                document.cookie = `sb-access-token=${token}; path=/; max-age=604800; SameSite=Lax`;
 
                 sessionStorage.setItem('we_user', usernameInput);
                 window.location.replace('Tutorial.html');
