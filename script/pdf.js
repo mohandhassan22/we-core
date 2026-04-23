@@ -135,35 +135,54 @@ function detectCategory(name) {
     return "all";
 }
 
+// ... (القاموس وباقي الدوال كما هي)
+
 function renderCards(forms) {
     const container = document.getElementById("formsContainer");
     if (!container) return;
-    container.innerHTML = forms.map(form => `
+    
+    container.innerHTML = forms.map(form => {
+        // إنشاء المسار الكامل للملف (المجلد + الاسم)
+        const fullPath = form.folder ? `${form.folder}/${form.filename}` : form.filename;
+        
+        return `
         <div class="form-card" data-category="${form.category}">
-            <div class="form-header"><i class="fas fa-file-pdf form-icon"></i><h3>${form.title}</h3></div>
+            <div class="form-header">
+                <i class="fas fa-file-pdf form-icon"></i>
+                <h3>${form.title}</h3>
+            </div>
             <p class="form-size">${form.size || ""}</p>
-            <a class="download-btn" href="viewpdf.html?src=${encodeURIComponent(form.link)}"><i class="fas fa-eye"></i> عرض النموذج</a>
-        </div>`).join("");
+            <a class="download-btn" href="viewpdf.html?path=${encodeURIComponent(fullPath)}">
+                <i class="fas fa-eye"></i> عرض النموذج
+            </a>
+        </div>`;
+    }).join("");
 }
 
 async function init() {
     const container = document.getElementById("formsContainer");
     if (container) container.innerHTML = "<div class='loader'>جاري تحميل البيانات...</div>";
+    
     const rawForms = [];
     const folders = await listFolders();
+    
     const tasks = [...folders, ""].map(async (folder) => {
         const files = await listFiles(folder);
-        files.forEach(f => rawForms.push({ filename: f.name, category: detectCategory(folder || f.name), size: f.metadata ? (f.metadata.size / 1024).toFixed(1) + " KB" : "", link: publicUrl(folder, f.name) }));
+        files.forEach(f => {
+            rawForms.push({ 
+                filename: f.name, 
+                folder: folder, // حفظ اسم المجلد
+                category: detectCategory(folder || f.name), 
+                size: f.metadata ? (f.metadata.size / 1024).toFixed(1) + " KB" : ""
+            });
+        });
     });
+    
     await Promise.all(tasks);
-    for (let form of rawForms) { form.title = await translateOne(form.filename); }
+    for (let form of rawForms) { 
+        form.title = await translateOne(form.filename); 
+    }
     renderCards(rawForms);
 }
-
-window.filterForms = (category) => { document.querySelectorAll(".form-card").forEach(c => c.style.display = (category === "all" || c.dataset.category === category) ? "block" : "none"); };
-window.searchForms = () => {
-    const term = document.getElementById("searchInput")?.value.toLowerCase() || "";
-    document.querySelectorAll(".form-card").forEach(c => c.style.display = c.querySelector("h3").textContent.toLowerCase().includes(term) ? "block" : "none");
-};
 
 init();
