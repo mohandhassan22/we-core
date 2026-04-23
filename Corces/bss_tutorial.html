@@ -492,34 +492,52 @@
 
 <script>
     const SB_URL = 'https://iygwhapcpdmsasqlfelv.supabase.co';
-    const SB_KEY = 'sb_publishable_rD9naqrpu1dI-iwchAS0GQ_JkgGysqP';
+    const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml5Z3doYXBjcGRtc2FzcWxmZWx2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzEzNDk5MDQsImV4cCI6MjA4NjkyNTkwNH0.jqU1fEc9kBkXcCfazH6aTnS2XWWzPv0bbixHZgjtrnQ';
+    
     const supabaseClient = supabase.createClient(SB_URL, SB_KEY);
     let FOLDERS_DATA = [];
     let currentFolderVideos = [];
 
+    // دالة لاستخراج التوكن من الكوكيز
+    function getAuthToken() {
+        const value = `; ${document.cookie}`;
+        const parts = value.split(`; sb-access-token=`);
+        if (parts.length === 2) return parts.pop().split(';').shift().replace(/"/g, '');
+        return null;
+    }
+
     async function loadLibrary() {
         try {
-            const token = sessionStorage.getItem('sb-access-token');
+            const token = getAuthToken(); // جلب التوكن من الكوكي
+            
             const { data, error } = await supabaseClient.functions.invoke('hyper-task', {
-                body: { action: 'get_videos' },
+                body: { action: 'get_videos', source: 'videos' },
                 headers: token ? { Authorization: `Bearer ${token}` } : {}
             });
+
             if (error) throw error;
+
+            // تنظيم البيانات (بناءً على الكود الذي كتبته في الـ Edge Function)
             const grouped = data.reduce((acc, file) => {
                 const folderName = file.folder || 'عام';
                 let folder = acc.find(f => f.name === folderName);
-                if (!folder) { folder = { name: folderName, videos: [] }; acc.push(folder); }
+                if (!folder) {
+                    folder = { name: folderName, videos: [] };
+                    acc.push(folder);
+                }
                 folder.videos.push(file);
                 return acc;
             }, []);
+
             FOLDERS_DATA = grouped;
             renderFolders();
             document.getElementById('totalFolders').textContent = FOLDERS_DATA.length;
             document.getElementById('totalVideos').textContent = data.length;
+
         } catch (err) {
             console.error("Load Error:", err.message);
-            document.getElementById('foldersGrid').innerHTML =
-                `<div class="loading-msg" style="color:#dc2626">⚠️ حدث خطأ أثناء تحميل البيانات.<br>تأكد من تسجيل الدخول وصلاحية الاتصال.</div>`;
+            document.getElementById('foldersGrid').innerHTML = 
+                `<div class="loading-msg" style="color:#dc2626">⚠️ خطأ في تحميل البيانات. تأكد من تسجيل الدخول.</div>`;
         }
     }
 
@@ -544,6 +562,7 @@
         document.getElementById('view-folders').style.display = 'none';
         document.getElementById('view-videos').style.display = 'block';
         document.getElementById('currentFolderName').textContent = folder.name;
+        
         const grid = document.getElementById('videosGrid');
         grid.innerHTML = currentFolderVideos.map((v, vIdx) => `
             <div class="video-card" onclick="playVideo(${vIdx})" style="animation-delay:${vIdx*0.05}s">
@@ -559,22 +578,29 @@
 
     async function playVideo(idx) {
         const video = currentFolderVideos[idx];
-        document.getElementById('modalTitle').textContent = "جاري جلب الرابط الآمن...";
-        document.getElementById('modalOverlay').classList.add('open');
+        const modal = document.getElementById('modalOverlay');
+        const player = document.getElementById('mainPlayer');
+        const title = document.getElementById('modalTitle');
+
+        title.textContent = "جاري التحميل...";
+        modal.classList.add('open');
+        
         try {
-            const token = sessionStorage.getItem('sb-access-token');
+            const token = getAuthToken();
             const { data, error } = await supabaseClient.functions.invoke('hyper-task', {
-                body: { action: 'get_single_url', file_id: video.file_id },
+                body: { action: 'get_single_url', file_id: video.file_id, source: 'videos' },
                 headers: token ? { Authorization: `Bearer ${token}` } : {}
             });
+
             if (error) throw error;
-            const player = document.getElementById('mainPlayer');
+            
             player.src = data.url;
-            document.getElementById('modalTitle').textContent = video.title;
+            title.textContent = video.title;
+
         } catch (err) {
             console.error("Play Error:", err.message);
             closeModal();
-            alert("عفواً، لا يمكن تشغيل هذا الفيديو حالياً.");
+            alert("فشل جلب رابط الفيديو الآمن.");
         }
     }
 
@@ -589,12 +615,14 @@
         document.getElementById('view-videos').style.display = 'none';
     }
 
+    // إغلاق المودال عند الضغط خارجه
     document.getElementById('modalOverlay').addEventListener('click', function(e) {
         if (e.target === this) closeModal();
     });
-    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
     document.addEventListener('DOMContentLoaded', loadLibrary);
-</script>
+</script>OMContentLoaded', loadLibrary);
+
 <script src="/script/active-users-widget.js"></script>
 </body>
 </html>
