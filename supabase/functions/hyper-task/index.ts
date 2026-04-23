@@ -53,7 +53,7 @@ async function verifyUser(req: Request, supabaseUrl: string, supabaseAnonKey: st
   }
 }
 
-Deno.serve(async (req) => {
+Deno.serve(async (req: Request) => {
   const corsHeaders = getCorsHeaders(req)
 
   if (req.method === 'OPTIONS') {
