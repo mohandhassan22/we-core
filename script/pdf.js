@@ -1,13 +1,18 @@
-// ========================================
-//  WE-Core · pdf.js (النسخة المصححة برمجياً)
-// ========================================
-
+// الإعدادات الأساسية
 const SUPABASE_URL = "https://iygwhapcpdmsasqlfelv.supabase.co";
 const SUPABASE_ANON = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml5Z3doYXBjcGRtc2FzcWxmZWx2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzEzNDk5MDQsImV4cCI6MjA4NjkyNTkwNH0.jqU1fEc9kBkXcCfazH6aTnS2XWWzPv0bbixHZgjtrnQ";
 const BUCKET_NAME = "All Form";
 const TRANSLATE_API = "https://api.mymemory.translated.net/get";
 
-// 1. القاموس اليدوي الشامل - تم تنظيفه من مراجع الـ [cite] التي تسبب الخطأ
+// دالة جلب التوكن من الكوكيز
+function getAuthToken() {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; sb-access-token=`);
+    if (parts.length === 2) return parts.pop().split(';').shift().replace(/"/g, '');
+    return null;
+}
+
+// القاموس اليدوي للترجمة
 const customDictionary = {
     "mobile": "موبايل",
     "sim card": "شريحة",
@@ -64,125 +69,87 @@ const customDictionary = {
     "sim swap": "استبدال شريحة"
 };
 
-// باقي الكود (إدارة الكاش، الترجمة، Supabase، والتشغيل) بنفس المنطق السابق
+
+// وظائف الترجمة والتحضير
 let translationCache = JSON.parse(localStorage.getItem("translationCache")) || {};
 function saveCache() { localStorage.setItem("translationCache", JSON.stringify(translationCache)); }
-function cleanAndPrepareText(text) { if (!text) return ""; return text.replace(/\.pdf$/i, "").replace(/[-_]/g, " ").replace(/([a-z])([A-Z])/g, "$1 $2").replace(/\s+/g, " ").trim(); }
-
-function smartTranslateFromDict(text) {
-    const cleanText = cleanAndPrepareText(text).toLowerCase();
-    if (customDictionary[cleanText]) return customDictionary[cleanText];
-    const words = cleanText.split(/\s+/);
-    return words.map(word => customDictionary[word] || word).join(" ");
-}
-
-function postProcessTranslation(translated) {
-    if (!translated) return "";
-    let res = translated.replace(/\s+/g, " ").trim();
-    res = res.replace(/ال\s+ال/g, "ال");
-    const needsAL = ["خدمة", "نموذج", "طلب", "استمارة", "شكوى"];
-    if (needsAL.includes(res)) res = "ال" + res;
-    return res;
-}
 
 async function translateOne(text) {
-    if (!text) return "";
-    if (translationCache[text]) return translationCache[text];
-    const cleaned = cleanAndPrepareText(text);
+    const cleaned = text.replace(/\.pdf$/i, "").replace(/[-_]/g, " ").trim();
+    if (translationCache[cleaned]) return translationCache[cleaned];
+    
+    // محاولة الترجمة من القاموس أولاً
+    const dictMatch = customDictionary[cleaned.toLowerCase()];
+    if (dictMatch) {
+        translationCache[cleaned] = dictMatch;
+        saveCache();
+        return dictMatch;
+    }
+    
+    // الترجمة عبر API لو لم يوجد في القاموس
     try {
-        const dictResult = smartTranslateFromDict(cleaned);
-        if (dictResult !== cleaned.toLowerCase()) {
-            const final = postProcessTranslation(dictResult);
-            translationCache[text] = final;
-            saveCache();
-            return final;
-        }
-        const url = `${TRANSLATE_API}?q=${encodeURIComponent(cleaned)}&langpair=en|ar`;
-        const res = await fetch(url);
+        const res = await fetch(`${TRANSLATE_API}?q=${encodeURIComponent(cleaned)}&langpair=en|ar`);
         const data = await res.json();
-        let translated = postProcessTranslation(data?.responseData?.translatedText || cleaned);
-        translationCache[text] = translated;
+        const translated = data?.responseData?.translatedText || cleaned;
+        translationCache[cleaned] = translated;
         saveCache();
         return translated;
-    } catch (e) { return cleaned; }
+    } catch { return cleaned; }
 }
-
-function bucketApiUrl() { return `${SUPABASE_URL}/storage/v1/object/list/${encodeURIComponent(BUCKET_NAME)}`; }
-function publicUrl(p, f) { return `${SUPABASE_URL}/storage/v1/object/public/${encodeURIComponent(BUCKET_NAME)}/${p ? p + "/" : ""}${f}`; }
-const HEADERS = { "Content-Type": "application/json", "Authorization": `Bearer ${SUPABASE_ANON}`, "apikey": SUPABASE_ANON };
 
 async function listFiles(prefix = "") {
+    const token = getAuthToken() || SUPABASE_ANON;
     try {
-        const res = await fetch(bucketApiUrl(), { method: "POST", headers: HEADERS, body: JSON.stringify({ prefix: prefix ? prefix + "/" : "", limit: 500 }) });
+        const res = await fetch(`${SUPABASE_URL}/storage/v1/object/list/${encodeURIComponent(BUCKET_NAME)}`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json", "Authorization": `Bearer ${token}`, "apikey": SUPABASE_ANON },
+            body: JSON.stringify({ prefix: prefix ? prefix + "/" : "", limit: 500 })
+        });
         const data = await res.json();
         return data.filter(f => f.name && f.name.toLowerCase().endsWith(".pdf"));
-    } catch (err) { return []; }
-}
-
-async function listFolders() {
-    try {
-        const res = await fetch(bucketApiUrl(), { method: "POST", headers: HEADERS, body: JSON.stringify({ prefix: "", limit: 100 }) });
-        const data = await res.json();
-        return data.filter(f => f.id === null && !f.name.includes(".")).map(f => f.name);
     } catch { return []; }
 }
 
-function detectCategory(name) {
-    const n = (name || "").toLowerCase();
-    if (n.includes("mobile") || n.includes("sim") || n.includes("mnp")) return "Mobile";
-    if (n.includes("land") || n.includes("fixed") || n.includes("ardy")) return "Landline";
-    if (n.includes("adsl") || n.includes("internet") || n.includes("dsl")) return "Adsl";
-    return "all";
-}
-
-// ... (القاموس وباقي الدوال كما هي)
-
 function renderCards(forms) {
     const container = document.getElementById("formsContainer");
-    if (!container) return;
-    
-    container.innerHTML = forms.map(form => {
-        // إنشاء المسار الكامل للملف (المجلد + الاسم)
-        const fullPath = form.folder ? `${form.folder}/${form.filename}` : form.filename;
-        
-        return `
+    container.innerHTML = forms.map(form => `
         <div class="form-card" data-category="${form.category}">
-            <div class="form-header">
-                <i class="fas fa-file-pdf form-icon"></i>
-                <h3>${form.title}</h3>
-            </div>
-            <p class="form-size">${form.size || ""}</p>
-            <a class="download-btn" href="viewpdf.html?path=${encodeURIComponent(fullPath)}">
+            <div class="form-header"><i class="fas fa-file-pdf form-icon"></i><h3>${form.title}</h3></div>
+            <p class="form-size">${form.size}</p>
+            <a class="download-btn" href="viewpdf.html?path=${encodeURIComponent(form.fullPath)}">
                 <i class="fas fa-eye"></i> عرض النموذج
             </a>
-        </div>`;
-    }).join("");
+        </div>`).join("");
 }
 
 async function init() {
-    const container = document.getElementById("formsContainer");
-    if (container) container.innerHTML = "<div class='loader'>جاري تحميل البيانات...</div>";
-    
     const rawForms = [];
-    const folders = await listFolders();
+    // جلب المجلدات والملفات
+    const folders = ["Adsl", "Fixed", "Mobile"]; // مجلداتك المكتشفة من الصورة
     
-    const tasks = [...folders, ""].map(async (folder) => {
+    for (const folder of [...folders, ""]) {
         const files = await listFiles(folder);
         files.forEach(f => {
-            rawForms.push({ 
-                filename: f.name, 
-                folder: folder, // حفظ اسم المجلد
-                category: detectCategory(folder || f.name), 
+            rawForms.push({
+                filename: f.name,
+                fullPath: folder ? `${folder}/${f.name}` : f.name,
+                category: folder || "General",
                 size: f.metadata ? (f.metadata.size / 1024).toFixed(1) + " KB" : ""
             });
         });
-    });
-    
-    await Promise.all(tasks);
-    for (let form of rawForms) { 
-        form.title = await translateOne(form.filename); 
     }
+
+    for (let form of rawForms) { form.title = await translateOne(form.filename); }
     renderCards(rawForms);
 }
+
+// وظائف البحث والفلترة
+window.filterForms = (cat) => {
+    document.querySelectorAll(".form-card").forEach(c => c.style.display = (cat === 'all' || c.dataset.category === cat) ? 'block' : 'none');
+};
+window.searchForms = () => {
+    const term = document.getElementById("searchInput").value.toLowerCase();
+    document.querySelectorAll(".form-card").forEach(c => c.style.display = c.querySelector("h3").textContent.toLowerCase().includes(term) ? 'block' : 'none');
+};
 
 init();
