@@ -1,14 +1,350 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <script src="script/auth.js?v=12.0.1"></script> <meta charset="UTF-8">
+    <script src="script/auth.js?v=12.0.1"></script>
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>النماذج | WE-Core</title>
     <link rel="shortcut icon" href="img/we-core.png" type="image/x-icon">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" href="style/pdf.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        :root {
+            --bg:        #f5f0ff;
+            --surface:   #ffffff;
+            --s1:        #ffffff;
+            --s2:        #f0ebff;
+            --s3:        #e8e0fb;
+            --border:    rgba(130,80,220,0.12);
+            --bh:        rgba(130,80,220,0.22);
+            --purple:    #7c3aed;
+            --purple2:   #6d28d9;
+            --purple-d:  rgba(124,58,237,0.1);
+            --purple-d2: rgba(124,58,237,0.05);
+            --gold:      #e8b84b;
+            --text:      #2d1f4e;
+            --text2:     #6b5c8a;
+            --text3:     #a899c0;
+            --r:         14px;
+            --r-sm:      9px;
+        }
+
+        body {
+            font-family: 'Cairo', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* ── BG Mesh ── */
+        body::before {
+            content: '';
+            position: fixed; inset: 0;
+            background:
+                radial-gradient(ellipse 70% 45% at 15% -5%, rgba(124,58,237,0.07) 0%, transparent 60%),
+                radial-gradient(ellipse 55% 35% at 85% 105%, rgba(124,58,237,0.05) 0%, transparent 55%),
+                radial-gradient(ellipse 40% 30% at 50% 50%, rgba(100,50,180,0.03) 0%, transparent 70%);
+            pointer-events: none; z-index: 0;
+        }
+
+        /* ── HEADER ── */
+        .header {
+            position: sticky; top: 0; z-index: 200;
+            background: rgba(255,255,255,0.9);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+            height: 66px;
+        }
+
+        .logo-wrapper {
+            display: flex; align-items: center; gap: 11px;
+            text-decoration: none;
+        }
+        .logo {
+            width: 40px; height: 40px; object-fit: contain;
+            border-radius: 10px;
+            border: 1px solid rgba(155,89,245,0.3);
+            transition: transform 0.25s, opacity 0.25s;
+        }
+        .logo-wrapper:hover .logo { transform: scale(1.07); opacity: 0.85; }
+        .logo-text { display: flex; flex-direction: column; line-height: 1.25; }
+        .logo-title { font-size: 16px; font-weight: 800; color: #fff; }
+        .logo-sub   { font-size: 11px; color: var(--text2); }
+
+        .nav-links a {
+            display: inline-flex; align-items: center; gap: 7px;
+            color: var(--text2);
+            text-decoration: none; font-size: 13.5px; font-weight: 600;
+            padding: 7px 15px; border-radius: var(--r-sm);
+            border: 1px solid var(--border);
+            background: var(--s1);
+            transition: all 0.2s;
+        }
+        .nav-links a:hover { color: var(--text); border-color: var(--bh); background: var(--s2); }
+
+        /* ── PAGE HERO ── */
+        .page-hero {
+            position: relative; z-index: 1;
+            text-align: center;
+            padding: 3.5rem 1.5rem 2rem;
+        }
+        .page-hero-icon {
+            width: 60px; height: 60px;
+            background: var(--purple-d);
+            border: 1px solid rgba(155,89,245,0.3);
+            border-radius: 16px;
+            display: inline-flex; align-items: center; justify-content: center;
+            margin-bottom: 1rem;
+        }
+        .page-hero-icon i { font-size: 26px; color: var(--purple2); }
+        .page-hero h1 { font-size: 1.75rem; font-weight: 900; color: var(--text); margin-bottom: 6px; }
+        .page-hero p  { font-size: 0.88rem; color: var(--text2); }
+
+        /* ── SEARCH & FILTERS ── */
+        .controls {
+            position: relative; z-index: 1;
+            max-width: 800px; margin: 0 auto;
+            padding: 0 1.5rem 1.5rem;
+            display: flex; flex-direction: column; gap: 12px;
+        }
+
+        .search-wrap {
+            position: relative;
+        }
+        .search-wrap svg {
+            position: absolute; right: 14px; top: 50%;
+            transform: translateY(-50%);
+            color: var(--text3); pointer-events: none;
+        }
+        #searchInput {
+            width: 100%;
+            padding: 12px 44px 12px 100px;
+            background: var(--s1);
+            border: 1px solid var(--border);
+            border-radius: 100px;
+            color: var(--text);
+            font-family: 'Cairo', sans-serif;
+            font-size: 14px;
+            outline: none;
+            transition: border-color 0.2s;
+            direction: rtl;
+        }
+        #searchInput:focus { border-color: rgba(155,89,245,0.45); }
+        #searchInput::placeholder { color: var(--text3); }
+
+        .search-go {
+            position: absolute; left: 6px; top: 50%;
+            transform: translateY(-50%);
+            background: var(--purple);
+            border: none; border-radius: 100px;
+            color: #fff;
+            font-family: 'Cairo', sans-serif;
+            font-size: 12px; font-weight: 700;
+            padding: 6px 16px; cursor: pointer;
+            transition: opacity 0.2s;
+        }
+        .search-go:hover { opacity: 0.85; }
+
+        .filter-row {
+            display: flex; align-items: center; gap: 8px;
+            flex-wrap: wrap; justify-content: center;
+        }
+        .filter-label { font-size: 0.75rem; color: var(--text3); white-space: nowrap; margin-left: 2px; }
+
+        .filter-btn {
+            padding: 6px 16px; border-radius: 100px;
+            border: 1px solid var(--border);
+            background: transparent;
+            color: var(--text2);
+            font-family: 'Cairo', sans-serif;
+            font-size: 0.8rem; font-weight: 600;
+            cursor: pointer; transition: all 0.2s;
+            white-space: nowrap;
+        }
+        .filter-btn:hover { border-color: var(--bh); color: var(--text); background: var(--s2); }
+        .filter-btn.active {
+            background: var(--purple-d);
+            border-color: rgba(155,89,245,0.45);
+            color: var(--purple2);
+        }
+
+        /* ── STATS ── */
+        .stats-row {
+            position: relative; z-index: 1;
+            max-width: 1200px; margin: 0 auto;
+            padding: 0 1.5rem 1.25rem;
+            display: flex; align-items: center; gap: 1rem;
+        }
+        .stat-chip {
+            display: inline-flex; align-items: center; gap: 6px;
+            padding: 5px 12px; border-radius: 100px;
+            background: var(--s1); border: 1px solid var(--border);
+            font-size: 0.75rem; color: var(--text2);
+        }
+        .stat-chip strong { color: var(--purple2); font-weight: 700; }
+
+        /* ── GRID ── */
+        .forms-section {
+            position: relative; z-index: 1;
+            max-width: 1200px; margin: 0 auto;
+            padding: 0 1.5rem 4rem;
+        }
+
+        .forms-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+            gap: 1.1rem;
+        }
+
+        /* ── CARD ── */
+        .form-card {
+            background: var(--s1);
+            border: 1px solid var(--border);
+            border-radius: var(--r);
+            padding: 1.25rem 1.3rem 1.1rem;
+            transition: transform 0.22s, border-color 0.22s, box-shadow 0.22s;
+            display: flex; flex-direction: column; gap: 10px;
+            position: relative; overflow: hidden;
+            box-shadow: 0 2px 10px rgba(124,58,237,0.07);
+        }
+        .form-card::before {
+            content: '';
+            position: absolute; top: 0; right: 0;
+            width: 80px; height: 80px;
+            background: radial-gradient(circle, rgba(155,89,245,0.08) 0%, transparent 70%);
+            pointer-events: none;
+        }
+        .form-card:hover {
+            transform: translateY(-3px);
+            border-color: rgba(124,58,237,0.28);
+            box-shadow: 0 8px 28px rgba(124,58,237,0.12), 0 0 0 1px rgba(124,58,237,0.08);
+        }
+
+        .form-header {
+            display: flex; align-items: flex-start; gap: 12px;
+        }
+        .form-icon-wrap {
+            width: 46px; height: 46px; flex-shrink: 0;
+            border-radius: 12px;
+            background: var(--purple-d);
+            border: 1px solid rgba(155,89,245,0.2);
+            display: flex; align-items: center; justify-content: center;
+        }
+        .form-icon-wrap i { font-size: 20px; color: var(--purple2); }
+
+        .form-meta { flex: 1; }
+        .form-meta h3 {
+            font-size: 0.92rem; font-weight: 700;
+            color: var(--text); line-height: 1.45;
+            margin-bottom: 4px;
+        }
+
+        /* category tag */
+        .cat-tag {
+            display: inline-flex; align-items: center; gap: 4px;
+            padding: 2px 9px; border-radius: 100px;
+            font-size: 0.7rem; font-weight: 600;
+        }
+        .cat-mobile  { background: rgba(59,130,246,0.12); border: 1px solid rgba(59,130,246,0.25); color: #7db4f7; }
+        .cat-fixed   { background: rgba(16,185,129,0.12); border: 1px solid rgba(16,185,129,0.25); color: #6ee7b7; }
+        .cat-adsl    { background: rgba(245,158,11,0.12); border: 1px solid rgba(245,158,11,0.25); color: #fcd34d; }
+        .cat-default { background: var(--purple-d2);      border: 1px solid rgba(155,89,245,0.2); color: var(--purple2); }
+
+        .form-desc {
+            font-size: 0.8rem; color: var(--text2); line-height: 1.6; flex: 1;
+        }
+
+        .download-btn {
+            display: flex; align-items: center; justify-content: center; gap: 7px;
+            padding: 9px 14px; border-radius: var(--r-sm);
+            background: var(--purple-d);
+            border: 1px solid rgba(155,89,245,0.3);
+            color: var(--purple2);
+            text-decoration: none;
+            font-family: 'Cairo', sans-serif;
+            font-size: 0.82rem; font-weight: 700;
+            transition: background 0.2s, border-color 0.2s, color 0.2s;
+            margin-top: auto;
+        }
+        .download-btn:hover {
+            background: rgba(124,58,237,0.18);
+            border-color: rgba(124,58,237,0.45);
+            color: #5b21b6;
+        }
+
+        /* ── LOADER ── */
+        .loader-wrap {
+            grid-column: 1/-1;
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            padding: 5rem 2rem; gap: 14px;
+            color: var(--text2);
+        }
+        .loader-spinner {
+            width: 34px; height: 34px;
+            border: 2px solid var(--border);
+            border-top-color: var(--purple);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .loader-wrap p { font-size: 0.88rem; }
+
+        /* skeleton */
+        .skel-card {
+            background: var(--s1); border: 1px solid var(--border);
+            border-radius: var(--r); padding: 1.25rem; display: flex; flex-direction: column; gap: 10px;
+        }
+        .skel-line {
+            height: 10px; border-radius: 5px;
+            background: linear-gradient(90deg, #ede8f8 25%, #ddd5f5 50%, #ede8f8 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.4s infinite;
+        }
+        @keyframes shimmer { to { background-position: -200% 0; } }
+
+        /* no-results */
+        .no-results {
+            grid-column: 1/-1; text-align: center;
+            padding: 5rem 2rem; color: var(--text2);
+        }
+        .no-results i { font-size: 2.5rem; color: var(--text3); margin-bottom: 14px; display: block; }
+        .no-results p { font-size: 0.92rem; }
+
+        /* ── FOOTER ── */
+        footer {
+            position: relative; z-index: 1;
+            text-align: center;
+            padding: 1.5rem;
+            border-top: 1px solid var(--border);
+            font-size: 0.78rem; color: var(--text3);
+            background: #fff;
+        }
+        footer span { color: var(--purple); font-weight: 700; }
+
+        @media (max-width: 600px) {
+            .forms-grid { grid-template-columns: 1fr; }
+            .page-hero h1 { font-size: 1.4rem; }
+            #searchInput { padding-left: 70px; }
+        }
+    </style>
 </head>
 <body>
+
+    <!-- HEADER -->
     <header class="header">
         <nav class="navbar">
             <a href="index.html" class="logo-wrapper">
@@ -19,32 +355,160 @@
                 </div>
             </a>
             <div class="nav-links">
-                <a href="index.html"><i class="fa-solid fa-house-user"></i> الرئيسية</a>
+                <a href="index.html">
+                    <i class="fa-solid fa-house-user"></i> الرئيسية
+                </a>
             </div>
         </nav>
     </header>
 
-    <section class="forms-section" id="forms">
-        <div class="search-bar">
+    <!-- HERO -->
+    <div class="page-hero">
+        <div class="page-hero-icon"><i class="fa-solid fa-file-pdf"></i></div>
+        <h1>النماذج والمستندات</h1>
+        <p>جميع ملفات PDF الخاصة بالخدمات والعروض في مكان واحد</p>
+    </div>
+
+    <!-- CONTROLS -->
+    <div class="controls">
+        <div class="search-wrap">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+            </svg>
             <input type="text" id="searchInput" placeholder="ابحث عن نموذج...">
-            <button class="filter-btn" onclick="searchForms()">بحث</button>
+            <button class="search-go" onclick="searchForms()">بحث</button>
         </div>
-
-        <div class="filter-buttons">
-            <button class="filter-btn" onclick="filterForms('all')">الكل</button>
-            <button class="filter-btn" onclick="filterForms('Mobile')">المحمول</button>
-            <button class="filter-btn" onclick="filterForms('Fixed')">الأرضي</button>
-            <button class="filter-btn" onclick="filterForms('Adsl')">إنتـرنت</button>
+        <div class="filter-row">
+            <span class="filter-label">تصفية:</span>
+            <button class="filter-btn active" onclick="filterForms('all', this)">الكل</button>
+            <button class="filter-btn" onclick="filterForms('Mobile', this)">
+                <i class="fa-solid fa-mobile-screen-button" style="font-size:11px"></i> المحمول
+            </button>
+            <button class="filter-btn" onclick="filterForms('Fixed', this)">
+                <i class="fa-solid fa-phone" style="font-size:11px"></i> الأرضي
+            </button>
+            <button class="filter-btn" onclick="filterForms('Adsl', this)">
+                <i class="fa-solid fa-wifi" style="font-size:11px"></i> إنترنت
+            </button>
         </div>
+    </div>
 
+    <!-- STATS -->
+    <div class="stats-row">
+        <div class="stat-chip">
+            <i class="fa-solid fa-layer-group" style="font-size:11px;color:var(--purple2)"></i>
+            إجمالي: <strong id="stat-total">—</strong>
+        </div>
+        <div class="stat-chip" id="stat-filtered-wrap" style="display:none">
+            نتائج: <strong id="stat-filtered">—</strong>
+        </div>
+    </div>
+
+    <!-- GRID -->
+    <section class="forms-section" id="forms">
         <div class="forms-grid" id="formsContainer">
-            <div class="loader">جاري تحميل النماذج...</div>
+            <!-- Skeleton placeholders -->
+            <div class="skel-card"><div class="skel-line" style="width:30%;height:38px;border-radius:10px"></div><div class="skel-line" style="width:90%"></div><div class="skel-line" style="width:65%"></div><div class="skel-line" style="width:100%;height:34px;border-radius:8px;margin-top:4px"></div></div>
+            <div class="skel-card"><div class="skel-line" style="width:30%;height:38px;border-radius:10px"></div><div class="skel-line" style="width:80%"></div><div class="skel-line" style="width:50%"></div><div class="skel-line" style="width:100%;height:34px;border-radius:8px;margin-top:4px"></div></div>
+            <div class="skel-card"><div class="skel-line" style="width:30%;height:38px;border-radius:10px"></div><div class="skel-line" style="width:85%"></div><div class="skel-line" style="width:60%"></div><div class="skel-line" style="width:100%;height:34px;border-radius:8px;margin-top:4px"></div></div>
         </div>
     </section>
 
-    <footer class="footer">
-        <p>Powered by Mohand Hassan | 2026</p>
-    </footer>
+    <footer>Powered by <span>Mohand Hassan</span> | 2026</footer>
+
+    <script>
+        // ── Filter active state helper ──
+        let activeFilter = 'all';
+        function filterForms(cat, btn) {
+            activeFilter = cat;
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            if (btn) btn.classList.add('active');
+            applyFilters();
+        }
+
+        function searchForms() { applyFilters(); }
+        document.addEventListener('DOMContentLoaded', () => {
+            const inp = document.getElementById('searchInput');
+            if (inp) inp.addEventListener('keydown', e => { if (e.key === 'Enter') applyFilters(); });
+        });
+
+        function applyFilters() {
+            const q = (document.getElementById('searchInput')?.value || '').toLowerCase();
+            const cards = document.querySelectorAll('.form-card');
+            let visible = 0;
+            cards.forEach(card => {
+                const matchCat = activeFilter === 'all' || card.dataset.cat === activeFilter;
+                const matchQ   = !q || card.dataset.title.includes(q);
+                const show = matchCat && matchQ;
+                card.style.display = show ? '' : 'none';
+                if (show) visible++;
+            });
+            const fw = document.getElementById('stat-filtered-wrap');
+            const fs = document.getElementById('stat-filtered');
+            if (q || activeFilter !== 'all') {
+                fw.style.display = 'flex'; fs.textContent = visible;
+            } else { fw.style.display = 'none'; }
+        }
+
+        // ── Category tag helper ──
+        function catTag(cat) {
+            const map = {
+                'Mobile': { cls: 'cat-mobile', icon: 'fa-mobile-screen-button', label: 'المحمول' },
+                'Fixed':  { cls: 'cat-fixed',  icon: 'fa-phone',                label: 'الأرضي' },
+                'Adsl':   { cls: 'cat-adsl',   icon: 'fa-wifi',                 label: 'إنترنت' },
+            };
+            const m = map[cat] || { cls: 'cat-default', icon: 'fa-tag', label: cat || 'عام' };
+            return `<span class="cat-tag ${m.cls}"><i class="fa-solid ${m.icon}" style="font-size:10px"></i>${m.label}</span>`;
+        }
+
+        // ── Render card ──
+        function buildCard(item) {
+            const cat   = item.category || item.cat || '';
+            const title = item.title || 'بدون عنوان';
+            const desc  = item.description || item.desc || '';
+            const link  = item.link || item.url || item.file_url || '#';
+
+            const card = document.createElement('div');
+            card.className = 'form-card';
+            card.dataset.cat   = cat;
+            card.dataset.title = title.toLowerCase();
+
+            card.innerHTML = `
+                <div class="form-header">
+                    <div class="form-icon-wrap">
+                        <i class="fa-solid fa-file-pdf"></i>
+                    </div>
+                    <div class="form-meta">
+                        <h3>${title}</h3>
+                        ${catTag(cat)}
+                    </div>
+                </div>
+                ${desc ? `<p class="form-desc">${desc}</p>` : ''}
+                <a href="${link}" target="_blank" rel="noopener" class="download-btn">
+                    <i class="fa-solid fa-download"></i> تحميل / فتح
+                </a>`;
+            return card;
+        }
+
+        // ── Hook: called by pdf.js after data is loaded ──
+        // pdf.js should call window.renderForms(data) with the array
+        window.renderForms = function(data) {
+            const container = document.getElementById('formsContainer');
+            container.innerHTML = '';
+            document.getElementById('stat-total').textContent = data.length;
+
+            if (!data.length) {
+                container.innerHTML = '<div class="no-results"><i class="fa-solid fa-folder-open"></i><p>لا توجد نماذج متاحة حالياً.</p></div>';
+                return;
+            }
+            data.forEach(item => container.appendChild(buildCard(item)));
+        };
+
+        window.showFormsError = function() {
+            document.getElementById('formsContainer').innerHTML =
+                '<div class="no-results"><i class="fa-solid fa-triangle-exclamation"></i><p>حدث خطأ أثناء تحميل البيانات. تحقق من اتصالك وأعد المحاولة.</p></div>';
+        };
+    </script>
 
     <script type="module" src="script/pdf.js"></script>
     <script src="script/active-users-widget.js"></script>
