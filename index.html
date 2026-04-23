@@ -141,7 +141,15 @@
     <script>
         const SB_URL = 'https://iygwhapcpdmsasqlfelv.supabase.co';
         const SB_KEY = 'sb_publishable_rD9naqrpu1dI-iwchAS0GQ_JkgGysqP';
-        const sb = supabase.createClient(SB_URL, SB_KEY);
+        
+        // تعديل: تعطيل الحفظ التلقائي في LocalStorage
+        const sb = supabase.createClient(SB_URL, SB_KEY, {
+            auth: {
+                persistSession: false,
+                autoRefreshToken: false,
+                detectSessionInUrl: false
+            }
+        });
 
         async function doLogin() {
             const usernameInput = document.getElementById('username').value.trim();
@@ -162,16 +170,16 @@
             errorMsg.style.display = 'none';
 
             try {
-                // 1. البحث عن الإيميل باستخدام وظيفة RPC الآمنة (hyper-task)
-                const { data: emailData, error: rpcError } = await sb.rpc('hyper-task', { 
-                    target_username: usernameInput 
+                // تصحيح: استدعاء Edge Function بدلاً من RPC لحل مشكلة الـ 404
+                const { data: emailData, error: emailErr } = await sb.functions.invoke('hyper-task', {
+                    body: { action: 'get_email', username: usernameInput }
                 });
 
-                if (rpcError || !emailData || emailData.length === 0) {
+                if (emailErr || !emailData?.email) {
                     throw new Error('اسم المستخدم غير موجود');
                 }
 
-                const userEmail = emailData[0].email;
+                const userEmail = emailData.email;
 
                 // 2. تسجيل الدخول
                 const { data: auth, error: aError } = await sb.auth.signInWithPassword({
@@ -179,16 +187,13 @@
                     password: password
                 });
 
-                if (aError) {
+                if (aError || !auth.session) {
                     throw new Error('كلمة المرور غير صحيحة');
                 }
 
-                // 3. تخزين الـ Token في الكوكيز
-                if (auth.session) {
-                    const expires = new Date();
-                    expires.setTime(expires.getTime() + (7 * 24 * 60 * 60 * 1000));
-                    document.cookie = "sb-access-token=" + auth.session.access_token + "; expires=" + expires.toUTCString() + "; path=/; SameSite=Strict";
-                }
+                // 3. تخزين الـ Token في الكوكيز فقط
+                const token = auth.session.access_token;
+                document.cookie = `sb-access-token=${token}; path=/; max-age=604800; SameSite=Lax; Secure`;
 
                 sessionStorage.setItem('we_user', usernameInput);
                 window.location.replace('Tutorial.html');
@@ -208,9 +213,19 @@
         }
 
         async function checkSession() {
-            const { data: { session } } = await sb.auth.getSession();
-            if (session) {
-                window.location.replace('Tutorial.html');
+            // التحقق من الكوكيز بدلاً من getSession (لأن LocalStorage معطل)
+            const getCookie = (name) => {
+                const value = `; ${document.cookie}`;
+                const parts = value.split(`; ${name}=`);
+                if (parts.length === 2) return parts.pop().split(';').shift();
+            };
+            
+            const token = getCookie('sb-access-token');
+            if (token) {
+                const { data: { user } } = await sb.auth.getUser(token);
+                if (user) {
+                    window.location.replace('Tutorial.html');
+                }
             }
         }
 
