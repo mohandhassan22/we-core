@@ -1,38 +1,29 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<script src="script/auth.js?v=12.0.1"></script>
-
-    <meta charset="UTF-8">
+    <script src="script/auth.js?v=12.0.1"></script> <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>النماذج</title>
+    <title>النماذج | WE-Core</title>
     <link rel="shortcut icon" href="img/we-core.png" type="image/x-icon">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="style/pdf.css">
-
-<script src="script/active-users-widget.js"></script>
 </head>
 <body>
-    <!-- الهيدر -->
     <header class="header">
         <nav class="navbar">
-            <a href="#" class="logo-wrapper">
+            <a href="index.html" class="logo-wrapper">
                 <img src="img/we-core.png" alt="WE-Core" class="logo">
                 <div class="logo-text">
                     <span class="logo-title">WE-Core</span>
-                    <span class="logo-sub">Powered by Mohand Hassan</span>
+                    <span class="logo-sub">بواسطة مهند حسن</span>
                 </div>
             </a>
             <div class="nav-links">
-                <a href="index.html">
-                    <i class="fa-solid fa-house-user"></i>
-                    الرئيسية
-                </a>
+                <a href="index.html"><i class="fa-solid fa-house-user"></i> الرئيسية</a>
             </div>
         </nav>
     </header>
 
-    <!-- قسم النماذج -->
     <section class="forms-section" id="forms">
         <div class="search-bar">
             <input type="text" id="searchInput" placeholder="ابحث عن نموذج...">
@@ -43,29 +34,19 @@
             <button class="filter-btn" onclick="filterForms('all')">الكل</button>
             <button class="filter-btn" onclick="filterForms('Mobile')">المحمول</button>
             <button class="filter-btn" onclick="filterForms('Landline')">الأرضي</button>
-            <button class="filter-btn" onclick="filterForms('Adsl')">Adsl</button>
+            <button class="filter-btn" onclick="filterForms('Adsl')">إنتـرنت</button>
         </div>
 
         <div class="forms-grid" id="formsContainer">
-            <!-- سيتم إضافة النماذج ديناميكيًا بواسطة الجافاسكريبت -->
+            <div class="loader">جاري تحميل النماذج...</div>
         </div>
     </section>
 
-    <!-- الفوتر -->
     <footer class="footer">
-        <p>powered by mohand</p>
+        <p>Powered by Mohand Hassan | 2026</p>
     </footer>
 
     <script type="module" src="script/pdf.js"></script>
-    <script src="script/pdf.js"></script>
-
-<script>
-  window.addEventListener('load', function() {
-    if (typeof ActiveUsersWidget !== 'undefined') {
-      ActiveUsersWidget.init({ position: 'corner' });
-    }
-  });
-</script>
+    <script src="script/active-users-widget.js"></script>
 </body>
 </html>
-
