@@ -1,4 +1,4 @@
-import { serve } from "https://deno.land/std@0.168.0/http/server.ts"
+
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2"
 
 const ALLOWED_FOLDERS_VIDEOS = ['Bss Features', 'Fixed & Adsl', 'Ramedy', 'WE Gold']
@@ -6,25 +6,15 @@ const ALLOWED_FOLDERS_SOFT = ['Soft']
 
 // ─── إعدادات CORS ───
 function getCorsHeaders(req: Request) {
-  const origin = req.headers.get('Origin') ?? ''
-  const allowedOrigins = [
-    'https://we-core.icu',
-    'http://127.0.0.1:5500',
-    'http://localhost:5500'
-  ]
+  const origin = req.headers.get('Origin') ?? '*'
 
-  const headers: Record<string, string> = {
+  return {
+    'Access-Control-Allow-Origin': origin,
     'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
-    'Access-Control-Allow-Methods': 'POST, OPTIONS',
+    'Access-Control-Allow-Methods': 'POST, GET, OPTIONS, PUT, DELETE',
     'Access-Control-Allow-Credentials': 'true',
     'Vary': 'Origin',
   }
-
-  if (allowedOrigins.includes(origin) || origin.endsWith('we-core.icu')) {
-    headers['Access-Control-Allow-Origin'] = origin
-  }
-
-  return headers
 }
 
 // ─── استخراج التوكن بدقة من الكوكيز ───
@@ -53,10 +43,8 @@ async function verifyUser(req: Request, supabaseUrl: string, supabaseAnonKey: st
   if (!token) return null
 
   try {
-    const supabaseUser = createClient(supabaseUrl, supabaseAnonKey, {
-      global: { headers: { Authorization: `Bearer ${token}` } }
-    })
-    const { data: { user }, error } = await supabaseUser.auth.getUser()
+    const supabaseUser = createClient(supabaseUrl, supabaseAnonKey)
+    const { data: { user }, error } = await supabaseUser.auth.getUser(token)
     if (error || !user) return null
     return user
   } catch (e) {
@@ -65,7 +53,7 @@ async function verifyUser(req: Request, supabaseUrl: string, supabaseAnonKey: st
   }
 }
 
-serve(async (req) => {
+Deno.serve(async (req) => {
   const corsHeaders = getCorsHeaders(req)
 
   if (req.method === 'OPTIONS') {
