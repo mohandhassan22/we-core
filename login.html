@@ -55,9 +55,17 @@ footer span{color:#7b3fe4;font-weight:700;}
     const showErr = msg => { $('errMsg').textContent = msg; $('errMsg').classList.add('show'); };
     const hideErr = () => $('errMsg').classList.remove('show');
     
+    // تعديل: تعطيل الحفظ التلقائي في LocalStorage
     const sb = supabase.createClient(
         'https://iygwhapcpdmsasqlfelv.supabase.co',
-        'sb_publishable_rD9naqrpu1dI-iwchAS0GQ_JkgGysqP'
+        'sb_publishable_rD9naqrpu1dI-iwchAS0GQ_JkgGysqP',
+        {
+            auth: {
+                persistSession: false, // يمنع الحفظ في LocalStorage
+                autoRefreshToken: false,
+                detectSessionInUrl: false
+            }
+        }
     );
 
     window.doLogin = async function() {
@@ -71,7 +79,7 @@ footer span{color:#7b3fe4;font-weight:700;}
         btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> جاري التحقق...';
 
         try {
-            // 1. Get Email from Edge Function using username
+            // تصحيح: استدعاء Edge Function بدلاً من RPC لحل مشكلة الـ 404
             const { data: emailData, error: emailErr } = await sb.functions.invoke('hyper-task', {
                 body: { action: 'get_email', username: username }
             });
@@ -95,9 +103,8 @@ footer span{color:#7b3fe4;font-weight:700;}
             // حفظ التوكن في الكوكيز ليكون متاحاً للـ Edge Function
             document.cookie = `sb-access-token=${token}; path=/; max-age=86400; SameSite=Lax; Secure`;
             
-            // تخزين بيانات الجلسة
+            // تخزين بيانات الجلسة (اختياري للعرض فقط)
             sessionStorage.setItem('we_user', username);
-            sessionStorage.setItem('sb-access-token', token);
             
             window.location.replace('index.html');
 
