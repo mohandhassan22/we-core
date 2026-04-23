@@ -28,12 +28,12 @@ function saveCache() { localStorage.setItem("translationCache", JSON.stringify(t
 async function translateOne(text) {
   const cleaned = text.replace(/\.pdf$/i, "").replace(/[-_]/g, " ").trim();
   if (translationCache[cleaned.toLowerCase()]) return translationCache[cleaned.toLowerCase()];
-  
+
   const dictMatch = customDictionary[cleaned.toLowerCase()];
-  if (dictMatch) { 
-    translationCache[cleaned.toLowerCase()] = dictMatch; 
-    saveCache(); 
-    return dictMatch; 
+  if (dictMatch) {
+    translationCache[cleaned.toLowerCase()] = dictMatch;
+    saveCache();
+    return dictMatch;
   }
 
   try {
@@ -52,7 +52,6 @@ async function fetchAllPdfs() {
   const results = [];
 
   try {
-    // 1. طلب قائمة الملفات والمجلدات من المستوى الأول (Root)
     const res = await fetch(
       `${SUPABASE_URL}/storage/v1/object/list/${encodeURIComponent(BUCKET_NAME)}`,
       {
@@ -68,23 +67,19 @@ async function fetchAllPdfs() {
 
     if (!res.ok) throw new Error(`HTTP Error: ${res.status}`);
     const data = await res.json();
-    console.log("Storage Root Response:", data);
 
-    // تصفية المجلدات (التي ليس لها id أو لا تحتوي على نقطة امتداد)
-    const folders = data.filter(item => !item.id && !item.name.includes("."));
-    
-    // تصفية الملفات الموجودة في الـ Root مباشرة
+    const folders   = data.filter(item => !item.id && !item.name.includes("."));
     const rootFiles = data.filter(item => item.name.toLowerCase().endsWith(".pdf"));
+
     rootFiles.forEach(f => {
       results.push({
         filename: f.name,
         fullPath: f.name,
         category: "عام",
-        size: f.metadata ? (f.metadata.size / 1024).toFixed(1) + " KB" : "Unknown"
+        size: f.metadata ? (f.metadata.size / 1024).toFixed(1) + " KB" : ""
       });
     });
 
-    // 2. الدخول لكل مجلد (Adsl, Fixed, Mobile) وجلب ملفاته
     for (const folder of folders) {
       try {
         const subRes = await fetch(
@@ -99,10 +94,8 @@ async function fetchAllPdfs() {
             body: JSON.stringify({ prefix: folder.name + "/", limit: 100 })
           }
         );
-        
-        const subData = await subRes.json();
-        console.log(`Contents of [${folder.name}]:`, subData);
 
+        const subData = await subRes.json();
         if (Array.isArray(subData)) {
           subData
             .filter(f => f.name.toLowerCase().endsWith(".pdf"))
@@ -126,38 +119,80 @@ async function fetchAllPdfs() {
   return results;
 }
 
-// عرض الكروت في الصفحة
+// ── مساعد: تحديد tag الفئة ──
+function catTag(cat) {
+  const map = {
+    "Mobile": { cls: "cat-mobile", icon: "fa-mobile-screen-button", label: "المحمول" },
+    "Fixed":  { cls: "cat-fixed",  icon: "fa-phone",                label: "الأرضي"  },
+    "Adsl":   { cls: "cat-adsl",   icon: "fa-wifi",                 label: "إنترنت"  },
+    "عام":    { cls: "cat-default", icon: "fa-tag",                 label: "عام"     },
+  };
+  const m = map[cat] || { cls: "cat-default", icon: "fa-tag", label: cat || "عام" };
+  return `<span class="cat-tag ${m.cls}">
+    <i class="fa-solid ${m.icon}" style="font-size:10px"></i>${m.label}
+  </span>`;
+}
+
+// ── عرض الكروت بالتصميم الجديد ──
 function renderCards(forms) {
   const container = document.getElementById("formsContainer");
   if (!container) return;
 
+  // تحديث عداد الإجمالي لو موجود في الصفحة
+  const statTotal = document.getElementById("stat-total");
+  if (statTotal) statTotal.textContent = forms.length;
+
   if (!forms.length) {
-    container.innerHTML = `<div class="no-data">لا توجد نماذج متاحة حالياً في Bucket [${BUCKET_NAME}]</div>`;
+    container.innerHTML = `
+      <div class="no-results">
+        <i class="fa-solid fa-folder-open"></i>
+        <p>لا توجد نماذج متاحة حالياً في هذا القسم.</p>
+      </div>`;
     return;
   }
 
+  const viewUrl = form =>
+    `viewpdf.html?src=${encodeURIComponent(
+      `${SUPABASE_URL}/storage/v1/object/authenticated/${BUCKET_NAME}/${form.fullPath}`
+    )}`;
+
   container.innerHTML = forms.map(form => `
-    <div class="form-card" data-category="${form.category}">
-      <div class="card-icon"><i class="fa-solid fa-file-pdf"></i></div>
-      <div class="card-info">
-        <h3>${form.title}</h3>
-        <span class="file-size">${form.size}</span>
+    <div class="form-card" data-category="${form.category}" data-title="${(form.title || '').toLowerCase()}">
+      <div class="form-header">
+        <div class="form-icon-wrap">
+          <i class="fa-solid fa-file-pdf"></i>
+        </div>
+        <div class="form-meta">
+          <h3>${form.title || form.filename}</h3>
+          ${catTag(form.category)}
+        </div>
       </div>
-      <a href="viewpdf.html?src=${encodeURIComponent(`${SUPABASE_URL}/storage/v1/object/authenticated/${BUCKET_NAME}/${form.fullPath}`)}" class="form-btn">
-          عرض النموذج
+      ${form.size ? `<p class="form-desc"><i class="fa-solid fa-hard-drive" style="font-size:11px;margin-left:4px;color:var(--text3)"></i>${form.size}</p>` : ""}
+      <a href="${viewUrl(form)}" class="download-btn">
+        <i class="fa-solid fa-eye"></i> عرض النموذج
       </a>
     </div>`).join("");
 }
 
-// بدء التشغيل
+// ── بدء التشغيل ──
 async function init() {
   const container = document.getElementById("formsContainer");
-  if (container) container.innerHTML = `<div class="loading">جاري جلب النماذج من التخزين...</div>`;
+
+  // skeleton أثناء التحميل
+  if (container) {
+    container.innerHTML = `
+      ${[1,2,3].map(() => `
+        <div class="skel-card">
+          <div class="skel-line" style="width:30%;height:42px;border-radius:10px"></div>
+          <div class="skel-line" style="width:88%"></div>
+          <div class="skel-line" style="width:55%"></div>
+          <div class="skel-line" style="width:100%;height:36px;border-radius:9px;margin-top:4px"></div>
+        </div>`).join("")}`;
+  }
 
   const rawForms = await fetchAllPdfs();
-  console.log("Total PDFs detected:", rawForms.length);
 
-  // ترجمة العناوين قبل العرض
+  // ترجمة العناوين
   for (const form of rawForms) {
     form.title = await translateOne(form.filename);
   }
@@ -165,19 +200,41 @@ async function init() {
   renderCards(rawForms);
 }
 
-// الفلترة والبحث (Global Functions)
-window.filterForms = (cat) => {
+// ── الفلترة والبحث ──
+window.filterForms = (cat, btn) => {
+  // active state للأزرار
+  document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
+  if (btn) btn.classList.add("active");
+
+  const q = (document.getElementById("searchInput")?.value || "").toLowerCase();
+  let visible = 0;
+
   document.querySelectorAll(".form-card").forEach(c => {
-    c.style.display = (cat === "all" || c.dataset.category === cat) ? "block" : "none";
+    const matchCat = cat === "all" || c.dataset.category === cat;
+    const matchQ   = !q || (c.dataset.title || "").includes(q);
+    const show = matchCat && matchQ;
+    c.style.display = show ? "" : "none";
+    if (show) visible++;
   });
+
+  // تحديث عداد النتائج
+  const fw = document.getElementById("stat-filtered-wrap");
+  const fs = document.getElementById("stat-filtered");
+  if (fw && fs) {
+    if (cat !== "all" || q) {
+      fw.style.display = "flex";
+      fs.textContent = visible;
+    } else {
+      fw.style.display = "none";
+    }
+  }
 };
 
 window.searchForms = () => {
-  const term = document.getElementById("searchInput").value.toLowerCase();
-  document.querySelectorAll(".form-card").forEach(c => {
-    const title = c.querySelector("h3").textContent.toLowerCase();
-    c.style.display = title.includes(term) ? "block" : "none";
-  });
+  // استدعي filterForms مع الفلتر الحالي
+  const activeBtn = document.querySelector(".filter-btn.active");
+  const currentCat = activeBtn?.dataset?.folder || "all";
+  window.filterForms(currentCat, activeBtn);
 };
 
 // تنفيذ الكود
