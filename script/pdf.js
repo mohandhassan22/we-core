@@ -2,9 +2,9 @@
 //  WE-Core · pdf.js (النسخة المصححة برمجياً)
 // ========================================
 
-const SUPABASE_URL = "https://dfbzovrwaxrzsskbvmfs.supabase.co";
-const SUPABASE_ANON = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRmYnpvdnJ3YXhyenNza2J2bWZzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUwNjQzNjIsImV4cCI6MjA5MDY0MDM2Mn0.5LDy-m4WHViSOqlasypBn1sohXcTuCS8y2PENCTy60M";
-const BUCKET_NAME = "ALL FORM";
+const SUPABASE_URL = "https://iygwhapcpdmsasqlfelv.supabase.co";
+const SUPABASE_ANON = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml5Z3doYXBjcGRtc2FzcWxmZWx2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzEzNDk5MDQsImV4cCI6MjA4NjkyNTkwNH0.jqU1fEc9kBkXcCfazH6aTnS2XWWzPv0bbixHZgjtrnQ";
+const BUCKET_NAME = "All Form";
 const TRANSLATE_API = "https://api.mymemory.translated.net/get";
 
 // 1. القاموس اليدوي الشامل - تم تنظيفه من مراجع الـ [cite] التي تسبب الخطأ
