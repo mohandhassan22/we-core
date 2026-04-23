@@ -33,7 +33,7 @@ function getCookieToken(req: Request, name: string): string | null {
 // ─── التحقق من هوية المستخدم ───
 async function verifyUser(req: Request, supabaseUrl: string, supabaseAnonKey: string) {
   // 1. البحث في الهيدر أولاً
-  let token = req.headers.get('Authorization')?.replace('Bearer ', '')
+  let token: string | undefined | null = req.headers.get('Authorization')?.replace('Bearer ', '')
 
   // 2. البحث في الكوكيز لو مش موجود في الهيدر
   if (!token) {
