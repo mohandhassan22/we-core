@@ -2,7 +2,6 @@
 <html lang="ar" dir="rtl">
 <head>
   <script src="script/auth.js?v=15.0.1"></script>
-
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>عرض النموذج</title>
@@ -31,7 +30,6 @@
       overflow: hidden;
     }
 
-    /* ─── خلفية متحركة ─── */
     body::before {
       content: '';
       position: fixed;
@@ -44,20 +42,6 @@
       z-index: 0;
     }
 
-    /* ─── شبكة خفيفة ─── */
-    body::after {
-      content: '';
-      position: fixed;
-      inset: 0;
-      background-image:
-        linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
-      background-size: 40px 40px;
-      pointer-events: none;
-      z-index: 0;
-    }
-
-    /* ─── Toolbar ─── */
     .toolbar {
       position: sticky;
       top: 0;
@@ -71,15 +55,8 @@
       align-items: center;
       gap: 10px;
       padding: 0 20px;
-      animation: slideDown 0.4s ease;
     }
 
-    @keyframes slideDown {
-      from { transform: translateY(-100%); opacity: 0; }
-      to   { transform: translateY(0);     opacity: 1; }
-    }
-
-    /* ─── زر رجوع ─── */
     .btn-back {
       display: flex;
       align-items: center;
@@ -91,179 +68,44 @@
       border-radius: 10px;
       cursor: pointer;
       font-size: 13px;
-      font-family: 'Cairo', sans-serif;
       text-decoration: none;
       transition: all 0.2s;
-      white-space: nowrap;
-    }
-    .btn-back:hover {
-      background: rgba(224,64,251,0.15);
-      border-color: var(--accent);
-      color: #fff;
-    }
-    .btn-back i { font-size: 12px; }
-
-    /* ─── عنوان الملف ─── */
-    .title-wrap {
-      flex: 1;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      min-width: 0;
     }
 
+    .title-wrap { flex: 1; display: flex; align-items: center; gap: 10px; min-width: 0; }
     .file-icon {
-      width: 36px;
-      height: 36px;
-      border-radius: 8px;
+      width: 36px; height: 36px; border-radius: 8px;
       background: linear-gradient(135deg, var(--primary-light), var(--accent));
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #fff;
-      font-size: 15px;
-      flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center; color: #fff;
       box-shadow: 0 0 14px rgba(224,64,251,0.35);
     }
 
-    .doc-title {
-      color: #f0e0ff;
-      font-size: 15px;
-      font-weight: 700;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
+    .doc-title { color: #f0e0ff; font-size: 15px; font-weight: 700; }
 
-    /* ─── أزرار الأدوات ─── */
-    .actions {
-      display: flex;
-      gap: 8px;
-      flex-shrink: 0;
-    }
-
+    .actions { display: flex; gap: 8px; }
     .tb-btn {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      background: var(--glass);
-      color: #e0b0ff;
-      border: 1px solid var(--glass-border);
-      padding: 9px 15px;
-      border-radius: 10px;
-      cursor: pointer;
-      font-size: 13px;
-      font-family: 'Cairo', sans-serif;
-      transition: all 0.2s;
-      white-space: nowrap;
-    }
-    .tb-btn:hover {
-      background: rgba(255,255,255,0.12);
-      color: #fff;
-      transform: translateY(-1px);
+      display: flex; align-items: center; gap: 6px; background: var(--glass);
+      color: #e0b0ff; border: 1px solid var(--glass-border); padding: 9px 15px;
+      border-radius: 10px; cursor: pointer; font-size: 13px; font-family: 'Cairo';
     }
     .tb-btn.primary {
       background: linear-gradient(135deg, var(--primary-light), var(--accent));
-      border-color: transparent;
-      color: #fff;
-      box-shadow: 0 4px 14px rgba(224,64,251,0.3);
-    }
-    .tb-btn.primary:hover {
-      box-shadow: 0 6px 20px rgba(224,64,251,0.5);
-      transform: translateY(-2px);
+      border-color: transparent; color: #fff;
     }
 
-    /* ─── حاوية PDF ─── */
-    #viewerContainer {
-      position: relative;
-      z-index: 1;
-      height: calc(100vh - var(--toolbar-h));
-      width: 100%;
-      display: flex;
-      align-items: stretch;
-      animation: fadeIn 0.5s ease 0.2s both;
-    }
+    #viewerContainer { position: relative; height: calc(100vh - var(--toolbar-h)); width: 100%; }
+    #pdfFrame { width: 100%; height: 100%; border: none; background: #1a1a2e; }
 
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-
-    #pdfFrame {
-      width: 100%;
-      height: 100%;
-      border: none;
-      background: #1a1a2e;
-    }
-
-    /* ─── شاشة تحميل ─── */
     #loadingScreen {
-      position: absolute;
-      inset: 0;
-      background: rgba(13,0,21,0.9);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 16px;
-      z-index: 10;
-      transition: opacity 0.5s;
+      position: absolute; inset: 0; background: rgba(13,0,21,0.9);
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px;
     }
-    #loadingScreen.hidden {
-      opacity: 0;
-      pointer-events: none;
-    }
-
-    .spinner {
-      width: 48px;
-      height: 48px;
-      border: 3px solid rgba(224,64,251,0.2);
-      border-top-color: var(--accent);
-      border-radius: 50%;
-      animation: spin 0.9s linear infinite;
-    }
+    #loadingScreen.hidden { opacity: 0; pointer-events: none; }
+    .spinner { width: 48px; height: 48px; border: 3px solid rgba(224,64,251,0.2); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.9s linear infinite; }
     @keyframes spin { to { transform: rotate(360deg); } }
 
-    #loadingScreen p {
-      color: #c080ff;
-      font-size: 14px;
-      font-family: 'Cairo', sans-serif;
-    }
-
-    /* ─── رسالة خطأ ─── */
-    .error-state {
-      width: 100%;
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 12px;
-      color: #a070c0;
-    }
-    .error-state i {
-      font-size: 52px;
-      color: rgba(224,64,251,0.4);
-    }
-    .error-state p {
-      font-size: 15px;
-      font-family: 'Cairo', sans-serif;
-    }
-
-    /* ─── موبايل ─── */
-    @media (max-width: 600px) {
-      .toolbar { padding: 0 12px; gap: 8px; }
-      .tb-btn span { display: none; }
-      .tb-btn { padding: 9px 12px; }
-      .btn-back span { display: none; }
-    }
-
-    @media print {
-      .toolbar { display: none !important; }
-      #viewerContainer { height: 100vh; }
-    }
+    @media print { .toolbar { display: none !important; } }
   </style>
-<script src="script/active-users-widget.js"></script>
 </head>
 <body>
 
@@ -274,9 +116,7 @@
     </a>
 
     <div class="title-wrap">
-      <div class="file-icon">
-        <i class="fas fa-file-pdf"></i>
-      </div>
+      <div class="file-icon"><i class="fas fa-file-pdf"></i></div>
       <span class="doc-title" id="docTitle">جاري التحميل...</span>
     </div>
 
@@ -295,92 +135,84 @@
   <div id="viewerContainer">
     <div id="loadingScreen">
       <div class="spinner"></div>
-      <p>جاري تحميل النموذج...</p>
+      <p style="color: #c080ff;">جاري تحميل النموذج...</p>
     </div>
     <iframe id="pdfFrame"></iframe>
   </div>
 
   <script>
-    // وظيفة لجلب الكوكيز
     function getCookie(name) {
         const value = `; ${document.cookie}`;
         const parts = value.split(`; ${name}=`);
         if (parts.length === 2) return parts.pop().split(';').shift();
     }
 
-    const params  = new URLSearchParams(window.location.search);
+    const params = new URLSearchParams(window.location.search);
     let fileUrl = params.get("src");
-    const frame   = document.getElementById("pdfFrame");
+    const frame = document.getElementById("pdfFrame");
     const titleEl = document.getElementById("docTitle");
     const loading = document.getElementById("loadingScreen");
+    let localBlobUrl = null;
 
     if (fileUrl) {
       const fileName = decodeURIComponent(fileUrl.split("/").pop().split("?")[0]);
       titleEl.textContent = fileName.replace(/\.pdf$/i, "");
-      document.title = fileName.replace(/\.pdf$/i, "") + " | WE-Core";
-
-      // إضافة التوكن للرابط 
+      
       const token = getCookie('sb-access-token');
+
+      // حل مشكلة headers must have required property 'authorization'
       if (token && fileUrl.includes('/authenticated/')) {
           fetch(fileUrl, {
               headers: { "Authorization": `Bearer ${token}` }
           })
           .then(res => {
-              if(!res.ok) throw new Error("Failed to fetch PDF");
+              if(!res.ok) throw new Error("Authorization Required");
               return res.blob();
           })
           .then(blob => {
-              const objUrl = URL.createObjectURL(blob);
-              frame.src = objUrl;
+              localBlobUrl = URL.createObjectURL(blob);
+              frame.src = localBlobUrl;
           })
           .catch(err => {
               console.error(err);
               loading.classList.add("hidden");
-              titleEl.textContent = "خطأ في تحميل النموذج";
+              titleEl.textContent = "خطأ في صلاحية الوصول";
           });
       } else {
           frame.src = fileUrl;
+          localBlobUrl = fileUrl;
       }
 
-      frame.onload = () => {
-        setTimeout(() => loading.classList.add("hidden"), 400);
-      };
-      // fallback لو onload ماتشغلش
-      setTimeout(() => loading.classList.add("hidden"), 5000);
-    } else {
-      loading.classList.add("hidden");
-      titleEl.textContent = "لم يتم تحديد ملف";
-      frame.style.display = "none";
-      document.getElementById("viewerContainer").innerHTML = `
-        <div class="error-state">
-          <i class="fas fa-exclamation-circle"></i>
-          <p>لم يتم العثور على الملف</p>
-        </div>`;
+      frame.onload = () => setTimeout(() => loading.classList.add("hidden"), 400);
     }
 
+    // جعل Ctrl + P يطبع الملف فقط
+    window.addEventListener('keydown', function(e) {
+        if ((e.ctrlKey || e.metaKey) && e.key === 'p') {
+            e.preventDefault();
+            printPDF();
+        }
+    });
+
     function printPDF() {
-      if (!fileUrl) return;
-      const w = window.open(fileUrl, "_blank");
-      if (w) w.onload = () => w.print();
+        if (frame.contentWindow) {
+            frame.contentWindow.focus();
+            frame.contentWindow.print();
+        } else if (localBlobUrl) {
+            const w = window.open(localBlobUrl, "_blank");
+            w.onload = () => w.print();
+        }
     }
 
     function downloadPDF() {
-      if (!fileUrl) return;
+      if (!localBlobUrl) return;
       const a = document.createElement("a");
-      a.href = fileUrl;
+      a.href = localBlobUrl;
       a.download = decodeURIComponent(fileUrl.split("/").pop());
-      a.target = "_blank";
+      document.body.appendChild(a);
       a.click();
+      document.body.removeChild(a);
     }
   </script>
-
-
-<script>
-  window.addEventListener('load', function() {
-    if (typeof ActiveUsersWidget !== 'undefined') {
-      ActiveUsersWidget.init({ position: 'corner' });
-    }
-  });
-</script>
 </body>
 </html>
