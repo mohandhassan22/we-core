@@ -4,126 +4,287 @@
   <script src="script/auth.js?v=15.0.1"></script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>عرض النموذج</title>
+  <title>WE Core | جاري التحميل...</title>
   <link rel="shortcut icon" href="img/we-core.png" type="image/x-icon">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;900&display=swap" rel="stylesheet">
 
   <style>
     :root {
-      --primary: #4a148c;
-      --primary-light: #7b1fa2;
-      --primary-dark: #2d0060;
-      --accent: #e040fb;
-      --accent-soft: rgba(224, 64, 251, 0.15);
-      --glass: rgba(255,255,255,0.07);
-      --glass-border: rgba(255,255,255,0.15);
-      --toolbar-h: 64px;
+      --primary:        #6b21a8;
+      --primary-light:  #9333ea;
+      --primary-dark:   #4c1d95;
+      --accent:         #a855f7;
+      --accent-soft:    rgba(168, 85, 247, 0.12);
+      --accent-glow:    rgba(168, 85, 247, 0.25);
+
+      --bg:             #faf5ff;
+      --surface:        #ffffff;
+      --surface-2:      #f3e8ff;
+      --border:         #e9d5ff;
+      --border-strong:  #c084fc;
+
+      --text-primary:   #3b0764;
+      --text-secondary: #7c3aed;
+      --text-muted:     #a78bfa;
+
+      --toolbar-h: 68px;
+      --radius: 12px;
+      --shadow-sm: 0 1px 3px rgba(109,40,217,.08), 0 1px 2px rgba(109,40,217,.06);
+      --shadow-md: 0 4px 16px rgba(109,40,217,.12), 0 2px 6px rgba(109,40,217,.08);
+      --shadow-lg: 0 8px 32px rgba(109,40,217,.15), 0 4px 12px rgba(109,40,217,.10);
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
-    body {
+    html, body {
       font-family: 'Cairo', Tahoma, sans-serif;
-      background: #0d0015;
-      min-height: 100vh;
+      background: var(--bg);
+      height: 100%;
       overflow: hidden;
     }
 
-    body::before {
-      content: '';
-      position: fixed;
-      inset: 0;
-      background:
-        radial-gradient(ellipse 80% 60% at 20% 0%, rgba(106,27,154,0.5) 0%, transparent 60%),
-        radial-gradient(ellipse 60% 50% at 80% 100%, rgba(74,20,140,0.4) 0%, transparent 55%),
-        radial-gradient(ellipse 40% 40% at 50% 50%, rgba(224,64,251,0.06) 0%, transparent 70%);
-      pointer-events: none;
-      z-index: 0;
-    }
-
+    /* ─── Toolbar ─── */
     .toolbar {
       position: sticky;
       top: 0;
-      z-index: 200;
+      z-index: 300;
       height: var(--toolbar-h);
-      background: rgba(13, 0, 21, 0.85);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border-bottom: 1px solid var(--glass-border);
+      background: var(--surface);
+      border-bottom: 1.5px solid var(--border);
       display: flex;
       align-items: center;
       gap: 10px;
       padding: 0 20px;
+      box-shadow: var(--shadow-sm);
     }
 
-    .btn-back {
+    /* Subtle top accent stripe */
+    .toolbar::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--primary-dark), var(--accent), var(--primary-light));
+      border-radius: 0 0 2px 2px;
+    }
+
+    /* Brand badge */
+    .brand {
       display: flex;
       align-items: center;
       gap: 8px;
-      background: var(--glass);
-      color: #e0b0ff;
-      border: 1px solid var(--glass-border);
-      padding: 9px 16px;
+      padding: 6px 14px 6px 10px;
+      background: linear-gradient(135deg, var(--primary-dark), var(--primary-light));
       border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(109,40,217,.35);
+      text-decoration: none;
+      flex-shrink: 0;
+      transition: box-shadow .2s, transform .2s;
+    }
+    .brand:hover { transform: translateY(-1px); box-shadow: 0 4px 16px rgba(109,40,217,.45); }
+    .brand-logo {
+      width: 28px; height: 28px;
+      background: rgba(255,255,255,.2);
+      border-radius: 6px;
+      display: flex; align-items: center; justify-content: center;
+      color: #fff; font-size: 13px;
+    }
+    .brand-text { color: #fff; font-size: 13px; font-weight: 700; letter-spacing: .5px; }
+
+    /* Divider */
+    .divider {
+      width: 1px;
+      height: 32px;
+      background: var(--border);
+      flex-shrink: 0;
+    }
+
+    /* Title area */
+    .title-wrap {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+      overflow: hidden;
+    }
+    .file-icon {
+      width: 38px; height: 38px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      display: flex; align-items: center; justify-content: center;
+      color: #fff; font-size: 15px;
+      box-shadow: 0 2px 10px var(--accent-glow);
+      flex-shrink: 0;
+    }
+    .title-meta { min-width: 0; }
+    .doc-label {
+      font-size: 10px;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: .8px;
+    }
+    .doc-title {
+      color: var(--text-primary);
+      font-size: 14px;
+      font-weight: 700;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* Actions */
+    .actions { display: flex; gap: 8px; flex-shrink: 0; }
+
+    .tb-btn {
+      display: flex; align-items: center; gap: 7px;
+      background: var(--surface-2);
+      color: var(--primary);
+      border: 1.5px solid var(--border);
+      padding: 8px 16px;
+      border-radius: var(--radius);
       cursor: pointer;
       font-size: 13px;
-      text-decoration: none;
-      transition: all 0.2s;
+      font-family: 'Cairo', sans-serif;
+      font-weight: 600;
+      transition: all .18s;
+      white-space: nowrap;
+      box-shadow: var(--shadow-sm);
     }
-
-    .title-wrap { flex: 1; display: flex; align-items: center; gap: 10px; min-width: 0; }
-    .file-icon {
-      width: 36px; height: 36px; border-radius: 8px;
-      background: linear-gradient(135deg, var(--primary-light), var(--accent));
-      display: flex; align-items: center; justify-content: center; color: #fff;
-      box-shadow: 0 0 14px rgba(224,64,251,0.35);
+    .tb-btn:hover {
+      background: var(--accent-soft);
+      border-color: var(--border-strong);
+      color: var(--primary-dark);
+      box-shadow: var(--shadow-md);
+      transform: translateY(-1px);
     }
+    .tb-btn:active { transform: translateY(0); }
 
-    .doc-title { color: #f0e0ff; font-size: 15px; font-weight: 700; }
-
-    .actions { display: flex; gap: 8px; }
-    .tb-btn {
-      display: flex; align-items: center; gap: 6px; background: var(--glass);
-      color: #e0b0ff; border: 1px solid var(--glass-border); padding: 9px 15px;
-      border-radius: 10px; cursor: pointer; font-size: 13px; font-family: 'Cairo';
-    }
     .tb-btn.primary {
-      background: linear-gradient(135deg, var(--primary-light), var(--accent));
-      border-color: transparent; color: #fff;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      border-color: transparent;
+      color: #fff;
+      box-shadow: 0 3px 12px var(--accent-glow);
+    }
+    .tb-btn.primary:hover {
+      background: linear-gradient(135deg, var(--primary-dark), var(--primary-light));
+      color: #fff;
+      box-shadow: 0 5px 18px var(--accent-glow);
     }
 
-    #viewerContainer { position: relative; height: calc(100vh - var(--toolbar-h)); width: 100%; }
-    #pdfFrame { width: 100%; height: 100%; border: none; background: #1a1a2e; }
+    /* Keyboard hint badge */
+    .kbd {
+      display: inline-flex; align-items: center;
+      background: rgba(255,255,255,.25);
+      border: 1px solid rgba(255,255,255,.35);
+      border-radius: 4px;
+      padding: 1px 5px;
+      font-size: 10px;
+      font-family: monospace;
+      letter-spacing: .5px;
+    }
 
+    /* ─── Viewer ─── */
+    #viewerContainer {
+      position: relative;
+      height: calc(100vh - var(--toolbar-h));
+      width: 100%;
+      background: var(--bg);
+    }
+
+    #pdfFrame {
+      width: 100%;
+      height: 100%;
+      border: none;
+      display: block;
+    }
+
+    /* ─── Loading ─── */
     #loadingScreen {
-      position: absolute; inset: 0; background: rgba(13,0,21,0.9);
-      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px;
+      position: absolute; inset: 0;
+      background: var(--bg);
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      gap: 20px;
+      transition: opacity .4s;
+      z-index: 10;
     }
     #loadingScreen.hidden { opacity: 0; pointer-events: none; }
-    .spinner { width: 48px; height: 48px; border: 3px solid rgba(224,64,251,0.2); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.9s linear infinite; }
-    @keyframes spin { to { transform: rotate(360deg); } }
 
-    @media print { .toolbar { display: none !important; } }
+    .loader-icon {
+      width: 72px; height: 72px;
+      border-radius: 18px;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      display: flex; align-items: center; justify-content: center;
+      color: #fff; font-size: 28px;
+      box-shadow: 0 8px 28px var(--accent-glow);
+      animation: pulse 1.8s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { transform: scale(1);   box-shadow: 0 8px 28px var(--accent-glow); }
+      50%       { transform: scale(1.06); box-shadow: 0 12px 36px rgba(168,85,247,.4); }
+    }
+
+    .loader-bar {
+      width: 200px; height: 4px;
+      background: var(--border);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    .loader-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+      border-radius: 4px;
+      animation: load 1.6s ease-in-out infinite;
+    }
+    @keyframes load {
+      0%   { width: 0%;   margin-right: 100%; }
+      50%  { width: 60%;  margin-right: 20%; }
+      100% { width: 0%;   margin-right: 100%; }
+    }
+
+    .loader-text {
+      color: var(--text-secondary);
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    /* ─── Print styles ─── */
+    @media print {
+      .toolbar { display: none !important; }
+      #viewerContainer { height: 100vh !important; }
+      body { overflow: auto !important; }
+      #loadingScreen { display: none !important; }
+    }
   </style>
 </head>
 <body>
 
   <div class="toolbar">
-    <a class="btn-back" href="pdf.html">
-      <i class="fas fa-arrow-right"></i>
-      <span>رجوع</span>
+    <!-- Brand / Back -->
+    <a class="brand" href="pdf.html" title="رجوع إلى القائمة">
+      <div class="brand-logo"><i class="fas fa-layer-group"></i></div>
+      <span class="brand-text">WE Core</span>
     </a>
 
+    <div class="divider"></div>
+
+    <!-- Document Title -->
     <div class="title-wrap">
       <div class="file-icon"><i class="fas fa-file-pdf"></i></div>
-      <span class="doc-title" id="docTitle">جاري التحميل...</span>
+      <div class="title-meta">
+        <div class="doc-label">ملف PDF</div>
+        <div class="doc-title" id="docTitle">جاري التحميل...</div>
+      </div>
     </div>
 
+    <!-- Actions -->
     <div class="actions">
-      <button class="tb-btn" onclick="printPDF()">
+      <button class="tb-btn" onclick="printPDF()" title="طباعة (Ctrl+P)">
         <i class="fas fa-print"></i>
         <span>طباعة</span>
+        <span class="kbd"></span>
       </button>
       <button class="tb-btn primary" onclick="downloadPDF()">
         <i class="fas fa-download"></i>
@@ -133,81 +294,90 @@
   </div>
 
   <div id="viewerContainer">
-    <div id="loadingScreen">
-      <div class="spinner"></div>
-      <p style="color: #c080ff;">جاري تحميل النموذج...</p>
+    <div id="loadingScreen" id="loadingScreen">
+      <div class="loader-icon"><i class="fas fa-file-pdf"></i></div>
+      <div class="loader-bar"><div class="loader-bar-fill"></div></div>
+      <p class="loader-text">جاري تحميل النموذج...</p>
     </div>
-    <iframe id="pdfFrame"></iframe>
+    <iframe id="pdfFrame" title="عارض PDF"></iframe>
   </div>
 
   <script>
+    /* ── helpers ── */
     function getCookie(name) {
-        const value = `; ${document.cookie}`;
-        const parts = value.split(`; ${name}=`);
-        if (parts.length === 2) return parts.pop().split(';').shift();
+      const val = `; ${document.cookie}`;
+      const parts = val.split(`; ${name}=`);
+      if (parts.length === 2) return parts.pop().split(';').shift();
     }
 
-    const params = new URLSearchParams(window.location.search);
-    let fileUrl = params.get("src");
-    const frame = document.getElementById("pdfFrame");
-    const titleEl = document.getElementById("docTitle");
-    const loading = document.getElementById("loadingScreen");
-    let localBlobUrl = null;
+    /* ── init ── */
+    const params   = new URLSearchParams(window.location.search);
+    let   fileUrl  = params.get("src");
+    const frame    = document.getElementById("pdfFrame");
+    const titleEl  = document.getElementById("docTitle");
+    const loading  = document.getElementById("loadingScreen");
+    let   localBlobUrl = null;
 
     if (fileUrl) {
-      const fileName = decodeURIComponent(fileUrl.split("/").pop().split("?")[0]);
-      titleEl.textContent = fileName.replace(/\.pdf$/i, "");
-      
+      const rawName  = decodeURIComponent(fileUrl.split("/").pop().split("?")[0]);
+      const cleanName = rawName.replace(/\.pdf$/i, "");
+
+      // Update tab title & toolbar title
+      titleEl.textContent = cleanName;
+      document.title = `WE Core | ${cleanName}`;
+
       const token = getCookie('sb-access-token');
 
-      // حل مشكلة headers must have required property 'authorization'
       if (token && fileUrl.includes('/authenticated/')) {
-          fetch(fileUrl, {
-              headers: { "Authorization": `Bearer ${token}` }
-          })
+        fetch(fileUrl, { headers: { "Authorization": `Bearer ${token}` } })
           .then(res => {
-              if(!res.ok) throw new Error("Authorization Required");
-              return res.blob();
+            if (!res.ok) throw new Error("Authorization Required");
+            return res.blob();
           })
           .then(blob => {
-              localBlobUrl = URL.createObjectURL(blob);
-              frame.src = localBlobUrl;
+            localBlobUrl = URL.createObjectURL(blob);
+            frame.src    = localBlobUrl;
           })
           .catch(err => {
-              console.error(err);
-              loading.classList.add("hidden");
-              titleEl.textContent = "خطأ في صلاحية الوصول";
+            console.error(err);
+            loading.classList.add("hidden");
+            titleEl.textContent = "خطأ في صلاحية الوصول";
+            document.title = "WE Core | خطأ";
           });
       } else {
-          frame.src = fileUrl;
-          localBlobUrl = fileUrl;
+        frame.src    = fileUrl;
+        localBlobUrl = fileUrl;
       }
 
-      frame.onload = () => setTimeout(() => loading.classList.add("hidden"), 400);
+      frame.onload = () => setTimeout(() => loading.classList.add("hidden"), 450);
     }
 
-    // جعل Ctrl + P يطبع الملف فقط
+    /* ── Print via Ctrl+P ── */
     window.addEventListener('keydown', function(e) {
-        if ((e.ctrlKey || e.metaKey) && e.key === 'p') {
-            e.preventDefault();
-            printPDF();
-        }
+      if ((e.ctrlKey || e.metaKey) && e.key === 'p') {
+        e.preventDefault();
+        printPDF();
+      }
     });
 
     function printPDF() {
-        if (frame.contentWindow) {
-            frame.contentWindow.focus();
-            frame.contentWindow.print();
-        } else if (localBlobUrl) {
-            const w = window.open(localBlobUrl, "_blank");
-            w.onload = () => w.print();
-        }
+      if (frame.contentWindow) {
+        try {
+          frame.contentWindow.focus();
+          frame.contentWindow.print();
+          return;
+        } catch (_) { /* cross-origin fallback below */ }
+      }
+      if (localBlobUrl) {
+        const w = window.open(localBlobUrl, "_blank");
+        if (w) w.addEventListener('load', () => w.print());
+      }
     }
 
     function downloadPDF() {
       if (!localBlobUrl) return;
       const a = document.createElement("a");
-      a.href = localBlobUrl;
+      a.href     = localBlobUrl;
       a.download = decodeURIComponent(fileUrl.split("/").pop());
       document.body.appendChild(a);
       a.click();
