@@ -6,47 +6,61 @@ const TRANSLATE_API = "https://api.mymemory.translated.net/get";
 
 // قاموس مخصص للمصطلحات التقنية لشركة WE
 const customDictionary = {
-  "mobile": "موبايل", "sim card": "شريحة", "mnp": "تحويل رقم", "adsl": "إنترنت منزلي",
-  "form": "نموذج", "service": "خدمة", "complaint": "شكوى", "customer": "عميل",
-  "request": "طلب", "cancel": "إلغاء", "subscription": "اشتراك", "transfer": "نقل",
-  "ownership": "ملكية", "sim swap": "استبدال شريحة", "fixed": "الخط الأرضي","cancellation Adsl": "إلغاء الإنترنت المنزلي",
-"Cash receipt": "إيصال نقدي",
-"Router installment approval": "إقرار تقسيط الراوتر",
-"Landline internet fine contract": "عقد غرامة الإنترنت الأرضي",
-"NTRA_FORE-NEW-LANDLAIEN": "الجهاز القومي لتنظيم الاتصالات - أرضي جديد",
-"NTRA_FORE-OLD-LANDLAIEN": "الجهاز القومي لتنظيم الاتصالات - أرضي قديم",
-"Personal data modification form": "نموذج تعديل البيانات الشخصية",
-"Request to transfer ADSL phone number": "طلب نقل رقم الإنترنت المنزلي",
-"Request to transfer ADSL service from another provider": "طلب نقل خدمة الإنترنت المنزلي من مشغل آخر",
-"Guide 140": "دليل 140",
-"Home Personal Number Service Subscription Form": "نموذج اشتراك خدمة الرقم الشخصي المنزلي",
-"Request for a new landline": "طلب خط أرضي جديد",
-"Request for transfer of landline telephone line": "طلب تحويل خط تليفون أرضي",
-"Request to cancel a landline telephone service": "طلب إلغاء خدمة التليفون الأرضي",
-"Request to pay phone bills in installments": "طلب تقسيط فواتير التليفون",
-"Request to subscribe to additional mobile packages": "طلب اشتراك في باقات موبايل إضافية",
-"Request to transfer landline telephone": "طلب نقل تليفون أرضي",
-"Requesting added features and services": "طلب ميزات وخدمات مضافة",
-"Added a new landline for an existing We Gold customer": "إضافة خط أرضي جديد لعميل وي جولد حالي",
-"Approval of temporary suspension of the billing line": "إقرار تعليق مؤقت لخط الفاتورة",
-"Cancel mnp": "إلغاء تحويل الرقم",
-"Contract for providing promotional call services for individual lines": "عقد تقديم خدمات مكالمات ترويجية لخطوط الأفراد",
-"Declaration of 12 months": "إقرار 12 شهر",
-"Diplomatic pledge and declaration": "تعهد وإقرار دبلوماسي",
-"E-Sim": "شريحة إلكترونية",
-"Mnp": "تحويل الرقم",
-"More than one line form for the customer": "نموذج أكثر من خط للعميل",
-"Ownership transfer form": "نموذج نقل الملكية",
-"Parental approval": "موافقة ولي الأمر",
-"Request to add a new landline for a new We Gold customer": "طلب إضافة خط أرضي جديد لعميل وي جولد جديد",
-"Request to add an existing landline for a new WE Gold customer": "طلب إضافة خط أرضي حالي لعميل وي جولد جديد",
-"Request to cancel a prepaid SIM card": "طلب إلغاء شريحة مسبقة الدفع",
-"Request to cancel wallet": "طلب إلغاء المحفظة الإلكترونية",
-"Request to cancel We Gold line": "طلب إلغاء خط وي جولد",
-"Request to transfer ownership of student data SIM card": "طلب نقل ملكية شريحة بيانات الطلاب",
-"Sim Swap": "استبدال شريحة"
-};
+  // المصطلحات الأساسية
+  "mobile": "موبايل",
+  "sim card": "شريحة",
+  "mnp": "تحويل رقم",
+  "adsl": "إنترنت منزلي",
+  "form": "نموذج",
+  "service": "خدمة",
+  "complaint": "شكوى",
+  "customer": "عميل",
+  "request": "طلب",
+  "cancel": "إلغاء",
+  "subscription": "اشتراك",
+  "transfer": "نقل",
+  "ownership": "ملكية",
+  "sim swap": "استبدال شريحة",
+  "fixed": "الخط الأرضي",
 
+  // المصطلحات المستخرجة من ملف cancellation Adsl.docx
+  "cancellation Adsl": "إلغاء الإنترنت المنزلي",[cite: 1]
+  "Cash receipt": "إيصال نقدي",[cite: 1]
+  "Router installment approval": "إقرار تقسيط الراوتر",[cite: 1]
+  "Landline internet fine contract": "عقد غرامة الإنترنت الأرضي",[cite: 1]
+  "NTRA_FORE-NEW-LANDLAIEN": "الجهاز القومي لتنظيم الاتصالات - أرضي جديد",[cite: 1]
+  "NTRA_FORE-OLD-LANDLAIEN": "الجهاز القومي لتنظيم الاتصالات - أرضي قديم",[cite: 1]
+  "Personal data modification form": "نموذج تعديل البيانات الشخصية",[cite: 1]
+  "Request to transfer ADSL phone number": "طلب نقل رقم الإنترنت المنزلي",[cite: 1]
+  "Request to transfer ADSL service from another provider": "طلب نقل خدمة الإنترنت المنزلي من مشغل آخر",[cite: 1]
+  "Guide 140": "دليل 140",[cite: 1]
+  "Home Personal Number Service Subscription Form": "نموذج اشتراك خدمة الرقم الشخصي المنزلي",[cite: 1]
+  "Request for a new landline": "طلب خط أرضي جديد",[cite: 1]
+  "Request for transfer of landline telephone line": "طلب تحويل خط تليفون أرضي",[cite: 1]
+  "Request to cancel a landline telephone service": "طلب إلغاء خدمة التليفون الأرضي",[cite: 1]
+  "Request to pay phone bills in installments": "طلب تقسيط فواتير التليفون",[cite: 1]
+  "Request to subscribe to additional mobile packages": "طلب اشتراك في باقات موبايل إضافية",[cite: 1]
+  "Request to transfer landline telephone": "طلب نقل تليفون أرضي",[cite: 1]
+  "Requesting added features and services": "طلب ميزات وخدمات مضافة",[cite: 1]
+  "Added a new landline for an existing We Gold customer": "إضافة خط أرضي جديد لعميل وي جولد حالي",[cite: 1]
+  "Approval of temporary suspension of the billing line": "إقرار تعليق مؤقت لخط الفاتورة",[cite: 1]
+  "Cancel mnp": "إلغاء تحويل الرقم",[cite: 1]
+  "Contract for providing promotional call services for individual lines": "عقد تقديم خدمات مكالمات ترويجية لخطوط الأفراد",[cite: 1]
+  "Declaration of 12 months": "إقرار 12 شهر",[cite: 1]
+  "Diplomatic pledge and declaration": "تعهد وإقرار دبلوماسي",[cite: 1]
+  "E-Sim": "شريحة إلكترونية",[cite: 1]
+  "Mnp": "تحويل الرقم",[cite: 1]
+  "More than one line form for the customer": "نموذج أكثر من خط للعميل",[cite: 1]
+  "Ownership transfer form": "نموذج نقل الملكية",[cite: 1]
+  "Parental approval": "موافقة ولي الأمر",[cite: 1]
+  "Request to add a new landline for a new We Gold customer": "طلب إضافة خط أرضي جديد لعميل وي جولد جديد",[cite: 1]
+  "Request to add an existing landline for a new WE Gold customer": "طلب إضافة خط أرضي حالي لعميل وي جولد جديد",[cite: 1]
+  "Request to cancel a prepaid SIM card": "طلب إلغاء شريحة مسبقة الدفع",[cite: 1]
+  "Request to cancel wallet": "طلب إلغاء المحفظة الإلكترونية",[cite: 1]
+  "Request to cancel We Gold line": "طلب إلغاء خط وي جولد",[cite: 1]
+  "Request to transfer ownership of student data SIM card": "طلب نقل ملكية شريحة بيانات الطلاب",[cite: 1]
+  "Sim Swap": "استبدال شريحة"[cite: 1]
+};
 // جلب التوكن من الكوكيز
 function getAuthToken() {
   const value = `; ${document.cookie}`;
