@@ -1,359 +1,627 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<script src="../script/auth.js?v=12.0.1"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>باقات Super Kix – WE Core</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #0e0a00;
+      --surface: #181000;
+      --card: #1e1500;
+      --card2: #181000;
+      --border: #2e2400;
+      --accent: #f4a942;
+      --accent2: #ff6b35;
+      --text: #fdf4e3;
+      --muted: #a89060;
+      --we-red: #cc1e27;
 
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Super Kix</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: white;
-            color: #333;
-            margin: 0;
-            padding: 0;
-        }
-        .container {
-            max-width: 1000px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        .header-image {
-            width: 100%;
-            max-height: 200px;
-            object-fit: contain;
-            margin-bottom: 20px;
-        }
-        h1 {
-            color: #8A2BE2;
-            text-align: center;
-            margin-bottom: 30px;
-        }
-        h2 {
-            color: #8A2BE2;
-            border-bottom: 2px solid #8A2BE2;
-            padding-bottom: 5px;
-            margin-top: 40px;
-        }
-        h3 {
-            color: #6a0dad;
-            margin-top: 25px;
-        }
-        .packages-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 20px 0;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-        .packages-table th, .packages-table td {
-            border: 1px solid #ddd;
-            padding: 12px;
-            text-align: center;
-        }
-        .packages-table th {
-            background-color: #F3E5FF;
-            color: #333;
-            font-weight: bold;
-        }
-        .packages-table tr:nth-child(even) {
-            background-color: #f9f9f9;
-        }
-        .highlight {
-            background-color: #F3E5FF;
-            padding: 15px;
-            border-radius: 8px;
-            margin: 20px 0;
-        }
-        .feature-list {
-            margin: 15px 0;
-            padding-right: 20px;
-        }
-        .feature-list li {
-            margin-bottom: 10px;
-        }
-        .code {
-            font-family: monospace;
-            background-color: #eee;
-            padding: 2px 5px;
-            border-radius: 3px;
-        }
-        .footer {
-            text-align: center;
-            margin-top: 30px;
-            padding: 15px;
-            background-color: #8A2BE2;
-            color: white;
-            border-radius: 8px;
-        }
-        .golden {
-            color: #FFD700;
-            font-weight: bold;
-        }
-        .silver {
-            color: #C0C0C0;
-            font-weight: bold;
-        }
-        .bronze {
-            color: #CD7F32;
-            font-weight: bold;
-        }
-        .info-box {
-            background-color: #f5f5f5;
-            padding: 15px;
-            border-radius: 8px;
-            margin: 15px 0;
-            border-right: 4px solid #8A2BE2;
-        }
-        .small-table {
-            width: 80%;
-            margin: 20px auto;
-        }
-    </style>
-<script src="../script/active-users-widget.js"></script>
+      --gold: #f4a942;
+      --silver: #bcc0c8;
+      --bronze: #cd7f32;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Cairo', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    .hero {
+      position: relative;
+      padding: 0 18px 0;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 80% 55% at 50% -10%, rgba(244,169,66,.22) 0%, transparent 60%),
+        radial-gradient(ellipse 50% 35% at 90% 80%, rgba(255,107,53,.1) 0%, transparent 55%);
+      pointer-events: none;
+    }
+
+    .navbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 0 0;
+    }
+
+    .back-btn {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 14px;
+      transition: color .2s;
+    }
+    .back-btn:hover { color: var(--text); }
+    .back-btn svg { width: 18px; height: 18px; }
+
+    .logo-badge {
+      background: linear-gradient(135deg, #7018e2, #981ee9);
+      color: #fff;
+      font-weight: 900;
+      font-size: 18px;
+      padding: 5px 14px;
+      border-radius: 9px;
+      letter-spacing: 2px;
+    }
+
+    .hero-body {
+      padding: 30px 0 36px;
+      text-align: center;
+    }
+
+    .hero-icon {
+      font-size: 52px;
+      margin-bottom: 16px;
+      display: block;
+      filter: drop-shadow(0 0 18px rgba(244,169,66,.5));
+    }
+
+    .hero-tag {
+      display: inline-block;
+      background: rgba(244,169,66,.12);
+      border: 1px solid rgba(244,169,66,.3);
+      color: #f4a942;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 4px 14px;
+      border-radius: 20px;
+      margin-bottom: 14px;
+      letter-spacing: 1.5px;
+    }
+
+    .hero h1 {
+      font-size: clamp(28px, 8vw, 46px);
+      font-weight: 900;
+      line-height: 1.15;
+      margin-bottom: 10px;
+    }
+
+    .hero h1 span {
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-sub {
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.8;
+      max-width: 360px;
+      margin: 0 auto;
+    }
+
+    .features-bar {
+      display: flex;
+      gap: 10px;
+      overflow-x: auto;
+      padding: 0 18px 28px;
+      scrollbar-width: none;
+    }
+    .features-bar::-webkit-scrollbar { display: none; }
+
+    .feat-chip {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 40px;
+      padding: 9px 16px;
+      font-size: 13px;
+      font-weight: 600;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .feat-chip .dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--accent);
+      flex-shrink: 0;
+    }
+
+    .section {
+      padding: 0 18px 32px;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    .section-title {
+      font-size: 18px;
+      font-weight: 800;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .section-title::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    /* TIER LABELS */
+    .tier-gold   { color: var(--gold); }
+    .tier-silver { color: var(--silver); }
+    .tier-bronze { color: var(--bronze); }
+
+    /* PLAN CARDS */
+    .plans-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: 12px;
+    }
+
+    .plan-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 18px 14px 16px;
+      text-align: center;
+      position: relative;
+      transition: transform .2s, border-color .2s;
+    }
+
+    .plan-card:hover {
+      transform: translateY(-3px);
+      border-color: var(--accent);
+    }
+
+    .plan-card.gold-card {
+      border-color: rgba(244,169,66,.4);
+      background: linear-gradient(135deg, rgba(244,169,66,.07), rgba(255,107,53,.04));
+    }
+
+    .plan-card.silver-card {
+      border-color: rgba(188,192,200,.25);
+      background: linear-gradient(135deg, rgba(188,192,200,.05), transparent);
+    }
+
+    .tier-badge {
+      display: inline-block;
+      font-size: 10px;
+      font-weight: 800;
+      padding: 3px 10px;
+      border-radius: 20px;
+      margin-bottom: 10px;
+    }
+
+    .tier-badge.gold   { background: rgba(244,169,66,.15); color: var(--gold); border: 1px solid rgba(244,169,66,.3); }
+    .tier-badge.silver { background: rgba(188,192,200,.1); color: var(--silver); border: 1px solid rgba(188,192,200,.25); }
+    .tier-badge.bronze { background: rgba(205,127,50,.1); color: var(--bronze); border: 1px solid rgba(205,127,50,.25); }
+
+    .plan-price {
+      font-size: 26px;
+      font-weight: 900;
+      color: var(--accent);
+    }
+
+    .plan-price-label { font-size: 11px; color: var(--muted); margin-bottom: 6px; }
+
+    .plan-units {
+      font-size: 15px;
+      font-weight: 800;
+      margin: 6px 0 2px;
+    }
+
+    .plan-detail {
+      font-size: 11px;
+      color: var(--muted);
+      margin-bottom: 4px;
+      line-height: 1.5;
+    }
+
+    .plan-code {
+      background: rgba(244,169,66,.1);
+      border: 1px solid rgba(244,169,66,.2);
+      border-radius: 8px;
+      padding: 6px 8px;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--accent);
+      font-family: monospace;
+      direction: ltr;
+      margin-top: 10px;
+    }
+
+    .plan-coupon {
+      background: rgba(244,169,66,.08);
+      border: 1px dashed rgba(244,169,66,.3);
+      border-radius: 8px;
+      padding: 6px 10px;
+      font-size: 11px;
+      color: var(--gold);
+      font-weight: 700;
+      margin-top: 8px;
+    }
+
+    /* INFO BOXES */
+    .info-box {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 18px;
+      margin-bottom: 12px;
+    }
+
+    .info-box h3 {
+      font-size: 14px;
+      font-weight: 800;
+      margin-bottom: 12px;
+      color: var(--accent);
+    }
+
+    .info-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 13px;
+      gap: 12px;
+    }
+
+    .info-row:last-child { border-bottom: none; }
+    .info-row .label { color: var(--muted); }
+    .info-row .value { font-weight: 700; text-align: left; }
+
+    /* EXTRA PACKAGES */
+    .extra-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+
+    .extra-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 14px 10px;
+      text-align: center;
+    }
+
+    .extra-price {
+      font-size: 20px;
+      font-weight: 900;
+      color: var(--accent);
+    }
+
+    .extra-units {
+      font-size: 12px;
+      font-weight: 700;
+      margin: 4px 0;
+    }
+
+    .extra-validity {
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    /* CODES */
+    .codes-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .code-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px 16px;
+      gap: 12px;
+    }
+
+    .code-value {
+      font-family: monospace;
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--accent);
+      direction: ltr;
+      flex-shrink: 0;
+    }
+
+    .code-desc { font-size: 13px; color: var(--muted); text-align: right; }
+
+    .divider {
+      height: 1px;
+      background: var(--border);
+      margin: 0 18px 28px;
+    }
+
+    .footer {
+      text-align: center;
+      padding: 24px 16px 40px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+    .footer a { color: var(--accent); text-decoration: none; }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <img src="https://te.eg/wps/wcm/connect/ad75f542-d5cf-45c1-a24a-7cde73fc8329/Promotion-Page---1252-x-322---AR.jpg?MOD=AJPERES&CACHEID=ad75f542-d5cf-45c1-a24a-7cde73fc8329" alt="Super Kix من WE" class="header-image">
-       
-        <h1>تفاصيل باقات Super Kix من WE</h1>
 
-        <div class="info-box">
-            <h2>مميزات نظام Super Kix</h2>
-            <ul class="feature-list">
-                <li>يحصل العميل على كوبونات شراء من WEBonus مع كل 3 تجديدات متتالية بدءاً من باقة Super Kix 45</li>
-                <li>يحصل العميل على Facebook, Whatsapp, Instagram مجاناً على الباقة</li>
-                <li>زيادة 25% على باقات Nitro عند الاشتراك أو التجديد إذا كانت باقة Super Kix وباقة Nitro مفعلتين معاً</li>
-            </ul>
-        </div>
+<!-- HERO -->
+<section class="hero">
+  <nav class="navbar">
+    <a href="https://we-core.icu/mobil.html" class="back-btn">
+      <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/>
+      </svg>
+      الباقات
+    </a>
+    <div class="logo-badge">WE</div>
+  </nav>
 
-        <table class="packages-table">
-            <tr>
-                <th>اسم الباقة</th>
-                <th>Super Kix 130</th>
-                <th>Super Kix 105</th>
-                <th>Super Kix 85</th>
-                <th>Super Kix 60</th>
-                <th>Super Kix 45</th>
-                <th>Super Kix 32</th>
-                <th>Super Kix 25</th>
-            </tr>
-            <tr>
-                <td>فئة الخط</td>
-                <td class="golden">Golden</td>
-                <td class="golden">Golden</td>
-                <td class="silver">Silver</td>
-                <td class="silver">Silver</td>
-                <td class="bronze">Bronze</td>
-                <td class="bronze">Bronze</td>
-                <td class="bronze">Bronze</td>
-            </tr>
-            <tr>
-                <td>وحدات الباقة</td>
-                <td>6500</td>
-                <td>5500</td>
-                <td>4200</td>
-                <td>2800</td>
-                <td>1800</td>
-                <td>1000</td>
-                <td>750</td>
-            </tr>
-            <tr>
-                <td>وحدات خارج الشبكة (1 وحدة = 1 دقيقة)</td>
-                <td>350</td>
-                <td>100</td>
-                <td>70</td>
-                <td>60</td>
-                <td>50</td>
-                <td>30</td>
-                <td>20</td>
-            </tr>
-            <tr>
-                <td>ميجابايتس للسوشيال ميديا</td>
-                <td>1000</td>
-                <td>850</td>
-                <td>600</td>
-                <td>550</td>
-                <td>250</td>
-                <td>100</td>
-                <td>50</td>
-            </tr>
-            <tr>
-                <td>أفراد العائلة</td>
-                <td>2</td>
-                <td>2</td>
-                <td>2</td>
-                <td>2</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-            </tr>
-            <tr>
-                <td>كوبونات الشراء (كل 3 تجديدات)</td>
-                <td>100 جنيه</td>
-                <td>70 جنيه</td>
-                <td>65 جنيه</td>
-                <td>35 جنيه</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-            </tr>
-            <tr>
-                <td>سعر الباقة من الرصيد</td>
-                <td>130</td>
-                <td>105</td>
-                <td>85</td>
-                <td>60</td>
-                <td>45</td>
-                <td>32</td>
-                <td>25</td>
-            </tr>
-            <tr>
-                <td>الضريبة على الباقة</td>
-                <td>185.714</td>
-                <td>150.000</td>
-                <td>121.429</td>
-                <td>85.714</td>
-                <td>64.286</td>
-                <td>45.714</td>
-                <td>35.714</td>
-            </tr>
-            <tr>
-                <td>إجمالي سعر الخط شامل الرسوم</td>
-                <td>252.564</td>
-                <td>216.850</td>
-                <td>188.279</td>
-                <td>152.564</td>
-                <td>131.136</td>
-                <td>112.564</td>
-                <td>102.564</td>
-            </tr>
-        </table>
+  <div class="hero-body">
+    <span class="hero-icon">✨</span>
+    <div class="hero-tag">مسبق الدفع</div>
+    <h1>باقات <span>Super Kix</span></h1>
+    <p class="hero-sub">
+      وحدات متعددة الاستخدام مع مكافآت على التجديد المتتالي
+      وسوشيال ميديا مجاني
+    </p>
+  </div>
+</section>
 
-        <div>
-            <h2>كود الاشتراك: <span class="code">#707*</span></h2>
-            <p>يمكن معرفة المتبقي من الباقة عن طريق <span class="code">*414#</span> أو <span class="code">*707*107#</span></p>
-        </div>
+<!-- FEATURES -->
+<div class="features-bar">
+  <div class="feat-chip"><span class="dot"></span>فيسبوك وواتساب وانستجرام مجاني</div>
+  <div class="feat-chip"><span class="dot"></span>كوبونات شراء كل 3 تجديدات</div>
+  <div class="feat-chip"><span class="dot"></span>+25% Nitro</div>
+  <div class="feat-chip"><span class="dot"></span>ترحيل الوحدات</div>
+</div>
 
-        <div class="highlight">
-            <h2>تفاصيل الكوبونات المجانية:</h2>
-            <ul class="feature-list">
-                <li>يجب أن تكون الـ 3 تجديدات متتالية وفي الوقت المحدد للتجديد للحصول على قسيمة الشراء</li>
-                <li>في حالة توقف الباقة سيتم إلغاء المرات السابقة وسيتم الاحتساب من البداية</li>
-                <li>يجب أن تكون الـ 3 تجديدات شهرية للحصول على قسيمة الشراء</li>
-            </ul>
-        </div>
+<!-- كود الاشتراك banner -->
+<div style="margin:0 18px 24px;background:linear-gradient(135deg,rgba(244,169,66,.12),rgba(255,107,53,.08));border:1px solid rgba(244,169,66,.25);border-radius:16px;padding:16px 18px;display:flex;align-items:center;justify-content:space-between;gap:12px;">
+  <div>
+    <div style="font-size:12px;color:var(--muted);margin-bottom:4px;">كود الاشتراك الرئيسي</div>
+    <div style="font-size:24px;font-weight:900;color:var(--accent);font-family:monospace;direction:ltr;">#707*</div>
+  </div>
+  <div style="text-align:left;">
+    <div style="font-size:12px;color:var(--muted);margin-bottom:4px;">المتبقي من الباقة</div>
+    <div style="font-size:13px;font-weight:700;font-family:monospace;direction:ltr;color:var(--text);">*414#</div>
+    <div style="font-size:13px;font-weight:700;font-family:monospace;direction:ltr;color:var(--text);">*707*107#</div>
+  </div>
+</div>
 
-        <div>
-            <h2>تفاصيل استخدام الكيكس</h2>
-           
-            <h3>المكالمات:</h3>
-            <ul class="feature-list">
-                <li>1 كيكس = 1 دقيقة داخل شبكة WE (موبايل أو أرضي)</li>
-                <li>1 كيكس = 1 دقيقة للشبكات الأخرى (بعد انتهاء وحدات المستخدمة خارج الشبكة)</li>
-                <li>بعد الحد الأقصى: 5 كيكس = 1 دقيقة لكل الشبكات</li>
-            </ul>
-           
-            <h3>الإنترنت:</h3>
-            <ul class="feature-list">
-                <li>1 كيكس = 1 ميجابايت لجميع المواقع والتطبيقات</li>
-                <li>1 كيكس = 3 ميجابايت لمواقع السوشيال ميديا</li>
-                <li>1 كيكس = 2 ميجابايت للسيستم</li>
-            </ul>
-           
-            <h3>الرسائل:</h3>
-            <ul class="feature-list">
-                <li>1 كيكس = 1 رسالة لشبكة WE</li>
-                <li>5 كيكس = 1 رسالة للشبكات الأخرى</li>
-            </ul>
-        </div>
+<!-- PLANS -->
+<section class="section">
+  <h2 class="section-title">📦 الباقات المتاحة</h2>
 
-        <div class="highlight">
-            <h2>الباقات الإضافية:</h2>
-            <table class="packages-table small-table">
-                <tr>
-                    <th>السعر (جنيه)</th>
-                    <th>الوحدات</th>
-                    <th>صلاحية</th>
-                </tr>
-                <tr>
-                    <td>4</td>
-                    <td>70 وحدة</td>
-                    <td rowspan="3">28 يوم</td>
-                </tr>
-                <tr>
-                    <td>6.5</td>
-                    <td>140 وحدة</td>
-                </tr>
-                <tr>
-                    <td>13</td>
-                    <td>460 وحدة</td>
-                </tr>
-            </table>
-            <ul class="feature-list">
-                <li>يمكن الاشتراك في الباقات الإضافية في أي وقت خلال الشهر</li>
-                <li>يمكن شراء الباقة أكثر من مرة في الشهر</li>
-                <li>لا يتم تجديد الباقة تلقائياً</li>
-                <li>كود الاشتراك: <span class="code">*707*4#</span></li>
-            </ul>
-        </div>
+  <div class="plans-grid">
 
-        <div>
-            <h2>خدمات الترفيه:</h2>
-            <ul class="feature-list">
-                <li>لباقات Super Kix 105 و 130 يحصل العميل على اشتراك مجاني لمنصة jawwy</li>
-                <li>الإشتراك على المنصة يحدد تلقائياً مع تجديد الباقة</li>
-                <li>رابط الإشتراك: <a href="https://www.jawwy.tv/we-ar">https://www.jawwy.tv/we-ar</a></li>
-            </ul>
-        </div>
-
-        <div class="highlight">
-            <h2>نظام Kix Family:</h2>
-            <ul class="feature-list">
-                <li>متاح بدءاً من باقة Super Kix 60</li>
-                <li>حد أقصى 2 أفراد للعائلة</li>
-                <li>يمكن الاشتراك من خلال الفرع، الكول سنتر أو My WE App</li>
-                <li>يمكن التحكم في تحديد الحد الأقصى لاستخدام الدقائق والميجابايتس لأفراد العائلة</li>
-            </ul>
-        </div>
-
-        <div>
-            <h2>تفاصيل المحاسبة خارج الباقة:</h2>
-            <ul class="feature-list">
-                <li>19 قرش للدقيقة أو الرسالة أو الميجابايت لكل الشبكات</li>
-                <li>أولوية استهلاك الوحدات:
-                    <ol>
-                        <li>باقات إضافية أو وحدات هدية</li>
-                        <li>ميجابايتس باقة النيترو</li>
-                        <li>وحدات الباقة الأساسية</li>
-                        <li>الوحدات المرحلة للباقة الأساسية</li>
-                    </ol>
-                </li>
-                <li>يتم ترحيل الوحدات غير المستخدمة إلى الشهر التالي في حالة التجديد في الموعد المحدد</li>
-            </ul>
-        </div>
-
-        <div class="highlight">
-            <h2>الشروط والأحكام:</h2>
-            <ul class="feature-list">
-                <li>صلاحية الباقة 28 يوم</li>
-                <li>تُجدد الباقة تلقائياً في حالة وجود رصيد كافي</li>
-                <li>في حالة تعليق الباقة (Suspended)، يمكن استخدام الإنترنت بسعر الاستخدام خارج الباقة</li>
-                <li>خدمة Voice Mail غير متاحة لعملاء Super Kix</li>
-            </ul>
-        </div>
-
-        <div class="footer">
-          Powered by Mohand
-        </div>
+    <div class="plan-card gold-card">
+      <div class="tier-badge gold">🥇 Golden</div>
+      <div class="plan-price">130</div>
+      <div class="plan-price-label">252.56 جنيه إجمالي</div>
+      <div class="plan-units">6,500 وحدة</div>
+      <div class="plan-detail">350 وحدة خارج الشبكة</div>
+      <div class="plan-detail">1000 MB سوشيال</div>
+      <div class="plan-detail">👨‍👩‍👧 عائلة 2 فرد</div>
+      <div class="plan-coupon">🎟 كوبون 100 جنيه كل 3 تجديدات</div>
     </div>
 
-<script>
-  window.addEventListener('load', function() {
-    if (typeof ActiveUsersWidget !== 'undefined') {
-      ActiveUsersWidget.init({ position: 'corner' });
-    }
-  });
-</script>
+    <div class="plan-card gold-card">
+      <div class="tier-badge gold">🥇 Golden</div>
+      <div class="plan-price">105</div>
+      <div class="plan-price-label">216.85 جنيه إجمالي</div>
+      <div class="plan-units">5,500 وحدة</div>
+      <div class="plan-detail">100 وحدة خارج الشبكة</div>
+      <div class="plan-detail">850 MB سوشيال</div>
+      <div class="plan-detail">👨‍👩‍👧 عائلة 2 فرد</div>
+      <div class="plan-coupon">🎟 كوبون 70 جنيه كل 3 تجديدات</div>
+    </div>
+
+    <div class="plan-card silver-card">
+      <div class="tier-badge silver">🥈 Silver</div>
+      <div class="plan-price">85</div>
+      <div class="plan-price-label">188.28 جنيه إجمالي</div>
+      <div class="plan-units">4,200 وحدة</div>
+      <div class="plan-detail">70 وحدة خارج الشبكة</div>
+      <div class="plan-detail">600 MB سوشيال</div>
+      <div class="plan-detail">👨‍👩‍👧 عائلة 2 فرد</div>
+      <div class="plan-coupon">🎟 كوبون 65 جنيه كل 3 تجديدات</div>
+    </div>
+
+    <div class="plan-card silver-card">
+      <div class="tier-badge silver">🥈 Silver</div>
+      <div class="plan-price">60</div>
+      <div class="plan-price-label">152.56 جنيه إجمالي</div>
+      <div class="plan-units">2,800 وحدة</div>
+      <div class="plan-detail">60 وحدة خارج الشبكة</div>
+      <div class="plan-detail">550 MB سوشيال</div>
+      <div class="plan-detail">👨‍👩‍👧 عائلة 2 فرد</div>
+      <div class="plan-coupon">🎟 كوبون 35 جنيه كل 3 تجديدات</div>
+    </div>
+
+    <div class="plan-card">
+      <div class="tier-badge bronze">🥉 Bronze</div>
+      <div class="plan-price">45</div>
+      <div class="plan-price-label">131.14 جنيه إجمالي</div>
+      <div class="plan-units">1,800 وحدة</div>
+      <div class="plan-detail">50 وحدة خارج الشبكة</div>
+      <div class="plan-detail">250 MB سوشيال</div>
+    </div>
+
+    <div class="plan-card">
+      <div class="tier-badge bronze">🥉 Bronze</div>
+      <div class="plan-price">32</div>
+      <div class="plan-price-label">112.56 جنيه إجمالي</div>
+      <div class="plan-units">1,000 وحدة</div>
+      <div class="plan-detail">30 وحدة خارج الشبكة</div>
+      <div class="plan-detail">100 MB سوشيال</div>
+    </div>
+
+    <div class="plan-card">
+      <div class="tier-badge bronze">🥉 Bronze</div>
+      <div class="plan-price">25</div>
+      <div class="plan-price-label">102.56 جنيه إجمالي</div>
+      <div class="plan-units">750 وحدة</div>
+      <div class="plan-detail">20 وحدة خارج الشبكة</div>
+      <div class="plan-detail">50 MB سوشيال</div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- كيف تُستهلك الوحدات -->
+<section class="section">
+  <h2 class="section-title">📊 كيف تُحسب الوحدات</h2>
+
+  <div class="info-box">
+    <h3>📞 المكالمات</h3>
+    <div class="info-row">
+      <span class="label">داخل WE (موبايل أو أرضي)</span>
+      <span class="value">1 كيكس = 1 دقيقة</span>
+    </div>
+    <div class="info-row">
+      <span class="label">الشبكات الأخرى (ضمن الحد)</span>
+      <span class="value">1 كيكس = 1 دقيقة</span>
+    </div>
+    <div class="info-row">
+      <span class="label">بعد استهلاك الحد الخارجي</span>
+      <span class="value">5 كيكس = 1 دقيقة</span>
+    </div>
+  </div>
+
+  <div class="info-box">
+    <h3>🌐 الإنترنت</h3>
+    <div class="info-row">
+      <span class="label">جميع المواقع والتطبيقات</span>
+      <span class="value">1 كيكس = 1 MB</span>
+    </div>
+    <div class="info-row">
+      <span class="label">مواقع السوشيال ميديا</span>
+      <span class="value">1 كيكس = 3 MB</span>
+    </div>
+    <div class="info-row">
+      <span class="label">السيستم (System)</span>
+      <span class="value">1 كيكس = 2 MB</span>
+    </div>
+  </div>
+
+  <div class="info-box">
+    <h3>✉️ الرسائل</h3>
+    <div class="info-row">
+      <span class="label">داخل شبكة WE</span>
+      <span class="value">1 كيكس = 1 رسالة</span>
+    </div>
+    <div class="info-row">
+      <span class="label">الشبكات الأخرى</span>
+      <span class="value">5 كيكس = 1 رسالة</span>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- EXTRA PACKAGES -->
+<section class="section">
+  <h2 class="section-title">➕ باقات إضافية</h2>
+
+  <div class="extra-grid">
+    <div class="extra-card">
+      <div class="extra-price">4</div>
+      <div style="font-size:10px;color:var(--muted)">جنيه</div>
+      <div class="extra-units">70 وحدة</div>
+      <div class="extra-validity">⏳ 28 يوم</div>
+    </div>
+    <div class="extra-card">
+      <div class="extra-price">6.5</div>
+      <div style="font-size:10px;color:var(--muted)">جنيه</div>
+      <div class="extra-units">140 وحدة</div>
+      <div class="extra-validity">⏳ 28 يوم</div>
+    </div>
+    <div class="extra-card">
+      <div class="extra-price">13</div>
+      <div style="font-size:10px;color:var(--muted)">جنيه</div>
+      <div class="extra-units">460 وحدة</div>
+      <div class="extra-validity">⏳ 28 يوم</div>
+    </div>
+  </div>
+  <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.7">
+    كود الاشتراك في الباقات الإضافية: <span style="font-family:monospace;color:var(--accent);direction:ltr;display:inline-block;">*707*4#</span> — يمكن الشراء أكثر من مرة في الشهر ولا تتجدد تلقائياً.
+  </p>
+</section>
+
+<div class="divider"></div>
+
+<!-- TERMS -->
+<section class="section">
+  <h2 class="section-title">📋 شروط مهمة</h2>
+  <div class="info-box">
+    <div class="info-row">
+      <span class="label">صلاحية الباقة</span>
+      <span class="value">28 يوم</span>
+    </div>
+    <div class="info-row">
+      <span class="label">التجديد التلقائي</span>
+      <span class="value">نعم عند وجود رصيد</span>
+    </div>
+    <div class="info-row">
+      <span class="label">ترحيل الوحدات</span>
+      <span class="value">نعم عند التجديد في الموعد</span>
+    </div>
+    <div class="info-row">
+      <span class="label">سعر خارج الباقة</span>
+      <span class="value">19 قرش / دقيقة أو MB</span>
+    </div>
+    <div class="info-row">
+      <span class="label">Voice Mail</span>
+      <span class="value">غير متاح</span>
+    </div>
+    <div class="info-row">
+      <span class="label">jawwy TV</span>
+      <span class="value">مجاني لباقات 105 و 130</span>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  Powered by <a href="https://we-core.icu">WE Core</a> &mdash; Mohand
+</footer>
+
 </body>
 </html>
