@@ -2,477 +2,668 @@
 <html lang="ar" dir="rtl">
 <head>
 <script src="../script/auth.js?v=12.0.1"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>دليل باقات WE Space 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --purple-deep: #4a0080;
+  --purple-main: #7c3aed;
+  --purple-mid: #a855f7;
+  --purple-light: #d8b4fe;
+  --purple-pale: #f3e8ff;
+  --purple-ghost: #faf5ff;
+  --green: #059669;
+  --gold: #f59e0b;
+  --white: #ffffff;
+  --text-dark: #1e0536;
+  --text-mid: #4c1d95;
+  --text-soft: #7c3aed;
+}
 
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>دليل باقات WE Space </title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+* { margin: 0; padding: 0; box-sizing: border-box; }
 
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #f5f3ff 0%, #ffffff 50%, #f0e6ff 100%);
-            min-height: 100vh;
-            padding: 20px;
-            line-height: 1.6;
-        }
+body {
+  font-family: 'Cairo', sans-serif;
+  background: #f8f0ff;
+  min-height: 100vh;
+  direction: rtl;
+}
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
+/* ── Background ── */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 60% 40% at 20% 10%, rgba(168,85,247,.12) 0%, transparent 70%),
+    radial-gradient(ellipse 50% 50% at 80% 80%, rgba(124,58,237,.10) 0%, transparent 70%),
+    #f8f0ff;
+  z-index: 0;
+  pointer-events: none;
+}
 
-        header {
-            background: linear-gradient(135deg, #7c3aed 0%, #a855f7 100%);
-            color: white;
-            padding: 40px 30px;
-            border-radius: 20px;
-            text-align: center;
-            margin-bottom: 40px;
-            box-shadow: 0 10px 30px rgba(124, 58, 237, 0.3);
-        }
+.container { max-width: 1200px; margin: 0 auto; padding: 20px; position: relative; z-index: 1; }
 
-        header h1 {
-            font-size: 2.5em;
-            margin-bottom: 10px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
-        }
+/* ── Header ── */
+header {
+  background: linear-gradient(135deg, #3b0066 0%, #7c3aed 50%, #a855f7 100%);
+  color: white;
+  padding: 50px 40px;
+  border-radius: 24px;
+  text-align: center;
+  margin-bottom: 50px;
+  box-shadow: 0 20px 60px rgba(124,58,237,.4), inset 0 1px 0 rgba(255,255,255,.15);
+  position: relative;
+  overflow: hidden;
+}
+header::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+header h1 { font-size: 2.6em; font-weight: 900; letter-spacing: -1px; position: relative; }
+header p { font-size: 1.1em; opacity: .9; margin-top: 8px; position: relative; }
 
-        header p {
-            font-size: 1.1em;
-            opacity: 0.95;
-        }
+/* ── Section ── */
+.section {
+  background: white;
+  border-radius: 20px;
+  padding: 36px;
+  margin-bottom: 36px;
+  box-shadow: 0 4px 24px rgba(124,58,237,.08);
+  border: 1.5px solid #ede0ff;
+}
+.section-title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 1.7em;
+  font-weight: 900;
+  color: var(--purple-deep);
+  margin-bottom: 28px;
+  padding-bottom: 16px;
+  border-bottom: 2.5px solid var(--purple-pale);
+}
+.section-title .icon { font-size: 1.3em; }
 
-        .section {
-            background: white;
-            padding: 30px;
-            margin-bottom: 30px;
-            border-radius: 15px;
-            box-shadow: 0 5px 20px rgba(124, 58, 237, 0.1);
-            border: 2px solid #e9d5ff;
-        }
+/* ── Tier Header ── */
+.tier-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin: 32px 0 20px;
+}
+.tier-badge {
+  padding: 6px 20px;
+  border-radius: 30px;
+  font-weight: 700;
+  font-size: .95em;
+  color: white;
+}
+.tier-badge.super  { background: linear-gradient(135deg,#7c3aed,#a855f7); }
+.tier-badge.mega   { background: linear-gradient(135deg,#1d4ed8,#3b82f6); }
+.tier-badge.ultra  { background: linear-gradient(135deg,#0f766e,#14b8a6); }
+.tier-badge.max    { background: linear-gradient(135deg,#b45309,#f59e0b); }
+.tier-speed {
+  font-size: .88em;
+  color: #6b21a8;
+  background: var(--purple-pale);
+  padding: 4px 14px;
+  border-radius: 20px;
+  font-weight: 600;
+}
 
-        .section h2 {
-            color: #7c3aed;
-            margin-bottom: 20px;
-            font-size: 1.8em;
-            padding-bottom: 10px;
-            border-bottom: 3px solid #e9d5ff;
-        }
+/* ── Cards Grid ── */
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 16px;
+}
+.card {
+  background: var(--purple-ghost);
+  border: 2px solid #ede0ff;
+  border-radius: 16px;
+  padding: 22px 16px;
+  text-align: center;
+  transition: transform .2s, box-shadow .2s, border-color .2s;
+  cursor: default;
+  position: relative;
+  overflow: hidden;
+}
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0; right: 0; left: 0;
+  height: 4px;
+  border-radius: 16px 16px 0 0;
+}
+.card.super::before  { background: linear-gradient(90deg,#7c3aed,#a855f7); }
+.card.mega::before   { background: linear-gradient(90deg,#1d4ed8,#3b82f6); }
+.card.ultra::before  { background: linear-gradient(90deg,#0f766e,#14b8a6); }
+.card.max::before    { background: linear-gradient(90deg,#b45309,#f59e0b); }
+.card.maxplus::before{ background: linear-gradient(90deg,#be123c,#f43f5e); }
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 32px rgba(124,58,237,.18);
+  border-color: var(--purple-mid);
+}
+.card-capacity {
+  font-size: 1.35em;
+  font-weight: 900;
+  color: var(--purple-deep);
+  margin-bottom: 8px;
+}
+.card-price {
+  font-size: 1.6em;
+  font-weight: 900;
+  color: var(--purple-main);
+}
+.card-price span { font-size: .55em; font-weight: 600; color: #7c3aed; }
+.card-label {
+  font-size: .78em;
+  color: #9333ea;
+  margin-top: 6px;
+  font-weight: 600;
+}
 
-        .section h3 {
-            color: #a855f7;
-            margin-top: 25px;
-            margin-bottom: 15px;
-            font-size: 1.4em;
-        }
+/* Max cards wider */
+.cards-grid.max-grid {
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+}
+.card-speed-tag {
+  font-size: .8em;
+  background: #fef3c7;
+  color: #92400e;
+  padding: 3px 10px;
+  border-radius: 12px;
+  display: inline-block;
+  margin-bottom: 10px;
+  font-weight: 700;
+}
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 20px 0;
-            background: white;
-            border-radius: 10px;
-            overflow: hidden;
-        }
+/* ── Note ── */
+.note {
+  background: #fff7ed;
+  border-right: 4px solid #f59e0b;
+  padding: 14px 18px;
+  border-radius: 10px;
+  color: #78350f;
+  font-size: .92em;
+  margin-top: 20px;
+  line-height: 1.7;
+}
+.note strong { color: #92400e; }
 
-        th {
-            background: linear-gradient(135deg, #7c3aed 0%, #a855f7 100%);
-            color: white;
-            padding: 15px;
-            text-align: center;
-            font-weight: bold;
-            font-size: 1.05em;
-        }
+/* ── Annual Section ── */
+.annual-intro {
+  background: linear-gradient(135deg,#3b0066 0%,#7c3aed 100%);
+  border-radius: 16px;
+  padding: 20px 24px;
+  color: white;
+  margin-bottom: 24px;
+  font-size: .95em;
+  line-height: 1.8;
+}
+.annual-intro strong { color: #e9d5ff; }
 
-        td {
-            padding: 15px;
-            text-align: center;
-            border-bottom: 1px solid #f3e8ff;
-        }
+.annual-tier {
+  margin-bottom: 28px;
+}
+.annual-tier-title {
+  font-weight: 800;
+  color: var(--purple-deep);
+  font-size: 1.05em;
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.annual-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 14px;
+}
+.annual-card {
+  border-radius: 14px;
+  padding: 18px;
+  text-align: center;
+  border: 2px solid;
+  transition: transform .2s, box-shadow .2s;
+}
+.annual-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 28px rgba(0,0,0,.12);
+}
+.annual-card.super  { background: #faf5ff; border-color: #c4b5fd; }
+.annual-card.mega   { background: #eff6ff; border-color: #93c5fd; }
+.annual-card.ultra  { background: #f0fdfa; border-color: #6ee7b7; }
+.annual-card.max    { background: #fffbeb; border-color: #fcd34d; }
 
-        tr:hover {
-            background-color: #faf5ff;
-        }
+.annual-capacity {
+  font-size: 1.2em;
+  font-weight: 900;
+  color: var(--text-dark);
+  margin-bottom: 6px;
+}
+.annual-price {
+  font-size: 1.45em;
+  font-weight: 900;
+}
+.annual-card.super  .annual-price { color: #7c3aed; }
+.annual-card.mega   .annual-price { color: #2563eb; }
+.annual-card.ultra  .annual-price { color: #0d9488; }
+.annual-card.max    .annual-price { color: #d97706; }
+.annual-price span { font-size: .5em; font-weight: 600; }
 
-        tr:last-child td {
-            border-bottom: none;
-        }
+.saving-badge {
+  display: inline-block;
+  margin-top: 6px;
+  background: #dcfce7;
+  color: #15803d;
+  font-size: .75em;
+  font-weight: 700;
+  padding: 2px 10px;
+  border-radius: 10px;
+}
 
-        .price {
-            color: #7c3aed;
-            font-weight: bold;
-            font-size: 1.1em;
-        }
+/* ── Addons ── */
+.addon-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 14px;
+}
+.addon-card {
+  background: linear-gradient(135deg,#f0fdf4,#dcfce7);
+  border: 2px solid #86efac;
+  border-radius: 14px;
+  padding: 18px 14px;
+  text-align: center;
+}
+.addon-card.giga { background: linear-gradient(135deg,#fff7ed,#fed7aa); border-color: #fb923c; }
+.addon-cap { font-size: 1.1em; font-weight: 800; color: #14532d; margin-bottom: 6px; }
+.addon-card.giga .addon-cap { color: #7c2d12; }
+.addon-price { font-size: 1.35em; font-weight: 900; color: #15803d; }
+.addon-card.giga .addon-price { color: #c2410c; }
+.addon-price span { font-size: .5em; font-weight: 600; }
 
-        .capacity {
-            color: #059669;
-            font-weight: bold;
-        }
+/* ── Gaming ── */
+.game-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 14px;
+}
+.game-card {
+  background: linear-gradient(135deg,#1e1b4b,#312e81);
+  border-radius: 14px;
+  padding: 20px 16px;
+  text-align: center;
+  color: white;
+  border: 2px solid #4338ca;
+}
+.game-card.ps { background: linear-gradient(135deg,#1e3a5f,#1d4ed8); border-color: #3b82f6; }
+.game-cap { font-size: 1.1em; font-weight: 800; margin-bottom: 6px; }
+.game-price { font-size: 1.4em; font-weight: 900; color: #fbbf24; }
+.game-price span { font-size: .5em; font-weight: 600; color: #fde68a; }
+.game-label { font-size: .78em; opacity: .8; margin-top: 4px; }
 
-        .speed-badge {
-            background: linear-gradient(135deg, #a855f7 0%, #c084fc 100%);
-            color: white;
-            padding: 5px 15px;
-            border-radius: 20px;
-            display: inline-block;
-            font-size: 0.9em;
-            margin-bottom: 10px;
-        }
+/* ── Features ── */
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 16px;
+}
+.feature-card {
+  background: var(--purple-ghost);
+  border: 2px solid #ede0ff;
+  border-radius: 14px;
+  padding: 22px;
+}
+.feature-card h4 { color: var(--purple-main); font-size: 1em; font-weight: 800; margin-bottom: 10px; }
+.feature-card p { color: var(--text-mid); font-size: .9em; line-height: 1.7; }
 
-        .note {
-            background: #faf5ff;
-            border-right: 4px solid #a855f7;
-            padding: 15px 20px;
-            margin: 20px 0;
-            border-radius: 8px;
-            color: #581c87;
-        }
+footer {
+  text-align: center;
+  padding: 30px;
+  color: #9333ea;
+  font-size: .9em;
+  margin-top: 20px;
+}
 
-        .feature-box {
-            background: linear-gradient(135deg, #faf5ff 0%, #f3e8ff 100%);
-            padding: 20px;
-            margin: 15px 0;
-            border-radius: 10px;
-            border: 2px solid #e9d5ff;
-        }
-
-        .feature-box h4 {
-            color: #7c3aed;
-            margin-bottom: 10px;
-            font-size: 1.2em;
-        }
-
-        .feature-box p {
-            color: #4c1d95;
-            margin: 5px 0;
-        }
-
-        footer {
-            text-align: center;
-            padding: 30px;
-            color: #7c3aed;
-            font-size: 0.95em;
-            margin-top: 40px;
-        }
-
-        @media (max-width: 768px) {
-            header h1 {
-                font-size: 1.8em;
-            }
-            
-            .section {
-                padding: 20px;
-            }
-            
-            table {
-                font-size: 0.9em;
-            }
-            
-            th, td {
-                padding: 10px 5px;
-            }
-        }
-    </style>
+@media(max-width: 640px){
+  header h1 { font-size: 1.7em; }
+  .section { padding: 20px; }
+  .cards-grid { grid-template-columns: repeat(2,1fr); }
+}
+</style>
 <script src="../script/active-users-widget.js"></script>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>🌐 دليل باقات WE Space 2026</h1>
-            <p>المصرية للاتصالات - دليلك الشامل لباقات الإنترنت المنزلي</p>
-        </header>
+<div class="container">
 
-        <!-- الباقات الشهرية الأساسية -->
-        <div class="section">
-            <h2>📦 الباقات الشهرية الأساسية</h2>
-            
-            <h3>⚡ باقات Super</h3>
-            <div class="speed-badge">سرعة تصل إلى 30 ميجابت/ث</div>
-            <table>
-                <thead>
-                    <tr>
-                        <th>سعة الباقة</th>
-                        <th>السعر الشهري (جنيه)</th>
+  <!-- Header -->
+  <header>
+    <h1>🌐 دليل باقات WE Space 2026</h1>
+    <p>المصرية للاتصالات — دليلك الشامل لباقات الإنترنت المنزلي</p>
+  </header>
 
-                    </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                        <td class="capacity">50 جيجابايت</td>
-                        <td class="price">150</td>
-                        
-                    </tr>
-                    <tr>
-                    <tr>
-                        <td class="capacity">150 جيجابايت</td>
-                        <td class="price">260</td>
-                      
-                    </tr>
-                    <tr>
-                        <td class="capacity">200 جيجابايت</td>
-                        <td class="price">330</td>
-                        
-                    </tr>
-                    <tr>
-                        <td class="capacity">250 جيجابايت</td>
-                        <td class="price">395</td>
-                        
-                    </tr>
-                     <td class="capacity">300 جيجابايت</td>
-                        <td class="price">460</td>
-                        
-                    </tr>
-                    <tr>
-                        <td class="capacity">400 جيجابايت</td>
-                        <td class="price">580</td>
-                        
-                    </tr>
-                     <tr>
-                        <td class="capacity">500 جيجابايت</td>
-                        <td class="price">660</td>
-                        
-                    </tr>
-                    <tr>
-                        <td class="capacity">750 جيجابايت</td>
-                        <td class="price">925</td>
-                       
-                    </tr>
-                    <tr>
-                        <td class="capacity">1.5 تيرابايت</td>
-                        <td class="price">1,650</td>
-                        
-                    </tr>
-                </tbody>
-            </table>
+  <!-- ══ الباقات الشهرية ══ -->
+  <div class="section">
+    <div class="section-title"><span class="icon">📦</span> الباقات الشهرية الأساسية</div>
 
-            <h3>🚀 باقات Mega</h3>
-            <div class="speed-badge">سرعة تصل إلى 70 ميجابت/ث</div>
-            <table>
-                <thead>
-                    <tr>
-                        <th>سعة الباقة</th>
-                        <th>السعر الشهري (جنيه)</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td class="capacity">250 جيجابايت</td>
-                        <td class="price">590</td>
-                
-                    </tr>
-                    <tr>
-                       <tr>
-                        <td class="capacity">500 جيجابايت</td>
-                        <td class="price">900</td>
-                
-                    </tr>
-                        <td class="capacity">750 جيجابايت</td>
-                        <td class="price">1,175</td>
-                        
-                    </tr>
-                    <tr>
-                        <td class="capacity">1.5 تيرابايت</td>
-                        <td class="price">2000</td>
-                        
-                    </tr>
-                </tbody>
-            </table>
+    <!-- Super -->
+    <div class="tier-header">
+      <span class="tier-badge super">⚡ Super</span>
+      <span class="tier-speed">سرعة تصل إلى 30 ميجابت/ث</span>
+    </div>
+    <div class="cards-grid">
+      <div class="card super">
+        <div class="card-capacity">50 GB</div>
+        <div class="card-price">150 <span>جنيه/شهر</span></div>
+        <div class="card-label">للعملاء الجدد والحاليين</div>
+      </div>
+      <div class="card super">
+        <div class="card-capacity">150 GB</div>
+        <div class="card-price">260 <span>جنيه/شهر</span></div>
+      </div>
+      <div class="card super">
+        <div class="card-capacity">200 GB</div>
+        <div class="card-price">330 <span>جنيه/شهر</span></div>
+      </div>
+      <div class="card super">
+        <div class="card-capacity">250 GB</div>
+        <div class="card-price">395 <span>جنيه/شهر</span></div>
+      </div>
+      <div class="card super">
+        <div class="card-capacity">300 GB</div>
+        <div class="card-price">460 <span>جنيه/شهر</span></div>
+      </div>
+      <div class="card super">
+        <div class="card-capacity">400 GB</div>
+        <div class="card-price">580 <span>جنيه/شهر</span></div>
+      </div>
+      <div class="card super">
+        <div class="card-capacity">500 GB</div>
+        <div class="card-price">660 <span>جنيه/شهر</span></div>
+      </div>
+      <div class="card super">
+        <div class="card-capacity">750 GB</div>
+        <div class="card-price">925 <span>جنيه/شهر</span></div>
+      </div>
+      <div class="card super">
+        <div class="card-capacity">1.5 TB</div>
+        <div class="card-price">1,650 <span>جنيه/شهر</span></div>
+      </div>
+    </div>
 
-            <h3>💎 باقات Ultra</h3>
-            <div class="speed-badge">سرعة تصل إلى 100 ميجابت/ث</div>
-            <table>
-                <thead>
-                    <tr>
-                        <th>سعة الباقة</th>
-                        <th>السعر الشهري (جنيه)</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td class="capacity">250 جيجابايت</td>
-                        <td class="price">785</td>
-                     
-                    </tr>
-                     <tr>
-                        <td class="capacity">500 جيجابايت</td>
-                        <td class="price">1150</td>
-                
-                    </tr>
-                    <tr>
-                        <td class="capacity">750 جيجابايت</td>
-                        <td class="price">1,425</td>
-                
-                    </tr>
-                </tbody>
-            </table>
+    <!-- Mega -->
+    <div class="tier-header" style="margin-top:36px">
+      <span class="tier-badge mega">🚀 Mega</span>
+      <span class="tier-speed" style="background:#dbeafe;color:#1e40af;">سرعة تصل إلى 70 ميجابت/ث</span>
+    </div>
+    <div class="cards-grid">
+      <div class="card mega">
+        <div class="card-capacity">250 GB</div>
+        <div class="card-price" style="color:#2563eb">590 <span style="color:#3b82f6">جنيه/شهر</span></div>
+      </div>
+      <div class="card mega">
+        <div class="card-capacity">500 GB</div>
+        <div class="card-price" style="color:#2563eb">900 <span style="color:#3b82f6">جنيه/شهر</span></div>
+      </div>
+      <div class="card mega">
+        <div class="card-capacity">750 GB</div>
+        <div class="card-price" style="color:#2563eb">1,175 <span style="color:#3b82f6">جنيه/شهر</span></div>
+      </div>
+      <div class="card mega">
+        <div class="card-capacity">1.5 TB</div>
+        <div class="card-price" style="color:#2563eb">2,000 <span style="color:#3b82f6">جنيه/شهر</span></div>
+      </div>
+    </div>
 
-            <h3>🔥 باقات Max & Max+</h3>
-            <div class="speed-badge">السرعات القصوى</div>
-            <table>
-                <thead>
-                    <tr>
-                        <th>نوع الباقة</th>
-                        <th>السرعة القصوى</th>
-                        <th>سعة الباقة</th>
-                        <th>السعر الشهري (جنيه)</th>
-                    
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><strong>Max</strong></td>
-                        <td>200 ميجابت/ث</td>
-                        <td class="capacity">1.5 تيرابايت</td>
-                        <td class="price">2350</td>
-                     
-                    </tr>
-                    <tr>
-                        <td><strong>Max+</strong></td>
-                        <td>500 ميجابت/ث</td>
-                        <td class="capacity">1.5 تيرابايت</td>
-                        <td class="price">2700</td>
-                        <td>-</td>
-                    </tr>
-                </tbody>
-            </table>
+    <!-- Ultra -->
+    <div class="tier-header" style="margin-top:36px">
+      <span class="tier-badge ultra">💎 Ultra</span>
+      <span class="tier-speed" style="background:#ccfbf1;color:#0f766e;">سرعة تصل إلى 100 ميجابت/ث</span>
+    </div>
+    <div class="cards-grid">
+      <div class="card ultra">
+        <div class="card-capacity">250 GB</div>
+        <div class="card-price" style="color:#0d9488">785 <span style="color:#14b8a6">جنيه/شهر</span></div>
+      </div>
+      <div class="card ultra">
+        <div class="card-capacity">500 GB</div>
+        <div class="card-price" style="color:#0d9488">1,150 <span style="color:#14b8a6">جنيه/شهر</span></div>
+      </div>
+      <div class="card ultra">
+        <div class="card-capacity">750 GB</div>
+        <div class="card-price" style="color:#0d9488">1,425 <span style="color:#14b8a6">جنيه/شهر</span></div>
+      </div>
+    </div>
 
-            <div class="note">
-                <strong>⚠️ ملاحظة:</strong> جميع الأسعار المذكورة أعلاه لا تشمل ضريبة القيمة المضافة (14%)
-               <br> <strong>⚠️ ملاحظة:</strong> باقه super 50 متاحه للعملاء الجدد و الحالين ولا يتم اخبار العميل بيها الا عند السؤال عنها 
-            </div>
+    <!-- Max & Max+ -->
+    <div class="tier-header" style="margin-top:36px">
+      <span class="tier-badge max">🔥 Max & Max+</span>
+      <span class="tier-speed" style="background:#fef3c7;color:#92400e;">السرعات القصوى</span>
+    </div>
+    <div class="cards-grid max-grid">
+      <div class="card max">
+        <div class="card-speed-tag">Max — 200 ميجابت/ث</div>
+        <div class="card-capacity">1.5 TB</div>
+        <div class="card-price" style="color:#d97706">2,350 <span style="color:#f59e0b">جنيه/شهر</span></div>
+      </div>
+      <div class="card maxplus">
+        <div class="card-speed-tag" style="background:#ffe4e6;color:#9f1239;">Max+ — 500 ميجابت/ث</div>
+        <div class="card-capacity">1.5 TB</div>
+        <div class="card-price" style="color:#be123c">2,700 <span style="color:#f43f5e">جنيه/شهر</span></div>
+      </div>
+    </div>
+
+    <div class="note">
+      <strong>⚠️ ملاحظة:</strong> جميع الأسعار لا تشمل ضريبة القيمة المضافة (14%)<br>
+      <strong>⚠️ ملاحظة:</strong> باقة Super 50 GB متاحة للعملاء الجدد والحاليين ولا يتم إخبار العميل بها إلا عند السؤال عنها
+    </div>
+  </div>
+
+  <!-- ══ الباقات السنوية ══ -->
+  <div class="section">
+    <div class="section-title"><span class="icon">📅</span> الباقات السنوية WE Space</div>
+
+    <div class="annual-intro">
+      مع الباقات السنوية من WE SPACE هتدفع حتى <strong>10 شهور فقط</strong> وتستمتع بأسهل تجربة إشتراك، وهتدفع مرة واحدة في السنة بتخفيض. سوف تحصل على سعة الباقة السنوية بشكل كامل عند الإشتراك في باقة WE SPACE السنوية ويمكنك إستخدام سعة الباقة طول السنة.
+    </div>
+
+    <!-- Super Annual -->
+    <div class="annual-tier">
+      <div class="annual-tier-title">
+        <span class="tier-badge super" style="font-size:.85em">⚡ Super</span>
+        سرعة تصل إلى 30 ميجابت/ث
+      </div>
+      <div class="annual-cards">
+        <div class="annual-card super">
+          <div class="annual-capacity">3,000 GB</div>
+          <div class="annual-price">4,345 <span>جنيه/سنة</span></div>
+          <div class="saving-badge">🎉 وفّر شهرين</div>
         </div>
-
-        <!-- سعات الشحن الإضافية -->
-        <div class="section">
-            <h2>🔋 سعات الشحن الإضافية</h2>
-            <p style="color: #4c1d95; margin-bottom: 20px;">في حالة انتهاء سعة التحميل الأساسية، تنخفض السرعة تلقائيًا. يمكنك استعادة السرعة الأصلية من خلال شحن السعات التالية:</p>
-
-            <h3>📱 سعات إضافية (مرة واحدة أو تجديد تلقائي)</h3>
-            <table>
-                <thead>
-                    <tr>
-                        <th>السعة الإضافية</th>
-                        <th>السعر (جنيه)</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td class="capacity">20 جيجابايت</td>
-                        <td class="price">60</td>
-                    </tr>
-                    <tr>
-                        <td class="capacity">50 جيجابايت</td>
-                        <td class="price">120</td>
-                    </tr>
-                    <tr>
-                        <td class="capacity">100 جيجابايت</td>
-                        <td class="price">190</td>
-                    </tr>
-                </tbody>
-            </table>
-
-            <h3>🎯 باقات Giga Tank (مرة واحدة)</h3>
-            <table>
-                <thead>
-                    <tr>
-                        <th>السعة الإضافية</th>
-                        <th>السعر (جنيه)</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td class="capacity">400 جيجابايت</td>
-                        <td class="price">500</td>
-                    </tr>
-                    <tr>
-                        <td class="capacity">2,000 جيجابايت</td>
-                        <td class="price">2000</td>
-                    </tr>
-                </tbody>
-            </table>
+        <div class="annual-card super">
+          <div class="annual-capacity">4,800 GB</div>
+          <div class="annual-price">6,380 <span>جنيه/سنة</span></div>
+          <div class="saving-badge">🎉 وفّر شهرين</div>
         </div>
-
-        <!-- باقات الألعاب -->
-        <div class="section">
-            <h2>🎮 باقات الألعاب (Gaming Add-ons)</h2>
-            <p style="color: #4c1d95; margin-bottom: 20px;">باقات مخصصة لهواة الألعاب لا تستهلك من سعة الباقة الأساسية</p>
-
-            <h3>🎮  باقة البلايستيشن(PS Bundle)</h3>
-            <p style="color: #6b21a8; margin-bottom: 15px;"><strong>تدعم أجهزة:</strong> PS3, PS4, PS5</p>
-            <table>
-                <thead>
-                    <tr>
-                        <th>السعة</th>
-                        <th>السعر (جنيه)</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td class="capacity">150 جيجابايت</td>
-                        <td class="price">120</td>
-                    </tr>
-                    <tr>
-                        <td class="capacity">300 جيجابايت</td>
-                        <td class="price">240</td>
-                    </tr>
-                </tbody>
-            </table>
-
-            <h3>🎯 باقة الألعاب (GAME ON)</h3>
-            <p style="color: #6b21a8; margin-bottom: 15px;"><strong>تدعم ألعاب مثل:</strong> PUBG, Call of Duty, Fortnite, League of Legends وغيرها</p>
-            <table>
-                <thead>
-                    <tr>
-                        <th>السعة</th>
-                        <th>السعر (جنيه)</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td class="capacity">40 جيجابايت Arab</td>
-                        <td class="price">40</td>
-                    </tr>
-                </tbody>
-            </table>
+        <div class="annual-card super">
+          <div class="annual-capacity">9,000 GB</div>
+          <div class="annual-price">9,715 <span>جنيه/سنة</span></div>
+          <div class="saving-badge">🎉 وفّر شهرين</div>
         </div>
-
-        <!-- خدمات ومميزات إضافية -->
-        <div class="section">
-            <h2>✨ خدمات ومميزات إضافية</h2>
-
-            <div class="feature-box">
-                <h4>🏥 خدمة شامل من فيزيتا (Shamel by Vezeeta)</h4>
-                <p><strong>الوصف:</strong> اشتراك سنوي مجاني يقدم خصومات تصل إلى 80% على الخدمات الطبية</p>
-                <p><strong>الشروط:</strong> متاحة لعملاء WE Space بدءًا من باقة Super 200GB</p>
-                <p><strong>التفعيل:</strong> يتم عبر تطبيق WE My</p>
-            </div>
-
-            <div class="feature-box">
-                <h4>💰 خدمة سلفني (Salefny)</h4>
-                <p>تتيح لك الحصول على 5 جيجابايت إضافية مقابل 10 جنيهات صالحة لمدة يومين في حالة توقف الخدمة لعدم السداد</p>
-            </div>
-
-            <div class="feature-box">
-                <h4>🔄 التجديد المبكر</h4>
-                <p>يمكنك تجديد باقتك الأساسية في أي وقت قبل موعد التجديد في حال نفاد السعة</p>
-            </div>
+        <div class="annual-card super">
+          <div class="annual-capacity">18 TB</div>
+          <div class="annual-price">16,500 <span>جنيه/سنة</span></div>
+          <div class="saving-badge">🎉 وفّر شهرين</div>
         </div>
+      </div>
+    </div>
 
-       <footer>
-        Powered by <span>Mohand Hassan</span> – From <span>Abassia Store</span>
-    </footer>    </div>
+    <!-- Mega Annual -->
+    <div class="annual-tier">
+      <div class="annual-tier-title">
+        <span class="tier-badge mega" style="font-size:.85em">🚀 Mega</span>
+        سرعة تصل إلى 70 ميجابت/ث
+      </div>
+      <div class="annual-cards">
+        <div class="annual-card mega">
+          <div class="annual-capacity">3,000 GB</div>
+          <div class="annual-price">6,490 <span>جنيه/سنة</span></div>
+          <div class="saving-badge">🎉 وفّر شهرين</div>
+        </div>
+        <div class="annual-card mega">
+          <div class="annual-capacity">9,000 GB</div>
+          <div class="annual-price">12,340 <span>جنيه/سنة</span></div>
+          <div class="saving-badge">🎉 وفّر شهرين</div>
+        </div>
+        <div class="annual-card mega">
+          <div class="annual-capacity">18 TB</div>
+          <div class="annual-price">20,000 <span>جنيه/سنة</span></div>
+          <div class="saving-badge">🎉 وفّر شهرين</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Ultra Annual -->
+    <div class="annual-tier">
+      <div class="annual-tier-title">
+        <span class="tier-badge ultra" style="font-size:.85em">💎 Ultra</span>
+        سرعة تصل إلى 100 ميجابت/ث
+      </div>
+      <div class="annual-cards">
+        <div class="annual-card ultra">
+          <div class="annual-capacity">3,000 GB</div>
+          <div class="annual-price">8,635 <span>جنيه/سنة</span></div>
+          <div class="saving-badge">🎉 وفّر شهرين</div>
+        </div>
+        <div class="annual-card ultra">
+          <div class="annual-capacity">9,000 GB</div>
+          <div class="annual-price">14,965 <span>جنيه/سنة</span></div>
+          <div class="saving-badge">🎉 وفّر شهرين</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Max Annual -->
+    <div class="annual-tier">
+      <div class="annual-tier-title">
+        <span class="tier-badge max" style="font-size:.85em">🔥 Max</span>
+        سرعة تصل إلى 200 ميجابت/ث
+      </div>
+      <div class="annual-cards">
+        <div class="annual-card max">
+          <div class="annual-capacity">18 TB</div>
+          <div class="annual-price">23,500 <span>جنيه/سنة</span></div>
+          <div class="saving-badge">🎉 وفّر شهرين</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="note">
+      <strong>⚠️ ملاحظة:</strong> جميع الأسعار لا تشمل ضريبة القيمة المضافة (14%)
+    </div>
+  </div>
+
+  <!-- ══ الشحن الإضافي ══ -->
+  <div class="section">
+    <div class="section-title"><span class="icon">🔋</span> سعات الشحن الإضافية</div>
+    <p style="color:#4c1d95;margin-bottom:20px;font-size:.95em">عند انتهاء سعة التحميل الأساسية تنخفض السرعة تلقائيًا. استعد السرعة باختيار إحدى الباقات التالية:</p>
+
+    <h3 style="color:#a855f7;margin-bottom:16px;font-size:1.1em">📱 سعات إضافية</h3>
+    <div class="addon-grid">
+      <div class="addon-card">
+        <div class="addon-cap">20 GB</div>
+        <div class="addon-price">60 <span>جنيه</span></div>
+      </div>
+      <div class="addon-card">
+        <div class="addon-cap">50 GB</div>
+        <div class="addon-price">120 <span>جنيه</span></div>
+      </div>
+      <div class="addon-card">
+        <div class="addon-cap">100 GB</div>
+        <div class="addon-price">190 <span>جنيه</span></div>
+      </div>
+    </div>
+
+    <h3 style="color:#c2410c;margin:28px 0 16px;font-size:1.1em">🎯 باقات Giga Tank (مرة واحدة)</h3>
+    <div class="addon-grid">
+      <div class="addon-card giga">
+        <div class="addon-cap">400 GB</div>
+        <div class="addon-price">500 <span>جنيه</span></div>
+      </div>
+      <div class="addon-card giga">
+        <div class="addon-cap">2,000 GB</div>
+        <div class="addon-price">2,000 <span>جنيه</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ الألعاب ══ -->
+  <div class="section">
+    <div class="section-title"><span class="icon">🎮</span> باقات الألعاب (Gaming Add-ons)</div>
+    <p style="color:#4c1d95;margin-bottom:20px;font-size:.95em">باقات مخصصة لهواة الألعاب — لا تستهلك من سعة الباقة الأساسية</p>
+
+    <h3 style="color:#1d4ed8;margin-bottom:14px;font-size:1.05em">🎮 باقة البلايستيشن (PS Bundle) — يدعم PS3 / PS4 / PS5</h3>
+    <div class="game-grid">
+      <div class="game-card ps">
+        <div class="game-cap">150 GB</div>
+        <div class="game-price">120 <span>جنيه</span></div>
+        <div class="game-label">PlayStation Bundle</div>
+      </div>
+      <div class="game-card ps">
+        <div class="game-cap">300 GB</div>
+        <div class="game-price">240 <span>جنيه</span></div>
+        <div class="game-label">PlayStation Bundle</div>
+      </div>
+    </div>
+
+    <h3 style="color:#312e81;margin:24px 0 14px;font-size:1.05em">🎯 باقة GAME ON — PUBG / COD / Fortnite / LoL وغيرها</h3>
+    <div class="game-grid">
+      <div class="game-card">
+        <div class="game-cap">40 GB Arab</div>
+        <div class="game-price">40 <span>جنيه</span></div>
+        <div class="game-label">Game On</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ الخدمات الإضافية ══ -->
+  <div class="section">
+    <div class="section-title"><span class="icon">✨</span> خدمات ومميزات إضافية</div>
+    <div class="features-grid">
+      <div class="feature-card">
+        <h4>🏥 شامل من فيزيتا (Shamel by Vezeeta)</h4>
+        <p><strong>الوصف:</strong> اشتراك سنوي مجاني يقدم خصومات تصل إلى 80% على الخدمات الطبية</p>
+        <p><strong>الشروط:</strong> متاحة لعملاء WE Space بدءًا من باقة Super 200 GB</p>
+        <p><strong>التفعيل:</strong> عبر تطبيق WE My</p>
+      </div>
+      <div class="feature-card">
+        <h4>💰 خدمة سلفني (Salefny)</h4>
+        <p>احصل على 5 جيجابايت إضافية مقابل 10 جنيهات صالحة لمدة يومين في حالة توقف الخدمة لعدم السداد</p>
+      </div>
+      <div class="feature-card">
+        <h4>🔄 التجديد المبكر</h4>
+        <p>يمكنك تجديد باقتك الأساسية في أي وقت قبل موعد التجديد في حال نفاد السعة</p>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    Powered by <strong>Mohand Hassan</strong> – From <strong>Abassia Store</strong>
+  </footer>
+</div>
 
 <script>
-  window.addEventListener('load', function() {
-    if (typeof ActiveUsersWidget !== 'undefined') {
-      ActiveUsersWidget.init({ position: 'corner' });
-    }
-  });
+window.addEventListener('load', function() {
+  if (typeof ActiveUsersWidget !== 'undefined') {
+    ActiveUsersWidget.init({ position: 'corner' });
+  }
+});
 </script>
 </body>
 </html>
