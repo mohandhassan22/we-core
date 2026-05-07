@@ -9,20 +9,23 @@
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet" />
   <style>
     :root {
-      --bg: #0e0a00;
-      --surface: #181000;
-      --card: #1e1500;
-      --card2: #181000;
-      --border: #2e2400;
-      --accent: #f4a942;
-      --accent2: #ff6b35;
-      --text: #fdf4e3;
-      --muted: #a89060;
-      --we-red: #cc1e27;
+      --bg: #f5f0f8;
+      --surface: #ede6f4;
+      --card: #ffffff;
+      --card2: #f9f5fc;
+      --border: #d9cee8;
+      --accent: #8b5ca8;
+      --accent2: #b07cc6;
+      --accent-light: #c49dd8;
+      --text: #2a1a3e;
+      --muted: #8a7a9e;
+      --we-purple: #6b3d9a;
 
-      --gold: #f4a942;
-      --silver: #bcc0c8;
-      --bronze: #cd7f32;
+      --mauve: #8b5ca8;
+      --mauve-dark: #5e3478;
+      --mauve-light: #c9a8df;
+      --mauve-xlight: #ede6f4;
+      --white: #ffffff;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -34,10 +37,25 @@
       min-height: 100vh;
     }
 
+    /* subtle dot pattern */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: radial-gradient(circle, rgba(139,92,168,.08) 1px, transparent 1px);
+      background-size: 24px 24px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    * { position: relative; z-index: 1; }
+
     .hero {
       position: relative;
       padding: 0 18px 0;
       overflow: hidden;
+      background: linear-gradient(160deg, #ffffff 0%, #ede6f4 60%, #d5bee8 100%);
+      border-bottom: 1px solid var(--border);
     }
 
     .hero::before {
@@ -45,8 +63,8 @@
       position: absolute;
       inset: 0;
       background:
-        radial-gradient(ellipse 80% 55% at 50% -10%, rgba(244,169,66,.22) 0%, transparent 60%),
-        radial-gradient(ellipse 50% 35% at 90% 80%, rgba(255,107,53,.1) 0%, transparent 55%);
+        radial-gradient(ellipse 80% 55% at 50% -10%, rgba(139,92,168,.18) 0%, transparent 60%),
+        radial-gradient(ellipse 50% 35% at 90% 80%, rgba(176,124,198,.12) 0%, transparent 55%);
       pointer-events: none;
     }
 
@@ -70,13 +88,14 @@
     .back-btn svg { width: 18px; height: 18px; }
 
     .logo-badge {
-      background: linear-gradient(135deg, #7018e2, #981ee9);
+      background: linear-gradient(135deg, var(--mauve-dark), var(--mauve));
       color: #fff;
       font-weight: 900;
       font-size: 18px;
       padding: 5px 14px;
       border-radius: 9px;
       letter-spacing: 2px;
+      box-shadow: 0 4px 14px rgba(139,92,168,.3);
     }
 
     .hero-body {
@@ -88,14 +107,14 @@
       font-size: 52px;
       margin-bottom: 16px;
       display: block;
-      filter: drop-shadow(0 0 18px rgba(244,169,66,.5));
+      filter: drop-shadow(0 0 18px rgba(139,92,168,.35));
     }
 
     .hero-tag {
       display: inline-block;
-      background: rgba(244,169,66,.12);
-      border: 1px solid rgba(244,169,66,.3);
-      color: #f4a942;
+      background: rgba(139,92,168,.1);
+      border: 1px solid rgba(139,92,168,.3);
+      color: var(--mauve-dark);
       font-size: 11px;
       font-weight: 700;
       padding: 4px 14px;
@@ -109,10 +128,11 @@
       font-weight: 900;
       line-height: 1.15;
       margin-bottom: 10px;
+      color: var(--text);
     }
 
     .hero h1 span {
-      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      background: linear-gradient(90deg, var(--mauve-dark), var(--accent2));
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
@@ -139,7 +159,7 @@
       display: flex;
       align-items: center;
       gap: 7px;
-      background: var(--card);
+      background: var(--white);
       border: 1px solid var(--border);
       border-radius: 40px;
       padding: 9px 16px;
@@ -147,6 +167,8 @@
       font-weight: 600;
       white-space: nowrap;
       flex-shrink: 0;
+      color: var(--text);
+      box-shadow: 0 2px 8px rgba(139,92,168,.08);
     }
 
     .feat-chip .dot {
@@ -169,6 +191,7 @@
       display: flex;
       align-items: center;
       gap: 10px;
+      color: var(--mauve-dark);
     }
 
     .section-title::after {
@@ -178,11 +201,6 @@
       background: var(--border);
     }
 
-    /* TIER LABELS */
-    .tier-gold   { color: var(--gold); }
-    .tier-silver { color: var(--silver); }
-    .tier-bronze { color: var(--bronze); }
-
     /* PLAN CARDS */
     .plans-grid {
       display: grid;
@@ -191,28 +209,30 @@
     }
 
     .plan-card {
-      background: var(--card);
+      background: var(--white);
       border: 1px solid var(--border);
       border-radius: 18px;
       padding: 18px 14px 16px;
       text-align: center;
       position: relative;
-      transition: transform .2s, border-color .2s;
+      transition: transform .2s, border-color .2s, box-shadow .2s;
+      box-shadow: 0 2px 12px rgba(139,92,168,.07);
     }
 
     .plan-card:hover {
       transform: translateY(-3px);
       border-color: var(--accent);
+      box-shadow: 0 8px 24px rgba(139,92,168,.15);
     }
 
     .plan-card.gold-card {
-      border-color: rgba(244,169,66,.4);
-      background: linear-gradient(135deg, rgba(244,169,66,.07), rgba(255,107,53,.04));
+      border-color: rgba(139,92,168,.35);
+      background: linear-gradient(135deg, rgba(139,92,168,.06), rgba(176,124,198,.04));
     }
 
     .plan-card.silver-card {
-      border-color: rgba(188,192,200,.25);
-      background: linear-gradient(135deg, rgba(188,192,200,.05), transparent);
+      border-color: rgba(139,92,168,.2);
+      background: linear-gradient(135deg, rgba(201,168,223,.08), transparent);
     }
 
     .tier-badge {
@@ -224,14 +244,26 @@
       margin-bottom: 10px;
     }
 
-    .tier-badge.gold   { background: rgba(244,169,66,.15); color: var(--gold); border: 1px solid rgba(244,169,66,.3); }
-    .tier-badge.silver { background: rgba(188,192,200,.1); color: var(--silver); border: 1px solid rgba(188,192,200,.25); }
-    .tier-badge.bronze { background: rgba(205,127,50,.1); color: var(--bronze); border: 1px solid rgba(205,127,50,.25); }
+    .tier-badge.gold {
+      background: rgba(139,92,168,.12);
+      color: var(--mauve-dark);
+      border: 1px solid rgba(139,92,168,.3);
+    }
+    .tier-badge.silver {
+      background: rgba(201,168,223,.15);
+      color: #7a5298;
+      border: 1px solid rgba(201,168,223,.4);
+    }
+    .tier-badge.bronze {
+      background: rgba(176,124,198,.1);
+      color: #9b6ab8;
+      border: 1px solid rgba(176,124,198,.3);
+    }
 
     .plan-price {
       font-size: 26px;
       font-weight: 900;
-      color: var(--accent);
+      color: var(--mauve-dark);
     }
 
     .plan-price-label { font-size: 11px; color: var(--muted); margin-bottom: 6px; }
@@ -240,6 +272,7 @@
       font-size: 15px;
       font-weight: 800;
       margin: 6px 0 2px;
+      color: var(--text);
     }
 
     .plan-detail {
@@ -249,44 +282,32 @@
       line-height: 1.5;
     }
 
-    .plan-code {
-      background: rgba(244,169,66,.1);
-      border: 1px solid rgba(244,169,66,.2);
-      border-radius: 8px;
-      padding: 6px 8px;
-      font-size: 12px;
-      font-weight: 700;
-      color: var(--accent);
-      font-family: monospace;
-      direction: ltr;
-      margin-top: 10px;
-    }
-
     .plan-coupon {
-      background: rgba(244,169,66,.08);
-      border: 1px dashed rgba(244,169,66,.3);
+      background: rgba(139,92,168,.07);
+      border: 1px dashed rgba(139,92,168,.35);
       border-radius: 8px;
       padding: 6px 10px;
       font-size: 11px;
-      color: var(--gold);
+      color: var(--mauve-dark);
       font-weight: 700;
       margin-top: 8px;
     }
 
     /* INFO BOXES */
     .info-box {
-      background: var(--card);
+      background: var(--white);
       border: 1px solid var(--border);
       border-radius: 16px;
       padding: 18px;
       margin-bottom: 12px;
+      box-shadow: 0 2px 10px rgba(139,92,168,.06);
     }
 
     .info-box h3 {
       font-size: 14px;
       font-weight: 800;
       margin-bottom: 12px;
-      color: var(--accent);
+      color: var(--mauve-dark);
     }
 
     .info-row {
@@ -301,7 +322,7 @@
 
     .info-row:last-child { border-bottom: none; }
     .info-row .label { color: var(--muted); }
-    .info-row .value { font-weight: 700; text-align: left; }
+    .info-row .value { font-weight: 700; text-align: left; color: var(--text); }
 
     /* EXTRA PACKAGES */
     .extra-grid {
@@ -311,58 +332,31 @@
     }
 
     .extra-card {
-      background: var(--card);
+      background: var(--white);
       border: 1px solid var(--border);
       border-radius: 14px;
       padding: 14px 10px;
       text-align: center;
+      box-shadow: 0 2px 8px rgba(139,92,168,.06);
     }
 
     .extra-price {
       font-size: 20px;
       font-weight: 900;
-      color: var(--accent);
+      color: var(--mauve-dark);
     }
 
     .extra-units {
       font-size: 12px;
       font-weight: 700;
       margin: 4px 0;
+      color: var(--text);
     }
 
     .extra-validity {
       font-size: 11px;
       color: var(--muted);
     }
-
-    /* CODES */
-    .codes-list {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-
-    .code-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 12px 16px;
-      gap: 12px;
-    }
-
-    .code-value {
-      font-family: monospace;
-      font-size: 15px;
-      font-weight: 800;
-      color: var(--accent);
-      direction: ltr;
-      flex-shrink: 0;
-    }
-
-    .code-desc { font-size: 13px; color: var(--muted); text-align: right; }
 
     .divider {
       height: 1px;
@@ -375,8 +369,10 @@
       padding: 24px 16px 40px;
       color: var(--muted);
       font-size: 12px;
+      background: var(--mauve-xlight);
+      border-top: 1px solid var(--border);
     }
-    .footer a { color: var(--accent); text-decoration: none; }
+    .footer a { color: var(--mauve-dark); text-decoration: none; font-weight: 700; }
   </style>
 </head>
 <body>
@@ -405,7 +401,7 @@
 </section>
 
 <!-- FEATURES -->
-<div class="features-bar">
+<div class="features-bar" style="padding-top:18px;">
   <div class="feat-chip"><span class="dot"></span>فيسبوك وواتساب وانستجرام مجاني</div>
   <div class="feat-chip"><span class="dot"></span>كوبونات شراء كل 3 تجديدات</div>
   <div class="feat-chip"><span class="dot"></span>+25% Nitro</div>
@@ -413,10 +409,10 @@
 </div>
 
 <!-- كود الاشتراك banner -->
-<div style="margin:0 18px 24px;background:linear-gradient(135deg,rgba(244,169,66,.12),rgba(255,107,53,.08));border:1px solid rgba(244,169,66,.25);border-radius:16px;padding:16px 18px;display:flex;align-items:center;justify-content:space-between;gap:12px;">
+<div style="margin:0 18px 24px;background:linear-gradient(135deg,rgba(139,92,168,.1),rgba(176,124,198,.07));border:1px solid rgba(139,92,168,.25);border-radius:16px;padding:16px 18px;display:flex;align-items:center;justify-content:space-between;gap:12px;box-shadow:0 2px 12px rgba(139,92,168,.1);">
   <div>
     <div style="font-size:12px;color:var(--muted);margin-bottom:4px;">كود الاشتراك الرئيسي</div>
-    <div style="font-size:24px;font-weight:900;color:var(--accent);font-family:monospace;direction:ltr;">#707*</div>
+    <div style="font-size:24px;font-weight:900;color:var(--mauve-dark);font-family:monospace;direction:ltr;">#707*</div>
   </div>
   <div style="text-align:left;">
     <div style="font-size:12px;color:var(--muted);margin-bottom:4px;">المتبقي من الباقة</div>
@@ -582,7 +578,7 @@
     </div>
   </div>
   <p style="font-size:12px;color:var(--muted);margin-top:12px;line-height:1.7">
-    كود الاشتراك في الباقات الإضافية: <span style="font-family:monospace;color:var(--accent);direction:ltr;display:inline-block;">*707*4#</span> — يمكن الشراء أكثر من مرة في الشهر ولا تتجدد تلقائياً.
+    كود الاشتراك في الباقات الإضافية: <span style="font-family:monospace;color:var(--mauve-dark);font-weight:700;direction:ltr;display:inline-block;">*707*4#</span> — يمكن الشراء أكثر من مرة في الشهر ولا تتجدد تلقائياً.
   </p>
 </section>
 
