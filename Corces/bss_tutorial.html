@@ -371,26 +371,31 @@
     </div>
   </div>
 </div>
-
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-  const SUPABASE_URL = 'https://iygwhapcpdmsasqlfelv.supabase.co';
-  const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml5Z3doYXBjcGRtc2FzcWxmZWx2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzEzNDk5MDQsImV4cCI6MjA4NjkyNTkwNH0.jqU1fEc9kBkXcCfazH6aTnS2XWWzPv0bbixHZgjtrnQ';
+   const sb = window.supabase.createClient(
+  'https://iygwhapcpdmsasqlfelv.supabase.co',
+  'sb_publishable_rD9naqrpu1dI-iwchAS0GQ_JkgGysqP'
+);
+async function load() {
+  const { data, error } = await sb.from('Videos').select();
+
+  console.log(data, error);
+}
+
+load();
 
   let allVideos = [];
 
   async function loadVideos() {
+    console.log('loading')
     try {
-      const res = await fetch(
-        `${SUPABASE_URL}/rest/v1/Videos?select=id,title,file_id,folder-name&order=id.asc`,
-        {
-          headers: {
-            'apikey': SUPABASE_KEY,
-            'Authorization': `Bearer ${SUPABASE_KEY}`
-          }
-        }
-      );
+       const { data, error } = await sb.functions.invoke('clever-processor', {
+  body: {}
+}); console.log(data)
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       allVideos = await res.json();
+      console.log(allVideos)
       populateFolders();
       renderVideos();
     } catch (e) {
