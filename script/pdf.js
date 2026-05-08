@@ -1,169 +1,287 @@
-// ========================================
-//  WE-Core · pdf.js (النسخة المصححة برمجياً)
-// ========================================
-
-const SUPABASE_URL = "https://dfbzovrwaxrzsskbvmfs.supabase.co";
-const SUPABASE_ANON = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRmYnpvdnJ3YXhyenNza2J2bWZzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzUwNjQzNjIsImV4cCI6MjA5MDY0MDM2Mn0.5LDy-m4WHViSOqlasypBn1sohXcTuCS8y2PENCTy60M";
-const BUCKET_NAME = "ALL FORM";
+// إعدادات الربط مع Supabase
+const SUPABASE_URL  = "https://iygwhapcpdmsasqlfelv.supabase.co";
+const SUPABASE_ANON = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml5Z3doYXBjcGRtc2FzcWxmZWx2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzEzNDk5MDQsImV4cCI6MjA4NjkyNTkwNH0.jqU1fEc9kBkXcCfazH6aTnS2XWWzPv0bbixHZgjtrnQ";
+const BUCKET_NAME   = "All Form";
 const TRANSLATE_API = "https://api.mymemory.translated.net/get";
 
-// 1. القاموس اليدوي الشامل - تم تنظيفه من مراجع الـ [cite] التي تسبب الخطأ
+  // القاموس المحدث والمصحح تقنياً لشركة WE
 const customDictionary = {
-    "mobile": "موبايل",
-    "sim card": "شريحة",
-    "mnp": "تحويل رقم",
-    "landline": "خط أرضي",
-    "fixed": "ثابت",
-    "ardy": "أرضي",
-    "adsl": "إنترنت منزلي",
-    "internet": "إنترنت",
-    "dsl": "دي إس إل",
-    "form": "نموذج",
-    "service": "خدمة",
-    "complaint": "شكوى",
-    "customer": "عميل",
-    "request": "طلب",
-    "cancel": "إلغاء",
-    "subscription": "اشتراك",
-    "transfer": "نقل",
-    "ownership": "ملكية",
-    "cancellation adsl": "إلغاء خدمة الإنترنت المنزلي",
-    "cash receipt": "إيصال نقدي",
-    "router installment approval": "إقرار تقسيط الراوتر",
-    "landline internet fine contract": "عقد غرامة إنترنت أرضي",
-    "ntra fore new landlaien": "نموذج تنظيم الاتصالات - أرضي جديد",
-    "ntra fore old landlaien": "نموذج تنظيم الاتصالات - أرضي قديم",
-    "personal data modification form": "نموذج تعديل بيانات شخصية",
-    "request to transfer adsl phone number": "طلب نقل رقم الإنترنت المنزلي",
-    "request to transfer adsl service from another provider": "طلب تحويل الإنترنت من مشغل آخر",
-    "guide 140": "دليل 140",
-    "home personal number service subscription form": "نموذج اشتراك خدمة الرقم الشخصي المنزلي",
-    "request for a new landline": "طلب خط أرضي جديد",
-    "request for transfer of landline telephone line": "طلب نقل خط تليفون أرضي",
-    "request to cancel a landline telephone service": "طلب إلغاء خدمة التليفون الأرضي",
-    "request to pay phone bills in installments": "طلب تقسيط فواتير التليفون",
-    "request to subscribe to additional mobile packages": "طلب اشتراك باقات موبايل إضافية",
-    "request to transfer landline telephone": "طلب نقل تليفون أرضي",
-    "requesting added features and services": "طلب خدمات ومميزات إضافية",
-    "added a new landline for an existing we gold customer": "إضافة أرضي لعميل وي جولد حالي",
-    "approval of temporary suspension of the billing line": "إقرار تعليق مؤقت لخط الفاتورة",
-    "cancel mnp": "إلغاء طلب تحويل الرقم",
-    "contract for providing promotional call services for individual lines": "عقد خدمات ترويجية للأفراد",
-    "declaration of 12 months": "إقرار 12 شهر",
-    "diplomatic pledge and declaration": "تعهد وإقرار دبلوماسي",
-    "e sim": "شريحة إلكترونية",
-    "more than one line form for the customer": "نموذج أكثر من خط للعميل",
-    "ownership transfer form": "نموذج نقل ملكية",
-    "parental approval": "موافقة ولي الأمر",
-    "request to add a new landline for a new we gold customer": "طلب أرضي جديد لعميل وي جولد جديد",
-    "request to add an existing landline for a new we gold customer": "إضافة أرضي حالي لعميل وي جولد جديد",
-    "request to cancel a prepaid sim card": "إلغاء شريحة كارت مدفوع مقدماً",
-    "request to cancel wallet": "طلب إغلاق محفظة إلكترونية",
-    "request to cancel we gold line": "طلب إلغاء خط وي جولد",
-    "request to transfer ownership of student data sim card": "نقل ملكية شريحة بيانات طلاب",
-    "sim swap": "استبدال شريحة"
+  "mobile": "موبايل",
+  "sim card": "شريحة",
+  "mnp": "تحويل رقم",
+  "adsl": "إنترنت منزلي",
+  "form": "نموذج",
+  "service": "خدمة",
+  "complaint": "شكوى",
+  "customer": "عميل",
+  "request": "طلب",
+  "cancel": "إلغاء",
+  "subscription": "اشتراك",
+  "transfer": "نقل",
+  "ownership": "ملكية",
+  "sim swap": "استبدال شريحة",
+  "fixed": "الخط الأرضي",
+  "cancellation Adsl": "إلغاء الإنترنت المنزلي",
+  "Cash receipt": "إيصال نقدي",
+  "Router installment approval": "إقرار تقسيط الراوتر",
+  "Landline internet fine contract": "عقد غرامة الإنترنت الأرضي",
+  "NTRA_FORE-NEW-LANDLAIEN": "الجهاز القومي لتنظيم الاتصالات - أرضي جديد",
+  "NTRA_FORE-OLD-LANDLAIEN": "الجهاز القومي لتنظيم الاتصالات - أرضي قديم",
+  "Personal data modification form": "نموذج تعديل البيانات الشخصية",
+  "Request to transfer ADSL phone number": "طلب نقل رقم الإنترنت المنزلي",
+  "Request to transfer ADSL service from another provider": "طلب نقل خدمة الإنترنت المنزلي من مشغل آخر",
+  "Guide 140": "دليل 140",
+  "Home Personal Number Service Subscription Form": "نموذج اشتراك خدمة الرقم الشخصي المنزلي",
+  "Request for a new landline": "طلب خط أرضي جديد",
+  "Request for transfer of landline telephone line": "طلب تحويل خط تليفون أرضي",
+  "Request to cancel a landline telephone service": "طلب إلغاء خدمة التليفون الأرضي",
+  "Request to pay phone bills in installments": "طلب تقسيط فواتير التليفون",
+  "Request to subscribe to additional mobile packages": "طلب اشتراك في باقات موبايل إضافية",
+  "Request to transfer landline telephone": "طلب نقل تليفون أرضي",
+  "Requesting added features and services": "طلب ميزات وخدمات مضافة",
+  "Added a new landline for an existing We Gold customer": "إضافة خط أرضي جديد لعميل وي جولد حالي",
+  "Approval of temporary suspension of the billing line": "إقرار تعليق مؤقت لخط الفاتورة",
+  "Cancel mnp": "إلغاء تحويل الرقم",
+  "Contract for providing promotional call services for individual lines": "عقد تقديم خدمات مكالمات ترويجية لخطوط الأفراد",
+  "Declaration of 12 months": "إقرار 12 شهر",
+  "Diplomatic pledge and declaration": "تعهد وإقرار دبلوماسي",
+  "E-Sim": "شريحة إلكترونية",
+  "Mnp": "تحويل الرقم",
+  "More than one line form for the customer": "نموذج أكثر من خط للعميل",
+  "Ownership transfer form": "نموذج نقل الملكية",
+  "Parental approval": "موافقة ولي الأمر",
+  "Request to add a new landline for a new We Gold customer": "طلب إضافة خط أرضي جديد لعميل وي جولد جديد",
+  "Request to add an existing landline for a new WE Gold customer": "طلب إضافة خط أرضي حالي لعميل وي جولد جديد",
+  "Request to cancel a prepaid SIM card": "طلب إلغاء شريحة مسبقة الدفع",
+  "Request to cancel wallet": "طلب إلغاء المحفظة الإلكترونية",
+  "Request to cancel We Gold line": "طلب إلغاء خط وي جولد",
+  "Request to transfer ownership of student data SIM card": "طلب نقل ملكية شريحة بيانات الطلاب",
+  "Sim Swap": "استبدال شريحة"
 };
+// جلب التوكن من الكوكيز
+function getAuthToken() {
+  const value = `; ${document.cookie}`;
+  const parts = value.split(`; sb-access-token=`);
+  if (parts.length === 2) return parts.pop().split(";").shift().replace(/"/g, "");
+  return null;
+}
 
-// باقي الكود (إدارة الكاش، الترجمة، Supabase، والتشغيل) بنفس المنطق السابق
-let translationCache = JSON.parse(localStorage.getItem("translationCache")) || {};
+// نظام التخزين المؤقت للترجمة لتسريع الأداء
+let translationCache = JSON.parse(localStorage.getItem("translationCache") || "{}");
 function saveCache() { localStorage.setItem("translationCache", JSON.stringify(translationCache)); }
-function cleanAndPrepareText(text) { if (!text) return ""; return text.replace(/\.pdf$/i, "").replace(/[-_]/g, " ").replace(/([a-z])([A-Z])/g, "$1 $2").replace(/\s+/g, " ").trim(); }
 
-function smartTranslateFromDict(text) {
-    const cleanText = cleanAndPrepareText(text).toLowerCase();
-    if (customDictionary[cleanText]) return customDictionary[cleanText];
-    const words = cleanText.split(/\s+/);
-    return words.map(word => customDictionary[word] || word).join(" ");
-}
-
-function postProcessTranslation(translated) {
-    if (!translated) return "";
-    let res = translated.replace(/\s+/g, " ").trim();
-    res = res.replace(/ال\s+ال/g, "ال");
-    const needsAL = ["خدمة", "نموذج", "طلب", "استمارة", "شكوى"];
-    if (needsAL.includes(res)) res = "ال" + res;
-    return res;
-}
-
+// دالة الترجمة الذكية
 async function translateOne(text) {
-    if (!text) return "";
-    if (translationCache[text]) return translationCache[text];
-    const cleaned = cleanAndPrepareText(text);
-    try {
-        const dictResult = smartTranslateFromDict(cleaned);
-        if (dictResult !== cleaned.toLowerCase()) {
-            const final = postProcessTranslation(dictResult);
-            translationCache[text] = final;
-            saveCache();
-            return final;
-        }
-        const url = `${TRANSLATE_API}?q=${encodeURIComponent(cleaned)}&langpair=en|ar`;
-        const res = await fetch(url);
-        const data = await res.json();
-        let translated = postProcessTranslation(data?.responseData?.translatedText || cleaned);
-        translationCache[text] = translated;
-        saveCache();
-        return translated;
-    } catch (e) { return cleaned; }
+  const cleaned = text.replace(/\.pdf$/i, "").replace(/[-_]/g, " ").trim();
+  if (translationCache[cleaned.toLowerCase()]) return translationCache[cleaned.toLowerCase()];
+
+  const dictMatch = customDictionary[cleaned.toLowerCase()];
+  if (dictMatch) {
+    translationCache[cleaned.toLowerCase()] = dictMatch;
+    saveCache();
+    return dictMatch;
+  }
+
+  try {
+    const res = await fetch(`${TRANSLATE_API}?q=${encodeURIComponent(cleaned)}&langpair=en|ar`);
+    const data = await res.json();
+    const translated = data?.responseData?.translatedText || cleaned;
+    translationCache[cleaned.toLowerCase()] = translated;
+    saveCache();
+    return translated;
+  } catch { return cleaned; }
 }
 
-function bucketApiUrl() { return `${SUPABASE_URL}/storage/v1/object/list/${encodeURIComponent(BUCKET_NAME)}`; }
-function publicUrl(p, f) { return `${SUPABASE_URL}/storage/v1/object/public/${encodeURIComponent(BUCKET_NAME)}/${p ? p + "/" : ""}${f}`; }
-const HEADERS = { "Content-Type": "application/json", "Authorization": `Bearer ${SUPABASE_ANON}`, "apikey": SUPABASE_ANON };
+// الدالة الرئيسية لجلب الملفات من المجلدات
+async function fetchAllPdfs() {
+  const token = getAuthToken() || SUPABASE_ANON;
+  const results = [];
 
-async function listFiles(prefix = "") {
-    try {
-        const res = await fetch(bucketApiUrl(), { method: "POST", headers: HEADERS, body: JSON.stringify({ prefix: prefix ? prefix + "/" : "", limit: 500 }) });
-        const data = await res.json();
-        return data.filter(f => f.name && f.name.toLowerCase().endsWith(".pdf"));
-    } catch (err) { return []; }
-}
+  try {
+    const res = await fetch(
+      `${SUPABASE_URL}/storage/v1/object/list/${encodeURIComponent(BUCKET_NAME)}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`,
+          "apikey": SUPABASE_ANON
+        },
+        body: JSON.stringify({ prefix: "", limit: 100 })
+      }
+    );
 
-async function listFolders() {
-    try {
-        const res = await fetch(bucketApiUrl(), { method: "POST", headers: HEADERS, body: JSON.stringify({ prefix: "", limit: 100 }) });
-        const data = await res.json();
-        return data.filter(f => f.id === null && !f.name.includes(".")).map(f => f.name);
-    } catch { return []; }
-}
+    if (!res.ok) throw new Error(`HTTP Error: ${res.status}`);
+    const data = await res.json();
 
-function detectCategory(name) {
-    const n = (name || "").toLowerCase();
-    if (n.includes("mobile") || n.includes("sim") || n.includes("mnp")) return "Mobile";
-    if (n.includes("land") || n.includes("fixed") || n.includes("ardy")) return "Landline";
-    if (n.includes("adsl") || n.includes("internet") || n.includes("dsl")) return "Adsl";
-    return "all";
-}
+    const folders   = data.filter(item => !item.id && !item.name.includes("."));
+    const rootFiles = data.filter(item => item.name.toLowerCase().endsWith(".pdf"));
 
-function renderCards(forms) {
-    const container = document.getElementById("formsContainer");
-    if (!container) return;
-    container.innerHTML = forms.map(form => `
-        <div class="form-card" data-category="${form.category}">
-            <div class="form-header"><i class="fas fa-file-pdf form-icon"></i><h3>${form.title}</h3></div>
-            <p class="form-size">${form.size || ""}</p>
-            <a class="download-btn" href="viewpdf.html?src=${encodeURIComponent(form.link)}"><i class="fas fa-eye"></i> عرض النموذج</a>
-        </div>`).join("");
-}
-
-async function init() {
-    const container = document.getElementById("formsContainer");
-    if (container) container.innerHTML = "<div class='loader'>جاري تحميل البيانات...</div>";
-    const rawForms = [];
-    const folders = await listFolders();
-    const tasks = [...folders, ""].map(async (folder) => {
-        const files = await listFiles(folder);
-        files.forEach(f => rawForms.push({ filename: f.name, category: detectCategory(folder || f.name), size: f.metadata ? (f.metadata.size / 1024).toFixed(1) + " KB" : "", link: publicUrl(folder, f.name) }));
+    rootFiles.forEach(f => {
+      results.push({
+        filename: f.name,
+        fullPath: f.name,
+        category: "عام",
+        size: f.metadata ? (f.metadata.size / 1024).toFixed(1) + " KB" : ""
+      });
     });
-    await Promise.all(tasks);
-    for (let form of rawForms) { form.title = await translateOne(form.filename); }
-    renderCards(rawForms);
+
+    for (const folder of folders) {
+      try {
+        const subRes = await fetch(
+          `${SUPABASE_URL}/storage/v1/object/list/${encodeURIComponent(BUCKET_NAME)}`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "Authorization": `Bearer ${token}`,
+              "apikey": SUPABASE_ANON
+            },
+            body: JSON.stringify({ prefix: folder.name + "/", limit: 100 })
+          }
+        );
+
+        const subData = await subRes.json();
+        if (Array.isArray(subData)) {
+          subData
+            .filter(f => f.name.toLowerCase().endsWith(".pdf"))
+            .forEach(f => {
+              results.push({
+                filename: f.name,
+                fullPath: `${folder.name}/${f.name}`,
+                category: folder.name,
+                size: f.metadata ? (f.metadata.size / 1024).toFixed(1) + " KB" : ""
+              });
+            });
+        }
+      } catch (err) {
+        console.error(`Error fetching folder ${folder.name}:`, err);
+      }
+    }
+  } catch (e) {
+    console.error("General Fetch Error:", e);
+  }
+
+  return results;
 }
 
-window.filterForms = (category) => { document.querySelectorAll(".form-card").forEach(c => c.style.display = (category === "all" || c.dataset.category === category) ? "block" : "none"); };
-window.searchForms = () => {
-    const term = document.getElementById("searchInput")?.value.toLowerCase() || "";
-    document.querySelectorAll(".form-card").forEach(c => c.style.display = c.querySelector("h3").textContent.toLowerCase().includes(term) ? "block" : "none");
+// ── مساعد: تحديد tag الفئة ──
+function catTag(cat) {
+  const map = {
+    "Mobile": { cls: "cat-mobile", icon: "fa-mobile-screen-button", label: "المحمول" },
+    "Fixed":  { cls: "cat-fixed",  icon: "fa-phone",                label: "الأرضي"  },
+    "Adsl":   { cls: "cat-adsl",   icon: "fa-wifi",                 label: "إنترنت"  },
+    "عام":    { cls: "cat-default", icon: "fa-tag",                 label: "عام"     },
+  };
+  const m = map[cat] || { cls: "cat-default", icon: "fa-tag", label: cat || "عام" };
+  return `<span class="cat-tag ${m.cls}">
+    <i class="fa-solid ${m.icon}" style="font-size:10px"></i>${m.label}
+  </span>`;
+}
+
+// ── عرض الكروت بالتصميم الجديد ──
+function renderCards(forms) {
+  const container = document.getElementById("formsContainer");
+  if (!container) return;
+
+  // تحديث عداد الإجمالي لو موجود في الصفحة
+  const statTotal = document.getElementById("stat-total");
+  if (statTotal) statTotal.textContent = forms.length;
+
+  if (!forms.length) {
+    container.innerHTML = `
+      <div class="no-results">
+        <i class="fa-solid fa-folder-open"></i>
+        <p>لا توجد نماذج متاحة حالياً في هذا القسم.</p>
+      </div>`;
+    return;
+  }
+
+  const viewUrl = form =>
+    `viewpdf.html?src=${encodeURIComponent(
+      `${SUPABASE_URL}/storage/v1/object/authenticated/${BUCKET_NAME}/${form.fullPath}`
+    )}`;
+
+  container.innerHTML = forms.map(form => `
+    <div class="form-card" data-category="${form.category}" data-title="${(form.title || '').toLowerCase()}">
+      <div class="form-header">
+        <div class="form-icon-wrap">
+          <i class="fa-solid fa-file-pdf"></i>
+        </div>
+        <div class="form-meta">
+          <h3>${form.title || form.filename}</h3>
+          ${catTag(form.category)}
+        </div>
+      </div>
+      ${form.size ? `<p class="form-desc"><i class="fa-solid fa-hard-drive" style="font-size:11px;margin-left:4px;color:var(--text3)"></i>${form.size}</p>` : ""}
+      <a href="${viewUrl(form)}" class="download-btn">
+        <i class="fa-solid fa-eye"></i> عرض النموذج
+      </a>
+    </div>`).join("");
+}
+
+// ── بدء التشغيل ──
+async function init() {
+  const container = document.getElementById("formsContainer");
+
+  // skeleton أثناء التحميل
+  if (container) {
+    container.innerHTML = `
+      ${[1,2,3].map(() => `
+        <div class="skel-card">
+          <div class="skel-line" style="width:30%;height:42px;border-radius:10px"></div>
+          <div class="skel-line" style="width:88%"></div>
+          <div class="skel-line" style="width:55%"></div>
+          <div class="skel-line" style="width:100%;height:36px;border-radius:9px;margin-top:4px"></div>
+        </div>`).join("")}`;
+  }
+
+  const rawForms = await fetchAllPdfs();
+
+  // ترجمة العناوين
+  for (const form of rawForms) {
+    form.title = await translateOne(form.filename);
+  }
+
+  renderCards(rawForms);
+}
+
+// ── الفلترة والبحث ──
+window.filterForms = (cat, btn) => {
+  // active state للأزرار
+  document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
+  if (btn) btn.classList.add("active");
+
+  const q = (document.getElementById("searchInput")?.value || "").toLowerCase();
+  let visible = 0;
+
+  document.querySelectorAll(".form-card").forEach(c => {
+    const matchCat = cat === "all" || c.dataset.category === cat;
+    const matchQ   = !q || (c.dataset.title || "").includes(q);
+    const show = matchCat && matchQ;
+    c.style.display = show ? "" : "none";
+    if (show) visible++;
+  });
+
+  // تحديث عداد النتائج
+  const fw = document.getElementById("stat-filtered-wrap");
+  const fs = document.getElementById("stat-filtered");
+  if (fw && fs) {
+    if (cat !== "all" || q) {
+      fw.style.display = "flex";
+      fs.textContent = visible;
+    } else {
+      fw.style.display = "none";
+    }
+  }
 };
 
+window.searchForms = () => {
+  // استدعي filterForms مع الفلتر الحالي
+  const activeBtn = document.querySelector(".filter-btn.active");
+  const currentCat = activeBtn?.dataset?.folder || "all";
+  window.filterForms(currentCat, activeBtn);
+};
+
+// تنفيذ الكود
 init();

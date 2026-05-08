@@ -2,139 +2,439 @@
 <html lang="ar" dir="rtl">
 <head>
 <script src="script/auth.js?v=12.0.1"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>All info</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style/info.css">
+  <script src="script/active-users-widget.js"></script>
+  <style>
+    :root {
+      --bg: #f5f3fb;
+      --card: #ffffff;
+      --border: #e8e0f5;
+      --border-bright: #7b3fe4;
+      --purple: #7b3fe4;
+      --purple-light: #9b5ff4;
+      --purple-xlight: #c4a0f8;
+      --text: #1a0a3c;
+      --muted: #7b6a99;
+      --dot-color: rgba(123,63,228,.12);
+    }
 
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>All info</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style/info.css">
-<script src="script/active-users-widget.js"></script>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Tajawal', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* dot pattern */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: radial-gradient(var(--dot-color) 1.5px, transparent 1.5px);
+      background-size: 28px 28px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* top-right glow */
+    body::after {
+      content: '';
+      position: fixed;
+      top: -160px; right: -160px;
+      width: 520px; height: 520px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(123,63,228,.13) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ── HEADER ── */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: linear-gradient(135deg, #7b3fe4 0%, #9b5ff4 100%);
+      box-shadow: 0 4px 24px rgba(123,63,228,.35);
+      padding: 0;
+    }
+
+    header .container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 28px;
+      max-width: 1060px;
+      margin: 0 auto;
+    }
+
+    header h1 {
+      font-size: 22px;
+      font-weight: 900;
+      color: #ffffff;
+      letter-spacing: .5px;
+    }
+
+    .home-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255,255,255,.15);
+      border: 1px solid rgba(255,255,255,.3);
+      color: #ffffff;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 700;
+      padding: 8px 16px;
+      border-radius: 24px;
+      transition: background .2s, transform .2s;
+    }
+
+    .home-link:hover {
+      background: rgba(255,255,255,.25);
+      transform: translateY(-1px);
+    }
+
+    /* wave divider */
+    .header-wave {
+      display: block;
+      width: 100%;
+      height: 32px;
+      background: var(--bg);
+      clip-path: ellipse(55% 100% at 50% 100%);
+      margin-top: -1px;
+    }
+
+    /* ── CONTAINER ── */
+    .container {
+      max-width: 1060px;
+      margin: 0 auto;
+      padding: 0 24px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ── SEARCH ── */
+    .search-container {
+      margin: 36px 0 32px;
+    }
+
+    #search-input {
+      width: 100%;
+      padding: 14px 22px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      font-family: 'Tajawal', sans-serif;
+      font-size: 15px;
+      color: var(--text);
+      outline: none;
+      transition: border-color .2s, box-shadow .2s;
+      box-shadow: 0 2px 12px rgba(123,63,228,.06);
+    }
+
+    #search-input::placeholder { color: var(--muted); }
+
+    #search-input:focus {
+      border-color: var(--border-bright);
+      box-shadow: 0 0 0 3px rgba(123,63,228,.12);
+    }
+
+    /* ── GRID ── */
+    .packages-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 18px;
+      padding-bottom: 60px;
+    }
+
+    /* ── CARD ── */
+    .package-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 26px 22px 22px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      position: relative;
+      overflow: hidden;
+      transition: transform .25s ease, border-color .25s ease, box-shadow .25s ease;
+      animation: fadeUp .45s ease both;
+    }
+
+    .package-card:nth-child(1)  { animation-delay: .03s; }
+    .package-card:nth-child(2)  { animation-delay: .06s; }
+    .package-card:nth-child(3)  { animation-delay: .09s; }
+    .package-card:nth-child(4)  { animation-delay: .12s; }
+    .package-card:nth-child(5)  { animation-delay: .15s; }
+    .package-card:nth-child(6)  { animation-delay: .18s; }
+    .package-card:nth-child(7)  { animation-delay: .21s; }
+    .package-card:nth-child(8)  { animation-delay: .24s; }
+    .package-card:nth-child(9)  { animation-delay: .27s; }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(18px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* top accent bar */
+    .package-card::before {
+      content: '';
+      position: absolute;
+      top: 0; right: 0;
+      width: 100%; height: 3px;
+      background: linear-gradient(90deg, transparent, var(--purple), var(--purple-light));
+    }
+
+    /* glow orb */
+    .package-card::after {
+      content: '';
+      position: absolute;
+      top: -30px; left: -30px;
+      width: 100px; height: 100px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(123,63,228,.07) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .package-card:hover {
+      transform: translateY(-5px);
+      border-color: var(--border-bright);
+      box-shadow: 0 16px 40px rgba(123,63,228,.14);
+    }
+
+    /* icon */
+    .package-icon {
+      width: 52px; height: 52px;
+      background: rgba(123,63,228,.09);
+      border: 1px solid rgba(123,63,228,.2);
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      transition: transform .25s ease, background .25s ease;
+      flex-shrink: 0;
+    }
+
+    .package-card:hover .package-icon {
+      transform: scale(1.1) rotate(-4deg);
+      background: rgba(123,63,228,.16);
+    }
+
+    /* content */
+    .package-content {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      flex: 1;
+    }
+
+    .package-title {
+      font-size: 17px;
+      font-weight: 800;
+      color: var(--text);
+      line-height: 1.3;
+    }
+
+    .package-desc {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.7;
+      flex: 1;
+    }
+
+    .package-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 6px;
+      align-self: flex-start;
+      background: rgba(123,63,228,.09);
+      border: 1px solid rgba(123,63,228,.25);
+      color: var(--purple);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 700;
+      padding: 8px 18px;
+      border-radius: 24px;
+      transition: background .2s, border-color .2s, transform .2s;
+    }
+
+    .package-link::after {
+      content: '←';
+      font-size: 13px;
+      transition: transform .2s;
+    }
+
+    .package-link:hover {
+      background: rgba(123,63,228,.16);
+      border-color: var(--border-bright);
+      transform: translateY(-1px);
+    }
+
+    .package-link:hover::after { transform: translateX(-3px); }
+
+    /* no results */
+    .no-results {
+      display: none;
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 48px 0;
+      color: var(--muted);
+      font-size: 16px;
+      font-weight: 700;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--card);
+      border-top: 1px solid var(--border);
+      position: relative;
+      z-index: 1;
+    }
+
+    footer .container {
+      padding: 20px 24px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 500;
+    }
+
+    footer .container p span {
+      color: var(--purple);
+      font-weight: 800;
+    }
+  </style>
 </head>
 <body>
-    <header>
-        <div class="container">
-            <a href="index.html" class="home-link">الصفحة الرئيسية 🏠</a>
-            <h1>All info</h1>
-        </div>
-    </header>
 
+  <header>
     <div class="container">
-        <div class="search-container">
-            <input type="text" id="search-input" placeholder="ابحث عن الباقة المطلوبة..." aria-label="بحث عن الباقات">
-        </div>
+      <a href="https://we-core.icu/index.html" class="home-link">🏠 الصفحة الرئيسية</a>
+      <h1>All info</h1>
+    </div>
+  </header>
+  <span class="header-wave"></span>
 
-        <div class="packages-grid">
-            <!-- WE Mix -->
-            <div class="package-card" data-name="we mix">
-                <div class="package-icon">🔄</div>
-                <div class="package-content">
-                    <h3 class="package-title">WE Mix</h3>
-                    <p class="package-desc">نظام يجمع بين باقات الموبايل والإنترنت المنزلي في باقة واحدة مع مشاركة الموارد.</p>
-                    <a href="info/we mix.html"class="package-link">عرض التفاصيل</a>
-                </div>
-            </div>
-
-            <!-- Super Kix -->
-            <div class="package-card" data-name="super kix">
-                <div class="package-icon">✨</div>
-                <div class="package-content">
-                    <h3 class="package-title">Super Kix</h3>
-                    <p class="package-desc">باقات مسبقة الدفع مع وحدات متعددة الاستخدامات ومكافآت على التجديد المتتالي.</p>
-                    <a href="info/super kix.html" class="package-link">عرض التفاصيل</a>
-                </div>
-            </div>
-
-            <!-- Nitro -->
-            <div class="package-card" data-name="nitro">
-                <div class="package-icon">⚡</div>
-                <div class="package-content">
-                    <h3 class="package-title">Nitro</h3>
-                    <p class="package-desc">باقات إنترنت سريع للموبايل مع خصومات على استخدام الألعاب ومواقع الفيديو.</p>
-                    <a href="info/nitro.html" class="package-link">عرض التفاصيل</a>
-                </div>
-            </div>
-
-            <!-- WE Club -->
-            <div class="package-card" data-name="we club">
-                <div class="package-icon">👥</div>
-                <div class="package-content">
-                    <h3 class="package-title">WE Club</h3>
-                    <p class="package-desc">باقات مخصصة لأعضاء النوادي والجامعات مع مزايا جماعية ودقائق مجانية داخل النادي.</p>
-                    <a href="info/we club.html" class="package-link">عرض التفاصيل</a>
-                </div>
-            </div>
-
-            <!-- 12 قرش -->
-            <div class="package-card" data-name="12 قرش">
-                <div class="package-icon">💰</div>
-                <div class="package-content">
-                    <h3 class="package-title">نظام 12 قرش</h3>
-                    <p class="package-desc">نظام التعريفة الموحدة بسعر 12 قرش للدقيقة والرسالة والميجابايت لجميع الشبكات.</p>
-                    <a href="info/pt.html" class="package-link">عرض التفاصيل</a>
-                </div>
-            </div>
-
-            <!-- Egypt Mobile -->
-            <div class="package-card" data-name="egypt mobile">
-                <div class="package-icon">🌍</div>
-                <div class="package-content">
-                    <h3 class="package-title">Egypt Mobile</h3>
-                    <p class="package-desc">باقات مخصصة للسياح الزائرين لمصر تشمل دقائق محلية ودولية وإنترنت.</p>
-                    <a href="info/alo Egypt.html" class="package-link">عرض التفاصيل</a>
-                </div>
-            </div>
-
-            <!-- تكافل وكرامة -->
-            <div class="package-card" data-name="تكافل وكرامة">
-                <div class="package-icon">🤝</div>
-                <div class="package-content">
-                    <h3 class="package-title">تكافل وكرامة</h3>
-                    <p class="package-desc">باقات مخفضة للمستحقين من برنامج تكافل وكرامة مع مميزات خاصة.</p>
-                    <a href="info/تكافل و كرامه .html" class="package-link">عرض التفاصيل</a>
-                </div>
-            </div>
-
-            <!-- Tazbeet -->
-            <div class="package-card" data-name="tazbeet">
-                <div class="package-icon">🧩</div>
-                <div class="package-content">
-                    <h3 class="package-title">New Control Tazbeet</h3>
-                    <p class="package-desc">نظام مرن يسمح باختيار باقات متنوعة للدقائق والإنترنت مع إمكانية ترحيل الوحدات.</p>
-                    <a href="info/tazbeet.html" class="package-link">عرض التفاصيل</a>
-                </div>
-            </div>
-            
-            <!-- زوي الاحتياجات الخاصه -->
-            <div class="package-card" data-name="زوي الاحتياجات الخاصه">
-                <div class="package-icon">♿</div>
-                <div class="package-content">
-                    <h3 class="package-title">زوي الاحتياجات الخاصه</h3>
-                    <p class="package-desc">عروض خاصه لي زوي الهمم</p>
-                    <a href="info/عرض ذوي الاحتياجات الخاصة.html" class="package-link">عرض التفاصيل</a>
-                </div>
-            </div>
-
-            <div class="no-results">
-                <p>دور عدل ي 🙄🤬</p>
-            </div>
-        </div>
+  <div class="container">
+    <div class="search-container">
+      <input type="text" id="search-input" placeholder="🔍  ابحث عن الباقة المطلوبة..." aria-label="بحث عن الباقات">
     </div>
 
-    <footer>
-        <div class="container">
-            <p>| Powered by Mohand</p>
-        </div>
-    </footer>
-    <script src="scirpt/info.js"></script>
+    <div class="packages-grid">
 
-<script>
-  window.addEventListener('load', function() {
-    if (typeof ActiveUsersWidget !== 'undefined') {
-      ActiveUsersWidget.init({ position: 'corner' });
-    }
-  });
-</script>
+      <div class="package-card" data-name="we mix">
+        <div class="package-icon">🔄</div>
+        <div class="package-content">
+          <h3 class="package-title">WE Mix</h3>
+          <p class="package-desc">نظام يجمع بين باقات الموبايل والإنترنت المنزلي في باقة واحدة مع مشاركة الموارد.</p>
+          <a href="info/we mix.html" class="package-link">عرض التفاصيل</a>
+        </div>
+      </div>
+
+      <div class="package-card" data-name="super kix">
+        <div class="package-icon">✨</div>
+        <div class="package-content">
+          <h3 class="package-title">Super Kix</h3>
+          <p class="package-desc">باقات مسبقة الدفع مع وحدات متعددة الاستخدامات ومكافآت على التجديد المتتالي.</p>
+          <a href="info/super kix.html" class="package-link">عرض التفاصيل</a>
+        </div>
+      </div>
+
+      <div class="package-card" data-name="nitro">
+        <div class="package-icon">⚡</div>
+        <div class="package-content">
+          <h3 class="package-title">Nitro</h3>
+          <p class="package-desc">باقات إنترنت سريع للموبايل مع خصومات على استخدام الألعاب ومواقع الفيديو.</p>
+          <a href="info/nitro.html" class="package-link">عرض التفاصيل</a>
+        </div>
+      </div>
+
+      <div class="package-card" data-name="we club">
+        <div class="package-icon">👥</div>
+        <div class="package-content">
+          <h3 class="package-title">WE Club</h3>
+          <p class="package-desc">باقات مخصصة لأعضاء النوادي والجامعات مع مزايا جماعية ودقائق مجانية داخل النادي.</p>
+          <a href="info/we club.html" class="package-link">عرض التفاصيل</a>
+        </div>
+      </div>
+
+      <div class="package-card" data-name="12 قرش">
+        <div class="package-icon">💰</div>
+        <div class="package-content">
+          <h3 class="package-title">نظام 12 قرش</h3>
+          <p class="package-desc">نظام التعريفة الموحدة بسعر 12 قرش للدقيقة والرسالة والميجابايت لجميع الشبكات.</p>
+          <a href="info/pt.html" class="package-link">عرض التفاصيل</a>
+        </div>
+      </div>
+
+      <div class="package-card" data-name="egypt mobile">
+        <div class="package-icon">🌍</div>
+        <div class="package-content">
+          <h3 class="package-title">Egypt Mobile</h3>
+          <p class="package-desc">باقات مخصصة للسياح الزائرين لمصر تشمل دقائق محلية ودولية وإنترنت.</p>
+          <a href="info/alo Egypt.html" class="package-link">عرض التفاصيل</a>
+        </div>
+      </div>
+
+      <div class="package-card" data-name="تكافل وكرامة">
+        <div class="package-icon">🤝</div>
+        <div class="package-content">
+          <h3 class="package-title">تكافل وكرامة</h3>
+          <p class="package-desc">باقات مخفضة للمستحقين من برنامج تكافل وكرامة مع مميزات خاصة.</p>
+          <a href="info/تكافل و كرامه .html" class="package-link">عرض التفاصيل</a>
+        </div>
+      </div>
+
+      <div class="package-card" data-name="tazbeet">
+        <div class="package-icon">🧩</div>
+        <div class="package-content">
+          <h3 class="package-title">New Control Tazbeet</h3>
+          <p class="package-desc">نظام مرن يسمح باختيار باقات متنوعة للدقائق والإنترنت مع إمكانية ترحيل الوحدات.</p>
+          <a href="info/tazbeet.html" class="package-link">عرض التفاصيل</a>
+        </div>
+      </div>
+
+      <div class="package-card" data-name="زوي الاحتياجات الخاصه">
+        <div class="package-icon">♿</div>
+        <div class="package-content">
+          <h3 class="package-title">ذوي الاحتياجات الخاصة</h3>
+          <p class="package-desc">عروض خاصة لذوي الهمم.</p>
+          <a href="info/عرض ذوي الاحتياجات الخاصة.html" class="package-link">عرض التفاصيل</a>
+        </div>
+      </div>
+
+      <div class="no-results">
+        <p>دور عدل ي 🙄🤬</p>
+      </div>
+
+    </div>
+  </div>
+
+  <footer>
+    <div class="container">
+      <p>Powered by <span>Mohand</span></p>
+    </div>
+  </footer>
+
+  <script src="scirpt/info.js"></script>
+  <script>
+    window.addEventListener('load', function() {
+      if (typeof ActiveUsersWidget !== 'undefined') {
+        ActiveUsersWidget.init({ position: 'corner' });
+      }
+    });
+  </script>
 </body>
 </html>
