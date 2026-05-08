@@ -2,10 +2,12 @@
  * WE-Core Authentication Guard (V15 - Cookies Only Version)
  */
 
+ 
 (async function() {
     const SB_URL = 'https://iygwhapcpdmsasqlfelv.supabase.co';
     const SB_KEY = 'sb_publishable_rD9naqrpu1dI-iwchAS0GQ_JkgGysqP';
     
+     
     const path = window.location.pathname;
     const isLoginPage = path.includes('login.html') || path.endsWith('.icu/');
 
@@ -58,7 +60,8 @@
                 detectSessionInUrl: false
             } 
         });
-        
+         
+    
         // التحقق من التوكن المستخرج من الكوكيز
         const { data: { user }, error } = await sb.auth.getUser(savedToken);
 
