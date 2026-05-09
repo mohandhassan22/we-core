@@ -624,23 +624,43 @@ footer span{color:var(--p2);font-weight:700;}
     if(typeof ActiveUsersWidget !== 'undefined') ActiveUsersWidget.init({position:'corner'});
   });
 
-  /* ── Welcome Banner – reads window._sbClient & window._sbUser set by auth.js ── */
+  /* ── Welcome Banner – reads window._sbUser + token cookie, calls REST directly ── */
+  const SB_URL = 'https://iygwhapcpdmsasqlfelv.supabase.co';
+  const SB_KEY = 'sb_publishable_rD9naqrpu1dI-iwchAS0GQ_JkgGysqP';
+
+  function getCookieVal(name) {
+    const v = `; ${document.cookie}`;
+    const p = v.split(`; ${name}=`);
+    if (p.length === 2) return p.pop().split(';').shift();
+    return null;
+  }
+
   async function loadUserProfile() {
     $('welcomeSkeleton').style.display = 'block';
     try {
-      const sb   = window._sbClient;
-      const user = window._sbUser;
-      if (!sb || !user) { $('welcomeSkeleton').style.display = 'none'; return; }
+      const user  = window._sbUser;
+      const token = getCookieVal('sb-access-token');
+      if (!user || !token) { $('welcomeSkeleton').style.display = 'none'; return; }
 
-      // جيب بيانات البروفايل من جدول profiles
-      const { data: profile, error } = await sb
-        .from('profiles')
-        .select('name, title')
-        .eq('id', user.id)
-        .single();
+      // استدعاء REST مباشر مع Authorization header عشان يتجاوز RLS
+      const res = await fetch(
+        `${SB_URL}/rest/v1/profiles?select=name,title&id=eq.${user.id}&limit=1`,
+        {
+          headers: {
+            'apikey':        SB_KEY,
+            'Authorization': `Bearer ${token}`,
+            'Accept':        'application/json'
+          }
+        }
+      );
 
       $('welcomeSkeleton').style.display = 'none';
-      if (error || !profile) return;
+
+      if (!res.ok) { console.warn('WE-Core: profiles', res.status, await res.text()); return; }
+
+      const rows    = await res.json();
+      const profile = rows[0] || null;
+      if (!profile) return;
 
       // اعرض الاسم والمسمى الوظيفي
       $('welcomeName').textContent     = profile.name  || user.email || 'زميلنا';
@@ -656,7 +676,7 @@ footer span{color:var(--p2);font-weight:700;}
     }
   }
 
-  // auth.js بيبعت authSuccess بعد ما يتحقق من اليوزر ويحفظ _sbClient و _sbUser
+  // auth.js بيبعت authSuccess بعد ما يتحقق من اليوزر ويحفظ _sbUser
   window.addEventListener('authSuccess', loadUserProfile);
 </script>
 </body>
