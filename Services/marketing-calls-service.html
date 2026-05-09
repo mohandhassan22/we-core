@@ -1,0 +1,1791 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>خدمة المكالمات التسويقية</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&family=Tajawal:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --purple-dark: #4a1080;
+    --purple-main: #6b21a8;
+    --purple-mid: #7c3aed;
+    --purple-light: #a855f7;
+    --purple-pale: #e9d5ff;
+    --purple-ghost: #f5f0ff;
+    --white: #ffffff;
+    --gray-100: #f8f9fa;
+    --gray-200: #e9ecef;
+    --gray-600: #6c757d;
+    --gray-800: #343a40;
+    --gold: #f59e0b;
+    --shadow-sm: 0 2px 8px rgba(107,33,168,0.08);
+    --shadow-md: 0 8px 32px rgba(107,33,168,0.15);
+    --shadow-lg: 0 20px 60px rgba(107,33,168,0.2);
+    --radius: 16px;
+    --radius-sm: 8px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Cairo', sans-serif;
+    background: var(--white);
+    color: var(--gray-800);
+    overflow-x: hidden;
+  }
+
+  /* HEADER */
+  header {
+    background: linear-gradient(135deg, var(--purple-dark) 0%, var(--purple-main) 50%, var(--purple-mid) 100%);
+    position: relative;
+    overflow: hidden;
+    padding: 0;
+  }
+
+  header::before {
+    content: '';
+    position: absolute;
+    top: -80px; right: -80px;
+    width: 400px; height: 400px;
+    background: radial-gradient(circle, rgba(168,85,247,0.3) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+
+  header::after {
+    content: '';
+    position: absolute;
+    bottom: -60px; left: -60px;
+    width: 300px; height: 300px;
+    background: radial-gradient(circle, rgba(255,255,255,0.07) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+
+  nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 60px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    position: relative; z-index: 10;
+  }
+
+  .nav-logo {
+    font-family: 'Tajawal', sans-serif;
+    font-size: 1.6rem;
+    font-weight: 900;
+    color: var(--white);
+    letter-spacing: -0.5px;
+  }
+
+  .nav-logo span {
+    color: var(--purple-pale);
+    font-weight: 300;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 32px;
+    list-style: none;
+  }
+
+  .nav-links a {
+    color: rgba(255,255,255,0.8);
+    text-decoration: none;
+    font-size: 0.95rem;
+    font-weight: 500;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover { color: var(--white); }
+
+  .hero {
+    padding: 80px 60px 100px;
+    position: relative; z-index: 10;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: center;
+  }
+
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 50px;
+    padding: 6px 16px;
+    font-size: 0.82rem;
+    color: var(--purple-pale);
+    margin-bottom: 20px;
+    backdrop-filter: blur(10px);
+  }
+
+  .hero-badge::before {
+    content: '●';
+    color: #4ade80;
+    font-size: 0.6rem;
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+
+  .hero h1 {
+    font-family: 'Tajawal', sans-serif;
+    font-size: 3.2rem;
+    font-weight: 900;
+    color: var(--white);
+    line-height: 1.2;
+    margin-bottom: 20px;
+  }
+
+  .hero h1 em {
+    font-style: normal;
+    color: var(--purple-pale);
+    position: relative;
+  }
+
+  .hero p {
+    font-size: 1.05rem;
+    color: rgba(255,255,255,0.75);
+    line-height: 1.9;
+    margin-bottom: 36px;
+  }
+
+  .hero-btns {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .btn-primary {
+    background: var(--white);
+    color: var(--purple-dark);
+    padding: 14px 32px;
+    border-radius: 50px;
+    font-size: 0.95rem;
+    font-weight: 700;
+    font-family: 'Cairo', sans-serif;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+  }
+
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+  }
+
+  .btn-outline {
+    background: transparent;
+    color: var(--white);
+    padding: 14px 32px;
+    border-radius: 50px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    font-family: 'Cairo', sans-serif;
+    border: 2px solid rgba(255,255,255,0.4);
+    cursor: pointer;
+    transition: all 0.3s;
+    text-decoration: none;
+  }
+
+  .btn-outline:hover {
+    background: rgba(255,255,255,0.1);
+    border-color: var(--white);
+  }
+
+  .hero-visual {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .stat-cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  .stat-card {
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: var(--radius);
+    padding: 24px;
+    backdrop-filter: blur(10px);
+    transition: transform 0.3s;
+  }
+
+  .stat-card:hover { transform: translateY(-4px); }
+
+  .stat-card .icon {
+    font-size: 2rem;
+    margin-bottom: 12px;
+  }
+
+  .stat-card .value {
+    font-family: 'Tajawal', sans-serif;
+    font-size: 1.8rem;
+    font-weight: 900;
+    color: var(--white);
+    margin-bottom: 4px;
+  }
+
+  .stat-card .label {
+    font-size: 0.82rem;
+    color: rgba(255,255,255,0.65);
+  }
+
+  /* WAVE DIVIDER */
+  .wave {
+    display: block;
+    width: 100%;
+    overflow: hidden;
+    line-height: 0;
+  }
+
+  .wave svg { display: block; }
+
+  /* MAIN CONTENT */
+  main { background: var(--white); }
+
+  section { padding: 80px 60px; }
+
+  .section-label {
+    display: inline-block;
+    background: var(--purple-ghost);
+    color: var(--purple-main);
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    padding: 6px 14px;
+    border-radius: 50px;
+    margin-bottom: 16px;
+  }
+
+  .section-title {
+    font-family: 'Tajawal', sans-serif;
+    font-size: 2.2rem;
+    font-weight: 900;
+    color: var(--purple-dark);
+    margin-bottom: 16px;
+    line-height: 1.3;
+  }
+
+  .section-desc {
+    font-size: 1rem;
+    color: var(--gray-600);
+    line-height: 1.9;
+    max-width: 600px;
+  }
+
+  /* DEFINITION SECTION */
+  .definition-section {
+    background: var(--white);
+  }
+
+  .definition-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: start;
+    margin-top: 48px;
+  }
+
+  .definition-content h3 {
+    font-family: 'Tajawal', sans-serif;
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--purple-dark);
+    margin-bottom: 12px;
+  }
+
+  .definition-content p {
+    color: var(--gray-600);
+    line-height: 1.9;
+    margin-bottom: 20px;
+    font-size: 0.97rem;
+  }
+
+  .service-names {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 20px;
+  }
+
+  .service-name-tag {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 18px;
+    background: var(--purple-ghost);
+    border-radius: var(--radius-sm);
+    border-right: 4px solid var(--purple-main);
+  }
+
+  .service-name-tag .tag-icon {
+    width: 32px;
+    height: 32px;
+    background: var(--purple-main);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 0.85rem;
+    flex-shrink: 0;
+  }
+
+  .service-name-tag span {
+    font-weight: 600;
+    color: var(--purple-dark);
+    font-size: 0.95rem;
+  }
+
+  /* PRICING CARD */
+  .pricing-highlight {
+    background: linear-gradient(135deg, var(--purple-main), var(--purple-dark));
+    border-radius: var(--radius);
+    padding: 40px;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .pricing-highlight h3 {
+    font-family: 'Tajawal', sans-serif;
+    font-size: 1.4rem;
+    font-weight: 900;
+  }
+
+  .price-badge {
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.25);
+    border-radius: var(--radius);
+    padding: 24px;
+    text-align: center;
+  }
+
+  .price-badge .price {
+    font-family: 'Tajawal', sans-serif;
+    font-size: 3rem;
+    font-weight: 900;
+    color: #4ade80;
+    display: block;
+  }
+
+  .price-badge .price-label {
+    font-size: 0.9rem;
+    opacity: 0.8;
+    margin-top: 4px;
+  }
+
+  .pricing-features {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .pricing-features li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.92rem;
+    opacity: 0.9;
+  }
+
+  .pricing-features li::before {
+    content: '✓';
+    background: rgba(74,222,128,0.2);
+    color: #4ade80;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    flex-shrink: 0;
+  }
+
+  /* TABS SECTION */
+  .tabs-section {
+    background: var(--gray-100);
+  }
+
+  .tabs-header {
+    display: flex;
+    gap: 0;
+    border-radius: var(--radius);
+    background: var(--purple-ghost);
+    padding: 6px;
+    margin: 48px 0 32px;
+    width: fit-content;
+  }
+
+  .tab-btn {
+    padding: 12px 32px;
+    border: none;
+    background: transparent;
+    font-family: 'Cairo', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--purple-main);
+    cursor: pointer;
+    border-radius: 10px;
+    transition: all 0.3s;
+  }
+
+  .tab-btn.active {
+    background: var(--purple-main);
+    color: white;
+    box-shadow: 0 4px 14px rgba(107,33,168,0.3);
+  }
+
+  .tab-content { display: none; }
+  .tab-content.active { display: block; animation: fadeIn 0.3s ease; }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* SUBSCRIPTION STEPS */
+  .steps-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    margin-top: 16px;
+  }
+
+  .step-card {
+    background: white;
+    border-radius: var(--radius);
+    padding: 32px 24px;
+    text-align: center;
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--purple-ghost);
+    position: relative;
+    transition: all 0.3s;
+  }
+
+  .step-card:hover {
+    box-shadow: var(--shadow-md);
+    transform: translateY(-4px);
+  }
+
+  .step-number {
+    position: absolute;
+    top: -14px;
+    right: 24px;
+    width: 28px; height: 28px;
+    background: var(--purple-main);
+    color: white;
+    border-radius: 50%;
+    font-size: 0.8rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .step-icon {
+    width: 64px; height: 64px;
+    background: var(--purple-ghost);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    margin: 0 auto 16px;
+  }
+
+  .step-card h4 {
+    font-family: 'Tajawal', sans-serif;
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--purple-dark);
+    margin-bottom: 10px;
+  }
+
+  .step-card p {
+    font-size: 0.88rem;
+    color: var(--gray-600);
+    line-height: 1.7;
+  }
+
+  /* DOCUMENTS TABLE */
+  .docs-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin-top: 24px;
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+  }
+
+  .docs-table th {
+    background: var(--purple-main);
+    color: white;
+    padding: 16px 20px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-align: right;
+  }
+
+  .docs-table td {
+    padding: 14px 20px;
+    background: white;
+    border-bottom: 1px solid var(--purple-ghost);
+    font-size: 0.9rem;
+    color: var(--gray-800);
+    vertical-align: middle;
+  }
+
+  .docs-table tr:last-child td { border-bottom: none; }
+  .docs-table tr:hover td { background: var(--purple-ghost); }
+
+  /* RULES SECTION */
+  .rules-section {
+    background: white;
+  }
+
+  .rules-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+    margin-top: 48px;
+  }
+
+  .rule-card {
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--gray-200);
+  }
+
+  .rule-card-header {
+    background: var(--purple-main);
+    padding: 20px 24px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .rule-card-header .icon {
+    font-size: 1.6rem;
+  }
+
+  .rule-card-header h3 {
+    font-family: 'Tajawal', sans-serif;
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: white;
+  }
+
+  .rule-card-body {
+    padding: 24px;
+    background: white;
+  }
+
+  .rule-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--gray-200);
+  }
+
+  .rule-item:last-child { border-bottom: none; }
+
+  .rule-dot {
+    width: 8px; height: 8px;
+    background: var(--purple-main);
+    border-radius: 50%;
+    flex-shrink: 0;
+    margin-top: 7px;
+  }
+
+  .rule-item p {
+    font-size: 0.9rem;
+    color: var(--gray-800);
+    line-height: 1.7;
+  }
+
+  .rule-item strong {
+    color: var(--purple-dark);
+  }
+
+  /* FAQ SECTION */
+  .faq-section {
+    background: var(--gray-100);
+  }
+
+  .faq-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-top: 48px;
+  }
+
+  .faq-item {
+    background: white;
+    border-radius: var(--radius);
+    border: 1px solid var(--gray-200);
+    overflow: hidden;
+    transition: box-shadow 0.3s;
+  }
+
+  .faq-item:hover {
+    box-shadow: var(--shadow-md);
+  }
+
+  .faq-question {
+    width: 100%;
+    background: transparent;
+    border: none;
+    padding: 20px 24px;
+    text-align: right;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    cursor: pointer;
+    font-family: 'Cairo', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--purple-dark);
+    transition: background 0.2s;
+  }
+
+  .faq-question:hover { background: var(--purple-ghost); }
+
+  .faq-question .q-icon {
+    width: 28px; height: 28px;
+    background: var(--purple-ghost);
+    color: var(--purple-main);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    flex-shrink: 0;
+    transition: transform 0.3s, background 0.3s;
+  }
+
+  .faq-item.open .faq-question .q-icon {
+    transform: rotate(45deg);
+    background: var(--purple-main);
+    color: white;
+  }
+
+  .faq-answer {
+    display: none;
+    padding: 0 24px 20px;
+    font-size: 0.9rem;
+    color: var(--gray-600);
+    line-height: 1.8;
+    border-top: 1px solid var(--gray-200);
+    padding-top: 16px;
+  }
+
+  .faq-item.open .faq-answer { display: block; }
+
+  /* NAME CONSTRAINTS */
+  .constraint-box {
+    background: white;
+    border-radius: var(--radius);
+    padding: 32px;
+    border: 1px solid var(--gray-200);
+    box-shadow: var(--shadow-sm);
+    margin-top: 16px;
+  }
+
+  .allowed-chars {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 16px;
+  }
+
+  .char-tag {
+    background: var(--purple-ghost);
+    color: var(--purple-dark);
+    padding: 6px 14px;
+    border-radius: 6px;
+    font-family: monospace;
+    font-size: 0.95rem;
+    font-weight: 600;
+    border: 1px solid var(--purple-pale);
+  }
+
+  /* COMPLAINT SECTION */
+  .complaint-section {
+    background: white;
+  }
+
+  .complaint-card {
+    background: linear-gradient(135deg, #fff8f0, #fef3c7);
+    border: 2px solid #fbbf24;
+    border-radius: var(--radius);
+    padding: 40px;
+    margin-top: 32px;
+    display: flex;
+    gap: 32px;
+    align-items: flex-start;
+  }
+
+  .complaint-icon {
+    font-size: 3rem;
+    flex-shrink: 0;
+  }
+
+  .complaint-card h3 {
+    font-family: 'Tajawal', sans-serif;
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #92400e;
+    margin-bottom: 12px;
+  }
+
+  .complaint-card p {
+    color: #78350f;
+    font-size: 0.92rem;
+    line-height: 1.8;
+    margin-bottom: 16px;
+  }
+
+  .remedy-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+    margin-top: 12px;
+  }
+
+  .remedy-table th {
+    background: #92400e;
+    color: white;
+    padding: 12px 16px;
+    font-size: 0.85rem;
+    text-align: right;
+  }
+
+  .remedy-table td {
+    padding: 10px 16px;
+    background: white;
+    border-bottom: 1px solid #fef3c7;
+    font-size: 0.85rem;
+  }
+
+  /* CANCELLATION */
+  .cancel-section {
+    background: var(--gray-100);
+  }
+
+  .cancel-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-top: 32px;
+  }
+
+  .cancel-step {
+    background: white;
+    border-radius: var(--radius);
+    padding: 24px;
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    box-shadow: var(--shadow-sm);
+    border-right: 4px solid var(--purple-main);
+  }
+
+  .cancel-step-num {
+    width: 40px; height: 40px;
+    background: var(--purple-main);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 1rem;
+    flex-shrink: 0;
+  }
+
+  .cancel-step h4 {
+    font-family: 'Tajawal', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--purple-dark);
+    margin-bottom: 6px;
+  }
+
+  .cancel-step p {
+    font-size: 0.88rem;
+    color: var(--gray-600);
+    line-height: 1.7;
+  }
+
+  /* CONTRACT SECTION */
+  .contract-section {
+    background: white;
+  }
+
+  .contract-info-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    margin-top: 48px;
+  }
+
+  .contract-info-card {
+    background: var(--purple-ghost);
+    border-radius: var(--radius);
+    padding: 28px;
+    text-align: center;
+    border: 1px solid var(--purple-pale);
+    transition: all 0.3s;
+  }
+
+  .contract-info-card:hover {
+    background: var(--purple-main);
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-md);
+  }
+
+  .contract-info-card:hover h4,
+  .contract-info-card:hover p { color: white; }
+
+  .contract-info-card .c-icon {
+    font-size: 2.5rem;
+    margin-bottom: 12px;
+  }
+
+  .contract-info-card h4 {
+    font-family: 'Tajawal', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--purple-dark);
+    margin-bottom: 8px;
+    transition: color 0.3s;
+  }
+
+  .contract-info-card p {
+    font-size: 0.85rem;
+    color: var(--gray-600);
+    line-height: 1.6;
+    transition: color 0.3s;
+  }
+
+  /* BARRING INFO */
+  .barring-card {
+    background: linear-gradient(135deg, #fef2f2, #fee2e2);
+    border: 2px solid #fca5a5;
+    border-radius: var(--radius);
+    padding: 32px;
+    margin-top: 32px;
+    display: flex;
+    gap: 24px;
+    align-items: center;
+  }
+
+  .barring-icon { font-size: 3rem; }
+
+  .barring-card h3 {
+    font-family: 'Tajawal', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #991b1b;
+    margin-bottom: 10px;
+  }
+
+  .barring-card p {
+    color: #7f1d1d;
+    font-size: 0.9rem;
+    line-height: 1.8;
+  }
+
+  .barring-table {
+    border-collapse: separate;
+    border-spacing: 0;
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+    margin-top: 12px;
+    width: 100%;
+  }
+
+  .barring-table th {
+    background: #991b1b;
+    color: white;
+    padding: 10px 16px;
+    font-size: 0.82rem;
+    text-align: right;
+  }
+
+  .barring-table td {
+    background: white;
+    padding: 10px 16px;
+    font-size: 0.85rem;
+    border-bottom: 1px solid #fee2e2;
+  }
+
+  /* FOOTER */
+  footer {
+    background: linear-gradient(135deg, var(--purple-dark), var(--purple-main));
+    color: white;
+    padding: 60px;
+    text-align: center;
+  }
+
+  footer h2 {
+    font-family: 'Tajawal', sans-serif;
+    font-size: 1.8rem;
+    font-weight: 900;
+    margin-bottom: 12px;
+  }
+
+  footer p {
+    opacity: 0.75;
+    font-size: 0.92rem;
+    margin-bottom: 32px;
+  }
+
+  .footer-address {
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: var(--radius);
+    padding: 24px;
+    max-width: 500px;
+    margin: 0 auto 32px;
+    font-size: 0.9rem;
+    line-height: 1.8;
+  }
+
+  .footer-bottom {
+    border-top: 1px solid rgba(255,255,255,0.15);
+    padding-top: 24px;
+    margin-top: 24px;
+    font-size: 0.82rem;
+    opacity: 0.55;
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 900px) {
+    nav, .hero, section { padding-left: 24px; padding-right: 24px; }
+    .hero { grid-template-columns: 1fr; }
+    .hero h1 { font-size: 2.2rem; }
+    .definition-grid, .rules-grid, .faq-grid,
+    .contract-info-grid, .steps-grid { grid-template-columns: 1fr; }
+    .stat-cards { grid-template-columns: 1fr 1fr; }
+    nav { padding: 16px 24px; }
+    .nav-links { display: none; }
+    footer { padding: 40px 24px; }
+  }
+
+  /* STICKY NAV */
+  .sticky-nav {
+    position: sticky;
+    top: 0;
+    background: rgba(255,255,255,0.95);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--gray-200);
+    z-index: 100;
+    padding: 12px 60px;
+    display: flex;
+    gap: 0;
+    overflow-x: auto;
+  }
+
+  .sticky-nav a {
+    text-decoration: none;
+    color: var(--gray-600);
+    font-size: 0.85rem;
+    font-weight: 600;
+    padding: 8px 20px;
+    border-radius: 50px;
+    white-space: nowrap;
+    transition: all 0.2s;
+  }
+
+  .sticky-nav a:hover {
+    background: var(--purple-ghost);
+    color: var(--purple-main);
+  }
+
+  /* NOTIFICATION BOX */
+  .notice-box {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    background: #eff6ff;
+    border: 1px solid #93c5fd;
+    border-radius: var(--radius-sm);
+    padding: 16px 20px;
+    margin-top: 20px;
+    font-size: 0.88rem;
+    color: #1e40af;
+    line-height: 1.7;
+  }
+
+  .notice-box .notice-icon {
+    font-size: 1.2rem;
+    flex-shrink: 0;
+  }
+
+  /* INDIVIDUAL SECTION */
+  .individual-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+    margin-top: 48px;
+  }
+
+  .info-card {
+    background: white;
+    border-radius: var(--radius);
+    padding: 32px;
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--gray-200);
+  }
+
+  .info-card h3 {
+    font-family: 'Tajawal', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--purple-dark);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .info-card ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .info-card ul li {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    font-size: 0.9rem;
+    color: var(--gray-800);
+    line-height: 1.7;
+  }
+
+  .info-card ul li::before {
+    content: '◈';
+    color: var(--purple-main);
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <nav>
+    <div class="nav-logo">WE <span>Mobile</span></div>
+    <ul class="nav-links">
+      <li><a href="#definition">تعريف الخدمة</a></li>
+      <li><a href="#subscription">الاشتراك</a></li>
+      <li><a href="#rules">الضوابط</a></li>
+      <li><a href="#faq">الأسئلة الشائعة</a></li>
+      <li><a href="#cancellation">الإلغاء</a></li>
+    </ul>
+  </nav>
+
+  <div class="hero">
+    <div class="hero-text">
+      <div class="hero-badge">خدمة حديثة · موثوقة · رسمية</div>
+      <h1>خدمة المكالمات <em>التسويقية</em></h1>
+      <p>
+        خدمة تتيح إظهار اسم الجهة المتصلة ورقمها للمستخدم النهائي — حماية للمواطنين من الاتصالات المجهولة وضماناً للشفافية في التسويق التجاري.
+      </p>
+      <div class="hero-btns">
+        <a href="#subscription" class="btn-primary">📋 كيفية الاشتراك</a>
+        <a href="#faq" class="btn-outline">الأسئلة الشائعة</a>
+      </div>
+    </div>
+
+    <div class="hero-visual">
+      <div class="stat-cards">
+        <div class="stat-card">
+          <div class="icon">🏢</div>
+          <div class="value">شركات</div>
+          <div class="label">متاحة على أنظمة البيزنس</div>
+        </div>
+        <div class="stat-card">
+          <div class="icon">🆓</div>
+          <div class="value">مجانية</div>
+          <div class="label">لا تكلفة في الوقت الحالي</div>
+        </div>
+        <div class="stat-card">
+          <div class="icon">⏰</div>
+          <div class="value">9ص–10م</div>
+          <div class="label">أوقات الاتصال المسموح بها</div>
+        </div>
+        <div class="stat-card">
+          <div class="icon">📞</div>
+          <div class="value">3 مرات</div>
+          <div class="label">الحد الأقصى لمحاولات الاتصال يومياً</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="wave">
+    <svg viewBox="0 0 1440 60" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" style="height:60px;width:100%;">
+      <path d="M0,30 C360,60 1080,0 1440,30 L1440,60 L0,60 Z" fill="#ffffff"/>
+    </svg>
+  </div>
+</header>
+
+<!-- STICKY NAV -->
+<nav class="sticky-nav">
+  <a href="#definition">تعريف الخدمة</a>
+  <a href="#subscription">طريقة الاشتراك</a>
+  <a href="#rules">ضوابط الاستخدام</a>
+  <a href="#names">ضوابط الأسماء</a>
+  <a href="#faq">الأسئلة الشائعة</a>
+  <a href="#complaint">الشكاوى</a>
+  <a href="#cancellation">إلغاء الخدمة</a>
+  <a href="#individual">خدمة الأفراد</a>
+</nav>
+
+<main>
+
+  <!-- DEFINITION SECTION -->
+  <section class="definition-section" id="definition">
+    <div class="section-label">ما هي الخدمة؟</div>
+    <div class="section-title">تعريف خدمة المكالمات التسويقية</div>
+    <div class="section-desc">خدمة رسمية تضمن الشفافية في الاتصالات التجارية وتحمي المستخدم النهائي</div>
+
+    <div class="definition-grid">
+      <div class="definition-content">
+        <h3>ما هي CNAM / CNAP؟</h3>
+        <p>
+          هي الخاصية التي تتيح <strong>إظهار اسم الجهة المتصلة ورقمها</strong> للمستخدم النهائي. تزايدت في الفترة الأخيرة شكاوى المواطنين من تلقي اتصالات تليفونية من أرقام مجهولة بغرض التسويق المباشر للسلع والمنتجات والخدمات، مما يسبب إزعاجاً ويُشكل انتهاكاً للخصوصية.
+        </p>
+        <p>
+          الخدمة متاحة على <strong>نفس الشبكة وعلى الشبكات الأخرى</strong> في الوقت الحالي.
+        </p>
+
+        <div class="service-names">
+          <div class="service-name-tag">
+            <div class="tag-icon">1</div>
+            <span>CNAM Service — خدمة إظهار اسم المتصل</span>
+          </div>
+          <div class="service-name-tag">
+            <div class="tag-icon">2</div>
+            <span>CNAP Service — خدمة إظهار رقم المتصل</span>
+          </div>
+          <div class="service-name-tag">
+            <div class="tag-icon">3</div>
+            <span>خدمة إظهار رقم واسم المتصل</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="pricing-highlight">
+        <h3>💰 تكلفة الخدمة</h3>
+        <div class="price-badge">
+          <span class="price">مجانية</span>
+          <div class="price-label">للشركات في الوقت الحالي</div>
+        </div>
+        <ul class="pricing-features">
+          <li>متاحة للشركات على أنظمة البيزنس فقط</li>
+          <li>عقد منفصل خاص بالخدمة</li>
+          <li>يمكن تعدد الأسماء لنفس الشركة (أقسام مختلفة)</li>
+          <li>كل رقم له اسم واحد فقط يمكنه الظهور</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- SUBSCRIPTION SECTION -->
+  <section class="tabs-section" id="subscription">
+    <div class="section-label">كيفية الاشتراك</div>
+    <div class="section-title">طريقة الاشتراك في الخدمة</div>
+
+    <div class="tabs-header">
+      <button class="tab-btn active" onclick="switchTab('companies')">🏢 للشركات</button>
+      <button class="tab-btn" onclick="switchTab('individuals')">👤 للأفراد</button>
+    </div>
+
+    <div id="companies" class="tab-content active">
+      <div class="steps-grid">
+        <div class="step-card">
+          <div class="step-number">1</div>
+          <div class="step-icon">📝</div>
+          <h4>التوقيع على العقد</h4>
+          <p>التوقيع على عقد المرفق + سجل تجاري، ثم إنشاء الطلب على سيستم CSA مع إرفاق الأوراق المطلوبة</p>
+        </div>
+        <div class="step-card">
+          <div class="step-number">2</div>
+          <div class="step-icon">🖥️</div>
+          <h4>إدخال البيانات على السيستم</h4>
+          <p>Company · Issue type: Request · Category: Corporate SPOC · Type: Registration · Item: Corp New Account</p>
+        </div>
+        <div class="step-card">
+          <div class="step-number">3</div>
+          <div class="step-icon">➕</div>
+          <h4>إضافة Add-On للعميل</h4>
+          <p>يتم إضافة الـ Add-On بعد التوقيع على العقد وإرفاقه على السيستم — يقوم موظف المبيعات بتفعيل الخط مباشرة</p>
+        </div>
+      </div>
+
+      <div style="margin-top: 40px;">
+        <h3 style="font-family:'Tajawal',sans-serif; font-size:1.2rem; font-weight:700; color:var(--purple-dark); margin-bottom:20px;">📂 الأوراق المطلوبة</h3>
+        <table class="docs-table">
+          <thead>
+            <tr>
+              <th>المستند</th>
+              <th>الوصف</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>✅ عقد الخدمة الموقع</td>
+              <td>التوقيع على العقد المرفق مع صورة بطاقة الرقم القومي للشركات</td>
+            </tr>
+            <tr>
+              <td>✅ السجل التجاري</td>
+              <td>للتحقق من اسم الشركة المطابق للاسم المختار</td>
+            </tr>
+            <tr>
+              <td>✅ اسم العميل</td>
+              <td>Customer Name</td>
+            </tr>
+            <tr>
+              <td>✅ رقم التواصل</td>
+              <td>Customer Contact Number</td>
+            </tr>
+            <tr>
+              <td>✅ اسم الشركة وعنوانها</td>
+              <td>Company Name & Company Address (بالتفصيل)</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="notice-box" style="margin-top:24px;">
+        <span class="notice-icon">ℹ️</span>
+        <div>
+          <strong>ملحوظة:</strong> لا يتم تفعيل الخدمة إلا بعد توقيع العميل على عقد الاشتراك وإرفاقه على السيستم. سيقوم القسم المختص بإعادة تفعيل الخط مرة أخرى بعد الاشتراك في الخدمة.
+        </div>
+      </div>
+
+      <div style="margin-top:32px;">
+        <h3 style="font-family:'Tajawal',sans-serif; font-size:1.1rem; font-weight:700; color:var(--purple-dark); margin-bottom:12px;">📋 بيانات تذكرة السيستم (CSA)</h3>
+        <table class="docs-table">
+          <thead>
+            <tr>
+              <th>Company</th>
+              <th>Issue type</th>
+              <th>Category</th>
+              <th>Type</th>
+              <th>Item</th>
+              <th>Summary</th>
+              <th>SLA</th>
+              <th>Responsible</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>GSM</td>
+              <td>Request</td>
+              <td>Corporate SPOC</td>
+              <td>Registration</td>
+              <td>Corp New Account</td>
+              <td>Corp New Account</td>
+              <td>2 WDs</td>
+              <td>Enterprise Sales Support</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div id="individuals" class="tab-content">
+      <div class="individual-grid">
+        <div class="info-card">
+          <h3>📋 طريقة الاشتراك</h3>
+          <ul>
+            <li>التوجه لأقرب فرع</li>
+            <li>يوجد عقد منفصل خاص بالخدمة</li>
+            <li>الخدمة متاحة على جميع أنظمة الموبايل</li>
+          </ul>
+        </div>
+        <div class="info-card">
+          <h3>💡 ملاحظات مهمة</h3>
+          <ul>
+            <li>الخدمة مجانية في الوقت الحالي للأفراد</li>
+            <li>ستتاح الخدمة قريباً على نفس الشبكة وشبكات أخرى</li>
+            <li>بمجرد الاشتراك، يتم التفعيل تلقائياً عند إتاحة الخدمة</li>
+            <li>تُظهر الخدمة علامة "Marketing call" للمستخدم النهائي</li>
+          </ul>
+        </div>
+        <div class="info-card">
+          <h3>⏰ ضوابط الاتصال للأفراد</h3>
+          <ul>
+            <li>من الساعة 9 صباحاً إلى 10 مساءً</li>
+            <li>يوم الجمعة من 11 صباحاً إلى 10 مساءً</li>
+            <li>لا يجوز الاتصال بنفس المستخدم أكثر من 3 مرات يومياً</li>
+          </ul>
+        </div>
+        <div class="info-card">
+          <h3>📂 الأوراق المطلوبة</h3>
+          <ul>
+            <li>التوقيع على عقد المرفق</li>
+            <li>بطاقة الرقم القومي</li>
+            <li>التوجه لأقرب فرع لاستكمال الإجراءات</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- RULES SECTION -->
+  <section class="rules-section" id="rules">
+    <div class="section-label">الضوابط</div>
+    <div class="section-title">ضوابط استخدام الخدمة</div>
+
+    <div class="rules-grid">
+      <div class="rule-card">
+        <div class="rule-card-header">
+          <span class="icon">⏰</span>
+          <h3>أوقات الاتصال — للشركات</h3>
+        </div>
+        <div class="rule-card-body">
+          <div class="rule-item">
+            <div class="rule-dot"></div>
+            <p>لا يجوز إجراء الاتصال إلا في <strong>الأوقات المحددة من الساعة 9 صباحاً إلى 10 مساءً</strong></p>
+          </div>
+          <div class="rule-item">
+            <div class="rule-dot"></div>
+            <p>يوم الجمعة: <strong>من 11 صباحاً إلى 10 مساءً</strong></p>
+          </div>
+          <div class="rule-item">
+            <div class="rule-dot"></div>
+            <p>لا يجوز الاتصال بذات المستخدم <strong>أكثر من 3 مرات يومياً</strong></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="rule-card">
+        <div class="rule-card-header">
+          <span class="icon">⏰</span>
+          <h3>أوقات الاتصال — للأفراد</h3>
+        </div>
+        <div class="rule-card-body">
+          <div class="rule-item">
+            <div class="rule-dot"></div>
+            <p>الأوقات المحددة: <strong>من الساعة 9 صباحاً إلى 10 مساءً</strong></p>
+          </div>
+          <div class="rule-item">
+            <div class="rule-dot"></div>
+            <p>يوم الجمعة: <strong>من 11 صباحاً إلى 10 مساءً</strong></p>
+          </div>
+          <div class="rule-item">
+            <div class="rule-dot"></div>
+            <p>الحد الأقصى: <strong>3 مرات يومياً</strong> لنفس المستخدم</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="rule-card">
+        <div class="rule-card-header">
+          <span class="icon">🏢</span>
+          <h3>ضوابط العملاء الحاليين</h3>
+        </div>
+        <div class="rule-card-body">
+          <div class="rule-item">
+            <div class="rule-dot"></div>
+            <p>يتعين على العملاء الحاليين اتخاذ أحد إجرائين:</p>
+          </div>
+          <div class="rule-item">
+            <div class="rule-dot"></div>
+            <p><strong>الاشتراك في الخدمة</strong> بشكل جزئي (خط واحد على الأقل) أو بشكل كلي (جميع الخطوط)</p>
+          </div>
+          <div class="rule-item">
+            <div class="rule-dot"></div>
+            <p><strong>أو التوقيع على تعهد رسمي</strong> يفيد بعدم استخدام الخطوط لإجراء مكالمات ترويجية أو تجارية</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="rule-card">
+        <div class="rule-card-header">
+          <span class="icon">📜</span>
+          <h3>العقد والمدة</h3>
+        </div>
+        <div class="rule-card-body">
+          <div class="rule-item">
+            <div class="rule-dot"></div>
+            <p>يتم استكمال البيانات المطلوبة في العقد المرفق</p>
+          </div>
+          <div class="rule-item">
+            <div class="rule-dot"></div>
+            <p>الحد الأدنى للمدة: <strong>سنة واحدة</strong> — ولا يوجد حد أقصى</p>
+          </div>
+          <div class="rule-item">
+            <div class="rule-dot"></div>
+            <p>يتم إرسال جميع صور وأوصول الأوراق إلى فريق الشركات على عنوان: <strong>الجيزة - السادس من أكتوبر - الكيلو 28 - القرية الذكية - مبنى B90-G20</strong></p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Barring Info -->
+    <div class="barring-card" style="margin-top: 40px;">
+      <div class="barring-icon">🚫</div>
+      <div style="flex: 1;">
+        <h3>حالة الخط المحجوب على السيستم</h3>
+        <p>
+          سيتم تحويل خطوط الموبايل التي لم تقنن أوضاعها إلى <strong>استقبال فقط</strong> بسبب شكوى استخدام الخط في المكالمات التسويقية. يجب على العميل الاشتراك في الخدمة لتفعيل الخط مرة أخرى.
+        </p>
+        <table class="barring-table" style="margin-top:16px;">
+          <thead>
+            <tr>
+              <th>Operation Type</th>
+              <th>Reason</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Operator Request Barring</td>
+              <td>Till payment</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- NAMES SECTION -->
+  <section id="names" style="background: var(--gray-100); padding: 80px 60px;">
+    <div class="section-label">ضوابط الاسم</div>
+    <div class="section-title">ضوابط اختيار الاسم التسويقي</div>
+
+    <div class="definition-grid" style="margin-top: 40px;">
+      <div>
+        <div class="constraint-box">
+          <h3 style="font-family:'Tajawal',sans-serif; font-size:1.05rem; font-weight:700; color:var(--purple-dark); margin-bottom:12px;">📌 القواعد الأساسية</h3>
+          <div class="rule-item" style="padding:10px 0; border-bottom:1px solid var(--gray-200);">
+            <div class="rule-dot"></div>
+            <p>يجب أن يتوافق اختيار اسم المتصل <strong>بالاسم الموثق في السجل التجاري</strong></p>
+          </div>
+          <div class="rule-item" style="padding:10px 0; border-bottom:1px solid var(--gray-200);">
+            <div class="rule-dot"></div>
+            <p>الحد الأقصى لطول الاسم: <strong>70 حرفاً</strong></p>
+          </div>
+          <div class="rule-item" style="padding:10px 0;">
+            <div class="rule-dot"></div>
+            <p>يمكن اختيار أكثر من اسم لنفس الشركة للأقسام المختلفة<br>مثال: <em>WE Sales, WE Customer Service</em></p>
+          </div>
+          <div class="rule-item" style="padding:10px 0;">
+            <div class="rule-dot"></div>
+            <p>لكل رقم في الشركة <strong>اسم واحد فقط</strong> يمكنه الظهور في المكالمات</p>
+          </div>
+
+          <h4 style="font-family:'Tajawal',sans-serif; font-size:0.95rem; font-weight:700; color:var(--purple-dark); margin: 20px 0 10px;">الحروف والأرقام والرموز المسموح بها:</h4>
+          <div class="allowed-chars">
+            <span class="char-tag">a – z</span>
+            <span class="char-tag">A – Z</span>
+            <span class="char-tag">0 – 9</span>
+            <span class="char-tag">"."</span>
+            <span class="char-tag">"-"</span>
+            <span class="char-tag">"_"</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="info-card">
+        <h3>💡 مثال على الأسماء</h3>
+        <ul>
+          <li>يمكن للشركة الكبرى استخدام أسماء مختلفة لأقسامها</li>
+          <li><strong>WE_Sales</strong> — لقسم المبيعات</li>
+          <li><strong>WE-Customer-Service</strong> — لخدمة العملاء</li>
+          <li><strong>WE.Support</strong> — للدعم الفني</li>
+          <li>كل رقم موبايل مرتبط باسم واحد فقط</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ SECTION -->
+  <section class="faq-section" id="faq">
+    <div class="section-label">الأسئلة الشائعة</div>
+    <div class="section-title">FAQ — الأسئلة والأجوبة</div>
+
+    <div class="faq-grid">
+
+      <div class="faq-item open">
+        <button class="faq-question" onclick="toggleFaq(this)">
+          ما هي خدمة المكالمات التسويقية؟
+          <span class="q-icon">+</span>
+        </button>
+        <div class="faq-answer">
+          هي الخاصية التي تتيح إظهار اسم الجهة المتصلة ورقمها للمستخدم النهائي. تُعرف أيضاً بـ CNAM Service أو CNAP Service أو "خدمة إظهار رقم واسم المتصل".
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggleFaq(this)">
+          هل تعمل الخدمة من شبكة لشبكة أخرى؟
+          <span class="q-icon">+</span>
+        </button>
+        <div class="faq-answer">
+          نعم، الخدمة متاحة في الوقت الحالي على نفس الشبكة وعلى الشبكات الأخرى.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggleFaq(this)">
+          ما هي تكلفة الخدمة؟
+          <span class="q-icon">+</span>
+        </button>
+        <div class="faq-answer">
+          الخدمة متاحة بشكل مجاني للشركات في الوقت الحالي.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggleFaq(this)">
+          هل الخدمة متاحة للأفراد؟
+          <span class="q-icon">+</span>
+        </button>
+        <div class="faq-answer">
+          الخدمة للشركات متاحة على أنظمة البيزنس فقط في الوقت الحالي. أما خدمة المكالمات التسويقية للأفراد فستتاح قريباً وتُظهر علامة "Marketing Call" للمستخدم النهائي.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggleFaq(this)">
+          ما هي شروط التعاقد على الخدمة؟
+          <span class="q-icon">+</span>
+        </button>
+        <div class="faq-answer">
+          الخدمة متاحة للشركات على أنظمة البيزنس فقط ويوجد عقد منفصل خاص بالخدمة يجب التوقيع عليه.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggleFaq(this)">
+          كيفية الاشتراك في الخدمة؟
+          <span class="q-icon">+</span>
+        </button>
+        <div class="faq-answer">
+          يمكن طلب الخدمة للشركات عن طريق التوجه لأقرب فرع أو التواصل مع موظف مبيعات الشركات. وللأفراد عن طريق التوجه لأقرب فرع.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggleFaq(this)">
+          هل يمكن اختيار أكثر من اسم؟
+          <span class="q-icon">+</span>
+        </button>
+        <div class="faq-answer">
+          نعم، يمكن اختيار أكثر من اسم لنفس الشركة للأقسام المختلفة. مثال: WE Sales, WE Customer Service. لكن لكل رقم في الشركة اسم واحد فقط يمكنه الظهور في المكالمات.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggleFaq(this)">
+          ما هي أسباب تقديم الخدمة؟
+          <span class="q-icon">+</span>
+        </button>
+        <div class="faq-answer">
+          تزايدت شكاوى المواطنين من تلقي اتصالات من أرقام مجهولة بغرض التسويق المباشر، مما يسبب إزعاجاً عمدياً وانتهاكاً للخصوصية باستخدام البيانات الشخصية دون موافقة أصحابها.
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- COMPLAINT SECTION -->
+  <section class="complaint-section" id="complaint">
+    <div class="section-label">الشكاوى</div>
+    <div class="section-title">إجراء شكوى العميل على Remedy</div>
+    <div class="section-desc">في حالة شكوى العميل من أن رقمه تم إيقافه بينما لم يُستخدم في مكالمات تسويقية</div>
+
+    <div class="complaint-card">
+      <div class="complaint-icon">⚠️</div>
+      <div style="flex: 1;">
+        <h3>إجراء موظف المبيعات</h3>
+        <p>
+          في حالة شكوى العميل من أن رقمه (CName_consumer) تم إيقافه بينما لم يُستخدم في مكالمات تسويقية، يجب على موظف المبيعات إنشاء التكت التالية على سيستم Remedy:
+        </p>
+        <table class="remedy-table">
+          <thead>
+            <tr>
+              <th>Level 1</th>
+              <th>Level 2</th>
+              <th>Level 3</th>
+              <th>Level 4</th>
+              <th>Level 5</th>
+              <th>SLA</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Complaint</td>
+              <td>Consumer</td>
+              <td>Service</td>
+              <td>CNAM</td>
+              <td>Service usage denial</td>
+              <td>2D</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="notice-box" style="margin-top:24px;">
+      <span class="notice-icon">📋</span>
+      <div>
+        <strong>في حال طلب العميل (أفراد أو شركات) إلغاء خدمة المكالمات التسويقية لخطوط الموبايل</strong>، يجب اتباع الخطوات التالية: ملء نموذج إلغاء الاشتراك في الخدمة (مرفق) وحذف الـ Add-On الخاصة بالخدمة من النظام والمبيّنة أدناه.
+      </div>
+    </div>
+  </section>
+
+  <!-- CANCELLATION SECTION -->
+  <section class="cancel-section" id="cancellation">
+    <div class="section-label">إلغاء الخدمة</div>
+    <div class="section-title">خطوات إلغاء الاشتراك في الخدمة</div>
+
+    <div class="cancel-steps" style="max-width: 700px; margin-top: 40px;">
+      <div class="cancel-step">
+        <div class="cancel-step-num">1</div>
+        <div>
+          <h4>ملء نموذج الإلغاء</h4>
+          <p>ملء نموذج إلغاء الاشتراك في الخدمة (المرفق) من قِبل العميل مع التوقيع الرسمي</p>
+        </div>
+      </div>
+      <div class="cancel-step">
+        <div class="cancel-step-num">2</div>
+        <div>
+          <h4>حذف الـ Add-On من النظام</h4>
+          <p>حذف الـ Add-On الخاصة بالخدمة (CName_consumer) من النظام والتحقق من حالة الخط</p>
+        </div>
+      </div>
+      <div class="cancel-step">
+        <div class="cancel-step-num">3</div>
+        <div>
+          <h4>التحقق من الحالة على السيستم</h4>
+          <p>التأكد من تغيير حالة الخط من "Active" إلى حالة "Unsubscribe" على السيستم</p>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top: 32px; background: white; border-radius: var(--radius); padding: 24px; border: 1px solid var(--gray-200); box-shadow: var(--shadow-sm); max-width: 500px;">
+      <p style="font-size:0.85rem; color:var(--gray-600); margin-bottom:12px; font-weight:600;">حالة الخط على السيستم بعد إلغاء الخدمة:</p>
+      <div style="display:flex; gap:12px; align-items:center; background:var(--gray-100); padding:14px 18px; border-radius:var(--radius-sm); font-family:monospace; font-size:0.88rem;">
+        <span style="color:var(--gray-600);">CName_consumer</span>
+        <span style="color:var(--gray-600);">06/08/2025–31/12/2100</span>
+        <span style="color:var(--gray-600);">None</span>
+        <span style="color:#059669; font-weight:700;">Active</span>
+        <button style="background:#991b1b; color:white; border:none; border-radius:6px; padding:4px 12px; font-size:0.8rem; cursor:default;">Unsubscribe</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- INDIVIDUAL DETAILED SECTION -->
+  <section id="individual" style="background: white; padding: 80px 60px;">
+    <div class="section-label">للأفراد</div>
+    <div class="section-title">خدمة المكالمات التسويقية للأفراد</div>
+    <div class="section-desc">تفاصيل خاصة بخدمة المكالمات التسويقية لخطوط الأفراد</div>
+
+    <div class="individual-grid" style="margin-top: 48px;">
+      <div class="info-card">
+        <h3>📱 تعريف الخدمة للأفراد</h3>
+        <ul>
+          <li>تُظهر الخدمة علامة <strong>"Marketing Call"</strong> أو <strong>"مكالمة تسويقية"</strong> للمستخدم النهائي</li>
+          <li>تُعرف أيضاً بـ CNAM Service أو CNAP Service</li>
+          <li>ستتاح قريباً على نفس الشبكة وشبكات أخرى</li>
+        </ul>
+      </div>
+      <div class="info-card">
+        <h3>💰 التكلفة والتسجيل</h3>
+        <ul>
+          <li>الخدمة مجانية في الوقت الحالي</li>
+          <li>يوجد عقد منفصل خاص بالخدمة</li>
+          <li>متاحة على جميع أنظمة الموبايل</li>
+          <li>الاشتراك عن طريق أقرب فرع</li>
+        </ul>
+      </div>
+      <div class="info-card">
+        <h3>⏰ ضوابط وقت الاتصال</h3>
+        <ul>
+          <li>من 9 صباحاً حتى 10 مساءً (أيام الأسبوع)</li>
+          <li>يوم الجمعة: من 11 صباحاً إلى 10 مساءً</li>
+          <li>لا يجوز الاتصال بنفس المستخدم أكثر من 3 مرات يومياً</li>
+        </ul>
+      </div>
+      <div class="info-card">
+        <h3>🔔 ملاحظة مهمة</h3>
+        <ul>
+          <li>بمجرد الاشتراك في الخدمة، سيتم التفعيل تلقائياً على الخط عند إتاحة الخدمة رسمياً</li>
+          <li>لا داعي للمتابعة — التفعيل تلقائي</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- FOOTER -->
+<footer id="contact">
+  <h2>للاستفسار والتواصل</h2>
+  <p>لمزيد من التفاصيل، يرجى التواصل مع فريق مبيعات الشركات أو زيارة أقرب فرع</p>
+
+  <div class="footer-address">
+    <strong>📍 عنوان إرسال الأوراق لفريق الشركات:</strong><br>
+    الجيزة – السادس من أكتوبر<br>
+    الكيلو 28 – القرية الذكية<br>
+    مبنى B90 – G20
+  </div>
+
+  <div class="footer-bottom">
+    خدمة المكالمات التسويقية · WE Mobile · جميع الحقوق محفوظة
+  </div>
+</footer>
+
+<script>
+  function switchTab(tab) {
+    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById(tab).classList.add('active');
+    event.currentTarget.classList.add('active');
+  }
+
+  function toggleFaq(btn) {
+    const item = btn.parentElement;
+    item.classList.toggle('open');
+  }
+</script>
+</body>
+</html>
