@@ -118,6 +118,26 @@ body::before{
 }
 .pill-ghost:hover{background:rgba(255,255,255,0.22);border-color:rgba(255,255,255,0.4);}
 
+/* Welcome Banner */
+.welcome-banner{
+  background:rgba(255,255,255,0.12);
+  border:1px solid rgba(255,255,255,0.25);
+  border-radius:14px;
+  padding:12px 18px;
+  color:#fff;
+  font-size:13px;
+  font-weight:600;
+  display:flex;align-items:center;gap:8px;
+  margin-top:14px;
+  width:100%;max-width:400px;
+  animation:slideDown .4s ease;
+}
+@keyframes slideDown{from{opacity:0;transform:translateY(-10px);}to{opacity:1;transform:translateY(0);}}
+.welcome-banner i{font-size:16px;color:#fbbf24;}
+.welcome-banner .user-info{display:flex;flex-direction:column;gap:2px;}
+.welcome-banner .user-name{font-weight:700;color:#fef08a;}
+.welcome-banner .user-role{font-size:11.5px;opacity:0.85;}
+
 /* Wave */
 .wave{display:block;width:100%;line-height:0;
   background:linear-gradient(135deg,#3b0764,#7c3aed);}
@@ -348,6 +368,13 @@ footer span{color:var(--p2);font-weight:700;}
         <i class="fa-solid fa-circle-info"></i> من نحن
       </button>
     </div>
+    <div id="welcomeBanner" class="welcome-banner" style="display:none;">
+      <i class="fa-solid fa-hand-fist"></i>
+      <div class="user-info">
+        <div><i class="fa-solid fa-star"></i> أهلاً وسهلاً <span class="user-name" id="userName">--</span></div>
+        <div class="user-role" id="userRole">--</div>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -538,7 +565,23 @@ footer span{color:var(--p2);font-weight:700;}
   $('aboutModal').addEventListener('click',function(e){if(e.target===this)closeAboutModal();});
   $('comingSoonModal').addEventListener('click',function(e){if(e.target===this)closeModal();});
 
+  // Welcome Banner - جلب بيانات المستخدم
+  function loadUserWelcome(){
+    try{
+      // جلب بيانات المستخدم من localStorage
+      const userData=JSON.parse(localStorage.getItem('userData'));
+      if(userData&&userData.username&&userData.title){
+        $('userName').textContent=userData.username;
+        $('userRole').textContent=userData.title;
+        $('welcomeBanner').style.display='flex';
+      }
+    }catch(e){
+      console.log('No user data found');
+    }
+  }
+
   window.addEventListener('load',function(){
+    loadUserWelcome();
     if(typeof ActiveUsersWidget!=='undefined')ActiveUsersWidget.init({position:'corner'});
   });
 </script>
