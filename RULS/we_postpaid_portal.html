@@ -2,6 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
+  <script src="script/auth.js?v=16.0.0"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css">
 <style>
@@ -771,5 +772,20 @@ function show(id, btn) {
   btn.classList.add('active');
 }
 </script>
+  <script>
+  const $=id=>document.getElementById(id);
+  function openAboutModal(){$('aboutModal').classList.add('active');}
+  function closeAboutModal(){$('aboutModal').classList.remove('active');}
+  function showComingSoonModal(){$('comingSoonModal').classList.add('active');}
+  function closeModal(){$('comingSoonModal').classList.remove('active');}
+
+  $('aboutModal').addEventListener('click',function(e){if(e.target===this)closeAboutModal();});
+  $('comingSoonModal').addEventListener('click',function(e){if(e.target===this)closeModal();});
+
+  window.addEventListener('load',function(){
+    if(typeof ActiveUsersWidget!=='undefined')ActiveUsersWidget.init({position:'corner'});
+  });
+</script>
+  <script src="script/active-users-widget.js"></script>
 </body>
 </html>
