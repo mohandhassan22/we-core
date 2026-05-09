@@ -624,48 +624,30 @@ footer span{color:var(--p2);font-weight:700;}
     if(typeof ActiveUsersWidget !== 'undefined') ActiveUsersWidget.init({position:'corner'});
   });
 
-  /* ── Welcome Banner – load profile from Supabase ── */
+  /* ── Welcome Banner – reads window._sbClient & window._sbUser set by auth.js ── */
   async function loadUserProfile() {
-    // Wait for supabase client (defined in auth.js)
-    // auth.js is expected to expose `window.supabase` or `window._supabaseClient`
-    const client = window.supabase || window._supabaseClient;
-    if (!client) return; // supabase not available, skip silently
-
+    $('welcomeSkeleton').style.display = 'block';
     try {
-      // Show skeleton while fetching
-      $('welcomeSkeleton').style.display = 'block';
+      const sb   = window._sbClient;
+      const user = window._sbUser;
+      if (!sb || !user) { $('welcomeSkeleton').style.display = 'none'; return; }
 
-      // 1. Get current logged-in user
-      const { data: { user }, error: userErr } = await client.auth.getUser();
-      if (userErr || !user) {
-        $('welcomeSkeleton').style.display = 'none';
-        return; // not logged in → don't show banner
-      }
-
-      // 2. Fetch profile row from `profiles` table
-      const { data: profile, error: profileErr } = await client
+      // جيب بيانات البروفايل من جدول profiles
+      const { data: profile, error } = await sb
         .from('profiles')
         .select('name, title')
         .eq('id', user.id)
         .single();
 
       $('welcomeSkeleton').style.display = 'none';
+      if (error || !profile) return;
 
-      if (profileErr || !profile) return; // no profile row → skip
+      // اعرض الاسم والمسمى الوظيفي
+      $('welcomeName').textContent     = profile.name  || user.email || 'زميلنا';
+      $('welcomeJobTitle').textContent = profile.title || '—';
 
-      // 3. Fill in banner
-      const displayName  = profile.name  || user.email || 'زميلنا';
-      const displayTitle = profile.title || '';
+      if (!profile.title) document.querySelector('.welcome-title').style.display = 'none';
 
-      $('welcomeName').textContent     = displayName;
-      $('welcomeJobTitle').textContent = displayTitle || '—';
-
-      // Hide job-title chip if empty
-      if (!displayTitle) {
-        document.querySelector('.welcome-title').style.display = 'none';
-      }
-
-      // 4. Show banner with animation
       $('welcomeBanner').style.display = 'block';
 
     } catch(e) {
@@ -674,13 +656,8 @@ footer span{color:var(--p2);font-weight:700;}
     }
   }
 
-  // Run after auth.js has had time to initialise
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', loadUserProfile);
-  } else {
-    // Small delay to let auth.js finish setting up supabase
-    setTimeout(loadUserProfile, 300);
-  }
+  // auth.js بيبعت authSuccess بعد ما يتحقق من اليوزر ويحفظ _sbClient و _sbUser
+  window.addEventListener('authSuccess', loadUserProfile);
 </script>
 </body>
 </html>
