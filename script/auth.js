@@ -2,28 +2,24 @@
  * WE-Core Authentication Guard (V15 - Cookies Only Version)
  */
 
- 
 (async function() {
     const SB_URL = 'https://iygwhapcpdmsasqlfelv.supabase.co';
     const SB_KEY = 'sb_publishable_rD9naqrpu1dI-iwchAS0GQ_JkgGysqP';
-    
-     
+
     const path = window.location.pathname;
     const isLoginPage = path.includes('login.html') || path.endsWith('.icu/');
-
     if (isLoginPage) return;
-    
+
     if (document.documentElement) { document.documentElement.style.display = 'none'; }
-    
+
     function getLoginPath() {
         if (path.includes('/info/') || path.includes('/offers/') || path.includes('/Corces/')) { return '../login.html'; }
         return 'login.html';
     }
-    
-    async function redirectToLogin() { 
-        // مسح الكوكيز عند التوجيه لتسجيل الدخول
+
+    async function redirectToLogin() {
         document.cookie = "sb-access-token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-        window.location.replace(getLoginPath()); 
+        window.location.replace(getLoginPath());
     }
 
     function getCookie(name) {
@@ -32,9 +28,7 @@
         if (parts.length === 2) return parts.pop().split(';').shift();
     }
 
-    // الاعتماد على الكوكيز فقط
     const savedToken = getCookie('sb-access-token');
-
     if (!savedToken) {
         redirectToLogin();
         return;
@@ -51,24 +45,28 @@
                 document.head.appendChild(script);
             });
         }
-        
-        // إنشاء العميل بدون تخزين محلي
-        const sb = supabase.createClient(SB_URL, SB_KEY, { 
-            auth: { 
+
+        // إنشاء العميل
+        const sb = supabase.createClient(SB_URL, SB_KEY, {
+            auth: {
                 persistSession: false,
                 autoRefreshToken: false,
                 detectSessionInUrl: false
-            } 
+            }
         });
-         
-    
-        // التحقق من التوكن المستخرج من الكوكيز
+
+        // التحقق من التوكن
         const { data: { user }, error } = await sb.auth.getUser(savedToken);
 
         if (user && !error) {
+            // ✅ حفظ الـ client والـ user على window بعد ما اتعرفوا
+            window._sbClient = sb;
+            window._sbUser   = user;
+
             document.documentElement.style.display = '';
             const appDiv = document.getElementById('app');
             if (appDiv) appDiv.style.display = 'block';
+
             window.dispatchEvent(new CustomEvent('authSuccess', { detail: { token: savedToken } }));
         } else {
             redirectToLogin();
