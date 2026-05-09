@@ -644,7 +644,7 @@ footer span{color:var(--p2);font-weight:700;}
 
       // استدعاء REST مباشر مع Authorization header عشان يتجاوز RLS
       const res = await fetch(
-        `${SB_URL}/rest/v1/profiles?select=name,title&id=eq.${user.id}&limit=1`,
+        `${SB_URL}/rest/v1/profiles?select=full_name,title&id=eq.${user.id}&limit=1`,
         {
           headers: {
             'apikey':        SB_KEY,
@@ -663,7 +663,7 @@ footer span{color:var(--p2);font-weight:700;}
       if (!profile) return;
 
       // اعرض الاسم والمسمى الوظيفي
-      $('welcomeName').textContent     = profile.name  || user.email || 'زميلنا';
+      $('welcomeName').textContent     = profile.full_name || user.email || 'زميلنا';
       $('welcomeJobTitle').textContent = profile.title || '—';
 
       if (!profile.title) document.querySelector('.welcome-title').style.display = 'none';
