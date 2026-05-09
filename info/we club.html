@@ -2,297 +2,647 @@
 <html lang="ar" dir="rtl">
 <head>
 <script src="../script/auth.js?v=12.0.1"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WeClub</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --purple-deep: #5B0EA6;
+    --purple-main: #7B2FBE;
+    --purple-mid: #9B51E0;
+    --purple-light: #C084FC;
+    --purple-pale: #EDE9FE;
+    --purple-ghost: #F5F3FF;
+    --white: #FFFFFF;
+    --gray-soft: #F8F7FF;
+    --gray-text: #4B4B6B;
+    --gray-muted: #9B9BC0;
+    --black: #1A1A2E;
+  }
 
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WeClub</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #ffffff;
-            color: #333;
-            margin: 0;
-            padding: 0;
-            line-height: 1.6;
-        }
-        .container {
-            width: 90%;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        header {
-            background-color: #9966cc; /* Darker mauve */
-            color: white;
-            padding: 20px 0;
-            text-align: center;
-            border-radius: 0 0 10px 10px;
-            margin-bottom: 30px;
-        }
-        h1 {
-            margin: 0;
-            font-size: 2.2em;
-        }
-        h2 {
-            color: #7d55c7; /* Darker medium purple */
-            border-bottom: 2px solid #9966cc;
-            padding-bottom: 5px;
-        }
-        .package {
-            background-color: #f5f5f5;
-            border: 1px solid #d0d0d0;
-            border-radius: 8px;
-            padding: 20px;
-            margin-bottom: 20px;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 20px 0;
-        }
-        th, td {
-            border: 1px solid #bbb;
-            padding: 12px;
-            text-align: center;
-        }
-        th {
-            background-color: #8a6dbb; /* Darker mauve */
-            color: white;
-        }
-        tr:nth-child(even) {
-            background-color: #e9e9e9;
-        }
-        .highlight {
-            background-color: #e6d7ff;
-            padding: 15px;
-            border-radius: 5px;
-            margin: 15px 0;
-            border-left: 4px solid #8a6dbb;
-        }
-        footer {
-            background-color: #8a6dbb;
-            color: white;
-            text-align: center;
-            padding: 15px 0;
-            margin-top: 30px;
-            border-radius: 10px 10px 0 0;
-        }
-        .code {
-            font-family: monospace;
-            background-color: #e6d7ff;
-            padding: 2px 5px;
-            border-radius: 3px;
-            color: #5d3d8e;
-        }
-        ul {
-            padding-right: 20px;
-        }
-    </style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Cairo', sans-serif;
+    background: var(--white);
+    color: var(--black);
+    overflow-x: hidden;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    background: linear-gradient(135deg, var(--purple-deep) 0%, var(--purple-main) 50%, var(--purple-mid) 100%);
+    padding: 70px 20px 90px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 20% 50%, rgba(255,255,255,0.08) 0%, transparent 60%),
+                radial-gradient(ellipse at 80% 20%, rgba(255,255,255,0.06) 0%, transparent 50%);
+  }
+  .hero-badge {
+    display: inline-block;
+    background: rgba(255,255,255,0.15);
+    backdrop-filter: blur(8px);
+    color: #fff;
+    padding: 6px 20px;
+    border-radius: 999px;
+    font-size: 0.82rem;
+    letter-spacing: 0.05em;
+    margin-bottom: 20px;
+    border: 1px solid rgba(255,255,255,0.25);
+  }
+  .hero h1 {
+    font-size: clamp(2.2rem, 6vw, 3.8rem);
+    font-weight: 900;
+    color: #fff;
+    line-height: 1.15;
+    position: relative;
+  }
+  .hero h1 span { color: var(--purple-light); }
+  .hero-sub {
+    color: rgba(255,255,255,0.8);
+    font-size: 1.05rem;
+    margin-top: 14px;
+    max-width: 580px;
+    margin-inline: auto;
+    line-height: 1.8;
+    position: relative;
+  }
+  .hero-wave {
+    position: absolute;
+    bottom: -1px; left: 0; right: 0;
+    height: 60px;
+  }
+  .hero-wave svg { width: 100%; height: 100%; }
+
+  /* ── LAYOUT ── */
+  .container { max-width: 1020px; margin: 0 auto; padding: 0 20px; }
+
+  /* ── SECTIONS ── */
+  .section { padding: 60px 20px; }
+  .section-alt { background: var(--purple-ghost); }
+
+  .section-title {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 36px;
+  }
+  .section-title .icon {
+    width: 44px; height: 44px;
+    background: linear-gradient(135deg, var(--purple-main), var(--purple-mid));
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.3rem;
+    flex-shrink: 0;
+    box-shadow: 0 4px 14px rgba(123,47,190,0.35);
+  }
+  .section-title h2 {
+    font-size: 1.55rem;
+    font-weight: 800;
+    color: var(--purple-deep);
+  }
+
+  /* ── PILLS ── */
+  .pills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+    gap: 16px;
+  }
+  .pill-card {
+    background: var(--white);
+    border: 1.5px solid var(--purple-pale);
+    border-radius: 14px;
+    padding: 18px 20px;
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    transition: box-shadow 0.2s, transform 0.2s;
+  }
+  .pill-card:hover {
+    box-shadow: 0 6px 24px rgba(123,47,190,0.12);
+    transform: translateY(-2px);
+  }
+  .pill-dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: var(--purple-mid);
+    flex-shrink: 0;
+    margin-top: 6px;
+  }
+  .pill-card p { font-size: 0.93rem; color: var(--gray-text); line-height: 1.65; }
+
+  /* ── PACKAGES TABLE ── */
+  .pkg-table-wrap {
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0 8px 32px rgba(91,14,166,0.10);
+  }
+  .pkg-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  .pkg-table thead tr {
+    background: linear-gradient(135deg, var(--purple-deep), var(--purple-main));
+  }
+  .pkg-table thead th {
+    color: #fff;
+    padding: 16px 14px;
+    font-size: 0.95rem;
+    font-weight: 800;
+    text-align: center;
+    border: none;
+  }
+  .pkg-table thead th:first-child {
+    text-align: right;
+    padding-right: 20px;
+  }
+  .pkg-table tbody tr:nth-child(even) td { background: var(--purple-ghost); }
+  .pkg-table tbody tr:nth-child(odd) td { background: var(--white); }
+  .pkg-table tbody tr:hover td { background: var(--purple-pale); transition: background 0.15s; }
+  .pkg-table td {
+    padding: 13px 14px;
+    font-size: 0.9rem;
+    color: var(--gray-text);
+    text-align: center;
+    border: none;
+    border-bottom: 1px solid var(--purple-ghost);
+  }
+  .pkg-table td:first-child {
+    font-weight: 700;
+    color: var(--purple-deep);
+    text-align: right;
+    padding-right: 20px;
+  }
+  .pkg-table tbody tr:last-child td { border-bottom: none; }
+
+  /* price highlight cells */
+  .pkg-table td.price-cell {
+    font-weight: 800;
+    font-size: 1rem;
+    color: var(--purple-deep);
+  }
+
+  /* ── CODE BADGES ── */
+  .code-badge {
+    display: inline-block;
+    font-family: 'Courier New', monospace;
+    background: var(--purple-ghost);
+    border: 1.5px solid var(--purple-light);
+    color: var(--purple-deep);
+    padding: 3px 10px;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+  }
+
+  /* ── BILLING BOXES ── */
+  .billing-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+    gap: 20px;
+  }
+  .billing-card {
+    background: var(--white);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(91,14,166,0.08);
+    border: 1.5px solid var(--purple-pale);
+  }
+  .billing-card-header {
+    background: linear-gradient(135deg, var(--purple-main), var(--purple-mid));
+    color: #fff;
+    padding: 14px 20px;
+    font-weight: 800;
+    font-size: 1rem;
+  }
+  .billing-card-body { padding: 18px 20px; }
+  .billing-card-body li {
+    font-size: 0.9rem;
+    color: var(--gray-text);
+    line-height: 1.75;
+    margin-bottom: 6px;
+    display: flex;
+    gap: 8px;
+    align-items: flex-start;
+    list-style: none;
+  }
+  .billing-card-body li::before {
+    content: '◆';
+    color: var(--purple-light);
+    font-size: 0.6rem;
+    margin-top: 6px;
+    flex-shrink: 0;
+  }
+  .billing-card-body p { font-size: 0.9rem; color: var(--gray-text); line-height: 1.75; }
+
+  /* ── BAND ── */
+  .band {
+    background: linear-gradient(135deg, var(--purple-deep), var(--purple-main));
+    color: #fff;
+    border-radius: 18px;
+    padding: 28px 32px;
+    margin: 24px 0;
+    position: relative;
+    overflow: hidden;
+  }
+  .band::after {
+    content: '';
+    position: absolute;
+    left: -30px; top: -30px;
+    width: 120px; height: 120px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.06);
+  }
+  .band h3 { font-size: 1.1rem; font-weight: 800; margin-bottom: 10px; position: relative; }
+  .band p, .band li { font-size: 0.92rem; opacity: 0.9; line-height: 1.75; position: relative; }
+  .band ul { padding-right: 18px; }
+
+  /* ── FAQ ── */
+  .faq-list { display: grid; gap: 16px; }
+  .faq-item {
+    background: var(--white);
+    border: 1.5px solid var(--purple-pale);
+    border-radius: 14px;
+    overflow: hidden;
+    transition: box-shadow 0.2s;
+  }
+  .faq-item:hover { box-shadow: 0 4px 16px rgba(123,47,190,0.10); }
+  .faq-q {
+    background: var(--purple-ghost);
+    padding: 14px 20px;
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: var(--purple-deep);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .faq-q::before {
+    content: '؟';
+    width: 26px; height: 26px;
+    background: linear-gradient(135deg, var(--purple-main), var(--purple-mid));
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    color: #fff;
+    font-size: 0.85rem;
+    font-weight: 900;
+    flex-shrink: 0;
+  }
+  .faq-a {
+    padding: 14px 20px;
+    font-size: 0.9rem;
+    color: var(--gray-text);
+    line-height: 1.75;
+  }
+
+  /* ── CODES TABLE ── */
+  .codes-table-wrap {
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(91,14,166,0.08);
+  }
+  .codes-table { width: 100%; border-collapse: collapse; }
+  .codes-table thead th {
+    background: linear-gradient(135deg, var(--purple-deep), var(--purple-main));
+    color: #fff;
+    padding: 14px 20px;
+    font-size: 0.92rem;
+    font-weight: 700;
+    text-align: center;
+  }
+  .codes-table tbody td {
+    padding: 13px 20px;
+    font-size: 0.9rem;
+    color: var(--gray-text);
+    text-align: center;
+    border-bottom: 1px solid var(--purple-ghost);
+  }
+  .codes-table tbody tr:nth-child(even) td { background: var(--purple-ghost); }
+  .codes-table tbody tr:last-child td { border-bottom: none; }
+  .codes-table tbody td:first-child { font-weight: 700; }
+  .codes-table tbody tr:hover td { background: var(--purple-pale); transition: background 0.15s; }
+
+  /* ── ELIGIBILITY ── */
+  .elig-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
+  }
+  .elig-card {
+    background: var(--white);
+    border: 1.5px solid var(--purple-pale);
+    border-radius: 14px;
+    padding: 22px;
+    text-align: center;
+    transition: all 0.2s;
+  }
+  .elig-card:hover {
+    border-color: var(--purple-mid);
+    box-shadow: 0 4px 16px rgba(123,47,190,0.12);
+    transform: translateY(-2px);
+  }
+  .elig-icon { font-size: 2.2rem; margin-bottom: 10px; }
+  .elig-card strong {
+    display: block;
+    color: var(--purple-deep);
+    font-size: 0.95rem;
+    font-weight: 800;
+    margin-bottom: 6px;
+  }
+  .elig-card p { font-size: 0.83rem; color: var(--gray-muted); line-height: 1.6; }
+
+  /* ── DIVIDER ── */
+  .divider {
+    height: 1px;
+    background: linear-gradient(to left, transparent, var(--purple-pale), transparent);
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    background: linear-gradient(135deg, var(--purple-deep), var(--black));
+    color: rgba(255,255,255,0.7);
+    text-align: center;
+    padding: 32px 20px;
+    font-size: 0.88rem;
+  }
+  footer strong { color: var(--purple-light); }
+
+  @media (max-width: 600px) {
+    .section { padding: 44px 16px; }
+    .pkg-table thead th, .pkg-table td { font-size: 0.8rem; padding: 10px 8px; }
+  }
+</style>
 <script src="../script/active-users-widget.js"></script>
 </head>
 <body>
-    <header>
-        <div class="container">
-            <h1>نظام WeClub - باقات الموبايل</h1>
-        </div>
-    </header>
 
-    <div class="container">
-        <section>
-            <h2>مقدمة عن نظام WeClub</h2>
-            <div class="package">
-                <p>نظام WeClub هو نظام مجتمع النوادي الذي يقدم لعملائه باقات مخصصة لهم، حيث تقدم مزايا مختلفة من مكالمات مجانية لكل أعضاء النادي المشتركين في الباقة، بالإضافة إلى باقة موبايل انترنت + دقائق لكل الشبكات في مقابل اشتراك شهري واحد. كما يتضمن النظام عرض الخطوط الجديدة وباقات إضافية يستفيد بها العميل عندما تنتهي باقته الأساسية.</p>
-            </div>
-        </section>
+<!-- ══ HERO ══ -->
+<section class="hero">
+  <div class="hero-badge">🎓 نظام مجتمع النوادي</div>
+  <h1>نظام <span>WeClub</span></h1>
+  <p class="hero-sub">باقات مخصصة لأعضاء النوادي والجامعات — مكالمات مجانية داخل النادي + إنترنت + دقائق لجميع الشبكات في اشتراك شهري واحد</p>
+  <div class="hero-wave">
+    <svg viewBox="0 0 1440 60" preserveAspectRatio="none" fill="#ffffff">
+      <path d="M0,40 C360,80 1080,0 1440,40 L1440,60 L0,60 Z"/>
+    </svg>
+  </div>
+</section>
 
-        <section>
-            <h2>من يمكنه الحصول على خط WeClub؟</h2>
-            <div class="package">
-                <p>خط WeClub مخصص لأعضاء النوادي، ويمكن لأعضاء اندية النقابات أيضًا الاشتراك من خلال إثبات كارت العضوية وكارنية النقابة. كما يمكن للطلاب وأعضاء هيئة التدريس والعاملين بالجامعات الحصول على الخط، مع العلم بأن باقات WeClub متاحة فقط من خلال منافذ بيع WeClub.</p>
-                <h3>الأوراق المطلوبة:</h3>
-                <ul>
-                    <li>بطاقة الرقم القومي</li>
-                    <li>كارنية الجامعة (للطلاب)</li>
-                </ul>
-                <p>يمكن للطلاب غير المصريين الحصول على خط WeClub جديد عن طريق إرفاق إثبات قيد بالجامعة بدلاً من هوية الجامعة، بشرط أن تكون الوثيقة بها تاريخ التوقيع وأن يكون الاشتراك خلال 30 يومًا من تاريخ التوقيع.</p>
-            </div>
-        </section>
+<!-- ══ INTRO ══ -->
+<section class="section">
+  <div class="container">
+    <div class="section-title">
+      <div class="icon">✨</div>
+      <h2>مقدمة عن نظام WeClub</h2>
+    </div>
+    <div class="band">
+      <p>نظام WeClub هو نظام مجتمع النوادي الذي يقدم لعملائه باقات مخصصة، مع مزايا مكالمات مجانية لكل أعضاء النادي المشتركين في الباقة، بالإضافة إلى باقة موبايل إنترنت + دقائق لكل الشبكات في مقابل اشتراك شهري واحد. كما يتضمن النظام عرض الخطوط الجديدة وباقات إضافية يستفيد بها العميل عندما تنتهي باقته الأساسية.</p>
+    </div>
+  </div>
+</section>
 
-        <section>
-            <h2>باقات WeClub الأساسية</h2>
-            <div class="package">
-                <table>
-                    <tr>
-                        <th>التفاصيل</th>
-                        <th>WE club 130</th>
-                        <th>We Club 85</th>
-                        <th>We Club 50</th>
-                        <th>We Club 32</th>
-                    </tr>
-                    <tr>
-                        <td>سعر الباقة (ج.م. من الرصيد)</td>
-                        <td>142.86</td>
-                        <td>92.86</td>
-                        <td>57.14</td>
-                        <td>47.58</td>
-                    </tr>
-                     <tr>
-                        <td>سعر الخط (ج.م. من الرصيد)</td>
-                        <td>252.56</td>
-                        <td>188.28</td>
-                        <td>138.28</td>
-                        <td>112.50</td>
-                    </tr>
-                    <tr>
-                        <td>دقائق الباقة</td>
-                        <td>800</td>
-                        <td>800</td>
-                        <td>700</td>
-                        <td>400</td>
-                    </tr>
-                    <tr>
-                        <td>الإنترنت</td>
-                        <td>10,000 MB</td>
-                        <td>5,000 MB</td>
-                        <td>2,000 MB</td>
-                        <td>1,000 MB</td>
-                    </tr>
-                    <tr>
-                        <td>رسائل نصية لكل الشبكات</td>
-                        <td>50</td>
-                        <td>50</td>
-                        <td>50</td>
-                        <td>50</td>
-                    </tr>
-                    <tr>
-                        <td>دقائق داخل Club</td>
-                        <td>500</td>
-                        <td>500</td>
-                        <td>500</td>
-                        <td>500</td>
-                    </tr>
-                    <tr>
-                        <td>صلاحية الاستخدام</td>
-                        <td> يوم 28 </td>
-                        <td>28 يوم</td>
-                        <td>28 يوم</td>
-                        <td>28 يوم</td>
-                    </tr>
-                    <tr>
-                        <td>كود الإشتراك</td>
-                        <td>*617*130#</td>
-                        <td>*617*85#</td>
-                        <td>*617*50#</td>
-                        <td>*617*32#</td>
-                    </tr>
-                </table>
-            </div>
-        </section>
+<div class="divider"></div>
 
-        <section>
-            <h2>طريقة المحاسبة داخل الباقة</h2>
-            <div class="package">
-                <div class="highlight">
-                    <h3>للمكالمات:</h3>
-                    <ul>
-                        <li>الدقيقة داخل الشبكة (أرضي أو موبايل) = 1 دقيقة من دقائق الباقة الأساسية</li>
-                        <li>الدقيقة للشبكات الأخرى = 5 دقائق من دقائق الباقة الأساسية</li>
-                        <li>الرسالة لكل الشبكات = 1 رسالة من الباقة</li>
-                    </ul>
-                </div>
-                
-                <div class="highlight">
-                    <h3>للموبايل إنترنت:</h3>
-                    <p>1 ميجا = 1 ميجا استهلاك على جميع التطبيقات والخدمات</p>
-                </div>
-                
-                <div class="highlight">
-                    <h3>نظام المحاسبة خارج الباقة:</h3>
-                    <p>حساب الدقائق والرسائل لكل الشبكات والميجابايت خارج الباقة = 19 قرش</p>
-                    <p>في حالة عدم تجديد الباقة أو عدم وجود رصيد كافي، يتم محاسبة العميل بـ 19 قرش للميجابايت</p>
-                </div>
-            </div>
-        </section>
-
-        <section>
-            <h2>الأسئلة الشائعة</h2>
-            <div class="package">
-                <h3>كيف يمكن للعميل الاستفادة من الدقائق المجانية داخل باقات WeClub؟</h3>
-                <p>يجب على مسئول المبيعات إضافة العميل إلى الـ CUG حتى يستطيع العميل الاستفادة من الدقائق المجانية داخل باقات WeClub. إذا لم يتم إضافة العميل إلى الـ CUG Group، سيتم استهلاك المكالمات ما بين المشتركين من دقائق الباقة الأساسية.</p>
-                
-                <h3>ماذا يحدث بعد نفاذ الدقائق المجانية داخل باقات WeClub؟</h3>
-                <p>بعد نفاذ الدقائق المجانية، يستمر استهلاك المكالمات ما بين مشتركين WeClub من دقائق الباقة الأساسية (500 دقيقة).</p>
-                
-                <h3>هل يمكن تجديد الباقة قبل موعد التجديد التلقائي؟</h3>
-                <p>نعم، يمكن للعميل القيام بالتجديد المبكر لباقات WeClub في أي وقت.</p>
-                
-                <h3>هل يمكن إضافة باقات إنترنت إضافية؟</h3>
-                <p>نعم، يستطيع العميل إضافة باقات إنترنت على نظام خط WeClub.</p>
-            </div>
-        </section>
-
-        <section>
-            <h2>الأكواد المختصرة لنظام WeClub</h2>
-            <div class="package">
-                <table>
-                    <tr>
-                        <th>الكود</th>
-                        <th>الوصف</th>
-                    </tr>
-                    <tr>
-                        <td class="code">*617*2#</td>
-                        <td>تجديد مبكر</td>
-                    </tr>
-                    <tr>
-                        <td class="code">*617#</td>
-                        <td>الاشتراك أو التحويل في باقات WeClub</td>
-                    </tr>
-                    <tr>
-                        <td class="code">*617*32#</td>
-                        <td>الاشتراك أو التحويل في باقة We Club 32</td>
-                    </tr>
-                    <tr>
-                        <td class="code">*617*50#</td>
-                        <td>الاشتراك أو التحويل في باقة We Club 50</td>
-                    </tr>
-                    <tr>
-                        <td class="code">*617*85#</td>
-                        <td>الاشتراك أو التحويل في باقة We Club 85</td>
-                    </tr>
-                    <tr>
-                        <td class="code">*617*130#</td>
-                        <td>الاشتراك أو التحويل في باقة We Club 130</td>
-                    </tr>
-                    <tr>
-                        <td class="code">*617*500#</td>
-                        <td>500 دقيقة لشركة WE أرضي وموبايل، و5 جنيه لمدة 30 يوم</td>
-                    </tr>
-                    <tr>
-                        <td class="code">*617*300#</td>
-                        <td>300 دقيقة لكل الشبكات، و5 جنيه لمدة 30 يوم</td>
-                    </tr>
-                    <tr>
-                        <td class="code">*550#</td>
-                        <td>الاستفسار عن الرصيد</td>
-                    </tr>
-                    <tr>
-                        <td class="code">*414#</td>
-                        <td>معرفة المتبقي من الباقة</td>
-                    </tr>
-                    <tr>
-                        <td class="code">*066#</td>
-                        <td>خاصية الاحتفاظ بالرقم</td>
-                    </tr>
-                </table>
-            </div>
-        </section>
+<!-- ══ ELIGIBILITY ══ -->
+<section class="section section-alt">
+  <div class="container">
+    <div class="section-title">
+      <div class="icon">🎟️</div>
+      <h2>من يمكنه الحصول على خط WeClub؟</h2>
+    </div>
+    <div class="elig-grid">
+      <div class="elig-card">
+        <div class="elig-icon">🏛️</div>
+        <strong>أعضاء النوادي</strong>
+        <p>أعضاء النوادي الرياضية والاجتماعية بإثبات كارت العضوية</p>
+      </div>
+      <div class="elig-card">
+        <div class="elig-icon">⚖️</div>
+        <strong>أعضاء النقابات</strong>
+        <p>يمكن الاشتراك بإثبات كارنية النقابة</p>
+      </div>
+      <div class="elig-card">
+        <div class="elig-icon">🎓</div>
+        <strong>طلاب الجامعات</strong>
+        <p>الطلاب وأعضاء هيئة التدريس والعاملون بالجامعات</p>
+      </div>
+      <div class="elig-card">
+        <div class="elig-icon">🌍</div>
+        <strong>الطلاب غير المصريين</strong>
+        <p>بإرفاق إثبات قيد بالجامعة خلال 30 يوماً من تاريخ التوقيع</p>
+      </div>
     </div>
 
-    <footer>
-        <div class="container">
-            <p>Powered by Mohand</p>
+    <div class="band" style="margin-top: 28px; background: linear-gradient(135deg, #3D0080, #7B2FBE);">
+      <h3>📄 الأوراق المطلوبة</h3>
+      <ul>
+        <li>بطاقة الرقم القومي</li>
+        <li>كارنية الجامعة (للطلاب المصريين)</li>
+        <li>إثبات قيد بالجامعة (للطلاب غير المصريين — يجب أن يكون بتاريخ توقيع ويُقدَّم خلال 30 يوماً)</li>
+        <li>باقات WeClub متاحة فقط من خلال منافذ بيع WeClub</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══ PACKAGES ══ -->
+<section class="section">
+  <div class="container">
+    <div class="section-title">
+      <div class="icon">📦</div>
+      <h2>باقات WeClub الأساسية</h2>
+    </div>
+    <div class="pkg-table-wrap">
+      <table class="pkg-table">
+        <thead>
+          <tr>
+            <th>التفاصيل</th>
+            <th>WE Club 150</th>
+            <th>WE Club 98</th>
+            <th>WE Club 58</th>
+            <th>WE Club 37</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>سعر الباقة (من الرصيد)</td>
+            <td class="price-cell">214.50 ج</td>
+            <td class="price-cell">140.14 ج</td>
+            <td class="price-cell">82.94 ج</td>
+            <td class="price-cell">51.91 ج</td>
+          </tr>
+          <tr>
+            <td>سعر الخط (من الرصيد)</td>
+            <td class="price-cell">281.50 ج</td>
+            <td class="price-cell">255.28 ج</td>
+            <td class="price-cell">149.94 ج</td>
+            <td class="price-cell">118.91 ج</td>
+          </tr>
+          <tr>
+            <td>دقائق الباقة</td>
+            <td>800 دقيقة</td>
+            <td>800 دقيقة</td>
+            <td>700 دقيقة</td>
+            <td>400 دقيقة</td>
+          </tr>
+          <tr>
+            <td>الإنترنت</td>
+            <td>10,000 MB</td>
+            <td>5,000 MB</td>
+            <td>2,000 MB</td>
+            <td>1,000 MB</td>
+          </tr>
+          <tr>
+            <td>رسائل نصية لكل الشبكات</td>
+            <td>50 رسالة</td>
+            <td>50 رسالة</td>
+            <td>50 رسالة</td>
+            <td>50 رسالة</td>
+          </tr>
+          <tr>
+            <td>دقائق داخل Club</td>
+            <td>500 دقيقة</td>
+            <td>500 دقيقة</td>
+            <td>500 دقيقة</td>
+            <td>500 دقيقة</td>
+          </tr>
+          <tr>
+            <td>صلاحية الاستخدام</td>
+            <td>28 يوم</td>
+            <td>28 يوم</td>
+            <td>28 يوم</td>
+            <td>28 يوم</td>
+          </tr>
+          <tr>
+            <td>كود الاشتراك</td>
+            <td><span class="code-badge">*617*130#</span></td>
+            <td><span class="code-badge">*617*85#</span></td>
+            <td><span class="code-badge">*617*50#</span></td>
+            <td><span class="code-badge">*617*32#</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══ BILLING ══ -->
+<section class="section section-alt">
+  <div class="container">
+    <div class="section-title">
+      <div class="icon">💰</div>
+      <h2>طريقة المحاسبة داخل وخارج الباقة</h2>
+    </div>
+    <div class="billing-grid">
+      <div class="billing-card">
+        <div class="billing-card-header">📞 المكالمات</div>
+        <div class="billing-card-body">
+          <ul>
+            <li>الدقيقة داخل الشبكة (أرضي أو موبايل) = 1 دقيقة من الباقة</li>
+            <li>الدقيقة للشبكات الأخرى = 5 دقائق من الباقة</li>
+            <li>الرسالة لكل الشبكات = 1 رسالة من الباقة</li>
+          </ul>
         </div>
-    </footer>
+      </div>
+      <div class="billing-card">
+        <div class="billing-card-header">🌐 الموبايل إنترنت</div>
+        <div class="billing-card-body">
+          <p>1 ميجا = 1 ميجا استهلاك على جميع التطبيقات والخدمات بدون استثناء</p>
+        </div>
+      </div>
+      <div class="billing-card">
+        <div class="billing-card-header">⚡ خارج الباقة</div>
+        <div class="billing-card-body">
+          <p>الدقائق والرسائل لكل الشبكات والميجابايت خارج الباقة = <strong style="color: var(--purple-deep);">19 قرش</strong></p>
+          <br>
+          <p>في حالة عدم تجديد الباقة أو عدم وجود رصيد كافٍ يتم المحاسبة بـ 19 قرش للميجابايت</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══ FAQ ══ -->
+<section class="section">
+  <div class="container">
+    <div class="section-title">
+      <div class="icon">💬</div>
+      <h2>الأسئلة الشائعة</h2>
+    </div>
+    <div class="faq-list">
+      <div class="faq-item">
+        <div class="faq-q">كيف يمكن للعميل الاستفادة من الدقائق المجانية داخل باقات WeClub؟</div>
+        <div class="faq-a">يجب على مسئول المبيعات إضافة العميل إلى الـ CUG حتى يستطيع الاستفادة من الدقائق المجانية. إذا لم يتم إضافة العميل إلى الـ CUG Group، سيتم استهلاك المكالمات ما بين المشتركين من دقائق الباقة الأساسية.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">ماذا يحدث بعد نفاذ الدقائق المجانية داخل باقات WeClub؟</div>
+        <div class="faq-a">بعد نفاذ الدقائق المجانية، يستمر استهلاك المكالمات ما بين مشتركي WeClub من دقائق الباقة الأساسية (500 دقيقة).</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">هل يمكن تجديد الباقة قبل موعد التجديد التلقائي؟</div>
+        <div class="faq-a">نعم، يمكن للعميل القيام بالتجديد المبكر لباقات WeClub في أي وقت يرغب فيه.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">هل يمكن إضافة باقات إنترنت إضافية؟</div>
+        <div class="faq-a">نعم، يستطيع العميل إضافة باقات إنترنت إضافية على نظام خط WeClub بدون أي قيود.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══ CODES ══ -->
+<section class="section section-alt">
+  <div class="container">
+    <div class="section-title">
+      <div class="icon">📟</div>
+      <h2>الأكواد المختصرة لنظام WeClub</h2>
+    </div>
+    <div class="codes-table-wrap">
+      <table class="codes-table">
+        <thead>
+          <tr>
+            <th>الكود</th>
+            <th>الوصف</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td><span class="code-badge">*617*2#</span></td><td>تجديد مبكر</td></tr>
+          <tr><td><span class="code-badge">*617#</span></td><td>الاشتراك أو التحويل في باقات WeClub</td></tr>
+          <tr><td><span class="code-badge">*617*32#</span></td><td>الاشتراك أو التحويل في باقة WE Club 32</td></tr>
+          <tr><td><span class="code-badge">*617*50#</span></td><td>الاشتراك أو التحويل في باقة WE Club 50</td></tr>
+          <tr><td><span class="code-badge">*617*85#</span></td><td>الاشتراك أو التحويل في باقة WE Club 85</td></tr>
+          <tr><td><span class="code-badge">*617*130#</span></td><td>الاشتراك أو التحويل في باقة WE Club 130</td></tr>
+          <tr><td><span class="code-badge">*617*500#</span></td><td>500 دقيقة لشركة WE أرضي وموبايل — 5 جنيه لمدة 30 يوم</td></tr>
+          <tr><td><span class="code-badge">*617*300#</span></td><td>300 دقيقة لكل الشبكات — 5 جنيه لمدة 30 يوم</td></tr>
+          <tr><td><span class="code-badge">*550#</span></td><td>الاستفسار عن الرصيد</td></tr>
+          <tr><td><span class="code-badge">*414#</span></td><td>معرفة المتبقي من الباقة</td></tr>
+          <tr><td><span class="code-badge">*066#</span></td><td>خاصية الاحتفاظ بالرقم</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ══ FOOTER ══ -->
+<footer>
+  <p>Powered by <strong>Mohand</strong> — WeClub &copy; 2025 المصرية للاتصالات</p>
+</footer>
 
 <script>
   window.addEventListener('load', function() {
