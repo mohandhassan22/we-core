@@ -279,8 +279,9 @@ body{font-family:var(--font-sans,'Segoe UI',sans-serif);background:transparent;c
     <div class="alert alert-warn"><i class="ti ti-alert-triangle" aria-hidden="true"></i> تُطبَّق عندما يطلب العميل إلغاء خط موبايل فاتورة وكان الحساب موقوفًا (Suspended) بسبب التأخر في السداد</div>
     <div class="card">
       <div class="card-title"><i class="ti ti-steps" aria-hidden="true"></i> خطوات إلغاء خط فاتورة FMC متوقف</div>
-      <div class="step"><div class="step-num">1</div><div class="step-text">سداد أول فاتورتين فقط المستحقتين — <span style="color:#791F1F">بدون عمل Hot Bill أو Dismiss للجروب</span></div></div>
       <div class="step"><div class="step-num">2</div><div class="step-text">إيقاف خط الموبايل يدويًا عبر شاشة Suspend and Bar:<br><span class="badge badge-purple" style="margin-top:5px;display:inline-flex">Operation Type: Customer Request Suspension</span><br><span class="badge badge-amber" style="margin-top:4px;display:inline-flex">Suspension Reason: Post-paid deactivation request</span></div></div>
+      <div class="step"><div class="step-num">1</div><div class="step-text">سداد أول فاتورتين فقط المستحقتين — <span style="color:#791F1F">بدون عمل Hot Bill أو Dismiss للجروب</span></div></div>
+      <div class="alert alert-warn"><i class="ti ti-alert-triangle" aria-hidden="true"></i> <strong>ملحوظه </strong> يجب ابلاغ العميل بعدم استخدام اي من الجيجات الانترنت المنزلي أو الموبيل لاستمرار عملية الالغاء </div> 
       <div class="step"><div class="step-num">3</div><div class="step-text">إنشاء التكت على Remedy مع إرفاق نموذج الإلغاء داخل التكت:
         <div class="tbl-wrap" style="margin-top:8px">
           <table class="tbl"><tr><th>Company</th><th>Issue Type</th><th>Category</th><th>Type</th><th>Item</th><th>SLA</th></tr>
@@ -291,11 +292,12 @@ body{font-family:var(--font-sans,'Segoe UI',sans-serif);background:transparent;c
     <div class="sec-heading" style="font-size:14px">🔁 إعادة تشغيل خط فاتورة FMC متوقف بسبب Activation Team</div>
     <div class="card">
       <div class="card-title"><i class="ti ti-steps" aria-hidden="true"></i> خطوات إعادة التشغيل</div>
-      <div class="step"><div class="step-num">1</div><div class="step-text">الدخول على Remedy وفتح TT باسم <span class="badge badge-purple">Data Validation</span> للاطلاع على سبب الإيقاف:<br>
+      <div class="step"><div class="step-num">1</div><div class="step-text">الدخول على Remedy وفتح TT باسم <span class="badge badge-purple">ATP Validation</span> للاطلاع على سبب الإيقاف:<br>
         <ul style="margin-top:8px;padding-right:16px;font-size:13px;line-height:1.9">
           <li>إذا كان السبب <strong>عقد أو بيانات خاطئة</strong> → التصحيح ورفع الأوراق مرة أخرى</li>
           <li>إذا كان السبب <strong>Bad History</strong> → دفع المبلغ التأميني أو ما يلزم</li>
         </ul>
+        <div class="alert alert-warn"><i class="ti ti-alert-triangle" aria-hidden="true"></i> <strong>ملحوظه </strong> سوف يتم تواصل Activation Team لتنشيط الخط علي رقم التواصل و في حالة عدم الرد تغلق ال TT و يجب انشاء TT أخري </div>
       </div></div>
       <div class="step"><div class="step-num">2</div><div class="step-text">بعد تنفيذ طلب الـ Activation، إنشاء التكت:
         <div class="tbl-wrap" style="margin-top:8px">
