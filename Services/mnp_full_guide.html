@@ -1,0 +1,167 @@
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700&display=swap');
+*{box-sizing:border-box;margin:0;padding:0;}
+.pg{font-family:'Cairo',sans-serif;direction:rtl;color:var(--color-text-primary);padding:1.5rem;}
+.hero{background:#5b21b6;border-radius:var(--border-radius-lg);padding:1.25rem 1.5rem;margin-bottom:1.25rem;color:#fff;}
+.hero h1{font-size:20px;font-weight:700;margin-bottom:4px;}
+.hero p{font-size:12px;opacity:0.85;line-height:1.6;}
+.sec-head{font-size:14px;font-weight:700;color:#5b21b6;margin:1.25rem 0 8px;display:flex;align-items:center;gap:6px;padding-bottom:6px;border-bottom:1px solid #e9d5ff;}
+.card{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:12px 14px;margin-bottom:10px;}
+.row{display:flex;align-items:flex-start;gap:8px;padding:5px 0;border-bottom:0.5px solid var(--color-border-tertiary);font-size:13px;line-height:1.65;}
+.row:last-child{border-bottom:none;}
+.num{width:22px;height:22px;border-radius:50%;background:#5b21b6;color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;}
+.tag{display:inline-block;background:#ede9fe;color:#4c1d95;border-radius:6px;padding:1px 8px;font-size:11px;font-weight:700;margin:0 2px;}
+.alert{border-radius:var(--border-radius-md);padding:10px 14px;font-size:12px;line-height:1.7;margin-bottom:10px;display:flex;gap:8px;align-items:flex-start;}
+.alert-warn{background:#fef9c3;border:0.5px solid #fde047;color:#713f12;}
+.alert-red{background:#fee2e2;border:0.5px solid #fca5a5;color:#7f1d1d;}
+.alert-green{background:#dcfce7;border:0.5px solid #86efac;color:#14532d;}
+.alert-blue{background:#dbeafe;border:0.5px solid #93c5fd;color:#1e3a8a;}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;}
+.stat{background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:10px 12px;}
+.stat .lbl{font-size:11px;color:var(--color-text-secondary);margin-bottom:3px;}
+.stat .val{font-size:16px;font-weight:700;color:#5b21b6;}
+.stat .sub{font-size:11px;color:var(--color-text-secondary);}
+.rej-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px;}
+.rej-item{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);padding:10px 12px;font-size:12px;}
+.rej-code{font-weight:700;color:#dc2626;font-size:13px;margin-bottom:2px;}
+.rej-desc{color:var(--color-text-secondary);line-height:1.5;}
+.step-wrap{display:flex;flex-direction:column;}
+.step{display:flex;gap:0;align-items:stretch;margin-bottom:10px;}
+.step-l{display:flex;flex-direction:column;align-items:center;width:40px;flex-shrink:0;}
+.step-n{width:30px;height:30px;border-radius:50%;background:#5b21b6;color:#fff;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;}
+.step-line{width:2px;background:#e9d5ff;flex:1;margin:3px 0;}
+.step:last-child .step-line{display:none;}
+.step-b{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:10px 12px;flex:1;}
+.step-t{font-size:13px;font-weight:700;color:#3b0764;margin-bottom:3px;}
+.step-d{font-size:12px;color:var(--color-text-secondary);line-height:1.6;}
+.path{background:#f3e8ff;border-radius:6px;padding:4px 10px;font-size:11px;color:#4c1d95;font-family:monospace;direction:ltr;text-align:left;margin-top:6px;display:inline-block;}
+.img-box{border:0.5px solid var(--color-border-tertiary);border-radius:8px;overflow:hidden;margin-top:8px;width:100%;}
+</style>
+<div class="pg">
+  <h2 class="sr-only" style="position:absolute;width:1px;height:1px;overflow:hidden;">دليل خدمة MNP الشامل — تحويل الأرقام</h2>
+
+  <div class="hero">
+    <h1><i class="ti ti-arrows-transfer-up" aria-hidden="true" style="font-size:18px;vertical-align:-3px;margin-left:8px;"></i>دليل خدمة MNP — تحويل الأرقام</h1>
+    <p>Mobile Number Portability | تحويل بنفس الرقم بدون تغيير | Operation Development Team</p>
+  </div>
+
+  <div class="alert alert-warn">
+    <i class="ti ti-alert-triangle" aria-hidden="true" style="font-size:15px;flex-shrink:0;margin-top:2px;"></i>
+    <div><strong>تحذير مهم — مخالفات الرقم القومي:</strong> يجب كتابة بيانات العميل بشكل صحيح وتحديداً الرقم القومي، ومراجعتها من خلال المشرف قبل تسجيل الطلب. في حال رقم خاطئ يلزم حضور العميل خلال 24 ساعة لإلغاء الطلب وإنشاء طلب جديد.</div>
+  </div>
+
+  <div class="alert alert-blue" style="margin-bottom:10px;">
+    <i class="ti ti-info-circle" aria-hidden="true" style="font-size:15px;flex-shrink:0;margin-top:2px;"></i>
+    <div><strong>تحديث أبريل 2026:</strong> يلزم كتابة <span class="tag">كود الفرع</span> في خانة <span class="tag">Comment</span> أثناء إنشاء طلب MNP.</div>
+  </div>
+
+  <div class="sec-head"><i class="ti ti-info-circle" aria-hidden="true" style="font-size:16px;"></i>ما هي خدمة MNP؟</div>
+  <div class="card" style="font-size:13px;line-height:1.8;color:var(--color-text-secondary);">
+    خدمة تمكّن العميل من الانتقال إلى شبكة <strong style="color:var(--color-text-primary);">WE</strong> مع الاحتفاظ بنفس رقمه دون الحاجة لتغييره، والاستفادة من جميع خدمات الشبكة. يتوجه العميل بشريحته القديمة ويوقع على عقد WE الجديد ويأخذ شريحته الجديدة. يتم تحويل الطلب خلال <strong style="color:#5b21b6;">8 ساعات عمل</strong>.
+  </div>
+
+  <div class="two-col">
+    <div class="stat"><div class="lbl">مدة التنفيذ</div><div class="val">8 ساعات</div><div class="sub">ساعات عمل SLA</div></div>
+    <div class="stat"><div class="lbl">تكلفة التحويل</div><div class="val">مجاناً</div><div class="sub">الشريحة والتحويل بدون رسوم</div></div>
+  </div>
+
+  <div class="sec-head"><i class="ti ti-file-check" aria-hidden="true" style="font-size:16px;"></i>متطلبات Port In</div>
+  <div class="card">
+    <div class="row"><div class="num">1</div><div>زيارة مالك الخط لأقرب فرع WE رئيسي</div></div>
+    <div class="row"><div class="num">2</div><div>بطاقة شخصية أو جواز سفر سارية — <strong>بدون كسر أو خدش</strong></div></div>
+    <div class="row"><div class="num">3</div><div>التأكد من كتابة الرقم القومي أو رقم جواز السفر بشكل صحيح</div></div>
+    <div class="row"><div class="num">4</div><div>التوقيع على طلب الانتقال إلى الشركة المصرية للاتصالات</div></div>
+    <div class="row"><div class="num">5</div><div>التوقيع على عقد الخط واستلام الشريحة من WE</div></div>
+    <div class="row"><div class="num">6</div><div>رفع جميع الأوراق على السيستم بشكل صحيح</div></div>
+    <div class="row"><div class="num">7</div><div>يمكن تقديم الطلب بصرف النظر عن مرور 4 أشهر أو لا — الرفض يأتي من الشركة الأخرى إن وجد</div></div>
+  </div>
+
+  <div class="alert alert-green">
+    <i class="ti ti-user-check" aria-hidden="true" style="font-size:15px;flex-shrink:0;margin-top:2px;"></i>
+    <div>العملاء المحوّلون من شركات أخرى يحق لهم الحصول على خط فاتورة <strong>دون تقديم أوراق ATP</strong> أو دفع مبلغ تأميني.</div>
+  </div>
+
+  <div class="sec-head"><i class="ti ti-list-numbers" aria-hidden="true" style="font-size:16px;"></i>خطوات إنشاء طلب Port In على السيستم</div>
+  <div class="step-wrap">
+    <div class="step">
+      <div class="step-l"><div class="step-n">1</div><div class="step-line"></div></div>
+      <div class="step-b"><div class="step-t">الدخول على Sitemap</div><div class="step-d">الضغط على <span class="tag">Integrated Operations (New)</span> ثم اختيار <span class="tag">General Query → Port In</span></div></div>
+    </div>
+    <div class="step">
+      <div class="step-l"><div class="step-n">2</div><div class="step-line"></div></div>
+      <div class="step-b"><div class="step-t">تحديد نوع الهوية والبحث</div><div class="step-d">اختر <span class="tag">National ID</span> أو Passport ثم أدخل الرقم واضغط <span class="tag">Search</span> ثم <span class="tag">Verify</span> — ستظهر رسالة "Verification successful"</div></div>
+    </div>
+    <div class="step">
+      <div class="step-l"><div class="step-n">3</div><div class="step-line"></div></div>
+      <div class="step-b"><div class="step-t">رفع ملفات العميل</div><div class="step-d">الضغط على <span class="tag">Upload</span> لرفع المستندات (الهوية + عقد WE + نموذج MNP) ثم <span class="tag">Confirm</span></div></div>
+    </div>
+    <div class="step">
+      <div class="step-l"><div class="step-n">4</div><div class="step-line"></div></div>
+      <div class="step-b"><div class="step-t">تعبئة البيانات الإلزامية</div><div class="step-d">الاسم الأول والأخير، الجنسية، تاريخ الميلاد، الجنس، العنوان، Customer Segmentation، رقم الهاتف</div></div>
+    </div>
+    <div class="step">
+      <div class="step-l"><div class="step-n">5</div><div class="step-line"></div></div>
+      <div class="step-b"><div class="step-t">اختيار الباقة الأساسية</div><div class="step-d">الضغط على <span class="tag">+</span> في Select Package — اختر <span class="tag">WE Gold - Port-in</span> (كباقة مؤقتة) أو أي باقة Prepaid</div></div>
+    </div>
+    <div class="step">
+      <div class="step-l"><div class="step-n">6</div><div class="step-line"></div></div>
+      <div class="step-b">
+        <div class="step-t">تعبئة بيانات Select Number</div>
+        <div class="step-d">
+          <strong>Donor:</strong> اختر الشركة (Orange/Vodafone/Etisalat)<br>
+          <strong>Old SIM Serial:</strong> رقم الشريحة القديمة — إذا لم يتوفر استخدم الكود الثابت:<br>
+          <span class="tag">89200</span> + كود الشركة: Orange=1، Vodafone=2، Etisalat=3<br>
+          <strong>Billing Number:</strong> رقم حساب العميل — إذا لم يتوفر اكتب <span class="tag">123</span><br>
+          <strong>Service Number:</strong> الرقم المراد تحويله<br>
+          <strong>SIM Card:</strong> رقم الشريحة الجديدة
+        </div>
+        <img class="img-box" src="/mnt/user-data/uploads/1778350896522_image.png" alt="حقل Comment في شاشة Select Number" />
+        <div style="font-size:11px;color:#5b21b6;margin-top:6px;"><i class="ti ti-alert-circle" aria-hidden="true" style="font-size:13px;vertical-align:-2px;"></i> من أبريل 2026: لا تنسَ كتابة كود الفرع في حقل <strong>Comment</strong></div>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-l"><div class="step-n">7</div><div class="step-line"></div></div>
+      <div class="step-b"><div class="step-t">التحقق من الشريحة والإرسال</div><div class="step-d">اضغط <span class="tag">Verify Card No.</span> — ستظهر "The card is available" ثم <span class="tag">CHECK OUT</span> وأخيراً <span class="tag">SUBMIT</span> — ستظهر شاشة Business Handling Success</div></div>
+    </div>
+  </div>
+
+  <div class="sec-head"><i class="ti ti-arrows-exchange" aria-hidden="true" style="font-size:16px;"></i>تحويل عميل WE Gold Port-in إلى WE Gold</div>
+  <div class="alert alert-red">
+    <i class="ti ti-ban" aria-hidden="true" style="font-size:15px;flex-shrink:0;margin-top:2px;"></i>
+    <div><strong>إلزامي:</strong> إذا زار العميل الفرع وكان لا يزال على باقة <strong>WE Gold_Port-in</strong>، يجب تنفيذ التحويل أولاً إلى <strong>WE Gold</strong> قبل أي إجراء آخر. يُمنع تنفيذ أي إجراء قبل إتمام التحويل أو توجيهه لمركز الخدمة.</div>
+  </div>
+  <img class="img-box" src="/mnt/user-data/uploads/1778350921996_image.png" alt="شاشة WE Gold Port-in على السيستم" style="margin-bottom:10px;" />
+
+  <div class="sec-head"><i class="ti ti-x" aria-hidden="true" style="font-size:16px;"></i>أسباب رفض الطلب (Reject Codes)</div>
+  <div class="rej-grid">
+    <div class="rej-item"><div class="rej-code">SP01</div><div class="rej-desc">رقم الهوية خاطئ أو ناقص</div></div>
+    <div class="rej-item"><div class="rej-code">SP02</div><div class="rej-desc">الرقم لا ينتمي للشركة المحوّل منها</div></div>
+    <div class="rej-item"><div class="rej-code">SP03</div><div class="rej-desc">الخط غير مفعّل (Deactivated)</div></div>
+    <div class="rej-item"><div class="rej-code">SP04</div><div class="rej-desc">الخط Secondary بدون Primary</div></div>
+    <div class="rej-item"><div class="rej-code">SP05</div><div class="rej-desc">الخط موقوف (Suspended)</div></div>
+    <div class="rej-item"><div class="rej-code">SP07</div><div class="rej-desc">حساب Corporate (شركات)</div></div>
+    <div class="rej-item"><div class="rej-code">SP08</div><div class="rej-desc">أقل من 4 أشهر عند الشركة الأخرى</div></div>
+    <div class="rej-item"><div class="rej-code">SP09</div><div class="rej-desc">فواتير غير مدفوعة</div></div>
+  </div>
+  <div style="font-size:12px;color:var(--color-text-secondary);margin-bottom:10px;">لمعرفة سبب الرفض من الشركة الأخرى: <span class="path">Request → Consumer MNP → Port Out → NPC Response → NPC Response</span></div>
+
+  <div class="sec-head"><i class="ti ti-trash" aria-hidden="true" style="font-size:16px;"></i>إلغاء طلب Port In</div>
+  <div class="card">
+    <div class="row"><div class="num">1</div><div>الدخول على <span class="tag">MNP Order Info</span> والبحث عن طلب العميل</div></div>
+    <div class="row"><div class="num">2</div><div>الضغط على <span class="tag">Cancel</span> بجانب الطلب</div></div>
+    <div class="row"><div class="num">3</div><div>إنشاء TT على Remedy مع إرفاق نموذج إلغاء موقّع من العميل ومتضمن رقم هويته</div></div>
+  </div>
+  <div style="font-size:12px;margin-bottom:4px;"><span class="path">Request → Consumer MNP → Port in → Cancel port in request → Cancel port in request</span></div>
+
+  <div class="sec-head"><i class="ti ti-alert-circle" aria-hidden="true" style="font-size:16px;"></i>ملاحظات عامة مهمة</div>
+  <div class="card">
+    <div class="row"><i class="ti ti-point" aria-hidden="true" style="font-size:14px;color:#5b21b6;flex-shrink:0;margin-top:3px;"></i><div>العميل المصري يمكنه تحويل حتى <strong>10 خطوط Voice</strong> في نفس الوقت، والأجنبي حتى <strong>5 خطوط</strong></div></div>
+    <div class="row"><i class="ti ti-point" aria-hidden="true" style="font-size:14px;color:#5b21b6;flex-shrink:0;margin-top:3px;"></i><div>يُسلَّم العميل نسخة من نموذج التحويل أو الإلغاء مختومة بختم الفرع مع توضيح وقت وتاريخ الطلب</div></div>
+    <div class="row"><i class="ti ti-point" aria-hidden="true" style="font-size:14px;color:#5b21b6;flex-shrink:0;margin-top:3px;"></i><div>لا يُنقل أي رصيد أو مميزات أو خدمات أو نقاط من الشركة السابقة</div></div>
+    <div class="row"><i class="ti ti-point" aria-hidden="true" style="font-size:14px;color:#5b21b6;flex-shrink:0;margin-top:3px;"></i><div>تم <strong>حذف البند 7</strong> الخاص بترحيل الجيجابايت المتبقية في ADSL — لم يعد هذا الإجراء معمولاً به ولا يتم ترحيل الجيجابايت</div></div>
+    <div class="row"><i class="ti ti-point" aria-hidden="true" style="font-size:14px;color:#dc2626;flex-shrink:0;margin-top:3px;"></i><div>عدم اتخاذ إجراء Re-Dispatch على أي طلب برقم قومي خاطئ — يضاعف المخالفة المالية</div></div>
+    <div class="row"><i class="ti ti-point" aria-hidden="true" style="font-size:14px;color:#5b21b6;flex-shrink:0;margin-top:3px;"></i><div>يجب إرفاق كافة الأوراق مع ختم الفرع والتاريخ والإمضاء</div></div>
+  </div>
+
+</div>
