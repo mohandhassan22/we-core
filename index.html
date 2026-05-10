@@ -395,6 +395,58 @@ footer span{color:var(--p2);font-weight:700;}
   .welcome-name{font-size:17px;}
 }
 
+/* ── SEARCH BAR ── */
+.search-wrap{
+  position:relative;z-index:1;
+  max-width:960px;margin:0 auto;
+  padding:0 20px 0;
+}
+.search-box{
+  position:relative;
+  display:flex;align-items:center;
+}
+.search-box input{
+  width:100%;
+  padding:14px 52px 14px 20px;
+  border-radius:14px;
+  border:1.5px solid var(--border);
+  background:#fff;
+  font-family:'Cairo',sans-serif;
+  font-size:14px;
+  color:var(--text);
+  outline:none;
+  box-shadow:0 2px 12px var(--shadow);
+  transition:border-color .2s, box-shadow .2s;
+  direction:rtl;
+}
+.search-box input::placeholder{color:var(--text3);}
+.search-box input:focus{
+  border-color:var(--p2);
+  box-shadow:0 4px 18px rgba(124,58,237,.18);
+}
+.search-icon{
+  position:absolute;right:16px;
+  color:var(--p2);font-size:17px;
+  pointer-events:none;
+}
+.search-clear{
+  position:absolute;left:14px;
+  background:none;border:none;cursor:pointer;
+  color:var(--text3);font-size:15px;
+  display:none;transition:color .2s;
+  padding:4px;
+}
+.search-clear:hover{color:var(--p2);}
+
+.search-no-result{
+  display:none;
+  text-align:center;
+  padding:32px 20px;
+  color:var(--text2);
+  font-size:14.5px;
+}
+.search-no-result i{font-size:36px;color:var(--p3);display:block;margin-bottom:10px;}
+
 /* ── INSTRUCTIONS MODAL ── */
 .instr-overlay{
   position:fixed;inset:0;
@@ -638,6 +690,15 @@ footer span{color:var(--p2);font-weight:700;}
   </svg>
 </div>
 
+<!-- SEARCH BAR -->
+<div class="search-wrap" style="padding-top:22px;">
+  <div class="search-box">
+    <i class="fa-solid fa-magnifying-glass search-icon"></i>
+    <input type="text" id="siteSearch" placeholder="ابحث عن أي قسم أو خدمة…" oninput="handleSearch(this.value)" autocomplete="off">
+    <button class="search-clear" id="searchClear" onclick="clearSearch()"><i class="fa-solid fa-xmark"></i></button>
+  </div>
+</div>
+
 <!-- Section head -->
 <div class="section-head">
   <h2><i class="fa-solid fa-table-cells-large"></i> الأقسام الرئيسية</h2>
@@ -646,7 +707,11 @@ footer span{color:var(--p2);font-weight:700;}
 
 <!-- CARDS -->
 <div class="container">
-  <div class="cards">
+  <div id="noResult" class="search-no-result">
+    <i class="fa-solid fa-face-frown-open"></i>
+    مفيش نتائج للبحث ده، جرب كلمة تانية
+  </div>
+  <div class="cards" id="cardsGrid">
 
     <a href="pdf.html" class="card-link">
       <div class="card">
@@ -1122,6 +1187,30 @@ footer span{color:var(--p2);font-weight:700;}
 
   // auth.js بيبعت authSuccess بعد ما يتحقق من اليوزر ويحفظ _sbUser
   window.addEventListener('authSuccess', loadUserProfile);
+
+  /* ── SEARCH ── */
+  function handleSearch(val){
+    const q = val.trim().toLowerCase();
+    document.getElementById('searchClear').style.display = q ? 'block' : 'none';
+
+    const links = document.querySelectorAll('#cardsGrid .card-link');
+    let visible = 0;
+    links.forEach(link => {
+      const text = link.innerText.toLowerCase();
+      const match = !q || text.includes(q);
+      link.style.display = match ? '' : 'none';
+      if(match) visible++;
+    });
+
+    document.getElementById('noResult').style.display = (visible === 0) ? 'block' : 'none';
+  }
+
+  function clearSearch(){
+    const inp = document.getElementById('siteSearch');
+    inp.value = '';
+    handleSearch('');
+    inp.focus();
+  }
 </script>
 </body>
 </html>
