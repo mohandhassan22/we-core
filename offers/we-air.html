@@ -1,0 +1,606 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <script src="../script/auth.js?v=12.0.1"></script>
+
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>عروض WE Air — WE</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --p1: #7d3ae6bf;
+        --p2: #986be6;
+        --p3: #9774ff;
+        --p4: #ede9fe;
+        --p5: #f5f3ff;
+        --white: #ffffff;
+        --text: #1e1030;
+        --text2: #6b5c8a;
+        --text3: #a899c0;
+        --border: rgba(124, 58, 237, 0.12);
+        --shadow: rgba(91, 33, 182, 0.12);
+        --radius: 18px;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Cairo", sans-serif;
+        background: linear-gradient(180deg, #f8f6ff 0%, #eef0fc 100%);
+        color: var(--text);
+        min-height: 100vh;
+        overflow-x: hidden;
+        display: flex;
+        flex-direction: column;
+      }
+
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        background:
+          radial-gradient(
+            ellipse 65% 40% at 0% 0%,
+            rgba(124, 58, 237, 0.09) 0%,
+            transparent 60%
+          ),
+          radial-gradient(
+            ellipse 50% 35% at 100% 100%,
+            rgba(91, 33, 182, 0.07) 0%,
+            transparent 55%
+          );
+        pointer-events: none;
+        z-index: 0;
+      }
+
+      /* HEADER */
+      header {
+        position: relative;
+        z-index: 10;
+        background: linear-gradient(
+          135deg,
+          rgba(91, 33, 182, 0.95),
+          rgba(124, 58, 237, 0.88),
+          rgba(172, 106, 255, 0.86)
+        );
+        padding: 50px 20px 40px;
+        text-align: center;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.16);
+      }
+
+      h1 {
+        font-size: clamp(28px, 6vw, 52px);
+        font-weight: 600;
+        color: white;
+        background: linear-gradient(
+          135deg,
+          rgba(255, 255, 255, 0.95),
+          var(--p5)
+        );
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        line-height: 1.2;
+        margin-bottom: 8px;
+      }
+
+      .subtitle {
+        font-size: clamp(14px, 2.5vw, 18px);
+        color: rgba(255, 255, 255, 0.831);
+        font-weight: 300;
+      }
+
+      /* MAIN CONTENT */
+      main {
+        position: relative;
+        z-index: 5;
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 40px 16px 60px;
+        background: rgba(255, 255, 255, 0.9);
+        border-radius: 32px;
+        box-shadow: 0 24px 80px rgba(91, 33, 182, 0.08);
+        flex: 1;
+        width: 100%;
+      }
+
+      /* SECTIONS */
+      .section {
+        background: var(--white);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 32px;
+        margin-bottom: 24px;
+        box-shadow: 0 4px 24px var(--shadow);
+      }
+
+      .section h2 {
+        font-size: 24px;
+        font-weight: 700;
+        color: var(--p1);
+        margin-bottom: 16px;
+        border-bottom: 2px solid var(--p2);
+        padding-bottom: 8px;
+      }
+
+      .section h3 {
+        font-size: 20px;
+        font-weight: 600;
+        color: var(--text);
+        margin: 24px 0 12px;
+      }
+
+      .section p {
+        font-size: 16px;
+        line-height: 1.7;
+        color: var(--text2);
+        margin-bottom: 16px;
+      }
+
+      /* CARDS */
+      .card {
+        background: linear-gradient(
+          135deg,
+          rgba(124, 58, 237, 0.05),
+          rgba(255, 255, 255, 0.8)
+        );
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 24px;
+        margin-bottom: 16px;
+        transition: all 0.3s ease;
+      }
+
+      .card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 32px rgba(91, 33, 182, 0.15);
+        border-color: var(--p2);
+      }
+
+      .card h4 {
+        font-size: 18px;
+        font-weight: 600;
+        color: var(--p1);
+        margin-bottom: 8px;
+      }
+
+      /* TABLES */
+      .info-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 16px 0;
+        background: var(--white);
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 2px 8px var(--shadow);
+      }
+
+      .info-table th,
+      .info-table td {
+        padding: 12px 16px;
+        text-align: right;
+        border-bottom: 1px solid var(--border);
+      }
+
+      .info-table th {
+        background: linear-gradient(135deg, var(--p1), var(--p2));
+        color: var(--white);
+        font-weight: 600;
+        font-size: 14px;
+      }
+
+      .info-table td {
+        color: var(--text);
+        font-size: 14px;
+      }
+
+      .info-table tr:last-child td {
+        border-bottom: none;
+      }
+
+      .info-table tr:hover td {
+        background: rgba(125, 62, 234, 0.02);
+      }
+
+      /* LISTS */
+      .steps-list {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        margin: 16px 0;
+      }
+
+      .step-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+        background: rgba(124, 58, 237, 0.03);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 16px;
+      }
+
+      .step-number {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 32px;
+        height: 32px;
+        background: var(--p1);
+        color: var(--white);
+        border-radius: 50%;
+        font-weight: 700;
+        font-size: 14px;
+        flex-shrink: 0;
+      }
+
+      .step-content {
+        flex: 1;
+      }
+
+      .step-content h4 {
+        font-size: 16px;
+        font-weight: 600;
+        color: var(--text);
+        margin-bottom: 4px;
+      }
+
+      .step-content p {
+        font-size: 14px;
+        color: var(--text2);
+        line-height: 1.5;
+      }
+
+      /* HIGHLIGHTS */
+      .highlight {
+        background: linear-gradient(135deg, var(--p2), var(--p3));
+        color: var(--white);
+        padding: 16px;
+        border-radius: 8px;
+        margin: 16px 0;
+        font-weight: 600;
+      }
+
+      .highlight strong {
+        color: var(--white);
+      }
+
+      /* NOTES */
+      .note {
+        background: rgba(234, 88, 12, 0.1);
+        border: 1px solid rgba(234, 88, 12, 0.2);
+        border-radius: 8px;
+        padding: 16px;
+        margin: 16px 0;
+      }
+
+      .note h4 {
+        color: #ea580c;
+        font-weight: 600;
+        margin-bottom: 8px;
+      }
+
+      .note p {
+        color: #9a3412;
+        font-size: 14px;
+      }
+
+      /* RESPONSIVE */
+      @media (max-width: 768px) {
+        header {
+          padding: 30px 16px 24px;
+        }
+
+        h1 {
+          font-size: 32px;
+        }
+
+        .section {
+          padding: 20px;
+          margin-bottom: 16px;
+        }
+
+        .info-table th,
+        .info-table td {
+          padding: 8px 12px;
+          font-size: 13px;
+        }
+
+        .step-item {
+          flex-direction: column;
+          gap: 8px;
+        }
+
+        .step-number {
+          align-self: flex-start;
+        }
+      }
+
+      /* ── FOOTER ── */
+      footer {
+            display: relative;
+            height: 100%;
+            bottom:-100%;
+        text-align: center;
+        padding: .5rem;
+   
+        margin-top: 50px;
+        color: #777;
+        font-size: 14px;
+    }
+
+    footer span {
+        color: #5a2d82;
+        font-weight: 600;
+    }
+      
+
+      /* BACK BUTTON */
+      .back-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        margin-top: 16px;
+        padding: 10px 20px;
+        background: rgba(255, 255, 255, 0.2);
+        border: 1.5px solid rgba(255, 255, 255, 0.4);
+        color: rgba(255, 255, 255, 0.95);
+        font-size: 14px;
+        font-weight: 600;
+        border-radius: 10px;
+        cursor: pointer;
+        text-decoration: none;
+        font-family: "Cairo", sans-serif;
+        transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        backdrop-filter: blur(4px);
+      }
+
+      .back-btn:hover {
+        background: rgba(255, 255, 255, 0.3);
+        border-color: rgba(255, 255, 255, 0.6);
+        transform: translateX(4px);
+        box-shadow: 0 8px 24px rgba(91, 33, 182, 0.25);
+      }
+
+      .back-btn:active {
+        transform: translateX(2px) scale(0.98);
+      }
+
+      .back-btn i {
+        font-size: 16px;
+        transition: transform 0.3s ease;
+      }
+
+      .back-btn:hover i {
+        transform: translateX(-2px);
+      }
+    </style>
+  </head>
+  <body>
+    <!-- HEADER -->
+    <header>
+      <h1>عروض WE Air</h1>
+      <p class="subtitle">
+        استكشف أحدث عروض راوتر WE Air، الخصومات، حزم الإنترنت، والعروض الخاصة
+        المتاحة لأجهزة Home 4G و 5G.
+      </p>
+      <a href="../offer.html" class="back-btn">
+        <i class="fa-solid fa-arrow-left"></i>
+        العودة للعروض
+      </a>
+    </header>
+
+    <!-- MAIN -->
+    <main>
+      <!-- SECTION 1: 5G Router Offer -->
+      <section class="section">
+        <h2>عرض راوتر 5G</h2>
+        <div class="card">
+          <h4>Huawei H153 / 381-5G Router Offer</h4>
+          <p>
+            أعلنت WE عن إطلاق الراوتر الجديد المدعوم بالجيل الخامس (5G) Huawei
+            H153 / 381-5G بدءًا من يوم الخميس، 29 فبراير 2026.
+          </p>
+          <p>خصم خاص بنسبة 50% متاح للعملاء المؤهلين.</p>
+          <div class="highlight">
+            <strong
+              >السعر بعد الخصم: 2500 جنيه مصري بدلاً من 5000 جنيه مصري.</strong
+            >
+          </div>
+        </div>
+
+        <h3>نظرة عامة على الجهاز</h3>
+        <p>
+          يعمل راوتر Huawei H153 / 381-5G على شبكة 5G ويوفر إنترنت لاسلكي عالي
+          السرعة للاستخدام المنزلي.
+        </p>
+        <p>يدعم الراوتر:</p>
+        <ul style="margin-right: 20px; color: var(--text2)">
+          <li>سرعات تحميل تصل إلى 3600 ميجابت في الثانية</li>
+          <li>تغطية لاسلكية منزلية مستقرة</li>
+          <li>مناسب للاستخدام الثقيل للإنترنت</li>
+        </ul>
+
+        <h3>تفاصيل العرض</h3>
+        <div class="card">
+          <h4>الخصم</h4>
+          <ul style="color: var(--text2)">
+            <li>خصم 50% على سعر الراوتر</li>
+            <li>السعر النهائي: 2500 جنيه مصري</li>
+            <li>السعر الأصلي: 5000 جنيه مصري</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h4>متاح لـ</h4>
+          <p>العرض متاح لعملاء WE Air المدفوع مسبقًا والفاتورة</p>
+        </div>
+
+        <div class="card">
+          <h4>متطلبات الحزمة</h4>
+          <p>يمكن للعملاء استخدام جميع حزم WE Air الخامسة مع الراوتر.</p>
+        </div>
+
+        <h3>معلومات الجهاز</h3>
+        <table class="info-table">
+          <thead>
+            <tr>
+              <th>العنصر</th>
+              <th>القيمة</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>موديل الراوتر</td>
+              <td>Huawei H153 / 381-5G</td>
+            </tr>
+            <tr>
+              <td>الاسم التجاري</td>
+              <td>Huawei H153-5G Router Home Wireless</td>
+            </tr>
+            <tr>
+              <td>معرف العرض</td>
+              <td>460509482</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3>سياسة الإرجاع والاستبدال</h3>
+        <div class="note">
+          <h4>ملاحظة مهمة</h4>
+          <p>إرجاع أو استبدال الجهاز متاح خلال 14 يومًا من تاريخ الشراء.</p>
+          <p>يجب أن يكون الجهاز في حالته الأصلية.</p>
+          <p>لا يوجد به اي تلف أو سوء استخدام.</p>
+          <p>التعبئة والإكسسوارات الأصلية مطلوبة.</p>
+        </div>
+
+        <h3>مدة العرض</h3>
+        <p>السعر متاح لمدة 3 أشهر من تاريخ الإطلاق.</p>
+      </section>
+
+      <!-- SECTION 2: ZTE CAT4 K10 Offer -->
+      <section class="section">
+        <h2>عرض ZTE CAT4 Router K10</h2>
+        <div class="card">
+          <h4>ZTE CAT4 Router K10 Home 4G Discount Offer</h4>
+          <p>
+            بدءًا من يوم الخميس، 12 فبراير 2026، أطلقت WE عرض خصم على جهاز ZTE
+            CAT4 Router K10 Home 4G.
+          </p>
+          <p>
+            توفر راوترات WE Air خدمة الإنترنت في الأماكن التي لا تغطيها خدمة
+            الإنترنت الثابتة باستخدام شريحة Data Mobile.
+          </p>
+        </div>
+
+        <h3>تفاصيل العرض</h3>
+        <div class="card">
+          <h4>معلومات الخصم</h4>
+          <ul style="color: var(--text2)">
+            <li>السعر بعد الخصم: 850 جنيه مصري</li>
+            <li>السعر الأصلي: 1100 جنيه مصري</li>
+            <li>نسبة الخصم: 22.7%</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h4>الأهلية</h4>
+          <p>العرض متاح لعملاء حزم WE Air المدفوع مسبقًا والفاتورة.</p>
+        </div>
+
+        <div class="card">
+          <h4>الشرط المهم</h4>
+          <p>يجب على العميل:</p>
+          <ul style="margin-right: 20px; color: var(--text2)">
+            <li>شراء الجهاز</li>
+            <li>شراء خط</li>
+            <li>شحن الحزمة خلال نفس عملية البيع</li>
+          </ul>
+          <p>إذا تم شراء الجهاز فقط دون خط، لن يحصل العميل على الخصم.</p>
+        </div>
+
+        <h3>مواصفات الجهاز</h3>
+        <div class="card">
+          <h4>ZTE CAT4 Router K10 Home 4G</h4>
+          <ul style="color: var(--text2)">
+            <li>سرعة التحميل تصل إلى 150 ميجابت في الثانية</li>
+            <li>يدعم حتى 32 جهاز متصل في نفس الوقت</li>
+            <li>مناسب للاستخدام المنزلي للإنترنت</li>
+          </ul>
+        </div>
+
+        <h3>جدول معلومات الجهاز</h3>
+        <table class="info-table">
+          <thead>
+            <tr>
+              <th>الجهاز</th>
+              <th>الخدمة</th>
+              <th>السعر الأصلي</th>
+              <th>السعر بعد الخصم</th>
+              <th>الخصم</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>ZTE CAT4 Router K10 Home 4G</td>
+              <td>WE Air Home 4G</td>
+              <td>1100 جنيه مصري</td>
+              <td>850 جنيه مصري</td>
+              <td>22.7%</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3>مدة العرض</h3>
+        <p>السعر متاح لمدة 3 أشهر من تاريخ الإطلاق.</p>
+      </section>
+
+      <!-- GENERAL NOTES -->
+      <section class="section">
+        <h2>ملاحظات عامة</h2>
+        <div class="card">
+          <h4>الخدمات المدعومة</h4>
+          <ul style="color: var(--text2)">
+            <li>Home 4G</li>
+            <li>Home 5G</li>
+            <li>حزم الدفع المسبق</li>
+            <li>حزم الفاتورة</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h4>استخدام الإنترنت</h4>
+          <p>مناسب لـ:</p>
+          <ul style="margin-right: 20px; color: var(--text2)">
+            <li>الإنترنت المنزلي</li>
+            <li>البث المباشر</li>
+            <li>الألعاب عبر الإنترنت</li>
+            <li>العمل عن بعد</li>
+            <li>الأجهزة المتعددة المتصلة</li>
+          </ul>
+        </div>
+
+        <div class="note">
+          <h4>إخلاء مسؤولية مهم</h4>
+          <p>
+            العروض والأسعار وتوافر الحزم قد تتغير وفقًا لسياسات WE وتوافر
+            الخدمة.
+          </p>
+        </div>
+      </section>
+    </main>
+
+     <footer>
+        Powered by <span>Mohand Hassan</span> – From <span>Abassia Store</span>
+    </footer>
+  </body>
+</html>
