@@ -93,6 +93,27 @@ body{font-family:'Cairo',sans-serif;background:#f0ecf8;min-height:100vh;directio
 .note-item p{color:#7a3a00;font-size:13px;line-height:1.7;}
 
 /* FOOTER */
+
+/* UPDATE CARD */
+.update-card{border-top-color:#f97316;background:linear-gradient(180deg,#fff9f5 0%,#fff 60%);}
+.update-badge{background:linear-gradient(135deg,#fff3e0,#ffe0b2)!important;}
+.update-badge i{color:#f97316!important;}
+.update-badge span{color:#7c3a00!important;}
+.update-subsection{border-right-color:#f97316;background:#fff9f5;}
+
+/* DOC UPDATE NOTE */
+.doc-update-note{display:flex;align-items:flex-start;gap:10px;padding:11px 14px;border-radius:10px;background:#fff9f0;border:1px solid #fed7aa;margin-bottom:8px;margin-top:4px;color:#7c3a00;font-size:13px;line-height:1.7;}
+.doc-update-note i{color:#f97316;font-size:15px;flex-shrink:0;margin-top:2px;}
+
+/* PDF LINK */
+.pdf-link-item{display:flex;align-items:center;gap:12px;padding:14px 16px;border-radius:14px;background:#fff;border:1.5px solid #ede3fc;margin-bottom:10px;text-decoration:none;transition:all 0.2s;}
+.pdf-link-item:hover{background:#f5f0ff;border-color:#7b3fe4;transform:translateX(-3px);}
+.pdf-link-icon{width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,#7b3fe4,#a066f5);display:flex;align-items:center;justify-content:center;color:#fff;font-size:20px;flex-shrink:0;}
+.pdf-link-body{flex:1;}
+.pdf-link-title{font-size:14px;font-weight:800;color:#3d1a6e;}
+.pdf-link-sub{font-size:12px;color:#999;margin-top:2px;}
+.pdf-link-arrow{color:#7b3fe4;font-size:13px;flex-shrink:0;}
+
 footer{text-align:center;padding:24px 20px;color:#999;font-size:13px;border-top:1px solid #e8e2f5;background:#fff;}
 .footer-logo{width:38px;border-radius:50%;margin-bottom:6px;opacity:0.8;}
 footer span{color:#7b3fe4;font-weight:700;}
@@ -150,6 +171,10 @@ footer span{color:#7b3fe4;font-weight:700;}
     <div class="doc-item"><i class="fa-solid fa-stamp"></i><span>صورة من التوكيل (توكيل عام رسمي أو توكيل خاص بالتعامل مع المصرية للاتصالات) مع الأصل.</span></div>
     <div class="doc-item"><i class="fa-solid fa-receipt"></i><span>صورة البطاقة الضريبية.</span></div>
     <div class="doc-item"><i class="fa-solid fa-building"></i><span>صورة السجل التجاري.</span></div>
+    <div class="doc-update-note">
+      <i class="fa-solid fa-triangle-exclamation"></i>
+      <div><strong>تحديث:</strong> في حالة عدم توافر سجل تجاري للشركة، يتم توضيح ذلك داخل التكت وإرفاق البطاقة الضريبية مع باقي الأوراق المطلوبة.</div>
+    </div>
     <div class="doc-item"><i class="fa-solid fa-bank"></i><span>تفويض من الشركة مختوم بصحة توقيع من البنك.</span></div>
     <div class="doc-item"><i class="fa-solid fa-id-card"></i><span>صورة بطاقة المفوض إليه.</span></div>
   </div>
@@ -232,6 +257,65 @@ footer span{color:#7b3fe4;font-weight:700;}
       <i class="fa-solid fa-circle-info"></i>
       <p>جميع الأسعار المذكورة في جدول مصاريف التركيب  تشمل الضريبة المضافة.</p>
     </div>
+  </div>
+
+
+  <!-- Section 4: تحديث - أكثر من رقم لنفس الـ Account -->
+  <div class="section-card update-card">
+    <div class="section-badge update-badge"><i class="fa-solid fa-rotate"></i><span>تحديث مهم</span></div>
+    <div class="section-title"><i class="fa-solid fa-layer-group"></i>أكثر من رقم لنفس الـ Account</div>
+    <div class="section-desc">
+      في حالة تعاقد العميل على الخدمة لأكثر من رقم لنفس الـ Account (Corp ID)، يتم اتباع الإجراء التالي:
+    </div>
+    <div class="subsection update-subsection">
+      <div class="subsection-title"><i class="fa-solid fa-list-check"></i>خطوات الإجراء</div>
+      <ul class="feature-list">
+        <li><i class="fa-solid fa-ticket"></i>يتم عمل <strong>تكت واحد فقط</strong> برقم الـ Account (Corp ID) للعميل.</li>
+        <li><i class="fa-solid fa-keyboard"></i>يتم <strong>إدخال البيانات يدوياً</strong> داخل التكت.</li>
+        <li><i class="fa-solid fa-file-excel"></i>يتم كتابة الأرقام داخل <strong>Excel Sheet</strong> وإرفاقها مع الأوراق المطلوبة.</li>
+      </ul>
+    </div>
+    <div class="info-box" style="background:linear-gradient(135deg,#fff7ed,#fff3e0);border:1px solid #fed7aa;">
+      <i class="fa-solid fa-circle-info" style="color:#f97316;"></i>
+      <p style="color:#7c3a00;">ملاحظة: التكت يُفتح برقم الـ Account (Corp ID) وليس برقم كل خط على حدة، مع إرفاق Excel Sheet يحتوي على جميع الأرقام.</p>
+    </div>
+  </div>
+
+  <!-- Section 5: رسوم تنمية موارد الدولة -->
+  <div class="section-card update-card">
+    <div class="section-badge update-badge"><i class="fa-solid fa-rotate"></i><span>تحديث مهم</span></div>
+    <div class="section-title"><i class="fa-solid fa-coins"></i>رسوم تنمية موارد الدولة – الإنترنت التجاري</div>
+    <div class="section-desc">
+      تطبيق زيادة رسوم تنمية الدولة للشركات والمنشآت التجارية على خدمات الإنترنت. يرجى مراعاة التحديثات التالية:
+    </div>
+    <div class="notes-grid">
+      <div class="note-item" style="background:#f0fdf4;border-color:#bbf7d0;">
+        <i class="fa-solid fa-receipt" style="color:#16a34a;"></i>
+        <p style="color:#14532d;">سيظهر إجمالي المبلغ المستحق <strong>شاملاً قيمة الضريبة</strong> من خلال جميع وسائل الدفع.</p>
+      </div>
+      <div class="note-item" style="background:#f0fdf4;border-color:#bbf7d0;">
+        <i class="fa-solid fa-credit-card" style="color:#16a34a;"></i>
+        <p style="color:#14532d;">تُخصم الضريبة على كل <strong>عملية شحن/دفع</strong>، وليس عند تجديد الباقة.</p>
+      </div>
+    </div>
+
+    <div class="section-title" style="margin-top:22px;"><i class="fa-solid fa-file-pdf"></i>الملفات المرفقة</div>
+    <a href="https://we-core.icu/viewpdf.html?src=https%3A%2F%2Fiygwhapcpdmsasqlfelv.supabase.co%2Fstorage%2Fv1%2Fobject%2Fauthenticated%2FAll%20Form%2FFixed%2FAcknowledgment%20and%20pledge.pdf" class="pdf-link-item" target="_blank">
+      <div class="pdf-link-icon"><i class="fa-solid fa-file-pdf"></i></div>
+      <div class="pdf-link-body">
+        <div class="pdf-link-title">الإقرار والتعهد</div>
+        <div class="pdf-link-sub">Acknowledgment and Pledge – Fixed</div>
+      </div>
+      <i class="fa-solid fa-arrow-up-right-from-square pdf-link-arrow"></i>
+    </a>
+    <a href="https://we-core.icu/viewpdf.html?src=https%3A%2F%2Fiygwhapcpdmsasqlfelv.supabase.co%2Fstorage%2Fv1%2Fobject%2Fauthenticated%2FAll%20Form%2FFixed%2FContract%20for%20providing%20business%20call%20services%20from%20a%20fixed%20line.pdf" class="pdf-link-item" target="_blank">
+      <div class="pdf-link-icon"><i class="fa-solid fa-file-contract"></i></div>
+      <div class="pdf-link-body">
+        <div class="pdf-link-title">عقد تقديم خدمات مكالمات الأعمال من الخط الثابت</div>
+        <div class="pdf-link-sub">Contract for Business Call Services – Fixed Line</div>
+      </div>
+      <i class="fa-solid fa-arrow-up-right-from-square pdf-link-arrow"></i>
+    </a>
   </div>
 
 </div>
