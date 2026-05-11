@@ -218,9 +218,10 @@
   .device-card:nth-child(7) { animation-delay: 0.35s; }
   .device-card:nth-child(8) { animation-delay: 0.4s; }
 
+  /* ─── IMAGE WRAPPER ─── */
   .card-img-wrap {
     background: var(--gray-light);
-    height: 190px;
+    height: 200px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -232,15 +233,44 @@
     position:absolute;
     bottom:0; left:0; right:0; height:40px;
     background: linear-gradient(to top, rgba(243,240,255,0.8), transparent);
+    pointer-events: none;
   }
-  .card-img-wrap img {
-    max-height: 140px;
-    max-width: 80%;
+
+  /* الصور الحقيقية */
+  .card-img-wrap img.real-img {
+    width: 100%;
+    height: 100%;
     object-fit: contain;
+    padding: 20px;
     transition: transform 0.4s ease;
     filter: drop-shadow(0 8px 20px rgba(107,33,200,0.15));
+    display: block;
   }
-  .device-card:hover .card-img-wrap img { transform: scale(1.07) translateY(-4px); }
+  .device-card:hover .card-img-wrap img.real-img {
+    transform: scale(1.07) translateY(-4px);
+  }
+
+  /* أيقونة بديلة عند فشل تحميل الصورة */
+  .card-img-wrap .img-fallback {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    height: 100%;
+  }
+  .card-img-wrap .img-fallback .fallback-icon {
+    font-size: 52px;
+    opacity: 0.5;
+  }
+  .card-img-wrap .img-fallback .fallback-name {
+    font-size: 12px;
+    color: var(--purple);
+    font-weight: 600;
+    text-align: center;
+    padding: 0 16px;
+  }
 
   .card-badge {
     position: absolute;
@@ -253,6 +283,7 @@
     padding: 4px 10px;
     border-radius: 20px;
     font-family: 'Tajawal', sans-serif;
+    z-index: 2;
   }
   .card-badge.green { background: #059669; }
   .card-badge.orange { background: #D97706; }
@@ -325,66 +356,6 @@
   }
   .btn-more:hover { background: var(--purple); color: white; }
 
-  /* ─── PROMO SECTION ─── */
-  .promo-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 24px;
-  }
-  .promo-card {
-    border-radius: 20px;
-    padding: 28px;
-    position: relative;
-    overflow: hidden;
-    animation: fadeUp 0.5s ease both;
-  }
-  .promo-card.purple-card {
-    background: linear-gradient(135deg, #6B21C8, #4C1D95);
-    color: white;
-  }
-  .promo-card.light-card {
-    background: white;
-    box-shadow: var(--shadow);
-    border: 1.5px solid var(--purple-pale);
-  }
-  .promo-card::before {
-    content:'';
-    position:absolute;
-    top:-40px; left:-40px;
-    width:180px; height:180px;
-    background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
-    border-radius:50%;
-  }
-  .promo-icon { font-size: 36px; margin-bottom: 14px; }
-  .promo-title {
-    font-family:'Tajawal',sans-serif;
-    font-weight:800;
-    font-size:20px;
-    margin-bottom:10px;
-  }
-  .promo-card.purple-card .promo-title { color:white; }
-  .promo-card.light-card .promo-title { color: var(--text-dark); }
-  .promo-desc {
-    font-size:14px;
-    line-height:1.7;
-    opacity:0.85;
-  }
-  .promo-card.light-card .promo-desc { color: var(--gray-text); opacity:1; }
-  .promo-highlight {
-    display:inline-block;
-    margin-top:16px;
-    background:rgba(255,255,255,0.2);
-    border-radius:10px;
-    padding:8px 16px;
-    font-weight:700;
-    font-size:14px;
-    color:white;
-  }
-  .promo-card.light-card .promo-highlight {
-    background:var(--purple-pale);
-    color:var(--purple);
-  }
-
   /* ─── MODAL ─── */
   .modal-overlay {
     position:fixed; inset:0;
@@ -408,12 +379,31 @@
     box-shadow: 0 40px 80px rgba(107,33,200,0.25);
   }
   .modal-overlay.open .modal { transform: scale(1) translateY(0); }
+
+  /* صورة الـ Modal */
   .modal-img {
-    background:var(--gray-light);
-    height:220px;
-    display:flex; align-items:center; justify-content:center;
+    background: var(--gray-light);
+    height: 240px;
+    display: flex; align-items: center; justify-content: center;
+    overflow: hidden;
+    position: relative;
   }
-  .modal-img img { max-height:180px; max-width:80%; object-fit:contain; filter:drop-shadow(0 10px 30px rgba(107,33,200,0.2)); }
+  .modal-img img {
+    max-width: 80%;
+    max-height: 200px;
+    object-fit: contain;
+    filter: drop-shadow(0 10px 30px rgba(107,33,200,0.2));
+    display: block;
+  }
+  .modal-img .modal-fallback {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+  }
+  .modal-img .modal-fallback-icon { font-size: 70px; opacity: 0.4; }
+  .modal-img .modal-fallback-text { color: var(--purple); font-weight: 700; font-size: 14px; }
+
   .modal-body { padding:28px 32px; }
   .modal-brand { color:var(--purple-mid); font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:1px; margin-bottom:8px; }
   .modal-name { font-family:'Tajawal',sans-serif; font-size:22px; font-weight:800; color:var(--text-dark); margin-bottom:20px; }
@@ -445,8 +435,7 @@
     .main { padding:32px 20px; }
     .tabs { padding:0 20px; }
     .devices-grid { grid-template-columns: 1fr 1fr; gap:16px; }
-    .card-img-wrap { height:140px; }
-    .promo-grid { grid-template-columns:1fr; }
+    .card-img-wrap { height:160px; }
   }
   @media(max-width:420px){
     .devices-grid { grid-template-columns:1fr; }
@@ -479,14 +468,15 @@
     <button class="tab-btn active" onclick="showSection('air4g', this)">📡 راوترات WE Air 4G</button>
     <button class="tab-btn" onclick="showSection('mifi', this)">📶 أجهزة MiFi المحمولة</button>
     <button class="tab-btn" onclick="showSection('wired', this)">🏠 راوترات أرضية VDSL</button>
-
   </div>
 </div>
 
 <!-- MAIN -->
 <div class="main">
 
-  <!-- AIR 4G -->
+  <!-- ══════════════════════════════════════
+       قسم 1: AIR 4G
+  ══════════════════════════════════════ -->
   <div id="air4g" class="section active">
     <div class="sec-header">
       <div class="sec-icon">📡</div>
@@ -497,9 +487,14 @@
     </div>
     <div class="devices-grid">
 
-      <div class="device-card" onclick="openModal('ZTE CAT4 Router K10')">
+      <!-- ZTE K10 -->
+      <div class="device-card" onclick="openModal('zte-k10')">
         <div class="card-img-wrap">
-          <img src="https://te.eg/documents/20117/0/TE%2BK10%2BWhite+%281%29.png/e18656ba-f843-599b-4f75-27592a4b5905?t=1776692388920">
+          <img class="real-img"
+               src="https://te.eg/documents/20117/0/TE%2BK10%2BWhite+%281%29.png/e18656ba-f843-599b-4f75-27592a4b5905?t=1776692388920"
+               alt="ZTE CAT4 Router K10"
+               onerror="handleImgError(this,'📡')">
+          <div class="img-fallback"><div class="fallback-icon">📡</div><div class="fallback-name">ZTE CAT4 Router K10</div></div>
           <span class="card-badge">CAT4</span>
         </div>
         <div class="card-body">
@@ -520,11 +515,150 @@
         </div>
       </div>
 
-    
-    </div>
-  </div>
+      <!-- ZTE MF293N -->
+      <div class="device-card" onclick="openModal('zte-mf293n')">
+        <div class="card-img-wrap">
+          <img class="real-img"
+               src="https://te.eg/documents/20117/0/ZTE-MF293N.png"
+               alt="ZTE MF293N"
+               onerror="handleImgError(this,'📡')">
+          <div class="img-fallback"><div class="fallback-icon">📡</div><div class="fallback-name">ZTE MF293N</div></div>
+          <span class="card-badge">CAT4</span>
+        </div>
+        <div class="card-body">
+          <div class="card-brand">ZTE</div>
+          <div class="card-name">WE Air ZTE CAT4 Router MF293N</div>
+          <div class="card-specs">
+            <span class="spec-tag">4G LTE</span>
+            <span class="spec-tag">150 Mbps</span>
+            <span class="spec-tag">32 جهاز</span>
+          </div>
+          <div class="card-footer">
+            <div class="price-stack">
+              <div class="price">850 <span>جنيه</span></div>
+              <div class="price-old">1,700 جنيه</div>
+            </div>
+            <button class="btn-more">التفاصيل</button>
+          </div>
+        </div>
+      </div>
 
-  <!-- MIFI -->
+      <!-- Huawei B320 -->
+      <div class="device-card" onclick="openModal('huawei-b320')">
+        <div class="card-img-wrap">
+          <img class="real-img"
+               src="https://te.eg/documents/20117/0/Huawei-B320.png"
+               alt="Huawei B320"
+               onerror="handleImgError(this,'📡')">
+          <div class="img-fallback"><div class="fallback-icon">📡</div><div class="fallback-name">Huawei B320</div></div>
+          <span class="card-badge">CAT4</span>
+        </div>
+        <div class="card-body">
+          <div class="card-brand">Huawei</div>
+          <div class="card-name">WE Air Huawei B320-923 CAT4</div>
+          <div class="card-specs">
+            <span class="spec-tag">4G LTE</span>
+            <span class="spec-tag">150 Mbps</span>
+            <span class="spec-tag">Dual Band</span>
+          </div>
+          <div class="card-footer">
+            <div class="price-stack">
+              <div class="price">850 <span>جنيه</span></div>
+              <div class="price-old">1,700 جنيه</div>
+            </div>
+            <button class="btn-more">التفاصيل</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ZTE MF296R CAT6 -->
+      <div class="device-card" onclick="openModal('zte-mf296r')">
+        <div class="card-img-wrap">
+          <img class="real-img"
+               src="https://te.eg/documents/20117/0/ZTE-MF296R.png"
+               alt="ZTE MF296R"
+               onerror="handleImgError(this,'📡')">
+          <div class="img-fallback"><div class="fallback-icon">📡</div><div class="fallback-name">ZTE MF296R CAT6</div></div>
+          <span class="card-badge orange">CAT6</span>
+        </div>
+        <div class="card-body">
+          <div class="card-brand">ZTE</div>
+          <div class="card-name">WE Air ZTE CAT6 Router MF296R</div>
+          <div class="card-specs">
+            <span class="spec-tag">4G CAT6</span>
+            <span class="spec-tag">300 Mbps</span>
+            <span class="spec-tag">Dual Band</span>
+          </div>
+          <div class="card-footer">
+            <div class="price-stack">
+              <div class="price">1,000 <span>جنيه</span></div>
+              <div class="price-old">2,000 جنيه</div>
+            </div>
+            <button class="btn-more">التفاصيل</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Huawei B315 -->
+      <div class="device-card" onclick="openModal('huawei-b315')">
+        <div class="card-img-wrap">
+          <img class="real-img"
+               src="https://te.eg/documents/20117/0/Huawei-B315.png"
+               alt="Huawei B315"
+               onerror="handleImgError(this,'📡')">
+          <div class="img-fallback"><div class="fallback-icon">📡</div><div class="fallback-name">Huawei B315</div></div>
+          <span class="card-badge green">الأكثر مبيعاً</span>
+        </div>
+        <div class="card-body">
+          <div class="card-brand">Huawei</div>
+          <div class="card-name">راوتر Huawei B315s-608 الهوائي</div>
+          <div class="card-specs">
+            <span class="spec-tag">4G LTE</span>
+            <span class="spec-tag">150 Mbps</span>
+            <span class="spec-tag">2.4GHz</span>
+          </div>
+          <div class="card-footer">
+            <div class="price-stack">
+              <div class="price">749 <span>جنيه</span></div>
+            </div>
+            <button class="btn-more">التفاصيل</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Huawei CAT7 -->
+      <div class="device-card" onclick="openModal('huawei-cat7')">
+        <div class="card-img-wrap">
+          <img class="real-img"
+               src="https://te.eg/documents/20117/0/Huawei-CAT7.png"
+               alt="Huawei CAT7"
+               onerror="handleImgError(this,'📡')">
+          <div class="img-fallback"><div class="fallback-icon">📡</div><div class="fallback-name">Huawei CAT7</div></div>
+          <span class="card-badge orange">CAT7</span>
+        </div>
+        <div class="card-body">
+          <div class="card-brand">Huawei</div>
+          <div class="card-name">Huawei CAT7 Router Home 4G</div>
+          <div class="card-specs">
+            <span class="spec-tag">4G CAT7</span>
+            <span class="spec-tag">300 Mbps</span>
+            <span class="spec-tag">Dual Band</span>
+          </div>
+          <div class="card-footer">
+            <div class="price-stack">
+              <div class="price">2,500 <span>جنيه</span></div>
+            </div>
+            <button class="btn-more">التفاصيل</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div><!-- /air4g -->
+
+  <!-- ══════════════════════════════════════
+       قسم 2: MIFI
+  ══════════════════════════════════════ -->
   <div id="mifi" class="section">
     <div class="sec-header">
       <div class="sec-icon">📶</div>
@@ -535,9 +669,14 @@
     </div>
     <div class="devices-grid">
 
+      <!-- ZTE MF937 -->
       <div class="device-card" onclick="openModal('zte-mf937')">
         <div class="card-img-wrap">
-          <img src="https://te.eg/documents/20117/590683/MF937%2BDevice%2B109%2B-%2B400x400+%281%29.png/a4592169-2b15-f2a0-f14b-ffd4834fc377?t=1750437092764">
+          <img class="real-img"
+               src="https://te.eg/documents/20117/590683/MF937%2BDevice%2B109%2B-%2B400x400+%281%29.png/a4592169-2b15-f2a0-f14b-ffd4834fc377?t=1750437092764"
+               alt="ZTE MF937"
+               onerror="handleImgError(this,'📶')">
+          <div class="img-fallback"><div class="fallback-icon">📶</div><div class="fallback-name">ZTE MF937</div></div>
           <span class="card-badge">CAT4</span>
         </div>
         <div class="card-body">
@@ -557,9 +696,14 @@
         </div>
       </div>
 
+      <!-- ZTE MF927U -->
       <div class="device-card" onclick="openModal('zte-mf927u')">
         <div class="card-img-wrap">
-          <img src="https://te.eg/documents/20117/590683/ZTE_MIFI_MF927U4.jpg/da99ec0e-5f3b-a94f-1e30-7fadcfbde6cb?t=1750437093617">
+          <img class="real-img"
+               src="https://te.eg/documents/20117/590683/ZTE_MIFI_MF927U4.jpg/da99ec0e-5f3b-a94f-1e30-7fadcfbde6cb?t=1750437093617"
+               alt="ZTE MF927U"
+               onerror="handleImgError(this,'📶')">
+          <div class="img-fallback"><div class="fallback-icon">📶</div><div class="fallback-name">ZTE MF927U</div></div>
           <span class="card-badge green">الأكثر مبيعاً</span>
         </div>
         <div class="card-body">
@@ -579,9 +723,14 @@
         </div>
       </div>
 
+      <!-- ZTE MF971R -->
       <div class="device-card" onclick="openModal('zte-mf971r')">
         <div class="card-img-wrap">
-          <img src="https://te.eg/documents/20117/590683/MF971R%2BPhoto%5B1%5D+%281%29.jpg/8bcc1d89-2910-a7f7-3b30-7b28c48c65cd?t=1750437093138">
+          <img class="real-img"
+               src="https://te.eg/documents/20117/590683/MF971R%2BPhoto%5B1%5D+%281%29.jpg/8bcc1d89-2910-a7f7-3b30-7b28c48c65cd?t=1750437093138"
+               alt="ZTE MF971R"
+               onerror="handleImgError(this,'📶')">
+          <div class="img-fallback"><div class="fallback-icon">📶</div><div class="fallback-name">ZTE MF971R CAT6</div></div>
           <span class="card-badge orange">CAT6</span>
         </div>
         <div class="card-body">
@@ -602,14 +751,19 @@
         </div>
       </div>
 
-      <div class="device-card" onclick="openModal('ZTE MF79U')">
+      <!-- ZTE MF79U Wingle -->
+      <div class="device-card" onclick="openModal('zte-mf79u')">
         <div class="card-img-wrap">
-          <img src="https://te.eg/documents/20117/587595/Wingle%2BMF79U%2BFront.jpg/f9df9b8e-8513-5b1a-3878-71e02d35a5da?t=1750428891906">
+          <img class="real-img"
+               src="https://te.eg/documents/20117/587595/Wingle%2BMF79U%2BFront.jpg/f9df9b8e-8513-5b1a-3878-71e02d35a5da?t=1750428891906"
+               alt="ZTE MF79U"
+               onerror="handleImgError(this,'🔌')">
+          <div class="img-fallback"><div class="fallback-icon">🔌</div><div class="fallback-name">ZTE MF79U Wingle</div></div>
           <span class="card-badge">Wingle</span>
         </div>
         <div class="card-body">
           <div class="card-brand">ZTE</div>
-          <div class="card-name">ZTE MF79U</div>
+          <div class="card-name">ZTE MF79U — USB Wingle</div>
           <div class="card-specs">
             <span class="spec-tag">USB مودم</span>
             <span class="spec-tag">150 Mbps</span>
@@ -618,12 +772,73 @@
           <div class="card-footer">
             <div class="price-stack">
               <div class="price">449 <span>جنيه</span></div>
+              <div class="price-old">1,270 جنيه</div>
             </div>
             <button class="btn-more">التفاصيل</button>
           </div>
         </div>
       </div>
-  <!-- WIRED -->
+
+      <!-- Huawei E5573 -->
+      <div class="device-card" onclick="openModal('huawei-e5573')">
+        <div class="card-img-wrap">
+          <img class="real-img"
+               src="https://te.eg/documents/20117/0/Huawei-E5573.png"
+               alt="Huawei E5573"
+               onerror="handleImgError(this,'📶')">
+          <div class="img-fallback"><div class="fallback-icon">📶</div><div class="fallback-name">Huawei E5573</div></div>
+          <span class="card-badge">4G</span>
+        </div>
+        <div class="card-body">
+          <div class="card-brand">Huawei</div>
+          <div class="card-name">Huawei E5573Cs-933 هوائي 4G</div>
+          <div class="card-specs">
+            <span class="spec-tag">4G LTE</span>
+            <span class="spec-tag">150 Mbps</span>
+            <span class="spec-tag">10 أجهزة</span>
+          </div>
+          <div class="card-footer">
+            <div class="price-stack">
+              <div class="price">600 <span>جنيه</span></div>
+            </div>
+            <button class="btn-more">التفاصيل</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Huawei E8372 Wingle -->
+      <div class="device-card" onclick="openModal('huawei-e8372')">
+        <div class="card-img-wrap">
+          <img class="real-img"
+               src="https://te.eg/documents/20117/0/Huawei-E8372.png"
+               alt="Huawei E8372"
+               onerror="handleImgError(this,'🔌')">
+          <div class="img-fallback"><div class="fallback-icon">🔌</div><div class="fallback-name">Huawei E8372 Wingle</div></div>
+          <span class="card-badge">Wingle</span>
+        </div>
+        <div class="card-body">
+          <div class="card-brand">Huawei</div>
+          <div class="card-name">WE Wingle 4G Huawei E8372</div>
+          <div class="card-specs">
+            <span class="spec-tag">USB Wingle</span>
+            <span class="spec-tag">4G LTE</span>
+            <span class="spec-tag">150 Mbps</span>
+          </div>
+          <div class="card-footer">
+            <div class="price-stack">
+              <div class="price">400 <span>جنيه</span></div>
+            </div>
+            <button class="btn-more">التفاصيل</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div><!-- /mifi -->
+
+  <!-- ══════════════════════════════════════
+       قسم 3: WIRED VDSL
+  ══════════════════════════════════════ -->
   <div id="wired" class="section">
     <div class="sec-header">
       <div class="sec-icon">🏠</div>
@@ -634,9 +849,14 @@
     </div>
     <div class="devices-grid">
 
+      <!-- ZTE H560N -->
       <div class="device-card" onclick="openModal('zte-h560n')">
         <div class="card-img-wrap">
-          <img src="data:image/svg+xml,<svg%20xmlns="http://www.w3.org/2000/svg"%20viewBox="0%200%20200%20140"%20width="200"%20height="140">%20<rect%20width="200"%20height="140"%20fill="#EDE9FE"/>%20<!--%20Router%20body%20-%20wider%20flat%20shape%20-->%20<rect%20x="30"%20y="50"%20width="140"%20height="55"%20rx="8"%20fill="#6B21C8"/>%20<rect%20x="34"%20y="54"%20width="132"%20height="47"%20rx="6"%20fill="#7C3AED"/>%20<!--%20Top%20edge%20detail%20-->%20<rect%20x="30"%20y="50"%20width="140"%20height="8"%20rx="8"%20fill="#5B21B6"/>%20<!--%20LEDs%20row%20-->%20<circle%20cx="55"%20cy="70"%20r="3.5"%20fill="#4ADE80"/>%20<circle%20cx="67"%20cy="70"%20r="3.5"%20fill="#4ADE80"/>%20<circle%20cx="79"%20cy="70"%20r="3.5"%20fill="#FCD34D"/>%20<circle%20cx="91"%20cy="70"%20r="3.5"%20fill="#4ADE80"/>%20<circle%20cx="103"%20cy="70"%20r="3.5"%20fill="#6B7280"/>%20<!--%20VDSL%20label%20area%20-->%20<rect%20x="120"%20y="62"%20width="38"%20height="16"%20rx="4"%20fill="#5B21B6"/>%20<text%20x="139"%20y="74"%20text-anchor="middle"%20font-family="Arial"%20font-weight="bold"%20font-size="9"%20fill="#C4B5FD">VDSL2</text>%20<!--%20Ports%20at%20bottom%20of%20device%20-->%20<rect%20x="44"%20y="89"%20width="14"%20height="8"%20rx="2"%20fill="#4C1D95"/>%20<rect%20x="62"%20y="89"%20width="14"%20height="8"%20rx="2"%20fill="#4C1D95"/>%20<rect%20x="80"%20y="89"%20width="14"%20height="8"%20rx="2"%20fill="#4C1D95"/>%20<rect%20x="98"%20y="89"%20width="14"%20height="8"%20rx="2"%20fill="#4C1D95"/>%20<!--%20Phone%20port%20-->%20<rect%20x="130"%20y="89"%20width="10"%20height="8"%20rx="2"%20fill="#374151"/>%20<!--%20Single%20antenna%20-->%20<rect%20x="155"%20y="20"%20width="5"%20height="32"%20rx="2.5"%20fill="#6B21C8"/>%20<ellipse%20cx="157.5"%20cy="19"%20rx="5"%20ry="5"%20fill="#8B3CF7"/>%20<text%20x="100"%20y="127"%20text-anchor="middle"%20font-family="Arial"%20font-weight="bold"%20font-size="11"%20fill="#6B21C8">VDSL%20Router</text>%20</svg>" alt="ZTE H560N">
+          <img class="real-img"
+               src="https://te.eg/documents/20117/0/ZTE-H560N.png"
+               alt="ZTE H560N"
+               onerror="handleImgError(this,'🏠')">
+          <div class="img-fallback"><div class="fallback-icon">🏠</div><div class="fallback-name">ZTE ZXHN-H560N</div></div>
           <span class="card-badge">VDSL</span>
         </div>
         <div class="card-body">
@@ -644,8 +864,8 @@
           <div class="card-name">ZTE ZXHN-H560N راوتر أرضي</div>
           <div class="card-specs">
             <span class="spec-tag">VDSL2</span>
-            <span class="spec-tag">Dual Band</span>
             <span class="spec-tag">4 منافذ LAN</span>
+            <span class="spec-tag">WiFi 2.4G</span>
           </div>
           <div class="card-footer">
             <div class="price-stack">
@@ -656,18 +876,101 @@
         </div>
       </div>
 
+      <!-- ZTE H168N -->
+      <div class="device-card" onclick="openModal('zte-h168n')">
+        <div class="card-img-wrap">
+          <img class="real-img"
+               src="https://te.eg/documents/20117/0/ZTE-H168N.png"
+               alt="ZTE H168N"
+               onerror="handleImgError(this,'🏠')">
+          <div class="img-fallback"><div class="fallback-icon">🏠</div><div class="fallback-name">ZTE ZXHN H168N</div></div>
+          <span class="card-badge">VDSL</span>
+        </div>
+        <div class="card-body">
+          <div class="card-brand">ZTE</div>
+          <div class="card-name">ZTE ZXHN H168N راوتر VDSL</div>
+          <div class="card-specs">
+            <span class="spec-tag">VDSL2</span>
+            <span class="spec-tag">300 Mbps</span>
+            <span class="spec-tag">4 منافذ LAN</span>
+          </div>
+          <div class="card-footer">
+            <div class="price-stack">
+              <div class="price">400 <span>جنيه</span></div>
+            </div>
+            <button class="btn-more">التفاصيل</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Huawei DG8045 -->
+      <div class="device-card" onclick="openModal('huawei-dg8045')">
+        <div class="card-img-wrap">
+          <img class="real-img"
+               src="https://te.eg/documents/20117/0/Huawei-DG8045.png"
+               alt="Huawei DG8045"
+               onerror="handleImgError(this,'🏠')">
+          <div class="img-fallback"><div class="fallback-icon">🏠</div><div class="fallback-name">Huawei DG8045</div></div>
+          <span class="card-badge orange">Dual Band</span>
+        </div>
+        <div class="card-body">
+          <div class="card-brand">Huawei</div>
+          <div class="card-name">Huawei VDSL DG8045</div>
+          <div class="card-specs">
+            <span class="spec-tag">VDSL2</span>
+            <span class="spec-tag">Dual Band</span>
+            <span class="spec-tag">4 شبكات WiFi</span>
+          </div>
+          <div class="card-footer">
+            <div class="price-stack">
+              <div class="price">400 <span>جنيه</span></div>
+            </div>
+            <button class="btn-more">التفاصيل</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ZyXEL -->
+      <div class="device-card" onclick="openModal('zyxel-699')">
+        <div class="card-img-wrap">
+          <img class="real-img"
+               src="https://te.eg/documents/20117/0/ZyXEL-VDSL.png"
+               alt="ZyXEL VDSL"
+               onerror="handleImgError(this,'🏠')">
+          <div class="img-fallback"><div class="fallback-icon">🏠</div><div class="fallback-name">ZyXEL Dual Band VDSL</div></div>
+          <span class="card-badge orange">Dual Band</span>
+        </div>
+        <div class="card-body">
+          <div class="card-brand">ZyXEL</div>
+          <div class="card-name">ZyXEL Dual Band VDSL راوتر</div>
+          <div class="card-specs">
+            <span class="spec-tag">VDSL2</span>
+            <span class="spec-tag">Dual Band</span>
+            <span class="spec-tag">LED ذكي</span>
+          </div>
+          <div class="card-footer">
+            <div class="price-stack">
+              <div class="price">699 <span>جنيه</span></div>
+            </div>
+            <button class="btn-more">التفاصيل</button>
+          </div>
+        </div>
+      </div>
 
     </div>
-  </div>
-
+  </div><!-- /wired -->
 
 </div><!-- /main -->
 
-<!-- MODAL -->
+<!-- ─── MODAL ─── -->
 <div class="modal-overlay" id="modal-overlay" onclick="closeModalOutside(event)">
   <div class="modal" id="modal-box">
-    <div class="modal-img">
-      <img id="modal-img" src="" alt="">
+    <div class="modal-img" id="modal-img-wrap">
+      <img id="modal-img" src="" alt="" onerror="handleModalImgError(this)">
+      <div class="modal-fallback" id="modal-fallback">
+        <div class="modal-fallback-icon" id="modal-fallback-icon">📡</div>
+        <div class="modal-fallback-text" id="modal-fallback-text"></div>
+      </div>
     </div>
     <div class="modal-body">
       <div class="modal-brand" id="modal-brand"></div>
@@ -691,144 +994,219 @@
 </div>
 
 <script>
+/* ══════════════════════════════════════
+   بيانات الأجهزة (IDs صحيحة ومتطابقة مع الكروت)
+══════════════════════════════════════ */
 const devices = {
+
+  /* ── AIR 4G ── */
+  'zte-k10': {
+    brand: 'ZTE', name: 'ZTE CAT4 Router K10',
+    price: '850 جنيه', oldPrice: '1,100 جنيه',
+    img: 'https://te.eg/documents/20117/0/TE%2BK10%2BWhite+%281%29.png/e18656ba-f843-599b-4f75-27592a4b5905?t=1776692388920',
+    icon: '📡',
+    specs: [
+      {l:'الشبكة',v:'4G LTE CAT4'},{l:'سرعة التحميل',v:'150 Mbps'},
+      {l:'سرعة الرفع',v:'50 Mbps'},{l:'WiFi',v:'2.4GHz'},
+      {l:'أجهزة متصلة',v:'32 جهاز'},{l:'الشركة',v:'ZTE'}
+    ]
+  },
   'zte-mf293n': {
     brand: 'ZTE', name: 'WE Air ZTE CAT4 Router MF293N',
     price: '850 جنيه', oldPrice: '1,700 جنيه',
-    img: 'data:image/svg+xml,<svg%20xmlns="http://www.w3.org/2000/svg"%20viewBox="0%200%20200%20140"%20width="200"%20height="140">%20<rect%20width="200"%20height="140"%20fill="#EDE9FE"/>%20<!--%20Router%20body%20-->%20<rect%20x="50"%20y="65"%20width="100"%20height="52"%20rx="8"%20fill="#6B21C8"/>%20<rect%20x="55"%20y="70"%20width="90"%20height="42"%20rx="6"%20fill="#7C3AED"/>%20<!--%20LED%20lights%20-->%20<circle%20cx="68"%20cy="85"%20r="4"%20fill="#4ADE80"/>%20<circle%20cx="80"%20cy="85"%20r="4"%20fill="#4ADE80"/>%20<circle%20cx="92"%20cy="85"%20r="4"%20fill="#FCD34D"/>%20<circle%20cx="104"%20cy="85"%20r="4"%20fill="#6B7280"/>%20<!--%20WiFi%20symbol%20area%20-->%20<rect%20x="70"%20y="95"%20width="60"%20height="10"%20rx="3"%20fill="#5B21B6"/>%20<!--%20Left%20antenna%20-->%20<rect%20x="65"%20y="35"%20width="6"%20height="32"%20rx="3"%20fill="#6B21C8"/>%20<ellipse%20cx="68"%20cy="34"%20rx="5"%20ry="5"%20fill="#8B3CF7"/>%20<!--%20Right%20antenna%20-->%20<rect%20x="129"%20y="35"%20width="6"%20height="32"%20rx="3"%20fill="#6B21C8"/>%20<ellipse%20cx="132"%20cy="34"%20rx="5"%20ry="5"%20fill="#8B3CF7"/>%20<!--%20WiFi%20waves%20-->%20<path%20d="M85%2055%20Q100%2045%20115%2055"%20stroke="#A78BFA"%20stroke-width="2.5"%20fill="none"%20stroke-linecap="round"/>%20<path%20d="M90%2062%20Q100%2056%20110%2062"%20stroke="#C4B5FD"%20stroke-width="2"%20fill="none"%20stroke-linecap="round"/>%20<!--%204G%20label%20-->%20<text%20x="100"%20y="130"%20text-anchor="middle"%20font-family="Arial"%20font-weight="bold"%20font-size="11"%20fill="#6B21C8">4G%20LTE</text>%20</svg>',
+    img: 'https://te.eg/documents/20117/0/ZTE-MF293N.png',
+    icon: '📡',
     specs: [
-      {l:'الشبكة',v:'4G LTE CAT4'},{l:'سرعة التحميل',v:'150 Mbps'},{l:'سرعة الرفع',v:'50 Mbps'},
-      {l:'WiFi',v:'2.4GHz 2×2 MIMO'},{l:'أجهزة متصلة',v:'32 جهاز'},{l:'الشركة',v:'ZTE'}
+      {l:'الشبكة',v:'4G LTE CAT4'},{l:'سرعة التحميل',v:'150 Mbps'},
+      {l:'سرعة الرفع',v:'50 Mbps'},{l:'WiFi',v:'2.4GHz 2×2 MIMO'},
+      {l:'أجهزة متصلة',v:'32 جهاز'},{l:'الشركة',v:'ZTE'}
     ]
   },
   'huawei-b320': {
     brand: 'Huawei', name: 'WE Air Huawei B320-923 CAT4',
     price: '850 جنيه', oldPrice: '1,700 جنيه',
-    img: 'data:image/svg+xml,<svg%20xmlns="http://www.w3.org/2000/svg"%20viewBox="0%200%20200%20140"%20width="200"%20height="140">%20<rect%20width="200"%20height="140"%20fill="#EDE9FE"/>%20<!--%20Router%20body%20-->%20<rect%20x="50"%20y="65"%20width="100"%20height="52"%20rx="8"%20fill="#6B21C8"/>%20<rect%20x="55"%20y="70"%20width="90"%20height="42"%20rx="6"%20fill="#7C3AED"/>%20<!--%20LED%20lights%20-->%20<circle%20cx="68"%20cy="85"%20r="4"%20fill="#4ADE80"/>%20<circle%20cx="80"%20cy="85"%20r="4"%20fill="#4ADE80"/>%20<circle%20cx="92"%20cy="85"%20r="4"%20fill="#FCD34D"/>%20<circle%20cx="104"%20cy="85"%20r="4"%20fill="#6B7280"/>%20<!--%20WiFi%20symbol%20area%20-->%20<rect%20x="70"%20y="95"%20width="60"%20height="10"%20rx="3"%20fill="#5B21B6"/>%20<!--%20Left%20antenna%20-->%20<rect%20x="65"%20y="35"%20width="6"%20height="32"%20rx="3"%20fill="#6B21C8"/>%20<ellipse%20cx="68"%20cy="34"%20rx="5"%20ry="5"%20fill="#8B3CF7"/>%20<!--%20Right%20antenna%20-->%20<rect%20x="129"%20y="35"%20width="6"%20height="32"%20rx="3"%20fill="#6B21C8"/>%20<ellipse%20cx="132"%20cy="34"%20rx="5"%20ry="5"%20fill="#8B3CF7"/>%20<!--%20WiFi%20waves%20-->%20<path%20d="M85%2055%20Q100%2045%20115%2055"%20stroke="#A78BFA"%20stroke-width="2.5"%20fill="none"%20stroke-linecap="round"/>%20<path%20d="M90%2062%20Q100%2056%20110%2062"%20stroke="#C4B5FD"%20stroke-width="2"%20fill="none"%20stroke-linecap="round"/>%20<!--%204G%20label%20-->%20<text%20x="100"%20y="130"%20text-anchor="middle"%20font-family="Arial"%20font-weight="bold"%20font-size="11"%20fill="#6B21C8">4G%20LTE</text>%20</svg>',
+    img: 'https://te.eg/documents/20117/0/Huawei-B320.png',
+    icon: '📡',
     specs: [
-      {l:'الشبكة',v:'4G LTE CAT4'},{l:'سرعة التحميل',v:'150 Mbps'},{l:'سرعة الرفع',v:'50 Mbps'},
-      {l:'WiFi',v:'Dual Band'},{l:'أجهزة متصلة',v:'32 جهاز'},{l:'الشركة',v:'Huawei'}
+      {l:'الشبكة',v:'4G LTE CAT4'},{l:'سرعة التحميل',v:'150 Mbps'},
+      {l:'سرعة الرفع',v:'50 Mbps'},{l:'WiFi',v:'Dual Band'},
+      {l:'أجهزة متصلة',v:'32 جهاز'},{l:'الشركة',v:'Huawei'}
     ]
   },
   'zte-mf296r': {
     brand: 'ZTE', name: 'WE Air ZTE CAT6 Router MF296R',
     price: '1,000 جنيه', oldPrice: '2,000 جنيه',
-    img: 'data:image/svg+xml,<svg%20xmlns="http://www.w3.org/2000/svg"%20viewBox="0%200%20200%20140"%20width="200"%20height="140">%20<rect%20width="200"%20height="140"%20fill="#EDE9FE"/>%20<!--%20Router%20body%20-->%20<rect%20x="50"%20y="65"%20width="100"%20height="52"%20rx="8"%20fill="#6B21C8"/>%20<rect%20x="55"%20y="70"%20width="90"%20height="42"%20rx="6"%20fill="#7C3AED"/>%20<!--%20LED%20lights%20-->%20<circle%20cx="68"%20cy="85"%20r="4"%20fill="#4ADE80"/>%20<circle%20cx="80"%20cy="85"%20r="4"%20fill="#4ADE80"/>%20<circle%20cx="92"%20cy="85"%20r="4"%20fill="#FCD34D"/>%20<circle%20cx="104"%20cy="85"%20r="4"%20fill="#6B7280"/>%20<!--%20WiFi%20symbol%20area%20-->%20<rect%20x="70"%20y="95"%20width="60"%20height="10"%20rx="3"%20fill="#5B21B6"/>%20<!--%20Left%20antenna%20-->%20<rect%20x="65"%20y="35"%20width="6"%20height="32"%20rx="3"%20fill="#6B21C8"/>%20<ellipse%20cx="68"%20cy="34"%20rx="5"%20ry="5"%20fill="#8B3CF7"/>%20<!--%20Right%20antenna%20-->%20<rect%20x="129"%20y="35"%20width="6"%20height="32"%20rx="3"%20fill="#6B21C8"/>%20<ellipse%20cx="132"%20cy="34"%20rx="5"%20ry="5"%20fill="#8B3CF7"/>%20<!--%20WiFi%20waves%20-->%20<path%20d="M85%2055%20Q100%2045%20115%2055"%20stroke="#A78BFA"%20stroke-width="2.5"%20fill="none"%20stroke-linecap="round"/>%20<path%20d="M90%2062%20Q100%2056%20110%2062"%20stroke="#C4B5FD"%20stroke-width="2"%20fill="none"%20stroke-linecap="round"/>%20<!--%204G%20label%20-->%20<text%20x="100"%20y="130"%20text-anchor="middle"%20font-family="Arial"%20font-weight="bold"%20font-size="11"%20fill="#6B21C8">4G%20LTE</text>%20</svg>',
+    img: 'https://te.eg/documents/20117/0/ZTE-MF296R.png',
+    icon: '📡',
     specs: [
-      {l:'الشبكة',v:'4G LTE CAT6'},{l:'سرعة التحميل',v:'300 Mbps'},{l:'سرعة الرفع',v:'100 Mbps'},
-      {l:'WiFi',v:'Dual Band 2.4+5GHz'},{l:'أجهزة متصلة',v:'64 جهاز'},{l:'الشركة',v:'ZTE'}
+      {l:'الشبكة',v:'4G LTE CAT6'},{l:'سرعة التحميل',v:'300 Mbps'},
+      {l:'سرعة الرفع',v:'100 Mbps'},{l:'WiFi',v:'Dual Band 2.4+5GHz'},
+      {l:'أجهزة متصلة',v:'64 جهاز'},{l:'الشركة',v:'ZTE'}
     ]
   },
   'huawei-b315': {
     brand: 'Huawei', name: 'راوتر Huawei B315s-608 الهوائي',
     price: '749 جنيه', oldPrice: '',
-    img: 'data:image/svg+xml,<svg%20xmlns="http://www.w3.org/2000/svg"%20viewBox="0%200%20200%20140"%20width="200"%20height="140">%20<rect%20width="200"%20height="140"%20fill="#EDE9FE"/>%20<!--%20Router%20body%20-->%20<rect%20x="50"%20y="65"%20width="100"%20height="52"%20rx="8"%20fill="#6B21C8"/>%20<rect%20x="55"%20y="70"%20width="90"%20height="42"%20rx="6"%20fill="#7C3AED"/>%20<!--%20LED%20lights%20-->%20<circle%20cx="68"%20cy="85"%20r="4"%20fill="#4ADE80"/>%20<circle%20cx="80"%20cy="85"%20r="4"%20fill="#4ADE80"/>%20<circle%20cx="92"%20cy="85"%20r="4"%20fill="#FCD34D"/>%20<circle%20cx="104"%20cy="85"%20r="4"%20fill="#6B7280"/>%20<!--%20WiFi%20symbol%20area%20-->%20<rect%20x="70"%20y="95"%20width="60"%20height="10"%20rx="3"%20fill="#5B21B6"/>%20<!--%20Left%20antenna%20-->%20<rect%20x="65"%20y="35"%20width="6"%20height="32"%20rx="3"%20fill="#6B21C8"/>%20<ellipse%20cx="68"%20cy="34"%20rx="5"%20ry="5"%20fill="#8B3CF7"/>%20<!--%20Right%20antenna%20-->%20<rect%20x="129"%20y="35"%20width="6"%20height="32"%20rx="3"%20fill="#6B21C8"/>%20<ellipse%20cx="132"%20cy="34"%20rx="5"%20ry="5"%20fill="#8B3CF7"/>%20<!--%20WiFi%20waves%20-->%20<path%20d="M85%2055%20Q100%2045%20115%2055"%20stroke="#A78BFA"%20stroke-width="2.5"%20fill="none"%20stroke-linecap="round"/>%20<path%20d="M90%2062%20Q100%2056%20110%2062"%20stroke="#C4B5FD"%20stroke-width="2"%20fill="none"%20stroke-linecap="round"/>%20<!--%204G%20label%20-->%20<text%20x="100"%20y="130"%20text-anchor="middle"%20font-family="Arial"%20font-weight="bold"%20font-size="11"%20fill="#6B21C8">4G%20LTE</text>%20</svg>',
+    img: 'https://te.eg/documents/20117/0/Huawei-B315.png',
+    icon: '📡',
     specs: [
-      {l:'الشبكة',v:'4G LTE CAT4'},{l:'سرعة التحميل',v:'150 Mbps'},{l:'سرعة الرفع',v:'50 Mbps'},
-      {l:'WiFi',v:'2.4GHz'},{l:'أجهزة متصلة',v:'32 جهاز'},{l:'ضريبة القيمة المضافة',v:'شاملة'}
+      {l:'الشبكة',v:'4G LTE CAT4'},{l:'سرعة التحميل',v:'150 Mbps'},
+      {l:'سرعة الرفع',v:'50 Mbps'},{l:'WiFi',v:'2.4GHz'},
+      {l:'أجهزة متصلة',v:'32 جهاز'},{l:'الضريبة',v:'شاملة'}
     ]
   },
   'huawei-cat7': {
     brand: 'Huawei', name: 'Huawei CAT7 Router Home 4G',
     price: '2,500 جنيه', oldPrice: '',
-    img: 'data:image/svg+xml,<svg%20xmlns="http://www.w3.org/2000/svg"%20viewBox="0%200%20200%20140"%20width="200"%20height="140">%20<rect%20width="200"%20height="140"%20fill="#EDE9FE"/>%20<!--%20Router%20body%20-->%20<rect%20x="50"%20y="65"%20width="100"%20height="52"%20rx="8"%20fill="#6B21C8"/>%20<rect%20x="55"%20y="70"%20width="90"%20height="42"%20rx="6"%20fill="#7C3AED"/>%20<!--%20LED%20lights%20-->%20<circle%20cx="68"%20cy="85"%20r="4"%20fill="#4ADE80"/>%20<circle%20cx="80"%20cy="85"%20r="4"%20fill="#4ADE80"/>%20<circle%20cx="92"%20cy="85"%20r="4"%20fill="#FCD34D"/>%20<circle%20cx="104"%20cy="85"%20r="4"%20fill="#6B7280"/>%20<!--%20WiFi%20symbol%20area%20-->%20<rect%20x="70"%20y="95"%20width="60"%20height="10"%20rx="3"%20fill="#5B21B6"/>%20<!--%20Left%20antenna%20-->%20<rect%20x="65"%20y="35"%20width="6"%20height="32"%20rx="3"%20fill="#6B21C8"/>%20<ellipse%20cx="68"%20cy="34"%20rx="5"%20ry="5"%20fill="#8B3CF7"/>%20<!--%20Right%20antenna%20-->%20<rect%20x="129"%20y="35"%20width="6"%20height="32"%20rx="3"%20fill="#6B21C8"/>%20<ellipse%20cx="132"%20cy="34"%20rx="5"%20ry="5"%20fill="#8B3CF7"/>%20<!--%20WiFi%20waves%20-->%20<path%20d="M85%2055%20Q100%2045%20115%2055"%20stroke="#A78BFA"%20stroke-width="2.5"%20fill="none"%20stroke-linecap="round"/>%20<path%20d="M90%2062%20Q100%2056%20110%2062"%20stroke="#C4B5FD"%20stroke-width="2"%20fill="none"%20stroke-linecap="round"/>%20<!--%204G%20label%20-->%20<text%20x="100"%20y="130"%20text-anchor="middle"%20font-family="Arial"%20font-weight="bold"%20font-size="11"%20fill="#6B21C8">4G%20LTE</text>%20</svg>',
+    img: 'https://te.eg/documents/20117/0/Huawei-CAT7.png',
+    icon: '📡',
     specs: [
-      {l:'الشبكة',v:'4G LTE CAT7'},{l:'سرعة التحميل',v:'300 Mbps'},{l:'سرعة الرفع',v:'100 Mbps'},
-      {l:'WiFi',v:'Dual Band'},{l:'أجهزة متصلة',v:'64 جهاز'},{l:'الشركة',v:'Huawei'}
+      {l:'الشبكة',v:'4G LTE CAT7'},{l:'سرعة التحميل',v:'300 Mbps'},
+      {l:'سرعة الرفع',v:'100 Mbps'},{l:'WiFi',v:'Dual Band'},
+      {l:'أجهزة متصلة',v:'64 جهاز'},{l:'الشركة',v:'Huawei'}
     ]
   },
+
+  /* ── MiFi ── */
   'zte-mf937': {
     brand: 'ZTE', name: '4G MiFi ZTE MF937',
     price: '700 جنيه', oldPrice: '',
-    img: 'data:image/svg+xml,<svg%20xmlns="http://www.w3.org/2000/svg"%20viewBox="0%200%20200%20140"%20width="200"%20height="140">%20<rect%20width="200"%20height="140"%20fill="#EDE9FE"/>%20<!--%20MiFi%20body%20-%20rounded%20rectangle%20-->%20<rect%20x="70"%20y="30"%20width="60"%20height="85"%20rx="12"%20fill="#6B21C8"/>%20<rect%20x="74"%20y="34"%20width="52"%20height="77"%20rx="10"%20fill="#7C3AED"/>%20<!--%20Screen%20area%20-->%20<rect%20x="79"%20y="42"%20width="42"%20height="28"%20rx="5"%20fill="#1E1235"/>%20<!--%20Screen%20content%20-%20WiFi%20icon%20-->%20<circle%20cx="100"%20cy="62"%20r="3"%20fill="#4ADE80"/>%20<path%20d="M92%2057%20Q100%2051%20108%2057"%20stroke="#4ADE80"%20stroke-width="2"%20fill="none"%20stroke-linecap="round"/>%20<path%20d="M89%2053%20Q100%2045%20111%2053"%20stroke="#4ADE80"%20stroke-width="1.5"%20fill="none"%20stroke-linecap="round"/>%20<!--%20Button%20-->%20<circle%20cx="100"%20cy="97"%20r="7"%20fill="#5B21B6"/>%20<circle%20cx="100"%20cy="97"%20r="4"%20fill="#6B21C8"/>%20<!--%20LED%20-->%20<circle%20cx="100"%20cy="116"%20r="3"%20fill="#4ADE80"/>%20<!--%20Signal%20bars%20on%20side%20-->%20<rect%20x="75"%20y="72"%20width="4"%20height="4"%20rx="1"%20fill="#A78BFA"/>%20<rect%20x="75"%20y="68"%20width="4"%20height="3"%20rx="1"%20fill="#A78BFA"/>%20<text%20x="100"%20y="134"%20text-anchor="middle"%20font-family="Arial"%20font-weight="bold"%20font-size="11"%20fill="#6B21C8">MiFi%204G</text>%20</svg>',
+    img: 'https://te.eg/documents/20117/590683/MF937%2BDevice%2B109%2B-%2B400x400+%281%29.png/a4592169-2b15-f2a0-f14b-ffd4834fc377?t=1750437092764',
+    icon: '📶',
     specs: [
-      {l:'الشبكة',v:'4G LTE CAT4'},{l:'سرعة التحميل',v:'150 Mbps'},{l:'سرعة الرفع',v:'50 Mbps'},
-      {l:'WiFi',v:'2.4GHz 300 Mbps'},{l:'أجهزة متصلة',v:'10 أجهزة'},{l:'البطارية',v:'2000 mAh'}
+      {l:'الشبكة',v:'4G LTE CAT4'},{l:'سرعة التحميل',v:'150 Mbps'},
+      {l:'سرعة الرفع',v:'50 Mbps'},{l:'WiFi',v:'2.4GHz 300 Mbps'},
+      {l:'أجهزة متصلة',v:'10 أجهزة'},{l:'البطارية',v:'2000 mAh'}
     ]
   },
   'zte-mf927u': {
     brand: 'ZTE', name: '4G MiFi ZTE MF927U',
     price: '600 جنيه', oldPrice: '',
-    img: 'data:image/svg+xml,<svg%20xmlns="http://www.w3.org/2000/svg"%20viewBox="0%200%20200%20140"%20width="200"%20height="140">%20<rect%20width="200"%20height="140"%20fill="#EDE9FE"/>%20<!--%20MiFi%20body%20-%20rounded%20rectangle%20-->%20<rect%20x="70"%20y="30"%20width="60"%20height="85"%20rx="12"%20fill="#6B21C8"/>%20<rect%20x="74"%20y="34"%20width="52"%20height="77"%20rx="10"%20fill="#7C3AED"/>%20<!--%20Screen%20area%20-->%20<rect%20x="79"%20y="42"%20width="42"%20height="28"%20rx="5"%20fill="#1E1235"/>%20<!--%20Screen%20content%20-%20WiFi%20icon%20-->%20<circle%20cx="100"%20cy="62"%20r="3"%20fill="#4ADE80"/>%20<path%20d="M92%2057%20Q100%2051%20108%2057"%20stroke="#4ADE80"%20stroke-width="2"%20fill="none"%20stroke-linecap="round"/>%20<path%20d="M89%2053%20Q100%2045%20111%2053"%20stroke="#4ADE80"%20stroke-width="1.5"%20fill="none"%20stroke-linecap="round"/>%20<!--%20Button%20-->%20<circle%20cx="100"%20cy="97"%20r="7"%20fill="#5B21B6"/>%20<circle%20cx="100"%20cy="97"%20r="4"%20fill="#6B21C8"/>%20<!--%20LED%20-->%20<circle%20cx="100"%20cy="116"%20r="3"%20fill="#4ADE80"/>%20<!--%20Signal%20bars%20on%20side%20-->%20<rect%20x="75"%20y="72"%20width="4"%20height="4"%20rx="1"%20fill="#A78BFA"/>%20<rect%20x="75"%20y="68"%20width="4"%20height="3"%20rx="1"%20fill="#A78BFA"/>%20<text%20x="100"%20y="134"%20text-anchor="middle"%20font-family="Arial"%20font-weight="bold"%20font-size="11"%20fill="#6B21C8">MiFi%204G</text>%20</svg>',
+    img: 'https://te.eg/documents/20117/590683/ZTE_MIFI_MF927U4.jpg/da99ec0e-5f3b-a94f-1e30-7fadcfbde6cb?t=1750437093617',
+    icon: '📶',
     specs: [
-      {l:'الشبكة',v:'3G/4G'},{l:'سرعة التحميل',v:'150 Mbps'},{l:'WiFi',v:'300 Mbps'},
-      {l:'أجهزة متصلة',v:'10 أجهزة'},{l:'البطارية',v:'6-8 ساعات'},{l:'الشركة',v:'ZTE'}
+      {l:'الشبكة',v:'3G/4G'},{l:'سرعة التحميل',v:'150 Mbps'},
+      {l:'WiFi',v:'300 Mbps'},{l:'أجهزة متصلة',v:'10 أجهزة'},
+      {l:'البطارية',v:'6-8 ساعات'},{l:'الشركة',v:'ZTE'}
     ]
   },
   'zte-mf971r': {
     brand: 'ZTE', name: 'LTE CAT6 MiFi ZTE MF971R',
     price: '1,400 جنيه', oldPrice: '',
-    img: 'data:image/svg+xml,<svg%20xmlns="http://www.w3.org/2000/svg"%20viewBox="0%200%20200%20140"%20width="200"%20height="140">%20<rect%20width="200"%20height="140"%20fill="#EDE9FE"/>%20<!--%20MiFi%20body%20-%20rounded%20rectangle%20-->%20<rect%20x="70"%20y="30"%20width="60"%20height="85"%20rx="12"%20fill="#6B21C8"/>%20<rect%20x="74"%20y="34"%20width="52"%20height="77"%20rx="10"%20fill="#7C3AED"/>%20<!--%20Screen%20area%20-->%20<rect%20x="79"%20y="42"%20width="42"%20height="28"%20rx="5"%20fill="#1E1235"/>%20<!--%20Screen%20content%20-%20WiFi%20icon%20-->%20<circle%20cx="100"%20cy="62"%20r="3"%20fill="#4ADE80"/>%20<path%20d="M92%2057%20Q100%2051%20108%2057"%20stroke="#4ADE80"%20stroke-width="2"%20fill="none"%20stroke-linecap="round"/>%20<path%20d="M89%2053%20Q100%2045%20111%2053"%20stroke="#4ADE80"%20stroke-width="1.5"%20fill="none"%20stroke-linecap="round"/>%20<!--%20Button%20-->%20<circle%20cx="100"%20cy="97"%20r="7"%20fill="#5B21B6"/>%20<circle%20cx="100"%20cy="97"%20r="4"%20fill="#6B21C8"/>%20<!--%20LED%20-->%20<circle%20cx="100"%20cy="116"%20r="3"%20fill="#4ADE80"/>%20<!--%20Signal%20bars%20on%20side%20-->%20<rect%20x="75"%20y="72"%20width="4"%20height="4"%20rx="1"%20fill="#A78BFA"/>%20<rect%20x="75"%20y="68"%20width="4"%20height="3"%20rx="1"%20fill="#A78BFA"/>%20<text%20x="100"%20y="134"%20text-anchor="middle"%20font-family="Arial"%20font-weight="bold"%20font-size="11"%20fill="#6B21C8">MiFi%204G</text>%20</svg>',
+    img: 'https://te.eg/documents/20117/590683/MF971R%2BPhoto%5B1%5D+%281%29.jpg/8bcc1d89-2910-a7f7-3b30-7b28c48c65cd?t=1750437093138',
+    icon: '📶',
     specs: [
-      {l:'الشبكة',v:'4G LTE CAT6'},{l:'سرعة التحميل',v:'300 Mbps'},{l:'سرعة الرفع',v:'50 Mbps'},
-      {l:'WiFi',v:'1200 Mbps Dual Band'},{l:'أجهزة متصلة',v:'32 جهاز'},{l:'شاشة',v:'لمس تعمل باللمس'}
+      {l:'الشبكة',v:'4G LTE CAT6'},{l:'سرعة التحميل',v:'300 Mbps'},
+      {l:'سرعة الرفع',v:'50 Mbps'},{l:'WiFi',v:'1200 Mbps Dual Band'},
+      {l:'أجهزة متصلة',v:'32 جهاز'},{l:'شاشة',v:'تعمل باللمس'}
     ]
   },
   'zte-mf79u': {
     brand: 'ZTE', name: 'ZTE CAT4 Wingle MF79U',
     price: '449 جنيه', oldPrice: '1,270 جنيه',
-    img: 'data:image/svg+xml,<svg%20xmlns="http://www.w3.org/2000/svg"%20viewBox="0%200%20200%20140"%20width="200"%20height="140">%20<rect%20width="200"%20height="140"%20fill="#EDE9FE"/>%20<!--%20USB%20plug%20-->%20<rect%20x="85"%20y="95"%20width="30"%20height="18"%20rx="2"%20fill="#4C1D95"/>%20<rect%20x="88"%20y="99"%20width="10"%20height="10"%20rx="1"%20fill="#EDE9FE"/>%20<rect%20x="102"%20y="99"%20width="10"%20height="10"%20rx="1"%20fill="#EDE9FE"/>%20<!--%20Wingle%20body%20-->%20<rect%20x="70"%20y="35"%20width="60"%20height="63"%20rx="10"%20fill="#6B21C8"/>%20<rect%20x="74"%20y="39"%20width="52"%20height="55"%20rx="8"%20fill="#7C3AED"/>%20<!--%20WiFi%20symbol%20-->%20<circle%20cx="100"%20cy="72"%20r="4"%20fill="white"/>%20<path%20d="M90%2065%20Q100%2058%20110%2065"%20stroke="white"%20stroke-width="2.5"%20fill="none"%20stroke-linecap="round"/>%20<path%20d="M85%2059%20Q100%2050%20115%2059"%20stroke="rgba(255,255,255,0.6)"%20stroke-width="2"%20fill="none"%20stroke-linecap="round"/>%20<!--%20LED%20-->%20<circle%20cx="100"%20cy="84"%20r="3.5"%20fill="#4ADE80"/>%20<!--%20WE%20logo%20text%20-->%20<text%20x="100"%20y="55"%20text-anchor="middle"%20font-family="Arial"%20font-weight="900"%20font-size="14"%20fill="white">WE</text>%20<text%20x="100"%20y="133"%20text-anchor="middle"%20font-family="Arial"%20font-weight="bold"%20font-size="11"%20fill="#6B21C8">USB%20Wingle</text>%20</svg>',
+    img: 'https://te.eg/documents/20117/587595/Wingle%2BMF79U%2BFront.jpg/f9df9b8e-8513-5b1a-3878-71e02d35a5da?t=1750428891906',
+    icon: '🔌',
     specs: [
-      {l:'النوع',v:'USB Wingle مودم'},{l:'الشبكة',v:'4G LTE CAT4'},{l:'سرعة التحميل',v:'150 Mbps'},
-      {l:'سرعة الرفع',v:'50 Mbps'},{l:'WiFi',v:'300 Mbps'},{l:'أجهزة متصلة',v:'10 أجهزة'}
+      {l:'النوع',v:'USB Wingle مودم'},{l:'الشبكة',v:'4G LTE CAT4'},
+      {l:'سرعة التحميل',v:'150 Mbps'},{l:'سرعة الرفع',v:'50 Mbps'},
+      {l:'WiFi',v:'300 Mbps'},{l:'أجهزة متصلة',v:'10 أجهزة'}
     ]
   },
   'huawei-e5573': {
     brand: 'Huawei', name: 'Huawei E5573Cs-933 هوائي 4G',
     price: '600 جنيه', oldPrice: '',
-    img: 'data:image/svg+xml,<svg%20xmlns="http://www.w3.org/2000/svg"%20viewBox="0%200%20200%20140"%20width="200"%20height="140">%20<rect%20width="200"%20height="140"%20fill="#EDE9FE"/>%20<!--%20MiFi%20body%20-%20rounded%20rectangle%20-->%20<rect%20x="70"%20y="30"%20width="60"%20height="85"%20rx="12"%20fill="#6B21C8"/>%20<rect%20x="74"%20y="34"%20width="52"%20height="77"%20rx="10"%20fill="#7C3AED"/>%20<!--%20Screen%20area%20-->%20<rect%20x="79"%20y="42"%20width="42"%20height="28"%20rx="5"%20fill="#1E1235"/>%20<!--%20Screen%20content%20-%20WiFi%20icon%20-->%20<circle%20cx="100"%20cy="62"%20r="3"%20fill="#4ADE80"/>%20<path%20d="M92%2057%20Q100%2051%20108%2057"%20stroke="#4ADE80"%20stroke-width="2"%20fill="none"%20stroke-linecap="round"/>%20<path%20d="M89%2053%20Q100%2045%20111%2053"%20stroke="#4ADE80"%20stroke-width="1.5"%20fill="none"%20stroke-linecap="round"/>%20<!--%20Button%20-->%20<circle%20cx="100"%20cy="97"%20r="7"%20fill="#5B21B6"/>%20<circle%20cx="100"%20cy="97"%20r="4"%20fill="#6B21C8"/>%20<!--%20LED%20-->%20<circle%20cx="100"%20cy="116"%20r="3"%20fill="#4ADE80"/>%20<!--%20Signal%20bars%20on%20side%20-->%20<rect%20x="75"%20y="72"%20width="4"%20height="4"%20rx="1"%20fill="#A78BFA"/>%20<rect%20x="75"%20y="68"%20width="4"%20height="3"%20rx="1"%20fill="#A78BFA"/>%20<text%20x="100"%20y="134"%20text-anchor="middle"%20font-family="Arial"%20font-weight="bold"%20font-size="11"%20fill="#6B21C8">MiFi%204G</text>%20</svg>',
+    img: 'https://te.eg/documents/20117/0/Huawei-E5573.png',
+    icon: '📶',
     specs: [
-      {l:'الشبكة',v:'4G LTE'},{l:'سرعة التحميل',v:'150 Mbps'},{l:'WiFi',v:'2.4GHz'},
-      {l:'أجهزة متصلة',v:'10 أجهزة'},{l:'الشركة',v:'Huawei'},{l:'الضريبة',v:'شاملة'}
+      {l:'الشبكة',v:'4G LTE'},{l:'سرعة التحميل',v:'150 Mbps'},
+      {l:'WiFi',v:'2.4GHz'},{l:'أجهزة متصلة',v:'10 أجهزة'},
+      {l:'الشركة',v:'Huawei'},{l:'الضريبة',v:'شاملة'}
     ]
   },
   'huawei-e8372': {
     brand: 'Huawei', name: 'WE Wingle 4G Huawei E8372',
     price: '400 جنيه', oldPrice: '',
-    img: 'data:image/svg+xml,<svg%20xmlns="http://www.w3.org/2000/svg"%20viewBox="0%200%20200%20140"%20width="200"%20height="140">%20<rect%20width="200"%20height="140"%20fill="#EDE9FE"/>%20<!--%20MiFi%20body%20-%20rounded%20rectangle%20-->%20<rect%20x="70"%20y="30"%20width="60"%20height="85"%20rx="12"%20fill="#6B21C8"/>%20<rect%20x="74"%20y="34"%20width="52"%20height="77"%20rx="10"%20fill="#7C3AED"/>%20<!--%20Screen%20area%20-->%20<rect%20x="79"%20y="42"%20width="42"%20height="28"%20rx="5"%20fill="#1E1235"/>%20<!--%20Screen%20content%20-%20WiFi%20icon%20-->%20<circle%20cx="100"%20cy="62"%20r="3"%20fill="#4ADE80"/>%20<path%20d="M92%2057%20Q100%2051%20108%2057"%20stroke="#4ADE80"%20stroke-width="2"%20fill="none"%20stroke-linecap="round"/>%20<path%20d="M89%2053%20Q100%2045%20111%2053"%20stroke="#4ADE80"%20stroke-width="1.5"%20fill="none"%20stroke-linecap="round"/>%20<!--%20Button%20-->%20<circle%20cx="100"%20cy="97"%20r="7"%20fill="#5B21B6"/>%20<circle%20cx="100"%20cy="97"%20r="4"%20fill="#6B21C8"/>%20<!--%20LED%20-->%20<circle%20cx="100"%20cy="116"%20r="3"%20fill="#4ADE80"/>%20<!--%20Signal%20bars%20on%20side%20-->%20<rect%20x="75"%20y="72"%20width="4"%20height="4"%20rx="1"%20fill="#A78BFA"/>%20<rect%20x="75"%20y="68"%20width="4"%20height="3"%20rx="1"%20fill="#A78BFA"/>%20<text%20x="100"%20y="134"%20text-anchor="middle"%20font-family="Arial"%20font-weight="bold"%20font-size="11"%20fill="#6B21C8">MiFi%204G</text>%20</svg>',
+    img: 'https://te.eg/documents/20117/0/Huawei-E8372.png',
+    icon: '🔌',
     specs: [
-      {l:'النوع',v:'USB Wingle مودم'},{l:'الشبكة',v:'4G LTE'},{l:'سرعة التحميل',v:'150 Mbps'},
-      {l:'WiFi',v:'300 Mbps'},{l:'أجهزة متصلة',v:'10 أجهزة'},{l:'الشركة',v:'Huawei'}
+      {l:'النوع',v:'USB Wingle مودم'},{l:'الشبكة',v:'4G LTE'},
+      {l:'سرعة التحميل',v:'150 Mbps'},{l:'WiFi',v:'300 Mbps'},
+      {l:'أجهزة متصلة',v:'10 أجهزة'},{l:'الشركة',v:'Huawei'}
     ]
   },
+
+  /* ── VDSL ── */
   'zte-h560n': {
     brand: 'ZTE', name: 'ZTE ZXHN-H560N راوتر أرضي VDSL',
     price: '181 جنيه', oldPrice: '',
-    img: 'data:image/svg+xml,<svg%20xmlns="http://www.w3.org/2000/svg"%20viewBox="0%200%20200%20140"%20width="200"%20height="140">%20<rect%20width="200"%20height="140"%20fill="#EDE9FE"/>%20<!--%20Router%20body%20-%20wider%20flat%20shape%20-->%20<rect%20x="30"%20y="50"%20width="140"%20height="55"%20rx="8"%20fill="#6B21C8"/>%20<rect%20x="34"%20y="54"%20width="132"%20height="47"%20rx="6"%20fill="#7C3AED"/>%20<!--%20Top%20edge%20detail%20-->%20<rect%20x="30"%20y="50"%20width="140"%20height="8"%20rx="8"%20fill="#5B21B6"/>%20<!--%20LEDs%20row%20-->%20<circle%20cx="55"%20cy="70"%20r="3.5"%20fill="#4ADE80"/>%20<circle%20cx="67"%20cy="70"%20r="3.5"%20fill="#4ADE80"/>%20<circle%20cx="79"%20cy="70"%20r="3.5"%20fill="#FCD34D"/>%20<circle%20cx="91"%20cy="70"%20r="3.5"%20fill="#4ADE80"/>%20<circle%20cx="103"%20cy="70"%20r="3.5"%20fill="#6B7280"/>%20<!--%20VDSL%20label%20area%20-->%20<rect%20x="120"%20y="62"%20width="38"%20height="16"%20rx="4"%20fill="#5B21B6"/>%20<text%20x="139"%20y="74"%20text-anchor="middle"%20font-family="Arial"%20font-weight="bold"%20font-size="9"%20fill="#C4B5FD">VDSL2</text>%20<!--%20Ports%20at%20bottom%20of%20device%20-->%20<rect%20x="44"%20y="89"%20width="14"%20height="8"%20rx="2"%20fill="#4C1D95"/>%20<rect%20x="62"%20y="89"%20width="14"%20height="8"%20rx="2"%20fill="#4C1D95"/>%20<rect%20x="80"%20y="89"%20width="14"%20height="8"%20rx="2"%20fill="#4C1D95"/>%20<rect%20x="98"%20y="89"%20width="14"%20height="8"%20rx="2"%20fill="#4C1D95"/>%20<!--%20Phone%20port%20-->%20<rect%20x="130"%20y="89"%20width="10"%20height="8"%20rx="2"%20fill="#374151"/>%20<!--%20Single%20antenna%20-->%20<rect%20x="155"%20y="20"%20width="5"%20height="32"%20rx="2.5"%20fill="#6B21C8"/>%20<ellipse%20cx="157.5"%20cy="19"%20rx="5"%20ry="5"%20fill="#8B3CF7"/>%20<text%20x="100"%20y="127"%20text-anchor="middle"%20font-family="Arial"%20font-weight="bold"%20font-size="11"%20fill="#6B21C8">VDSL%20Router</text>%20</svg>',
+    img: 'https://te.eg/documents/20117/0/ZTE-H560N.png',
+    icon: '🏠',
     specs: [
-      {l:'النوع',v:'VDSL2 راوتر أرضي'},{l:'WiFi',v:'2.4GHz'},{l:'المنافذ',v:'4 × LAN'},
-      {l:'الشركة',v:'ZTE'},{l:'الموديل',v:'ZXHN-H560N'},{l:'الاستخدام',v:'خط أرضي WE'}
+      {l:'النوع',v:'VDSL2 راوتر أرضي'},{l:'WiFi',v:'2.4GHz'},
+      {l:'المنافذ',v:'4 × LAN'},{l:'الشركة',v:'ZTE'},
+      {l:'الموديل',v:'ZXHN-H560N'},{l:'الاستخدام',v:'خط أرضي WE'}
     ]
   },
   'zte-h168n': {
     brand: 'ZTE', name: 'ZTE ZXHN H168N راوتر VDSL',
     price: '400 جنيه', oldPrice: '',
-    img: 'data:image/svg+xml,<svg%20xmlns="http://www.w3.org/2000/svg"%20viewBox="0%200%20200%20140"%20width="200"%20height="140">%20<rect%20width="200"%20height="140"%20fill="#EDE9FE"/>%20<!--%20Router%20body%20-%20wider%20flat%20shape%20-->%20<rect%20x="30"%20y="50"%20width="140"%20height="55"%20rx="8"%20fill="#6B21C8"/>%20<rect%20x="34"%20y="54"%20width="132"%20height="47"%20rx="6"%20fill="#7C3AED"/>%20<!--%20Top%20edge%20detail%20-->%20<rect%20x="30"%20y="50"%20width="140"%20height="8"%20rx="8"%20fill="#5B21B6"/>%20<!--%20LEDs%20row%20-->%20<circle%20cx="55"%20cy="70"%20r="3.5"%20fill="#4ADE80"/>%20<circle%20cx="67"%20cy="70"%20r="3.5"%20fill="#4ADE80"/>%20<circle%20cx="79"%20cy="70"%20r="3.5"%20fill="#FCD34D"/>%20<circle%20cx="91"%20cy="70"%20r="3.5"%20fill="#4ADE80"/>%20<circle%20cx="103"%20cy="70"%20r="3.5"%20fill="#6B7280"/>%20<!--%20VDSL%20label%20area%20-->%20<rect%20x="120"%20y="62"%20width="38"%20height="16"%20rx="4"%20fill="#5B21B6"/>%20<text%20x="139"%20y="74"%20text-anchor="middle"%20font-family="Arial"%20font-weight="bold"%20font-size="9"%20fill="#C4B5FD">VDSL2</text>%20<!--%20Ports%20at%20bottom%20of%20device%20-->%20<rect%20x="44"%20y="89"%20width="14"%20height="8"%20rx="2"%20fill="#4C1D95"/>%20<rect%20x="62"%20y="89"%20width="14"%20height="8"%20rx="2"%20fill="#4C1D95"/>%20<rect%20x="80"%20y="89"%20width="14"%20height="8"%20rx="2"%20fill="#4C1D95"/>%20<rect%20x="98"%20y="89"%20width="14"%20height="8"%20rx="2"%20fill="#4C1D95"/>%20<!--%20Phone%20port%20-->%20<rect%20x="130"%20y="89"%20width="10"%20height="8"%20rx="2"%20fill="#374151"/>%20<!--%20Single%20antenna%20-->%20<rect%20x="155"%20y="20"%20width="5"%20height="32"%20rx="2.5"%20fill="#6B21C8"/>%20<ellipse%20cx="157.5"%20cy="19"%20rx="5"%20ry="5"%20fill="#8B3CF7"/>%20<text%20x="100"%20y="127"%20text-anchor="middle"%20font-family="Arial"%20font-weight="bold"%20font-size="11"%20fill="#6B21C8">VDSL%20Router</text>%20</svg>',
+    img: 'https://te.eg/documents/20117/0/ZTE-H168N.png',
+    icon: '🏠',
     specs: [
-      {l:'النوع',v:'VDSL2 راوتر أرضي'},{l:'WiFi',v:'300 Mbps 2.4GHz'},{l:'المنافذ',v:'4 × LAN'},
-      {l:'الشركة',v:'ZTE'},{l:'الموديل',v:'ZXHN H168N'},{l:'النسخة',v:'Mid End'}
+      {l:'النوع',v:'VDSL2 راوتر أرضي'},{l:'WiFi',v:'300 Mbps 2.4GHz'},
+      {l:'المنافذ',v:'4 × LAN'},{l:'الشركة',v:'ZTE'},
+      {l:'الموديل',v:'ZXHN H168N'},{l:'النسخة',v:'Mid End'}
     ]
   },
   'huawei-dg8045': {
     brand: 'Huawei', name: 'Huawei VDSL DG8045',
     price: '400 جنيه', oldPrice: '',
-    img: 'data:image/svg+xml,<svg%20xmlns="http://www.w3.org/2000/svg"%20viewBox="0%200%20200%20140"%20width="200"%20height="140">%20<rect%20width="200"%20height="140"%20fill="#EDE9FE"/>%20<!--%20Router%20body%20-%20wider%20flat%20shape%20-->%20<rect%20x="30"%20y="50"%20width="140"%20height="55"%20rx="8"%20fill="#6B21C8"/>%20<rect%20x="34"%20y="54"%20width="132"%20height="47"%20rx="6"%20fill="#7C3AED"/>%20<!--%20Top%20edge%20detail%20-->%20<rect%20x="30"%20y="50"%20width="140"%20height="8"%20rx="8"%20fill="#5B21B6"/>%20<!--%20LEDs%20row%20-->%20<circle%20cx="55"%20cy="70"%20r="3.5"%20fill="#4ADE80"/>%20<circle%20cx="67"%20cy="70"%20r="3.5"%20fill="#4ADE80"/>%20<circle%20cx="79"%20cy="70"%20r="3.5"%20fill="#FCD34D"/>%20<circle%20cx="91"%20cy="70"%20r="3.5"%20fill="#4ADE80"/>%20<circle%20cx="103"%20cy="70"%20r="3.5"%20fill="#6B7280"/>%20<!--%20VDSL%20label%20area%20-->%20<rect%20x="120"%20y="62"%20width="38"%20height="16"%20rx="4"%20fill="#5B21B6"/>%20<text%20x="139"%20y="74"%20text-anchor="middle"%20font-family="Arial"%20font-weight="bold"%20font-size="9"%20fill="#C4B5FD">VDSL2</text>%20<!--%20Ports%20at%20bottom%20of%20device%20-->%20<rect%20x="44"%20y="89"%20width="14"%20height="8"%20rx="2"%20fill="#4C1D95"/>%20<rect%20x="62"%20y="89"%20width="14"%20height="8"%20rx="2"%20fill="#4C1D95"/>%20<rect%20x="80"%20y="89"%20width="14"%20height="8"%20rx="2"%20fill="#4C1D95"/>%20<rect%20x="98"%20y="89"%20width="14"%20height="8"%20rx="2"%20fill="#4C1D95"/>%20<!--%20Phone%20port%20-->%20<rect%20x="130"%20y="89"%20width="10"%20height="8"%20rx="2"%20fill="#374151"/>%20<!--%20Single%20antenna%20-->%20<rect%20x="155"%20y="20"%20width="5"%20height="32"%20rx="2.5"%20fill="#6B21C8"/>%20<ellipse%20cx="157.5"%20cy="19"%20rx="5"%20ry="5"%20fill="#8B3CF7"/>%20<text%20x="100"%20y="127"%20text-anchor="middle"%20font-family="Arial"%20font-weight="bold"%20font-size="11"%20fill="#6B21C8">VDSL%20Router</text>%20</svg>',
+    img: 'https://te.eg/documents/20117/0/Huawei-DG8045.png',
+    icon: '🏠',
     specs: [
-      {l:'النوع',v:'VDSL2 راوتر أرضي'},{l:'WiFi',v:'Dual Band 2.4+5GHz'},{l:'شبكات WiFi',v:'4 شبكات منفصلة'},
-      {l:'الشركة',v:'Huawei'},{l:'الموديل',v:'DG8045'},{l:'الاستخدام',v:'خط أرضي WE'}
+      {l:'النوع',v:'VDSL2 راوتر أرضي'},{l:'WiFi',v:'Dual Band 2.4+5GHz'},
+      {l:'شبكات WiFi',v:'4 شبكات منفصلة'},{l:'الشركة',v:'Huawei'},
+      {l:'الموديل',v:'DG8045'},{l:'الاستخدام',v:'خط أرضي WE'}
     ]
   },
   'zyxel-699': {
     brand: 'ZyXEL', name: 'ZyXEL Dual Band VDSL راوتر',
     price: '699 جنيه', oldPrice: '',
-    img: 'data:image/svg+xml,<svg%20xmlns="http://www.w3.org/2000/svg"%20viewBox="0%200%20200%20140"%20width="200"%20height="140">%20<rect%20width="200"%20height="140"%20fill="#EDE9FE"/>%20<!--%20Router%20body%20-%20wider%20flat%20shape%20-->%20<rect%20x="30"%20y="50"%20width="140"%20height="55"%20rx="8"%20fill="#6B21C8"/>%20<rect%20x="34"%20y="54"%20width="132"%20height="47"%20rx="6"%20fill="#7C3AED"/>%20<!--%20Top%20edge%20detail%20-->%20<rect%20x="30"%20y="50"%20width="140"%20height="8"%20rx="8"%20fill="#5B21B6"/>%20<!--%20LEDs%20row%20-->%20<circle%20cx="55"%20cy="70"%20r="3.5"%20fill="#4ADE80"/>%20<circle%20cx="67"%20cy="70"%20r="3.5"%20fill="#4ADE80"/>%20<circle%20cx="79"%20cy="70"%20r="3.5"%20fill="#FCD34D"/>%20<circle%20cx="91"%20cy="70"%20r="3.5"%20fill="#4ADE80"/>%20<circle%20cx="103"%20cy="70"%20r="3.5"%20fill="#6B7280"/>%20<!--%20VDSL%20label%20area%20-->%20<rect%20x="120"%20y="62"%20width="38"%20height="16"%20rx="4"%20fill="#5B21B6"/>%20<text%20x="139"%20y="74"%20text-anchor="middle"%20font-family="Arial"%20font-weight="bold"%20font-size="9"%20fill="#C4B5FD">VDSL2</text>%20<!--%20Ports%20at%20bottom%20of%20device%20-->%20<rect%20x="44"%20y="89"%20width="14"%20height="8"%20rx="2"%20fill="#4C1D95"/>%20<rect%20x="62"%20y="89"%20width="14"%20height="8"%20rx="2"%20fill="#4C1D95"/>%20<rect%20x="80"%20y="89"%20width="14"%20height="8"%20rx="2"%20fill="#4C1D95"/>%20<rect%20x="98"%20y="89"%20width="14"%20height="8"%20rx="2"%20fill="#4C1D95"/>%20<!--%20Phone%20port%20-->%20<rect%20x="130"%20y="89"%20width="10"%20height="8"%20rx="2"%20fill="#374151"/>%20<!--%20Single%20antenna%20-->%20<rect%20x="155"%20y="20"%20width="5"%20height="32"%20rx="2.5"%20fill="#6B21C8"/>%20<ellipse%20cx="157.5"%20cy="19"%20rx="5"%20ry="5"%20fill="#8B3CF7"/>%20<text%20x="100"%20y="127"%20text-anchor="middle"%20font-family="Arial"%20font-weight="bold"%20font-size="11"%20fill="#6B21C8">VDSL%20Router</text>%20</svg>',
+    img: 'https://te.eg/documents/20117/0/ZyXEL-VDSL.png',
+    icon: '🏠',
     specs: [
-      {l:'النوع',v:'VDSL2 راوتر أرضي'},{l:'WiFi',v:'Dual Band 2.4+5GHz'},{l:'المؤشر',v:'LED ذكي للإشارة'},
-      {l:'الشركة',v:'ZyXEL'},{l:'سرعة WiFi',v:'300 Mbps 2.4G'},{l:'الاستخدام',v:'خط أرضي WE'}
+      {l:'النوع',v:'VDSL2 راوتر أرضي'},{l:'WiFi',v:'Dual Band 2.4+5GHz'},
+      {l:'المؤشر',v:'LED ذكي للإشارة'},{l:'الشركة',v:'ZyXEL'},
+      {l:'سرعة WiFi',v:'300 Mbps 2.4G'},{l:'الاستخدام',v:'خط أرضي WE'}
     ]
   }
 };
 
+/* ══════════════════════════════════════
+   معالجة فشل تحميل الصور في الكروت
+══════════════════════════════════════ */
+function handleImgError(imgEl, icon) {
+  imgEl.style.display = 'none';
+  const wrap = imgEl.closest('.card-img-wrap');
+  if (wrap) {
+    const fallback = wrap.querySelector('.img-fallback');
+    if (fallback) {
+      fallback.querySelector('.fallback-icon').textContent = icon;
+      fallback.style.display = 'flex';
+    }
+  }
+}
+
+/* معالجة فشل تحميل صورة الـ Modal */
+function handleModalImgError(imgEl) {
+  imgEl.style.display = 'none';
+  const fallback = document.getElementById('modal-fallback');
+  if (fallback) fallback.style.display = 'flex';
+}
+
+/* ══════════════════════════════════════
+   التبويبات
+══════════════════════════════════════ */
 function showSection(id, btn) {
   document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
@@ -836,16 +1214,39 @@ function showSection(id, btn) {
   btn.classList.add('active');
 }
 
+/* ══════════════════════════════════════
+   الـ Modal
+══════════════════════════════════════ */
 function openModal(id) {
-  const d = devices[id]; if(!d) return;
+  const d = devices[id];
+  if (!d) { console.warn('Device not found:', id); return; }
+
   document.getElementById('modal-brand').textContent = d.brand;
   document.getElementById('modal-name').textContent = d.name;
-  document.getElementById('modal-price').innerHTML = d.price + ' <small>شامل ضريبة القيمة المضافة</small>';
-  document.getElementById('modal-old').textContent = d.oldPrice ? 'السعر الأصلي: ' + d.oldPrice : '';
-  document.getElementById('modal-img').src = d.img;
-  document.getElementById('modal-img').onerror = function(){ this.src='https://via.placeholder.com/300x200/EDE9FE/8B3CF7?text='+encodeURIComponent(d.name); };
-  const specsHtml = d.specs.map(s => `<div class="spec-item"><div class="spec-label">${s.l}</div><div class="spec-val">${s.v}</div></div>`).join('');
+  document.getElementById('modal-price').innerHTML =
+    d.price + ' <small>شامل ضريبة القيمة المضافة</small>';
+  document.getElementById('modal-old').textContent =
+    d.oldPrice ? 'السعر الأصلي: ' + d.oldPrice : '';
+
+  /* إعادة تهيئة الصورة */
+  const modalImg = document.getElementById('modal-img');
+  const modalFallback = document.getElementById('modal-fallback');
+  modalImg.style.display = 'block';
+  modalFallback.style.display = 'none';
+  modalImg.src = d.img;
+  modalImg.alt = d.name;
+
+  document.getElementById('modal-fallback-icon').textContent = d.icon || '📡';
+  document.getElementById('modal-fallback-text').textContent = d.name;
+
+  const specsHtml = d.specs.map(s =>
+    `<div class="spec-item">
+       <div class="spec-label">${s.l}</div>
+       <div class="spec-val">${s.v}</div>
+     </div>`
+  ).join('');
   document.getElementById('modal-specs').innerHTML = specsHtml;
+
   document.getElementById('modal-overlay').classList.add('open');
 }
 
@@ -854,10 +1255,10 @@ function closeModal() {
 }
 
 function closeModalOutside(e) {
-  if(e.target === document.getElementById('modal-overlay')) closeModal();
+  if (e.target === document.getElementById('modal-overlay')) closeModal();
 }
 
-document.addEventListener('keydown', e => { if(e.key==='Escape') closeModal(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
 </script>
 </body>
 </html>
