@@ -1,5 +1,5 @@
 /**
- * WE-Core Authentication Guard (V15 - Cookies Only Version)
+ * WE-Core Authentication Guard (V16.0.3 - Robust Path Version)
  */
 
 (async function() {
@@ -10,11 +10,30 @@
     const isLoginPage = path.includes('login.html') || path.endsWith('.icu/');
     if (isLoginPage) return;
 
+    // Hide content immediately
     if (document.documentElement) { document.documentElement.style.display = 'none'; }
 
     function getLoginPath() {
-        if (path.includes('/info/') || path.includes('/offers/') || path.includes('/Corces/')) { return '../login.html'; }
-        return 'login.html';
+        // Calculate depth to return to root
+        const segments = path.split('/').filter(s => s.length > 0);
+        // If we are on a domain like we-core.icu/Services/page.html
+        // segments will be ["Services", "page.html"]
+        // We need to go up (segments.length - 1) times if the last segment is a file
+        // Or segments.length times if it's a directory.
+        
+        let depth = 0;
+        if (path.endsWith('/')) {
+            depth = segments.length;
+        } else {
+            depth = segments.length > 0 ? segments.length - 1 : 0;
+        }
+
+        // Special case for GitHub Pages or subfolder hosting
+        // If the path contains 'we-core', we might need to adjust.
+        // But based on the user's URL, it's root domain.
+        
+        if (depth <= 0) return 'login.html';
+        return '../'.repeat(depth) + 'login.html';
     }
 
     async function redirectToLogin() {
@@ -46,7 +65,7 @@
             });
         }
 
-        // إنشاء العميل
+        // Create Client
         const sb = supabase.createClient(SB_URL, SB_KEY, {
             auth: {
                 persistSession: false,
@@ -55,11 +74,10 @@
             }
         });
 
-        // التحقق من التوكن
+        // Verify Token
         const { data: { user }, error } = await sb.auth.getUser(savedToken);
 
         if (user && !error) {
-            // ✅ حفظ الـ client والـ user على window بعد ما اتعرفوا
             window._sbClient = sb;
             window._sbUser   = user;
 
