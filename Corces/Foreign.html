@@ -76,10 +76,13 @@
         }
     </style>
 <script src="../script/active-users-widget.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body class="bg-gray-50">
     <!-- Header -->
     <header class="gradient-bg text-white shadow-lg sticky top-0 z-50">
+<a href="javascript:history.back()" class="back-btn" style="position: absolute; left: 20px; top: 50%; transform: translateY(-50%); color: white; text-decoration: none; font-size: 20px; z-index: 1000;"><i class="fas fa-arrow-left"></i></a>
+
         <div class="container mx-auto px-4 py-6">
             <div class="flex items-center justify-between">
                 <div class="flex items-center space-x-4 space-x-reverse">
@@ -590,21 +593,7 @@
     </main>
 
     <!-- Footer -->
-    <footer class="gradient-bg text-white py-8 mt-12">
-        <div class="container mx-auto px-4 text-center">
-            <div class="mb-4">
-                <div class="bg-white rounded-full p-4 w-20 h-20 mx-auto flex items-center justify-center mb-4">
-                    <img src="we-core/img
-/we-core.png" alt="WE Logo" class="w-16 h-16 object-contain">
-                </div>
-                <h3 class="text-xl font-bold">فريق WE-CORE</h3>
-                <p class="text-purple-200">أكتوبر 2024</p>
-            </div>
-            <div class="border-t border-purple-400 pt-4">
-                <p class="text-purple-200">© 2024 WE - جميع الحقوق محفوظة</p>
-            </div>
-        </div>
-    </footer>
+    <footer class="gradient-bg text-white py-8 mt-12">WE Core Team 2026</footer>
 
     <script>
         // Tab functionality
@@ -694,13 +683,7 @@
     }
   });
 </script>
-<style>
-.back-btn-float{position:fixed;bottom:24px;left:20px;z-index:9999;display:flex;align-items:center;gap:8px;padding:12px 20px;border-radius:50px;background:linear-gradient(135deg,#5b21b6,#7c3aed);color:#fff;font-family:"Cairo",sans-serif;font-size:14px;font-weight:700;border:none;cursor:pointer;box-shadow:0 6px 22px rgba(91,33,182,.38);text-decoration:none;transition:transform .2s,box-shadow .2s,opacity .2s;animation:floatIn .4s ease both;}
-.back-btn-float:hover{transform:translateY(-3px);box-shadow:0 10px 28px rgba(91,33,182,.48);opacity:.93;}
-.back-btn-float i{font-size:15px;}
-@keyframes floatIn{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
-@media(max-width:480px){.back-btn-float{bottom:16px;left:14px;padding:10px 16px;font-size:13px;}}
-</style>
-<a href="../index.html" class="back-btn-float"><i class="fa-solid fa-arrow-right"></i> الرئيسية</a>
+
+
 </body>
 </html>
