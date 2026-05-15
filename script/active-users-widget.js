@@ -3,18 +3,7 @@
  * WE-Core | Active Users Widget
  * نظام تتبع المستخدمين النشطين
  * ====================================================
- * 
- * طريقة التضمين في أي صفحة HTML:
- * <script src="script/active-users-widget.js"></script>
- * 
- * ثم أضف في آخر الـ <body>:
- * <div id="active-users-widget"></div>
- * 
- * أو استدعي مباشرة:
- * ActiveUsersWidget.init({ supabaseUrl: '...', supabaseKey: '...' });
- * ====================================================
  */
- 
 
 const ActiveUsersWidget = (() => {
 
@@ -22,20 +11,11 @@ const ActiveUsersWidget = (() => {
   // ⚙️ الإعدادات
   // =====================
   const CONFIG = {
-    // 🔴 ضع هنا بيانات Supabase بتاعتك
     supabaseUrl: 'https://iygwhapcpdmsasqlfelv.supabase.co',
     supabaseKey: 'sb_publishable_rD9naqrpu1dI-iwchAS0GQ_JkgGysqP',
-
-    // اسم الـ channel في Supabase Realtime
     channelName: 'we-core-presence',
-
-    // كل كام ثانية يتحدث العداد (بدون Supabase)
     fallbackInterval: 5000,
-
-    // وين الـ Widget يظهر؟ 'corner' | 'inline'
-    position: 'inline',
-
-    // الـ Element اللي هيتضاف فيه لو position = 'inline'
+    position: 'corner', // Default to corner to show on all pages
     containerId: 'active-users-widget',
   };
 
@@ -56,11 +36,12 @@ const ActiveUsersWidget = (() => {
       border-radius: 50px;
       padding: 6px 12px;
       box-shadow: 0 4px 20px rgba(0,0,0,0.3), 0 0 0 1px rgba(255,107,53,0.1);
-      cursor: default;
+      cursor: pointer;
       font-family: 'Cairo', sans-serif;
       transition: all 0.3s ease;
       animation: slideInCorner 0.5s ease forwards;
       min-width: 80px;
+      user-select: none;
     }
 
     #we-active-users-corner:hover {
@@ -107,62 +88,122 @@ const ActiveUsersWidget = (() => {
       font-size: 10px;
     }
 
-    /* Dark mode support */
-    [data-theme="light"] #we-active-users-corner {
-      background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
-      border-color: rgba(255, 107, 53, 0.2);
-      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    /* Modal Styles */
+    #we-users-modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(4px);
+      z-index: 10000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      animation: fadeIn 0.3s ease;
     }
 
-    [data-theme="light"] .we-active-text { color: #1e293b; }
-    [data-theme="light"] .we-active-label { color: #64748b; }
+    #we-users-modal {
+      background: #1a1a2e;
+      border: 1px solid rgba(255, 107, 53, 0.3);
+      border-radius: 20px;
+      width: 100%;
+      max-width: 350px;
+      max-height: 80vh;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+      font-family: 'Cairo', sans-serif;
+      direction: rtl;
+    }
 
-    /* Inline card style */
-    .we-active-inline-card {
+    .we-modal-header {
+      padding: 15px 20px;
+      background: rgba(255, 255, 255, 0.05);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .we-modal-title {
+      color: #fff;
+      font-weight: 700;
+      font-size: 16px;
+    }
+
+    .we-modal-close {
+      color: #94a3b8;
+      cursor: pointer;
+      font-size: 20px;
+      transition: color 0.2s;
+    }
+
+    .we-modal-close:hover {
+      color: #fff;
+    }
+
+    .we-modal-body {
+      padding: 10px;
+      overflow-y: auto;
+      flex: 1;
+    }
+
+    .we-user-item {
       display: flex;
       align-items: center;
       gap: 12px;
-      background: linear-gradient(135deg, #1a1a2e, #16213e);
-      border: 1px solid rgba(255, 107, 53, 0.3);
+      padding: 10px 15px;
       border-radius: 12px;
-      padding: 14px 20px;
-      font-family: 'Cairo', sans-serif;
+      transition: background 0.2s;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.03);
     }
 
-    .we-active-inline-card .we-active-icon {
-      font-size: 22px;
+    .we-user-item:hover {
+      background: rgba(255, 255, 255, 0.05);
     }
 
-    .we-active-inline-card .we-active-info {
+    .we-user-avatar {
+      width: 35px;
+      height: 35px;
+      background: linear-gradient(135deg, #fb923c, #ea580c);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-weight: 700;
+      font-size: 14px;
+    }
+
+    .we-user-info {
       display: flex;
       flex-direction: column;
     }
 
-    .we-active-inline-card .we-active-num {
-      font-size: 24px;
-      font-weight: 700;
-      color: #fb923c;
-      line-height: 1;
+    .we-user-name {
+      color: #e2e8f0;
+      font-size: 13px;
+      font-weight: 600;
     }
 
-    .we-active-inline-card .we-active-desc {
-      font-size: 12px;
+    .we-user-page {
       color: #94a3b8;
-      margin-top: 2px;
+      font-size: 10px;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
     }
   `;
 
-  // =====================
-  // 🔧 المنطق الأساسي
-  // =====================
-
   let supabaseChannel = null;
-  let activeCount = 1;
+  let activeUsers = {};
   let widgetEl = null;
   let countEl = null;
-  let useSupabase = false;
+  let modalOverlay = null;
 
-  // إنشاء ID فريد للمستخدم الحالي
   function getUserId() {
     let uid = localStorage.getItem('we_user_uid');
     if (!uid) {
@@ -172,17 +213,75 @@ const ActiveUsersWidget = (() => {
     return uid;
   }
 
-  // تحديث عرض العداد
+  function getUserName() {
+    // Try to get name from Supabase user object if available
+    if (window._sbUser) {
+        return window._sbUser.user_metadata?.full_name || window._sbUser.user_metadata?.username || window._sbUser.email.split('@')[0];
+    }
+    // Fallback to localStorage if we stored it there
+    return localStorage.getItem('we_username') || 'مستخدم';
+  }
+
   function updateCount(count) {
-    activeCount = count;
     if (countEl) {
       countEl.textContent = count;
-      countEl.style.animation = 'none';
-      setTimeout(() => countEl.style.animation = '', 10);
     }
   }
 
-  // إنشاء الـ Widget HTML
+  function createModal() {
+    modalOverlay = document.createElement('div');
+    modalOverlay.id = 'we-users-modal-overlay';
+    modalOverlay.innerHTML = `
+      <div id="we-users-modal">
+        <div class="we-modal-header">
+          <span class="we-modal-title">المستخدمين النشطين</span>
+          <span class="we-modal-close">&times;</span>
+        </div>
+        <div class="we-modal-body" id="we-users-list">
+          <!-- Users will be listed here -->
+        </div>
+      </div>
+    `;
+    document.body.appendChild(modalOverlay);
+
+    modalOverlay.querySelector('.we-modal-close').onclick = () => {
+      modalOverlay.style.display = 'none';
+    };
+
+    modalOverlay.onclick = (e) => {
+      if (e.target === modalOverlay) modalOverlay.style.display = 'none';
+    };
+  }
+
+  function showUsers() {
+    if (!modalOverlay) createModal();
+    const list = document.getElementById('we-users-list');
+    list.innerHTML = '';
+
+    const users = Object.values(activeUsers);
+    if (users.length === 0) {
+        list.innerHTML = '<div style="text-align:center; padding:20px; color:#94a3b8;">لا يوجد مستخدمين آخرين</div>';
+    } else {
+        users.forEach(user => {
+            const name = user.name || 'مستخدم مجهول';
+            const initial = name.charAt(0).toUpperCase();
+            const page = user.page || 'الرئيسية';
+            
+            const item = document.createElement('div');
+            item.className = 'we-user-item';
+            item.innerHTML = `
+                <div class="we-user-avatar">${initial}</div>
+                <div class="we-user-info">
+                    <span class="we-user-name">${name}</span>
+                    <span class="we-user-page">يتصفح: ${page}</span>
+                </div>
+            `;
+            list.appendChild(item);
+        });
+    }
+    modalOverlay.style.display = 'flex';
+  }
+
   function createCornerWidget() {
     const div = document.createElement('div');
     div.id = 'we-active-users-corner';
@@ -193,39 +292,21 @@ const ActiveUsersWidget = (() => {
         <span class="we-active-label"> مستخدم نشط</span>
       </div>
     `;
+    div.onclick = showUsers;
     document.body.appendChild(div);
     widgetEl = div;
     countEl = document.getElementById('we-count');
   }
 
-  function createInlineWidget(containerId) {
-    const container = document.getElementById(containerId);
-    if (!container) return;
-    container.innerHTML = `
-      <div class="we-active-inline-card">
-        <span class="we-active-icon">👥</span>
-        <div class="we-active-info">
-          <span class="we-active-num" id="we-count">1</span>
-          <span class="we-active-desc">مستخدم نشط الآن</span>
-        </div>
-      </div>
-    `;
-    countEl = document.getElementById('we-count');
-  }
-
-  // =====================
-  // 🔌 Supabase Realtime
-  // =====================
   function connectSupabase(url, key) {
-    // تحميل Supabase JS SDK ديناميكياً
     const script = document.createElement('script');
     script.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js';
     script.onload = () => {
       const { createClient } = supabase;
       const client = createClient(url, key);
       const userId = getUserId();
-
-      const pageName = window.location.pathname.split('/').pop() || 'index';
+      const userName = getUserName();
+      const pageTitle = document.title.split('|')[0].trim();
 
       supabaseChannel = client.channel(CONFIG.channelName, {
         config: { presence: { key: userId } }
@@ -234,127 +315,46 @@ const ActiveUsersWidget = (() => {
       supabaseChannel
         .on('presence', { event: 'sync' }, () => {
           const state = supabaseChannel.presenceState();
-          const count = Object.keys(state).length;
-          updateCount(count);
-        })
-        .on('presence', { event: 'join' }, ({ newPresences }) => {
-          const state = supabaseChannel.presenceState();
-          updateCount(Object.keys(state).length);
-        })
-        .on('presence', { event: 'leave' }, ({ leftPresences }) => {
-          const state = supabaseChannel.presenceState();
+          activeUsers = {};
+          Object.keys(state).forEach(key => {
+            activeUsers[key] = state[key][0];
+          });
           updateCount(Object.keys(state).length);
         })
         .subscribe(async (status) => {
           if (status === 'SUBSCRIBED') {
             await supabaseChannel.track({
               user_id: userId,
-              page: pageName,
+              name: userName,
+              page: pageTitle,
               online_at: new Date().toISOString()
             });
-            console.log('[WE-Core] ✅ Connected to Supabase Realtime Presence');
           }
         });
 
-      // تنظيف عند إغلاق الصفحة
       window.addEventListener('beforeunload', () => {
         supabaseChannel.untrack();
       });
     };
-
     document.head.appendChild(script);
   }
 
-  // =====================
-  // 🔄 Fallback (بدون Supabase)
-  // تقريبي - يستخدم localStorage + BroadcastChannel
-  // =====================
-  function startFallbackTracking() {
-    const userId = getUserId();
-    const STORAGE_KEY = 'we_active_users';
-    const TIMEOUT = 15000; // 15 ثانية
-
-    function heartbeat() {
-      const now = Date.now();
-      let users = {};
-      try {
-        users = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
-      } catch (e) {}
-
-      // أضف/حدث نفسك
-      users[userId] = now;
-
-      // احذف اللي انقطعوا
-      Object.keys(users).forEach(uid => {
-        if (now - users[uid] > TIMEOUT) delete users[uid];
-      });
-
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(users));
-      updateCount(Object.keys(users).length);
-    }
-
-    heartbeat();
-    setInterval(heartbeat, CONFIG.fallbackInterval);
-
-    // استمع لتغييرات من tabs تانية
-    window.addEventListener('storage', (e) => {
-      if (e.key === STORAGE_KEY) {
-        const users = JSON.parse(e.newValue || '{}');
-        const now = Date.now();
-        const active = Object.keys(users).filter(uid => now - users[uid] < TIMEOUT);
-        updateCount(active.length);
-      }
-    });
-
-    window.addEventListener('beforeunload', () => {
-      let users = {};
-      try { users = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}'); } catch (e) {}
-      delete users[userId];
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(users));
-    });
-
-    console.log('[WE-Core] ⚡ Running in fallback mode (localStorage)');
-  }
-
-  // =====================
-  // 🚀 الدالة الرئيسية
-  // =====================
   function init(options = {}) {
     const cfg = { ...CONFIG, ...options };
-
-    // أضف الـ CSS
     const style = document.createElement('style');
     style.textContent = STYLES;
     document.head.appendChild(style);
 
-    // أنشئ الـ Widget
-    if (cfg.position === 'corner') {
-      createCornerWidget();
-    } else if (cfg.position === 'inline') {
-      createInlineWidget(cfg.containerId);
-    }
-
-    // اختار الطريقة
-    const hasSupabase = cfg.supabaseUrl && cfg.supabaseUrl !== 'YOUR_SUPABASE_URL';
-    if (hasSupabase) {
-      connectSupabase(cfg.supabaseUrl, cfg.supabaseKey);
-    } else {
-      startFallbackTracking();
-    }
+    createCornerWidget();
+    connectSupabase(cfg.supabaseUrl, cfg.supabaseKey);
   }
 
-  // Auto-init لو في attributes في الـ script tag
-  document.addEventListener('DOMContentLoaded', () => {
-    const scriptTag = document.querySelector('script[data-we-active-users]');
-    if (scriptTag) {
-      init({
-        supabaseUrl: scriptTag.dataset.supabaseUrl,
-        supabaseKey: scriptTag.dataset.supabaseKey,
-        position: scriptTag.dataset.position || 'corner',
-        containerId: scriptTag.dataset.containerId || 'active-users-widget',
-      });
-    }
-  });
+  // Auto-init
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => init());
+  } else {
+    init();
+  }
 
   return { init };
 
