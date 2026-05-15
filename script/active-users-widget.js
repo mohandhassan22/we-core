@@ -14,8 +14,7 @@ const ActiveUsersWidget = (() => {
     supabaseUrl: 'https://iygwhapcpdmsasqlfelv.supabase.co',
     supabaseKey: 'sb_publishable_rD9naqrpu1dI-iwchAS0GQ_JkgGysqP',
     channelName: 'we-core-presence',
-    fallbackInterval: 5000,
-    position: 'corner', // Default to corner to show on all pages
+    position: 'corner',
     containerId: 'active-users-widget',
   };
 
@@ -135,7 +134,8 @@ const ActiveUsersWidget = (() => {
     .we-modal-close {
       color: #94a3b8;
       cursor: pointer;
-      font-size: 20px;
+      font-size: 24px;
+      line-height: 1;
       transition: color 0.2s;
     }
 
@@ -147,13 +147,14 @@ const ActiveUsersWidget = (() => {
       padding: 10px;
       overflow-y: auto;
       flex: 1;
+      min-height: 100px;
     }
 
     .we-user-item {
       display: flex;
       align-items: center;
       gap: 12px;
-      padding: 10px 15px;
+      padding: 12px 15px;
       border-radius: 12px;
       transition: background 0.2s;
       border-bottom: 1px solid rgba(255, 255, 255, 0.03);
@@ -164,8 +165,8 @@ const ActiveUsersWidget = (() => {
     }
 
     .we-user-avatar {
-      width: 35px;
-      height: 35px;
+      width: 38px;
+      height: 38px;
       background: linear-gradient(135deg, #fb923c, #ea580c);
       border-radius: 50%;
       display: flex;
@@ -173,23 +174,31 @@ const ActiveUsersWidget = (() => {
       justify-content: center;
       color: #fff;
       font-weight: 700;
-      font-size: 14px;
+      font-size: 16px;
+      flex-shrink: 0;
     }
 
     .we-user-info {
       display: flex;
       flex-direction: column;
+      overflow: hidden;
     }
 
     .we-user-name {
       color: #e2e8f0;
-      font-size: 13px;
+      font-size: 14px;
       font-weight: 600;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     .we-user-page {
       color: #94a3b8;
-      font-size: 10px;
+      font-size: 11px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     @keyframes fadeIn {
@@ -214,12 +223,21 @@ const ActiveUsersWidget = (() => {
   }
 
   function getUserName() {
-    // Try to get name from Supabase user object if available
-    if (window._sbUser) {
-        return window._sbUser.user_metadata?.full_name || window._sbUser.user_metadata?.username || window._sbUser.email.split('@')[0];
+    // 1. Try Supabase Global Object (most reliable)
+    if (window._sbUser && window._sbUser.user_metadata) {
+        const meta = window._sbUser.user_metadata;
+        return meta.full_name || meta.username || window._sbUser.email.split('@')[0];
     }
-    // Fallback to localStorage if we stored it there
-    return localStorage.getItem('we_username') || 'مستخدم';
+    
+    // 2. Try to find in localStorage
+    const storedName = localStorage.getItem('we_username');
+    if (storedName) return storedName;
+
+    // 3. Try to parse from welcome banner if exists
+    const welcomeName = document.querySelector('.welcome-name')?.textContent;
+    if (welcomeName) return welcomeName;
+
+    return 'جهاز نشط';
   }
 
   function updateCount(count) {
@@ -229,16 +247,18 @@ const ActiveUsersWidget = (() => {
   }
 
   function createModal() {
+    if (document.getElementById('we-users-modal-overlay')) return;
+    
     modalOverlay = document.createElement('div');
     modalOverlay.id = 'we-users-modal-overlay';
     modalOverlay.innerHTML = `
       <div id="we-users-modal">
         <div class="we-modal-header">
-          <span class="we-modal-title">المستخدمين النشطين</span>
+          <span class="we-modal-title">الأجهزة المتصلة حالياً</span>
           <span class="we-modal-close">&times;</span>
         </div>
         <div class="we-modal-body" id="we-users-list">
-          <!-- Users will be listed here -->
+          <div style="text-align:center; padding:20px; color:#94a3b8;">جاري تحميل القائمة...</div>
         </div>
       </div>
     `;
@@ -253,19 +273,20 @@ const ActiveUsersWidget = (() => {
     };
   }
 
-  function showUsers() {
-    if (!modalOverlay) createModal();
+  function renderUsersList() {
     const list = document.getElementById('we-users-list');
+    if (!list) return;
+    
     list.innerHTML = '';
-
     const users = Object.values(activeUsers);
+    
     if (users.length === 0) {
-        list.innerHTML = '<div style="text-align:center; padding:20px; color:#94a3b8;">لا يوجد مستخدمين آخرين</div>';
+        list.innerHTML = '<div style="text-align:center; padding:20px; color:#94a3b8;">لا يوجد أجهزة أخرى نشطة</div>';
     } else {
         users.forEach(user => {
-            const name = user.name || 'مستخدم مجهول';
+            const name = user.name || 'جهاز مجهول';
             const initial = name.charAt(0).toUpperCase();
-            const page = user.page || 'الرئيسية';
+            const page = user.page || 'تصفح عام';
             
             const item = document.createElement('div');
             item.className = 'we-user-item';
@@ -279,17 +300,24 @@ const ActiveUsersWidget = (() => {
             list.appendChild(item);
         });
     }
+  }
+
+  function showUsers() {
+    createModal();
+    renderUsersList();
     modalOverlay.style.display = 'flex';
   }
 
   function createCornerWidget() {
+    if (document.getElementById('we-active-users-corner')) return;
+    
     const div = document.createElement('div');
     div.id = 'we-active-users-corner';
     div.innerHTML = `
       <div class="we-active-dot"></div>
       <div class="we-active-text">
         <span class="we-active-count" id="we-count">1</span>
-        <span class="we-active-label"> مستخدم نشط</span>
+        <span class="we-active-label"> جهاز نشط</span>
       </div>
     `;
     div.onclick = showUsers;
@@ -299,48 +327,68 @@ const ActiveUsersWidget = (() => {
   }
 
   function connectSupabase(url, key) {
-    const script = document.createElement('script');
-    script.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js';
-    script.onload = () => {
-      const { createClient } = supabase;
+    // Check if SDK is already loaded
+    if (typeof supabase !== 'undefined') {
+        startTracking(supabase);
+    } else {
+        const script = document.createElement('script');
+        script.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js';
+        script.onload = () => startTracking(supabase);
+        document.head.appendChild(script);
+    }
+
+    function startTracking(sb) {
+      const { createClient } = sb;
       const client = createClient(url, key);
       const userId = getUserId();
-      const userName = getUserName();
-      const pageTitle = document.title.split('|')[0].trim();
+      
+      // Delay to ensure auth.js has time to set window._sbUser
+      setTimeout(async () => {
+        const userName = getUserName();
+        const pageTitle = document.title.split('|')[0].trim();
 
-      supabaseChannel = client.channel(CONFIG.channelName, {
-        config: { presence: { key: userId } }
-      });
-
-      supabaseChannel
-        .on('presence', { event: 'sync' }, () => {
-          const state = supabaseChannel.presenceState();
-          activeUsers = {};
-          Object.keys(state).forEach(key => {
-            activeUsers[key] = state[key][0];
-          });
-          updateCount(Object.keys(state).length);
-        })
-        .subscribe(async (status) => {
-          if (status === 'SUBSCRIBED') {
-            await supabaseChannel.track({
-              user_id: userId,
-              name: userName,
-              page: pageTitle,
-              online_at: new Date().toISOString()
-            });
-          }
+        supabaseChannel = client.channel(CONFIG.channelName, {
+          config: { presence: { key: userId } }
         });
 
-      window.addEventListener('beforeunload', () => {
-        supabaseChannel.untrack();
-      });
-    };
-    document.head.appendChild(script);
+        supabaseChannel
+          .on('presence', { event: 'sync' }, () => {
+            const state = supabaseChannel.presenceState();
+            activeUsers = {};
+            Object.keys(state).forEach(key => {
+              activeUsers[key] = state[key][0];
+            });
+            updateCount(Object.keys(state).length);
+            // If modal is open, refresh it
+            if (modalOverlay && modalOverlay.style.display === 'flex') {
+                renderUsersList();
+            }
+          })
+          .subscribe(async (status) => {
+            if (status === 'SUBSCRIBED') {
+              await supabaseChannel.track({
+                user_id: userId,
+                name: userName,
+                page: pageTitle,
+                online_at: new Date().toISOString()
+              });
+            }
+          });
+
+        window.addEventListener('beforeunload', () => {
+          supabaseChannel.untrack();
+        });
+      }, 1500); // 1.5s delay
+    }
   }
 
   function init(options = {}) {
     const cfg = { ...CONFIG, ...options };
+    
+    // Only init if not already initialized
+    if (window._weWidgetInited) return;
+    window._weWidgetInited = true;
+
     const style = document.createElement('style');
     style.textContent = STYLES;
     document.head.appendChild(style);
@@ -349,7 +397,7 @@ const ActiveUsersWidget = (() => {
     connectSupabase(cfg.supabaseUrl, cfg.supabaseKey);
   }
 
-  // Auto-init
+  // Auto-init with safety check
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', () => init());
   } else {
