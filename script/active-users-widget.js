@@ -359,4 +359,3 @@ const ActiveUsersWidget = (() => {
   return { init };
 
 })();
-      
