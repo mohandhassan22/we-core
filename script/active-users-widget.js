@@ -341,31 +341,29 @@ const ActiveUsersWidget = (() => {
       const { createClient } = sb;
       const client = createClient(url, key);
       const userId = getUserId();
-      
-      // Delay to ensure auth.js has time to set window._sbUser
-      setTimeout(async () => {
-        const userName = getUserName();
-        const pageTitle = document.title.split('|')[0].trim();
+      const pageTitle = document.title.split('|')[0].trim();
 
-        supabaseChannel = client.channel(CONFIG.channelName, {
-          config: { presence: { key: userId } }
-        });
+      supabaseChannel = client.channel(CONFIG.channelName, {
+        config: { presence: { key: userId } }
+      });
 
-        supabaseChannel
-          .on('presence', { event: 'sync' }, () => {
-            const state = supabaseChannel.presenceState();
-            activeUsers = {};
-            Object.keys(state).forEach(key => {
-              activeUsers[key] = state[key][0];
-            });
-            updateCount(Object.keys(state).length);
-            // If modal is open, refresh it
-            if (modalOverlay && modalOverlay.style.display === 'flex') {
-                renderUsersList();
-            }
-          })
-          .subscribe(async (status) => {
-            if (status === 'SUBSCRIBED') {
+      supabaseChannel
+        .on('presence', { event: 'sync' }, () => {
+          const state = supabaseChannel.presenceState();
+          activeUsers = {};
+          Object.keys(state).forEach(key => {
+            activeUsers[key] = state[key][0];
+          });
+          updateCount(Object.keys(state).length);
+          if (modalOverlay && modalOverlay.style.display === 'flex') {
+            renderUsersList();
+          }
+        })
+        .subscribe(async (status) => {
+          if (status === 'SUBSCRIBED') {
+            // دالة لعمل track بالاسم الحالي
+            async function trackPresence() {
+              const userName = getUserName();
               await supabaseChannel.track({
                 user_id: userId,
                 name: userName,
@@ -373,12 +371,22 @@ const ActiveUsersWidget = (() => {
                 online_at: new Date().toISOString()
               });
             }
-          });
 
-        window.addEventListener('beforeunload', () => {
-          supabaseChannel.untrack();
+            // Track مباشرة
+            await trackPresence();
+
+            // لو الاسم مش حقيقي بعد، استنى authSuccess وعيد الـ track
+            if (!window._sbUser) {
+              window.addEventListener('authSuccess', async () => {
+                await trackPresence();
+              }, { once: true });
+            }
+          }
         });
-      }, 1500); // 1.5s delay
+
+      window.addEventListener('beforeunload', () => {
+        supabaseChannel.untrack();
+      });
     }
   }
 
