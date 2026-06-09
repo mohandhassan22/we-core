@@ -90,7 +90,7 @@
       flex-wrap: wrap;
     }
 
-    input[type="text"] {
+    input[type="text"], select {
       flex: 1;
       min-width: 200px;
       padding: 12px 15px;
@@ -98,9 +98,10 @@
       border-radius: 8px;
       font-size: 1em;
       transition: border-color 0.3s;
+      background-color: white;
     }
 
-    input[type="text"]:focus {
+    input[type="text"]:focus, select:focus {
       outline: none;
       border-color: #667eea;
     }
@@ -167,14 +168,8 @@
     }
 
     @keyframes slideIn {
-      from {
-        opacity: 0;
-        transform: translateY(-10px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
     .location-chip {
@@ -188,9 +183,7 @@
       transition: opacity 0.3s;
     }
 
-    .location-chip.visible {
-      opacity: 1;
-    }
+    .location-chip.visible { opacity: 1; }
 
     .results-section {
       background: white;
@@ -225,30 +218,13 @@
     }
 
     @keyframes cardIn {
-      from {
-        opacity: 0;
-        transform: translateY(10px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
-    .station-card.rank-1 {
-      border-left-color: #ffc107;
-      background: #fffbf0;
-    }
-
-    .station-card.rank-2 {
-      border-left-color: #c0c0c0;
-      background: #f9f9f9;
-    }
-
-    .station-card.rank-3 {
-      border-left-color: #cd7f32;
-      background: #faf9f7;
-    }
+    .station-card.rank-1 { border-left-color: #ffc107; background: #fffbf0; }
+    .station-card.rank-2 { border-left-color: #c0c0c0; background: #f9f9f9; }
+    .station-card.rank-3 { border-left-color: #cd7f32; background: #faf9f7; }
 
     .card-header {
       display: flex;
@@ -271,38 +247,13 @@
       font-size: 0.9em;
     }
 
-    .rank-badge.rank-1 {
-      background: #ffc107;
-      color: #333;
-    }
+    .rank-badge.rank-1 { background: #ffc107; color: #333; }
+    .rank-badge.rank-2 { background: #c0c0c0; color: #333; }
+    .rank-badge.rank-3 { background: #cd7f32; color: white; }
 
-    .rank-badge.rank-2 {
-      background: #c0c0c0;
-      color: #333;
-    }
-
-    .rank-badge.rank-3 {
-      background: #cd7f32;
-      color: white;
-    }
-
-    .station-name {
-      font-size: 1.2em;
-      font-weight: 600;
-      color: #333;
-    }
-
-    .station-code {
-      color: #999;
-      font-size: 0.85em;
-      margin-top: 5px;
-    }
-
-    .station-distance {
-      font-size: 1.1em;
-      font-weight: 600;
-      color: #667eea;
-    }
+    .station-name { font-size: 1.2em; font-weight: 600; color: #333; }
+    .station-code { color: #999; font-size: 0.85em; margin-top: 5px; }
+    .station-distance { font-size: 1.1em; font-weight: 600; color: #667eea; }
 
     .card-details {
       margin-top: 15px;
@@ -317,61 +268,18 @@
       font-size: 0.95em;
     }
 
-    .detail-label {
-      color: #666;
-      font-weight: 500;
-    }
+    .detail-label { color: #666; font-weight: 500; }
+    .detail-value { color: #333; font-weight: 600; }
 
-    .detail-value {
-      color: #333;
-      font-weight: 600;
-    }
+    .coverage-badges { display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap; }
+    .coverage-badge { display: inline-block; padding: 6px 12px; border-radius: 20px; font-size: 0.85em; font-weight: 600; }
+    .coverage-5g { background: #d4f4dd; color: #1e7e34; }
+    .coverage-4g { background: #cfe2ff; color: #084298; }
+    .coverage-3g { background: #fff3cd; color: #664d03; }
+    .coverage-none { background: #f8d7da; color: #721c24; }
 
-    .coverage-badges {
-      display: flex;
-      gap: 8px;
-      margin-top: 10px;
-      flex-wrap: wrap;
-    }
-
-    .coverage-badge {
-      display: inline-block;
-      padding: 6px 12px;
-      border-radius: 20px;
-      font-size: 0.85em;
-      font-weight: 600;
-    }
-
-    .coverage-5g {
-      background: #d4f4dd;
-      color: #1e7e34;
-    }
-
-    .coverage-4g {
-      background: #cfe2ff;
-      color: #084298;
-    }
-
-    .coverage-3g {
-      background: #fff3cd;
-      color: #664d03;
-    }
-
-    .coverage-none {
-      background: #f8d7da;
-      color: #721c24;
-    }
-
-    .empty-state {
-      text-align: center;
-      padding: 40px;
-      color: #999;
-    }
-
-    .empty-state-icon {
-      font-size: 3em;
-      margin-bottom: 15px;
-    }
+    .empty-state { text-align: center; padding: 40px; color: #999; }
+    .empty-state-icon { font-size: 3em; margin-bottom: 15px; }
 
     footer {
       text-align: center;
@@ -392,23 +300,27 @@
     <div class="stats">
       <div class="stat-item">
         <div class="number">⚡</div>
-        <div class="label">بحث فوري</div>
+        <div class="label">تصفية فورية بالكود</div>
       </div>
       <div class="stat-item">
-        <div class="number" id="stations-count">0</div>
+        <div class="number" id="stations-count">402</div>
         <div class="label">قسم مسجّل</div>
       </div>
       <div class="stat-item">
-        <div class="number" id="coverage-count">0</div>
-        <div class="label">نقطة تغطية</div>
+        <div class="number" id="coverage-count">-</div>
+        <div class="label">النتائج المعروضة</div>
       </div>
     </div>
 
     <div class="search-box">
-      <h2>🔍 أدخل عنوانك أو اضغط زر GPS لتحديد موقعك تلقائياً</h2>
+      <h2>🔍 اختر القسم أو أدخل عنوانك للبحث الفوري والآمن</h2>
       <div class="search-controls">
-        <input type="text" id="address-input" placeholder="مثال: المعادي، القاهرة  أو  طنطا، الغربية">
-        <button class="btn-search" id="search-btn" onclick="searchByText()">ابحث عن أقرب منطقة تغطية</button>
+        <select id="department-select" onchange="searchByText()">
+          <option value="">-- اختر قسم الشرطة (الكل) --</option>
+        </select>
+        
+        <input type="text" id="address-input" placeholder="مثال: المعادي أو اكتب اسم السنترال مباشرة">
+        <button class="btn-search" id="search-btn" onclick="searchByText()">بحث</button>
         <button class="btn-gps" id="gps-btn" onclick="locateByGPS()" title="تحديد موقعي بالـ GPS">GPS</button>
       </div>
       <div class="status-message" id="status-message"></div>
@@ -422,7 +334,7 @@
       <div class="cards-container" id="cards-container">
         <div class="empty-state">
           <div class="empty-state-icon">🔍</div>
-          <p>ابدأ البحث لاكتشاف أقرب نقاط التغطية</p>
+          <p>ابدأ البحث أو اختر قسماً لاكتشاف التغطية</p>
         </div>
       </div>
     </div>
@@ -435,18 +347,15 @@
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
-    // ============================================================
-    // Supabase Configuration
-    // ============================================================
     const SUPABASE_URL = 'https://iygwhapcpdmsasqlfelv.supabase.co';
-    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml5Z3doYXBjcGRtc2FzcWxmZWx2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzEzNDk5MDQsImV4cCI6MjA4NjkyNTkwNH0.jqU1fEc9kBkXcCfazH6aTnS2XWWzPv0bbixHZgjtrnQ';
-
+    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml5Z3doYXBjcGRtc2FzcWxmZWx2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzEzNDk5MDQsImV4cCI6Mjا4NjkyNTkwNH0.jqU1fEc9kBkXcCfazH6aTnS2XWWzPv0bbixHZgjtrnQ';
     const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-    // ============================================================
-    // Police Stations List
-    // ============================================================
-    const policeStations = [
+    const EDGE_FUNCTION_NAME = 'your-function-name'; // ضع اسم الفانكشن هنا
+
+    // ─── مصفوفة أقسام الشرطة الثابتة داخل الكود ───
+    // يمكنك تعديلها أو إضافة أو حذف أي قسم شرطة مباشرة من هنا
+    const POLICE_DEPARTMENTS = [
       '101_Qism Al Tebin', '102_Qism Helwan', '103_Qism Al Maasara', '104_Qism 15 May', '105_Qism Tora',
       '106_Qism Al Maadi', '107_Qism Al Basatin', '108_Qism Dar Al Salam', '109_Qism Masr Al Adema', '110_Qism Al Sayeda Zainab',
       '1101_Qism Awal Dammietta', '1102_Qism Tany Dammietta', '1104_Markaz Fraskour', '1105_Markaz Al Zarka', '1106_Markaz Kafr Saad',
@@ -530,232 +439,145 @@
       '2699_Desert Side Sohag Governorate 3', '2799_Desert Side Qena Governorate 2'
     ];
 
-    let allExchangesData = [];
-
-    // ============================================================
-    // Load Coverage Data from Supabase
-    // ============================================================
-    async function loadCoverageData() {
-      try {
-        console.log('جاري جلب البيانات من Supabase...');
-        const { data, error } = await supabaseClient
-          .from('exchanges')
-          .select('*');
-        
-        if (error) {
-          console.error('خطأ في جلب البيانات من Supabase:', error);
-          return;
-        }
-        
-        allExchangesData = data || [];
-        document.getElementById('stations-count').textContent = policeStations.length;
-        document.getElementById('coverage-count').textContent = allExchangesData.length;
-        
-        console.log(`✓ تم تحميل ${allExchangesData.length} نقطة تغطية من Supabase`);
-      } catch (err) {
-        console.error('خطأ في loadCoverageData:', err);
-        document.getElementById('stations-count').textContent = policeStations.length;
-      }
+    // تعبئة الـ Select Box فوراً من المصفوفة الثابتة
+    function initDepartments() {
+      const select = document.getElementById('department-select');
+      // ترتيب الأقسام أبدياً قبل العرض
+      POLICE_DEPARTMENTS.sort().forEach(dept => {
+        const opt = document.createElement('option');
+        opt.value = dept;
+        opt.textContent = dept;
+        select.appendChild(opt);
+      });
     }
 
-    // ============================================================
-    // Calculate Distance (Haversine Formula)
-    // ============================================================
-    function calculateDistance(lat1, lng1, lat2, lng2) {
-      const R = 6371;
-      const dLat = (lat2 - lat1) * Math.PI / 180;
-      const dLng = (lng2 - lng1) * Math.PI / 180;
-      const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
-                Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
-                Math.sin(dLng/2) * Math.sin(dLng/2);
-      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-      return R * c;
+    async function getValidToken() {
+      const { data: { session }, error } = await supabaseClient.auth.getSession();
+      if (error || !session) return null;
+      return session.access_token;
     }
 
-    // ============================================================
-    // Find Nearest Coverage Points
-    // ============================================================
-    function findNearestStations(lat, lng) {
-      if (allExchangesData.length === 0) return [];
-
-      const stationsWithDistance = allExchangesData
-        .map(exchange => ({
-          ...exchange,
-          distance: calculateDistance(lat, lng, exchange.lat, exchange.lng)
-        }))
-        .sort((a, b) => a.distance - b.distance)
-        .slice(0, 3);
-
-      return stationsWithDistance;
-    }
-
-    // ============================================================
-    // Get Coverage Badges
-    // ============================================================
-    function getCoverageBadges(status) {
-      if (!status || status === 'غير محدد') {
-        return '<div class="coverage-badge coverage-none">غير محدد</div>';
-      }
-
-      const badges = [];
-      const statusLower = status.toLowerCase();
-
-      if (statusLower.includes('5g') || statusLower.includes('5 g')) {
-        badges.push('<div class="coverage-badge coverage-5g">✓ 5G</div>');
-      }
-      if (statusLower.includes('4g') || statusLower.includes('4 g') || statusLower.includes('lte')) {
-        badges.push('<div class="coverage-badge coverage-4g">✓ 4G</div>');
-      }
-      if (statusLower.includes('3g') || statusLower.includes('3 g')) {
-        badges.push('<div class="coverage-badge coverage-3g">✓ 3G</div>');
-      }
-
-      if (badges.length > 0) {
-        return badges.join('');
-      }
-      
-      return `<div class="coverage-badge coverage-none">${status}</div>`;
-    }
-
-    // ============================================================
-    // Display Results
-    // ============================================================
     function displayResults(stations) {
       const container = document.getElementById('cards-container');
       container.innerHTML = '';
+      document.getElementById('coverage-count').textContent = stations.length;
+
+      if (stations.length === 0) {
+        container.innerHTML = '<div class="empty-state"><p>لا توجد نتائج مطابقة</p></div>';
+        return;
+      }
 
       stations.forEach((station, index) => {
         const rank = index + 1;
         const coverageStatus = station.coverage_status || 'غير محدد';
-        const coverageBadges = getCoverageBadges(coverageStatus);
+        const badges = [];
+        const sl = coverageStatus.toLowerCase();
+        if (sl.includes('5g')) badges.push('<div class="coverage-badge coverage-5g">✓ 5G</div>');
+        if (sl.includes('4g') || sl.includes('lte')) badges.push('<div class="coverage-badge coverage-4g">✓ 4G</div>');
+        if (sl.includes('3g')) badges.push('<div class="coverage-badge coverage-3g">✓ 3G</div>');
+        const badgeHtml = badges.length > 0 ? badges.join('') : `<div class="coverage-badge coverage-none">${coverageStatus}</div>`;
 
         const card = document.createElement('div');
-        card.className = `station-card rank-${rank} show`;
-        const displayName = station.police_department || station.name || 'منطقة';
+        card.className = `station-card rank-${rank <= 3 ? rank : 'other'} show`;
         card.innerHTML = `
           <div class="card-header">
-            <div>
-              <div class="station-name">${displayName}</div>
-              <div class="station-code">${station.name}</div>
-            </div>
-            <div class="rank-badge rank-${rank}">${rank}</div>
+            <div><div class="station-name">${station.name || 'منطقة'}</div><div class="station-code">${station.police_department || ''}</div></div>
+            ${rank <= 3 ? `<div class="rank-badge rank-${rank}">${rank}</div>` : ''}
           </div>
-          <div class="station-distance">${station.distance.toFixed(1)} كم</div>
+          ${station.distance ? `<div class="station-distance">${Number(station.distance).toFixed(1)} كم</div>` : ''}
           <div class="card-details">
-            <div class="detail-row">
-              <span class="detail-label">📡 نوع التغطية</span>
-              <span class="detail-value">${coverageBadges}</span>
-            </div>
-            <div class="detail-row">
-              <span class="detail-label">📍 المحافظة</span>
-              <span class="detail-value">${station.governorate || 'غير محدد'}</span>
-            </div>
+            <div class="detail-row"><span class="detail-label">📡 نوع التغطية</span><span class="detail-value">${badgeHtml}</span></div>
+            <div class="detail-row"><span class="detail-label">📍 المحافظة</span><span class="detail-value">${station.governorate || 'غير محدد'}</span></div>
           </div>
         `;
         container.appendChild(card);
       });
     }
 
-    // ============================================================
-    // Show Status Message
-    // ============================================================
     function showStatus(message, type) {
-      const statusEl = document.getElementById('status-message');
-      statusEl.textContent = message;
-      statusEl.className = `status-message show ${type}`;
-      
-      if (type !== 'loading') {
-        setTimeout(() => {
-          statusEl.classList.remove('show');
-        }, 5000);
-      }
+      const el = document.getElementById('status-message');
+      el.textContent = message;
+      el.className = `status-message show ${type}`;
+      if (type !== 'loading') setTimeout(() => el.classList.remove('show'), 5000);
     }
 
-    // ============================================================
-    // Search by Text
-    // ============================================================
-    function searchByText() {
+    async function searchByText() {
       const input = document.getElementById('address-input').value.trim();
-      if (!input) {
-        showStatus('الرجاء إدخال عنوان أو موقع', 'error');
+      const selectedDept = document.getElementById('department-select').value;
+      
+      showStatus('جاري معالجة طلب البحث بأمان...', 'loading');
+
+      const token = await getValidToken();
+      if (!token) {
+        showStatus('خطأ: يرجى تسجيل الدخول أولاً للوصول إلى قاعدة البيانات.', 'error');
         return;
       }
 
-      showStatus('جاري البحث...', 'loading');
+      try {
+        const { data, error } = await supabaseClient.functions.invoke(EDGE_FUNCTION_NAME, {
+          method: 'POST',
+          headers: { 'Authorization': `Bearer ${token}` },
+          body: { 
+            action: 'search_we_air_text', 
+            query: input,
+            police_department: selectedDept
+          }
+        });
 
-      const searchLower = input.toLowerCase();
-      const matchedPoints = allExchangesData.filter(ex => 
-        (ex.name && ex.name.toLowerCase().includes(searchLower)) ||
-        (ex.police_department && ex.police_department.toLowerCase().includes(searchLower)) ||
-        (ex.governorate && ex.governorate.toLowerCase().includes(searchLower))
-      );
+        if (error) throw error;
 
-      if (matchedPoints.length === 0) {
-        showStatus('لم يتم العثور على نتائج. جرب عنوان آخر.', 'error');
-        return;
+        const results = data.results || [];
+        displayResults(results);
+        showStatus(`تم العثور على ${results.length} نتيجة مصرح بها`, 'success');
+
+      } catch (err) {
+        console.error('فشل في جلب البيانات:', err);
+        showStatus('حدث خطأ في الاتصال بالسيرفر.', 'error');
       }
-
-      const topResults = matchedPoints.slice(0, 3);
-      displayResults(topResults);
-      showStatus(`✓ تم العثور على ${topResults.length} نتيجة`, 'success');
-      document.getElementById('location-chip').classList.add('visible');
-      document.getElementById('location-text').textContent = input;
     }
 
-    // ============================================================
-    // Locate by GPS
-    // ============================================================
     async function locateByGPS() {
-      showStatus('جاري تحديد موقعك...', 'loading');
+      showStatus('جاري تحديد الإحداثيات الحالية...', 'loading');
+      if (!navigator.geolocation) { showStatus('المتصفح لا يدعم تحديد الموقع GPS', 'error'); return; }
 
-      if (!navigator.geolocation) {
-        showStatus('المتصفح لا يدعم GPS', 'error');
+      const token = await getValidToken();
+      if (!token) {
+        showStatus('خطأ: يرجى تسجيل الدخول أولاً للوصول إلى قاعدة البيانات.', 'error');
         return;
       }
 
       navigator.geolocation.getCurrentPosition(
-        async (position) => {
-          const lat = position.coords.latitude;
-          const lng = position.coords.longitude;
+        async (pos) => {
+          const { latitude: lat, longitude: lng } = pos.coords;
+          
+          try {
+            const { data, error } = await supabaseClient.functions.invoke(EDGE_FUNCTION_NAME, {
+              method: 'POST',
+              headers: { 'Authorization': `Bearer ${token}` },
+              body: { action: 'search_we_air_gps', lat: lat, lng: lng }
+            });
 
-          const stations = findNearestStations(lat, lng);
+            if (error) throw error;
 
-          if (stations.length === 0) {
-            showStatus('لم يتم العثور على نتائج', 'error');
-            return;
+            const results = data.results || [];
+            displayResults(results);
+            
+            showStatus('تم جلب أقرب النقاط المتاحة لموقعك الحالي', 'success');
+            document.getElementById('location-chip').classList.add('visible');
+            document.getElementById('location-text').textContent = `الموقع الحالي (${lat.toFixed(3)}, ${lng.toFixed(3)})`;
+
+          } catch (err) {
+            console.error(err);
+            showStatus('فشل السيرفر في معالجة حساب المسافات.', 'error');
           }
-
-          displayResults(stations);
-          showStatus(`✓ تم تحديد موقعك بنجاح`, 'success');
-          document.getElementById('location-chip').classList.add('visible');
-          document.getElementById('location-text').textContent = `الموقع الحالي (${lat.toFixed(3)}, ${lng.toFixed(3)})`;
         },
-        (error) => {
-          showStatus('لم يتم تفعيل GPS أو حدث خطأ', 'error');
-        }
+        () => showStatus('فشل في العثور على إشارة الـ GPS.', 'error'),
+        { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 }
       );
     }
 
-    // ============================================================
-    // Make functions globally accessible
-    // ============================================================
-    window.searchByText = searchByText;
-    window.locateByGPS = locateByGPS;
-
-    // ============================================================
-    // Load data on page load
-    // ============================================================
-    window.addEventListener('load', function() {
-      setTimeout(() => {
-        loadCoverageData();
-        const addressInput = document.getElementById('address-input');
-        if (addressInput) {
-          addressInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') searchByText();
-          });
-        }
-      }, 200);
-    });
+    // تشغيل التعبئة الثابتة فور فتح المستند
+    document.addEventListener("DOMContentLoaded", initDepartments);
   </script>
 </body>
 </html>
