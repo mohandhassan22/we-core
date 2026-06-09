@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<script src="../script/auth.js?v=12.0.1"></script>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>خدمات الصوت للأعمال – WE-Core</title>
+<link rel="shortcut icon" href="img/we-core.png">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Cairo',sans-serif;background:#f0ecf8;min-height:100vh;direction:rtl;}
+
+/* HEADER */
+.header{background:linear-gradient(135deg,#4a1a72 0%,#7b3fe4 100%);padding:28px 20px 24px;position:relative;overflow:hidden;}
+.header::before{content:'';position:absolute;top:-60px;right:-60px;width:200px;height:200px;border-radius:50%;background:rgba(255,255,255,0.07);}
+.header::after{content:'';position:absolute;bottom:-80px;left:-40px;width:250px;height:250px;border-radius:50%;background:rgba(255,255,255,0.05);}
+.header-inner{max-width:960px;margin:0 auto;display:flex;align-items:center;gap:16px;position:relative;z-index:1;}
+.header-logo{width:60px;height:60px;border-radius:50%;border:3px solid rgba(255,255,255,0.35);box-shadow:0 6px 20px rgba(0,0,0,0.25);object-fit:cover;}
+.header-text .page-title{font-size:22px;font-weight:900;color:#fff;letter-spacing:0.5px;}
+.header-text .page-sub{font-size:12px;color:rgba(255,255,255,0.7);margin-top:3px;}
+.back-btn{margin-right:auto;background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.3);color:#fff;border-radius:10px;padding:7px 16px;font-family:'Cairo',sans-serif;font-size:13px;font-weight:700;cursor:pointer;text-decoration:none;display:flex;align-items:center;gap:7px;transition:background 0.2s;}
+.back-btn:hover{background:rgba(255,255,255,0.25);}
+
+/* CONTAINER */
+.container{max-width:960px;margin:32px auto;padding:0 20px 60px;}
+
+/* SECTION CARD */
+.section-card{background:#fff;border-radius:20px;padding:28px 28px 24px;box-shadow:0 4px 20px rgba(90,45,130,0.10);margin-bottom:24px;border-top:4px solid #7b3fe4;position:relative;overflow:hidden;}
+.section-card::before{content:'';position:absolute;bottom:-40px;left:-30px;width:120px;height:120px;border-radius:50%;background:rgba(123,63,228,0.04);}
+
+.section-badge{display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,#ede3fc,#f5f0ff);padding:6px 14px;border-radius:20px;margin-bottom:16px;}
+.section-badge i{color:#7b3fe4;font-size:15px;}
+.section-badge span{color:#3d1a6e;font-size:13px;font-weight:800;}
+
+.section-title{font-size:19px;font-weight:900;color:#3d1a6e;margin-bottom:14px;padding-bottom:10px;border-bottom:2px solid #f0ecf8;}
+.section-title i{color:#7b3fe4;margin-left:8px;}
+
+.section-desc{color:#555;font-size:14px;line-height:1.85;margin-bottom:16px;}
+
+/* SUBSECTION */
+.subsection{background:#f8f5ff;border-radius:14px;padding:18px 20px;margin-bottom:16px;border-right:4px solid #7b3fe4;}
+.subsection-title{font-size:15px;font-weight:800;color:#3d1a6e;margin-bottom:10px;display:flex;align-items:center;gap:8px;}
+.subsection-title i{color:#7b3fe4;}
+.subsection p{color:#555;font-size:13.5px;line-height:1.85;}
+
+/* INFO BOX */
+.info-box{background:linear-gradient(135deg,#ede3fc,#f5f0ff);border-radius:12px;padding:14px 18px;margin-bottom:14px;display:flex;gap:12px;align-items:flex-start;}
+.info-box i{color:#7b3fe4;font-size:18px;margin-top:2px;flex-shrink:0;}
+.info-box p{color:#3d1a6e;font-size:13.5px;line-height:1.8;font-weight:600;}
+
+/* LIST */
+.feature-list{list-style:none;padding:0;margin:10px 0;}
+.feature-list li{display:flex;align-items:flex-start;gap:10px;padding:8px 0;border-bottom:1px solid #f0ecf8;color:#555;font-size:13.5px;line-height:1.7;}
+.feature-list li:last-child{border-bottom:none;}
+.feature-list li i{color:#7b3fe4;margin-top:3px;flex-shrink:0;font-size:14px;}
+
+/* DOCS LIST */
+.doc-item{display:flex;align-items:flex-start;gap:10px;padding:9px 12px;border-radius:10px;background:#fff;border:1px solid #ede3fc;margin-bottom:8px;}
+.doc-item i{color:#7b3fe4;font-size:16px;flex-shrink:0;margin-top:2px;}
+.doc-item span{color:#444;font-size:13.5px;line-height:1.6;}
+
+/* PACKAGES TABLE */
+.packages-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px;}
+.package-card{background:#fff;border-radius:16px;padding:22px 20px;border:2px solid #ede3fc;position:relative;overflow:hidden;transition:transform 0.25s,box-shadow 0.25s;}
+.package-card:hover{transform:translateY(-4px);box-shadow:0 12px 30px rgba(90,45,130,0.15);}
+.package-card.featured{border-color:#7b3fe4;background:linear-gradient(160deg,#faf8ff,#f5f0ff);}
+.package-card.featured::after{content:'الأكثر شمولاً';position:absolute;top:12px;left:12px;background:linear-gradient(135deg,#7b3fe4,#a066f5);color:#fff;font-size:10px;font-weight:800;padding:3px 10px;border-radius:20px;}
+.pkg-name{font-size:17px;font-weight:900;color:#3d1a6e;margin-bottom:12px;}
+.pkg-price{font-size:28px;font-weight:900;color:#7b3fe4;margin-bottom:4px;}
+.pkg-price span{font-size:13px;color:#999;font-weight:400;margin-right:3px;}
+.pkg-divider{height:2px;background:linear-gradient(90deg,#ede3fc,transparent);margin:12px 0;}
+.pkg-feature{display:flex;align-items:flex-start;gap:8px;padding:5px 0;font-size:13px;color:#555;}
+.pkg-feature i{color:#7b3fe4;font-size:13px;flex-shrink:0;margin-top:3px;}
+
+/* COSTS TABLE */
+.costs-table{width:100%;border-collapse:collapse;margin-top:14px;border-radius:12px;overflow:hidden;}
+.costs-table thead tr{background:linear-gradient(135deg,#7b3fe4,#a066f5);}
+.costs-table thead th{color:#fff;padding:12px 16px;font-size:13px;font-weight:700;text-align:right;}
+.costs-table tbody tr{border-bottom:1px solid #f0ecf8;transition:background 0.15s;}
+.costs-table tbody tr:hover{background:#faf8ff;}
+.costs-table tbody tr:last-child{border-bottom:none;}
+.costs-table tbody td{padding:12px 16px;font-size:13.5px;color:#444;text-align:right;}
+.costs-table tbody td:first-child{font-weight:700;color:#3d1a6e;}
+.cost-badge{display:inline-block;background:linear-gradient(135deg,#ede3fc,#f0ecf8);color:#7b3fe4;font-weight:800;padding:3px 10px;border-radius:20px;font-size:13px;}
+
+/* NOTES */
+.notes-grid{display:grid;gap:10px;margin-top:10px;}
+.note-item{display:flex;gap:10px;align-items:flex-start;background:#fff7f0;border:1px solid #ffddbb;border-radius:10px;padding:11px 14px;}
+.note-item i{color:#f97316;font-size:15px;flex-shrink:0;margin-top:2px;}
+.note-item p{color:#7a3a00;font-size:13px;line-height:1.7;}
+
+/* FOOTER */
+
+/* UPDATE CARD */
+.update-card{border-top-color:#f97316;background:linear-gradient(180deg,#fff9f5 0%,#fff 60%);}
+.update-badge{background:linear-gradient(135deg,#fff3e0,#ffe0b2)!important;}
+.update-badge i{color:#f97316!important;}
+.update-badge span{color:#7c3a00!important;}
+.update-subsection{border-right-color:#f97316;background:#fff9f5;}
+
+/* DOC UPDATE NOTE */
+.doc-update-note{display:flex;align-items:flex-start;gap:10px;padding:11px 14px;border-radius:10px;background:#fff9f0;border:1px solid #fed7aa;margin-bottom:8px;margin-top:4px;color:#7c3a00;font-size:13px;line-height:1.7;}
+.doc-update-note i{color:#f97316;font-size:15px;flex-shrink:0;margin-top:2px;}
+
+/* PDF LINK */
+.pdf-link-item{display:flex;align-items:center;gap:12px;padding:14px 16px;border-radius:14px;background:#fff;border:1.5px solid #ede3fc;margin-bottom:10px;text-decoration:none;transition:all 0.2s;}
+.pdf-link-item:hover{background:#f5f0ff;border-color:#7b3fe4;transform:translateX(-3px);}
+.pdf-link-icon{width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,#7b3fe4,#a066f5);display:flex;align-items:center;justify-content:center;color:#fff;font-size:20px;flex-shrink:0;}
+.pdf-link-body{flex:1;}
+.pdf-link-title{font-size:14px;font-weight:800;color:#3d1a6e;}
+.pdf-link-sub{font-size:12px;color:#999;margin-top:2px;}
+.pdf-link-arrow{color:#7b3fe4;font-size:13px;flex-shrink:0;}
+
+footer{text-align:center;padding:24px 20px;color:#999;font-size:13px;border-top:1px solid #e8e2f5;background:#fff;}
+.footer-logo{width:38px;border-radius:50%;margin-bottom:6px;opacity:0.8;}
+footer span{color:#7b3fe4;font-weight:700;}
+
+@media(max-width:600px){
+  .packages-grid{grid-template-columns:1fr;}
+  .package-card.featured::after{display:none;}
+}
+</style>
+<script src="../script/active-users-widget.js"></script>
+</head>
+<body>
+
+<div class="header">
+<a href="javascript:history.back()" class="back-btn" style="position: absolute; left: 20px; top: 50%; transform: translateY(-50%); color: white; text-decoration: none; font-size: 20px; z-index: 1000;"><i class="fas fa-arrow-left"></i></a>
+
+  <div class="header-inner">
+    <img src="img/we-core.png" class="header-logo" alt="WE-Core Logo" onerror="this.style.display='none'">
+    <div class="header-text">
+      <div class="page-title"><i class="fa-solid fa-briefcase" style="margin-left:8px;"></i>خدمات الصوت للأعمال</div>
+      <div class="page-sub">Powered By Mohand Hassan – From Abassia Store</div>
+    </div>
+    <a href="../index.html" class="back-btn">
+      <i class="fa-solid fa-arrow-right"></i> رجوع
+    </a>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- Section 1: الخط الأرضي -->
+  <div class="section-card">
+    <div class="section-badge"><i class="fa-solid fa-phone-office"></i><span>أولاً</span></div>
+    <div class="section-title"><i class="fa-solid fa-phone-flip"></i>الخط الأرضي التجاري</div>
+    <div class="section-desc">
+      يمكّنك خطك الأرضي من القيام بجميع المكالمات التي تريد إجراءها، كما يسمح لك بالدخول على الإنترنت. للتعاقد، قم بزيارة أقرب سنترال أو اطلب خدمة التوصيل من خلال خدمة العملاء.
+    </div>
+
+    <div class="subsection">
+      <div class="subsection-title"><i class="fa-solid fa-truck-fast"></i>خدمة التوصيل للعميل غير المنزلي</div>
+      <p>تمكّنك خدمة التوصيل من التعاقد على الخط الأرضي في مكانك دون التوجه للفرع، مقابل رسوم الخدمة <strong>(456 جنيه شاملة الضريبة)</strong> بالإضافة لرسوم التعاقد على الخط الأرضي التجاري. يتم مراجعة الطلب والاتصال بك لتحديد موعد مناسب لإتمام التعاقد في مقر الشركة.</p>
+    </div>
+
+    <div class="section-title" style="margin-top:20px;"><i class="fa-solid fa-star"></i>المميزات</div>
+    <ul class="feature-list">
+      <li><i class="fa-solid fa-check-circle"></i>إجراء المكالمات المحلية.</li>
+      <li><i class="fa-solid fa-check-circle"></i>الدخول إلى الإنترنت عن طريق الاشتراك في خدمة ADSL.</li>
+      <li><i class="fa-solid fa-check-circle"></i>تفعيل خدمة المباشر للمحافظات ومكالمة أي محافظة داخل جمهورية مصر العربية.</li>
+      <li><i class="fa-solid fa-check-circle"></i>الاشتراك في خدمة المحمول والاستمتاع بمكالمة أي محمول داخل مصر.</li>
+      <li><i class="fa-solid fa-check-circle"></i>الاشتراك في خدمة الدولي ومكالمة أي دولة في العالم.</li>
+      <li><i class="fa-solid fa-check-circle"></i>استخدام كروت الشحن المدفوعة مقدماً.</li>
+      <li><i class="fa-solid fa-check-circle"></i>الاشتراك في الخواص مثل إظهار رقم الطالب وخاصية الانتظار.</li>
+    </ul>
+
+    <div class="section-title" style="margin-top:20px;"><i class="fa-solid fa-file-alt"></i>المستندات المطلوبة</div>
+    <div class="doc-item"><i class="fa-solid fa-file-contract"></i><span>صورة مستند يثبت شغل العين (عقد الإيجار أو التمليك / إيصال كهرباء / غاز / مياه) مع إحضار الأصل.</span></div>
+    <div class="doc-item"><i class="fa-solid fa-stamp"></i><span>صورة من التوكيل (توكيل عام رسمي أو توكيل خاص بالتعامل مع المصرية للاتصالات) مع الأصل.</span></div>
+    <div class="doc-item"><i class="fa-solid fa-receipt"></i><span>صورة البطاقة الضريبية.</span></div>
+    <div class="doc-item"><i class="fa-solid fa-building"></i><span>صورة السجل التجاري.</span></div>
+    <div class="doc-update-note">
+      <i class="fa-solid fa-triangle-exclamation"></i>
+      <div><strong>تحديث:</strong> في حالة عدم توافر سجل تجاري للشركة، يتم توضيح ذلك داخل التكت وإرفاق البطاقة الضريبية مع باقي الأوراق المطلوبة.</div>
+    </div>
+    <div class="doc-item"><i class="fa-solid fa-bank"></i><span>تفويض من الشركة مختوم بصحة توقيع من البنك.</span></div>
+    <div class="doc-item"><i class="fa-solid fa-id-card"></i><span>صورة بطاقة المفوض إليه.</span></div>
+  </div>
+
+  <!-- Section 2: الباقات -->
+  <div class="section-card">
+    <div class="section-badge"><i class="fa-solid fa-boxes-stacked"></i><span>ثانياً</span></div>
+    <div class="section-title"><i class="fa-solid fa-tags"></i>باقات WE أرضي بيزنس</div>
+    <div class="section-desc">
+      تُعدّ باقة WE أرضي بيزنس 60 أو 85 هي الباقة الأساسية لأي تعاقد جديد على الخط الأرضي التجاري حسب طلب العميل.
+    </div>
+
+    <div class="packages-grid">
+      <!-- باقة 60 -->
+      <div class="package-card">
+        <div class="pkg-name"><i class="fa-solid fa-phone" style="color:#7b3fe4;margin-left:6px;"></i>WE أرضي بيزنس 60</div>
+        <div class="pkg-price">60<span>جنيه/شهر</span></div>
+        <div class="pkg-divider"></div>
+        <div class="pkg-feature"><i class="fa-solid fa-clock"></i>2,000 دقيقة محلي</div>
+        <div class="pkg-feature"><i class="fa-solid fa-info-circle"></i>دقائق الباقة لا تُرحّل للشهر التالي</div>
+        <div class="pkg-feature"><i class="fa-solid fa-store"></i>متاح للتعاقدات الجديدة فقط</div>
+      </div>
+
+      <!-- باقة 85 -->
+      <div class="package-card featured">
+        <div class="pkg-name"><i class="fa-solid fa-phone" style="color:#7b3fe4;margin-left:6px;"></i>WE أرضي بيزنس 85</div>
+        <div class="pkg-price">85<span>جنيه/شهر</span></div>
+        <div class="pkg-divider"></div>
+        <div class="pkg-feature"><i class="fa-solid fa-clock"></i>2,000 دقيقة محلي</div>
+        <div class="pkg-feature"><i class="fa-solid fa-map-marked-alt"></i>750 دقيقة محافظات</div>
+        <div class="pkg-feature"><i class="fa-solid fa-phone-volume"></i>750 دقيقة من الأرضي لشبكة WE</div>
+        <div class="pkg-feature"><i class="fa-solid fa-eye"></i>إظهار رقم الطالب</div>
+        <div class="pkg-feature"><i class="fa-solid fa-search"></i>خاصية التتبع</div>
+        <div class="pkg-feature"><i class="fa-solid fa-pause-circle"></i>خاصية الانتظار</div>
+        <div class="pkg-feature"><i class="fa-solid fa-mobile-alt"></i>خدمة الاتصال بالموبايل (بطلب العميل)</div>
+      </div>
+    </div>
+
+    <!-- ملاحظات -->
+    <div class="section-title" style="margin-top:22px;"><i class="fa-solid fa-triangle-exclamation"></i>ملاحظات هامة</div>
+    <div class="notes-grid">
+      <div class="note-item"><i class="fa-solid fa-circle-info"></i><p>قيمة الاشتراك تشمل اشتراك الخط الأرضي وتُضاف في الفاتورة تحت بند الخدمات المضافة.</p></div>
+      <div class="note-item"><i class="fa-solid fa-calendar-xmark"></i><p>دقائق الباقة تُستهلك خلال نفس الشهر ولا يتم ترحيلها للشهر التالي.</p></div>
+      <div class="note-item"><i class="fa-solid fa-file-invoice-dollar"></i><p>الدقائق خارج الباقة تُحاسب بالتعريفة المطبقة ويُضاف قيمة الاستهلاك الزائد على الفاتورة التالية.</p></div>
+      <div class="note-item"><i class="fa-solid fa-ban"></i><p>العملاء المتعاقدون على WE أرضي بيزنس 80 غير متاح لهم الاشتراك في خدمات (باقتي وسمارت بيزنس).</p></div>
+      <div class="note-item"><i class="fa-solid fa-lock"></i><p>باقة WE أرضي بيزنس 55 هي باقة لدى بعض العملاء الحاليين وغير متاح الاشتراك عليها للعملاء الجدد أو التحويل إليها.</p></div>
+      <div class="note-item"><i class="fa-solid fa-percent"></i><p>قيمة التعاقد على الخط الأرضي التجاري غير شاملة الضرائب والدمغة. قيمة اشتراك الباقات غير شاملة الضريبة.</p></div>
+      <div class="note-item"><i class="fa-solid fa-user-plus"></i><p>باقات WE أرضي بيزنس متاحة للتعاقدات الجديدة فقط.</p></div>
+    </div>
+  </div>
+
+  <!-- Section 3: مصاريف التركيب -->
+  <div class="section-card">
+    <div class="section-badge"><i class="fa-solid fa-wrench"></i><span>ثالثاً</span></div>
+    <div class="section-title"><i class="fa-solid fa-screwdriver-wrench"></i>مصاريف التركيب</div>
+
+    <table class="costs-table">
+      <thead>
+        <tr>
+          <th><i class="fa-solid fa-box" style="margin-left:6px;"></i>الباقة</th>
+          <th><i class="fa-solid fa-calendar-day" style="margin-left:6px;"></i>شهري</th>
+          <th><i class="fa-solid fa-calendar" style="margin-left:6px;"></i>ربع سنوي</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>WE أرضي بيزنس 60</td>
+          <td><span class="cost-badge">633.95 جنيه</span></td>
+          <td><span class="cost-badge">770.75 جنيه</span></td>
+        </tr>
+        <tr>
+          <td>WE أرضي بيزنس 85</td>
+          <td><span class="cost-badge">662.45 جنيه</span></td>
+          <td><span class="cost-badge">822.05 جنيه</span></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="info-box" style="margin-top:16px;">
+      <i class="fa-solid fa-circle-info"></i>
+      <p>جميع الأسعار المذكورة في جدول مصاريف التركيب  تشمل الضريبة المضافة.</p>
+    </div>
+  </div>
+
+
+  <!-- Section 4: تحديث - أكثر من رقم لنفس الـ Account -->
+  <div class="section-card update-card">
+    <div class="section-badge update-badge"><i class="fa-solid fa-rotate"></i><span>تحديث مهم</span></div>
+    <div class="section-title"><i class="fa-solid fa-layer-group"></i>أكثر من رقم لنفس الـ Account</div>
+    <div class="section-desc">
+      في حالة تعاقد العميل على الخدمة لأكثر من رقم لنفس الـ Account (Corp ID)، يتم اتباع الإجراء التالي:
+    </div>
+    <div class="subsection update-subsection">
+      <div class="subsection-title"><i class="fa-solid fa-list-check"></i>خطوات الإجراء</div>
+      <ul class="feature-list">
+        <li><i class="fa-solid fa-ticket"></i>يتم عمل <strong>تكت واحد فقط</strong> برقم الـ Account (Corp ID) للعميل.</li>
+        <li><i class="fa-solid fa-keyboard"></i>يتم <strong>إدخال البيانات يدوياً</strong> داخل التكت.</li>
+        <li><i class="fa-solid fa-file-excel"></i>يتم كتابة الأرقام داخل <strong>Excel Sheet</strong> وإرفاقها مع الأوراق المطلوبة.</li>
+      </ul>
+    </div>
+    <div class="info-box" style="background:linear-gradient(135deg,#fff7ed,#fff3e0);border:1px solid #fed7aa;">
+      <i class="fa-solid fa-circle-info" style="color:#f97316;"></i>
+      <p style="color:#7c3a00;">ملاحظة: التكت يُفتح برقم الـ Account (Corp ID) وليس برقم كل خط على حدة، مع إرفاق Excel Sheet يحتوي على جميع الأرقام.</p>
+    </div>
+  </div>
+
+  <!-- Section 5: رسوم تنمية موارد الدولة -->
+  <div class="section-card update-card">
+    <div class="section-badge update-badge"><i class="fa-solid fa-rotate"></i><span>تحديث مهم</span></div>
+    <div class="section-title"><i class="fa-solid fa-coins"></i>رسوم تنمية موارد الدولة – الإنترنت التجاري</div>
+    <div class="section-desc">
+      تطبيق زيادة رسوم تنمية الدولة للشركات والمنشآت التجارية على خدمات الإنترنت. يرجى مراعاة التحديثات التالية:
+    </div>
+    <div class="notes-grid">
+      <div class="note-item" style="background:#f0fdf4;border-color:#bbf7d0;">
+        <i class="fa-solid fa-receipt" style="color:#16a34a;"></i>
+        <p style="color:#14532d;">سيظهر إجمالي المبلغ المستحق <strong>شاملاً قيمة الضريبة</strong> من خلال جميع وسائل الدفع.</p>
+      </div>
+      <div class="note-item" style="background:#f0fdf4;border-color:#bbf7d0;">
+        <i class="fa-solid fa-credit-card" style="color:#16a34a;"></i>
+        <p style="color:#14532d;">تُخصم الضريبة على كل <strong>عملية شحن/دفع</strong>، وليس عند تجديد الباقة.</p>
+      </div>
+    </div>
+
+    <div class="section-title" style="margin-top:22px;"><i class="fa-solid fa-file-pdf"></i>الملفات المرفقة</div>
+    <a href="https://we-core.icu/viewpdf.html?src=https%3A%2F%2Fiygwhapcpdmsasqlfelv.supabase.co%2Fstorage%2Fv1%2Fobject%2Fauthenticated%2FAll%20Form%2FFixed%2FAcknowledgment%20and%20pledge.pdf" class="pdf-link-item" target="_blank">
+      <div class="pdf-link-icon"><i class="fa-solid fa-file-pdf"></i></div>
+      <div class="pdf-link-body">
+        <div class="pdf-link-title">الإقرار والتعهد</div>
+        <div class="pdf-link-sub">Acknowledgment and Pledge – Fixed</div>
+      </div>
+      <i class="fa-solid fa-arrow-up-right-from-square pdf-link-arrow"></i>
+    </a>
+    <a href="https://we-core.icu/viewpdf.html?src=https%3A%2F%2Fiygwhapcpdmsasqlfelv.supabase.co%2Fstorage%2Fv1%2Fobject%2Fauthenticated%2FAll%20Form%2FFixed%2FContract%20for%20providing%20business%20call%20services%20from%20a%20fixed%20line.pdf" class="pdf-link-item" target="_blank">
+      <div class="pdf-link-icon"><i class="fa-solid fa-file-contract"></i></div>
+      <div class="pdf-link-body">
+        <div class="pdf-link-title">عقد تقديم خدمات مكالمات الأعمال من الخط الثابت</div>
+        <div class="pdf-link-sub">Contract for Business Call Services – Fixed Line</div>
+      </div>
+      <i class="fa-solid fa-arrow-up-right-from-square pdf-link-arrow"></i>
+    </a>
+  </div>
+
+</div>
+
+<footer>WE Core Team 2026</footer>
+
+
+<script>
+  window.addEventListener('load', function() {
+    if (typeof ActiveUsersWidget !== 'undefined') {
+      ActiveUsersWidget.init({ position: 'corner' });
+    }
+  });
+</script>
+
+
+</body>
+</html>

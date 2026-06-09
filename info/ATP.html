@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<script src="../script/auth.js?v=12.0.1"></script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ATP – إثبات القدرة على الدفع</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+    <style>
+    :root {
+        --purple: #5b1f82;
+        --purple-mid: #7c3aad;
+        --purple-light: #9f6ec7;
+        --purple-soft: #f3edf9;
+        --purple-xsoft: #faf7fd;
+        --gold: #c9a84c;
+        --gold-light: #e8ca7a;
+        --gold-soft: #fdf8ec;
+        --white: #ffffff;
+        --gray-100: #f5f5f7;
+        --gray-200: #e5e5ea;
+        --gray-400: #aaaaaa;
+        --gray-700: #444444;
+        --gray-900: #1a1a1a;
+        --radius: 12px;
+        --shadow: 0 2px 16px rgba(91,31,130,0.09);
+    }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body {
+        font-family: 'Tajawal', sans-serif;
+        background: var(--gray-100);
+        color: var(--gray-900);
+        line-height: 1.75;
+        direction: rtl;
+    }
+
+    /* HEADER */
+    .site-header {
+        background: linear-gradient(135deg, var(--purple) 0%, var(--purple-mid) 65%, var(--purple-light) 100%);
+        position: sticky; top: 0; z-index: 200;
+        box-shadow: 0 2px 20px rgba(0,0,0,0.22);
+    }
+    .header-inner {
+        max-width: 1200px; margin: 0 auto;
+        padding: 0 24px;
+        display: flex; align-items: center; justify-content: space-between; gap: 16px;
+        min-height: 70px;
+    }
+    .header-brand { display: flex; align-items: center; gap: 14px; }
+    .header-logo {
+        width: 48px; height: 48px; background: white; border-radius: 50%;
+        display: flex; align-items: center; justify-content: center;
+        font-weight: 900; font-size: 1rem; color: var(--purple);
+        letter-spacing: -1px; box-shadow: 0 2px 10px rgba(0,0,0,0.18); flex-shrink: 0;
+    }
+    .header-title h1 { font-size: 1.25rem; font-weight: 800; color: white; line-height: 1.2; }
+    .header-title p  { font-size: 0.78rem; color: rgba(255,255,255,0.78); }
+    .header-nav { display: flex; gap: 6px; flex-wrap: wrap; justify-content: flex-end; }
+    .header-nav a {
+        color: rgba(255,255,255,0.9); text-decoration: none; font-size: 0.8rem; font-weight: 600;
+        padding: 6px 13px; border-radius: 20px;
+        background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.2);
+        transition: all 0.2s; white-space: nowrap;
+    }
+    .header-nav a:hover { background: rgba(255,255,255,0.25); }
+    .header-nav a.home { background: rgba(255,255,255,0.22); border-color: rgba(255,255,255,0.38); }
+
+    /* PAGE INTRO */
+    .page-intro {
+        background: linear-gradient(135deg, var(--purple) 0%, var(--purple-mid) 100%);
+        color: white; padding: 28px 24px;
+        text-align: center;
+    }
+    .page-intro h2 { font-size: 1.4rem; font-weight: 800; margin-bottom: 6px; }
+    .page-intro p { font-size: 0.92rem; opacity: 0.88; max-width: 680px; margin: 0 auto; }
+
+    /* MAIN */
+    .page-main { max-width: 1200px; margin: 0 auto; padding: 30px 24px 64px; }
+
+    /* SECTION CARD */
+    .section-card {
+        background: var(--white); border-radius: var(--radius);
+        box-shadow: var(--shadow); margin-bottom: 28px;
+        overflow: hidden; border: 1px solid rgba(91,31,130,0.06);
+        animation: fadeUp 0.4s ease both;
+    }
+    @keyframes fadeUp { from { opacity:0; transform:translateY(18px); } to { opacity:1; transform:none; } }
+    .section-card:nth-child(odd) { animation-delay: 0.05s; }
+    .section-card:nth-child(even) { animation-delay: 0.1s; }
+
+    .section-head {
+        background: linear-gradient(135deg, var(--purple) 0%, var(--purple-mid) 100%);
+        color: white; padding: 16px 24px;
+        display: flex; align-items: center; gap: 12px;
+    }
+    .section-icon {
+        width: 38px; height: 38px; background: rgba(255,255,255,0.16);
+        border-radius: 9px; display: flex; align-items: center; justify-content: center;
+        font-size: 1.2rem; flex-shrink: 0;
+    }
+    .section-head h2 { font-size: 1.05rem; font-weight: 700; }
+    .section-head p  { font-size: 0.8rem; opacity: 0.82; margin-top: 2px; }
+    .section-body { padding: 0; }
+
+    /* ATP TABLE */
+    .atp-table {
+        width: 100%; border-collapse: collapse; font-size: 0.87rem;
+    }
+    .atp-table thead tr {
+        background: linear-gradient(135deg, #3d1060, #5b1f82);
+    }
+    .atp-table th {
+        padding: 13px 18px; font-weight: 700; color: white; text-align: center;
+        border: 1px solid rgba(255,255,255,0.1);
+    }
+    .atp-table th.col-strong {
+        background: rgba(0,0,0,0.2);
+        border-left: 2px solid rgba(255,255,255,0.2);
+    }
+    .atp-table th.col-new {
+        background: rgba(255,255,255,0.08);
+    }
+    .atp-table td {
+        padding: 14px 18px; border: 1px solid var(--gray-200);
+        vertical-align: top; color: var(--gray-700);
+        font-size: 0.87rem; line-height: 1.7;
+    }
+    .atp-table td.col-label {
+        font-weight: 700; color: var(--purple);
+        background: var(--purple-soft);
+        border-right: 3px solid var(--purple);
+        font-size: 0.9rem; text-align: center;
+        vertical-align: middle; white-space: nowrap;
+    }
+    .atp-table td.col-strong-cell {
+        background: #f9f5fd;
+    }
+    .atp-table td.col-new-cell {
+        background: var(--purple-xsoft);
+    }
+    .atp-table tr:hover td { filter: brightness(0.97); }
+    .atp-table ol, .atp-table ul {
+        padding-right: 20px; margin: 0;
+    }
+    .atp-table li { margin-bottom: 5px; }
+
+    /* BADGE */
+    .badge {
+        display: inline-block; padding: 3px 12px; border-radius: 20px;
+        font-size: 0.78rem; font-weight: 800; margin-bottom: 8px;
+    }
+    .badge-s { background: var(--purple); color: white; }
+    .badge-n { background: var(--purple-mid); color: white; }
+
+    /* NOTE */
+    .note-box {
+        background: var(--gold-soft); border: 1px solid var(--gold-light);
+        border-right: 4px solid var(--gold); border-radius: 8px;
+        padding: 12px 18px; margin: 16px 24px; font-size: 0.87rem; color: #6b4e00;
+    }
+    .note-box strong { color: #5a3d00; }
+
+    /* IMP NOTE */
+    .imp-note {
+        background: #fff3cd; border-right: 4px solid #f5a623; border-radius: 8px;
+        padding: 10px 16px; margin-top: 8px; font-size: 0.85rem; color: #7a4f00;
+        font-weight: 600;
+    }
+
+    /* CLUBS GRID */
+    .clubs-grid {
+        display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px;
+    }
+    .club-tag {
+        background: var(--purple-soft); color: var(--purple);
+        border: 1px solid var(--purple-light); border-radius: 20px;
+        padding: 4px 12px; font-size: 0.8rem; font-weight: 600;
+    }
+
+    /* FOOTER */
+    .site-footer {
+        background: linear-gradient(135deg, var(--purple), var(--purple-mid));
+        color: rgba(255,255,255,0.72); text-align: center;
+        padding: 26px 24px; font-size: 0.8rem;
+    }
+    .site-footer strong { color: white; font-size: 0.95rem; display: block; margin-bottom: 4px; }
+
+    @media (max-width: 700px) {
+        .header-inner { flex-wrap: wrap; padding: 12px 14px; min-height: auto; }
+        .header-nav a { font-size: 0.73rem; padding: 5px 9px; }
+        .page-main { padding: 14px 10px 40px; }
+        .section-head { padding: 12px 14px; }
+        .atp-table th, .atp-table td { padding: 10px 10px; font-size: 0.82rem; }
+        .note-box { margin: 12px 14px; }
+    }
+    </style>
+<script src="../script/active-users-widget.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="site-header">
+<a href="javascript:history.back()" class="back-btn" style="position: absolute; left: 20px; top: 50%; transform: translateY(-50%); color: white; text-decoration: none; font-size: 20px; z-index: 1000;"><i class="fas fa-arrow-left"></i></a>
+
+    <div class="header-inner">
+        <div class="header-brand">
+            <div class="header-logo">we</div>
+            <div class="header-title">
+                <h1>ATP – إثبات القدرة على الدفع</h1>
+                <p>فريق WE-CORE – WE Gold</p>
+            </div>
+        </div>
+        <nav class="header-nav">
+            <a href="../index.html" class="home">🏠 الرئيسية</a>
+            <a href="./We Gold.html">⬅ WE Gold</a>
+            <a href="#atp1">ATP المعيارية</a>
+            <a href="#atp2">ATP القوية</a>
+        </nav>
+    </div>
+</header>
+
+<!-- PAGE INTRO -->
+<div class="page-intro">
+    <h2>إثبات القدرة على الدفع (ATP)</h2>
+    <p>هو ضمان للشركة بأن العميل عنده المقدرة اللازمة على دفع قيمة الفاتورة. يجب أن يتوفر لدى العميل شرط واحد على الأقل من التالي.</p>
+</div>
+
+<main class="page-main">
+
+    <!-- SECTION 1: Main ATP Table -->
+    <div class="section-card" id="atp1">
+        <div class="section-head">
+            <div class="section-icon">📋</div>
+            <div>
+                <h2>جدول إثباتات القدرة على الدفع</h2>
+                <p>مقارنة بين New Script و Strong ATP</p>
+            </div>
+        </div>
+        <div class="section-body">
+            <table class="atp-table">
+                <thead>
+                    <tr>
+                        <th style="width:22%">نوع الإثبات</th>
+                        <th class="col-new" style="width:39%">
+                            <span class="badge badge-n">New Script</span><br>
+                            يحق للعميل 3 أرقام عند التعاقد لأول مرة، ويستطيع الحصول على 3 أرقام إضافية بعد دفع فاتورتين
+                        </th>
+                        <th class="col-strong" style="width:39%">
+                            <span class="badge badge-s">Strong ATP</span><br>
+                            يسمح بالتعاقد على جميع الباقات بحد أقصى 3 خطوط
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- عميل TE Data ADSL -->
+                    <tr>
+                        <td class="col-label">عميل TE Data ADSL الحالي</td>
+                        <td class="col-new-cell">يتم التأكد من دفع آخر 3 فواتير من على السيستم مع كتابة رقم ADSL على العقد.</td>
+                        <td class="col-strong-cell">TE Data existing ADSL customer having last 3 Paid invoices</td>
+                    </tr>
+                    <!-- عميل WE Mix -->
+                    <tr>
+                        <td class="col-label">عميل WE Mix</td>
+                        <td class="col-new-cell">يتم التأكد من دفع آخر 3 فواتير لـ WE MIX من على السيستم مع كتابة رقم ADSL على العقد.</td>
+                        <td class="col-strong-cell">For WE Mix customers who have last 3 paid invoices</td>
+                    </tr>
+                    <!-- رخصة سيارة -->
+                    <tr>
+                        <td class="col-label">رخصة السيارة</td>
+                        <td class="col-new-cell">
+                            <ul>
+                                <li>أن تكون باسم العميل نفسه</li>
+                                <li>أن تكون سارية</li>
+                                <li>أن تكون سليمة غير ممزقة (منفصلة)</li>
+                                <li>الاطلاع على الأصل</li>
+                                <li>رفع صورة ملونة وواضحة ومقروءة على السيستم</li>
+                            </ul>
+                        </td>
+                        <td class="col-strong-cell">Car License Model greater than 2000 (Must to be ملاكي or greater)</td>
+                    </tr>
+                    <!-- فيزا / ماستر -->
+                    <tr>
+                        <td class="col-label">بطاقة Visa / Master Card</td>
+                        <td class="col-new-cell">
+                            <strong>يجب اتباع الخطوات التالية:</strong>
+                            <ol>
+                                <li>عدم رفع صورة الكارت ملونة أو مطبوعة نهائياً على السيستم.</li>
+                                <li>الحصول على إيصال حديث للفيزا واضح ومقروء باخر عملية، لا تتعدى 30 يوم من تاريخ زيارة العميل للفرع.</li>
+                                <li>التأكد من وجود اسم صاحب الفيزا على الإيصال بشكل واضح ومقروء، والتأكد من أن تاريخ الإيصال لا يتعدى 30 يوم.</li>
+                                <li>يتم رفع الإيصال بصورة واضحة ومقروءة مع الأوراق المطلوبة على السيستم.</li>
+                                <li>إرفاق الإيصال مع أوراق التعاقد الخاصة بالعميل والاحتفاظ به.</li>
+                                <li>التأكد من أن الاسم في الإيصال هو نفسه اسم العميل.</li>
+                            </ol>
+                        </td>
+                        <td class="col-strong-cell">Valid credit card (Visa-master Card)</td>
+                    </tr>
+                    <!-- Debit Card + Mini Statement -->
+                    <tr>
+                        <td class="col-label">Debit Card + Mini Statement</td>
+                        <td class="col-new-cell">
+                            <strong>يجب اتباع الخطوات التالية:</strong>
+                            <ol>
+                                <li>عدم رفع صورة ملونة أو مطبوعة للكارت نهائياً على السيستم.</li>
+                                <li>إحضار إيصال من ماكينة الصراف الآلي برصيد <strong>5000 جنيه</strong> واضح ومقروء.</li>
+                                <li>إرفاق إيصال باي بمعاملة تمت من نفس الكارت خلال 30 يوم من تاريخ زيارة العميل، ويكون اسم العميل مكتوباً عليها. في حالة عدم وجود اسم العميل على الإيصال، يتم التأكد من آخر 4 أرقام الكارت مع الأرقام المطبوعة على الإيصال.</li>
+                                <li>رفع صورة واضحة ومقروءة من ماكينة الصراف الآلي بالإضافة إلى إيصال المعاملة وهي باسم العميل - لا تتعدى 30 يوم - وفي حالة عدم وجود اسم العميل، التأكد من آخر 4 أرقام الكارت.</li>
+                                <li>إرفاق كل إيصالات ماكينة الصراف الآلي بـ 5000 جنيه + إيصال المعاملة ضمن الأوراق الخاصة بالتعاقد والاحتفاظ بها.</li>
+                                <li>التأكد من أن الاسم في الإيصال هو نفسه اسم العميل.</li>
+                            </ol>
+                        </td>
+                        <td class="col-strong-cell">Debit card + mini statement with balance 5000 LE</td>
+                    </tr>
+                    <!-- نادي -->
+                    <tr>
+                        <td class="col-label">كارنيه النادي</td>
+                        <td class="col-new-cell">
+                            <ul>
+                                <li>أن يكون عضواً عاملاً</li>
+                                <li>أن يكون كارنيه العضوية سارياً</li>
+                                <li>الاطلاع على أصل الكارنيه</li>
+                                <li>رفع صورة ملونة واضحة ومقروءة على السيستم</li>
+                            </ul>
+                            <div class="imp-note">ملحوظة هامة: إذا تم تحويل كارنيه عضوية نادي سبورتنج ليكون هو نفسه البطاقة الائتمانية (Debit Card) فسنعتبرها كارنيه نادي فقط بالإضافة إلى إيصال التجديد مع رفع صورة ملونة على السيستم.</div>
+                        </td>
+                        <td class="col-strong-cell">
+                            <p style="font-weight:700;margin-bottom:8px">Club ID of a labor member in one of the following clubs:</p>
+                            <div class="clubs-grid">
+                                <span class="club-tag">Ahly Club</span>
+                                <span class="club-tag">Maadi Club</span>
+                                <span class="club-tag">Gezierah Club</span>
+                                <span class="club-tag">Shooting Club</span>
+                                <span class="club-tag">Rehab Club</span>
+                                <span class="club-tag">Shams Club</span>
+                                <span class="club-tag">Zamalik Club</span>
+                                <span class="club-tag">Heliopolis</span>
+                                <span class="club-tag">Degla</span>
+                                <span class="club-tag">Palm Hills</span>
+                                <span class="club-tag">Alex Sporting</span>
+                                <span class="club-tag">جزيرة الورد بالمنصورة-وادي دجلة</span>
+                                <span class="club-tag">Al-Zohor</span>
+                                <span class="club-tag">6 October Club</span>
+                                <span class="club-tag">Acassia Club</span>
+                                <span class="club-tag">Green Hills</span>
+                                <span class="club-tag">El Sherouk</span>
+                                <span class="club-tag">Lagoon Club</span>
+                                <span class="club-tag">Petrosport Club</span>
+                                <span class="club-tag">semouha Club</span>
+                                <span class="club-tag">Yacht Club</span>
+                                <span class="club-tag">نادى المهندسين</span>
+                                <span class="club-tag">نادى أعضاء هيئة التدريس بالجامعة</span>
+                                <span class="club-tag">GOLD'S GYM</span>
+                                <span class="club-tag">World GYM</span>
+                                <span class="club-tag">ZedSmash</span>
+                                <span class="club-tag">Elkhamayel</span>
+                                <span class="club-tag">Platinum Club</span>
+                                <span class="club-tag">Elnady Club</span>
+                                <span class="club-tag">Elkarma Club</span>
+                                <span class="club-tag">Elrabwa S Club (sodic)</span>
+                                <span class="club-tag">نادي حدائق الأهرام</span>
+                            </div>
+                        </td>
+                    </tr>
+                    <!-- موظفي WE -->
+                    <tr>
+                        <td class="col-label">موظفو WE والشركات التابعة</td>
+                        <td class="col-new-cell">
+                            صورة ملونة واضحة ومقروءة من الكارنيه مع الاطلاع على الأصل. أو في حالة وجود المهنة في بطاقة الرقم القومي يكتفى بصورة الرقم القومي.
+                        </td>
+                        <td class="col-strong-cell">موظفو المصرية للاتصالات والشركات التابعة – Xceed, TE Holding</td>
+                    </tr>
+                    <!-- أساتذة الجامعات -->
+                    <tr>
+                        <td class="col-label">أساتذة الجامعات</td>
+                        <td class="col-new-cell">صورة ملونة واضحة ومقروءة من الكارنيه مع الاطلاع على الأصل. أو في حالة وجود المهنة في بطاقة الرقم القومي يكتفى بصورة الرقم القومي.</td>
+                        <td class="col-strong-cell">أساتذة الجامعات</td>
+                    </tr>
+                    <!-- ضباط الشرطة -->
+                    <tr>
+                        <td class="col-label">ضباط الشرطة</td>
+                        <td class="col-new-cell">صورة ملونة واضحة ومقروءة من الكارنيه مع الاطلاع على الأصل. أو في حالة وجود المهنة في بطاقة الرقم القومي يكتفى بصورة الرقم القومي.</td>
+                        <td class="col-strong-cell">Police ID – ضباط الشرطة</td>
+                    </tr>
+                    <!-- القضاة -->
+                    <tr>
+                        <td class="col-label">القضاة والمستشارون</td>
+                        <td class="col-new-cell">صورة ملونة واضحة ومقروءة من الكارنيه مع الاطلاع على الأصل. أو في حالة وجود المهنة في بطاقة الرقم القومي يكتفى بصورة الرقم القومي.</td>
+                        <td class="col-strong-cell">Judge ID – وكلاء نيابة، القضاة، المستشارون، رئيس المحكمة</td>
+                    </tr>
+                    <!-- ضباط الجيش -->
+                    <tr>
+                        <td class="col-label">ضباط الجيش</td>
+                        <td class="col-new-cell">صورة ملونة واضحة ومقروءة من الكارنيه مع الاطلاع على الأصل. أو في حالة وجود المهنة في بطاقة الرقم القومي يكتفى بصورة الرقم القومي.</td>
+                        <td class="col-strong-cell">Military ID – ضباط الجيش</td>
+                    </tr>
+                    <!-- خطاب HR -->
+                    <tr>
+                        <td class="col-label">خطاب HR براتب</td>
+                        <td class="col-new-cell">
+                            <ul>
+                                <li>حديثة لا تتعدى شهراً من تاريخ إصدارها</li>
+                                <li>أن تكون وثيقة أصلية مختومة من جهة العمل</li>
+                                <li>أن يكون الختم واضحاً</li>
+                                <li>يحتفظ بها في ملف العميل</li>
+                                <li>ترفع صورة واضحة ومقروءة على السيستم</li>
+                            </ul>
+                        </td>
+                        <td class="col-strong-cell">HR letter with AVG Salary From EGP 3,000</td>
+                    </tr>
+                    <!-- منافس مدفوع -->
+                    <tr>
+                        <td class="col-label">فواتير منافس مدفوعة</td>
+                        <td class="col-new-cell">يجب على العميل إحضار آخر 3 فواتير أصلية. الاحتفاظ بالأصل في ملف العميل. رفع صورة واضحة ومقروءة على السيستم.</td>
+                        <td class="col-strong-cell">Paid Competitor with at least 500 LE</td>
+                    </tr>
+                    <!-- ISP آخر -->
+                    <tr>
+                        <td class="col-label">عميل ADSL لمزود خدمة آخر</td>
+                        <td class="col-new-cell">في حالة إذا كان العميل لا يتبع المصرية، يجب إحضار آخر 3 فواتير أصلية. الاحتفاظ بالأصل في ملف العميل. رفع صورة واضحة ومقروءة على السيستم.</td>
+                        <td class="col-strong-cell">Other ISP existing ADSL customers having 3 recent Paid invoices greater than 500 LE</td>
+                    </tr>
+                    <!-- فاتورة أرضي -->
+                    <tr>
+                        <td class="col-label">فواتير الخط الأرضي</td>
+                        <td class="col-new-cell">يتم التأكد من دفع فواتير من على السيستم مع كتابة رقم الخط الأرضي على العقد. بحد أقصى 12 شهراً للاشتراك السنوي، وبالنسبة للاشتراك الشهري يؤخذ بآخر 3 فواتير مدفوعة بدون غرامة تأخير.</td>
+                        <td class="col-strong-cell">3 paid monthly fixed voice or last quarterly bill consequent recent invoices without penalty — Accepted only for Indigo plus 180 and Indigo ADSL 160</td>
+                    </tr>
+                    <!-- فواتير كهرباء -->
+                    <tr>
+                        <td class="col-label">فواتير الكهرباء</td>
+                        <td class="col-new-cell">
+                            <ul>
+                                <li>أن تكون الفواتير باسم العميل نفسه</li>
+                                <li>أخذ صورة ملونة واضحة ومقروءة ورفعها على السيستم</li>
+                                <li>الاحتفاظ بالأصل في ملف العميل</li>
+                                <li>أن تكون حديثة بحد أقصى 5 شهور ماضية</li>
+                            </ul>
+                        </td>
+                        <td class="col-strong-cell">3 paid recent electricity bills each one greater than EGP 500</td>
+                    </tr>
+                    <!-- شهادة استثمار -->
+                    <tr>
+                        <td class="col-label">شهادة استثمار</td>
+                        <td class="col-new-cell">
+                            <ul>
+                                <li>أخذ صورة ملونة واضحة ومقروءة ورفعها على السيستم</li>
+                                <li>أن تكون باسم العميل نفسه</li>
+                                <li>الاطلاع على الأصل</li>
+                            </ul>
+                        </td>
+                        <td class="col-strong-cell">Investment Certificate from EGP 5,000</td>
+                    </tr>
+                    <!-- كشف حساب بنكي -->
+                    <tr>
+                        <td class="col-label">كشف حساب بنكي</td>
+                        <td class="col-new-cell">
+                            <ul>
+                                <li>أخذ صورة ملونة واضحة ومقروءة ورفعها على السيستم</li>
+                                <li>أن تكون باسم العميل نفسه</li>
+                                <li>الاطلاع على الأصل</li>
+                            </ul>
+                        </td>
+                        <td class="col-strong-cell">Original Bank Statement from EGP 5,000 (copy from the bank must be stamped)</td>
+                    </tr>
+                    <!-- دفتر توفير -->
+                    <tr>
+                        <td class="col-label">دفتر توفير بنكي</td>
+                        <td class="col-new-cell">
+                            <ul>
+                                <li>أخذ صورة ملونة واضحة ومقروءة ورفعها على السيستم</li>
+                                <li>أن تكون باسم العميل نفسه</li>
+                                <li>الاطلاع على الأصل</li>
+                            </ul>
+                        </td>
+                        <td class="col-strong-cell">Bank Saving book from EGP 5,000</td>
+                    </tr>
+                    <!-- معاش -->
+                    <tr>
+                        <td class="col-label">إيصال المعاش</td>
+                        <td class="col-new-cell">
+                            <ul>
+                                <li>أخذ صورة ملونة واضحة ومقروءة ورفعها على السيستم</li>
+                                <li>أن تكون باسم العميل نفسه</li>
+                                <li>الاطلاع على الأصل</li>
+                            </ul>
+                        </td>
+                        <td class="col-strong-cell">Pension Receipt from EGP 3,000</td>
+                    </tr>
+                    <!-- وكلاء الوزارة -->
+                    <tr>
+                        <td class="col-label">وكلاء الوزارة / الوزراء</td>
+                        <td class="col-new-cell">صورة ملونة واضحة ومقروءة من الكارنيه مع الاطلاع على الأصل. أو في حالة وجود المهنة في بطاقة الرقم القومي يكتفى بصورة الرقم القومي.</td>
+                        <td class="col-strong-cell">وكلاء الوزارة – الوزراء</td>
+                    </tr>
+                    <!-- جواز دبلوماسي -->
+                    <tr>
+                        <td class="col-label">جواز سفر دبلوماسي</td>
+                        <td class="col-new-cell">
+                            <ul>
+                                <li>أن يكون جواز السفر سارياً</li>
+                                <li>رفع صورة ملونة واضحة من جواز السفر</li>
+                                <li>كمستند قدرة على الدفع</li>
+                            </ul>
+                        </td>
+                        <td class="col-strong-cell">Diplomatic Passport</td>
+                    </tr>
+                    <!-- هوية دبلوماسية -->
+                    <tr>
+                        <td class="col-label">هوية دبلوماسية</td>
+                        <td class="col-new-cell">صورة ملونة واضحة ومقروءة من الكارنيه مع الاطلاع على الأصل. أو في حالة وجود المهنة في بطاقة الرقم القومي يكتفى بصورة الرقم القومي.</td>
+                        <td class="col-strong-cell">Diplomatic ID</td>
+                    </tr>
+                    <!-- كارنيه جامعات -->
+                    <tr>
+                        <td class="col-label">كارنيه جامعات معتمدة</td>
+                        <td class="col-new-cell">
+                            <ul>
+                                <li>أخذ صورة ملونة واضحة ومقروءة ورفعها على السيستم</li>
+                                <li>أن تكون باسم العميل نفسه</li>
+                                <li>الاطلاع على الأصل</li>
+                                <li>أن يكون الكارنيه سارياً</li>
+                            </ul>
+                        </td>
+                        <td class="col-strong-cell">
+                            <p style="font-weight:700;margin-bottom:8px">University IDs for:</p>
+                            <div class="clubs-grid">
+                                <span class="club-tag">الجامعة الأمريكية</span>
+                                <span class="club-tag">الجامعة الألمانية – MSA</span>
+                                <span class="club-tag">الجامعة البريطانية</span>
+                                <span class="club-tag">الجامعة الفرنسية</span>
+                                <span class="club-tag">الأكاديمية البحرية – Eslesca</span>
+                                <span class="club-tag">Nile University</span>
+                                <span class="club-tag">Ahram Canadian University</span>
+                                <span class="club-tag">French University of Egypt</span>
+                                <span class="club-tag">Future University</span>
+                            </div>
+                        </td>
+                    </tr>
+                    <!-- رخصة سلاح -->
+                    <tr>
+                        <td class="col-label">رخصة سلاح</td>
+                        <td class="col-new-cell">–</td>
+                        <td class="col-strong-cell">رخصة سلاح</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</main>
+
+<footer class="site-footer">WE Core Team 2026</footer>
+
+
+<script>
+  window.addEventListener('load', function() {
+    if (typeof ActiveUsersWidget !== 'undefined') {
+      ActiveUsersWidget.init({ position: 'corner' });
+    }
+  });
+</script>
+
+
+</body>
+</html>

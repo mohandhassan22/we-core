@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<script src="script/auth.js?v=12.0.1"></script>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>الدليل الشامل لخدمة WE Pay - المحفظة الإلكترونية 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --purple-deep: #5B0EA6;
+    --purple-main: #7B2FBE;
+    --purple-mid:  #9B51E0;
+    --purple-light:#C084FC;
+    --purple-pale: #EDE9FE;
+    --purple-ghost:#F5F3FF;
+    --green:       #059669;
+    --green-pale:  #ECFDF5;
+    --white: #FFFFFF;
+    --gray-text:  #4B4B6B;
+    --gray-muted: #9B9BC0;
+    --black: #1A1A2E;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Cairo',sans-serif;background:var(--white);color:var(--black);overflow-x:hidden;}
+
+  /* ── HERO ── */
+  .hero{
+    background:linear-gradient(135deg,var(--purple-deep) 0%,var(--purple-main) 50%,var(--purple-mid) 100%);
+    padding:70px 20px 90px;text-align:center;position:relative;overflow:hidden;
+  }
+  .hero::before{
+    content:'';position:absolute;inset:0;
+    background:radial-gradient(ellipse at 20% 50%,rgba(255,255,255,.08) 0%,transparent 60%),
+               radial-gradient(ellipse at 80% 20%,rgba(255,255,255,.06) 0%,transparent 50%);
+  }
+  .hero-badge{
+    display:inline-block;background:rgba(255,255,255,.15);backdrop-filter:blur(8px);
+    color:#fff;padding:6px 20px;border-radius:999px;font-size:.82rem;letter-spacing:.05em;
+    margin-bottom:20px;border:1px solid rgba(255,255,255,.25);
+  }
+  .hero h1{font-size:clamp(2rem,6vw,3.6rem);font-weight:900;color:#fff;line-height:1.15;position:relative;}
+  .hero h1 span{color:var(--purple-light);}
+  .hero-sub{color:rgba(255,255,255,.85);font-size:1rem;margin-top:14px;max-width:580px;margin-inline:auto;line-height:1.8;position:relative;}
+  .hero-wave{position:absolute;bottom:-1px;left:0;right:0;height:60px;}
+  .hero-wave svg{width:100%;height:100%;}
+
+  /* ── LAYOUT ── */
+  .container{max-width:1020px;margin:0 auto;padding:0 20px;}
+  .section{padding:60px 20px;}
+  .section-alt{background:var(--purple-ghost);}
+  .divider{height:1px;background:linear-gradient(to left,transparent,var(--purple-pale),transparent);}
+
+  .section-title{display:flex;align-items:center;gap:14px;margin-bottom:36px;}
+  .section-title .icon{
+    width:44px;height:44px;
+    background:linear-gradient(135deg,var(--purple-main),var(--purple-mid));
+    border-radius:12px;display:flex;align-items:center;justify-content:center;
+    font-size:1.3rem;flex-shrink:0;box-shadow:0 4px 14px rgba(123,47,190,.35);
+  }
+  .section-title h2{font-size:1.55rem;font-weight:800;color:var(--purple-deep);}
+
+  /* ── STATS ── */
+  .stats-grid{
+    display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+    gap:16px;margin-bottom:0;
+  }
+  .stat-card{
+    background:var(--white);border:1.5px solid var(--purple-pale);
+    border-radius:16px;padding:22px 18px;text-align:center;
+    transition:all .2s;
+  }
+  .stat-card:hover{border-color:var(--purple-mid);box-shadow:0 4px 16px rgba(123,47,190,.12);transform:translateY(-2px);}
+  .stat-icon{font-size:1.8rem;margin-bottom:8px;}
+  .stat-val{font-size:1.6rem;font-weight:900;color:var(--purple-deep);line-height:1;}
+  .stat-label{font-size:.8rem;color:var(--gray-muted);margin-top:4px;}
+
+  /* ── SERVICE CATEGORIES ── */
+  .services-grid{
+    display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
+    gap:18px;
+  }
+  .srv-card{
+    background:var(--white);border:1.5px solid var(--purple-pale);
+    border-radius:16px;overflow:hidden;
+    transition:box-shadow .2s,transform .2s;
+  }
+  .srv-card:hover{box-shadow:0 6px 24px rgba(123,47,190,.12);transform:translateY(-2px);}
+  .srv-card-header{
+    background:linear-gradient(135deg,var(--purple-main),var(--purple-mid));
+    color:#fff;padding:14px 18px;
+    font-weight:800;font-size:.95rem;
+    display:flex;align-items:center;gap:8px;
+  }
+  .srv-card-body{padding:14px 18px;}
+  .srv-card-body li{
+    list-style:none;padding:7px 0;
+    border-bottom:1px solid var(--purple-ghost);
+    font-size:.88rem;color:var(--gray-text);
+    display:flex;align-items:center;gap:8px;
+  }
+  .srv-card-body li:last-child{border-bottom:none;}
+  .srv-card-body li::before{content:'◆';color:var(--purple-light);font-size:.55rem;flex-shrink:0;}
+  .srv-card-body li strong{color:var(--purple-deep);}
+
+  /* ── FEATURE BOXES (transactions) ── */
+  .txn-grid{
+    display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:16px;
+  }
+  .txn-card{
+    background:var(--white);border:1.5px solid var(--purple-pale);
+    border-radius:14px;padding:20px;
+    transition:all .2s;
+  }
+  .txn-card:hover{border-color:var(--purple-mid);box-shadow:0 4px 16px rgba(123,47,190,.10);}
+  .txn-icon{font-size:1.8rem;margin-bottom:10px;}
+  .txn-card h4{color:var(--purple-deep);font-size:.95rem;font-weight:800;margin-bottom:6px;}
+  .txn-card p{font-size:.85rem;color:var(--gray-text);line-height:1.65;}
+
+  /* ── FEES TABLE ── */
+  .fees-wrap{border-radius:16px;overflow:hidden;box-shadow:0 6px 24px rgba(91,14,166,.09);}
+  .fees-table{width:100%;border-collapse:collapse;}
+  .fees-table thead th{
+    background:linear-gradient(135deg,var(--purple-deep),var(--purple-main));
+    color:#fff;padding:15px 18px;font-size:.9rem;font-weight:800;text-align:center;
+  }
+  .fees-table tbody td{
+    padding:13px 18px;font-size:.88rem;color:var(--gray-text);
+    border-bottom:1px solid var(--purple-ghost);text-align:center;
+  }
+  .fees-table tbody tr:nth-child(even) td{background:var(--purple-ghost);}
+  .fees-table tbody tr:last-child td{border-bottom:none;}
+  .fees-table tbody tr:hover td{background:var(--purple-pale);transition:background .15s;}
+  .fees-table td:first-child{text-align:right;font-weight:600;color:var(--black);}
+  .fee-free{color:var(--green);font-weight:800;}
+  .fee-paid{color:var(--purple-deep);font-weight:800;}
+  .fee-var{color:var(--gray-text);font-style:italic;}
+
+  /* ── LIMITS TABLE ── */
+  .limits-wrap{border-radius:16px;overflow:hidden;box-shadow:0 6px 24px rgba(91,14,166,.09);margin-bottom:24px;}
+  .limits-table{width:100%;border-collapse:collapse;}
+  .limits-table thead th{
+    background:linear-gradient(135deg,var(--purple-deep),var(--purple-main));
+    color:#fff;padding:14px 18px;font-weight:800;text-align:center;font-size:.9rem;
+  }
+  .limits-table tbody td{
+    padding:14px 18px;font-size:.9rem;color:var(--gray-text);
+    border-bottom:1px solid var(--purple-ghost);text-align:center;
+  }
+  .limits-table tbody tr:last-child td{border-bottom:none;}
+  .limits-table td:first-child{text-align:right;font-weight:700;color:var(--purple-deep);}
+  .limits-table td.amount{font-weight:900;font-size:1rem;color:var(--purple-deep);}
+
+  /* ── NOTE BOX ── */
+  .note-box{
+    background:var(--white);border:1.5px solid var(--purple-pale);
+    border-right:4px solid var(--purple-mid);
+    border-radius:12px;padding:18px 20px;
+    margin-top:20px;
+  }
+  .note-box h4{color:var(--purple-deep);font-size:.95rem;font-weight:800;margin-bottom:10px;}
+  .note-box li{
+    list-style:none;padding:6px 0;font-size:.87rem;color:var(--gray-text);line-height:1.65;
+    border-bottom:1px solid var(--purple-ghost);display:flex;gap:10px;align-items:flex-start;
+  }
+  .note-box li:last-child{border-bottom:none;}
+  .note-box li::before{content:'📌';font-size:.8rem;flex-shrink:0;margin-top:2px;}
+  .note-box strong{color:var(--purple-deep);}
+
+  /* ── INFO CARDS ── */
+  .info-grid{
+    display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+    gap:16px;
+  }
+  .info-card{
+    background:var(--white);border:1.5px solid var(--purple-pale);
+    border-radius:16px;padding:22px 18px;text-align:center;
+    transition:all .2s;
+  }
+  .info-card:hover{border-color:var(--purple-mid);box-shadow:0 4px 16px rgba(123,47,190,.12);transform:translateY(-2px);}
+  .info-card .ic-icon{font-size:1.8rem;margin-bottom:8px;}
+  .info-card h4{color:var(--gray-muted);font-size:.8rem;font-weight:700;margin-bottom:8px;letter-spacing:.04em;}
+  .info-card .ic-val{font-size:1.8rem;font-weight:900;color:var(--purple-deep);line-height:1;}
+  .info-card .ic-note{font-size:.78rem;color:var(--gray-muted);margin-top:6px;line-height:1.5;}
+
+  /* ── BAND ── */
+  .band{
+    background:linear-gradient(135deg,var(--purple-deep),var(--purple-main));
+    color:#fff;border-radius:18px;padding:26px 30px;
+    margin-bottom:28px;position:relative;overflow:hidden;
+  }
+  .band::after{content:'';position:absolute;left:-30px;top:-30px;width:120px;height:120px;border-radius:50%;background:rgba(255,255,255,.05);}
+  .band p{font-size:.95rem;opacity:.9;line-height:1.8;position:relative;}
+  .band strong{color:var(--purple-light);}
+
+  /* ── FOOTER ── */
+  footer{
+    background:linear-gradient(135deg,var(--purple-deep),var(--black));
+    color:rgba(255,255,255,.7);text-align:center;padding:32px 20px;font-size:.88rem;
+  }
+  footer strong{color:var(--purple-light);}
+  footer p+p{margin-top:6px;}
+
+  @media(max-width:600px){
+    .section{padding:44px 16px;}
+    .fees-table thead th,.fees-table tbody td{font-size:.8rem;padding:10px 10px;}
+  }
+</style>
+<script src="script/active-users-widget.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+
+<!-- ══ HERO ══ -->
+<section class="hero">
+  <div class="hero-badge">💳 المحفظة الإلكترونية</div>
+  <h1>خدمة <span>WE Pay</span></h1>
+  <p class="hero-sub">الدليل الشامل للمحفظة الإلكترونية من المصرية للاتصالات — الخدمات والرسوم والحدود المالية 2026</p>
+  <div class="hero-wave">
+    <svg viewBox="0 0 1440 60" preserveAspectRatio="none" fill="#ffffff">
+      <path d="M0,40 C360,80 1080,0 1440,40 L1440,60 L0,60 Z"/>
+    </svg>
+  </div>
+</section>
+
+<!-- ══ QUICK STATS ══ -->
+<section class="section" style="padding-top:44px;padding-bottom:44px;">
+  <div class="container">
+    <div class="stats-grid">
+      <div class="stat-card"><div class="stat-icon">📞</div><div class="stat-val">*7#</div><div class="stat-label">كود الخدمة</div></div>
+      <div class="stat-card"><div class="stat-icon">🆘</div><div class="stat-val">565</div><div class="stat-label">خدمة العملاء</div></div>
+      <div class="stat-card"><div class="stat-icon">👤</div><div class="stat-val">15 عاماً</div><div class="stat-label">الحد الأدنى للسن</div></div>
+      <div class="stat-card"><div class="stat-icon">💼</div><div class="stat-val">3 محافظ</div><div class="stat-label">لكل بطاقة رقم قومي</div></div>
+      <div class="stat-card"><div class="stat-icon">💰</div><div class="stat-val">200,000 ج</div><div class="stat-label">أقصى رصيد للمحفظة</div></div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══ SERVICES ══ -->
+<section class="section section-alt">
+  <div class="container">
+    <div class="section-title">
+      <div class="icon">🌟</div>
+      <h2>الخدمات المتاحة عبر WE Pay</h2>
+    </div>
+
+    <div class="band">
+      <p>تتيح محفظة WE Pay للمستخدمين إجراء مجموعة واسعة من المعاملات المالية والمدفوعات بسهولة وأمان — من دفع الفواتير والخدمات الحكومية إلى تحويل الأموال والشراء الإلكتروني.</p>
+    </div>
+
+    <!-- GOVT & UTILITY -->
+    <div class="section-title" style="margin-bottom:20px;">
+      <div class="icon" style="font-size:1rem;width:36px;height:36px;">🏛️</div>
+      <h2 style="font-size:1.15rem;">المدفوعات الحكومية والخدمية</h2>
+    </div>
+    <div class="services-grid" style="margin-bottom:36px;">
+
+      <div class="srv-card">
+        <div class="srv-card-header">📱 سداد فواتير WE</div>
+        <ul class="srv-card-body">
+          <li>الموبايل</li>
+          <li>الإنترنت المنزلي</li>
+          <li>التليفون الأرضي</li>
+          <li>الشحن</li>
+        </ul>
+      </div>
+
+      <div class="srv-card">
+        <div class="srv-card-header">⚡ فواتير المرافق</div>
+        <ul class="srv-card-body">
+          <li>فواتير الكهرباء</li>
+          <li>فواتير المياه</li>
+          <li>فواتير الغاز</li>
+        </ul>
+      </div>
+
+      <div class="srv-card">
+        <div class="srv-card-header">🏛️ خدمات حكومية متنوعة</div>
+        <ul class="srv-card-body">
+          <li><strong>المرور:</strong> تجديد الرخصة والمخالفات</li>
+          <li><strong>التعليم:</strong> مصاريف المدارس والجامعات</li>
+          <li><strong>التأمينات:</strong> أقساط وخدمات التأمينات</li>
+          <li><strong>التبرعات:</strong> المؤسسات الخيرية والعلاجية</li>
+          <li><strong>التذاكر والسياحة:</strong> حجز وسداد التذاكر</li>
+        </ul>
+      </div>
+
+      <div class="srv-card">
+        <div class="srv-card-header">👥 اشتراكات النقابات</div>
+        <ul class="srv-card-body">
+          <li>نقابة الأطباء البشريين</li>
+          <li>نقابة المهندسين</li>
+          <li>نقابة الصيادلة</li>
+          <li>نقابة البيطريين</li>
+          <li>نقابة علميين الإسكندرية</li>
+        </ul>
+      </div>
+
+      <div class="srv-card">
+        <div class="srv-card-header">🏅 اشتراكات الأندية</div>
+        <ul class="srv-card-body">
+          <li>نادي الصيد &amp; نادي بلم هيلز</li>
+          <li>نادي الجزيرة &amp; نادي دجلة</li>
+          <li>نادي اليخت &amp; نادي الشمس</li>
+          <li>نادي حلوان &amp; نادي سموحة</li>
+          <li>نادي هليوليدو &amp; الأوليمبي المصري</li>
+        </ul>
+      </div>
+
+      <div class="srv-card">
+        <div class="srv-card-header">💻 مدفوعات فوري باي</div>
+        <ul class="srv-card-body">
+          <li>مدفوعات أونلاين للخدمات</li>
+          <li>اشتراكات وإعلانات</li>
+          <li>مدفوعات مالية وبنكية</li>
+        </ul>
+      </div>
+
+    </div>
+
+    <!-- TRANSACTIONS -->
+    <div class="section-title" style="margin-bottom:20px;">
+      <div class="icon" style="font-size:1rem;width:36px;height:36px;">💸</div>
+      <h2 style="font-size:1.15rem;">المعاملات المالية</h2>
+    </div>
+    <div class="txn-grid">
+      <div class="txn-card">
+        <div class="txn-icon">🔄</div>
+        <h4>تحويل الأموال</h4>
+        <p>من محفظة WE Pay إلى أي محفظة إلكترونية أخرى داخل جمهورية مصر العربية</p>
+      </div>
+      <div class="txn-card">
+        <div class="txn-icon">🌍</div>
+        <h4>استقبال الحوالات الدولية</h4>
+        <p>استقبال التحويلات البنكية من الحساب البنكي إلى المحفظة مباشرة</p>
+      </div>
+      <div class="txn-card">
+        <div class="txn-icon">🏦</div>
+        <h4>الإيداع والسحب النقدي</h4>
+        <p>عبر فروع WE، منافذ فوري، وماكينات الصراف الآلي ATM للبنوك المشتركة</p>
+      </div>
+      <div class="txn-card">
+        <div class="txn-icon">🛒</div>
+        <h4>الشراء الإلكتروني</h4>
+        <p>باستخدام رمز QR Code أو تقنية NFC لشحن كروت الكهرباء الذكية</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══ FEES ══ -->
+<section class="section">
+  <div class="container">
+    <div class="section-title">
+      <div class="icon">💰</div>
+      <h2>الرسوم والمصاريف الإضافية</h2>
+    </div>
+    <div class="fees-wrap">
+      <table class="fees-table">
+        <thead>
+          <tr><th>الخدمة</th><th>التسعير</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>التسجيل، المصاريف السنوية، التجديد</td><td class="fee-free">✓ مجاناً</td></tr>
+          <tr><td>شحن المحفظة من بطاقات بنك مصر</td><td class="fee-free">✓ مجاناً</td></tr>
+          <tr><td>إيداع نقدي (فروع WE / فوري / ATM)</td><td class="fee-free">✓ مجاناً</td></tr>
+          <tr><td>سحب نقدي — ماكينات الصراف الآلي ATM</td><td class="fee-paid">1% (بحد أدنى 5 جنيه)</td></tr>
+          <tr><td>سحب نقدي — فروع WE / منافذ فوري</td><td class="fee-paid">1% (بحد أدنى 3 جنيهات)</td></tr>
+          <tr><td>دفع فواتير وخدمات WE (أرضي / إنترنت / موبايل / شحن)</td><td class="fee-free">✓ مجاناً</td></tr>
+          <tr><td>دفع فواتير المرافق وخدمات فوري</td><td class="fee-var">وفقاً للتسعير المعلن قبل الدفع</td></tr>
+          <tr><td>تحويل الأموال — أول معاملة شهرية فوق 2,000 ج</td><td class="fee-free">✓ مجاناً</td></tr>
+          <tr><td>تحويل الأموال — WE Pay إلى WE Pay</td><td class="fee-paid">1 جنيه كحد أقصى</td></tr>
+          <tr><td>تحويل الأموال — إلى أي محفظة أخرى</td><td class="fee-paid">0.5% (بحد أدنى 1 ج وأقصى 15 ج)</td></tr>
+          <tr><td>الشراء باستخدام QR Code</td><td class="fee-free">✓ مجاناً</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══ LIMITS ══ -->
+<section class="section section-alt">
+  <div class="container">
+    <div class="section-title">
+      <div class="icon">📊</div>
+      <h2>الحدود اليومية والشهرية للمحفظة</h2>
+    </div>
+
+    <div class="limits-wrap">
+      <table class="limits-table">
+        <thead>
+          <tr><th>نوع المحفظة</th><th>الحد الأقصى اليومي</th><th>الحد الأقصى الشهري</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>المحافظ الحالية</td>
+            <td class="amount">60,000 جنيه</td>
+            <td class="amount">200,000 جنيه</td>
+          </tr>
+          <tr>
+            <td>المحافظ الجديدة<br><small style="font-weight:400;color:var(--gray-muted);">بعد 6 مايو 2025</small></td>
+            <td class="amount">10,000 جنيه</td>
+            <td class="amount">60,000 جنيه</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="note-box">
+      <h4>ملاحظات هامة</h4>
+      <ul>
+        <li><strong>الحد الأقصى لرصيد المحفظة:</strong> 200,000 جنيه مصري</li>
+        <li><strong>تحديث حدود المحافظ الجديدة:</strong> تُحدَّث لتتطابق مع المحافظ الحالية بعد مرور 90 يوماً من تاريخ الاشتراك</li>
+        <li><strong>للاحتفاظ بالمحفظة مفعلة:</strong> يجب استخدامها خلال 90 يوماً في معاملة مالية أو إجراء/استقبال مكالمة صوتية</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ══ INFO ══ -->
+<section class="section">
+  <div class="container">
+    <div class="section-title">
+      <div class="icon">ℹ️</div>
+      <h2>معلومات إضافية</h2>
+    </div>
+    <div class="info-grid">
+      <div class="info-card">
+        <div class="ic-icon">📞</div>
+        <h4>كود الخدمة</h4>
+        <div class="ic-val">*7#</div>
+        <div class="ic-note">لإدارة الحساب وإجراء المعاملات المالية</div>
+      </div>
+      <div class="info-card">
+        <div class="ic-icon">🆘</div>
+        <h4>خدمة العملاء</h4>
+        <div class="ic-val">565</div>
+        <div class="ic-note">للشكاوى والاستفسارات</div>
+      </div>
+      <div class="info-card">
+        <div class="ic-icon">👤</div>
+        <h4>السن القانوني</h4>
+        <div class="ic-val">15 عاماً</div>
+        <div class="ic-note">الحد الأدنى للاشتراك في WE Pay</div>
+      </div>
+      <div class="info-card">
+        <div class="ic-icon">💼</div>
+        <h4>عدد المحافظ</h4>
+        <div class="ic-val">3 محافظ</div>
+        <div class="ic-note">لكل بطاقة رقم قومي على 3 أرقام مختلفة</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ FOOTER ══ -->
+<footer>WE Core Team 2026</footer>
+
+<script>
+  window.addEventListener('load', function() {
+    if (typeof ActiveUsersWidget !== 'undefined') {
+      ActiveUsersWidget.init({ position: 'corner' });
+    }
+  });
+</script>
+
+
+</body>
+</html>

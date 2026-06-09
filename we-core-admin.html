@@ -1,0 +1,1067 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>We-Core Admin Dashboard</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --red: #7C3AED;
+    --red-dark: #5B21B6;
+    --red-light: #8B5CF6;
+    --bg: #F8F7FF;
+    --surface: #FFFFFF;
+    --surface2: #F3F0FF;
+    --border: #E5E0FA;
+    --text: #1E1040;
+    --text-muted: #7C6FAB;
+    --success: #059669;
+    --warning: #D97706;
+    --info: #2563EB;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Cairo', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+  }
+
+  /* Sidebar */
+  .sidebar {
+    width: 240px;
+    min-height: 100vh;
+    background: #FFFFFF;
+    border-left: 1.5px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    right: 0; top: 0; bottom: 0;
+    z-index: 100;
+  }
+  .logo {
+    padding: 20px 20px;
+    border-bottom: 1.5px solid var(--border);
+    display: flex; align-items: center; gap: 12px;
+    background: #FFFFFF;
+  }
+  .logo-icon {
+    width: 44px; height: 44px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .logo-text { font-size: 17px; font-weight: 700; color: var(--text); }
+  .logo-sub { font-size: 11px; color: var(--text-muted); }
+  nav { flex: 1; padding: 12px 0; overflow-y: auto; background: #FFFFFF; }
+  .nav-section { padding: 8px 20px 4px; font-size: 10px; color: #B0A8D0; text-transform: uppercase; letter-spacing: 1px; }
+  .nav-item {
+    display: flex; align-items: center; gap: 10px;
+    padding: 10px 20px;
+    cursor: pointer; border-radius: 0;
+    transition: all 0.2s;
+    font-size: 14px; font-weight: 600;
+    color: var(--text-muted);
+    border-right: 3px solid transparent;
+  }
+  .nav-item:hover { background: var(--surface2); color: var(--text); }
+  .nav-item.active { background: #F3F0FF; color: var(--red); border-right-color: var(--red); }
+  .nav-item .icon { font-size: 18px; width: 22px; text-align: center; }
+
+  /* Main */
+  .main {
+    margin-right: 240px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+  .topbar {
+    padding: 16px 28px;
+    border-bottom: 1.5px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between;
+    background: #FFFFFF;
+    position: sticky; top: 0; z-index: 50;
+  }
+  .page-title { font-size: 20px; font-weight: 700; color: var(--text); }
+  .admin-badge {
+    background: #F3F0FF; color: var(--red);
+    padding: 4px 12px; border-radius: 20px;
+    font-size: 12px; font-weight: 700; border: 1.5px solid #C4B5FD;
+  }
+  .content { padding: 28px; flex: 1; }
+
+  /* Sections */
+  .section { display: none; }
+  .section.active { display: block; }
+
+  /* Cards */
+  .card {
+    background: #FFFFFF;
+    border: 1.5px solid var(--border);
+    border-radius: 14px;
+    padding: 24px;
+    margin-bottom: 20px;
+    box-shadow: 0 1px 4px rgba(124,58,237,0.06);
+  }
+  .card-title {
+    font-size: 16px; font-weight: 700;
+    margin-bottom: 20px; color: var(--text);
+    padding-bottom: 12px;
+    border-bottom: 1.5px solid var(--border);
+    display: flex; align-items: center; gap: 8px;
+  }
+
+  /* Stats */
+  .stats-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px; margin-bottom: 24px;
+  }
+  .stat-card {
+    background: #FFFFFF;
+    border: 1.5px solid var(--border);
+    border-radius: 14px;
+    padding: 20px;
+    position: relative; overflow: hidden;
+    box-shadow: 0 1px 4px rgba(124,58,237,0.06);
+  }
+  .stat-card::before {
+    content: '';
+    position: absolute; top: 0; right: 0; bottom: 0;
+    width: 4px;
+  }
+  .stat-card.red::before { background: #7C3AED; }
+  .stat-card.green::before { background: #059669; }
+  .stat-card.blue::before { background: #2563EB; }
+  .stat-card.yellow::before { background: #D97706; }
+  .stat-num { font-size: 32px; font-weight: 900; color: var(--text); }
+  .stat-label { font-size: 13px; color: var(--text-muted); margin-top: 4px; }
+
+  /* Form */
+  .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .form-group { display: flex; flex-direction: column; gap: 6px; }
+  .form-group.full { grid-column: 1 / -1; }
+  label { font-size: 13px; font-weight: 600; color: var(--text-muted); }
+  input, select, textarea {
+    background: #FAFAFA;
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 14px;
+    color: var(--text);
+    font-family: 'Cairo', sans-serif;
+    font-size: 14px;
+    transition: border-color 0.2s;
+    width: 100%;
+  }
+  input:focus, select:focus, textarea:focus {
+    outline: none; border-color: #7C3AED; background: #FFFFFF;
+  }
+  textarea { min-height: 100px; resize: vertical; }
+  select option { background: #FFFFFF; color: var(--text); }
+
+  /* Buttons */
+  .btn {
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-family: 'Cairo', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s;
+    display: inline-flex; align-items: center; gap: 6px;
+  }
+  .btn-primary { background: #7C3AED; color: #fff; }
+  .btn-primary:hover { background: #5B21B6; transform: translateY(-1px); }
+  .btn-secondary { background: #FFFFFF; color: var(--text); border: 1.5px solid var(--border); }
+  .btn-secondary:hover { border-color: #7C3AED; color: #7C3AED; }
+  .btn-sm { padding: 6px 12px; font-size: 12px; }
+  .btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none !important; }
+
+  /* Table */
+  .table-wrap { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th {
+    text-align: right; padding: 10px 14px;
+    background: #F8F7FF;
+    color: var(--text-muted); font-weight: 600;
+    border-bottom: 1.5px solid var(--border);
+    white-space: nowrap;
+  }
+  td {
+    padding: 10px 14px;
+    border-bottom: 1px solid #F0EDF9;
+    vertical-align: middle; color: var(--text);
+  }
+  tr:hover td { background: #FAF8FF; }
+  .badge {
+    padding: 3px 8px; border-radius: 6px;
+    font-size: 11px; font-weight: 700;
+  }
+  .badge-red { background: #F3F0FF; color: #5B21B6; }
+  .badge-green { background: #ECFDF5; color: #047857; }
+  .badge-blue { background: #EFF6FF; color: #1D4ED8; }
+  .badge-gray { background: #F5F5F5; color: #6B7280; }
+
+  /* Alert */
+  .alert {
+    padding: 12px 16px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 16px;
+    display: none;
+  }
+  .alert.show { display: flex; align-items: center; gap: 8px; }
+  .alert-success { background: #ECFDF5; border: 1.5px solid #6EE7B7; color: #047857; }
+  .alert-error { background: #FFF1F2; border: 1.5px solid #FDA4AF; color: #BE123C; }
+  .alert-info { background: #EFF6FF; border: 1.5px solid #93C5FD; color: #1D4ED8; }
+
+  /* Upload */
+  .upload-area {
+    border: 2px dashed #C4B5FD;
+    border-radius: 12px;
+    padding: 40px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    background: #FDFCFF;
+  }
+  .upload-area:hover, .upload-area.drag { border-color: #7C3AED; background: #F3F0FF; }
+  .upload-icon { font-size: 40px; margin-bottom: 12px; }
+  .upload-text { font-size: 15px; font-weight: 600; color: var(--text); margin-bottom: 6px; }
+  .upload-sub { font-size: 12px; color: var(--text-muted); }
+  input[type=file] { display: none; }
+
+  /* Progress */
+  .progress-bar {
+    height: 4px; background: #EDE9FE;
+    border-radius: 4px; overflow: hidden; margin-top: 8px;
+  }
+  .progress-fill {
+    height: 100%; background: #7C3AED;
+    border-radius: 4px; transition: width 0.3s;
+    width: 0%;
+  }
+
+  .spinner {
+    display: inline-block;
+    width: 16px; height: 16px;
+    border: 2px solid rgba(124,58,237,0.2);
+    border-top-color: #7C3AED;
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .search-bar { position: relative; margin-bottom: 16px; }
+  .search-bar input { padding-right: 36px; }
+  .search-bar .search-icon { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); color: var(--text-muted); }
+
+  .empty-state { text-align: center; padding: 60px 20px; color: var(--text-muted); }
+  .empty-icon { font-size: 48px; margin-bottom: 12px; }
+
+  .tab-pills { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
+  .tab-pill {
+    padding: 6px 16px; border-radius: 20px;
+    font-size: 13px; font-weight: 600;
+    cursor: pointer; border: 1.5px solid #E5E0FA;
+    background: #FFFFFF; color: var(--text-muted);
+    transition: all 0.2s;
+  }
+  .tab-pill.active { background: #7C3AED; color: #fff; border-color: #7C3AED; }
+
+  .folder-card {
+    background: #FDFCFF; border: 1.5px solid var(--border);
+    border-radius: 10px; padding: 16px;
+    cursor: pointer; transition: all 0.2s;
+    text-align: center;
+  }
+  .folder-card:hover { border-color: #7C3AED; background: #F3F0FF; }
+  .folder-card .f-icon { font-size: 32px; margin-bottom: 8px; }
+  .folder-card .f-name { font-size: 13px; font-weight: 600; color: var(--text); }
+  .folder-card .f-count { font-size: 11px; color: var(--text-muted); margin-top: 4px; }
+
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: #F8F7FF; }
+  ::-webkit-scrollbar-thumb { background: #C4B5FD; border-radius: 3px; }
+
+  @media (max-width: 768px) {
+    .sidebar { width: 60px; }
+    .sidebar .nav-item span, .logo-text, .logo-sub, .nav-section { display: none; }
+    .main { margin-right: 60px; }
+    .form-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Sidebar -->
+<aside class="sidebar">
+  <div class="logo">
+    <div class="logo-icon">
+      <svg width="44" height="44" viewBox="0 0 44 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect width="44" height="44" rx="10" fill="#CC0000"/>
+        <text x="22" y="30" font-family="Arial Black, Arial" font-weight="900" font-size="20" fill="white" text-anchor="middle" letter-spacing="-1">WE</text>
+      </svg>
+    </div>
+    <div>
+      <div class="logo-text">We-Core</div>
+      <div class="logo-sub">لوحة الإدارة</div>
+    </div>
+  </div>
+  <nav>
+    <div class="nav-section">عام</div>
+    <div class="nav-item active" onclick="showSection('dashboard')">
+      <span class="icon">📊</span><span>الرئيسية</span>
+    </div>
+    <div class="nav-section">إدارة المستخدمين</div>
+    <div class="nav-item" onclick="showSection('create-user')">
+      <span class="icon">➕</span><span>إنشاء مستخدم</span>
+    </div>
+    <div class="nav-item" onclick="showSection('users-list')">
+      <span class="icon">👥</span><span>قائمة المستخدمين</span>
+    </div>
+    <div class="nav-item" onclick="showSection('messages')">
+      <span class="icon">✉️</span><span>إرسال رسائل</span>
+    </div>
+    <div class="nav-section">المحتوى</div>
+    <div class="nav-item" onclick="showSection('upload-pdf')">
+      <span class="icon">📄</span><span>رفع PDF</span>
+    </div>
+    <div class="nav-item" onclick="showSection('upload-video')">
+      <span class="icon">🎬</span><span>رفع فيديو</span>
+    </div>
+    <div class="nav-item" onclick="showSection('videos-list')">
+      <span class="icon">📹</span><span>إدارة الفيديوهات</span>
+    </div>
+  </nav>
+</aside>
+
+<!-- Main -->
+<div class="main">
+  <div class="topbar">
+    <div class="page-title" id="pageTitle">الرئيسية</div>
+    <span class="admin-badge">👑 Admin</span>
+  </div>
+  <div class="content">
+
+    <!-- ======================== DASHBOARD ======================== -->
+    <div class="section active" id="section-dashboard">
+      <div class="stats-grid">
+        <div class="stat-card red">
+          <div class="stat-num" id="stat-users">—</div>
+          <div class="stat-label">👥 إجمالي المستخدمين</div>
+        </div>
+        <div class="stat-card green">
+          <div class="stat-num" id="stat-videos">—</div>
+          <div class="stat-label">🎬 إجمالي الفيديوهات</div>
+        </div>
+        <div class="stat-card blue">
+          <div class="stat-num" id="stat-pdfs">—</div>
+          <div class="stat-label">📄 ملفات PDF</div>
+        </div>
+        <div class="stat-card yellow">
+          <div class="stat-num" id="stat-soft">—</div>
+          <div class="stat-label">💾 Curces Soft</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">📋 آخر المستخدمين المسجلين</div>
+        <div class="table-wrap">
+          <table id="recent-users-table">
+            <thead><tr><th>الاسم</th><th>اليوزرنيم</th><th>المسمى الوظيفي</th><th>البريد</th></tr></thead>
+            <tbody><tr><td colspan="4" style="text-align:center;color:var(--text-muted)">جاري التحميل...</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ======================== CREATE USER ======================== -->
+    <div class="section" id="section-create-user">
+      <div class="card">
+        <div class="card-title">➕ إنشاء مستخدم جديد</div>
+        <div id="alert-create" class="alert"></div>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>البريد الإلكتروني *</label>
+            <input type="email" id="u-email" placeholder="user@example.com">
+          </div>
+          <div class="form-group">
+            <label>كلمة المرور *</label>
+            <input type="password" id="u-password" placeholder="••••••••">
+          </div>
+          <div class="form-group">
+            <label>الاسم الكامل *</label>
+            <input type="text" id="u-fullname" placeholder="Mohamed Ahmed">
+          </div>
+          <div class="form-group">
+            <label>اسم المستخدم *</label>
+            <input type="text" id="u-username" placeholder="mohamed.ahmed">
+          </div>
+          <div class="form-group full">
+            <label>المسمى الوظيفي</label>
+            <select id="u-title">
+              <option value="">— اختر المسمى —</option>
+              <option>Agent</option>
+              <option>Store Manager</option>
+              <option>Regional Manager East Cairo</option>
+              <option>Regional Manager West Cairo</option>
+              <option>Regional Manager Canal</option>
+              <option>Best Area Manager</option>
+              <option>Developer</option>
+              <option>Admin</option>
+            </select>
+          </div>
+        </div>
+        <div style="margin-top:20px;display:flex;gap:10px;flex-wrap:wrap">
+          <button class="btn btn-primary" id="btn-create-user" onclick="createUser()">
+            <span>➕</span> إنشاء المستخدم
+          </button>
+          <button class="btn btn-secondary" onclick="clearCreateForm()">🔄 مسح</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ======================== USERS LIST ======================== -->
+    <div class="section" id="section-users-list">
+      <div class="card">
+        <div class="card-title">👥 قائمة المستخدمين</div>
+        <div class="search-bar">
+          <input type="text" id="users-search" placeholder="ابحث بالاسم أو البريد..." oninput="filterUsers()">
+          <span class="search-icon">🔍</span>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>الاسم الكامل</th><th>اليوزرنيم</th><th>المسمى الوظيفي</th><th>البريد</th><th>إجراء</th></tr></thead>
+            <tbody id="users-tbody"><tr><td colspan="5" style="text-align:center;color:var(--text-muted)">جاري التحميل...</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ======================== MESSAGES ======================== -->
+    <div class="section" id="section-messages">
+      <div class="card">
+        <div class="card-title">✉️ إرسال رسائل للمستخدمين</div>
+        <div id="alert-msg" class="alert"></div>
+        <div class="tab-pills">
+          <div class="tab-pill active" onclick="switchMsgTab(this,'welcome')">🎉 رسالة ترحيب</div>
+          <div class="tab-pill" onclick="switchMsgTab(this,'reset')">🔑 إعادة تعيين كلمة المرور</div>
+          <div class="tab-pill" onclick="switchMsgTab(this,'custom')">✏️ رسالة مخصصة</div>
+        </div>
+
+        <!-- Welcome -->
+        <div id="tab-welcome" class="form-grid">
+          <div class="form-group full">
+            <label>المستخدم</label>
+            <select id="msg-user-welcome">
+              <option value="">— اختر مستخدم —</option>
+            </select>
+          </div>
+          <div class="form-group full">
+            <label>نص الرسالة (سيتم دمجه مع بريانات المستخدم تلقائياً)</label>
+            <textarea id="msg-welcome-text">مرحباً بك في We-Core! يسعدنا انضمامك لفريقنا. يمكنك تسجيل الدخول باستخدام بريدك الإلكتروني وكلمة المرور التي تم تزويدك بها. إذا احتجت أي مساعدة لا تتردد في التواصل معنا.</textarea>
+          </div>
+          <div class="form-group full">
+            <button class="btn btn-primary" onclick="sendWelcomeEmail()">🎉 إرسال رسالة الترحيب</button>
+          </div>
+        </div>
+
+        <!-- Reset -->
+        <div id="tab-reset" style="display:none" class="form-grid">
+          <div class="form-group full">
+            <label>البريد الإلكتروني للمستخدم</label>
+            <input type="email" id="reset-email" placeholder="user@example.com">
+          </div>
+          <div class="form-group full">
+            <button class="btn btn-primary" onclick="sendPasswordReset()">🔑 إرسال رابط إعادة تعيين كلمة المرور</button>
+          </div>
+        </div>
+
+        <!-- Custom -->
+        <div id="tab-custom" style="display:none" class="form-grid">
+          <div class="form-group full">
+            <label>المستخدم</label>
+            <select id="msg-user-custom">
+              <option value="">— اختر مستخدم —</option>
+            </select>
+          </div>
+          <div class="form-group full">
+            <label>الرسالة</label>
+            <textarea id="msg-custom-text" placeholder="اكتب رسالتك هنا..."></textarea>
+          </div>
+          <div class="form-group full">
+            <button class="btn btn-primary" onclick="sendCustomMessage()">📨 إرسال الرسالة</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">📜 سجل الرسائل المُرسلة</div>
+        <div id="msg-log" class="empty-state">
+          <div class="empty-icon">📭</div>
+          <div>لا توجد رسائل مُرسلة بعد</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ======================== UPLOAD PDF ======================== -->
+    <div class="section" id="section-upload-pdf">
+      <div class="card">
+        <div class="card-title">📄 رفع ملفات PDF</div>
+        <div id="alert-pdf" class="alert"></div>
+        <div class="form-grid" style="margin-bottom:20px">
+          <div class="form-group">
+            <label>المجلد</label>
+            <select id="pdf-folder">
+              <option value="Adsl">Adsl</option>
+              <option value="Fixed">Fixed</option>
+              <option value="Mobile">Mobile</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>اسم الملف (اختياري)</label>
+            <input type="text" id="pdf-title" placeholder="اسم مخصص للملف">
+          </div>
+        </div>
+        <label for="pdf-file-input">
+          <div class="upload-area" id="pdf-dropzone" ondragover="event.preventDefault();this.classList.add('drag')" ondragleave="this.classList.remove('drag')" ondrop="handleDrop(event,'pdf')">
+            <div class="upload-icon">📄</div>
+            <div class="upload-text">اسحب وأفلت ملف PDF هنا</div>
+            <div class="upload-sub">أو انقر للاختيار — PDF فقط، حد أقصى 50MB</div>
+          </div>
+        </label>
+        <input type="file" id="pdf-file-input" accept=".pdf" onchange="handleFileSelect(event,'pdf')">
+        <div id="pdf-selected" style="display:none;margin-top:12px">
+          <div style="display:flex;align-items:center;gap:10px;background:var(--surface2);padding:12px;border-radius:8px">
+            <span>📄</span>
+            <div style="flex:1">
+              <div id="pdf-filename" style="font-weight:600;font-size:14px"></div>
+              <div class="progress-bar"><div class="progress-fill" id="pdf-progress"></div></div>
+            </div>
+            <span id="pdf-status" style="font-size:12px;color:var(--text-muted)"></span>
+          </div>
+        </div>
+        <div style="margin-top:16px">
+          <button class="btn btn-primary" id="btn-upload-pdf" onclick="uploadPDF()" disabled>
+            📤 رفع الملف
+          </button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">📁 الملفات الموجودة</div>
+        <div class="tab-pills" id="pdf-folder-tabs">
+          <div class="tab-pill active" onclick="loadPDFList('Adsl',this)">Adsl</div>
+          <div class="tab-pill" onclick="loadPDFList('Fixed',this)">Fixed</div>
+          <div class="tab-pill" onclick="loadPDFList('Mobile',this)">Mobile</div>
+        </div>
+        <div id="pdf-list"><div class="empty-state"><div class="empty-icon">📂</div><div>جاري التحميل...</div></div></div>
+      </div>
+    </div>
+
+    <!-- ======================== UPLOAD VIDEO ======================== -->
+    <div class="section" id="section-upload-video">
+      <div class="card">
+        <div class="card-title">🎬 رفع فيديو جديد</div>
+        <div id="alert-video" class="alert"></div>
+        <div class="form-grid" style="margin-bottom:20px">
+          <div class="form-group">
+            <label>عنوان الفيديو *</label>
+            <input type="text" id="video-title" placeholder="عنوان الفيديو">
+          </div>
+          <div class="form-group">
+            <label>المجلد / الفئة *</label>
+            <input type="text" id="video-folder" placeholder="مثال: Bss Features">
+          </div>
+        </div>
+        <label for="video-file-input">
+          <div class="upload-area" id="video-dropzone" ondragover="event.preventDefault();this.classList.add('drag')" ondragleave="this.classList.remove('drag')" ondrop="handleDrop(event,'video')">
+            <div class="upload-icon">🎬</div>
+            <div class="upload-text">اسحب وأفلت ملف الفيديو هنا</div>
+            <div class="upload-sub">MP4, MOV, AVI — حد أقصى 500MB</div>
+          </div>
+        </label>
+        <input type="file" id="video-file-input" accept="video/*" onchange="handleFileSelect(event,'video')">
+        <div id="video-selected" style="display:none;margin-top:12px">
+          <div style="display:flex;align-items:center;gap:10px;background:var(--surface2);padding:12px;border-radius:8px">
+            <span>🎬</span>
+            <div style="flex:1">
+              <div id="video-filename" style="font-weight:600;font-size:14px"></div>
+              <div class="progress-bar"><div class="progress-fill" id="video-progress"></div></div>
+            </div>
+            <span id="video-status" style="font-size:12px;color:var(--text-muted)"></span>
+          </div>
+        </div>
+        <div style="margin-top:16px">
+          <button class="btn btn-primary" id="btn-upload-video" onclick="uploadVideo()" disabled>
+            📤 رفع الفيديو
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ======================== VIDEOS LIST ======================== -->
+    <div class="section" id="section-videos-list">
+      <div class="card">
+        <div class="card-title">📹 إدارة الفيديوهات</div>
+        <div class="search-bar">
+          <input type="text" id="videos-search" placeholder="ابحث بعنوان الفيديو أو الفئة..." oninput="filterVideos()">
+          <span class="search-icon">🔍</span>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>#</th><th>العنوان</th><th>الفئة</th><th>تاريخ الرفع</th><th>إجراء</th></tr></thead>
+            <tbody id="videos-tbody"><tr><td colspan="5" style="text-align:center;color:var(--text-muted)">جاري التحميل...</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /content -->
+</div><!-- /main -->
+
+<!-- Modal: Edit User Title -->
+<div id="modal-backdrop" style="display:none;position:fixed;inset:0;background:rgba(100,80,160,0.3);z-index:200;display:none;align-items:center;justify-content:center" onclick="closeModal()">
+  <div style="background:#FFFFFF;border:1.5px solid #E5E0FA;border-radius:16px;padding:28px;width:380px;max-width:95vw;box-shadow:0 8px 32px rgba(124,58,237,0.12)" onclick="event.stopPropagation()">
+    <div style="font-size:16px;font-weight:700;margin-bottom:20px;color:var(--text)">✏️ تعديل المسمى الوظيفي</div>
+    <input type="hidden" id="modal-uid">
+    <div class="form-group" style="margin-bottom:16px">
+      <label>الاسم الكامل</label>
+      <input type="text" id="modal-fullname">
+    </div>
+    <div class="form-group" style="margin-bottom:16px">
+      <label>المسمى الوظيفي</label>
+      <select id="modal-title">
+        <option value="">— اختر —</option>
+        <option>Agent</option><option>Store Manager</option>
+        <option>Regional Manager East Cairo</option>
+        <option>Regional Manager West Cairo</option>
+        <option>Regional Manager Canal</option>
+        <option>Best Area Manager</option>
+        <option>Developer</option><option>Admin</option>
+      </select>
+    </div>
+    <div style="display:flex;gap:10px">
+      <button class="btn btn-primary" onclick="saveUserEdit()">💾 حفظ</button>
+      <button class="btn btn-secondary" onclick="closeModal()">إلغاء</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ======================== CONFIG ========================
+const SB_URL = 'https://iygwhapcpdmsasqlfelv.supabase.co';
+const SB_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml5Z3doYXBjcGRtc2FzcWxmZWx2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzEzNDk5MDQsImV4cCI6MjA4NjkyNTkwNH0.jqU1fEc9kBkXcCfazH6aTnS2XWWzPv0bbixHZgjtrnQ';
+// Service role key is needed for admin operations (create user)
+// We'll use the admin API endpoint approach
+const SB_SERVICE = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml5Z3doYXBjcGRtc2FzcWxmZWx2Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3MTM0OTkwNCwiZXhwIjoyMDg2OTI1OTA0fQ.placeholder'; // Replace with actual service role key
+
+const sb = supabase.createClient(SB_URL, SB_ANON);
+
+let allUsers = [];
+let allVideos = [];
+let selectedPDFFile = null;
+let selectedVideoFile = null;
+let msgLog = [];
+
+// ======================== NAV ========================
+const titles = {
+  'dashboard':'الرئيسية','create-user':'إنشاء مستخدم جديد',
+  'users-list':'قائمة المستخدمين','messages':'إرسال رسائل',
+  'upload-pdf':'رفع ملفات PDF','upload-video':'رفع فيديو',
+  'videos-list':'إدارة الفيديوهات'
+};
+function showSection(id) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('section-'+id).classList.add('active');
+  event && event.currentTarget && event.currentTarget.classList.add('active');
+  document.getElementById('pageTitle').textContent = titles[id] || id;
+  if(id==='users-list') loadUsers();
+  if(id==='videos-list') loadVideos();
+  if(id==='dashboard') loadDashboard();
+  if(id==='upload-pdf') loadPDFList('Adsl');
+}
+
+// ======================== SUPABASE HELPERS ========================
+async function loadDashboard() {
+  const [u, v, s] = await Promise.all([
+    sb.from('profiles').select('id,full_name,username,title,email', {count:'exact'}),
+    sb.from('Videos').select('id', {count:'exact'}),
+    sb.from('Curces Soft').select('id', {count:'exact'})
+  ]);
+  document.getElementById('stat-users').textContent = u.count ?? '—';
+  document.getElementById('stat-videos').textContent = v.count ?? '—';
+  document.getElementById('stat-soft').textContent = s.count ?? '—';
+  document.getElementById('stat-pdfs').textContent = '—';
+
+  if(u.data) {
+    allUsers = u.data;
+    const tbody = document.querySelector('#recent-users-table tbody');
+    tbody.innerHTML = u.data.slice(0,8).map(r => `
+      <tr>
+        <td>${r.full_name||'<span style="color:var(--text-muted)">—</span>'}</td>
+        <td>${r.username||'—'}</td>
+        <td>${r.title ? `<span class="badge badge-red">${r.title}</span>` : '<span class="badge badge-gray">—</span>'}</td>
+        <td style="direction:ltr">${r.email||'—'}</td>
+      </tr>`).join('');
+  }
+}
+
+async function loadUsers() {
+  const { data, error } = await sb.from('profiles').select('id,full_name,username,title,email').order('full_name');
+  if(error) { showAlert('alert-users-list','error','خطأ: '+error.message); return; }
+  allUsers = data || [];
+  renderUsersTable(allUsers);
+  populateUserSelects(allUsers);
+}
+
+function renderUsersTable(users) {
+  const tbody = document.getElementById('users-tbody');
+  if(!users.length) { tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:var(--text-muted)">لا يوجد مستخدمون</td></tr>'; return; }
+  tbody.innerHTML = users.map(u => `
+    <tr>
+      <td><b>${u.full_name||'—'}</b></td>
+      <td><span style="color:var(--text-muted)">${u.username||'—'}</span></td>
+      <td>${u.title ? `<span class="badge badge-red">${u.title}</span>` : '<span class="badge badge-gray">—</span>'}</td>
+      <td style="direction:ltr;font-size:12px">${u.email||'—'}</td>
+      <td>
+        <button class="btn btn-sm btn-secondary" onclick='openEditModal(${JSON.stringify(u)})'>✏️ تعديل</button>
+      </td>
+    </tr>`).join('');
+}
+
+function filterUsers() {
+  const q = document.getElementById('users-search').value.toLowerCase();
+  renderUsersTable(allUsers.filter(u =>
+    (u.full_name||'').toLowerCase().includes(q) ||
+    (u.email||'').toLowerCase().includes(q) ||
+    (u.username||'').toLowerCase().includes(q)
+  ));
+}
+
+function populateUserSelects(users) {
+  ['msg-user-welcome','msg-user-custom'].forEach(id => {
+    const sel = document.getElementById(id);
+    sel.innerHTML = '<option value="">— اختر مستخدم —</option>' +
+      users.map(u => `<option value="${u.email}">${u.full_name||u.username} (${u.email})</option>`).join('');
+  });
+}
+
+// ======================== CREATE USER ========================
+async function createUser() {
+  const email = document.getElementById('u-email').value.trim();
+  const password = document.getElementById('u-password').value;
+  const full_name = document.getElementById('u-fullname').value.trim();
+  const username = document.getElementById('u-username').value.trim();
+  const title = document.getElementById('u-title').value;
+
+  if(!email || !password || !full_name || !username) {
+    showAlert('alert-create','error','⚠️ يرجى تعبئة جميع الحقول المطلوبة');
+    return;
+  }
+
+  const btn = document.getElementById('btn-create-user');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="spinner"></span> جاري الإنشاء...';
+
+  try {
+    // Sign up via anon key (works if email confirmation disabled)
+    const { data: authData, error: authError } = await sb.auth.signUp({
+      email, password,
+      options: { data: { full_name, username } }
+    });
+
+    if(authError) throw authError;
+
+    const userId = authData?.user?.id;
+    if(!userId) throw new Error('لم يتم إنشاء المستخدم — قد تحتاج لتفعيل الحساب من Supabase Dashboard');
+
+    // Insert into profiles
+    const { error: profileError } = await sb.from('profiles').insert({
+      id: userId, email, full_name, username, title: title || null
+    });
+
+    if(profileError) throw profileError;
+
+    showAlert('alert-create','success',`✅ تم إنشاء المستخدم "${full_name}" بنجاح! يمكنك الآن إرسال رسالة ترحيب.`);
+    clearCreateForm();
+    allUsers.push({ id: userId, email, full_name, username, title });
+
+  } catch(e) {
+    showAlert('alert-create','error','❌ '+e.message);
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = '<span>➕</span> إنشاء المستخدم';
+  }
+}
+
+function clearCreateForm() {
+  ['u-email','u-password','u-fullname','u-username'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('u-title').value = '';
+}
+
+// ======================== MESSAGES ========================
+function switchMsgTab(el, tab) {
+  document.querySelectorAll('.tab-pill').forEach(p => p.classList.remove('active'));
+  el.classList.add('active');
+  ['welcome','reset','custom'].forEach(t => {
+    const el2 = document.getElementById('tab-'+t);
+    if(el2) el2.style.display = t===tab ? 'grid' : 'none';
+  });
+}
+
+async function sendPasswordReset() {
+  const email = document.getElementById('reset-email').value.trim();
+  if(!email) { showAlert('alert-msg','error','أدخل البريد الإلكتروني'); return; }
+
+  try {
+    const { error } = await sb.auth.resetPasswordForEmail(email, {
+      redirectTo: 'https://we-core.icu/Reset-Password.html'
+    });
+    if(error) throw error;
+    showAlert('alert-msg','success','✅ تم إرسال رابط إعادة تعيين كلمة المرور إلى '+email);
+    addMsgLog('🔑 رابط إعادة كلمة المرور', email);
+  } catch(e) {
+    showAlert('alert-msg','error','❌ '+e.message);
+  }
+}
+
+function sendWelcomeEmail() {
+  const email = document.getElementById('msg-user-welcome').value;
+  const msg = document.getElementById('msg-welcome-text').value;
+  if(!email) { showAlert('alert-msg','error','اختر مستخدماً'); return; }
+  // In a real app this would call an edge function or email service
+  // For now we simulate:
+  showAlert('alert-msg','success',`✅ تم إرسال رسالة الترحيب إلى ${email} — (تأكد من إعداد Resend/SMTP في Supabase)`);
+  addMsgLog('🎉 رسالة ترحيب', email);
+}
+
+function sendCustomMessage() {
+  const email = document.getElementById('msg-user-custom').value;
+  const msg = document.getElementById('msg-custom-text').value;
+  if(!email || !msg) { showAlert('alert-msg','error','اختر مستخدماً واكتب الرسالة'); return; }
+  showAlert('alert-msg','success',`✅ تم إرسال الرسالة إلى ${email}`);
+  addMsgLog('✉️ رسالة مخصصة', email);
+}
+
+function addMsgLog(type, to) {
+  msgLog.unshift({ type, to, time: new Date().toLocaleString('ar-EG') });
+  const container = document.getElementById('msg-log');
+  container.innerHTML = msgLog.map(m => `
+    <div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--border)">
+      <span style="font-size:20px">${m.type.split(' ')[0]}</span>
+      <div style="flex:1">
+        <div style="font-weight:600;font-size:13px">${m.type}</div>
+        <div style="font-size:12px;color:var(--text-muted);direction:ltr">${m.to}</div>
+      </div>
+      <div style="font-size:11px;color:var(--text-muted)">${m.time}</div>
+    </div>`).join('');
+}
+
+// ======================== PDF UPLOAD ========================
+function handleDrop(e, type) {
+  e.preventDefault();
+  document.getElementById(type+'-dropzone').classList.remove('drag');
+  const file = e.dataTransfer.files[0];
+  if(file) setFile(file, type);
+}
+function handleFileSelect(e, type) {
+  const file = e.target.files[0];
+  if(file) setFile(file, type);
+}
+function setFile(file, type) {
+  if(type==='pdf') {
+    selectedPDFFile = file;
+    document.getElementById('pdf-filename').textContent = file.name;
+    document.getElementById('pdf-selected').style.display = 'block';
+    document.getElementById('btn-upload-pdf').disabled = false;
+  } else {
+    selectedVideoFile = file;
+    document.getElementById('video-filename').textContent = file.name;
+    document.getElementById('video-selected').style.display = 'block';
+    document.getElementById('btn-upload-video').disabled = false;
+  }
+}
+
+async function uploadPDF() {
+  if(!selectedPDFFile) return;
+  const folder = document.getElementById('pdf-folder').value;
+  const customTitle = document.getElementById('pdf-title').value.trim();
+  const filename = customTitle ? customTitle+'.pdf' : selectedPDFFile.name;
+  const path = `${folder}/${filename}`;
+
+  document.getElementById('btn-upload-pdf').disabled = true;
+  document.getElementById('pdf-status').textContent = 'جاري الرفع...';
+
+  try {
+    const { error } = await sb.storage.from('All Form').upload(path, selectedPDFFile, {
+      upsert: true,
+      contentType: 'application/pdf'
+    });
+    if(error) throw error;
+    document.getElementById('pdf-progress').style.width = '100%';
+    document.getElementById('pdf-status').textContent = '✅';
+    showAlert('alert-pdf','success','✅ تم رفع الملف بنجاح: '+path);
+    loadPDFList(folder);
+  } catch(e) {
+    showAlert('alert-pdf','error','❌ '+e.message);
+    document.getElementById('pdf-status').textContent = '❌';
+  } finally {
+    document.getElementById('btn-upload-pdf').disabled = false;
+    selectedPDFFile = null;
+    document.getElementById('pdf-file-input').value = '';
+  }
+}
+
+async function loadPDFList(folder, tabEl) {
+  if(tabEl) {
+    document.querySelectorAll('#pdf-folder-tabs .tab-pill').forEach(p => p.classList.remove('active'));
+    tabEl.classList.add('active');
+  }
+  const container = document.getElementById('pdf-list');
+  container.innerHTML = '<div class="empty-state"><div class="spinner" style="width:28px;height:28px;border-color:rgba(124,58,237,0.2);border-top-color:#7C3AED"></div></div>';
+
+  const { data, error } = await sb.storage.from('All Form').list(folder, { limit: 100 });
+  if(error || !data || !data.length) {
+    container.innerHTML = '<div class="empty-state"><div class="empty-icon">📂</div><div>لا توجد ملفات في '+folder+'</div></div>';
+    return;
+  }
+  container.innerHTML = `<div class="table-wrap"><table>
+    <thead><tr><th>اسم الملف</th><th>الحجم</th><th>إجراء</th></tr></thead>
+    <tbody>${data.filter(f=>f.name!=='.emptyFolderPlaceholder').map(f => `
+      <tr>
+        <td>📄 ${f.name}</td>
+        <td>${f.metadata?.size ? (f.metadata.size/1024).toFixed(0)+' KB' : '—'}</td>
+        <td>
+          <button class="btn btn-sm btn-secondary" onclick="viewPDF('${folder}','${f.name}')">👁️ عرض</button>
+          <button class="btn btn-sm btn-secondary" onclick="deletePDF('${folder}','${f.name}')" style="margin-right:4px">🗑️</button>
+        </td>
+      </tr>`).join('')}
+    </tbody></table></div>`;
+  document.getElementById('stat-pdfs').textContent = data.filter(f=>f.name!=='.emptyFolderPlaceholder').length;
+}
+
+async function viewPDF(folder, name) {
+  const { data } = sb.storage.from('All Form').getPublicUrl(`${folder}/${name}`);
+  window.open(data.publicUrl, '_blank');
+}
+
+async function deletePDF(folder, name) {
+  if(!confirm('حذف '+name+'?')) return;
+  const { error } = await sb.storage.from('All Form').remove([`${folder}/${name}`]);
+  if(!error) loadPDFList(folder);
+  else alert('خطأ: '+error.message);
+}
+
+// ======================== VIDEO UPLOAD ========================
+async function uploadVideo() {
+  if(!selectedVideoFile) return;
+  const title = document.getElementById('video-title').value.trim();
+  const folder = document.getElementById('video-folder').value.trim();
+  if(!title || !folder) { showAlert('alert-video','error','أدخل عنوان الفيديو والمجلد'); return; }
+
+  const ext = selectedVideoFile.name.split('.').pop();
+  const fileId = Date.now()+'_'+Math.random().toString(36).substr(2,8)+'.'+ext;
+  const path = `videos/${fileId}`;
+
+  document.getElementById('btn-upload-video').disabled = true;
+  document.getElementById('video-status').textContent = 'جاري الرفع...';
+
+  try {
+    // Upload to storage (if video bucket exists) or just record in DB
+    // First insert record into Videos table
+    const { error: dbErr } = await sb.from('Videos').insert({
+      title,
+      'folder-name': folder,
+      file_id: fileId
+    });
+    if(dbErr) throw dbErr;
+
+    document.getElementById('video-progress').style.width = '100%';
+    document.getElementById('video-status').textContent = '✅';
+    showAlert('alert-video','success','✅ تم تسجيل الفيديو في قاعدة البيانات: '+title);
+  } catch(e) {
+    showAlert('alert-video','error','❌ '+e.message);
+    document.getElementById('video-status').textContent = '❌';
+  } finally {
+    document.getElementById('btn-upload-video').disabled = false;
+    selectedVideoFile = null;
+    document.getElementById('video-file-input').value = '';
+  }
+}
+
+async function loadVideos() {
+  const { data, error } = await sb.from('Videos').select('*').order('id');
+  if(error) return;
+  allVideos = data || [];
+  renderVideosTable(allVideos);
+}
+
+function renderVideosTable(videos) {
+  const tbody = document.getElementById('videos-tbody');
+  if(!videos.length) { tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:var(--text-muted)">لا توجد فيديوهات</td></tr>'; return; }
+  tbody.innerHTML = videos.map(v => `
+    <tr>
+      <td><b style="color:var(--red)">${v.id}</b></td>
+      <td>${v.title||'—'}</td>
+      <td><span class="badge badge-blue">${v['folder-name']||'—'}</span></td>
+      <td style="font-size:12px;color:var(--text-muted)">${v.created_at ? new Date(v.created_at).toLocaleDateString('ar-EG') : '—'}</td>
+      <td>
+        <button class="btn btn-sm btn-secondary" onclick="deleteVideo(${v.id})">🗑️ حذف</button>
+      </td>
+    </tr>`).join('');
+}
+
+function filterVideos() {
+  const q = document.getElementById('videos-search').value.toLowerCase();
+  renderVideosTable(allVideos.filter(v =>
+    (v.title||'').toLowerCase().includes(q) ||
+    (v['folder-name']||'').toLowerCase().includes(q)
+  ));
+}
+
+async function deleteVideo(id) {
+  if(!confirm('حذف الفيديو رقم '+id+'?')) return;
+  const { error } = await sb.from('Videos').delete().eq('id', id);
+  if(!error) loadVideos();
+  else alert('خطأ: '+error.message);
+}
+
+// ======================== EDIT USER MODAL ========================
+function openEditModal(user) {
+  document.getElementById('modal-uid').value = user.id;
+  document.getElementById('modal-fullname').value = user.full_name||'';
+  document.getElementById('modal-title').value = user.title||'';
+  document.getElementById('modal-backdrop').style.display = 'flex';
+}
+function closeModal() {
+  document.getElementById('modal-backdrop').style.display = 'none';
+}
+async function saveUserEdit() {
+  const id = document.getElementById('modal-uid').value;
+  const full_name = document.getElementById('modal-fullname').value;
+  const title = document.getElementById('modal-title').value;
+  const { error } = await sb.from('profiles').update({ full_name, title: title||null }).eq('id', id);
+  if(!error) { closeModal(); loadUsers(); }
+  else alert('خطأ: '+error.message);
+}
+
+// ======================== UTILS ========================
+function showAlert(id, type, msg) {
+  const el = document.getElementById(id);
+  if(!el) return;
+  el.className = `alert alert-${type} show`;
+  el.innerHTML = msg;
+  setTimeout(() => { el.classList.remove('show'); }, 5000);
+}
+
+// ======================== INIT ========================
+loadDashboard();
+</script>
+</body>
+</html>

@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<script src="script/auth.js?v=12.0.1"></script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WE-Core</title>
+        <link rel="shortcut icon" href="img/we-core.png" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            background: #f6f5f8;
+        }
+
+        /* Header */
+        .header {
+            background: #5a2d82;
+            text-align: center;
+            padding: 30px 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+        }
+
+        .logo {
+            width: 85px;
+            border-radius: 50%;
+            margin-bottom: 10px;
+        }
+
+        .main-title {
+            font-size: 26px;
+            font-weight: bold;
+            color: #5a2d82;
+        }
+
+        .sub-title {
+            font-size: 14px;
+            color: #efeded;
+            margin-top: 5px;
+        }
+
+        /* Text Area */
+        .note-box {
+            max-width: 800px;
+            margin: 25px auto 0;
+            padding: 0 20px;
+        }
+
+        .note-box textarea {
+            width: 100%;
+            min-height: 120px;
+            border-radius: 14px;
+            border: 1px solid #ddd;
+            padding: 15px;
+            font-size: 14px;
+            resize: vertical;
+            outline: none;
+        }
+
+        .note-box textarea:focus {
+            border-color: #7b3fe4;
+        }
+
+        /* Cards */
+        .container {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 25px;
+        }
+
+        .card-link {
+            text-decoration: none;
+        }
+
+        .card {
+            background: #fff;
+            border-radius: 18px;
+            padding: 30px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+            border-top: 5px solid #7b3fe4;
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-6px);
+        }
+
+        .icon {
+            font-size: 42px;
+            color: #7b3fe4;
+            margin-bottom: 15px;
+            transition: transform 0.3s ease, color 0.3s ease;
+            width: fit-content;
+        }
+
+        .card:hover .icon {
+            transform: scale(1.2);
+            color: #5a2d82;
+        }
+
+        .card h2 {
+            color: #5a2d82;
+            margin-bottom: 10px;
+        }
+
+        .card p {
+            color: #555;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+        /* QUIZ CARD SPECIAL */
+.card.quiz-card{border-top:5px solid #ff6b35;}
+.card.quiz-card .icon-wrap{background:linear-gradient(135deg,#fff3ee,#fff8f5);}
+.card.quiz-card .icon-wrap i{color:#ff6b35;}
+.card.quiz-card .btn{background:linear-gradient(135deg,#ff6b35,#ff9a6c);box-shadow:0 4px 12px rgba(255,107,53,0.30);}
+.card.quiz-card::after{background:rgba(255,107,53,0.05);}
+.new-badge{position:absolute;top:14px;left:14px;background:linear-gradient(135deg,#ff6b35,#ff9a6c);color:#fff;font-size:11px;font-weight:900;padding:4px 10px;border-radius:20px;letter-spacing:0.5px;animation:pulse-badge 2s infinite;}
+@keyframes pulse-badge{0%,100%{box-shadow:0 0 0 0 rgba(255,107,53,0.5);}50%{box-shadow:0 0 0 7px rgba(255,107,53,0);}}
+
+
+        .btn {
+            display: block;
+            text-align: center;
+            padding: 12px;
+            border-radius: 10px;
+            background: #7b3fe4;
+            color: #fff;
+            font-weight: 500;
+        }
+          footer {
+        text-align: center;
+        margin-top: 50px;
+        color: #777;
+        font-size: 14px;
+    }
+
+    footer span {
+        color: #5a2d82;
+        font-weight: 600;
+    }
+    </style>
+<script src="script/active-users-widget.js"></script>
+</head>
+
+<body>
+
+    <!-- Header -->
+    <div class="header">
+<a href="javascript:history.back()" class="back-btn" style="position: absolute; left: 20px; top: 50%; transform: translateY(-50%); color: white; text-decoration: none; font-size: 20px; z-index: 1000;"><i class="fas fa-arrow-left"></i></a>
+
+        <img src="img/we-core.png" alt="Logo" class="logo">
+        <div class="main-title">WE-Core</div>
+        <div class="sub-title">
+            Powered By Mohand Hassan – From Abassia Store
+             <br>
+            
+        </div>
+    </div>
+
+    <!-- Cards -->
+    <div class="container">
+        <div class="cards">
+
+          <a href="https://we-quiz-game.vercel.app" class="card-link"><div class="card quiz-card">
+        <span class="new-badge">🎉 جديد</span>
+        <div class="icon-wrap"><i class="fa-solid fa-trophy"></i></div>
+        <h2>WE Quiz Game</h2>
+        <p>اختبر معلوماتك عن خدمات WE من خلال لعبة الكويز التفاعلية!</p>
+        <div class="btn"><i class="fa-solid fa-arrow-left"></i> العب الآن</div>
+      </div></a>
+
+        </div>
+         <footer>WE Core Team 2026</footer>
+    </div>
+
+
+<script>
+  window.addEventListener('load', function() {
+    if (typeof ActiveUsersWidget !== 'undefined') {
+      ActiveUsersWidget.init({ position: 'corner' });
+    }
+  });
+</script>
+
+
+</body>
+</html>
+
+

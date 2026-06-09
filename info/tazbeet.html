@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<script src="../script/auth.js?v=12.0.1"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tazbeet – كتزول تطبيط</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f5f3fb;
+      --surface: #ffffff;
+      --card: #ffffff;
+      --card-hover: #faf8ff;
+      --border: #e8e0f5;
+      --border-bright: #7b3fe4;
+      --purple: #7b3fe4;
+      --purple-light: #9b5ff4;
+      --purple-xlight: #c4a0f8;
+      --purple-glow: rgba(123,63,228,.18);
+      --text: #1a0a3c;
+      --muted: #7b6a99;
+      --accent: #7b3fe4;
+      --dot-color: rgba(123,63,228,.12);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Tajawal', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* dot background */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: radial-gradient(var(--dot-color) 1.5px, transparent 1.5px);
+      background-size: 28px 28px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* top glow blob */
+    body::after {
+      content: '';
+      position: fixed;
+      top: -160px;
+      right: -160px;
+      width: 520px;
+      height: 520px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(123,63,228,.13) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 0 20px 60px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ── HEADER ── */
+    .site-header {
+      text-align: center;
+      padding: 52px 0 48px;
+      position: relative;
+    }
+
+    .site-header::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 120px;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--purple), transparent);
+    }
+
+    .header-badge {
+      display: inline-block;
+      background: rgba(123,63,228,.1);
+      border: 1px solid rgba(123,63,228,.3);
+      color: var(--purple);
+      font-size: 11px;
+      font-weight: 800;
+      padding: 5px 16px;
+      border-radius: 20px;
+      margin-bottom: 18px;
+      letter-spacing: 2px;
+    }
+
+    .site-header h1 {
+      font-size: clamp(30px, 7vw, 52px);
+      font-weight: 900;
+      line-height: 1.15;
+      color: var(--text);
+      margin-bottom: 14px;
+    }
+
+    .site-header h1 span {
+      background: linear-gradient(135deg, var(--purple), var(--purple-light));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .site-header p {
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.8;
+      max-width: 520px;
+      margin: 0 auto;
+    }
+
+    /* ── SECTION ── */
+    .section { margin-top: 52px; }
+
+    .section-label {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    .section-label h2 {
+      font-size: 20px;
+      font-weight: 800;
+      color: var(--text);
+      white-space: nowrap;
+    }
+
+    .section-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, var(--border-bright), transparent);
+      opacity: .35;
+    }
+
+    .section-label .label-icon {
+      width: 36px;
+      height: 36px;
+      background: rgba(123,63,228,.1);
+      border: 1px solid rgba(123,63,228,.25);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      flex-shrink: 0;
+    }
+
+    /* ── PLAN CARDS ── */
+    .plans-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 16px;
+    }
+
+    .plan-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 24px 18px 20px;
+      position: relative;
+      overflow: hidden;
+      transition: transform .25s ease, border-color .25s ease, box-shadow .25s ease;
+      animation: fadeUp .5s ease both;
+    }
+
+    .plan-card:nth-child(1) { animation-delay: .05s; }
+    .plan-card:nth-child(2) { animation-delay: .1s; }
+    .plan-card:nth-child(3) { animation-delay: .15s; }
+    .plan-card:nth-child(4) { animation-delay: .2s; }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .plan-card::before {
+      content: '';
+      position: absolute;
+      top: 0; right: 0;
+      width: 100%;
+      height: 3px;
+      background: linear-gradient(90deg, transparent, var(--purple), var(--purple-light));
+    }
+
+    .plan-card:hover {
+      transform: translateY(-5px);
+      border-color: var(--border-bright);
+      box-shadow: 0 16px 40px rgba(123,63,228,.15);
+    }
+
+    .plan-card::after {
+      content: '';
+      position: absolute;
+      top: -40px; left: -40px;
+      width: 120px; height: 120px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(123,63,228,.07) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .plan-name {
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--purple);
+      letter-spacing: 1px;
+      margin-bottom: 16px;
+      text-transform: uppercase;
+    }
+
+    .plan-price-block { margin-bottom: 18px; }
+
+    .plan-price {
+      font-size: 36px;
+      font-weight: 900;
+      color: var(--text);
+      line-height: 1;
+    }
+
+    .plan-price sup {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--purple);
+      vertical-align: super;
+    }
+
+    .plan-price-note {
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+
+    .plan-divider {
+      height: 1px;
+      background: var(--border);
+      margin: 16px 0;
+    }
+
+    .plan-stat {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 10px;
+      font-size: 13px;
+    }
+
+    .plan-stat .stat-label {
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .plan-stat .stat-label::before {
+      content: '';
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: var(--purple);
+      opacity: .5;
+      flex-shrink: 0;
+    }
+
+    .plan-stat .stat-val {
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .plan-code-block {
+      background: rgba(123,63,228,.07);
+      border: 1px solid rgba(123,63,228,.2);
+      border-radius: 10px;
+      padding: 10px 14px;
+      margin-top: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .plan-code-label {
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    .plan-code-val {
+      font-family: monospace;
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--purple);
+      direction: ltr;
+    }
+
+    /* ── FEATURE BOX ── */
+    .feature-box {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 28px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .feature-box::before {
+      content: '';
+      position: absolute;
+      top: 0; right: 0;
+      width: 100%; height: 3px;
+      background: linear-gradient(90deg, transparent, var(--purple-light), var(--purple-xlight));
+    }
+
+    .feature-list {
+      list-style: none;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 14px;
+    }
+
+    .feature-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 14px;
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    .feature-list li .feat-dot {
+      width: 20px; height: 20px;
+      border-radius: 6px;
+      background: rgba(123,63,228,.1);
+      border: 1px solid rgba(123,63,228,.25);
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 2px;
+    }
+
+    .feature-list li .feat-dot::after {
+      content: '';
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--purple-light);
+    }
+
+    /* ── ACCOUNTING ── */
+    .accounting-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 12px;
+    }
+
+    .acc-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 18px;
+      transition: border-color .2s, box-shadow .2s;
+    }
+
+    .acc-card:hover {
+      border-color: var(--border-bright);
+      box-shadow: 0 4px 20px rgba(123,63,228,.1);
+    }
+
+    .acc-card .acc-type {
+      font-size: 12px;
+      font-weight: 800;
+      color: var(--purple);
+      letter-spacing: 1px;
+      margin-bottom: 10px;
+      text-transform: uppercase;
+    }
+
+    .acc-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 7px 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 13px;
+    }
+
+    .acc-row:last-child { border-bottom: none; }
+    .acc-row .lbl { color: var(--muted); }
+    .acc-row .val { font-weight: 700; color: var(--text); direction: ltr; }
+
+    /* ── TABLE ── */
+    .styled-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: var(--card);
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+
+    .styled-table th {
+      background: rgba(123,63,228,.08);
+      padding: 14px 16px;
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--purple);
+      text-align: center;
+    }
+
+    .styled-table td {
+      padding: 12px 16px;
+      font-size: 13px;
+      text-align: center;
+      border-top: 1px solid var(--border);
+      color: var(--text);
+    }
+
+    .styled-table tr:hover td { background: rgba(123,63,228,.04); }
+
+    .code-inline {
+      font-family: monospace;
+      background: rgba(123,63,228,.08);
+      border: 1px solid rgba(123,63,228,.2);
+      padding: 3px 10px;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--purple);
+      direction: ltr;
+      display: inline-block;
+    }
+
+    /* ── ALERT BOX ── */
+    .alert-box {
+      background: rgba(123,63,228,.06);
+      border: 1px solid rgba(123,63,228,.2);
+      border-radius: 16px;
+      padding: 20px 24px;
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+    }
+
+    .alert-icon { font-size: 22px; flex-shrink: 0; margin-top: 2px; }
+
+    .alert-text {
+      font-size: 14px;
+      color: var(--text);
+      line-height: 1.7;
+    }
+
+    .alert-text strong { color: var(--purple); }
+
+    /* ── CODES GRID ── */
+    .codes-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 12px;
+    }
+
+    .code-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 16px;
+      text-align: center;
+      transition: border-color .2s, transform .2s, box-shadow .2s;
+    }
+
+    .code-card:hover {
+      border-color: var(--border-bright);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(123,63,228,.12);
+    }
+
+    .code-card .cc-label {
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+
+    .code-card .cc-code {
+      font-family: monospace;
+      font-size: 22px;
+      font-weight: 900;
+      color: var(--purple);
+      direction: ltr;
+    }
+
+    /* ── TERMS ── */
+    .terms-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .terms-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 14px 16px;
+      font-size: 13.5px;
+      line-height: 1.6;
+      color: var(--text);
+      transition: border-color .2s, box-shadow .2s;
+    }
+
+    .terms-list li:hover {
+      border-color: var(--border-bright);
+      box-shadow: 0 4px 16px rgba(123,63,228,.08);
+    }
+
+    .terms-list li::before {
+      content: '✓';
+      width: 22px; height: 22px;
+      border-radius: 6px;
+      background: rgba(123,63,228,.1);
+      color: var(--purple);
+      font-size: 12px;
+      font-weight: 900;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    /* ── FOOTER ── */
+    .site-footer {
+      text-align: center;
+      margin-top: 60px;
+      padding: 24px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .site-footer a {
+      color: var(--purple);
+      text-decoration: none;
+      font-weight: 800;
+    }
+  </style>
+<script src="../script/active-users-widget.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+<div class="container">
+
+  <!-- HEADER -->
+  <header class="site-header">
+<a href="javascript:history.back()" class="back-btn" style="position: absolute; left: 20px; top: 50%; transform: translateY(-50%); color: white; text-decoration: none; font-size: 20px; z-index: 1000;"><i class="fas fa-arrow-left"></i></a>
+
+    <div class="header-badge">مسبق الدفع · WE</div>
+    <h1>نظام <span>كتزول تطبيط</span></h1>
+    <p>نظام محاسبة موحد لجميع الخدمات مع إمكانية ترحيل الوحدات وباقات إضافية عند الحاجة</p>
+  </header>
+
+  <!-- PLANS -->
+  <section class="section">
+    <div class="section-label">
+      <div class="label-icon">📦</div>
+      <h2>الباقات الأساسية</h2>
+    </div>
+
+    <div class="plans-grid">
+
+      <div class="plan-card">
+        <div class="plan-name">تطبيط 46</div>
+        <div class="plan-price-block">
+          <div class="plan-price"><sup>جـ</sup>46</div>
+          <div class="plan-price-note">66 جنيه شامل الضرائب</div>
+        </div>
+        <div class="plan-divider"></div>
+        <div class="plan-stat">
+          <span class="stat-label">دقائق الباقة</span>
+          <span class="stat-val">300</span>
+        </div>
+        <div class="plan-stat">
+          <span class="stat-label">جيجات الباقه</span>
+          <span class="stat-val">1.250</span>
+        </div>
+        <div class="plan-stat">
+          <span class="stat-label">شبكات أخرى</span>
+          <span class="stat-val">45 دقيقه</span>
+        </div>
+        <div class="plan-stat">
+          <span class="stat-label">رسائل</span>
+          <span class="stat-val">50 SMS</span>
+        </div>
+        <div class="plan-stat">
+          <span class="stat-label">سعر الخط</span>
+          <span class="stat-val">132.78 جـ</span>
+        </div>
+        <div class="plan-code-block">
+          <span class="plan-code-label">كود الاشتراك</span>
+          <span class="plan-code-val">*660*40#</span>
+        </div>
+      </div>
+
+      <div class="plan-card">
+        <div class="plan-name">تطبيط 58</div>
+        <div class="plan-price-block">
+          <div class="plan-price"><sup>جـ</sup>58</div>
+          <div class="plan-price-note">82.94 جنيه شامل الضرائب</div>
+        </div>
+        <div class="plan-divider"></div>
+        <div class="plan-stat">
+           <span class="stat-label">دقائق الباقة</span>
+          <span class="stat-val">400</span>
+        </div>
+        <div class="plan-stat">
+          <span class="stat-label">جيجات الباقه</span>
+          <span class="stat-val">2.250</span>
+        </div>
+        <div class="plan-stat">
+          <span class="stat-label">شبكات أخرى</span>
+          <span class="stat-val">60 دقيقه</span>
+        </div>
+        <div class="plan-stat">
+          <span class="stat-label">رسائل</span>
+          <span class="stat-val">50 SMS</span>
+        </div>
+        <div class="plan-stat">
+          <span class="stat-label">سعر الخط</span>
+          <span class="stat-val">149.94 جـ</span>
+        </div>
+        <div class="plan-code-block">
+          <span class="plan-code-label">كود الاشتراك</span>
+          <span class="plan-code-val">*660*50#</span>
+        </div>
+      </div>
+
+      <div class="plan-card">
+        <div class="plan-name">تطبيط 105</div>
+        <div class="plan-price-block">
+          <div class="plan-price"><sup>جـ</sup>105</div>
+          <div class="plan-price-note">150.15 جنيه شامل الضرائب</div>
+        </div>
+        <div class="plan-divider"></div>
+        <div class="plan-stat">
+           <span class="stat-label">دقائق الباقة</span>
+          <span class="stat-val">500</span>
+        </div>
+        <div class="plan-stat">
+          <span class="stat-label">جيجات الباقه</span>
+          <span class="stat-val">5.250</span>
+        </div>
+        <div class="plan-stat">
+          <span class="stat-label">شبكات أخرى</span>
+          <span class="stat-val">75 دقيقه</span>
+        </div>
+        <div class="plan-stat">
+          <span class="stat-label">رسائل</span>
+          <span class="stat-val">50 SMS</span>
+        </div>
+        <div class="plan-stat">
+          <span class="stat-label">سعر الخط</span>
+          <span class="stat-val">217.15 جـ</span>
+        </div>
+        <div class="plan-code-block">
+          <span class="plan-code-label">كود الاشتراك</span>
+          <span class="plan-code-val">*660*90#</span>
+        </div>
+      </div>
+
+      <div class="plan-card">
+        <div class="plan-name">تطبيط 165</div>
+        <div class="plan-price-block">
+          <div class="plan-price"><sup>جـ</sup>165</div>
+          <div class="plan-price-note">235.95 جنيه شامل الضرائب</div>
+        </div>
+        <div class="plan-divider"></div>
+        <div class="plan-stat">
+          <span class="stat-label">دقائق الباقة</span>
+          <span class="stat-val">600</span>
+        </div>
+        <div class="plan-stat">
+          <span class="stat-label">جيجات الباقه</span>
+          <span class="stat-val">11.250</span>
+        </div>
+        <div class="plan-stat">
+          <span class="stat-label">شبكات أخرى</span>
+          <span class="stat-val">90 دقيقه</span>
+        </div>
+        <div class="plan-stat">
+          <span class="stat-label">رسائل</span>
+          <span class="stat-val">50 SMS</span>
+        </div>
+        <div class="plan-stat">
+          <span class="stat-label">سعر الخط</span>
+          <span class="stat-val">302.95 جـ</span>
+        </div>
+        <div class="plan-code-block">
+          <span class="plan-code-label">كود الاشتراك</span>
+          <span class="plan-code-val">*660*145#</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- FEATURES -->
+  <section class="section">
+    <div class="section-label">
+      <div class="label-icon">✨</div>
+      <h2>مميزات النظام</h2>
+    </div>
+    <div class="feature-box">
+      <ul class="feature-list">
+        <li><span class="feat-dot"></span>نظام محاسبة موحد لجميع الخدمات</li>
+        <li><span class="feat-dot"></span>ترحيل الوحدات غير المستخدمة للشهر التالي</li>
+        <li><span class="feat-dot"></span>باقات إضافية متاحة عند الحاجة</li>
+        <li><span class="feat-dot"></span>تجديد تلقائي عند وجود رصيد كافي</li>
+        <li><span class="feat-dot"></span>إشعارات عند استهلاك 80% و100% من الباقة</li>
+        <li><span class="feat-dot"></span>تنبيه قبل التجديد بـ 48 ساعة</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ACCOUNTING -->
+  <section class="section">
+    <div class="section-label">
+      <div class="label-icon">📊</div>
+      <h2>نظام المحاسبة</h2>
+    </div>
+    <div class="accounting-grid">
+      <div class="acc-card">
+        <div class="acc-type">📞 المكالمات</div>
+        <div class="acc-row">
+          <span class="lbl">WE أو أرضي</span>
+          <span class="val">1 وحدة = 1 دقيقة</span>
+        </div>
+        <div class="acc-row">
+          <span class="lbl">شبكات أخرى (ضمن الحد)</span>
+          <span class="val">1 وحدة = 1 دقيقة</span>
+        </div>
+        <div class="acc-row">
+          <span class="lbl">بعد استهلاك الحد</span>
+          <span class="val">5 وحدات = 1 دقيقة</span>
+        </div>
+      </div>
+      <div class="acc-card">
+        <div class="acc-type">🌐 الإنترنت</div>
+        <div class="acc-row">
+          <span class="lbl">جميع المواقع</span>
+          <span class="val">1 وحدة = 1 MB</span>
+        </div>
+      </div>
+      <div class="acc-card">
+        <div class="acc-type">✉️ الرسائل</div>
+        <div class="acc-row">
+          <span class="lbl">داخل WE</span>
+          <span class="val">1 وحدة = 1 رسالة</span>
+        </div>
+        <div class="acc-row">
+          <span class="lbl">شبكات أخرى</span>
+          <span class="val">5 وحدات = 1 رسالة</span>
+        </div>
+      </div>
+    </div>
+    <div class="alert-box" style="margin-top:14px;">
+      <div class="alert-icon">⚠️</div>
+      <div class="alert-text">سعر خارج الباقة: <strong>19 قرش</strong> للدقيقة والرسالة النصية والميجابايت.</div>
+    </div>
+  </section>
+
+  <!-- EXTRA PACKAGES -->
+  <section class="section">
+    <div class="section-label">
+      <div class="label-icon">➕</div>
+      <h2>الباقات الإضافية</h2>
+    </div>
+    <table class="styled-table">
+      <tr>
+        <th>الميزة</th>
+        <th>التفاصيل</th>
+      </tr>
+      <tr>
+        <td>الدقائق</td>
+        <td>500 دقيقة لشبكة WE</td>
+      </tr>
+      <tr>
+        <td>مدة الصلاحية</td>
+        <td>28 يوم</td>
+      </tr>
+      <tr>
+        <td>سعر الباقة</td>
+        <td>5 جنيه مصري</td>
+      </tr>
+      <tr>
+        <td>كود الاشتراك</td>
+        <td><span class="code-inline">*660*05#</span></td>
+      </tr>
+    </table>
+  </section>
+
+  <!-- SERVICE CODES -->
+  <section class="section">
+    <div class="section-label">
+      <div class="label-icon">🔢</div>
+      <h2>أكواد الخدمة</h2>
+    </div>
+    <div class="codes-grid">
+      <div class="code-card">
+        <div class="cc-label">الاستفسار عن الرصيد</div>
+        <div class="cc-code">*550#</div>
+      </div>
+      <div class="code-card">
+        <div class="cc-label">المتبقي من الباقة</div>
+        <div class="cc-code">*414#</div>
+      </div>
+      <div class="code-card">
+        <div class="cc-label">التجديد المبكر</div>
+        <div class="cc-code">*660*2#</div>
+      </div>
+      <div class="code-card">
+        <div class="cc-label">التحويل للنظام</div>
+        <div class="cc-code">*660#</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TERMS -->
+  <section class="section">
+    <div class="section-label">
+      <div class="label-icon">📋</div>
+      <h2>الشروط والأحكام</h2>
+    </div>
+    <ul class="terms-list">
+      <li>مدة صلاحية الباقة 28 يومًا من تاريخ التجديد</li>
+      <li>يتم إرسال رسالة تنبيه قبل التجديد بـ 48 ساعة</li>
+      <li>يتم إرسال إشعارات عند استهلاك 80% و100% من الباقة</li>
+      <li>لا يتم ترحيل الدقائق والرسائل من الباقات الإضافية</li>
+      <li>يمكن التحويل من أي نظام آخر إلى كتزول تطبيط عبر <span class="code-inline">*660#</span></li>
+      <li>في حالة التحويل، يتم الاحتفاظ بالوحدات المتبقية من النظام السابق</li>
+    </ul>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">WE Core Team 2026</footer>
+
+</div>
+
+<script>
+  window.addEventListener('load', function() {
+    if (typeof ActiveUsersWidget !== 'undefined') {
+      ActiveUsersWidget.init({ position: 'corner' });
+    }
+  });
+</script>
+
+
+</body>
+</html>

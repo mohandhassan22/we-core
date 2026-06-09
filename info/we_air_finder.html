@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>تحديد مناطق تشغيل we air</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    header {
+      text-align: center;
+      color: white;
+      margin-bottom: 40px;
+      padding-top: 20px;
+    }
+
+    header h1 {
+      font-size: 2.5em;
+      margin-bottom: 10px;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    }
+
+    header p {
+      font-size: 1.1em;
+      opacity: 0.9;
+    }
+
+    .stats {
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      margin-bottom: 40px;
+      flex-wrap: wrap;
+    }
+
+    .stat-item {
+      background: white;
+      padding: 20px 30px;
+      border-radius: 10px;
+      text-align: center;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+
+    .stat-item .number {
+      font-size: 2em;
+      font-weight: bold;
+      color: #667eea;
+      margin-bottom: 5px;
+    }
+
+    .stat-item .label {
+      color: #666;
+      font-size: 0.9em;
+    }
+
+    .search-box {
+      background: white;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+      margin-bottom: 30px;
+    }
+
+    .search-box h2 {
+      margin-bottom: 20px;
+      color: #333;
+      font-size: 1.3em;
+    }
+
+    .search-controls {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 15px;
+      flex-wrap: wrap;
+    }
+
+    input[type="text"] {
+      flex: 1;
+      min-width: 200px;
+      padding: 12px 15px;
+      border: 2px solid #e0e0e0;
+      border-radius: 8px;
+      font-size: 1em;
+      transition: border-color 0.3s;
+    }
+
+    input[type="text"]:focus {
+      outline: none;
+      border-color: #667eea;
+    }
+
+    button {
+      padding: 12px 25px;
+      border: none;
+      border-radius: 8px;
+      font-size: 1em;
+      cursor: pointer;
+      transition: all 0.3s;
+      font-weight: 600;
+    }
+
+    .btn-search {
+      background: #667eea;
+      color: white;
+    }
+
+    .btn-search:hover {
+      background: #5568d3;
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+    }
+
+    .btn-gps {
+      background: #f0f0f0;
+      color: #333;
+      padding: 12px 15px;
+    }
+
+    .btn-gps:hover {
+      background: #e0e0e0;
+    }
+
+    .status-message {
+      padding: 12px 15px;
+      border-radius: 8px;
+      margin-bottom: 15px;
+      display: none;
+      animation: slideIn 0.3s ease;
+    }
+
+    .status-message.show {
+      display: block;
+    }
+
+    .status-message.success {
+      background: #d4edda;
+      color: #155724;
+      border: 1px solid #c3e6cb;
+    }
+
+    .status-message.error {
+      background: #f8d7da;
+      color: #721c24;
+      border: 1px solid #f5c6cb;
+    }
+
+    .status-message.loading {
+      background: #d1ecf1;
+      color: #0c5460;
+      border: 1px solid #bee5eb;
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .location-chip {
+      display: inline-block;
+      background: #667eea;
+      color: white;
+      padding: 8px 15px;
+      border-radius: 20px;
+      margin-bottom: 15px;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .location-chip.visible {
+      opacity: 1;
+    }
+
+    .results-section {
+      background: white;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+    }
+
+    .results-section h2 {
+      color: #333;
+      margin-bottom: 20px;
+      font-size: 1.3em;
+    }
+
+    .cards-container {
+      display: grid;
+      gap: 15px;
+    }
+
+    .station-card {
+      background: #f8f9fa;
+      border-left: 4px solid #667eea;
+      padding: 20px;
+      border-radius: 8px;
+      transition: all 0.3s;
+      animation: cardIn 0.5s ease;
+    }
+
+    .station-card:hover {
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      transform: translateX(5px);
+    }
+
+    @keyframes cardIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .station-card.rank-1 {
+      border-left-color: #ffc107;
+      background: #fffbf0;
+    }
+
+    .station-card.rank-2 {
+      border-left-color: #c0c0c0;
+      background: #f9f9f9;
+    }
+
+    .station-card.rank-3 {
+      border-left-color: #cd7f32;
+      background: #faf9f7;
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .rank-badge {
+      display: inline-block;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background: #667eea;
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 0.9em;
+    }
+
+    .rank-badge.rank-1 {
+      background: #ffc107;
+      color: #333;
+    }
+
+    .rank-badge.rank-2 {
+      background: #c0c0c0;
+      color: #333;
+    }
+
+    .rank-badge.rank-3 {
+      background: #cd7f32;
+      color: white;
+    }
+
+    .station-name {
+      font-size: 1.2em;
+      font-weight: 600;
+      color: #333;
+    }
+
+    .station-code {
+      color: #999;
+      font-size: 0.85em;
+      margin-top: 5px;
+    }
+
+    .station-distance {
+      font-size: 1.1em;
+      font-weight: 600;
+      color: #667eea;
+    }
+
+    .card-details {
+      margin-top: 15px;
+      padding-top: 15px;
+      border-top: 1px solid #e0e0e0;
+    }
+
+    .detail-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 8px;
+      font-size: 0.95em;
+    }
+
+    .detail-label {
+      color: #666;
+      font-weight: 500;
+    }
+
+    .detail-value {
+      color: #333;
+      font-weight: 600;
+    }
+
+    .coverage-badges {
+      display: flex;
+      gap: 8px;
+      margin-top: 10px;
+      flex-wrap: wrap;
+    }
+
+    .coverage-badge {
+      display: inline-block;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 0.85em;
+      font-weight: 600;
+    }
+
+    .coverage-5g {
+      background: #d4f4dd;
+      color: #1e7e34;
+    }
+
+    .coverage-4g {
+      background: #cfe2ff;
+      color: #084298;
+    }
+
+    .coverage-3g {
+      background: #fff3cd;
+      color: #664d03;
+    }
+
+    .coverage-none {
+      background: #f8d7da;
+      color: #721c24;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 40px;
+      color: #999;
+    }
+
+    .empty-state-icon {
+      font-size: 3em;
+      margin-bottom: 15px;
+    }
+
+    footer {
+      text-align: center;
+      color: white;
+      margin-top: 40px;
+      opacity: 0.8;
+      font-size: 0.9em;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>🚔 تحديد مناطق تشغيل we air</h1>
+      <p>اكتشف أقرب نقاط تغطية خدمة we air في جميع أنحاء جمهورية مصر العربية</p>
+    </header>
+
+    <div class="stats">
+      <div class="stat-item">
+        <div class="number">⚡</div>
+        <div class="label">بحث فوري</div>
+      </div>
+      <div class="stat-item">
+        <div class="number" id="stations-count">0</div>
+        <div class="label">قسم مسجّل</div>
+      </div>
+      <div class="stat-item">
+        <div class="number" id="coverage-count">0</div>
+        <div class="label">نقطة تغطية</div>
+      </div>
+    </div>
+
+    <div class="search-box">
+      <h2>🔍 أدخل عنوانك أو اضغط زر GPS لتحديد موقعك تلقائياً</h2>
+      <div class="search-controls">
+        <input type="text" id="address-input" placeholder="مثال: المعادي، القاهرة  أو  طنطا، الغربية">
+        <button class="btn-search" id="search-btn" onclick="searchByText()">ابحث عن أقرب منطقة تغطية</button>
+        <button class="btn-gps" id="gps-btn" onclick="locateByGPS()" title="تحديد موقعي بالـ GPS">GPS</button>
+      </div>
+      <div class="status-message" id="status-message"></div>
+      <div class="location-chip" id="location-chip">
+        📍 <span id="location-text"></span>
+      </div>
+    </div>
+
+    <div class="results-section">
+      <h2>أقرب نقاط تغطية we air</h2>
+      <div class="cards-container" id="cards-container">
+        <div class="empty-state">
+          <div class="empty-state-icon">🔍</div>
+          <p>ابدأ البحث لاكتشاف أقرب نقاط التغطية</p>
+        </div>
+      </div>
+    </div>
+
+    <footer>
+      <img src="https://we-core.icu/img/we-core.png" alt="we core" style="height: 30px; margin-bottom: 10px;">
+      <p>we core team 2026 · https://we-core.icu/</p>
+    </footer>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    // ============================================================
+    // Supabase Configuration
+    // ============================================================
+    const SUPABASE_URL = 'https://iygwhapcpdmsasqlfelv.supabase.co';
+    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml5Z3doYXBjcGRtc2FzcWxmZWx2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzEzNDk5MDQsImV4cCI6MjA4NjkyNTkwNH0.jqU1fEc9kBkXcCfazH6aTnS2XWWzPv0bbixHZgjtrnQ';
+
+    const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+    // ============================================================
+    // Police Stations List
+    // ============================================================
+    const policeStations = [
+      '101_Qism Al Tebin', '102_Qism Helwan', '103_Qism Al Maasara', '104_Qism 15 May', '105_Qism Tora',
+      '106_Qism Al Maadi', '107_Qism Al Basatin', '108_Qism Dar Al Salam', '109_Qism Masr Al Adema', '110_Qism Al Sayeda Zainab',
+      '1101_Qism Awal Dammietta', '1102_Qism Tany Dammietta', '1104_Markaz Fraskour', '1105_Markaz Al Zarka', '1106_Markaz Kafr Saad',
+      '1107_Markaz Kafr Al Bateekh', '1108_New Dameitta City', '111_Qism Al Khalefa', '112_Qism Al Mokattam', '113_Qism Monshaat Nasr',
+      '114_Qism Al Darb Al Ahmar', '115_Qism Al Mosky', '116_Qism Abdeen', '117_Qism Kasr Al Nile', '118_Qism Al Zamalek',
+      '119_Qism Boulak', '120_Qism Al Azbakeya', '1201_Qism Awal Al Mansoura', '1202_Qism Tany Al Mansoura', '1204_Markaz Aga',
+      '1205_Qism Met Ghamr', '1206_Markaz Mit Ghamr', '1207_Markaz Al Senbellawein', '1208_Markaz Tamy Amded', '1209_Markaz Bani Abeed',
+      '1211_Markaz Dekerness', '1212_Markaz Menyet Al Nasr', '1213_Qism Al Kordy', '1214_Markaz Mit Selseel', '1216_Markaz Al Manzala',
+      '1217_Markaz Al Matareya', '1218_Markaz Sherbeen', '1219_Qism Gamasa', '122_Qism Al Gamaleya', '1220_Markaz Talkha',
+      '1221_Markaz Nebroua', '1222_Markaz Belqas', '123_Qism Al Daher', '124_Qism Al Waily', '125_Qism Hadayek Al Kobba',
+      '126_Qism Al Sharabeya', '128_Qism Rod Al Farag', '129_Qism Al Sahel', '130_Qism Al Zawya Al Hamra', '1301_Qism Awal Zagazig',
+      '1302_Qism Tany Al Zagazig', '1303_Markaz Al Zagazig', '1304_Qism Al Qenayat', '1305_Markaz Menya Al Qamh', '1306_Markaz Mashtoul Al Souq',
+      '1307_Markaz Belbes', '1308_Qism Al Asher Mn Ramadan', '1309_Qism Tany Madint Al Asher Mn Ramadan', '131_Qism Al Amereya', '1310_Markaz Abo Hammad',
+      '1311_Markaz Hehya', '1312_Markaz Dyarb Negm', '1314_Markaz Abo Kbeer', '1315_Markaz Kafr Sakr', '1316_Markaz Awlad Sakr',
+      '1317_Markaz San Al Hagar', '1319_Markaz Al Hasyneya', '132_Qism Al Zayton', '1320_Qism Faqous', '1321_Markaz Faqous',
+      '1323_Qism Al Salheya Al Gadeda', '133_Qism Al Matareya', '134_Qism Ain Shams', '135_Qism Al Marg', '136_Qism Awal Al Salam',
+      '137_Qism Tany Al Salam', '138_Qism Al Nozha', '1401_Qism Awal Banha', '1402_Qism Tany Banha', '1403_Markaz Banha',
+      '1404_Markaz Kafr Shokr', '1407_Markaz Al Qanater Al Khayreya', '1408_Qism Qalyoub', '1409_Markaz Qalyoub', '141_Qism Tany Madinet Nasr',
+      '1410_Qism Awal Shoubra Khema', '1411_Qism Tany Shoubra Al Khema', '1412_Qism Al Khosous', '1413_Markaz Shebeen Al Qanater', '1414_Qism Khanka',
+      '1415_Markaz Al khanka', '1416_Qism Al Obour', '142_Qism Awal Al Qahera Al Gadeda', '143_Qism Tany Al Qahera Al Gadeda', '144_Qism Talet Al Qahera Al Gadeda',
+      '145_Qism Al Shorouk', '146_Qism Badr', '1501_Qism Awal Kafr Al Sheikh', '1502_Qism Tany Kafr Al sheikh', '1503_Markaz Kafr Al Sheikh',
+      '1504_Markaz Al Reyad', '1506_Qism Bella', '1507_Markaz Beila', '1508_Markaz Al Burlos', '1509_Markaz Metobas',
+      '1511_Markaz Sidi Salem', '1512_Qism Dessouk', '1513_Markaz Desouk', '1514_Markaz Qelin', '1601_Qism Awal Tanta',
+      '1602_Qism Tany Tanta', '1603_Markaz Tanta', '1604_Markaz Al Santa', '1605_Markaz Zefta', '1606_Markaz Samannoud',
+      '1607_Qism Awal Al Mahala Al Kobra', '1608_Qism Tany Al Mahala Al Kobra', '1609_Qism Talet A Mahla Al Kobra', '1610_Markaz Al Mahla Al Kobra', '1611_Markaz Qotour',
+      '1613_Markaz Kafr Al Zayat', '1614_Qism Zefta', '1701_Qism Shebeen Al Kom', '1702_Markaz Shebeen Al Kom', '1703_Markaz Al Shohada',
+      '1704_Markaz Tala', '1705_Markaz Berket Al saba', '1706_Markaz Qewaisna', '1707_Markaz Al Bagour', '1708_Markaz Ashmoun',
+      '1711_Markaz Menouf', '1712_Markaz & Madinet Al Sadat', '1801_Qism Damanhour', '1802_Markaz Damanhour', '1803_Markaz Housh Eissa',
+      '1804_Markaz Abo Al Matamir', '1805_Qism Kafr Al Dawar', '1806_Markaz Kafr Al Dawar', '1807_Markaz Edko', '1808_Markaz Rahseed',
+      '1809_Markaz Abo Hummus', '1810_Markaz Al Mahmoudeya', '1811_Markaz Al Rahmanya', '1812_Markaz Shubrakhit', '1813_Markaz Etay Al Baroud',
+      '1814_Markaz Kom Hamada', '1816_Markaz Al Delengat', '1817_Markaz Wadi Al Natron', '1818_Qism Gharb Al Noubareya', '1902_Qism Tany',
+      '1903_Qism Talet', '1904_Markaz Al Ismailia', '1905_Markaz Al Qantara Gharb', '1906_Markaz Al Qantara Sharq', '1907_Markaz Fayed',
+      '1908_Markaz Abo Soweir', '1909_Markaz Al Tal Al Kbeer', '201_Qism Awal Al Montazah', '202_Qism Tany Al Montazah', '203_Qism Awal Al Raml',
+      '204_Qism Tany Al Raml', '205_Qism Sidi Gaber', '206_Qism Bab Sharqi', '207_Qism Al Atareen', '208_Qism Moharam Bek',
+      '209_Qism Karmouz', '210_Qism Al Laban', '2101_Qism Imbaba', '2102_Qism Al Agouza', '2103_Qism Al Dokki',
+      '2104_Qism Al Giza', '2105_Qism Bolak Al Dakrour', '2106_Qism Al Omraneya', '2107_Qism Al Talbeya', '2108_Qism Al Ahram',
+      '2109_Markaz Abo Al Nomros', '211_Qism Al Manshya', '2110_Qism Al Hawamedya', '2111_Markaz Badrasheen', '2112_Markaz Al Ayat',
+      '2113_Markaz Al Saf', '2116_Markaz Oussim', '2117_Qism Al Waraq', '2118_Markaz Monshaat Al Qanater', '2119_Qism Al Sheikh Zayed',
+      '212_Qism Al Gomrok', '2120_Qism Awl 6 Oct', '2121_Qism Tany 6 Oct', '2122_Qism Al Wahat Al Bahareya', '2123_Qism Talet 6 Oct',
+      '213_Qism Mina Al Basal', '214_Qism Al Dekhela', '215_Qism Awal Al Amerya', '216_Qism Tany Al Amerya', '217_Qism Borg Al Arab',
+      '218_Borg Al Arab Al Gadeda City', '219_Qism Al Sahel Al Shamali Alex', '2201_Qism Beni Suef', '2202_Markaz Bani Suef', '2203_Qism Beni Suef Al Gadeda',
+      '2204_Markaz Ehnasia', '2206_Markaz Samasta', '2207_Markaz Al Fashn', '2208_Markaz Al Wasta', '2209_Markaz Nasir',
+      '2301_Qism Awal Al Fayoum', '2302_Markaz Fayoum', '2303_Markaz Tamia', '2304_Markaz Senoures', '2305_Markaz Ebshway',
+      '2310_Qism Tany Al Fayoum', '2401_Qism Awal Menya', '2402_Qism Tany Al Menya', '2403_Qism Talt Al Menya', '2405_Markaz Menya',
+      '2406_Markaz Abo Qurqas', '2407_Qism Malawy', '2409_Markaz Der Mowas', '2410_Markaz Samalout Sharq', '2413_Markaz Bani Mazar',
+      '2414_Markaz Maghaghah', '2501_Qism Awal Assuit', '2503_Markaz Assuit', '2505_Markaz Abo Tig', '2506_Markaz Al Ghanayem',
+      '2509_Markaz Al Qousia', '2510_Markaz Dayrout', '2511_Markaz Abanoub', '2512_Markaz Al Fath', '2513_Markaz Sahel Selim',
+      '2514_Markaz Al Badary', '2515_Assuit Al Gadeda City', '2601_Qism Awal Sohag', '2602_Qism Tany Sohag', '2605_Markaz Juhayna',
+      '2606_Qism Tahta', '2608_Markaz Tama', '2610_Markaz Al osayrat', '2611_Qism Gerga', '2613_Markaz Al Belina',
+      '2615_Markaz Akhmim', '2616_Markaz Saqultah', '2617_Qism Al kawthar', '2701_Qism Qena', '2703_Markaz Deshna',
+      '2705_Markaz Nagaa Hamadi', '2708_Markaz Qeft', '2709_Markaz Qous', '2710_Markaz Neqada', '2801_Qism Awal Aswan',
+      '2802_Qism Tany Aswan', '2803_Markaz Aswan', '2805_Markaz Edfu', '2806_Markaz Kom Umbo', '2807_Markaz Nasr AL Nouba',
+      '2808_Markaz Daraw', '2809_Markaz Abo Sombol', '2901_Qism Luxor', '2903_Markaz Tiba', '2904_Markaz Al Qorna',
+      '2905_Markaz Armant', '2906_Markaz Esna', '301_QismAl Sharq', '304_Qism Al Dawahi', '305_Qism Al Zohour',
+      '309_Qism Awal Port Fouad', '3101_Qism Awal Hurghada', '3102_Qism Tany Hurghada', '3103_Qism Ras Ghareb', '3104_Qism Safaga',
+      '3105_Qism Al Qossier', '3106_Qism Marsa Alam', '3201_Qism Al Kharga', '3203_Markaz Balat', '3205_Markaz Al Dakhla',
+      '3301_Qism Marsa Matrouh', '3305_Qism Al Dabaa', '3306_Qism Al Alameen', '3307_Qism Marina Al Alameen', '3308_Qism Al Hamam',
+      '3310_Qism Al Sahel AL Shamali Matrouh', '3501_Qism Al Tour', '3502_Qism Abo Rades', '3503_Qism Ras Sedr', '3505_Qism Nuweiba',
+      '3507_Qism Dahab', '3508_Qism Awal Sharm Al Sheikh', '3509_Qism Tany Sharm Al Sheikh', '401_Qism Al Suez', '402_Qism Al Arbeen',
+      '403_Qism Ataqa', '404_Qism Faisal', '405_Qism Al Ganayen', '303_Qism Al Manakh', '307_Qism Awal Al Ganob',
+      '2308_Al Fayoum Al Gadeda City', '2599_Desert Side Assuit Governorate', '2607_Markaz Tahta', '2199_Desert Side Giza Governorate 2', '1709_Qism Sers Al Layan',
+      '308_Qism Tany Al Ganoub', '2896_Desert Side Aswan Governorate 1', '1313_Markaz Al Ibrahimeya', '3194_Desert Side Qism Halayeb', '3504_Qism Sant Catherine',
+      '2115_Markaz Kerdasa', '1103_Markaz Damietta', '1110_Qism Ras Al Bar', '1111_Qism Al Sro', '1203_Markaz Al Mansoura',
+      '121_Qism Bab Al Shaareya', '127_Qism Shoubra', '1318_Markaz Monshaat Abo omar', '1322_Qism Al Qoryen', '1405_Markaz Toukh',
+      '1406_Qism Qaha', '1505_Markaz Al Hamoul', '1510_Markaz Fowah', '1612_Markaz Basioun', '1710_Qism Menouf City',
+      '1815_Markaz Badr', '1899_Desert Side Beheira Governorate', '1901_Qism Awal', '199_Desert Side Cairo Governorate', '2205_Markaz Beba',
+      '2306_Markaz Etsa', '2307_Markaz Yousef Al sedik', '2404_Qism Al Menya Al Gadeda', '2408_Markaz Malawy', '2411_Markaz Samalout Gharb',
+      '2502_Qism Tany Assuit', '2504_Qism Abo Tig', '2507_Markaz Sadfa', '2508_Markaz Manfalout', '2603_Markaz Suhag',
+      '2604_Markaz Al Maragha', '2609_Markaz Al Monshaah', '2614_Markaz Dar Al Salam', '2619_Sohag Al Gadeda City', '2702_Markaz Qena',
+      '2704_Markaz Al Waqf', '2706_Markaz Farshout', '2707_Markaz Abo Tesht', '2902_Markaz Luxor', '302_Qism Al Arab',
+      '306_Qism Al Manasra', '310_Qism Tany Port Fouad', '311_Qism Sharq Al Tafreaa', '3202_Markaz Paris', '3303_Qism Sidi Berani',
+      '3304_Qism Al Salom', '3309_Qism Sewa', '3402_Qism Tany Al Areesh', '3403_Qism Talt Al Areesh', '3506_Qism Taba',
+      '3510_Qism Abo Zenema', '3108_Qism Halayeb', '3107_Qism Shalateen', '1215_Markaz Al Gamaleya', '2412_Markaz Matay',
+      '2299_Desert Side Beni Suef Governorate', '2114_Markaz Atfeeh', '1910_Markaz Al Qasasen Al Gadeda', '2612_Markaz Gerga', '2415_Markaz Al Adwa',
+      '2309_Markaz Al Shawshna', '3299_Desert Side Al Wadi Al Gaded Governorate', '2499_Desert Side Menya Governorate', '2711_Qena Al Gadeda City', '3198_Desert Side Qism Tany Hurghada',
+      '3302_Qism Al Negeela', '3204_Markaz Al Farafra', '2804_Aswan Al Gadeda City', '3407_Qism Al Hasna', '2999_Desert Side Luxor Governorate',
+      '1210_Markaz Mahlet Demna', '1109_New Dameitta Port Police Station', '312_Qism Al Daara Al Gomrokia', '2399_Desert Side Al Fayoum Governorate', '1999_Khareg Al Zemam',
+      '3406_Qism Romana', '3405_Qism Ber Abd', '499_Desert Side Suez Governorate', '2810_Toshka Al Gadeda City', '2798_Desert Side Qena Governorate 1',
+      '3410_Qism Al Sheikh Zowayed', '3411_Qism Rafah', '3409_Qism Al Kasima', '3408_Qism Nakhl', '2198_Desert Side Giza Governorate 1',
+      '2898_Desert Side Aswan Governorate 3', '2697_Desert Side Sohag Governorate 1', '3401_Qism Awal Al Areesh', '2899_Desert Side Aswan Governorate 4', '3404_Qism Raabe Al Areesh',
+      '2699_Desert Side Sohag Governorate 3', '2799_Desert Side Qena Governorate 2'
+    ];
+
+    let allExchangesData = [];
+
+    // ============================================================
+    // Load Coverage Data from Supabase
+    // ============================================================
+    async function loadCoverageData() {
+      try {
+        console.log('جاري جلب البيانات من Supabase...');
+        const { data, error } = await supabaseClient
+          .from('exchanges')
+          .select('*');
+        
+        if (error) {
+          console.error('خطأ في جلب البيانات من Supabase:', error);
+          return;
+        }
+        
+        allExchangesData = data || [];
+        document.getElementById('stations-count').textContent = policeStations.length;
+        document.getElementById('coverage-count').textContent = allExchangesData.length;
+        
+        console.log(`✓ تم تحميل ${allExchangesData.length} نقطة تغطية من Supabase`);
+      } catch (err) {
+        console.error('خطأ في loadCoverageData:', err);
+        document.getElementById('stations-count').textContent = policeStations.length;
+      }
+    }
+
+    // ============================================================
+    // Calculate Distance (Haversine Formula)
+    // ============================================================
+    function calculateDistance(lat1, lng1, lat2, lng2) {
+      const R = 6371;
+      const dLat = (lat2 - lat1) * Math.PI / 180;
+      const dLng = (lng2 - lng1) * Math.PI / 180;
+      const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+                Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+                Math.sin(dLng/2) * Math.sin(dLng/2);
+      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+      return R * c;
+    }
+
+    // ============================================================
+    // Find Nearest Coverage Points
+    // ============================================================
+    function findNearestStations(lat, lng) {
+      if (allExchangesData.length === 0) return [];
+
+      const stationsWithDistance = allExchangesData
+        .map(exchange => ({
+          ...exchange,
+          distance: calculateDistance(lat, lng, exchange.lat, exchange.lng)
+        }))
+        .sort((a, b) => a.distance - b.distance)
+        .slice(0, 3);
+
+      return stationsWithDistance;
+    }
+
+    // ============================================================
+    // Get Coverage Badges
+    // ============================================================
+    function getCoverageBadges(status) {
+      if (!status || status === 'غير محدد') {
+        return '<div class="coverage-badge coverage-none">غير محدد</div>';
+      }
+
+      const badges = [];
+      const statusLower = status.toLowerCase();
+
+      if (statusLower.includes('5g') || statusLower.includes('5 g')) {
+        badges.push('<div class="coverage-badge coverage-5g">✓ 5G</div>');
+      }
+      if (statusLower.includes('4g') || statusLower.includes('4 g') || statusLower.includes('lte')) {
+        badges.push('<div class="coverage-badge coverage-4g">✓ 4G</div>');
+      }
+      if (statusLower.includes('3g') || statusLower.includes('3 g')) {
+        badges.push('<div class="coverage-badge coverage-3g">✓ 3G</div>');
+      }
+
+      if (badges.length > 0) {
+        return badges.join('');
+      }
+      
+      return `<div class="coverage-badge coverage-none">${status}</div>`;
+    }
+
+    // ============================================================
+    // Display Results
+    // ============================================================
+    function displayResults(stations) {
+      const container = document.getElementById('cards-container');
+      container.innerHTML = '';
+
+      stations.forEach((station, index) => {
+        const rank = index + 1;
+        const coverageStatus = station.coverage_status || 'غير محدد';
+        const coverageBadges = getCoverageBadges(coverageStatus);
+
+        const card = document.createElement('div');
+        card.className = `station-card rank-${rank} show`;
+        const displayName = station.police_department || station.name || 'منطقة';
+        card.innerHTML = `
+          <div class="card-header">
+            <div>
+              <div class="station-name">${displayName}</div>
+              <div class="station-code">${station.name}</div>
+            </div>
+            <div class="rank-badge rank-${rank}">${rank}</div>
+          </div>
+          <div class="station-distance">${station.distance.toFixed(1)} كم</div>
+          <div class="card-details">
+            <div class="detail-row">
+              <span class="detail-label">📡 نوع التغطية</span>
+              <span class="detail-value">${coverageBadges}</span>
+            </div>
+            <div class="detail-row">
+              <span class="detail-label">📍 المحافظة</span>
+              <span class="detail-value">${station.governorate || 'غير محدد'}</span>
+            </div>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    // ============================================================
+    // Show Status Message
+    // ============================================================
+    function showStatus(message, type) {
+      const statusEl = document.getElementById('status-message');
+      statusEl.textContent = message;
+      statusEl.className = `status-message show ${type}`;
+      
+      if (type !== 'loading') {
+        setTimeout(() => {
+          statusEl.classList.remove('show');
+        }, 5000);
+      }
+    }
+
+    // ============================================================
+    // Search by Text
+    // ============================================================
+    function searchByText() {
+      const input = document.getElementById('address-input').value.trim();
+      if (!input) {
+        showStatus('الرجاء إدخال عنوان أو موقع', 'error');
+        return;
+      }
+
+      showStatus('جاري البحث...', 'loading');
+
+      const searchLower = input.toLowerCase();
+      const matchedPoints = allExchangesData.filter(ex => 
+        (ex.name && ex.name.toLowerCase().includes(searchLower)) ||
+        (ex.police_department && ex.police_department.toLowerCase().includes(searchLower)) ||
+        (ex.governorate && ex.governorate.toLowerCase().includes(searchLower))
+      );
+
+      if (matchedPoints.length === 0) {
+        showStatus('لم يتم العثور على نتائج. جرب عنوان آخر.', 'error');
+        return;
+      }
+
+      const topResults = matchedPoints.slice(0, 3);
+      displayResults(topResults);
+      showStatus(`✓ تم العثور على ${topResults.length} نتيجة`, 'success');
+      document.getElementById('location-chip').classList.add('visible');
+      document.getElementById('location-text').textContent = input;
+    }
+
+    // ============================================================
+    // Locate by GPS
+    // ============================================================
+    async function locateByGPS() {
+      showStatus('جاري تحديد موقعك...', 'loading');
+
+      if (!navigator.geolocation) {
+        showStatus('المتصفح لا يدعم GPS', 'error');
+        return;
+      }
+
+      navigator.geolocation.getCurrentPosition(
+        async (position) => {
+          const lat = position.coords.latitude;
+          const lng = position.coords.longitude;
+
+          const stations = findNearestStations(lat, lng);
+
+          if (stations.length === 0) {
+            showStatus('لم يتم العثور على نتائج', 'error');
+            return;
+          }
+
+          displayResults(stations);
+          showStatus(`✓ تم تحديد موقعك بنجاح`, 'success');
+          document.getElementById('location-chip').classList.add('visible');
+          document.getElementById('location-text').textContent = `الموقع الحالي (${lat.toFixed(3)}, ${lng.toFixed(3)})`;
+        },
+        (error) => {
+          showStatus('لم يتم تفعيل GPS أو حدث خطأ', 'error');
+        }
+      );
+    }
+
+    // ============================================================
+    // Make functions globally accessible
+    // ============================================================
+    window.searchByText = searchByText;
+    window.locateByGPS = locateByGPS;
+
+    // ============================================================
+    // Load data on page load
+    // ============================================================
+    window.addEventListener('load', function() {
+      setTimeout(() => {
+        loadCoverageData();
+        const addressInput = document.getElementById('address-input');
+        if (addressInput) {
+          addressInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') searchByText();
+          });
+        }
+      }, 200);
+    });
+  </script>
+</body>
+</html>

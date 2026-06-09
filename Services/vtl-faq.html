@@ -1,0 +1,944 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<script src="../script/auth.js?v=16.0.0"></script>
+<head>
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>خط داتا VTL – باقات تتبع المركبات</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --purple-deep:   #3d1a6e;
+    --purple-main:   #6b3fa0;
+    --purple-mid:    #8b5cc8;
+    --purple-light:  #c4a8e8;
+    --purple-pale:   #f0e9fb;
+    --white:         #ffffff;
+    --off-white:     #faf8ff;
+    --text-dark:     #1a0d30;
+    --text-mid:      #4a3770;
+    --border:        #ddd2f5;
+    --gold:          #f0c040;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Cairo', sans-serif;
+    background: var(--off-white);
+    color: var(--text-dark);
+    line-height: 1.7;
+    direction: rtl;
+  }
+
+  /* ── HEADER ── */
+  header {
+    background: linear-gradient(135deg, var(--purple-deep) 0%, var(--purple-main) 60%, var(--purple-mid) 100%);
+    position: relative;
+    overflow: hidden;
+    padding: 0;
+  }
+  header::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 70% 60% at 20% 50%, rgba(255,255,255,.07) 0%, transparent 70%),
+      radial-gradient(ellipse 50% 80% at 80% 20%, rgba(195,150,255,.15) 0%, transparent 60%);
+    pointer-events: none;
+  }
+  .header-inner {
+    max-width: 1100px;
+    margin: auto;
+    padding: 60px 24px 50px;
+    position: relative;
+    z-index: 1;
+  }
+  .logo-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(255,255,255,.12);
+    border: 1px solid rgba(255,255,255,.25);
+    border-radius: 50px;
+    padding: 6px 18px;
+    margin-bottom: 28px;
+    backdrop-filter: blur(8px);
+  }
+  .logo-badge span {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--purple-light);
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+  }
+  .logo-badge .dot {
+    width: 8px; height: 8px;
+    background: var(--gold);
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse {
+    0%,100% { opacity: 1; transform: scale(1); }
+    50%      { opacity: .6; transform: scale(1.4); }
+  }
+  header h1 {
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    font-weight: 900;
+    color: var(--white);
+    line-height: 1.25;
+    margin-bottom: 16px;
+  }
+  header h1 span { color: var(--gold); }
+  header p.subtitle {
+    font-size: 1.1rem;
+    color: rgba(255,255,255,.75);
+    max-width: 620px;
+  }
+  .header-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 32px;
+  }
+  .chip {
+    background: rgba(255,255,255,.13);
+    border: 1px solid rgba(255,255,255,.2);
+    border-radius: 50px;
+    padding: 6px 16px;
+    font-size: .82rem;
+    font-weight: 600;
+    color: var(--white);
+    backdrop-filter: blur(6px);
+  }
+  .chip.gold { background: var(--gold); color: var(--purple-deep); border-color: var(--gold); }
+
+  /* ── NAV WAVE ── */
+  .wave {
+    display: block;
+    width: 100%;
+    line-height: 0;
+    background: var(--purple-deep);
+  }
+  .wave svg { display: block; }
+
+  /* ── STICKY NAV ── */
+  .sticky-nav {
+    background: var(--white);
+    border-bottom: 2px solid var(--border);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 20px rgba(107,63,160,.1);
+  }
+  .nav-inner {
+    max-width: 1100px;
+    margin: auto;
+    padding: 0 24px;
+    display: flex;
+    gap: 0;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .nav-inner::-webkit-scrollbar { display: none; }
+  .nav-btn {
+    padding: 14px 20px;
+    font-family: 'Cairo', sans-serif;
+    font-size: .88rem;
+    font-weight: 700;
+    color: var(--text-mid);
+    background: none;
+    border: none;
+    border-bottom: 3px solid transparent;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all .2s;
+  }
+  .nav-btn:hover, .nav-btn.active {
+    color: var(--purple-main);
+    border-bottom-color: var(--purple-main);
+  }
+
+  /* ── MAIN ── */
+  main {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 48px 24px 80px;
+  }
+
+  /* ── SECTION ── */
+  .section {
+    margin-bottom: 60px;
+    scroll-margin-top: 70px;
+  }
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 28px;
+  }
+  .section-icon {
+    width: 48px; height: 48px;
+    background: linear-gradient(135deg, var(--purple-main), var(--purple-mid));
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+    flex-shrink: 0;
+    box-shadow: 0 4px 15px rgba(107,63,160,.3);
+  }
+  .section-header h2 {
+    font-size: 1.45rem;
+    font-weight: 900;
+    color: var(--purple-deep);
+  }
+
+  /* ── INTRO CARDS ── */
+  .intro-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 16px;
+  }
+  .intro-card {
+    background: var(--white);
+    border: 1.5px solid var(--border);
+    border-radius: 16px;
+    padding: 22px;
+    display: flex;
+    gap: 14px;
+    transition: box-shadow .25s, transform .25s;
+  }
+  .intro-card:hover {
+    box-shadow: 0 8px 30px rgba(107,63,160,.15);
+    transform: translateY(-2px);
+  }
+  .intro-card .bullet {
+    width: 10px; height: 10px;
+    background: var(--purple-main);
+    border-radius: 50%;
+    margin-top: 8px;
+    flex-shrink: 0;
+  }
+  .intro-card p { font-size: .93rem; color: var(--text-dark); }
+
+  /* ── PRICING TABLE ── */
+  .pricing-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+    margin-bottom: 32px;
+  }
+  .price-card {
+    background: var(--white);
+    border: 2px solid var(--border);
+    border-radius: 20px;
+    padding: 28px 20px;
+    text-align: center;
+    position: relative;
+    transition: all .25s;
+    cursor: default;
+  }
+  .price-card:hover {
+    border-color: var(--purple-main);
+    box-shadow: 0 12px 35px rgba(107,63,160,.2);
+    transform: translateY(-4px);
+  }
+  .price-card.featured {
+    background: linear-gradient(150deg, var(--purple-deep), var(--purple-main));
+    border-color: var(--purple-deep);
+    color: var(--white);
+  }
+  .price-card.featured::after {
+    content: 'الأكثر طلباً';
+    position: absolute;
+    top: -13px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--gold);
+    color: var(--purple-deep);
+    font-size: .72rem;
+    font-weight: 900;
+    padding: 3px 14px;
+    border-radius: 50px;
+    white-space: nowrap;
+  }
+  .price-card .pkg-name {
+    font-size: 1rem;
+    font-weight: 900;
+    color: var(--purple-main);
+    margin-bottom: 10px;
+    letter-spacing: .5px;
+  }
+  .price-card.featured .pkg-name { color: var(--gold); }
+  .price-card .price-main {
+    font-size: 2.4rem;
+    font-weight: 900;
+    color: var(--purple-deep);
+    line-height: 1;
+  }
+  .price-card.featured .price-main { color: var(--white); }
+  .price-card .price-label {
+    font-size: .75rem;
+    color: var(--text-mid);
+    margin-bottom: 18px;
+  }
+  .price-card.featured .price-label { color: rgba(255,255,255,.7); }
+  .price-card .divider {
+    height: 1px;
+    background: var(--border);
+    margin: 14px 0;
+  }
+  .price-card.featured .divider { background: rgba(255,255,255,.2); }
+  .price-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px 0;
+    font-size: .82rem;
+  }
+  .price-row .label { color: var(--text-mid); }
+  .price-card.featured .price-row .label { color: rgba(255,255,255,.65); }
+  .price-row .val { font-weight: 700; color: var(--purple-deep); }
+  .price-card.featured .price-row .val { color: var(--white); }
+  .tax-badge {
+    display: inline-block;
+    background: var(--purple-pale);
+    color: var(--purple-deep);
+    font-size: .75rem;
+    font-weight: 700;
+    border-radius: 8px;
+    padding: 3px 10px;
+    margin-top: 10px;
+  }
+  .price-card.featured .tax-badge { background: rgba(255,255,255,.2); color: var(--white); }
+
+  /* ── STEPS ── */
+  .steps-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .step {
+    background: var(--white);
+    border: 1.5px solid var(--border);
+    border-radius: 16px;
+    padding: 20px 24px;
+    display: flex;
+    gap: 18px;
+    align-items: flex-start;
+    transition: box-shadow .2s;
+  }
+  .step:hover { box-shadow: 0 6px 25px rgba(107,63,160,.12); }
+  .step-num {
+    width: 38px; height: 38px;
+    min-width: 38px;
+    background: linear-gradient(135deg, var(--purple-main), var(--purple-mid));
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: .9rem;
+    font-weight: 900;
+    color: var(--white);
+    box-shadow: 0 3px 12px rgba(107,63,160,.3);
+  }
+  .step p { font-size: .93rem; }
+  .step strong { color: var(--purple-deep); }
+
+  /* ── DOCS ── */
+  .docs-split {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+  @media (max-width: 660px) { .docs-split { grid-template-columns: 1fr; } }
+  .doc-box {
+    background: var(--white);
+    border: 1.5px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+  }
+  .doc-box-header {
+    background: linear-gradient(90deg, var(--purple-deep), var(--purple-main));
+    padding: 14px 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .doc-box-header span { font-size: 1rem; font-weight: 900; color: var(--white); }
+  .doc-list { padding: 16px 20px; list-style: none; }
+  .doc-list li {
+    padding: 8px 0;
+    border-bottom: 1px dashed var(--border);
+    font-size: .88rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .doc-list li:last-child { border-bottom: none; }
+  .doc-list li::before {
+    content: '✓';
+    width: 20px; height: 20px;
+    min-width: 20px;
+    background: var(--purple-pale);
+    color: var(--purple-main);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: .75rem;
+    font-weight: 900;
+  }
+
+  /* ── FAQ ACCORDION ── */
+  .faq-list { display: flex; flex-direction: column; gap: 12px; }
+  .faq-item {
+    background: var(--white);
+    border: 1.5px solid var(--border);
+    border-radius: 14px;
+    overflow: hidden;
+    transition: box-shadow .2s;
+  }
+  .faq-item:hover { box-shadow: 0 4px 18px rgba(107,63,160,.1); }
+  .faq-q {
+    width: 100%;
+    background: none;
+    border: none;
+    padding: 18px 22px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    font-family: 'Cairo', sans-serif;
+    font-size: .95rem;
+    font-weight: 700;
+    color: var(--purple-deep);
+    text-align: right;
+    gap: 12px;
+  }
+  .faq-q .arrow {
+    width: 26px; height: 26px;
+    min-width: 26px;
+    background: var(--purple-pale);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: .75rem;
+    color: var(--purple-main);
+    transition: transform .3s, background .2s;
+  }
+  .faq-item.open .faq-q .arrow {
+    transform: rotate(180deg);
+    background: var(--purple-main);
+    color: var(--white);
+  }
+  .faq-body {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height .4s ease;
+  }
+  .faq-item.open .faq-body { max-height: 600px; }
+  .faq-body-inner {
+    padding: 0 22px 20px;
+    font-size: .9rem;
+    color: var(--text-mid);
+    border-top: 1px solid var(--border);
+    padding-top: 16px;
+  }
+
+  /* ── CONTACT CARD ── */
+  .contact-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
+  }
+  .contact-card {
+    background: var(--white);
+    border: 1.5px solid var(--border);
+    border-radius: 16px;
+    padding: 24px;
+    text-align: center;
+    transition: all .25s;
+  }
+  .contact-card:hover {
+    border-color: var(--purple-main);
+    box-shadow: 0 8px 28px rgba(107,63,160,.15);
+    transform: translateY(-3px);
+  }
+  .contact-card .icon {
+    font-size: 2.2rem;
+    margin-bottom: 12px;
+    display: block;
+  }
+  .contact-card h3 {
+    font-size: .85rem;
+    color: var(--text-mid);
+    margin-bottom: 6px;
+  }
+  .contact-card .val {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--purple-deep);
+    word-break: break-all;
+  }
+  .contact-card a { color: var(--purple-main); text-decoration: none; }
+  .contact-card a:hover { text-decoration: underline; }
+
+  /* ── TT ALERT BOX ── */
+  .alert-box {
+    background: linear-gradient(135deg, var(--purple-deep), var(--purple-main));
+    border-radius: 20px;
+    padding: 28px 32px;
+    color: var(--white);
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+    box-shadow: 0 8px 30px rgba(61,26,110,.3);
+  }
+  .alert-box .alert-icon { font-size: 2.5rem; flex-shrink: 0; }
+  .alert-box h3 { font-size: 1.1rem; font-weight: 900; margin-bottom: 10px; color: var(--gold); }
+  .alert-box p { font-size: .9rem; opacity: .9; margin-bottom: 16px; }
+  .tt-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: .82rem;
+    background: rgba(255,255,255,.1);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  .tt-table th {
+    background: rgba(255,255,255,.2);
+    padding: 8px 12px;
+    text-align: right;
+    font-weight: 700;
+    font-size: .78rem;
+  }
+  .tt-table td {
+    padding: 8px 12px;
+    border-bottom: 1px solid rgba(255,255,255,.1);
+  }
+
+  /* ── TERMS ── */
+  .terms-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 16px;
+  }
+  .term-card {
+    background: var(--white);
+    border: 1.5px solid var(--border);
+    border-radius: 14px;
+    padding: 20px;
+    display: flex;
+    gap: 14px;
+  }
+  .term-card .t-icon {
+    font-size: 1.8rem;
+    flex-shrink: 0;
+  }
+  .term-card h4 { font-size: .88rem; font-weight: 900; color: var(--purple-deep); margin-bottom: 4px; }
+  .term-card p { font-size: .82rem; color: var(--text-mid); }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--purple-deep);
+    color: rgba(255,255,255,.6);
+    text-align: center;
+    padding: 32px 24px;
+    font-size: .82rem;
+  }
+  footer strong { color: var(--white); }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 600px) {
+    .header-inner { padding: 40px 20px 36px; }
+    .alert-box { flex-direction: column; gap: 12px; }
+  }
+
+  /* ── ANIMATIONS ── */
+  .fade-up {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity .5s ease, transform .5s ease;
+  }
+  .fade-up.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+</style>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+
+<!-- ═══ HEADER ═══ -->
+<header>
+<a href="javascript:history.back()" class="back-btn" style="position: absolute; left: 20px; top: 50%; transform: translateY(-50%); color: white; text-decoration: none; font-size: 20px; z-index: 1000;"><i class="fas fa-arrow-left"></i></a>
+
+  <div class="header-inner">
+    <div class="logo-badge">
+      <div class="dot"></div>
+      <span>WE × ETIT</span>
+    </div>
+    <h1>خط داتا <span>VTL</span><br>باقات تتبع المركبات</h1>
+    <p class="subtitle">تعريفة اشتراك مخصصة لأجهزة تتبع المركبات للأفراد – موبايل إنترنت + رسائل + APN خاص</p>
+    <div class="header-chips">
+      <span class="chip gold">متاح للمصريين والأجانب</span>
+      <span class="chip">4 باقات شهرية</span>
+      <span class="chip">تفعيل خلال 48 ساعة</span>
+      <span class="chip">APN مخصص للتتبع</span>
+    </div>
+  </div>
+</header>
+<div class="wave"><svg viewBox="0 0 1440 40" xmlns="http://www.w3.org/2000/svg"><path d="M0,40 C360,0 1080,40 1440,10 L1440,0 L0,0 Z" fill="#3d1a6e"/></svg></div>
+
+<!-- ═══ STICKY NAV ═══ -->
+<nav class="sticky-nav">
+  <div class="nav-inner">
+    <button class="nav-btn active" onclick="scrollTo('intro')">نبذة عن الخدمة</button>
+    <button class="nav-btn" onclick="scrollTo('packages')">الباقات والأسعار</button>
+    <button class="nav-btn" onclick="scrollTo('docs')">المستندات</button>
+    <button class="nav-btn" onclick="scrollTo('steps')">خطوات التفعيل</button>
+    <button class="nav-btn" onclick="scrollTo('faq')">الأسئلة الشائعة</button>
+    <button class="nav-btn" onclick="scrollTo('tt')">طلبات الشركات</button>
+    <button class="nav-btn" onclick="scrollTo('contact')">التواصل مع ETIT</button>
+  </div>
+</nav>
+
+<!-- ═══ MAIN ═══ -->
+<main>
+
+  <!-- INTRO -->
+  <section class="section fade-up" id="intro">
+    <div class="section-header">
+      <div class="section-icon">📡</div>
+      <h2>مقدمة عن الخدمة</h2>
+    </div>
+    <div class="intro-grid">
+      <div class="intro-card"><div class="bullet"></div><p>شركة <strong>ETIT</strong> هي الوكيل الوحيد المرخص بتوفير أجهزة تتبع المركبات بأنواعها في مصر.</p></div>
+      <div class="intro-card"><div class="bullet"></div><p>شريحة كبيرة من أجهزة التتبع الحالية غير مرخصة – أطلقت الجهات المختصة مبادرة لتقنين أوضاعها.</p></div>
+      <div class="intro-card"><div class="bullet"></div><p>تم إيقاف الخطوط العاملة على تلك الأجهزة وتوجيه أصحابها لشراء خطوط VTL من فروع WE.</p></div>
+      <div class="intro-card"><div class="bullet"></div><p>تعمل الخطوط عبر <strong>APN خاص</strong> بالخدمة، ولا يمكن استخدامها لأي غرض آخر مثل تصفح الإنترنت.</p></div>
+      <div class="intro-card"><div class="bullet"></div><p>تقوم <strong>WE</strong> بتوفير الشريحة والإنترنت والرسائل وتشغيل الـ APN، ثم يستكمل العميل إجراءات التقنين مع <strong>ETIT</strong>.</p></div>
+      <div class="intro-card"><div class="bullet"></div><p>باقة الرسائل تُستخدم لإرسال موقع السيارة عند غياب الإنترنت، حسب إمكانات الجهاز المستخدم.</p></div>
+    </div>
+  </section>
+
+  <!-- PACKAGES -->
+  <section class="section fade-up" id="packages">
+    <div class="section-header">
+      <div class="section-icon">💳</div>
+      <h2>الباقات والأسعار</h2>
+    </div>
+    <div class="pricing-grid">
+      <div class="price-card">
+        <div class="pkg-name">VTL 100</div>
+        <div class="price-main">100</div>
+        <div class="price-label">جنيه / شهر (قبل الضريبة)</div>
+        <div class="divider"></div>
+        <div class="price-row"><span class="label">إنترنت</span><span class="val">1000 ميجا</span></div>
+        <div class="price-row"><span class="label">رسائل</span><span class="val">50 رسالة</span></div>
+        <div class="price-row"><span class="label">ميجا إضافي</span><span class="val">0.25 جنيه</span></div>
+        <div class="price-row"><span class="label">رسالة إضافية</span><span class="val">0.14 جنيه</span></div>
+        <div class="tax-badge">شامل ض.ق.م: 135.43 جنيه</div>
+      </div>
+      <div class="price-card featured">
+        <div class="pkg-name">VTL 135</div>
+        <div class="price-main">135</div>
+        <div class="price-label">جنيه / شهر (قبل الضريبة)</div>
+        <div class="divider"></div>
+        <div class="price-row"><span class="label">إنترنت</span><span class="val">1250 ميجا</span></div>
+        <div class="price-row"><span class="label">رسائل</span><span class="val">50 رسالة</span></div>
+        <div class="price-row"><span class="label">ميجا إضافي</span><span class="val">0.25 جنيه</span></div>
+        <div class="price-row"><span class="label">رسالة إضافية</span><span class="val">0.14 جنيه</span></div>
+        <div class="tax-badge">شامل ض.ق.م: 178.52 جنيه</div>
+      </div>
+      <div class="price-card">
+        <div class="pkg-name">VTL 170</div>
+        <div class="price-main">170</div>
+        <div class="price-label">جنيه / شهر (قبل الضريبة)</div>
+        <div class="divider"></div>
+        <div class="price-row"><span class="label">إنترنت</span><span class="val">1500 ميجا</span></div>
+        <div class="price-row"><span class="label">رسائل</span><span class="val">50 رسالة</span></div>
+        <div class="price-row"><span class="label">ميجا إضافي</span><span class="val">0.25 جنيه</span></div>
+        <div class="price-row"><span class="label">رسالة إضافية</span><span class="val">0.14 جنيه</span></div>
+        <div class="tax-badge">شامل ض.ق.م: 221.61 جنيه</div>
+      </div>
+      <div class="price-card">
+        <div class="pkg-name">VTL 200</div>
+        <div class="price-main">200</div>
+        <div class="price-label">جنيه / شهر (قبل الضريبة)</div>
+        <div class="divider"></div>
+        <div class="price-row"><span class="label">إنترنت</span><span class="val">2000 ميجا</span></div>
+        <div class="price-row"><span class="label">رسائل</span><span class="val">50 رسالة</span></div>
+        <div class="price-row"><span class="label">ميجا إضافي</span><span class="val">0.25 جنيه</span></div>
+        <div class="price-row"><span class="label">رسالة إضافية</span><span class="val">0.14 جنيه</span></div>
+        <div class="tax-badge">شامل ض.ق.م: 258.55 جنيه</div>
+      </div>
+    </div>
+    <p style="font-size:.85rem;color:var(--text-mid);margin-top:8px;">✱ جميع الباقات على نظام الاشتراك الشهري – يجب تقديم ATP عند التعاقد في الفرع</p>
+  </section>
+
+  <!-- DOCS -->
+  <section class="section fade-up" id="docs">
+    <div class="section-header">
+      <div class="section-icon">📄</div>
+      <h2>المستندات اللازمة للتعاقد</h2>
+    </div>
+    <div class="docs-split">
+      <div class="doc-box">
+        <div class="doc-box-header">
+          <span>👤 حضور مالك السيارة</span>
+        </div>
+        <ul class="doc-list">
+          <li>صورة البطاقة الشخصية لمالك السيارة</li>
+          <li>صورة عقد شركة المحمول (عقد الخط)</li>
+          <li>صورة رخصة السيارة</li>
+          <li>صورة عقد التقنين المرفق &nbsp;<a href="https://we-core.icu/viewpdf.html?src=https%3A%2F%2Fiygwhapcpdmsasqlfelv.supabase.co%2Fstorage%2Fv1%2Fobject%2Fauthenticated%2FAll%20Form%2FUntitled%20folder%2FIndividual%20legalization%20contract.pdf" target="_blank" style="display:inline-flex;align-items:center;gap:5px;background:var(--purple-main);color:#fff;font-size:.75rem;font-weight:700;padding:3px 10px;border-radius:20px;text-decoration:none;">📄 تحميل العقد</a></li>
+        </ul>
+      </div>
+      <div class="doc-box">
+        <div class="doc-box-header">
+          <span>👥 غياب مالك السيارة (بتوكيل)</span>
+        </div>
+        <ul class="doc-list">
+          <li>صورة البطاقة الشخصية لمالك السيارة</li>
+          <li>صورة عقد شركة المحمول (عقد الخط)</li>
+          <li>صورة رخصة السيارة</li>
+          <li>صورة عقد التقنين &nbsp;<a href="https://we-core.icu/viewpdf.html?src=https%3A%2F%2Fiygwhapcpdmsasqlfelv.supabase.co%2Fstorage%2Fv1%2Fobject%2Fauthenticated%2FAll%20Form%2FUntitled%20folder%2FIndividual%20legalization%20contract.pdf" target="_blank" style="display:inline-flex;align-items:center;gap:5px;background:var(--purple-main);color:#fff;font-size:.75rem;font-weight:700;padding:3px 10px;border-radius:20px;text-decoration:none;">📄 تحميل العقد</a></li>
+          <li>صورة توكيل يشمل التعاقد مع شركات المحمول</li>
+          <li>صورة بطاقة الموكِّل والموكَّل إليه</li>
+          <li>صورة عقد بيع السيارة</li>
+          <li>⚠️ يجب الاطلاع على أصول التوكيلات وعقد البيع</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- STEPS -->
+  <section class="section fade-up" id="steps">
+    <div class="section-header">
+      <div class="section-icon">🔧</div>
+      <h2>خطوات تشغيل الخط</h2>
+    </div>
+    <div class="steps-list">
+      <div class="step"><div class="step-num">1</div><p>زيارة أي فرع <strong>WE</strong> وتقديم المستندات اللازمة + مستندات التعاقد على خط فاتورة + تقديم <strong>ATP</strong> أو المبلغ التأميني المناسب للباقة.</p></div>
+      <div class="step"><div class="step-num">2</div><p>توقيع <strong>عقد الاشتراك في خدمة التتبع</strong> ويُختم بختم الفرع. يحصل العميل على نسخة، ويُرفق العقدان معاً على السيستم (يُدبَّسان معاً للأرشيف).</p></div>
+      <div class="step"><div class="step-num">3</div><p>يرفق ممثل المبيعات <strong>صورة عقد التقنين مع ETIT</strong> ضمن المستندات ليتمكن النظام من تشغيل الخط. &nbsp;<a href="https://we-core.icu/viewpdf.html?src=https%3A%2F%2Fiygwhapcpdmsasqlfelv.supabase.co%2Fstorage%2Fv1%2Fobject%2Fauthenticated%2FAll%20Form%2FUntitled%20folder%2FIndividual%20legalization%20contract.pdf" target="_blank" style="display:inline-flex;align-items:center;gap:5px;background:var(--purple-main);color:#fff;font-size:.75rem;font-weight:700;padding:3px 10px;border-radius:20px;text-decoration:none;vertical-align:middle;">📄 تحميل العقد</a></p></div>
+      <div class="step"><div class="step-num">4</div><p><strong>Network Provisioning:</strong> ينتظر العميل تفعيل الخدمة تلقائياً على الخط خلال <strong>48 ساعة</strong>.</p></div>
+      <div class="step"><div class="step-num">5</div><p>يُرسل العميل بيانات الجهاز إلى ETIT عبر البريد الإلكتروني (رقم الشريحة، رقم السيارة، نوع الجهاز، الرقم التعريفي، رقم للتواصل).</p></div>
+      <div class="step"><div class="step-num">6</div><p>التوجه لـ <strong>مقر ETIT</strong> لاستكمال إجراءات التقنين وتفعيل الخدمة على الجهاز.</p></div>
+    </div>
+
+    <div style="margin-top:24px;background:var(--purple-pale);border:1.5px solid var(--border);border-radius:14px;padding:20px 24px;">
+      <p style="font-size:.88rem;font-weight:700;color:var(--purple-deep);margin-bottom:12px;">📧 عناوين البريد الإلكتروني لإرسال بيانات الجهاز إلى ETIT:</p>
+      <div style="display:flex;flex-wrap:wrap;gap:10px;">
+        <a href="mailto:user.etit@etit-eg.com" style="background:var(--white);border:1px solid var(--border);border-radius:8px;padding:6px 14px;font-size:.82rem;color:var(--purple-main);text-decoration:none;font-weight:600;">user.etit@etit-eg.com</a>
+        <a href="mailto:corp.etit@etit-eg.com" style="background:var(--white);border:1px solid var(--border);border-radius:8px;padding:6px 14px;font-size:.82rem;color:var(--purple-main);text-decoration:none;font-weight:600;">corp.etit@etit-eg.com</a>
+        <a href="mailto:info@etit-eg.com" style="background:var(--white);border:1px solid var(--border);border-radius:8px;padding:6px 14px;font-size:.82rem;color:var(--purple-main);text-decoration:none;font-weight:600;">info@etit-eg.com</a>
+        <a href="mailto:shakwa@etit-eg.com" style="background:var(--white);border:1px solid var(--border);border-radius:8px;padding:6px 14px;font-size:.82rem;color:var(--purple-main);text-decoration:none;font-weight:600;">shakwa@etit-eg.com</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="section fade-up" id="faq">
+    <div class="section-header">
+      <div class="section-icon">❓</div>
+      <h2>الأسئلة الشائعة</h2>
+    </div>
+    <div class="faq-list">
+      <div class="faq-item open">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          ما هو خط داتا VTL؟
+          <div class="arrow">▾</div>
+        </button>
+        <div class="faq-body"><div class="faq-body-inner">
+          خط داتا VTL هو تعريفة اشتراك شهرية جديدة مخصصة <strong>فقط</strong> لأجهزة تتبع المركبات للأفراد. يشتمل الخط على باقة موبايل إنترنت لتتبع مسار السيارة وباقة رسائل لإرسال الموقع في مناطق انعدام الإنترنت. <strong>لا يمكن استخدام هذا الخط لأي خدمة أخرى كتصفح الإنترنت.</strong>
+        </div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          كيف يتم تغيير الباقة؟
+          <div class="arrow">▾</div>
+        </button>
+        <div class="faq-body"><div class="faq-body-inner">
+          يمكن تغيير الباقة لأعلى أو لأقل عبر الاتصال بخدمة العملاء على <strong>111</strong> أو زيارة أي فرع WE، بشرط سداد أي مبالغ مستحقة على الخط قبل إتمام عملية التغيير.
+        </div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          هل يمكن التحويل لنظام آخر (دفع مسبق / فاتورة)؟
+          <div class="arrow">▾</div>
+        </button>
+        <div class="faq-body"><div class="faq-body-inner">
+          لا. نظراً لطبيعة الخدمة الخاصة، <strong>لا يمكن التحويل لأي نظام آخر.</strong> الخيار الوحيد المتاح هو تغيير الباقة الشهرية.
+        </div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          ماذا يحدث عند تأخر دفع الفاتورة؟
+          <div class="arrow">▾</div>
+        </button>
+        <div class="faq-body"><div class="faq-body-inner">
+          في حال إيقاف الخط (Suspension) نتيجة تأخر السداد، يجب إرسال طلب لقسم الشبكات لإعادة تفعيل الـ APN الخاص بالخدمة بعد إعادة تشغيل الخط، لضمان استفادة العميل من الخدمة مجدداً.
+        </div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          ما هي خطوات السيستم لتفعيل الخط؟
+          <div class="arrow">▾</div>
+        </button>
+        <div class="faq-body"><div class="faq-body-inner">
+          <strong>1.</strong> التعاقد عبر وظيفة <em>Create Subscriber</em><br>
+          <strong>2.</strong> اختيار <em>VTL-M2M</em> كـ Primary Offer<br>
+          <strong>3.</strong> اختيار الدورة المحاسبية <em>BC1</em> (إلزامي)<br>
+          <strong>4.</strong> اختيار الباقة المناسبة للعميل كـ Supplementary Offer
+        </div></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          ما هو سعر التعاقد على الخط؟
+          <div class="arrow">▾</div>
+        </button>
+        <div class="faq-body"><div class="faq-body-inner">
+          سعر التعاقد على الخط <strong>81.23 جنيه مصري</strong>.
+        </div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TT CORPORATE -->
+  <section class="section fade-up" id="tt">
+    <div class="section-header">
+      <div class="section-icon">🏢</div>
+      <h2>طلبات التعاقد للشركات (TT)</h2>
+    </div>
+    <div class="alert-box">
+      <div class="alert-icon">⚠️</div>
+      <div>
+        <h3>تنبيه – خطوط الشركات</h3>
+        <p>في حالة طلب العميل التعاقد على خط شركات (Corporate) ضمن باقات VTL، يُرجى الاطلاع على الملف المرفق والإشارة إلى أنه يتم عمل TT التالي وسيقوم القسم المختص بالتواصل مع العميل:</p>
+        <table class="tt-table">
+          <thead>
+            <tr>
+              <th>Company</th>
+              <th>Issue Type</th>
+              <th>Category</th>
+              <th>Type</th>
+              <th>Item</th>
+              <th>Summary</th>
+              <th>SLA</th>
+              <th>Responsible</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>GSM</td>
+              <td>Request</td>
+              <td>Corporate SPOC</td>
+              <td>Registration</td>
+              <td>Corp New Account</td>
+              <td>Corp New Account</td>
+              <td>2 WDs</td>
+              <td>Enterprise Sales Support</td>
+            </tr>
+          </tbody>
+        </table>
+        <p style="margin-top:14px;font-size:.82rem;opacity:.85;">📋 البيانات المطلوبة: اسم العميل – رقم التواصل – اسم الشركة – عنوان الشركة بالتفصيل</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- TERMS -->
+  <section class="section fade-up" id="terms">
+    <div class="section-header">
+      <div class="section-icon">📋</div>
+      <h2>الشروط والأحكام</h2>
+    </div>
+    <div class="terms-grid">
+      <div class="term-card"><div class="t-icon">📅</div><div><h4>الدورة المحاسبية</h4><p>يتبع الخط الدورة المحاسبية الطبيعية ويلتزم ممثل المبيعات باختيار BC1 عند التشغيل.</p></div></div>
+      <div class="term-card"><div class="t-icon">💰</div><div><h4>الاشتراك الشهري</h4><p>يلتزم العميل بدفع الاشتراك الشهري للخط لضمان استمرارية الخدمة دون انقطاع.</p></div></div>
+      <div class="term-card"><div class="t-icon">🔒</div><div><h4>الحد الائتماني</h4><p>يوجد حد ائتماني ثابت بقيمة <strong>25 جنيه</strong> لجميع الباقات.</p></div></div>
+      <div class="term-card"><div class="t-icon">⏸️</div><div><h4>الإيقاف المؤقت</h4><p>يمكن للعميل طلب إيقاف الخط مؤقتاً، ويتبع الخط قواعد الاشتراك الشهري للأفراد.</p></div></div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="section fade-up" id="contact">
+    <div class="section-header">
+      <div class="section-icon">📞</div>
+      <h2>التواصل مع شركة ETIT</h2>
+    </div>
+    <div class="contact-grid">
+      <div class="contact-card">
+        <span class="icon">📞</span>
+        <h3>رقم الاتصال</h3>
+        <div class="val">19382</div>
+      </div>
+      <div class="contact-card">
+        <span class="icon">🌐</span>
+        <h3>الموقع الإلكتروني</h3>
+        <div class="val"><a href="https://www.etit-eg.com" target="_blank">www.etit-eg.com</a></div>
+      </div>
+      <div class="contact-card">
+        <span class="icon">📍</span>
+        <h3>العنوان</h3>
+        <div class="val" style="font-size:.82rem;">مبنى 145B، شارع 56، القرية الذكية<br>كم 28 طريق القاهرة-الإسكندرية الصحراوي، الجيزة</div>
+      </div>
+      <div class="contact-card">
+        <span class="icon">✉️</span>
+        <h3>البريد الإلكتروني</h3>
+        <div class="val"><a href="mailto:info@etit-eg.com">info@etit-eg.com</a></div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>WE Core Team 2026</footer>
+
+<script>
+  function scrollTo(id) {
+    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+    event.target.classList.add('active');
+  }
+
+  function toggleFaq(btn) {
+    const item = btn.closest('.faq-item');
+    const isOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+    if (!isOpen) item.classList.add('open');
+  }
+
+  // Scroll-triggered fade-up
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+  // Highlight nav on scroll
+  const sections = ['intro','packages','docs','steps','faq','tt','contact'];
+  window.addEventListener('scroll', () => {
+    const scrollY = window.scrollY + 100;
+    sections.forEach((id, i) => {
+      const el = document.getElementById(id);
+      if (el && scrollY >= el.offsetTop) {
+        document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.nav-btn')[i]?.classList.add('active');
+      }
+    });
+  });
+</script>
+
+
+<script src="../script/active-users-widget.js"></script>
+</body>
+</html>

@@ -1,0 +1,282 @@
+/* 
+   Main CSS Stylesheet for WE Gold Mobile Plans
+   Colors: White and Purple theme
+*/
+
+/* Global Styles and Variables */
+:root {
+    --primary-color: #7b4397;
+    --secondary-color: #a77bc7;
+    --light-purple: #f0ebf7;
+    --white: #ffffff;
+    --light-gray: #e0e0e0;
+    --dark-gray: #333333;
+    --box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    --border-radius: 8px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Cairo', sans-serif;
+    background-color: var(--light-purple);
+    color: var(--dark-gray);
+    line-height: 1.6;
+}
+
+.container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 15px;
+}
+
+/* Header Styles */
+header {
+    background-color: var(--primary-color);
+    color: var(--white);
+    padding: 20px 0;
+    box-shadow: var(--box-shadow);
+}
+
+header h1 {
+    text-align: center;
+    font-weight: 700;
+    font-size: 2rem;
+}
+
+/* Navigation Styles */
+nav {
+    background-color: var(--secondary-color);
+    padding: 10px 0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: var(--box-shadow);
+}
+
+.main-nav {
+    display: flex;
+    justify-content: space-around;
+    list-style: none;
+    flex-wrap: wrap;
+}
+
+.main-nav li {
+    margin: 5px 10px;
+}
+
+.main-nav a {
+    color: var(--white);
+    text-decoration: none;
+    font-weight: 600;
+    padding: 5px 10px;
+    border-radius: var(--border-radius);
+    transition: background-color 0.3s ease;
+}
+
+.main-nav a:hover {
+    background-color: var(--primary-color);
+}
+
+/* Main Content Styles */
+main {
+    padding: 30px 0;
+}
+
+.plan-section, .info-section {
+    background-color: var(--white);
+    border-radius: var(--border-radius);
+    margin-bottom: 30px;
+    box-shadow: var(--box-shadow);
+    overflow: hidden;
+}
+
+.section-header {
+    background-color: var(--primary-color);
+    color: var(--white);
+    padding: 15px 20px;
+    text-align: center;
+}
+
+.section-header h2 {
+    font-weight: 700;
+    font-size: 1.5rem;
+    margin-bottom: 5px;
+}
+
+.section-header p {
+    font-size: 1rem;
+    opacity: 0.9;
+}
+
+/* Table Styles */
+.table-container {
+    overflow-x: auto;
+    padding: 20px;
+}
+
+.pricing-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: center;
+}
+
+.pricing-table th, .pricing-table td {
+    padding: 12px 15px;
+    border: 1px solid var(--light-gray);
+}
+
+.pricing-table thead {
+    background-color: var(--primary-color);
+    color: var(--white);
+}
+
+.pricing-table th {
+    font-weight: 600;
+}
+
+.pricing-table th.details {
+    background-color: var(--secondary-color);
+}
+
+.pricing-table tbody tr:nth-child(even) {
+    background-color: var(--light-purple);
+}
+
+.pricing-table .feature {
+    background-color: var(--secondary-color);
+    color: var(--white);
+    font-weight: 600;
+    text-align: right;
+}
+
+/* Content Box Styles */
+.content-box {
+    padding: 20px;
+}
+
+.content-box ul, .content-box ol {
+    padding-right: 20px;
+    margin-bottom: 15px;
+}
+
+.content-box li {
+    margin-bottom: 10px;
+}
+
+.content-box h3 {
+    color: var(--primary-color);
+    margin: 20px 0 10px;
+    font-weight: 600;
+}
+
+.content-box h4 {
+    color: var(--secondary-color);
+    margin: 15px 0 10px;
+    font-weight: 600;
+}
+
+.highlight {
+    background-color: var(--light-purple);
+    padding: 10px;
+    border-right: 4px solid var(--primary-color);
+    margin-bottom: 15px;
+}
+
+.note {
+    background-color: var(--light-purple);
+    padding: 15px 20px;
+    margin: 0 20px 20px;
+    border-radius: var(--border-radius);
+    font-size: 0.9rem;
+}
+
+.note ul {
+    padding-right: 20px;
+}
+
+.note li {
+    margin-bottom: 5px;
+}
+
+/* Footer Styles */
+footer {
+    background-color: var(--primary-color);
+    color: var(--white);
+    padding: 30px 0;
+    text-align: center;
+}
+
+.logo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.circles {
+    display: flex;
+    margin-bottom: 10px;
+}
+
+.circle {
+    width: 30px;
+    height: 30px;
+    background-color: var(--secondary-color);
+    border-radius: 50%;
+    margin: 0 5px;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    .main-nav {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .main-nav li {
+        margin: 5px 0;
+        width: 100%;
+        text-align: center;
+    }
+    
+    .pricing-table {
+        font-size: 0.9rem;
+    }
+    
+    .pricing-table th, .pricing-table td {
+        padding: 8px 10px;
+    }
+    
+    .section-header h2 {
+        font-size: 1.3rem;
+    }
+}
+
+@media (max-width: 576px) {
+    header h1 {
+        font-size: 1.5rem;
+    }
+    
+    .pricing-table {
+        font-size: 0.8rem;
+    }
+    
+    .pricing-table th, .pricing-table td {
+        padding: 6px 8px;
+    }
+    
+    .section-header h2 {
+        font-size: 1.1rem;
+    }
+    
+    .circle {
+        width: 25px;
+        height: 25px;
+    }
+}

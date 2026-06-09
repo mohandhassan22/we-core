@@ -1,0 +1,1005 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<script src="../script/auth.js?v=16.0.0"></script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>خدمة المكالمات الدولية - وي (WE)</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --purple-light: #e9d5ff;
+            --purple-mid: #d8b4fe;
+            --purple-main: #a855f7;
+            --purple-dark: #6b21a8;
+            --white: #ffffff;
+            --light-bg: #faf7ff;
+            --dark-text: #1e1030;
+            --light-text: #6b5c8a;
+            --success: #06d6a0;
+            --warning: #ffd166;
+            --danger: #ef476f;
+            --shadow: 0 10px 30px rgba(168, 85, 247, 0.15);
+            --shadow-hover: 0 15px 40px rgba(107, 33, 168, 0.25);
+            --border-radius: 16px;
+            --transition: all 0.3s ease;
+        }
+
+        body {
+            font-family: 'Cairo', sans-serif;
+            background: linear-gradient(135deg, #faf7ff 0%, #f3f0ff 50%, #ffffff 100%);
+            color: var(--dark-text);
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+
+        /* Header */
+        header {
+            background: linear-gradient(120deg, var(--purple-main), var(--purple-dark));
+            padding: 1rem 2rem;
+            position: sticky; top: 0; z-index: 1000;
+            box-shadow: var(--shadow);
+            display: flex; justify-content: space-between; align-items: center;
+        }
+
+        .logo {
+            display: flex; align-items: center; gap: 12px;
+            color: var(--white); font-weight: 700; font-size: 1.5rem;
+        }
+
+        .back-to-home {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px; height: 36px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            color: var(--white);
+            text-decoration: none;
+            font-size: 1.5rem;
+            transition: var(--transition);
+            cursor: pointer;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            margin-left: 10px;
+        }
+        .back-to-home:hover { background: rgba(255,255,255,0.3); transform: translateX(3px); }
+
+        .logo-icon {
+            width: 40px; height: 40px; background: var(--white);
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            font-weight: 800; color: var(--purple-dark); font-size: 1.2rem;
+        }
+
+        nav ul { display: flex; list-style: none; gap: 1.5rem; }
+        nav a {
+            color: var(--white); text-decoration: none; font-weight: 500;
+            padding: 8px 12px; border-radius: 8px; transition: var(--transition);
+        }
+        nav a:hover, nav a.active { background: rgba(255, 255, 255, 0.2); }
+
+        .cta-button {
+            background: var(--white); color: var(--purple-dark); border: none;
+            padding: 10px 24px; border-radius: 50px; font-weight: 600;
+            cursor: pointer; transition: var(--transition);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        .cta-button:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.15); }
+
+        /* Hero */
+        .hero {
+            background: linear-gradient(135deg, var(--purple-main) 0%, var(--purple-dark) 100%);
+            color: var(--white); padding: 4rem 2rem; text-align: center;
+            position: relative; overflow: hidden;
+        }
+        .hero::before, .hero::after {
+            content: ""; position: absolute; border-radius: 50%;
+            background: rgba(255,255,255,0.1); z-index: 0;
+        }
+        .hero::before { width: 600px; height: 600px; top: -200px; left: -100px; }
+        .hero::after { width: 400px; height: 400px; bottom: -100px; right: -50px; background: rgba(255,255,255,0.07); }
+
+        .hero-content { max-width: 800px; margin: 0 auto; position: relative; z-index: 1; padding: 2rem; }
+        .hero h1 { font-size: 2.8rem; margin-bottom: 1.5rem; line-height: 1.3; }
+        .hero p { font-size: 1.3rem; margin-bottom: 2rem; opacity: 0.95; }
+
+        /* Country Selector Box */
+        .country-selector-box {
+            background: var(--white);
+            border-radius: 20px;
+            padding: 2rem;
+            max-width: 600px;
+            margin: 0 auto 2rem;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+            position: relative; z-index: 2;
+        }
+
+        .country-selector-box label {
+            display: block; font-weight: 600; margin-bottom: 12px;
+            color: var(--purple-dark); font-size: 1.1rem;
+        }
+
+        .country-select-wrapper { position: relative; display: flex; gap: 10px; }
+
+        #countrySelect {
+            flex: 1; padding: 14px 20px;
+            border: 2px solid rgba(168,85,247,0.3);
+            border-radius: 12px; font-size: 1.05rem;
+            font-family: 'Cairo', sans-serif;
+            background: var(--light-bg); color: var(--dark-text);
+            cursor: pointer; transition: var(--transition);
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%23a855f7' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: left 15px center;
+            padding-right: 40px;
+        }
+        #countrySelect:focus { outline: none; border-color: var(--purple-main); box-shadow: 0 0 0 4px rgba(168,85,247,0.15); }
+
+        #showPricingBtn {
+            background: linear-gradient(90deg, var(--purple-main), var(--purple-dark));
+            color: white; border: none; padding: 14px 28px;
+            border-radius: 12px; font-weight: 600; font-size: 1rem;
+            cursor: pointer; transition: var(--transition); white-space: nowrap;
+        }
+        #showPricingBtn:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(168,85,247,0.4); }
+        #showPricingBtn:disabled { background: #e0d1ff; cursor: not-allowed; transform: none; }
+
+        /* One World Banner */
+        .one-world-banner {
+            background: linear-gradient(135deg, #1a0533, #3b0764);
+            color: white;
+            padding: 2rem;
+            margin: 2rem auto;
+            max-width: 900px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            box-shadow: 0 15px 40px rgba(107,33,168,0.35);
+            border: 1px solid rgba(168,85,247,0.4);
+            position: relative;
+            overflow: hidden;
+        }
+        .one-world-banner::before {
+            content: "";
+            position: absolute;
+            width: 200px; height: 200px;
+            border-radius: 50%;
+            background: rgba(168,85,247,0.15);
+            top: -60px; left: -60px;
+        }
+        .one-world-icon {
+            font-size: 3rem;
+            flex-shrink: 0;
+            position: relative; z-index: 1;
+        }
+        .one-world-content { flex: 1; position: relative; z-index: 1; }
+        .one-world-content h3 { font-size: 1.4rem; margin-bottom: 0.5rem; color: #f0c0ff; }
+        .one-world-content p { opacity: 0.9; font-size: 0.95rem; line-height: 1.6; }
+        .one-world-prices {
+            display: flex; gap: 1rem; margin-top: 1rem; flex-wrap: wrap;
+        }
+        .one-world-price-badge {
+            background: rgba(168,85,247,0.3);
+            border: 1px solid rgba(168,85,247,0.5);
+            border-radius: 10px;
+            padding: 0.5rem 1rem;
+            text-align: center;
+        }
+        .one-world-price-badge .amount { font-size: 1.5rem; font-weight: 900; color: #f0c0ff; }
+        .one-world-price-badge .label { font-size: 0.75rem; opacity: 0.85; }
+        .one-world-btn {
+            background: linear-gradient(135deg, var(--purple-main), #9333ea);
+            color: white; border: none; padding: 12px 24px;
+            border-radius: 12px; font-weight: 700; font-size: 0.95rem;
+            cursor: pointer; transition: var(--transition);
+            white-space: nowrap; position: relative; z-index: 1;
+            flex-shrink: 0;
+        }
+        .one-world-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(168,85,247,0.5); }
+
+        /* Pricing Section */
+        .section { padding: 4rem 2rem; max-width: 1200px; margin: 0 auto; }
+        .pricing-section { display: none; }
+        .pricing-section.visible { display: block; animation: fadeInUp 0.6s ease; }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .section-title { text-align: center; margin-bottom: 3rem; }
+        .section-title h2 {
+            font-size: 2.2rem; color: var(--purple-dark); margin-bottom: 1rem;
+            position: relative; display: inline-block;
+        }
+        .section-title h2::after {
+            content: ""; position: absolute; bottom: -10px; left: 50%;
+            transform: translateX(-50%); width: 70px; height: 4px;
+            background: linear-gradient(90deg, var(--purple-main), var(--purple-dark));
+            border-radius: 2px;
+        }
+
+        .pricing-card {
+            background: var(--white);
+            border-radius: 18px; padding: 2rem; margin-bottom: 2rem;
+            box-shadow: 0 10px 30px rgba(168,85,247,0.1);
+            border: 1px solid rgba(168,85,247,0.2); transition: var(--transition);
+        }
+        .pricing-card:hover { transform: translateY(-5px); box-shadow: 0 15px 40px rgba(168,85,247,0.2); }
+
+        .country-header {
+            display: flex; align-items: center; gap: 15px;
+            margin-bottom: 1.5rem; padding-bottom: 1rem;
+            border-bottom: 2px solid rgba(168,85,247,0.15);
+        }
+        .country-flag { font-size: 3rem; }
+        .country-info h3 { font-size: 1.5rem; color: var(--purple-dark); margin-bottom: 0.3rem; }
+        .country-info p { color: var(--light-text); font-size: 0.95rem; }
+
+        /* Zone badge */
+        .zone-badge {
+            display: inline-block;
+            padding: 4px 12px; border-radius: 20px;
+            font-size: 0.82rem; font-weight: 700;
+            margin-top: 4px;
+        }
+        .zone-1 { background: #dcfce7; color: #166534; }
+        .zone-2 { background: #dbeafe; color: #1d4ed8; }
+        .zone-3 { background: #fef9c3; color: #854d0e; }
+        .zone-4 { background: #fee2e2; color: #991b1b; }
+        .zone-5 { background: #f3e8ff; color: #6b21a8; }
+
+        .price-container {
+            background: linear-gradient(135deg, #faf7ff, #f3f0ff);
+            border-radius: 14px; padding: 1.5rem; margin-bottom: 1.5rem;
+            border: 2px solid rgba(168,85,247,0.2);
+        }
+        .price-label { color: var(--light-text); font-size: 0.9rem; font-weight: 600; margin-bottom: 0.5rem; }
+        .price-amount { font-size: 2.5rem; font-weight: 800; color: var(--purple-dark); margin-bottom: 0.3rem; }
+        .price-currency { font-size: 0.9rem; color: var(--light-text); }
+
+        /* SMS price */
+        .sms-price-box {
+            background: #f0fdf4;
+            border: 1px solid #86efac;
+            border-radius: 10px;
+            padding: 0.8rem 1.2rem;
+            margin-bottom: 1.5rem;
+            display: flex; align-items: center; gap: 10px;
+            font-size: 0.95rem; color: #166534;
+        }
+        .sms-price-box .sms-amount { font-weight: 800; font-size: 1.1rem; }
+
+        .features-list { list-style: none; }
+        .features-list li {
+            padding: 0.8rem 0; border-bottom: 1px solid rgba(168,85,247,0.1);
+            display: flex; align-items: center; gap: 10px; color: var(--dark-text);
+        }
+        .features-list li:last-child { border-bottom: none; }
+        .features-list li::before { content: "✓"; color: var(--success); font-weight: 800; font-size: 1.2rem; flex-shrink: 0; }
+
+        .subscribe-btn {
+            background: linear-gradient(135deg, var(--purple-main), var(--purple-dark));
+            color: white; border: none; padding: 14px 28px;
+            border-radius: 12px; font-weight: 600; font-size: 1rem;
+            cursor: pointer; transition: var(--transition);
+            width: 100%; margin-top: 1rem;
+            box-shadow: 0 6px 20px rgba(168,85,247,0.3);
+        }
+        .subscribe-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(168,85,247,0.4); }
+
+        /* Zones Table */
+        .zones-section { padding: 3rem 2rem; max-width: 1000px; margin: 0 auto; }
+        .zones-table { width: 100%; border-collapse: collapse; margin-top: 1.5rem; background: white; border-radius: 16px; overflow: hidden; box-shadow: var(--shadow); }
+        .zones-table th {
+            background: linear-gradient(135deg, var(--purple-main), var(--purple-dark));
+            color: white; padding: 14px 16px; font-size: 1rem; font-weight: 700;
+            text-align: center;
+        }
+        .zones-table td { padding: 12px 16px; border-bottom: 1px solid rgba(168,85,247,0.1); text-align: center; font-size: 0.95rem; }
+        .zones-table tr:last-child td { border-bottom: none; }
+        .zones-table tr:hover td { background: rgba(168,85,247,0.05); }
+        .price-cell { font-weight: 800; font-size: 1.1rem; color: var(--purple-dark); }
+
+        /* Features Section */
+        .features-section {
+            background: linear-gradient(135deg, rgba(168,85,247,0.08), rgba(168,85,247,0.04));
+            border-radius: 18px; padding: 2rem; margin-top: 3rem;
+        }
+        .features-section h3 { color: var(--purple-dark); font-size: 1.5rem; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 10px; }
+        .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin-top: 1.5rem; }
+        .feature-card { background: var(--white); border-radius: 12px; padding: 1.5rem; border-left: 4px solid var(--purple-main); transition: var(--transition); }
+        .feature-card:hover { transform: translateX(5px); box-shadow: 0 8px 20px rgba(168,85,247,0.15); }
+        .feature-icon { font-size: 2rem; margin-bottom: 0.5rem; }
+        .feature-card h4 { color: var(--purple-dark); margin-bottom: 0.5rem; font-size: 1.1rem; }
+        .feature-card p { color: var(--light-text); font-size: 0.9rem; }
+
+        /* Tips Section */
+        .tips-section { background: var(--light-bg); margin-top: 0; }
+        .tips-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; margin-top: 2rem; }
+        .tip-card { background: var(--white); border-radius: 16px; padding: 2rem; box-shadow: 0 8px 25px rgba(168,85,247,0.1); border: 1px solid rgba(168,85,247,0.2); display: flex; gap: 1.5rem; transition: var(--transition); }
+        .tip-card:hover { transform: translateY(-3px); box-shadow: 0 12px 35px rgba(168,85,247,0.15); }
+        .tip-icon { font-size: 2.5rem; flex-shrink: 0; }
+        .tip-content h3 { color: var(--purple-dark); margin-bottom: 0.5rem; font-size: 1.1rem; }
+        .tip-content p { color: var(--light-text); font-size: 0.95rem; }
+
+        /* Countries Preview */
+        .countries-preview { margin-top: 2rem; }
+        .countries-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 1rem; margin-top: 1.5rem; }
+        .country-chip {
+            background: linear-gradient(135deg, var(--purple-main), var(--purple-dark));
+            color: var(--white); padding: 1rem; border-radius: 12px; text-align: center;
+            cursor: pointer; transition: var(--transition); font-weight: 600;
+            border: 2px solid transparent; box-shadow: 0 4px 15px rgba(168,85,247,0.2);
+        }
+        .country-chip:hover { transform: translateY(-3px); box-shadow: 0 8px 25px rgba(168,85,247,0.3); }
+        .country-chip .chip-price { font-size: 0.78rem; opacity: 0.85; margin-top: 3px; }
+
+        /* FAQ */
+        .faq-container { max-width: 800px; margin: 0 auto; margin-top: 2rem; }
+        .faq-item { background: var(--white); border-radius: 12px; margin-bottom: 1rem; overflow: hidden; border: 1px solid rgba(168,85,247,0.2); box-shadow: 0 4px 15px rgba(168,85,247,0.08); }
+        .faq-question { padding: 1.5rem; background: linear-gradient(135deg, #faf7ff, #f3f0ff); cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-weight: 600; color: var(--purple-dark); transition: var(--transition); }
+        .faq-question:hover { background: linear-gradient(135deg, #f3f0ff, #e9d5ff); }
+        .faq-question::after { content: "▼"; transition: transform 0.3s ease; color: var(--purple-main); }
+        .faq-item.active .faq-question::after { transform: rotate(180deg); }
+        .faq-answer { display: none; padding: 1.5rem; color: var(--light-text); line-height: 1.8; }
+        .faq-item.active .faq-answer { display: block; }
+
+        /* Contact */
+        .contact-section { background: linear-gradient(135deg, var(--purple-main), var(--purple-dark)); color: var(--white); padding: 3rem 2rem; border-radius: 18px; text-align: center; margin-top: 3rem; }
+        .contact-section h2 { font-size: 2rem; margin-bottom: 1rem; }
+        .contact-section p { font-size: 1.1rem; margin-bottom: 1.5rem; opacity: 0.95; }
+        .contact-number { display: inline-block; background: rgba(255,255,255,0.15); padding: 15px 35px; border-radius: 50px; font-size: 1.8rem; font-weight: 700; border: 2px solid rgba(255,255,255,0.3); }
+        .contact-note { margin-top: 1rem; font-size: 0.95rem; opacity: 0.85; }
+
+        /* Satellite table */
+        .satellite-table { width: 100%; border-collapse: collapse; margin-top: 1rem; background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 20px rgba(168,85,247,0.1); }
+        .satellite-table th { background: #1a0533; color: white; padding: 12px 16px; font-weight: 700; text-align: center; }
+        .satellite-table td { padding: 12px 16px; border-bottom: 1px solid rgba(168,85,247,0.1); text-align: center; font-size: 0.95rem; }
+        .satellite-table tr:last-child td { border-bottom: none; }
+        .satellite-table .sat-price { font-weight: 800; color: #991b1b; font-size: 1.1rem; }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            header { flex-direction: column; gap: 1rem; padding: 1rem; }
+            nav ul { gap: 0.8rem; flex-wrap: wrap; justify-content: center; }
+            .hero h1 { font-size: 2rem; }
+            .hero p { font-size: 1.1rem; }
+            .section { padding: 3rem 1.5rem; }
+            .section-title h2 { font-size: 1.7rem; }
+            .price-amount { font-size: 2rem; }
+            .country-select-wrapper { flex-direction: column; }
+            #showPricingBtn { width: 100%; }
+            .countries-grid { grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); }
+            .one-world-banner { flex-direction: column; text-align: center; }
+            .one-world-prices { justify-content: center; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <a href="../index.html" class="back-to-home" title="العودة للصفحة الرئيسية">←</a>
+            <div class="logo-icon">WE</div>
+            <span>وي - المكالمات الدولية</span>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="#" class="active">الرئيسية</a></li>
+                <li><a href="#pricing-section">الأسعار</a></li>
+                <li><a href="#zones-table">جدول المناطق</a></li>
+                <li><a href="#faq">الأسئلة</a></li>
+            </ul>
+        </nav>
+        <button class="cta-button" onclick="scrollToCountrySelector()">اختر دولة</button>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>اتصل بأحبائك في أي مكان بأسعار رسمية وواضحة 📞</h1>
+            <p>أسعار المكالمات الدولية الرسمية لشبكة WE — محدّثة من الموقع الرسمي</p>
+
+            <!-- Country Selector Box -->
+            <div class="country-selector-box" id="countrySelectorBox">
+                <label for="countrySelect">🌍 اختر الدولة لعرض سعر المكالمة:</label>
+                <div class="country-select-wrapper">
+                    <select id="countrySelect">
+                        <option value="">-- اختر الدولة --</option>
+                        <optgroup label="منطقة 1 — 10 ج.م/دقيقة">
+                            <option value="saudi">🇸🇦 المملكة العربية السعودية</option>
+                            <option value="uae">🇦🇪 الإمارات العربية المتحدة</option>
+                            <option value="kuwait">🇰🇼 الكويت</option>
+                            <option value="qatar">🇶🇦 قطر</option>
+                            <option value="bahrain">🇧🇭 البحرين</option>
+                            <option value="oman">🇴🇲 عُمان</option>
+                            <option value="jordan">🇯🇴 الأردن</option>
+                            <option value="lebanon">🇱🇧 لبنان</option>
+                            <option value="iraq">🇮🇶 العراق</option>
+                            <option value="syria">🇸🇾 سوريا</option>
+                            <option value="yemen">🇾🇪 اليمن</option>
+                            <option value="palestine">🇵🇸 فلسطين</option>
+                            <option value="libya">🇱🇾 ليبيا</option>
+                            <option value="sudan">🇸🇩 السودان</option>
+                            <option value="usa">🇺🇸 الولايات المتحدة الأمريكية</option>
+                            <option value="hawaii">🏝️ هاواي وألاسكا</option>
+                            <option value="guam">🌏 جوام</option>
+                            <option value="usvi">🏝️ جزر فيرجين الأمريكية</option>
+                            <option value="puertorico">🇵🇷 بورتوريكو</option>
+                        </optgroup>
+                        <optgroup label="منطقة 2 — 10 ج.م/دقيقة">
+                            <option value="uk">🇬🇧 المملكة المتحدة</option>
+                            <option value="germany">🇩🇪 ألمانيا</option>
+                            <option value="france">🇫🇷 فرنسا</option>
+                            <option value="italy">🇮🇹 إيطاليا</option>
+                            <option value="spain">🇪🇸 إسبانيا</option>
+                            <option value="turkey">🇹🇷 تركيا</option>
+                            <option value="russia">🇷🇺 روسيا</option>
+                            <option value="netherlands">🇳🇱 هولندا</option>
+                            <option value="belgium">🇧🇪 بلجيكا — (لكن منطقة 4)</option>
+                            <option value="canada">🇨🇦 كندا</option>
+                            <option value="poland">🇵🇱 بولندا</option>
+                            <option value="romania">🇷🇴 رومانيا</option>
+                            <option value="portugal">🇵🇹 البرتغال</option>
+                            <option value="austria">🇦🇹 النمسا</option>
+                            <option value="greece">🇬🇷 اليونان</option>
+                            <option value="czech">🇨🇿 التشيك</option>
+                            <option value="hungary">🇭🇺 المجر</option>
+                            <option value="norway">🇳🇴 النرويج</option>
+                            <option value="ireland">🇮🇪 أيرلندا</option>
+                            <option value="ukraine">🇺🇦 أوكرانيا</option>
+                            <option value="cyprus">🇨🇾 قبرص</option>
+                            <option value="kazakhstan">🇰🇿 كازاخستان</option>
+                            <option value="armenia">🇦🇲 أرمينيا</option>
+                            <option value="barbados">🇧🇧 بربادوس</option>
+                        </optgroup>
+                        <optgroup label="منطقة 3 — 10 ج.م/دقيقة">
+                            <option value="australia">🇦🇺 أستراليا</option>
+                            <option value="japan">🇯🇵 اليابان</option>
+                            <option value="singapore">🇸🇬 سنغافورة</option>
+                            <option value="india">🇮🇳 الهند</option>
+                            <option value="china">🇨🇳 الصين</option>
+                            <option value="southkorea">🇰🇷 كوريا الجنوبية</option>
+                            <option value="thailand">🇹🇭 تايلاند</option>
+                            <option value="indonesia">🇮🇩 إندونيسيا</option>
+                            <option value="malaysia">🇲🇾 ماليزيا</option>
+                            <option value="pakistan">🇵🇰 باكستان</option>
+                            <option value="bangladesh">🇧🇩 بنجلاديش</option>
+                            <option value="brazil">🇧🇷 البرازيل</option>
+                            <option value="mexico">🇲🇽 المكسيك</option>
+                            <option value="argentina">🇦🇷 الأرجنتين</option>
+                            <option value="southafrica">🇿🇦 جنوب أفريقيا</option>
+                            <option value="nigeria">🇳🇬 نيجيريا</option>
+                            <option value="kenya">🇰🇪 كينيا</option>
+                            <option value="newzealand">🇳🇿 نيوزيلندا</option>
+                            <option value="israel">🇮🇱 إسرائيل</option>
+                            <option value="iran">🇮🇷 إيران</option>
+                            <option value="vietnam">🇻🇳 فيتنام</option>
+                            <option value="philippines">🇵🇭 الفلبين</option>
+                            <option value="srilanka">🇱🇰 سريلانكا</option>
+                            <option value="ethiopia">🇪🇹 إثيوبيا</option>
+                            <option value="colombia">🇨🇴 كولومبيا</option>
+                            <option value="chile">🇨🇱 تشيلي</option>
+                            <option value="peru">🇵🇪 بيرو</option>
+                            <option value="taiwan">🇹🇼 تايوان</option>
+                            <option value="hongkong">🇭🇰 هونغ كونغ</option>
+                            <option value="rwanda">🇷🇼 رواندا</option>
+                            <option value="ghana">🇬🇭 غانا</option>
+                            <option value="senegal">🇸🇳 السنغال</option>
+                            <option value="mozambique">🇲🇿 موزمبيق</option>
+                            <option value="cambodia">🇰🇭 كمبوديا</option>
+                            <option value="angola">🇦🇴 أنجولا</option>
+                        </optgroup>
+                        <optgroup label="منطقة 4 — 30 ج.م/دقيقة">
+                            <option value="morocco">🇲🇦 المغرب</option>
+                            <option value="tunisia">🇹🇳 تونس (منطقة 5)</option>
+                            <option value="algeria">🇩🇿 الجزائر (منطقة 5)</option>
+                            <option value="denmark">🇩🇰 الدنمارك</option>
+                            <option value="sweden">🇸🇪 السويد</option>
+                            <option value="finland">🇫🇮 فنلندا</option>
+                            <option value="switzerland">🇨🇭 سويسرا</option>
+                            <option value="cameroon">🇨🇲 الكاميرون</option>
+                            <option value="tanzania">🇹🇿 تنزانيا</option>
+                            <option value="uganda">🇺🇬 أوغندا</option>
+                            <option value="mali">🇲🇱 مالي</option>
+                            <option value="madagascar">🇲🇬 مدغشقر</option>
+                            <option value="somalia">🇸🇴 الصومال</option>
+                            <option value="southsudan">🇸🇸 جنوب السودان</option>
+                            <option value="djibouti">🇩🇯 جيبوتي</option>
+                            <option value="haiti">🇭🇹 هايتي</option>
+                            <option value="latvia">🇱🇻 لاتفيا</option>
+                            <option value="lithuania">🇱🇹 ليتوانيا</option>
+                            <option value="estonia">🇪🇪 إستونيا</option>
+                            <option value="georgia">🇬🇪 جورجيا</option>
+                            <option value="croatia">🇭🇷 كرواتيا</option>
+                            <option value="serbia">🇷🇸 صربيا</option>
+                            <option value="albania">🇦🇱 ألبانيا</option>
+                            <option value="morocco4">🇲🇦 المغرب (منطقة 4)</option>
+                            <option value="gabon">🇬🇦 الغابون</option>
+                            <option value="drc">🇨🇩 الكونغو الديمقراطية</option>
+                            <option value="ivorycoast">🇨🇮 ساحل العاج</option>
+                            <option value="burkinafaso">🇧🇫 بوركينا فاسو</option>
+                            <option value="reunion">🇷🇪 ريونيون</option>
+                            <option value="comoros">🇰🇲 جزر القمر</option>
+                            <option value="zimbabwe">🇿🇼 زيمبابوي</option>
+                            <option value="malawi">🇲🇼 ملاوي</option>
+                            <option value="zambia">🇿🇲 زامبيا</option>
+                        </optgroup>
+                        <optgroup label="منطقة 5 — 45 ج.م/دقيقة">
+                            <option value="cuba">🇨🇺 كوبا</option>
+                            <option value="tuvalu">🇹🇻 توفالو</option>
+                            <option value="maldives">🇲🇻 المالديف</option>
+                            <option value="vanuatu">🇻🇺 فانواتو</option>
+                            <option value="kiribati">🇰🇮 كيريباتي</option>
+                            <option value="nauru">🇳🇷 ناورو</option>
+                            <option value="tonga">🇹🇴 تونغا</option>
+                            <option value="solomons">🇸🇧 جزر سليمان</option>
+                        </optgroup>
+                    </select>
+                    <button id="showPricingBtn" onclick="showPricingForCountry()" disabled>عرض الأسعار</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- One World Banner -->
+    <div style="padding: 0 2rem;">
+        <div class="one-world-banner">
+            <div class="one-world-icon">🌐</div>
+            <div class="one-world-content">
+                <h3>⭐ خدمة عالم واحد — وفّر أكثر مع سعر ثابت</h3>
+                <p>اشترك بـ 8 ج.م شهرياً واتصل بأي دولة في العالم بسعر ثابت 8 ج.م للدقيقة. متاحة لجميع عملاء الدفع المسبق والكنترول. اشترك بالكود <strong>#299*</strong></p>
+                <div class="one-world-prices">
+                    <div class="one-world-price-badge">
+                        <div class="amount">8 ج.م</div>
+                        <div class="label">اشتراك شهري</div>
+                    </div>
+                    <div class="one-world-price-badge">
+                        <div class="amount">8 ج.م</div>
+                        <div class="label">ثابت/دقيقة لكل الدول</div>
+                    </div>
+                    <div class="one-world-price-badge">
+                        <div class="amount">1.5 ج.م</div>
+                        <div class="label">رسم فتح المكالمة (بديل)</div>
+                    </div>
+                </div>
+            </div>
+            <button class="one-world-btn" onclick="alert('اشترك في خدمة عالم واحد بالضغط على #299* أو تواصل مع خدمة العملاء على 111')">اشترك الآن</button>
+        </div>
+    </div>
+
+    <!-- Pricing Section -->
+    <section id="pricing-section" class="pricing-section">
+        <div class="section-title">
+            <h2>أسعار المكالمات الدولية</h2>
+            <p id="pricingSubtitle"></p>
+        </div>
+
+        <div class="pricing-card" style="max-width:700px;margin:0 auto 2rem;">
+            <div class="country-header">
+                <div class="country-flag" id="countryFlag"></div>
+                <div class="country-info">
+                    <h3 id="countryName"></h3>
+                    <p id="countryRegion"></p>
+                    <span class="zone-badge" id="zoneBadge"></span>
+                </div>
+            </div>
+
+            <div class="price-container">
+                <div class="price-label">سعر الدقيقة (عادي)</div>
+                <div class="price-amount"><span id="callPrice">---</span></div>
+                <div class="price-currency">جنيه مصري / دقيقة</div>
+            </div>
+
+            <div class="sms-price-box" id="smsPriceBox" style="display:none;">
+                <span>📩 سعر الرسالة القصيرة الدولية:</span>
+                <span class="sms-amount" id="smsPrice"></span>
+                <span>ج.م / رسالة</span>
+            </div>
+
+            <div style="background:#f0fdf4;border:1px solid #86efac;border-radius:10px;padding:1rem 1.2rem;margin-bottom:1.5rem;">
+                <div style="font-weight:700;color:#166534;margin-bottom:4px;">💡 مع خدمة عالم واحد:</div>
+                <div style="color:#166534;font-size:0.95rem;">8 ج.م فقط / دقيقة لهذه الدولة بدلاً من <span id="regularPriceCompare" style="font-weight:800;"></span> ج.م — <a href="#" onclick="alert('اشترك بالكود #299*')" style="color:#166534;font-weight:700;">اشترك الآن</a></div>
+            </div>
+
+            <h4 style="color:var(--purple-dark);margin-bottom:1rem;">✨ ملاحظات الخدمة:</h4>
+            <ul class="features-list" id="countryFeatures"></ul>
+
+            <button class="subscribe-btn" onclick="subscribe()">اشترك في الخدمة الآن</button>
+        </div>
+    </section>
+
+    <!-- Zones Table -->
+    <section class="zones-section" id="zones-table">
+        <div class="section-title">
+            <h2>جدول أسعار المناطق الدولية الرسمية</h2>
+            <p>الأسعار الرسمية لشبكة WE — لجميع عملاء الكارت والكنترول</p>
+        </div>
+        <table class="zones-table">
+            <thead>
+                <tr>
+                    <th>المنطقة</th>
+                    <th>سعر الدقيقة</th>
+                    <th>سعر الرسالة القصيرة</th>
+                    <th>أمثلة على الدول</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><span class="zone-badge zone-1">المنطقة 1</span></td>
+                    <td class="price-cell">10 ج.م</td>
+                    <td>4 ج.م</td>
+                    <td>السعودية، الإمارات، الكويت، قطر، الأردن، الولايات المتحدة، ليبيا، السودان</td>
+                </tr>
+                <tr>
+                    <td><span class="zone-badge zone-2">المنطقة 2</span></td>
+                    <td class="price-cell">10 ج.م</td>
+                    <td>—</td>
+                    <td>المملكة المتحدة، ألمانيا، فرنسا، إيطاليا، كندا، تركيا، روسيا، هولندا</td>
+                </tr>
+                <tr>
+                    <td><span class="zone-badge zone-3">المنطقة 3</span></td>
+                    <td class="price-cell">10 ج.م</td>
+                    <td>—</td>
+                    <td>الهند، الصين، اليابان، أستراليا، سنغافورة، البرازيل، نيجيريا، كينيا</td>
+                </tr>
+                <tr>
+                    <td><span class="zone-badge zone-4">المنطقة 4</span></td>
+                    <td class="price-cell">30 ج.م</td>
+                    <td>—</td>
+                    <td>المغرب، الدنمارك، السويد، فنلندا، سويسرا، الكاميرون، تنزانيا، الصومال</td>
+                </tr>
+                <tr>
+                    <td><span class="zone-badge zone-5">المنطقة 5</span></td>
+                    <td class="price-cell">45 ج.م</td>
+                    <td>—</td>
+                    <td>تونس، الجزائر، كوبا، المالديف، توفالو، كيريباتي، جزر سليمان</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Satellite Table -->
+        <div style="margin-top:2.5rem;">
+            <div class="section-title" style="margin-bottom:1.5rem;">
+                <h2 style="font-size:1.6rem;">مكالمات الأقمار الصناعية</h2>
+            </div>
+            <table class="satellite-table">
+                <thead>
+                    <tr>
+                        <th>القمر الصناعي</th>
+                        <th>السعر (ج.م/دقيقة)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>الثريا (El Thuraya)</td><td class="sat-price">100 ج.م</td></tr>
+                    <tr><td>Inmarsat</td><td class="sat-price">250 ج.م</td></tr>
+                    <tr><td>Iridium</td><td class="sat-price">350 ج.م</td></tr>
+                    <tr><td>Air Connection</td><td class="sat-price">250 ج.م</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- Countries Preview -->
+    <section class="section">
+        <div class="section-title">
+            <h2>اضغط على دولة لعرض السعر بسرعة</h2>
+            <p>اختر من الدول الأكثر طلباً:</p>
+        </div>
+        <div class="countries-preview">
+            <div class="countries-grid">
+                <div class="country-chip" onclick="selectCountryQuick('saudi')">🇸🇦 السعودية<div class="chip-price">10 ج.م/دقيقة</div></div>
+                <div class="country-chip" onclick="selectCountryQuick('uae')">🇦🇪 الإمارات<div class="chip-price">10 ج.م/دقيقة</div></div>
+                <div class="country-chip" onclick="selectCountryQuick('kuwait')">🇰🇼 الكويت<div class="chip-price">10 ج.م/دقيقة</div></div>
+                <div class="country-chip" onclick="selectCountryQuick('uk')">🇬🇧 بريطانيا<div class="chip-price">10 ج.م/دقيقة</div></div>
+                <div class="country-chip" onclick="selectCountryQuick('usa')">🇺🇸 أمريكا<div class="chip-price">10 ج.م/دقيقة</div></div>
+                <div class="country-chip" onclick="selectCountryQuick('turkey')">🇹🇷 تركيا<div class="chip-price">10 ج.م/دقيقة</div></div>
+                <div class="country-chip" onclick="selectCountryQuick('morocco')">🇲🇦 المغرب<div class="chip-price">30 ج.م/دقيقة</div></div>
+                <div class="country-chip" onclick="selectCountryQuick('tunisia')">🇹🇳 تونس<div class="chip-price">45 ج.م/دقيقة</div></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="section" id="faq">
+        <div class="section-title">
+            <h2>الأسئلة الشائعة</h2>
+            <p>إجابات على أكثر الاستفسارات شيوعاً حول المكالمات الدولية</p>
+        </div>
+        <div class="faq-container">
+            <div class="faq-item">
+                <div class="faq-question">ما الفرق بين الأسعار العادية وخدمة عالم واحد؟</div>
+                <div class="faq-answer">
+                    الأسعار العادية تعتمد على المنطقة الجغرافية: المناطق 1 و2 و3 بـ 10 ج.م/دقيقة، المنطقة 4 بـ 30 ج.م/دقيقة، والمنطقة 5 بـ 45 ج.م/دقيقة بدون اشتراك. أما خدمة عالم واحد فرسمها الشهري 8 ج.م فقط، وتتيح الاتصال بأي دولة بسعر ثابت 8 ج.م/دقيقة — مما يجعلها أوفر للدول في المناطق 4 و5.
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">كيف أشترك في خدمة عالم واحد؟</div>
+                <div class="faq-answer">
+                    اتصل أو اضغط على الكود <strong>#299*</strong> مجاناً واختر إما الاشتراك الشهري بـ 8 ج.م أو رسم فتح المكالمة بـ 1.5 ج.م. الخدمة متاحة لجميع عملاء الدفع المسبق والكنترول.
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">هل سعر الرسالة القصيرة الدولية نفس سعر المكالمة؟</div>
+                <div class="faq-answer">
+                    لا. سعر الرسالة القصيرة الدولية للمنطقة 1 هو 4 ج.م للرسالة. للمناطق الأخرى لا يوجد سعر رسمي محدد معلن للرسائل في جدول الأسعار الحالي.
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">ما هي الدول التي تنتمي لكل منطقة؟</div>
+                <div class="faq-answer">
+                    <strong>المنطقة 1 (10 ج.م):</strong> دول الخليج العربي، الأردن، لبنان، سوريا، العراق، اليمن، فلسطين، السودان، ليبيا، الولايات المتحدة وأراضيها.<br>
+                    <strong>المنطقة 2 (10 ج.م):</strong> أوروبا الغربية والشرقية، كندا، تركيا، روسيا، كازاخستان، أرمينيا، أوكرانيا، وجزر الكاريبي البريطانية.<br>
+                    <strong>المنطقة 3 (10 ج.م):</strong> آسيا، أستراليا، نيوزيلندا، أفريقيا جنوب الصحراء (جزء)، أمريكا اللاتينية.<br>
+                    <strong>المنطقة 4 (30 ج.م):</strong> المغرب، الدنمارك، السويد، فنلندا، سويسرا، دول أفريقيا الوسطى والغربية (جزء)، إستونيا، لاتفيا، ليتوانيا.<br>
+                    <strong>المنطقة 5 (45 ج.م):</strong> تونس، الجزائر، كوبا، جزر المحيط الهادئ النائية (توفالو، كيريباتي، إلخ)، المالديف.
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">هل الخدمة متاحة لأقمار الاتصال الصناعية؟</div>
+                <div class="faq-answer">
+                    نعم ولكن بأسعار مختلفة جداً: الثريا بـ 100 ج.م/دقيقة، Inmarsat وAir Connection بـ 250 ج.م/دقيقة، وIridium بـ 350 ج.م/دقيقة.
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">كيف أتأكد من الدولة التي أتصل بها وتكلفتها؟</div>
+                <div class="faq-answer">
+                    استخدم أداة البحث أعلاه باختيار الدولة للحصول على سعرها ومنطقتها بدقة. يمكنك أيضاً مراجعة الجدول الكامل أدناه أو الاتصال بخدمة العملاء على 111.
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="section">
+        <div class="contact-section">
+            <h2>محتاج مساعدة؟ نحن هنا 🤝</h2>
+            <p>فريق خدمة العملاء جاهز لمساعدتك طوال اليوم</p>
+            <div class="contact-number">111</div>
+            <div class="contact-note">رقم الخدمة الموحدة - مكالمة مجانية</div>
+        </div>
+    </section>
+
+    <script>
+        // === البيانات الرسمية من موقع WE ===
+        // المنطقة 1 و2 و3: 10 ج.م/دقيقة  |  المنطقة 4: 30 ج.م/دقيقة  |  المنطقة 5: 45 ج.م/دقيقة
+        // الرسائل القصيرة المنطقة 1 فقط: 4 ج.م/رسالة
+
+        const countryData = {
+            // === المنطقة 1 — 10 ج.م ===
+            'saudi':     { name: 'المملكة العربية السعودية', flag: '🇸🇦', region: 'الشرق الأوسط', zone: 1, price: 10, sms: 4 },
+            'uae':       { name: 'الإمارات العربية المتحدة', flag: '🇦🇪', region: 'الشرق الأوسط', zone: 1, price: 10, sms: 4 },
+            'kuwait':    { name: 'الكويت', flag: '🇰🇼', region: 'الشرق الأوسط', zone: 1, price: 10, sms: 4 },
+            'qatar':     { name: 'قطر', flag: '🇶🇦', region: 'الشرق الأوسط', zone: 1, price: 10, sms: 4 },
+            'bahrain':   { name: 'البحرين', flag: '🇧🇭', region: 'الشرق الأوسط', zone: 1, price: 10, sms: 4 },
+            'oman':      { name: 'عُمان', flag: '🇴🇲', region: 'الشرق الأوسط', zone: 1, price: 10, sms: 4 },
+            'jordan':    { name: 'الأردن', flag: '🇯🇴', region: 'الشرق الأوسط', zone: 1, price: 10, sms: 4 },
+            'lebanon':   { name: 'لبنان', flag: '🇱🇧', region: 'الشرق الأوسط', zone: 1, price: 10, sms: 4 },
+            'iraq':      { name: 'العراق', flag: '🇮🇶', region: 'الشرق الأوسط', zone: 1, price: 10, sms: 4 },
+            'syria':     { name: 'سوريا', flag: '🇸🇾', region: 'الشرق الأوسط', zone: 1, price: 10, sms: 4 },
+            'yemen':     { name: 'اليمن', flag: '🇾🇪', region: 'الشرق الأوسط', zone: 1, price: 10, sms: 4 },
+            'palestine': { name: 'فلسطين', flag: '🇵🇸', region: 'الشرق الأوسط', zone: 1, price: 10, sms: 4 },
+            'libya':     { name: 'ليبيا', flag: '🇱🇾', region: 'شمال أفريقيا', zone: 1, price: 10, sms: 4 },
+            'sudan':     { name: 'السودان', flag: '🇸🇩', region: 'أفريقيا', zone: 1, price: 10, sms: 4 },
+            'usa':       { name: 'الولايات المتحدة الأمريكية', flag: '🇺🇸', region: 'أمريكا الشمالية', zone: 1, price: 10, sms: 4 },
+            'hawaii':    { name: 'هاواي وألاسكا', flag: '🏝️', region: 'الولايات المتحدة', zone: 1, price: 10, sms: 4 },
+            'guam':      { name: 'جوام', flag: '🌏', region: 'الولايات المتحدة', zone: 1, price: 10, sms: 4 },
+            'usvi':      { name: 'جزر فيرجين الأمريكية', flag: '🏝️', region: 'الكاريبي', zone: 1, price: 10, sms: 4 },
+            'puertorico':{ name: 'بورتوريكو', flag: '🇵🇷', region: 'الكاريبي', zone: 1, price: 10, sms: 4 },
+
+            // === المنطقة 2 — 10 ج.م ===
+            'uk':        { name: 'المملكة المتحدة', flag: '🇬🇧', region: 'أوروبا الغربية', zone: 2, price: 10, sms: null },
+            'germany':   { name: 'ألمانيا', flag: '🇩🇪', region: 'أوروبا الغربية', zone: 2, price: 10, sms: null },
+            'france':    { name: 'فرنسا', flag: '🇫🇷', region: 'أوروبا الغربية', zone: 2, price: 10, sms: null },
+            'italy':     { name: 'إيطاليا', flag: '🇮🇹', region: 'أوروبا الغربية', zone: 2, price: 10, sms: null },
+            'spain':     { name: 'إسبانيا', flag: '🇪🇸', region: 'أوروبا الغربية', zone: 2, price: 10, sms: null },
+            'turkey':    { name: 'تركيا', flag: '🇹🇷', region: 'أوروبا / آسيا', zone: 2, price: 10, sms: null },
+            'russia':    { name: 'روسيا', flag: '🇷🇺', region: 'أوروبا الشرقية', zone: 2, price: 10, sms: null },
+            'netherlands': { name: 'هولندا', flag: '🇳🇱', region: 'أوروبا الغربية', zone: 2, price: 10, sms: null },
+            'canada':    { name: 'كندا', flag: '🇨🇦', region: 'أمريكا الشمالية', zone: 2, price: 10, sms: null },
+            'poland':    { name: 'بولندا', flag: '🇵🇱', region: 'أوروبا الشرقية', zone: 2, price: 10, sms: null },
+            'romania':   { name: 'رومانيا', flag: '🇷🇴', region: 'أوروبا الشرقية', zone: 2, price: 10, sms: null },
+            'portugal':  { name: 'البرتغال', flag: '🇵🇹', region: 'أوروبا الغربية', zone: 2, price: 10, sms: null },
+            'austria':   { name: 'النمسا', flag: '🇦🇹', region: 'أوروبا الوسطى', zone: 2, price: 10, sms: null },
+            'greece':    { name: 'اليونان', flag: '🇬🇷', region: 'أوروبا الجنوبية', zone: 2, price: 10, sms: null },
+            'czech':     { name: 'التشيك', flag: '🇨🇿', region: 'أوروبا الوسطى', zone: 2, price: 10, sms: null },
+            'hungary':   { name: 'المجر', flag: '🇭🇺', region: 'أوروبا الوسطى', zone: 2, price: 10, sms: null },
+            'norway':    { name: 'النرويج', flag: '🇳🇴', region: 'أوروبا الشمالية', zone: 2, price: 10, sms: null },
+            'ireland':   { name: 'أيرلندا', flag: '🇮🇪', region: 'أوروبا الغربية', zone: 2, price: 10, sms: null },
+            'ukraine':   { name: 'أوكرانيا', flag: '🇺🇦', region: 'أوروبا الشرقية', zone: 2, price: 10, sms: null },
+            'cyprus':    { name: 'قبرص', flag: '🇨🇾', region: 'البحر المتوسط', zone: 2, price: 10, sms: null },
+            'kazakhstan':{ name: 'كازاخستان', flag: '🇰🇿', region: 'آسيا الوسطى', zone: 2, price: 10, sms: null },
+            'armenia':   { name: 'أرمينيا', flag: '🇦🇲', region: 'القوقاز', zone: 2, price: 10, sms: null },
+            'barbados':  { name: 'بربادوس', flag: '🇧🇧', region: 'الكاريبي', zone: 2, price: 10, sms: null },
+            'belgium':   { name: 'بلجيكا', flag: '🇧🇪', region: 'أوروبا الغربية', zone: 4, price: 30, sms: null },
+
+            // === المنطقة 3 — 10 ج.م ===
+            'australia': { name: 'أستراليا', flag: '🇦🇺', region: 'أوقيانوسيا', zone: 3, price: 10, sms: null },
+            'japan':     { name: 'اليابان', flag: '🇯🇵', region: 'شرق آسيا', zone: 3, price: 10, sms: null },
+            'singapore': { name: 'سنغافورة', flag: '🇸🇬', region: 'جنوب شرق آسيا', zone: 3, price: 10, sms: null },
+            'india':     { name: 'الهند', flag: '🇮🇳', region: 'جنوب آسيا', zone: 3, price: 10, sms: null },
+            'china':     { name: 'الصين', flag: '🇨🇳', region: 'شرق آسيا', zone: 3, price: 10, sms: null },
+            'southkorea':{ name: 'كوريا الجنوبية', flag: '🇰🇷', region: 'شرق آسيا', zone: 3, price: 10, sms: null },
+            'thailand':  { name: 'تايلاند', flag: '🇹🇭', region: 'جنوب شرق آسيا', zone: 3, price: 10, sms: null },
+            'indonesia': { name: 'إندونيسيا', flag: '🇮🇩', region: 'جنوب شرق آسيا', zone: 3, price: 10, sms: null },
+            'malaysia':  { name: 'ماليزيا', flag: '🇲🇾', region: 'جنوب شرق آسيا', zone: 3, price: 10, sms: null },
+            'pakistan':  { name: 'باكستان', flag: '🇵🇰', region: 'جنوب آسيا', zone: 3, price: 10, sms: null },
+            'bangladesh':{ name: 'بنجلاديش', flag: '🇧🇩', region: 'جنوب آسيا', zone: 3, price: 10, sms: null },
+            'brazil':    { name: 'البرازيل', flag: '🇧🇷', region: 'أمريكا الجنوبية', zone: 3, price: 10, sms: null },
+            'mexico':    { name: 'المكسيك', flag: '🇲🇽', region: 'أمريكا الوسطى', zone: 3, price: 10, sms: null },
+            'argentina': { name: 'الأرجنتين', flag: '🇦🇷', region: 'أمريكا الجنوبية', zone: 3, price: 10, sms: null },
+            'southafrica':{ name: 'جنوب أفريقيا', flag: '🇿🇦', region: 'أفريقيا', zone: 3, price: 10, sms: null },
+            'nigeria':   { name: 'نيجيريا', flag: '🇳🇬', region: 'غرب أفريقيا', zone: 3, price: 10, sms: null },
+            'kenya':     { name: 'كينيا', flag: '🇰🇪', region: 'شرق أفريقيا', zone: 3, price: 10, sms: null },
+            'newzealand':{ name: 'نيوزيلندا', flag: '🇳🇿', region: 'أوقيانوسيا', zone: 3, price: 10, sms: null },
+            'israel':    { name: 'إسرائيل', flag: '🇮🇱', region: 'الشرق الأوسط', zone: 3, price: 10, sms: null },
+            'iran':      { name: 'إيران', flag: '🇮🇷', region: 'الشرق الأوسط', zone: 3, price: 10, sms: null },
+            'vietnam':   { name: 'فيتنام', flag: '🇻🇳', region: 'جنوب شرق آسيا', zone: 3, price: 10, sms: null },
+            'philippines':{ name: 'الفلبين', flag: '🇵🇭', region: 'جنوب شرق آسيا', zone: 3, price: 10, sms: null },
+            'srilanka':  { name: 'سريلانكا', flag: '🇱🇰', region: 'جنوب آسيا', zone: 3, price: 10, sms: null },
+            'ethiopia':  { name: 'إثيوبيا', flag: '🇪🇹', region: 'شرق أفريقيا', zone: 3, price: 10, sms: null },
+            'colombia':  { name: 'كولومبيا', flag: '🇨🇴', region: 'أمريكا الجنوبية', zone: 3, price: 10, sms: null },
+            'chile':     { name: 'تشيلي', flag: '🇨🇱', region: 'أمريكا الجنوبية', zone: 3, price: 10, sms: null },
+            'peru':      { name: 'بيرو', flag: '🇵🇪', region: 'أمريكا الجنوبية', zone: 3, price: 10, sms: null },
+            'taiwan':    { name: 'تايوان', flag: '🇹🇼', region: 'شرق آسيا', zone: 3, price: 10, sms: null },
+            'hongkong':  { name: 'هونغ كونغ', flag: '🇭🇰', region: 'شرق آسيا', zone: 3, price: 10, sms: null },
+            'rwanda':    { name: 'رواندا', flag: '🇷🇼', region: 'أفريقيا', zone: 3, price: 10, sms: null },
+            'ghana':     { name: 'غانا', flag: '🇬🇭', region: 'غرب أفريقيا', zone: 3, price: 10, sms: null },
+            'senegal':   { name: 'السنغال', flag: '🇸🇳', region: 'غرب أفريقيا', zone: 3, price: 10, sms: null },
+            'mozambique':{ name: 'موزمبيق', flag: '🇲🇿', region: 'جنوب أفريقيا', zone: 3, price: 10, sms: null },
+            'cambodia':  { name: 'كمبوديا', flag: '🇰🇭', region: 'جنوب شرق آسيا', zone: 3, price: 10, sms: null },
+            'angola':    { name: 'أنجولا', flag: '🇦🇴', region: 'أفريقيا', zone: 3, price: 10, sms: null },
+
+            // === المنطقة 4 — 30 ج.م ===
+            'morocco':   { name: 'المغرب', flag: '🇲🇦', region: 'شمال أفريقيا', zone: 4, price: 30, sms: null },
+            'morocco4':  { name: 'المغرب', flag: '🇲🇦', region: 'شمال أفريقيا', zone: 4, price: 30, sms: null },
+            'denmark':   { name: 'الدنمارك', flag: '🇩🇰', region: 'أوروبا الشمالية', zone: 4, price: 30, sms: null },
+            'sweden':    { name: 'السويد', flag: '🇸🇪', region: 'أوروبا الشمالية', zone: 4, price: 30, sms: null },
+            'finland':   { name: 'فنلندا', flag: '🇫🇮', region: 'أوروبا الشمالية', zone: 4, price: 30, sms: null },
+            'switzerland':{ name: 'سويسرا', flag: '🇨🇭', region: 'أوروبا الوسطى', zone: 4, price: 30, sms: null },
+            'cameroon':  { name: 'الكاميرون', flag: '🇨🇲', region: 'أفريقيا', zone: 4, price: 30, sms: null },
+            'tanzania':  { name: 'تنزانيا', flag: '🇹🇿', region: 'أفريقيا', zone: 4, price: 30, sms: null },
+            'uganda':    { name: 'أوغندا', flag: '🇺🇬', region: 'أفريقيا', zone: 4, price: 30, sms: null },
+            'mali':      { name: 'مالي', flag: '🇲🇱', region: 'غرب أفريقيا', zone: 4, price: 30, sms: null },
+            'madagascar':{ name: 'مدغشقر', flag: '🇲🇬', region: 'أفريقيا', zone: 4, price: 30, sms: null },
+            'somalia':   { name: 'الصومال', flag: '🇸🇴', region: 'شرق أفريقيا', zone: 4, price: 30, sms: null },
+            'southsudan':{ name: 'جنوب السودان', flag: '🇸🇸', region: 'أفريقيا', zone: 4, price: 30, sms: null },
+            'djibouti':  { name: 'جيبوتي', flag: '🇩🇯', region: 'شرق أفريقيا', zone: 4, price: 30, sms: null },
+            'haiti':     { name: 'هايتي', flag: '🇭🇹', region: 'الكاريبي', zone: 4, price: 30, sms: null },
+            'latvia':    { name: 'لاتفيا', flag: '🇱🇻', region: 'أوروبا الشمالية', zone: 4, price: 30, sms: null },
+            'lithuania': { name: 'ليتوانيا', flag: '🇱🇹', region: 'أوروبا الشمالية', zone: 4, price: 30, sms: null },
+            'estonia':   { name: 'إستونيا', flag: '🇪🇪', region: 'أوروبا الشمالية', zone: 4, price: 30, sms: null },
+            'georgia':   { name: 'جورجيا', flag: '🇬🇪', region: 'القوقاز', zone: 4, price: 30, sms: null },
+            'croatia':   { name: 'كرواتيا', flag: '🇭🇷', region: 'أوروبا الشرقية', zone: 4, price: 30, sms: null },
+            'serbia':    { name: 'صربيا', flag: '🇷🇸', region: 'أوروبا الشرقية', zone: 4, price: 30, sms: null },
+            'albania':   { name: 'ألبانيا', flag: '🇦🇱', region: 'أوروبا', zone: 4, price: 30, sms: null },
+            'gabon':     { name: 'الغابون', flag: '🇬🇦', region: 'أفريقيا', zone: 4, price: 30, sms: null },
+            'drc':       { name: 'الكونغو الديمقراطية', flag: '🇨🇩', region: 'أفريقيا', zone: 4, price: 30, sms: null },
+            'ivorycoast':{ name: 'ساحل العاج', flag: '🇨🇮', region: 'غرب أفريقيا', zone: 4, price: 30, sms: null },
+            'burkinafaso':{ name: 'بوركينا فاسو', flag: '🇧🇫', region: 'غرب أفريقيا', zone: 4, price: 30, sms: null },
+            'reunion':   { name: 'ريونيون', flag: '🇷🇪', region: 'أفريقيا', zone: 4, price: 30, sms: null },
+            'comoros':   { name: 'جزر القمر', flag: '🇰🇲', region: 'أفريقيا', zone: 4, price: 30, sms: null },
+            'zimbabwe':  { name: 'زيمبابوي', flag: '🇿🇼', region: 'أفريقيا', zone: 4, price: 30, sms: null },
+            'malawi':    { name: 'ملاوي', flag: '🇲🇼', region: 'أفريقيا', zone: 4, price: 30, sms: null },
+            'zambia':    { name: 'زامبيا', flag: '🇿🇲', region: 'أفريقيا', zone: 4, price: 30, sms: null },
+
+            // === المنطقة 5 — 45 ج.م ===
+            'tunisia':   { name: 'تونس', flag: '🇹🇳', region: 'شمال أفريقيا', zone: 5, price: 45, sms: null },
+            'algeria':   { name: 'الجزائر', flag: '🇩🇿', region: 'شمال أفريقيا', zone: 5, price: 45, sms: null },
+            'cuba':      { name: 'كوبا', flag: '🇨🇺', region: 'الكاريبي', zone: 5, price: 45, sms: null },
+            'tuvalu':    { name: 'توفالو', flag: '🇹🇻', region: 'المحيط الهادئ', zone: 5, price: 45, sms: null },
+            'maldives':  { name: 'المالديف', flag: '🇲🇻', region: 'جنوب آسيا', zone: 5, price: 45, sms: null },
+            'vanuatu':   { name: 'فانواتو', flag: '🇻🇺', region: 'المحيط الهادئ', zone: 5, price: 45, sms: null },
+            'kiribati':  { name: 'كيريباتي', flag: '🇰🇮', region: 'المحيط الهادئ', zone: 5, price: 45, sms: null },
+            'nauru':     { name: 'ناورو', flag: '🇳🇷', region: 'المحيط الهادئ', zone: 5, price: 45, sms: null },
+            'tonga':     { name: 'تونغا', flag: '🇹🇴', region: 'المحيط الهادئ', zone: 5, price: 45, sms: null },
+            'solomons':  { name: 'جزر سليمان', flag: '🇸🇧', region: 'المحيط الهادئ', zone: 5, price: 45, sms: null },
+        };
+
+        const zoneLabels = {
+            1: { text: 'المنطقة 1', cls: 'zone-1' },
+            2: { text: 'المنطقة 2', cls: 'zone-2' },
+            3: { text: 'المنطقة 3', cls: 'zone-3' },
+            4: { text: 'المنطقة 4', cls: 'zone-4' },
+            5: { text: 'المنطقة 5', cls: 'zone-5' },
+        };
+
+        const countryFeaturesByZone = {
+            1: ['سعر الرسالة القصيرة الدولية: 4 ج.م/رسالة', 'متاح للدفع المسبق والكنترول', 'السعر ثابت في الذروة وخارجها', 'مع خدمة عالم واحد: 8 ج.م/دقيقة فقط (#299*)'],
+            2: ['متاح للدفع المسبق والكنترول', 'السعر ثابت في الذروة وخارجها', 'مع خدمة عالم واحد: 8 ج.م/دقيقة فقط (#299*)'],
+            3: ['متاح للدفع المسبق والكنترول', 'السعر ثابت في الذروة وخارجها', 'مع خدمة عالم واحد: 8 ج.م/دقيقة فقط (#299*)'],
+            4: ['⚠️ السعر مرتفع — ننصح بخدمة عالم واحد', 'مع خدمة عالم واحد: 8 ج.م فقط بدلاً من 30 ج.م (#299*)', 'متاح للدفع المسبق والكنترول', 'السعر ثابت في الذروة وخارجها'],
+            5: ['⚠️ السعر مرتفع جداً — ننصح بخدمة عالم واحد', 'مع خدمة عالم واحد: 8 ج.م فقط بدلاً من 45 ج.م (#299*)', 'متاح للدفع المسبق والكنترول', 'السعر ثابت في الذروة وخارجها'],
+        };
+
+        const countrySelect = document.getElementById('countrySelect');
+        const showPricingBtn = document.getElementById('showPricingBtn');
+        const pricingSection = document.getElementById('pricing-section');
+
+        countrySelect.addEventListener('change', function() {
+            showPricingBtn.disabled = !this.value;
+        });
+
+        function showPricingForCountry() {
+            const val = countrySelect.value;
+            if (val) displayPricing(val);
+        }
+
+        function selectCountryQuick(code) {
+            countrySelect.value = code;
+            showPricingBtn.disabled = false;
+            displayPricing(code);
+            setTimeout(() => {
+                document.getElementById('pricing-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 100);
+        }
+
+        function displayPricing(code) {
+            const d = countryData[code];
+            if (!d) return;
+
+            document.getElementById('countryFlag').textContent = d.flag;
+            document.getElementById('countryName').textContent = d.name;
+            document.getElementById('countryRegion').textContent = d.region;
+            document.getElementById('callPrice').textContent = d.price;
+            document.getElementById('pricingSubtitle').textContent = `سعر المكالمة الدولية إلى ${d.name}`;
+            document.getElementById('regularPriceCompare').textContent = d.price;
+
+            const badge = document.getElementById('zoneBadge');
+            const zl = zoneLabels[d.zone];
+            badge.textContent = zl.text;
+            badge.className = 'zone-badge ' + zl.cls;
+
+            const smsBox = document.getElementById('smsPriceBox');
+            if (d.sms) {
+                smsBox.style.display = 'flex';
+                document.getElementById('smsPrice').textContent = d.sms;
+            } else {
+                smsBox.style.display = 'none';
+            }
+
+            const features = countryFeaturesByZone[d.zone] || [];
+            document.getElementById('countryFeatures').innerHTML = features.map(f => `<li>${f}</li>`).join('');
+
+            pricingSection.classList.add('visible');
+            setTimeout(() => {
+                pricingSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 100);
+        }
+
+        function subscribe() {
+            const name = document.getElementById('countryName').textContent;
+            const price = document.getElementById('callPrice').textContent;
+            alert(`✅ خدمة المكالمات لـ ${name} بسعر ${price} ج.م/دقيقة\n\nللاشتراك في خدمة عالم واحد واتصل بـ 8 ج.م/دقيقة فقط:\nاضغط #299* مجاناً\n\nأو اتصل بخدمة العملاء على 111`);
+        }
+
+        function scrollToCountrySelector() {
+            document.getElementById('countrySelectorBox').scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
+        document.querySelectorAll('.faq-question').forEach(q => {
+            q.addEventListener('click', () => {
+                const item = q.parentElement;
+                const wasActive = item.classList.contains('active');
+                document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('active'));
+                if (!wasActive) item.classList.add('active');
+            });
+        });
+
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const t = this.getAttribute('href');
+                if (t === '#') return;
+                const el = document.querySelector(t);
+                if (el) window.scrollTo({ top: el.offsetTop - 80, behavior: 'smooth' });
+            });
+        });
+    </script>
+<script src="../script/active-users-widget.js"></script>
+</body>
+</html>
