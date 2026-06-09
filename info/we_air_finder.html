@@ -5,11 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>تحديد مناطق تشغيل we air</title>
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
 
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -18,77 +14,21 @@
       padding: 20px;
     }
 
-    .container {
-      max-width: 900px;
-      margin: 0 auto;
-    }
+    .container { max-width: 900px; margin: 0 auto; }
 
-    header {
-      text-align: center;
-      color: white;
-      margin-bottom: 40px;
-      padding-top: 20px;
-    }
+    header { text-align: center; color: white; margin-bottom: 40px; padding-top: 20px; }
+    header h1 { font-size: 2.5em; margin-bottom: 10px; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); }
+    header p { font-size: 1.1em; opacity: 0.9; }
 
-    header h1 {
-      font-size: 2.5em;
-      margin-bottom: 10px;
-      text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-    }
+    .stats { display: flex; justify-content: center; gap: 40px; margin-bottom: 40px; flex-wrap: wrap; }
+    .stat-item { background: white; padding: 20px 30px; border-radius: 10px; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+    .stat-item .number { font-size: 2em; font-weight: bold; color: #667eea; margin-bottom: 5px; }
+    .stat-item .label { color: #666; font-size: 0.9em; }
 
-    header p {
-      font-size: 1.1em;
-      opacity: 0.9;
-    }
+    .search-box { background: white; padding: 30px; border-radius: 15px; box-shadow: 0 10px 40px rgba(0,0,0,0.2); margin-bottom: 30px; }
+    .search-box h2 { margin-bottom: 20px; color: #333; font-size: 1.3em; }
 
-    .stats {
-      display: flex;
-      justify-content: center;
-      gap: 40px;
-      margin-bottom: 40px;
-      flex-wrap: wrap;
-    }
-
-    .stat-item {
-      background: white;
-      padding: 20px 30px;
-      border-radius: 10px;
-      text-align: center;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-    }
-
-    .stat-item .number {
-      font-size: 2em;
-      font-weight: bold;
-      color: #667eea;
-      margin-bottom: 5px;
-    }
-
-    .stat-item .label {
-      color: #666;
-      font-size: 0.9em;
-    }
-
-    .search-box {
-      background: white;
-      padding: 30px;
-      border-radius: 15px;
-      box-shadow: 0 10px 40px rgba(0,0,0,0.2);
-      margin-bottom: 30px;
-    }
-
-    .search-box h2 {
-      margin-bottom: 20px;
-      color: #333;
-      font-size: 1.3em;
-    }
-
-    .search-controls {
-      display: flex;
-      gap: 10px;
-      margin-bottom: 15px;
-      flex-wrap: wrap;
-    }
+    .search-controls { display: flex; gap: 10px; margin-bottom: 15px; flex-wrap: wrap; }
 
     input[type="text"], select {
       flex: 1;
@@ -100,153 +40,54 @@
       transition: border-color 0.3s;
       background-color: white;
     }
+    input[type="text"]:focus, select:focus { outline: none; border-color: #667eea; }
 
-    input[type="text"]:focus, select:focus {
-      outline: none;
-      border-color: #667eea;
-    }
+    button { padding: 12px 25px; border: none; border-radius: 8px; font-size: 1em; cursor: pointer; transition: all 0.3s; font-weight: 600; }
+    .btn-search { background: #667eea; color: white; }
+    .btn-search:hover { background: #5568d3; transform: translateY(-2px); box-shadow: 0 5px 15px rgba(102,126,234,0.4); }
+    .btn-gps { background: #f0f0f0; color: #333; padding: 12px 15px; }
+    .btn-gps:hover { background: #e0e0e0; }
 
-    button {
-      padding: 12px 25px;
-      border: none;
-      border-radius: 8px;
-      font-size: 1em;
-      cursor: pointer;
-      transition: all 0.3s;
-      font-weight: 600;
-    }
-
-    .btn-search {
-      background: #667eea;
-      color: white;
-    }
-
-    .btn-search:hover {
-      background: #5568d3;
-      transform: translateY(-2px);
-      box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
-    }
-
-    .btn-gps {
-      background: #f0f0f0;
-      color: #333;
-      padding: 12px 15px;
-    }
-
-    .btn-gps:hover {
-      background: #e0e0e0;
-    }
-
-    .status-message {
-      padding: 12px 15px;
-      border-radius: 8px;
+    .session-expired {
+      background: #f8d7da;
+      border: 1px solid #f5c6cb;
+      color: #721c24;
+      padding: 15px 20px;
+      border-radius: 10px;
       margin-bottom: 15px;
       display: none;
-      animation: slideIn 0.3s ease;
+      text-align: center;
     }
+    .session-expired.show { display: block; }
+    .session-expired a { color: #721c24; font-weight: bold; text-decoration: underline; }
 
-    .status-message.show {
-      display: block;
-    }
+    .status-message { padding: 12px 15px; border-radius: 8px; margin-bottom: 15px; display: none; animation: slideIn 0.3s ease; }
+    .status-message.show { display: block; }
+    .status-message.success { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+    .status-message.error { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+    .status-message.loading { background: #d1ecf1; color: #0c5460; border: 1px solid #bee5eb; }
 
-    .status-message.success {
-      background: #d4edda;
-      color: #155724;
-      border: 1px solid #c3e6cb;
-    }
+    @keyframes slideIn { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
 
-    .status-message.error {
-      background: #f8d7da;
-      color: #721c24;
-      border: 1px solid #f5c6cb;
-    }
-
-    .status-message.loading {
-      background: #d1ecf1;
-      color: #0c5460;
-      border: 1px solid #bee5eb;
-    }
-
-    @keyframes slideIn {
-      from { opacity: 0; transform: translateY(-10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    .location-chip {
-      display: inline-block;
-      background: #667eea;
-      color: white;
-      padding: 8px 15px;
-      border-radius: 20px;
-      margin-bottom: 15px;
-      opacity: 0;
-      transition: opacity 0.3s;
-    }
-
+    .location-chip { display: inline-block; background: #667eea; color: white; padding: 8px 15px; border-radius: 20px; margin-bottom: 15px; opacity: 0; transition: opacity 0.3s; }
     .location-chip.visible { opacity: 1; }
 
-    .results-section {
-      background: white;
-      padding: 30px;
-      border-radius: 15px;
-      box-shadow: 0 10px 40px rgba(0,0,0,0.2);
-    }
+    .results-section { background: white; padding: 30px; border-radius: 15px; box-shadow: 0 10px 40px rgba(0,0,0,0.2); }
+    .results-section h2 { color: #333; margin-bottom: 20px; font-size: 1.3em; }
+    .cards-container { display: grid; gap: 15px; }
 
-    .results-section h2 {
-      color: #333;
-      margin-bottom: 20px;
-      font-size: 1.3em;
-    }
-
-    .cards-container {
-      display: grid;
-      gap: 15px;
-    }
-
-    .station-card {
-      background: #f8f9fa;
-      border-left: 4px solid #667eea;
-      padding: 20px;
-      border-radius: 8px;
-      transition: all 0.3s;
-      animation: cardIn 0.5s ease;
-    }
-
-    .station-card:hover {
-      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-      transform: translateX(5px);
-    }
-
-    @keyframes cardIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
+    .station-card { background: #f8f9fa; border-left: 4px solid #667eea; padding: 20px; border-radius: 8px; transition: all 0.3s; animation: cardIn 0.5s ease; }
+    /* FIX 4: added rank-other style */
+    .station-card:hover { box-shadow: 0 5px 15px rgba(0,0,0,0.1); transform: translateX(5px); }
     .station-card.rank-1 { border-left-color: #ffc107; background: #fffbf0; }
     .station-card.rank-2 { border-left-color: #c0c0c0; background: #f9f9f9; }
     .station-card.rank-3 { border-left-color: #cd7f32; background: #faf9f7; }
+    .station-card.rank-other { border-left-color: #667eea; background: #f8f9fa; }
 
-    .card-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 10px;
-    }
+    @keyframes cardIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-    .rank-badge {
-      display: inline-block;
-      width: 30px;
-      height: 30px;
-      border-radius: 50%;
-      background: #667eea;
-      color: white;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: bold;
-      font-size: 0.9em;
-    }
-
+    .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+    .rank-badge { display: inline-flex; width: 30px; height: 30px; border-radius: 50%; background: #667eea; color: white; align-items: center; justify-content: center; font-weight: bold; font-size: 0.9em; }
     .rank-badge.rank-1 { background: #ffc107; color: #333; }
     .rank-badge.rank-2 { background: #c0c0c0; color: #333; }
     .rank-badge.rank-3 { background: #cd7f32; color: white; }
@@ -255,19 +96,8 @@
     .station-code { color: #999; font-size: 0.85em; margin-top: 5px; }
     .station-distance { font-size: 1.1em; font-weight: 600; color: #667eea; }
 
-    .card-details {
-      margin-top: 15px;
-      padding-top: 15px;
-      border-top: 1px solid #e0e0e0;
-    }
-
-    .detail-row {
-      display: flex;
-      justify-content: space-between;
-      margin-bottom: 8px;
-      font-size: 0.95em;
-    }
-
+    .card-details { margin-top: 15px; padding-top: 15px; border-top: 1px solid #e0e0e0; }
+    .detail-row { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 0.95em; }
     .detail-label { color: #666; font-weight: 500; }
     .detail-value { color: #333; font-weight: 600; }
 
@@ -281,13 +111,7 @@
     .empty-state { text-align: center; padding: 40px; color: #999; }
     .empty-state-icon { font-size: 3em; margin-bottom: 15px; }
 
-    footer {
-      text-align: center;
-      color: white;
-      margin-top: 40px;
-      opacity: 0.8;
-      font-size: 0.9em;
-    }
+    footer { text-align: center; color: white; margin-top: 40px; opacity: 0.8; font-size: 0.9em; }
   </style>
 </head>
 <body>
@@ -307,19 +131,25 @@
         <div class="label">قسم مسجّل</div>
       </div>
       <div class="stat-item">
-        <div class="number" id="coverage-count">-</div>
+        <!-- FIX 5: show 0 instead of - -->
+        <div class="number" id="coverage-count">0</div>
         <div class="label">النتائج المعروضة</div>
       </div>
     </div>
 
     <div class="search-box">
       <h2>🔍 اختر القسم أو أدخل عنوانك للبحث الفوري والآمن</h2>
+
+      <div class="session-expired" id="session-expired">
+        ⚠️ انتهت جلستك، يرجى <a href="/">تسجيل الدخول مرة أخرى</a>
+      </div>
+
       <div class="search-controls">
         <select id="department-select" onchange="searchByText()">
           <option value="">-- اختر قسم الشرطة (الكل) --</option>
         </select>
-        
-        <input type="text" id="address-input" placeholder="مثال: المعادي أو اكتب اسم السنترال مباشرة">
+        <!-- FIX 3: Enter key triggers search -->
+        <input type="text" id="address-input" placeholder="مثال: المعادي أو اكتب اسم السنترال مباشرة" onkeydown="if(event.key==='Enter') searchByText()">
         <button class="btn-search" id="search-btn" onclick="searchByText()">بحث</button>
         <button class="btn-gps" id="gps-btn" onclick="locateByGPS()" title="تحديد موقعي بالـ GPS">GPS</button>
       </div>
@@ -345,16 +175,9 @@
     </footer>
   </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>
-    const SUPABASE_URL = 'https://iygwhapcpdmsasqlfelv.supabase.co';
-    const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml5Z3doYXBjcGRtc2FzcWxmZWx2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzEzNDk5MDQsImV4cCI6Mjا4NjkyNTkwNH0.jqU1fEc9kBkXcCfazH6aTnS2XWWzPv0bbixHZgjtrnQ';
-    const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    const FUNCTION_URL = 'https://iygwhapcpdmsasqlfelv.supabase.co/functions/v1/hyper-task';
 
-    const EDGE_FUNCTION_NAME = 'hyper-task'; // ضع اسم الفانكشن هنا
-
-    // ─── مصفوفة أقسام الشرطة الثابتة داخل الكود ───
-    // يمكنك تعديلها أو إضافة أو حذف أي قسم شرطة مباشرة من هنا
     const POLICE_DEPARTMENTS = [
       '101_Qism Al Tebin', '102_Qism Helwan', '103_Qism Al Maasara', '104_Qism 15 May', '105_Qism Tora',
       '106_Qism Al Maadi', '107_Qism Al Basatin', '108_Qism Dar Al Salam', '109_Qism Masr Al Adema', '110_Qism Al Sayeda Zainab',
@@ -439,10 +262,8 @@
       '2699_Desert Side Sohag Governorate 3', '2799_Desert Side Qena Governorate 2'
     ];
 
-    // تعبئة الـ Select Box فوراً من المصفوفة الثابتة
     function initDepartments() {
       const select = document.getElementById('department-select');
-      // ترتيب الأقسام أبدياً قبل العرض
       POLICE_DEPARTMENTS.sort().forEach(dept => {
         const opt = document.createElement('option');
         opt.value = dept;
@@ -451,10 +272,20 @@
       });
     }
 
-    async function getValidToken() {
-      const { data: { session }, error } = await supabaseClient.auth.getSession();
-      if (error || !session) return null;
-      return session.access_token;
+    // إرسال الكوكي تلقائياً مع كل request
+    async function callFunction(body) {
+      const res = await fetch(FUNCTION_URL, {
+        method: 'POST',
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body)
+      });
+      if (res.status === 401) {
+        document.getElementById('session-expired').classList.add('show');
+        throw new Error('Unauthorized');
+      }
+      if (!res.ok) throw new Error('Server error: ' + res.status);
+      return res.json();
     }
 
     function displayResults(stations) {
@@ -477,11 +308,16 @@
         if (sl.includes('3g')) badges.push('<div class="coverage-badge coverage-3g">✓ 3G</div>');
         const badgeHtml = badges.length > 0 ? badges.join('') : `<div class="coverage-badge coverage-none">${coverageStatus}</div>`;
 
+        // FIX 4: use rank-other class for ranks > 3
+        const rankClass = rank <= 3 ? `rank-${rank}` : 'rank-other';
         const card = document.createElement('div');
-        card.className = `station-card rank-${rank <= 3 ? rank : 'other'} show`;
+        card.className = `station-card ${rankClass}`;
         card.innerHTML = `
           <div class="card-header">
-            <div><div class="station-name">${station.name || 'منطقة'}</div><div class="station-code">${station.police_department || ''}</div></div>
+            <div>
+              <div class="station-name">${station.name || 'منطقة'}</div>
+              <div class="station-code">${station.police_department || ''}</div>
+            </div>
             ${rank <= 3 ? `<div class="rank-badge rank-${rank}">${rank}</div>` : ''}
           </div>
           ${station.distance ? `<div class="station-distance">${Number(station.distance).toFixed(1)} كم</div>` : ''}
@@ -504,35 +340,25 @@
     async function searchByText() {
       const input = document.getElementById('address-input').value.trim();
       const selectedDept = document.getElementById('department-select').value;
-      
+
       showStatus('جاري معالجة طلب البحث بأمان...', 'loading');
 
-      const token = await getValidToken();
-      if (!token) {
-        showStatus('خطأ: يرجى تسجيل الدخول أولاً للوصول إلى قاعدة البيانات.', 'error');
-        return;
-      }
-
       try {
-        const { data, error } = await supabaseClient.functions.invoke(EDGE_FUNCTION_NAME, {
-          method: 'POST',
-          headers: { 'Authorization': `Bearer ${token}` },
-          body: { 
-            action: 'search_we_air_text', 
-            query: input,
-            police_department: selectedDept
-          }
+        const data = await callFunction({
+          action: 'search_we_air_text',
+          query: input,
+          police_department: selectedDept
         });
-
-        if (error) throw error;
 
         const results = data.results || [];
         displayResults(results);
         showStatus(`تم العثور على ${results.length} نتيجة مصرح بها`, 'success');
 
       } catch (err) {
-        console.error('فشل في جلب البيانات:', err);
-        showStatus('حدث خطأ في الاتصال بالسيرفر.', 'error');
+        if (err.message !== 'Unauthorized') {
+          console.error('فشل في جلب البيانات:', err);
+          showStatus('حدث خطأ في الاتصال بالسيرفر.', 'error');
+        }
       }
     }
 
@@ -540,35 +366,23 @@
       showStatus('جاري تحديد الإحداثيات الحالية...', 'loading');
       if (!navigator.geolocation) { showStatus('المتصفح لا يدعم تحديد الموقع GPS', 'error'); return; }
 
-      const token = await getValidToken();
-      if (!token) {
-        showStatus('خطأ: يرجى تسجيل الدخول أولاً للوصول إلى قاعدة البيانات.', 'error');
-        return;
-      }
-
       navigator.geolocation.getCurrentPosition(
         async (pos) => {
           const { latitude: lat, longitude: lng } = pos.coords;
-          
           try {
-            const { data, error } = await supabaseClient.functions.invoke(EDGE_FUNCTION_NAME, {
-              method: 'POST',
-              headers: { 'Authorization': `Bearer ${token}` },
-              body: { action: 'search_we_air_gps', lat: lat, lng: lng }
-            });
-
-            if (error) throw error;
+            const data = await callFunction({ action: 'search_we_air_gps', lat, lng });
 
             const results = data.results || [];
             displayResults(results);
-            
             showStatus('تم جلب أقرب النقاط المتاحة لموقعك الحالي', 'success');
             document.getElementById('location-chip').classList.add('visible');
             document.getElementById('location-text').textContent = `الموقع الحالي (${lat.toFixed(3)}, ${lng.toFixed(3)})`;
 
           } catch (err) {
-            console.error(err);
-            showStatus('فشل السيرفر في معالجة حساب المسافات.', 'error');
+            if (err.message !== 'Unauthorized') {
+              console.error(err);
+              showStatus('فشل السيرفر في معالجة حساب المسافات.', 'error');
+            }
           }
         },
         () => showStatus('فشل في العثور على إشارة الـ GPS.', 'error'),
@@ -576,8 +390,9 @@
       );
     }
 
-    // تشغيل التعبئة الثابتة فور فتح المستند
-    document.addEventListener("DOMContentLoaded", initDepartments);
+    document.addEventListener('DOMContentLoaded', () => {
+      initDepartments();
+    });
   </script>
 </body>
 </html>
