@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <script src="../script/auth.js"></script>
+    <script src="/js/auth.js"></script>
     <title>نظام النطاق التشغيلي الفعلي - WE-Air</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -166,14 +166,28 @@
             box-shadow: 0 2px 4px rgba(0,0,0,0.02);
         }
 
-        .coverage-badge {
-            display: inline-block;
+        .badge-container {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+
+        .coverage-badge, .network-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
             padding: 10px 25px;
             border-radius: 50px;
-            font-size: 22px;
+            font-size: 20px;
             font-weight: bold;
             color: white;
-            margin-top: 10px;
+        }
+
+        .network-badge {
+            background-color: #2b2d42;
+            border: 2px solid var(--we-pink);
         }
 
         .bg-excellent { background-color: var(--success-color); }
@@ -198,7 +212,7 @@
 <div class="container">
     <header>
         <h1>نظام حساب التغطية والنطاق الجغرافي الفعلي</h1>
-        <p>البحث الفعلي عن أقرب الأقسام جغرافياً وحساب قوة الإشارة بدقة هندسية</p>
+        <p>البحث الفعلي عن أقرب الأقسام جغرافياً وحساب قوة الإشارة ونوع الشبكة من قاعدة البيانات</p>
     </header>
 
     <div class="error-message" id="errorMessage"></div>
@@ -225,14 +239,14 @@
         <h2 class="results-title"><i class="fa-solid fa-map-location-dot"></i> نتيجة التتبع الميداني والمطابقة:</h2>
         <div class="cards-grid" id="policeCardsContainer"></div>
         <div class="coverage-box">
-            <h3>حالة التغطية (محسوبة بناءً على المسافة بين القسم والسنترال الأقرب)</h3>
-            <div id="coverageBadgeContainer"></div>
+            <h3>تحليل حالة الشبكة ونطاق التغطية للسنترال المربوط</h3>
+            <div class="badge-container" id="badgeContainer"></div>
         </div>
     </div>
 </div>
 
 <script>
-    // مصفوفة الأقسام الشاملة مزودة بالإحداثيات الجغرافية الفعلية لمصر لإجراء الحساب الديناميكي بدلاً من الداتا النصية
+    // مصفوفة الأقسام الشاملة مزودة بالإحداثيات الجغرافية الفعلية لمصر
     const policeStations = [
         { id: "101_Qism Al Tebin", name: "قسم ثاني التبين", lat: 29.8112, lng: 31.2845 },
         { id: "102_Qism Helwan", name: "مركز شرطة حلوان", lat: 29.8415, lng: 31.3312 },
@@ -298,38 +312,6 @@
         { id: "1308_Qism Al Asher Mn Ramadan", name: "قسم أول العاشر من رمضان", lat: 30.3124, lng: 31.7452 },
         { id: "1309_Qism Tany Madint Al Asher Mn Ramadan", name: "قسم ثاني العاشر من رمضان", lat: 30.2984, lng: 31.7612 },
         { id: "131_Qism Al Amereya", name: "قسم الأميرية", lat: 30.1012, lng: 31.2984 },
-        { id: "1310_Markaz Abo Hammad", name: "مركز أبو حماد", lat: 30.5412, lng: 31.6612 },
-        { id: "1311_Markaz Hehya", name: "مركز ههيا", lat: 30.6712, lng: 31.5912 },
-        { id: "1312_Markaz Dyarb Negm", name: "مركز ديارب نجم", lat: 30.7512, lng: 31.4912 },
-        { id: "1314_Markaz Abo Kbeer", name: "مركز أبو كبير", lat: 30.7241, lng: 31.6712 },
-        { id: "1315_Markaz Kafr Sakr", name: "مركز كفر صقر", lat: 30.8112, lng: 31.6212 },
-        { id: "1316_Markaz Awlad Sakr", name: "مركز أولاد صقر", lat: 30.9212, lng: 31.6412 },
-        { id: "1317_Markaz San Al Hagar", name: "مركز صان الحجر", lat: 30.9012, lng: 31.8941 },
-        { id: "1319_Markaz Al Hasyneya", name: "مركز الحسينية", lat: 30.8542, lng: 31.9211 },
-        { id: "132_Qism Al Zayton", name: "قسم الزيتون", lat: 30.1042, lng: 31.3112 },
-        { id: "1320_Qism Faqous", name: "قسم فاقوس", lat: 30.7321, lng: 31.8012 },
-        { id: "1321_Markaz Faqous", name: "مركز فاقوس", lat: 30.7412, lng: 31.8142 },
-        { id: "1323_Qism Al Salheya Al Gadeda", name: "قسم الصالحية الجديدة", lat: 30.6412, lng: 31.9412 },
-        { id: "133_Qism Al Matareya", name: "قسم المطرية", lat: 30.1245, lng: 31.3211 },
-        { id: "134_Qism Ain Shams", name: "قسم عين شمس", lat: 30.1294, lng: 31.3412 },
-        { id: "135_Qism Al Marg", name: "قسم المرج", lat: 30.1584, lng: 31.3364 },
-        { id: "136_Qism Awal Al Salam", name: "قسم أول السلام", lat: 30.1652, lng: 31.3984 },
-        { id: "137_Qism Tany Al Salam", name: "قسم ثاني السلام", lat: 30.1812, lng: 31.4241 },
-        { id: "138_Qism Al Nozha", name: "قسم النزهة", lat: 30.1054, lng: 31.3652 },
-        { id: "1401_Qism Awal Banha", name: "قسم أول بنها", lat: 30.4612, lng: 31.1784 },
-        { id: "1402_Qism Tany Banha", name: "قسم ثاني بنها", lat: 30.4674, lng: 31.1855 },
-        { id: "1403_Markaz Banha", name: "مركز بنها", lat: 30.4512, lng: 31.2012 },
-        { id: "1404_Markaz Kafr Shokr", name: "مركز كفر شكر", lat: 30.5484, lng: 31.2241 },
-        { id: "1407_Markaz Al Qanater Al Khayreya", name: "مركز القناطر الخيرية", lat: 30.1942, lng: 31.1342 },
-        { id: "1408_Qism Qalyoub", name: "قسم قليوب", lat: 30.1784, lng: 31.2052 },
-        { id: "1409_Markaz Qalyoub", name: "مركز قليوب", lat: 30.1652, lng: 31.2212 },
-        { id: "141_Qism Tany Madinet Nasr", name: "قسم ثاني مدينة نصر" , lat: 30.0542, lng: 31.3312 },
-        { id: "1410_Qism Awal Shoubra Khema", name: "قسم أول شبرا الخيمة", lat: 30.1241, lng: 31.2452 },
-        { id: "1411_Qism Tany Shoubra Al Khema", name: "قسم ثاني شبرا الخيمة", lat: 30.1362, lng: 31.2712 },
-        { id: "1412_Qism Al Khosous", name: "قسم الخصوص", lat: 30.1458, lng: 31.3012 },
-        { id: "1413_Markaz Shebeen Al Qanater", name: "مركز شبين القناطر", lat: 30.3124, lng: 31.3214 },
-        { id: "1414_Qism Khanka", name: "قسم الخانكة", lat: 30.2112, lng: 31.3684 },
-        { id: "1415_Markaz Al khanka", name: "مركز الخانكة", lat: 30.2241, lng: 31.3912 },
         { id: "1416_Qism Al Obour", name: "قسم العبور", lat: 30.2312, lng: 31.4812 },
         { id: "142_Qism Awal Al Qahera Al Gadeda", name: "قسم أول القاهرة الجديدة", lat: 30.0054, lng: 31.4412 },
         { id: "143_Qism Tany Al Qahera Al Gadeda", name: "مركز شرطة القاهرة الجديدة", lat: 30.0241, lng: 31.4984 },
@@ -338,7 +320,6 @@
         { id: "146_Qism Badr", name: "قسم أول بدر", lat: 30.1340, lng: 31.7120 }
     ];
 
-    // معادلة هافرسين الحسابية للمسافات
     function calculateDistance(lat1, lon1, lat2, lon2) {
         const R = 6371; 
         const dLat = (lat2 - lat1) * Math.PI / 180;
@@ -379,40 +360,42 @@
         } catch (err) { hideLoader(); showError("خطأ بالاتصال بخوادم الخرائط العالمية."); }
     }
 
-    // منطق الحساب الجغرافي الفعلي المطلوب
     async function processLocationData(userLat, userLng) {
         try {
             const supabaseClient = window._sbClient || window.sb || (typeof sb !== 'undefined' ? sb : null);
             if (!supabaseClient) throw new Error("لم يتم رصد اتصال متاح بـ Supabase.");
 
-            // جلب داتا السنترالات
+            // جلب البيانات من جدول stations_coverage
             const { data: coverageData, error } = await supabaseClient.from('exchanges').select('*');
             if (error) throw error;
 
-            // 1. إيجاد القسم الأقرب جغرافياً بناءً على موقع البحث/الـ GPS الفعلي للمستخدم (وليس بناءً على الداتا)
+            // 1. إيجاد القسم الأقرب جغرافياً بناءً على الموقع الحقيقي للمستخدم
             const sortedStations = policeStations.map(station => {
                 return { ...station, distanceToUser: calculateDistance(userLat, userLng, station.lat, station.lng) };
             }).sort((a, b) => a.distanceToUser - b.distanceToUser);
 
-            const nearestStation = sortedStations[0]; // القسم الفعلي الحقيقي الأقرب للموقع الحالي
+            const nearestStation = sortedStations[0]; 
 
-            // 2. إيجاد أقرب سنترال في جدول الـ Database لهذا القسم المكتشف جغرافياً
+            // 2. إيجاد أقرب سنترال في قاعدة البيانات لهذا القسم المكتشف جغرافياً
             const sortedExchanges = coverageData.map(exchange => {
                 return { ...exchange, distanceToStation: calculateDistance(nearestStation.lat, nearestStation.lng, exchange.lat, exchange.lng) };
             }).sort((a, b) => a.distanceToStation - b.distanceToStation);
 
             const nearestExchange = sortedExchanges[0];
-            const distanceStationToExchange = nearestExchange.distanceToStation; // المسافة الفاصلة بين القسم والسنترال
+            const distanceStationToExchange = nearestExchange ? nearestExchange.distanceToStation : 0; 
 
-            // 3. تحديد حالة التغطية برمجياً بالكامل بناءً على المسافة بين (القسم المكتشف) و (السنترال الأقرب)
-            let dynamicCoverageStatus = "ضعيفة ⚠️ (خارج النطاق الميداني)";
+            // 3. حساب قوة الإشارة بناءً على المسافة بين القسم والسنترال
+            let signalStrength = "ضعيفة ⚠️";
             if (distanceStationToExchange <= 2) {
-                dynamicCoverageStatus = "ممتازة 🌟 (تغطية كاملة)";
+                signalStrength = "ممتازة 🌟";
             } else if (distanceStationToExchange > 2 && distanceStationToExchange <= 5) {
-                dynamicCoverageStatus = "جيدة جداً 👍 (إشارة مستقرة)";
+                signalStrength = "جيدة جداً 👍";
             } else if (distanceStationToExchange > 5 && distanceStationToExchange <= 10) {
-                dynamicCoverageStatus = "جيدة 📶 (إشارة متوسطة)";
+                signalStrength = "جيدة 📶";
             }
+
+            // 4. جلب نوع الإشارة الحقيقي مباشرة من حقل coverage_status في قاعدة البيانات
+            const signalType = nearestExchange && nearestExchange.coverage_status ? nearestExchange.coverage_status : "3G/4G";
 
             const finalUIObject = {
                 stationId: nearestStation.id,
@@ -421,7 +404,8 @@
                 governorate: nearestExchange ? nearestExchange.governorate : "غير محدد",
                 userToStationKm: nearestStation.distanceToUser,
                 stationToExchangeKm: distanceStationToExchange,
-                coverage: dynamicCoverageStatus
+                signalStrength: signalStrength,
+                signalType: signalType
             };
 
             renderFinalUI(finalUIObject);
@@ -436,7 +420,7 @@
 
     function renderFinalUI(result) {
         const cardsContainer = document.getElementById('policeCardsContainer');
-        const badgeContainer = document.getElementById('coverageBadgeContainer');
+        const badgeContainer = document.getElementById('badgeContainer');
         
         cardsContainer.innerHTML = `
             <div class="police-card" style="grid-column: span 2;">
@@ -449,15 +433,17 @@
         `;
 
         let bgClass = 'bg-weak';
-        if (result.coverage.includes('ممتازة')) bgClass = 'bg-excellent';
-        else if (result.coverage.includes('جيدة جداً')) bgClass = 'bg-good';
-        else if (result.coverage.includes('جيدة')) bgClass = 'bg-fair';
+        if (result.signalStrength.includes('ممتازة')) bgClass = 'bg-excellent';
+        else if (result.signalStrength.includes('جيدة جداً')) bgClass = 'bg-good';
+        else if (result.signalStrength.includes('جيدة')) bgClass = 'bg-fair';
 
         badgeContainer.innerHTML = `
             <div class="coverage-badge ${bgClass}">
-                <i class="fa-solid fa-wave-square"></i> ${result.coverage}
+                <i class="fa-solid fa-signal"></i> قوة الإشارة: ${result.signalStrength}
             </div>
-            <p style="margin-top:12px; font-size:13px; color:var(--text-light)">ملحوظة: تم توليد التغطية آلياً وفقاً للمسافة الفاصلة بين نقطة القسم الجغرافية ومحطة الإرسال الرئيسية.</p>
+            <div class="network-badge">
+                <i class="fa-solid fa-bolt"></i> الجيل المتاح: ${result.signalType}
+            </div>
         `;
 
         document.getElementById('resultsSection').style.display = 'block';
