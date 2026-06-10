@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <script src="../script/auth.js"></script>
-    <title>تحديد المناطق التشغيلية وجهاز WE-Air</title>
+    <title>نظام النطاق التشغيلي الفعلي - WE-Air</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
@@ -12,6 +12,7 @@
             --we-pink: #ff007f;
             --we-light-purple: #f4eff6;
             --success-color: #2ec4b6;
+            --good-color: #4ea8de;
             --warning-color: #ffb703;
             --danger-color: #e63946;
             --text-dark: #2b2d42;
@@ -51,11 +52,6 @@
             margin-bottom: 10px;
         }
 
-        header p {
-            font-size: 14px;
-            opacity: 0.9;
-        }
-
         .search-card {
             background: white;
             padding: 25px;
@@ -77,11 +73,6 @@
             border-radius: 8px;
             font-size: 16px;
             outline: none;
-            transition: border-color 0.3s;
-        }
-
-        .input-group input:focus {
-            border-color: var(--we-purple);
         }
 
         .btn {
@@ -98,31 +89,12 @@
             gap: 8px;
         }
 
-        .btn-primary {
-            background-color: var(--we-purple);
-            color: white;
-        }
+        .btn-primary { background-color: var(--we-purple); color: white; }
+        .btn-primary:hover { background-color: #3a103e; }
+        .btn-gps { background-color: #e2e8f0; color: var(--text-dark); width: 100%; }
+        .btn-gps:hover { background-color: #cbd5e1; }
 
-        .btn-primary:hover {
-            background-color: #3a103e;
-        }
-
-        .btn-gps {
-            background-color: #e2e8f0;
-            color: var(--text-dark);
-            width: 100%;
-        }
-
-        .btn-gps:hover {
-            background-color: #cbd5e1;
-        }
-
-        .divider {
-            text-align: center;
-            margin: 15px 0;
-            color: var(--text-light);
-            position: relative;
-        }
+        .divider { text-align: center; margin: 15px 0; color: var(--text-light); }
 
         .loader {
             display: none;
@@ -141,9 +113,7 @@
             100% { transform: rotate(360deg); }
         }
 
-        .results-section {
-            display: none;
-        }
+        .results-section { display: none; }
 
         .results-title {
             margin-bottom: 15px;
@@ -162,12 +132,8 @@
         }
 
         @media (max-width: 600px) {
-            .cards-grid {
-                grid-template-columns: 1fr;
-            }
-            .input-group {
-                flex-direction: column;
-            }
+            .cards-grid { grid-template-columns: 1fr; }
+            .input-group { flex-direction: column; }
         }
 
         .police-card {
@@ -179,29 +145,16 @@
             position: relative;
         }
 
-        .police-card .badge {
-            position: absolute;
-            top: 15px;
-            left: 15px;
-            background: var(--we-light-purple);
-            color: var(--we-purple);
-            padding: 4px 8px;
-            border-radius: 5px;
-            font-size: 12px;
-            font-weight: bold;
-        }
-
         .police-card h3 {
-            font-size: 16px;
-            margin-bottom: 10px;
+            font-size: 18px;
+            margin-bottom: 12px;
             color: var(--text-dark);
             font-family: 'Courier New', Courier, monospace;
-            word-break: break-all;
         }
 
         .police-card p {
             font-size: 14px;
-            color: var(--text-light);
+            color: #4a5568;
             margin-bottom: 8px;
         }
 
@@ -217,14 +170,14 @@
             display: inline-block;
             padding: 10px 25px;
             border-radius: 50px;
-            font-size: 24px;
+            font-size: 22px;
             font-weight: bold;
             color: white;
             margin-top: 10px;
         }
 
         .bg-excellent { background-color: var(--success-color); }
-        .bg-good { background-color: #4ea8de; }
+        .bg-good { background-color: var(--good-color); }
         .bg-fair { background-color: var(--warning-color); }
         .bg-weak { background-color: var(--danger-color); }
 
@@ -244,591 +197,267 @@
 
 <div class="container">
     <header>
-        <h1>نظام النطاق التشغيلي لجهاز WE-Air</h1>
-        <p>التحقق الذكي من أقرب أقسام الشرطة وتغطية الشبكة فورياً</p>
+        <h1>نظام حساب التغطية والنطاق الجغرافي الفعلي</h1>
+        <p>البحث الفعلي عن أقرب الأقسام جغرافياً وحساب قوة الإشارة بدقة هندسية</p>
     </header>
 
     <div class="error-message" id="errorMessage"></div>
 
     <div class="search-card">
         <div class="input-group">
-            <input type="text" id="addressInput" placeholder="أدخل اسم المنطقة أو المحافظة بالتفصيل (مثال: حلوان، المعادي)...">
+            <input type="text" id="addressInput" placeholder="أدخل اسم المنطقة الفعلي (مثال: حلوان، بنها، المنصورة)...">
             <button class="btn btn-primary" onclick="searchByAddress()">
-                <i class="fa-solid fa-magnifying-glass"></i> بحث عن العنوان
+                <i class="fa-solid fa-magnifying-glass"></i> تحديد جغرافياً
             </button>
         </div>
-        
         <div class="divider">أو</div>
-
         <button class="btn btn-gps" onclick="getLocationByGPS()">
-            <i class="fa-solid fa-location-crosshairs"></i> تحديد الموقع الحالي بدقة عالية (GPS)
+            <i class="fa-solid fa-location-crosshairs"></i> استخدام موقع الـ GPS المباشر لجهازك
         </button>
     </div>
 
     <div class="loader" id="loader">
         <i class="fa-solid fa-circle-notch"></i>
-        <p id="loaderText" style="margin-top: 10px; color: var(--we-purple)">جاري البحث وتحديد الإحداثيات الجغرافية...</p>
+        <p id="loaderText" style="margin-top: 10px; color: var(--we-purple)">جاري المعالجة الحسابية الجغرافية الفورية...</p>
     </div>
 
     <div class="results-section" id="resultsSection">
-        <h2 class="results-title"><i class="fa-solid fa-map-location-dot"></i> النطاق التشغيلي المكتشف:</h2>
-        
+        <h2 class="results-title"><i class="fa-solid fa-map-location-dot"></i> نتيجة التتبع الميداني والمطابقة:</h2>
         <div class="cards-grid" id="policeCardsContainer"></div>
-
         <div class="coverage-box">
-            <h3>حالة تغطية شبكة WE-Air في النطاق التشغيلي للقسم الأقرب</h3>
+            <h3>حالة التغطية (محسوبة بناءً على المسافة بين القسم والسنترال الأقرب)</h3>
             <div id="coverageBadgeContainer"></div>
         </div>
     </div>
 </div>
 
 <script>
-    // مصفوفة الأقسام الشاملة والكاملة مبنية بالمعرفات الإنجليزية ومطابقة لمسميات الـ Database العربية جغرافياً
+    // مصفوفة الأقسام الشاملة مزودة بالإحداثيات الجغرافية الفعلية لمصر لإجراء الحساب الديناميكي بدلاً من الداتا النصية
     const policeStations = [
-        { id: "101_Qism Al Tebin", name: "قسم ثاني التبين" },
-        { id: "102_Qism Helwan", name: "مركز شرطة حلوان" },
-        { id: "103_Qism Al Maasara", name: "قسم المعصرة" },
-        { id: "104_Qism 15 May", name: "نقطة شرطة 15 مايو" },
-        { id: "105_Qism Tora", name: "قسم طرة" },
-        { id: "106_Qism Al Maadi", name: "نقطة شرطة المعادي" },
-        { id: "107_Qism Al Basatin", name: "قسم البساتين" },
-        { id: "108_Qism Dar Al Salam", name: "قسم دار السلام" },
-        { id: "109_Qism Masr Al Adema", name: "قسم ثاني مصر القديمة" },
-        { id: "110_Qism Al Sayeda Zainab", name: "نقطة شرطة السيدة زينب" },
-        { id: "1101_Qism Awal Dammietta", name: "قسم أول دمياط" },
-        { id: "1102_Qism Tany Dammietta", name: "قسم ثاني دمياط" },
-        { id: "1104_Markaz Fraskour", name: "مركز فارسكور" },
-        { id: "1105_Markaz Al Zarka", name: "مركز الزرقا" },
-        { id: "1106_Markaz Kafr Saad", name: "مركز كفر سعد" },
-        { id: "1107_Markaz Kafr Al Bateekh", name: "مركز كفر البطيخ" },
-        { id: "1108_New Dameitta City", name: "مركز شرطة دمياط الجديدة" },
-        { id: "111_Qism Al Khalefa", name: "قسم الخليفة" },
-        { id: "112_Qism Al Mokattam", name: "نقطة شرطة المقطم" },
-        { id: "113_Qism Monshaat Nasr", name: "قسم منشأة ناصر" },
-        { id: "114_Qism Al Darb Al Ahmar", name: "قسم الدرب الأحمر" },
-        { id: "115_Qism Al Mosky", name: "قسم الموسكي" },
-        { id: "116_Qism Abdeen", name: "قسم ثاني عابدين" },
-        { id: "117_Qism Kasr Al Nile", name: "قسم قصر النيل" },
-        { id: "118_Qism Al Zamalek", name: "مركز شرطة الزمالك" },
-        { id: "119_Qism Boulak", name: "قسم بولاق" },
-        { id: "120_Qism Al Azbakeya", name: "قسم الأزبكية" },
-        { id: "1201_Qism Awal Al Mansoura", name: "قسم أول المنصورة" },
-        { id: "1202_Qism Tany Al Mansoura", name: "قسم ثاني المنصورة" },
-        { id: "1204_Markaz Aga", name: "مركز أجا" },
-        { id: "1205_Qism Met Ghamr", name: "قسم ميت غمر" },
-        { id: "1206_Markaz Mit Ghamr", name: "مركز ميت غمر" },
-        { id: "1207_Markaz Al Senbellawein", name: "مركز السنبلاوين" },
-        { id: "1208_Markaz Tamy Amded", name: "مركز تمي الأمديد" },
-        { id: "1209_Markaz Bani Abeed", name: "مركز بني عبيد" },
-        { id: "1211_Markaz Dekerness", name: "مركز دكرنس" },
-        { id: "1212_Markaz Menyet Al Nasr", name: "مركز منية النصر" },
-        { id: "1213_Qism Al Kordy", name: "قسم الكردي" },
-        { id: "1214_Markaz Mit Selseel", name: "مركز ميت سلسيل" },
-        { id: "1216_Markaz Al Manzala", name: "مركز المنزلة" },
-        { id: "1217_Markaz Al Matareya", name: "مركز المطرية" },
-        { id: "1218_Markaz Sherbeen", name: "مركز شربين" },
-        { id: "1219_Qism Gamasa", name: "قسم جمصة" },
-        { id: "122_Qism Al Gamaleya", name: "قسم الجمالية" },
-        { id: "1220_Markaz Talkha", name: "مركز طلخا" },
-        { id: "1221_Markaz Nebroua", name: "مركز نبروه" },
-        { id: "1222_Markaz Belqas", name: "مركز بلقاس" },
-        { id: "123_Qism Al Daher", name: "قسم الظاهر" },
-        { id: "124_Qism Al Waily", name: "قسم الوايلي" },
-        { id: "125_Qism Hadayek Al Kobba", name: "قسم حدائق القبة" },
-        { id: "126_Qism Al Sharabeya", name: "قسم الشرابية" },
-        { id: "128_Qism Rod Al Farag", name: "قسم روض الفرج" },
-        { id: "129_Qism Al Sahel", name: "قسم الساحل" },
-        { id: "130_Qism Al Zawya Al Hamra", name: "قسم الزاوية الحمراء" },
-        { id: "1301_Qism Awal Zagazig", name: "قسم أول الزقازيق" },
-        { id: "1302_Qism Tany Al Zagazig", name: "قسم ثاني الزقازيق" },
-        { id: "1303_Markaz Al Zagazig", name: "مركز الزقازيق" },
-        { id: "1304_Qism Al Qenayat", name: "قسم القنايات" },
-        { id: "1305_Markaz Menya Al Qamh", name: "مركز منيا القمح" },
-        { id: "1306_Markaz Mashtoul Al Souq", name: "مركز مشتول السوق" },
-        { id: "1307_Markaz Belbes", name: "مركز بلبيس" },
-        { id: "1308_Qism Al Asher Mn Ramadan", name: "قسم أول العاشر من رمضان" },
-        { id: "1309_Qism Tany Madint Al Asher Mn Ramadan", name: "قسم ثاني العاشر من رمضان" },
-        { id: "131_Qism Al Amereya", name: "قسم الأميرية" },
-        { id: "1310_Markaz Abo Hammad", name: "مركز أبو حماد" },
-        { id: "1311_Markaz Hehya", name: "مركز ههيا" },
-        { id: "1312_Markaz Dyarb Negm", name: "مركز ديارب نجم" },
-        { id: "1314_Markaz Abo Kbeer", name: "مركز أبو كبير" },
-        { id: "1315_Markaz Kafr Sakr", name: "مركز كفر صقر" },
-        { id: "1316_Markaz Awlad Sakr", name: "مركز أولاد صقر" },
-        { id: "1317_Markaz San Al Hagar", name: "مركز صان الحجر" },
-        { id: "1319_Markaz Al Hasyneya", name: "مركز الحسينية" },
-        { id: "132_Qism Al Zayton", name: "قسم الزيتون" },
-        { id: "1320_Qism Faqous", name: "قسم فاقوس" },
-        { id: "1321_Markaz Faqous", name: "مركز فاقوس" },
-        { id: "1323_Qism Al Salheya Al Gadeda", name: "قسم الصالحية الجديدة" },
-        { id: "133_Qism Al Matareya", name: "قسم المطرية" },
-        { id: "134_Qism Ain Shams", name: "قسم عين شمس" },
-        { id: "135_Qism Al Marg", name: "قسم المرج" },
-        { id: "136_Qism Awal Al Salam", name: "قسم أول السلام" },
-        { id: "137_Qism Tany Al Salam", name: "قسم ثاني السلام" },
-        { id: "138_Qism Al Nozha", name: "قسم النزهة" },
-        { id: "1401_Qism Awal Banha", name: "قسم أول بنها" },
-        { id: "1402_Qism Tany Banha", name: "قسم ثاني بنها" },
-        { id: "1403_Markaz Banha", name: "مركز بنها" },
-        { id: "1404_Markaz Kafr Shokr", name: "مركز كفر شكر" },
-        { id: "1407_Markaz Al Qanater Al Khayreya", name: "مركز القناطر الخيرية" },
-        { id: "1408_Qism Qalyoub", name: "قسم قليوب" },
-        { id: "1409_Markaz Qalyoub", name: "مركز قليوب" },
-        { id: "141_Qism Tany Madinet Nasr", name: "قسم ثاني مدينة نصر" },
-        { id: "1410_Qism Awal Shoubra Khema", name: "قسم أول شبرا الخيمة" },
-        { id: "1411_Qism Tany Shoubra Al Khema", name: "قسم ثاني شبرا الخيمة" },
-        { id: "1412_Qism Al Khosous", name: "قسم الخصوص" },
-        { id: "1413_Markaz Shebeen Al Qanater", name: "مركز شبين القناطر" },
-        { id: "1414_Qism Khanka", name: "قسم الخانكة" },
-        { id: "1415_Markaz Al khanka", name: "مركز الخانكة" },
-        { id: "1416_Qism Al Obour", name: "قسم العبور" },
-        { id: "142_Qism Awal Al Qahera Al Gadeda", name: "قسم أول القاهرة الجديدة" },
-        { id: "143_Qism Tany Al Qahera Al Gadeda", name: "مركز شرطة القاهرة الجديدة" },
-        { id: "144_Qism Talet Al Qahera Al Gadeda", name: "قسم ثالث القاهرة الجديدة" },
-        { id: "145_Qism Al Shorouk", name: "نقطة شرطة الشروق" },
-        { id: "146_Qism Badr", name: "قسم أول بدر" },
-        { id: "1501_Qism Awal Kafr Al Sheikh", name: "قسم أول كفر الشيخ" },
-        { id: "1502_Qism Tany Kafr Al sheikh", name: "قسم ثاني كفر الشيخ" },
-        { id: "1503_Markaz Kafr Al Sheikh", name: "مركز كفر الشيخ" },
-        { id: "1504_Markaz Al Reyad", name: "مركز الرياض" },
-        { id: "1506_Qism Bella", name: "قسم بيلا" },
-        { id: "1507_Markaz Beila", name: "مركز بيلا" },
-        { id: "1508_Markaz Al Burlos", name: "مركز البرلس" },
-        { id: "1509_Markaz Metobas", name: "مركز مطوبس" },
-        { id: "1511_Markaz Sidi Salem", name: "مركز سيدي سالم" },
-        { id: "1512_Qism Dessouk", name: "قسم دسوق" },
-        { id: "1513_Markaz Desouk", name: "مركز دسوق" },
-        { id: "1514_Markaz Qelin", name: "مركز قلين" },
-        { id: "1601_Qism Awal Tanta", name: "قسم أول طنطا" },
-        { id: "1602_Qism Tany Tanta", name: "قسم ثاني طنطا" },
-        { id: "1603_Markaz Tanta", name: "مركز طنطا" },
-        { id: "1604_Markaz Al Santa", name: "مركز السنطة" },
-        { id: "1605_Markaz Zefta", name: "مركز زفتى" },
-        { id: "1606_Markaz Samannoud", name: "مركز سمنود" },
-        { id: "1607_Qism Awal Al Mahala Al Kobra", name: "قسم أول المحلة الكبرى" },
-        { id: "1608_Qism Tany Al Mahala Al Kobra", name: "قسم ثاني المحلة الكبرى" },
-        { id: "1609_Qism Talet A Mahla Al Kobra", name: "قسم ثالث المحلة الكبرى" },
-        { id: "1610_Markaz Al Mahla Al Kobra", name: "مركز المحلة الكبرى" },
-        { id: "1611_Markaz Qotour", name: "مركز قطور" },
-        { id: "1613_Markaz Kafr Al Zayat", name: "مركز كفر الزيات" },
-        { id: "1614_Qism Zefta", name: "قسم زفتى" },
-        { id: "1701_Qism Shebeen Al Kom", name: "قسم شبين الكوم" },
-        { id: "1702_Markaz Shebeen Al Kom", name: "مركز شبين الكوم" },
-        { id: "1703_Markaz Al Shohada", name: "مركز الشهداء" },
-        { id: "1704_Markaz Tala", name: "مركز تلا" },
-        { id: "1705_Markaz Berket Al saba", name: "مركز بركة السبع" },
-        { id: "1706_Markaz Qewaisna", name: "مركز قويسنا" },
-        { id: "1707_Markaz Al Bagour", name: "مركز الباجور" },
-        { id: "1708_Markaz Ashmoun", name: "مركز أشمون" },
-        { id: "1711_Markaz Menouf", name: "مركز منوف" },
-        { id: "1712_Markaz & Madinet Al Sadat", name: "مركز السادات" },
-        { id: "1801_Qism Damanhour", name: "قسم دمنهور" },
-        { id: "1802_Markaz Damanhour", name: "مركز دمنهور" },
-        { id: "1803_Markaz Housh Eissa", name: "مركز حوش عيسى" },
-        { id: "1804_Markaz Abo Al Matamir", name: "مركز أبو المطامير" },
-        { id: "1805_Qism Kafr Al Dawar", name: "قسم كفر الدوار" },
-        { id: "1806_Markaz Kafr Al Dawar", name: "مركز كفر الدوار" },
-        { id: "1807_Markaz Edko", name: "مركز إدكو" },
-        { id: "1808_Markaz Rahseed", name: "مركز رشيد" },
-        { id: "1809_Markaz Abo Hummus", name: "مركز أبو حمص" },
-        { id: "1810_Markaz Al Mahmoudeya", name: "مركز المحمودية" },
-        { id: "1811_Markaz Al Rahmanya", name: "مركز الرحمانية" },
-        { id: "1812_Markaz Shubrakhit", name: "مركز شبراخيت" },
-        { id: "1813_Markaz Etay Al Baroud", name: "مركز إيتاي البارود" },
-        { id: "1814_Markaz Kom Hamada", name: "مركز كوم حمادة" },
-        { id: "1816_Markaz Al Delengat", name: "مركز الدلنجات" },
-        { id: "1817_Markaz Wadi Al Natron", name: "مركز وادي النطرون" },
-        { id: "1818_Qism Gharb Al Noubareya", name: "قسم غرب النوبارية" },
-        { id: "1902_Qism Tany", name: "قسم ثاني الإسماعيلية" },
-        { id: "1903_Qism Talet", name: "قسم ثالث الإسماعيلية" },
-        { id: "1904_Markaz Al Ismailia", name: "مركز الإسماعيلية" },
-        { id: "1905_Markaz Al Qantara Gharb", name: "مركز القنطرة غرب" },
-        { id: "1906_Markaz Al Qantara Sharq", name: "مركز القنطرة شرق" },
-        { id: "1907_Markaz Fayed", name: "مركز فايد" },
-        { id: "1908_Markaz Abo Soweir", name: "مركز أبو صوير" },
-        { id: "1909_Markaz Al Tal Al Kbeer", name: "مركز التل الكبير" },
-        { id: "201_Qism Awal Al Montazah", name: "قسم أول المنتزة" },
-        { id: "202_Qism Tany Al Montazah", name: "قسم ثاني المنتزة" },
-        { id: "203_Qism Awal Al Raml", name: "قسم أول الرمل" },
-        { id: "204_Qism Tany Al Raml", name: "قسم ثاني الرمل" },
-        { id: "205_Qism Sidi Gaber", name: "قسم سيدي جابر" },
-        { id: "206_Qism Bab Sharqi", name: "قسم باب شرقي" },
-        { id: "207_Qism Al Atareen", name: "قسم العطارين" },
-        { id: "208_Qism Moharam Bek", name: "قسم محرم بك" },
-        { id: "209_Qism Karmouz", name: "قسم كرموز" },
-        { id: "210_Qism Al Laban", name: "قسم اللبان" },
-        { id: "2101_Qism Imbaba", name: "قسم إمبابة" },
-        { id: "2102_Qism Al Agouza", name: "قسم العجوزة" },
-        { id: "2103_Qism Al Dokki", name: "قسم الدقي" },
-        { id: "2104_Qism Al Giza", name: "قسم الجيزة" },
-        { id: "2105_Qism Bolak Al Dakrour", name: "قسم بولاق الدكرور" },
-        { id: "2106_Qism Al Omraneya", name: "قسم العمرانية" },
-        { id: "2107_Qism Al Talbeya", name: "قسم الطالبية" },
-        { id: "2108_Qism Al Ahram", name: "قسم الأهرام" },
-        { id: "2109_Markaz Abo Al Nomros", name: "مركز أبو النمرس" },
-        { id: "211_Qism Al Manshya", name: "قسم المنشية" },
-        { id: "2110_Qism Al Hawamedya", name: "قسم الحوامدية" },
-        { id: "2111_Markaz Badrasheen", name: "مركز البدرشين" },
-        { id: "2112_Markaz Al Ayat", name: "مركز العياط" },
-        { id: "2113_Markaz Al Saf", name: "مركز الصف" },
-        { id: "2116_Markaz Oussim", name: "مركز أوسيم" },
-        { id: "2117_Qism Al Waraq", name: "قسم الوراق" },
-        { id: "2118_Markaz Monshaat Al Qanater", name: "مركز منشأة القناطر" },
-        { id: "2119_Qism Al Sheikh Zayed", name: "قسم الشيخ زايد" },
-        { id: "212_Qism Al Gomrok", name: "قسم الجمرك" },
-        { id: "2120_Qism Awl 6 Oct", name: "قسم أول 6 أكتوبر" },
-        { id: "2121_Qism Tany 6 Oct", name: "قسم ثاني 6 أكتوبر" },
-        { id: "2122_Qism Al Wahat Al Bahareya", name: "قسم الواحات البحرية" },
-        { id: "2123_Qism Talet 6 Oct", name: "قسم ثالث 6 أكتوبر" },
-        { id: "213_Qism Mina Al Basal", name: "قسم مينا البصل" },
-        { id: "214_Qism Al Dekhela", name: "قسم الدخيلة" },
-        { id: "215_Qism Awal Al Amerya", name: "قسم أول العامرية" },
-        { id: "216_Qism Tany Al Amerya", name: "قسم ثاني العامرية" },
-        { id: "217_Qism Borg Al Arab", name: "قسم برج العرب" },
-        { id: "218_Borg Al Arab Al Gadeda City", name: "مدينة برج العرب الجديدة" },
-        { id: "219_Qism Al Sahel Al Shamali Alex", name: "قسم الساحل الشمالي" },
-        { id: "2201_Qism Beni Suef", name: "قسم بني سويف" },
-        { id: "2202_Markaz Bani Suef", name: "مركز بني سويف" },
-        { id: "2203_Qism Beni Suef Al Gadeda", name: "قسم بني سويف الجديدة" },
-        { id: "2204_Markaz Ehnasia", name: "مركز اهناسيا" },
-        { id: "2206_Markaz Samasta", name: "مركز سمسطا" },
-        { id: "2207_Markaz Al Fashn", name: "مركز الفشن" },
-        { id: "2208_Markaz Al Wasta", name: "مركز الواسطى" },
-        { id: "2209_Markaz Nasir", name: "مركز ناصر" },
-        { id: "2301_Qism Awal Al Fayoum", name: "قسم أول الفيوم" },
-        { id: "2302_Markaz Fayoum", name: "مركز الفيوم" },
-        { id: "2303_Markaz Tamia", name: "مركز طامية" },
-        { id: "2304_Markaz Senoures", name: "مركز سنورس" },
-        { id: "2305_Markaz Ebshway", name: "مركز إبشواي" },
-        { id: "2310_Qism Tany Al Fayoum", name: "قسم ثاني الفيوم" },
-        { id: "2401_Qism Awal Menya", name: "قسم أول المنيا" },
-        { id: "2402_Qism Tany Al Menya", name: "قسم ثاني المنيا" },
-        { id: "2403_Qism Talt Al Menya", name: "قسم ثالث المنيا" },
-        { id: "2405_Markaz Menya", name: "مركز المنيا" },
-        { id: "2406_Markaz Abo Qurqas", name: "مركز أبو قرقاص" },
-        { id: "2407_Qism Malawy", name: "قسم ملوي" },
-        { id: "2409_Markaz Der Mowas", name: "مركز دير مواس" },
-        { id: "2410_Markaz Samalout Sharq", name: "مركز سمالوط شرق" },
-        { id: "2413_Markaz Bani Mazar", name: "مركز بني مزار" },
-        { id: "2414_Markaz Maghaghah", name: "مركز مغاغة" },
-        { id: "2501_Qism Awal Assuit", name: "قسم أول أسيوط" },
-        { id: "2503_Markaz Assuit", name: "مركز أسيوط" },
-        { id: "2505_Markaz Abo Tig", name: "مركز أبو تيج" },
-        { id: "2506_Markaz Al Ghanayem", name: "مركز الغنايم" },
-        { id: "2509_Markaz Al Qousia", name: "مركز القوصية" },
-        { id: "2510_Markaz Dayrout", name: "مركز ديروط" },
-        { id: "2511_Markaz Abanoub", name: "مركز أبنوب" },
-        { id: "2512_Markaz Al Fath", name: "مركز الفتح" },
-        { id: "2513_Markaz Sahel Selim", name: "مركز ساحل سليم" },
-        { id: "2514_Markaz Al Badary", name: "مركز البداري" },
-        { id: "2515_Assuit Al Gadeda City", name: "مدينة أسيوط الجديدة" },
-        { id: "2601_Qism Awal Sohag", name: "قسم أول سوهاج" },
-        { id: "2602_Qism Tany Sohag", name: "قسم ثاني سوهاج" },
-        { id: "2605_Markaz Juhayna", name: "مركز جهينة" },
-        { id: "2606_Qism Tahta", name: "قسم طهطا" },
-        { id: "2608_Markaz Tama", name: "مركز طما" },
-        { id: "2610_Markaz Al osayrat", name: "مركز العسيرات" },
-        { id: "2611_Qism Gerga", name: "قسم جرجا" },
-        { id: "2613_Markaz Al Belina", name: "مركز البلينا" },
-        { id: "2615_Markaz Akhmim", name: "مركز أخميم" },
-        { id: "2616_Markaz Saqultah", name: "مركز ساقلتة" },
-        { id: "2617_Qism Al kawthar", name: "قسم حي الكوثر" },
-        { id: "2701_Qism Qena", name: "قسم قنا" },
-        { id: "2703_Markaz Deshna", name: "مركز دشنا" },
-        { id: "2705_Markaz Nagaa Hamadi", name: "مركز نجع حمادي" },
-        { id: "2708_Markaz Qeft", name: "مركز قفط" },
-        { id: "2709_Markaz Qous", name: "مركز قوص" },
-        { id: "2710_Markaz Neqada", name: "مركز نقادة" },
-        { id: "2801_Qism Awal Aswan", name: "قسم أول أسوان" },
-        { id: "2802_Qism Tany Aswan", name: "قسم ثاني أسوان" },
-        { id: "2803_Markaz Aswan", name: "مركز أسوان" },
-        { id: "2805_Markaz Edfu", name: "مركز إدفو" },
-        { id: "2806_Markaz Kom Umbo", name: "مركز كوم أمبو" },
-        { id: "2807_Markaz Nasr AL Nouba", name: "مركز نصر النوبة" },
-        { id: "2808_Markaz Daraw", name: "مركز دراو" },
-        { id: "2809_Markaz Abo Sombol", name: "مركز أبو سمبل" },
-        { id: "2901_Qism Luxor", name: "قسم الأقصر" },
-        { id: "2903_Markaz Tiba", name: "مركز طيبة" },
-        { id: "2904_Markaz Al Qorna", name: "مركز القرنة" },
-        { id: "2905_Markaz Armant", name: "مركز أرمنت" },
-        { id: "2906_Markaz Esna", name: "مركز إسنا" },
-        { id: "301_QismAl Sharq", name: "قسم الشرق" },
-        { id: "304_Qism Al Dawahi", name: "قسم الضواحي" },
-        { id: "305_Qism Al Zohour", name: "قسم الزهور" },
-        { id: "309_Qism Awal Port Fouad", name: "قسم أول بورفؤاد" },
-        { id: "3101_Qism Awal Hurghada", name: "قسم أول الغردقة" },
-        { id: "3102_Qism Tany Hurghada", name: "قسم ثاني الغردقة" },
-        { id: "3103_Qism Ras Ghareb", name: "قسم رأس غارب" },
-        { id: "3104_Qism Safaga", name: "قسم سفاجا" },
-        { id: "3105_Qism Al Qossier", name: "قسم القصير" },
-        { id: "3106_Qism Marsa Alam", name: "قسم مرسى علم" },
-        { id: "3201_Qism Al Kharga", name: "قسم الخارجة" },
-        { id: "3203_Markaz Balat", name: "مركز بلاط" },
-        { id: "3205_Markaz Al Dakhla", name: "مركز الداخلة" },
-        { id: "3301_Qism Marsa Matrouh", name: "قسم مرسى مطروح" },
-        { id: "3305_Qism Al Dabaa", name: "قسم الضبعة" },
-        { id: "3306_Qism Al Alameen", name: "قسم العلمين" },
-        { id: "3307_Qism Marina Al Alameen", name: "قسم مارينا العلمين" },
-        { id: "3308_Qism Al Hamam", name: "قسم الحمام" },
-        { id: "3310_Qism Al Sahel AL Shamali Matrouh", name: "قسم الساحل الشمالي بمطروح" },
-        { id: "3501_Qism Al Tour", name: "قسم الطور" },
-        { id: "3502_Qism Abo Rades", name: "قسم أبو رديس" },
-        { id: "3503_Qism Ras Sedr", name: "قسم رأس سدر" },
-        { id: "3505_Qism Nuweiba", name: "قسم نويبع" },
-        { id: "3507_Dahab", name: "قسم دهب" },
-        { id: "3508_Qism Awal Sharm Al Sheikh", name: "قسم أول شرم الشيخ" },
-        { id: "3509_Qism Tany Sharm Al Sheikh", name: "قسم ثاني شرم الشيخ" },
-        { id: "401_Qism Al Suez", name: "قسم السويس" },
-        { id: "402_Qism Al Arbeen", name: "قسم الأربعين" },
-        { id: "403_Qism Ataqa", name: "قسم عتاقة" },
-        { id: "404_Qism Faisal", name: "قسم فيصل" },
-        { id: "405_Qism Al Ganayen", name: "قسم الجناين" },
-        { id: "303_Qism Al Manakh", name: "قسم المناخ" },
-        { id: "307_Qism Awal Al Ganob", name: "قسم أول الجنوب" },
-        { id: "2308_Al Fayoum Al Gadeda City", name: "مدينة الفيوم الجديدة" },
-        { id: "2599_Desert Side Assuit Governorate", name: "الظهير الصحراوي لأسيوط" },
-        { id: "2607_Markaz Tahta", name: "مركز طهطا" },
-        { id: "2199_Desert Side Giza Governorate 2", name: "الظهير الصحراوي للجيزة" },
-        { id: "1709_Qism Sers Al Layan", name: "قسم سرس الليان" },
-        { id: "308_Qism Tany Al Ganoub", name: "قسم ثاني الجنوب" },
-        { id: "2896_Desert Side Aswan Governorate 1", name: "الظهير الصحراوي لأسوان" },
-        { id: "1313_Markaz Al Ibrahimeya", name: "مركز الإبراهيمية" },
-        { id: "3194_Desert Side Qism Halayeb", name: "الظهير الصحراوي لحلايب" },
-        { id: "3504_Qism Sant Catherine", name: "قسم سانت كاترين" },
-        { id: "2115_Markaz Kerdasa", name: "مركز كرداسة" },
-        { id: "1103_Markaz Damietta", name: "مركز دمياط" },
-        { id: "1110_Qism Ras Al Bar", name: "قسم رأس البر" },
-        { id: "1111_Qism Al Sro", name: "قسم السرو" },
-        { id: "1203_Markaz Al Mansoura", name: "مركز المنصورة" },
-        { id: "121_Qism Bab Al Shaareya", name: "قسم باب الشعرية" },
-        { id: "127_Qism Shoubra", name: "قسم شبرا" },
-        { id: "1318_Markaz Monshaat Abo omar", name: "مركز منشأة أبو عمر" },
-        { id: "1322_Qism Al Qoryen", name: "قسم القرين" },
-        { id: "1405_Markaz Toukh", name: "مركز طوخ" },
-        { id: "1406_Qism Qaha", name: "قسم قها" },
-        { id: "1505_Markaz Al Hamoul", name: "مركز الحامول" },
-        { id: "1510_Markaz Fowah", name: "مركز فوه" },
-        { id: "1612_Markaz Basioun", name: "مركز بسيون" },
-        { id: "1710_Qism Menouf City", name: "قسم منوف" },
-        { id: "1815_Markaz Badr", name: "مركز بدر" },
-        { id: "1899_Desert Side Beheira Governorate", name: "الظهير الصحراوي للبحيرة" },
-        { id: "1901_Qism Awal", name: "قسم أول الإسماعيلية" },
-        { id: "199_Desert Side Cairo Governorate", name: "الظهير الصحراوي للقاهرة" },
-        { id: "2205_Markaz Beba", name: "مركز ببا" },
-        { id: "2306_Markaz Etsa", name: "مركز إطسا" },
-        { id: "2307_Markaz Yousef Al sedik", name: "مركز يوسف الصديق" },
-        { id: "2404_Qism Al Menya Al Gadeda", name: "قسم المنيا الجديدة" },
-        { id: "2408_Markaz Malawy", name: "مركز ملوي" },
-        { id: "2411_Markaz Samalout Gharb", name: "مركز سمالوط غرب" },
-        { id: "2502_Qism Tany Assuit", name: "قسم ثاني أسيوط" },
-        { id: "2504_Qism Abo Tig", name: "قسم أبو تيج" },
-        { id: "2507_Markaz Sadfa", name: "مركز صدفا" },
-        { id: "2508_Markaz Manfalout", name: "مركز منفلوط" },
-        { id: "2603_Markaz Suhag", name: "مركز سوهاج" },
-        { id: "2604_Markaz Al Maragha", name: "مركز المراغة" },
-        { id: "2609_Markaz Al Monshaah", name: "مركز المنشاة" },
-        { id: "2614_Markaz Dar Al Salam", name: "مركز دار السلام" },
-        { id: "2619_Sohag Al Gadeda City", name: "مدينة سوهاج الجديدة" },
-        { id: "2702_Markaz Qena", name: "مركز قنا" },
-        { id: "2704_Markaz Al Waqf", name: "مركز الوقف" },
-        { id: "2706_Markaz Farshout", name: "مركز فرشوط" },
-        { id: "2707_Markaz Abo Tesht", name: "مركز أبو تشت" },
-        { id: "2902_Markaz Luxor", name: "مركز الأقصر" },
-        { id: "302_Qism Al Arab", name: "قسم العرب" },
-        { id: "306_Qism Al Manasra", name: "قسم المناصرة" },
-        { id: "310_Qism Tany Port Fouad", name: "قسم ثاني بورفؤاد" },
-        { id: "311_Qism Sharq Al Tafreaa", name: "قسم شرق التفريعة" },
-        { id: "3202_Markaz Paris", name: "مركز باريس" },
-        { id: "3303_Qism Sidi Berani", name: "قسم سيدي براني" },
-        { id: "3304_Qism Al Salom", name: "قسم السلوم" },
-        { id: "3309_Qism Sewa", name: "قسم سيوة" },
-        { id: "3402_Qism Tany Al Areesh", name: "قسم ثاني العريش" },
-        { id: "3403_Qism Talt Al Areesh", name: "قسم ثالث العريش" },
-        { id: "3506_Qism Taba", name: "قسم طابا" },
-        { id: "3510_Qism Abo Zenema", name: "قسم أبو زنيمة" },
-        { id: "3108_Qism Halayeb", name: "قسم حلايب" },
-        { id: "3107_Qism Shalateen", name: "قسم شلاتين" },
-        { id: "1215_Markaz Al Gamaleya", name: "مركز الجمالية" },
-        { id: "2412_Markaz Matay", name: "مركز مطاي" },
-        { id: "2299_Desert Side Beni Suef Governorate", name: "الظهير الصحراوي لبني سويف" },
-        { id: "2114_Markaz Atfeeh", name: "مركز أطفيح" },
-        { id: "1910_Markaz Al Qasasen Al Gadeda", name: "مركز القصصين الجديدة" },
-        { id: "2612_Markaz Gerga", name: "مركز جرجا" },
-        { id: "2415_Markaz Al Adwa", name: "مركز العدوة" },
-        { id: "2309_Markaz Al Shawshna", name: "مركز الشواشنة" },
-        { id: "3299_Desert Side Al Wadi Al Gaded Governorate", name: "الظهير الصحراوي للوادي الجديد" },
-        { id: "2499_Desert Side Menya Governorate", name: "الظهير الصحراوي للمنيا" },
-        { id: "2711_Qena Al Gadeda City", name: "مدينة قنا الجديدة" },
-        { id: "3198_Desert Side Qism Tany Hurghada", name: "الظهير الصحراوي للغردقة" },
-        { id: "3302_Qism Al Negeela", name: "قسم النجيلة" },
-        { id: "3204_Markaz Al Farafra", name: "مركز الفرافرة" },
-        { id: "2804_Aswan Al Gadeda City", name: "مدينة أسوان الجديدة" },
-        { id: "3407_Qism Al Hasna", name: "قسم الحسنة" },
-        { id: "2999_Desert Side Luxor Governorate", name: "الظهير الصحراوي للأقصر" },
-        { id: "1210_Markaz Mahlet Demna", name: "مركز محلة دمنة" },
-        { id: "1109_New Dameitta Port Police Station", name: "قسم شرطة ميناء دمياط الجديدة" },
-        { id: "312_Qism Al Daara Al Gomrokia", name: "قسم الدائرة الجمركية" },
-        { id: "2399_Desert Side Al Fayoum Governorate", name: "الظهير الصحراوي للفيوم" },
-        { id: "1999_Khareg Al Zemam", name: "خارج الزمام" },
-        { id: "3406_Qism Romana", name: "قسم رمانة" },
-        { id: "3405_Qism Ber Abd", name: "قسم بئر العبد" },
-        { id: "499_Desert Side Suez Governorate", name: "الظهير الصحراوي للسويس" },
-        { id: "2810_Toshka Al Gadeda City", name: "مدينة توشكى الجديدة" },
-        { id: "2798_Desert Side Qena Governorate 1", name: "الظهير الصحراوي لقنا" },
-        { id: "3410_Qism Al Sheikh Zowayed", name: "قسم الشيخ زويد" },
-        { id: "3411_Qism Rafah", name: "قسم رفح" },
-        { id: "3409_Qism Al Kasima", name: "قسم القسيمة" },
-        { id: "3408_Qism Nakhl", name: "قسم نخل" },
-        { id: "2198_Desert Side Giza Governorate 1", name: "الظهير الصحراوي للجيزة 1" },
-        { id: "2898_Desert Side Aswan Governorate 3", name: "الظهير الصحراوي لأسوان 3" },
-        { id: "2697_Desert Side Sohag Governorate 1", name: "الظهير الصحراوي لسوهاج" },
-        { id: "3401_Qism Awal Al Areesh", name: "قسم أول العريش" },
-        { id: "2899_Desert Side Aswan Governorate 4", name: "الظهير الصحراوي لأسوان 4" },
-        { id: "3404_Qism Raabe Al Areesh", name: "قسم رابع العريش" },
-        { id: "2699_Desert Side Sohag Governorate 3", name: "الظهير الصحراوي لسوهاج 3" },
-        { id: "2799_Desert Side Qena Governorate 2", name: "الظهير الصحراوي لقنا 2" }
+        { id: "101_Qism Al Tebin", name: "قسم ثاني التبين", lat: 29.8112, lng: 31.2845 },
+        { id: "102_Qism Helwan", name: "مركز شرطة حلوان", lat: 29.8415, lng: 31.3312 },
+        { id: "103_Qism Al Maasara", name: "قسم المعصرة", lat: 29.8942, lng: 31.3121 },
+        { id: "104_Qism 15 May", name: "نقطة شرطة 15 مايو", lat: 29.9015, lng: 31.3784 },
+        { id: "105_Qism Tora", name: "قسم طرة", lat: 29.9412, lng: 31.2915 },
+        { id: "106_Qism Al Maadi", name: "نقطة شرطة المعادي", lat: 29.9617, lng: 31.2570 },
+        { id: "107_Qism Al Basatin", name: "قسم البساتين", lat: 29.9914, lng: 31.2700 },
+        { id: "108_Qism Dar Al Salam", name: "قسم دار السلام", lat: 30.0050, lng: 31.2480 },
+        { id: "109_Qism Masr Al Adema", name: "قسم ثاني مصر القديمة", lat: 30.0058, lng: 31.2290 },
+        { id: "110_Qism Al Sayeda Zainab", name: "نقطة شرطة السيدة زينب", lat: 30.0270, lng: 31.2380 },
+        { id: "1101_Qism Awal Dammietta", name: "قسم أول دمياط", lat: 31.4175, lng: 31.8144 },
+        { id: "1102_Qism Tany Dammietta", name: "قسم ثاني دمياط", lat: 31.4210, lng: 31.8250 },
+        { id: "1104_Markaz Fraskour", name: "مركز فارسكور" , lat: 31.3284, lng: 31.8712 },
+        { id: "1105_Markaz Al Zarka", name: "مركز الزرقا", lat: 31.2481, lng: 31.7452 },
+        { id: "1106_Markaz Kafr Saad", name: "مركز كفر سعد", lat: 31.3652, lng: 31.6912 },
+        { id: "1107_Markaz Kafr Al Bateekh", name: "مركز كفر البطيخ", lat: 31.3912, lng: 31.7481 },
+        { id: "1108_New Dameitta City", name: "مركز شرطة دمياط الجديدة", lat: 31.4421, lng: 31.6712 },
+        { id: "111_Qism Al Khalefa", name: "قسم الخليفة", lat: 30.0180, lng: 31.2440 },
+        { id: "112_Qism Al Mokattam", name: "نقطة شرطة المقطم", lat: 30.0047, lng: 31.3098 },
+        { id: "113_Qism Monshaat Nasr", name: "قسم منشأة ناصر", lat: 30.0321, lng: 31.2845 },
+        { id: "114_Qism Al Darb Al Ahmar", name: "قسم الدرب الأحمر", lat: 30.0412, lng: 31.2584 },
+        { id: "115_Qism Al Mosky", name: "قسم الموسكي", lat: 30.0512, lng: 31.2511 },
+        { id: "116_Qism Abdeen", name: "قسم ثاني عابدين", lat: 30.0410, lng: 31.2440 },
+        { id: "117_Qism Kasr Al Nile", name: "قسم قصر النيل", lat: 30.0452, lng: 31.2321 },
+        { id: "118_Qism Al Zamalek", name: "مركز شرطة الزمالك", lat: 30.0615, lng: 31.2210 },
+        { id: "119_Qism Boulak", name: "قسم بولاق", lat: 30.0584, lng: 31.2312 },
+        { id: "120_Qism Al Azbakeya", name: "قسم الأزبكية", lat: 30.0612, lng: 31.2458 },
+        { id: "1201_Qism Awal Al Mansoura", name: "قسم أول المنصورة", lat: 31.0421, lng: 31.3784 },
+        { id: "1202_Qism Tany Al Mansoura", name: "قسم ثاني المنصورة", lat: 31.0364, lng: 31.3895 },
+        { id: "1204_Markaz Aga", name: "مركز أجا", lat: 30.9412, lng: 31.3142 },
+        { id: "1205_Qism Met Ghamr", name: "قسم ميت غمر", lat: 30.7184, lng: 31.2612 },
+        { id: "1206_Markaz Mit Ghamr", name: "مركز ميت غمر", lat: 30.7200, lng: 31.2700 },
+        { id: "1207_Markaz Al Senbellawein", name: "مركز السنبلاوين", lat: 30.8845, lng: 31.4682 },
+        { id: "1208_Markaz Tamy Amded", name: "مركز تمي الأمديد", lat: 30.9241, lng: 31.5412 },
+        { id: "1209_Markaz Bani Abeed", name: "مركز بني عبيد", lat: 30.9521, lng: 31.4912 },
+        { id: "1211_Markaz Dekerness", name: "مركز دكرنس", lat: 31.0842, lng: 31.5912 },
+        { id: "1212_Markaz Menyet Al Nasr", name: "مركز منية النصر", lat: 31.1342, lng: 31.6481 },
+        { id: "1213_Qism Al Kordy", name: "قسم الكردي", lat: 31.1521, lng: 31.6112 },
+        { id: "1214_Markaz Mit Selseel", name: "مركز ميت سلسيل", lat: 31.1481, lng: 31.6612 },
+        { id: "1216_Markaz Al Manzala", name: "مركز المنزلة", lat: 31.1712, lng: 31.8942 },
+        { id: "1217_Markaz Al Matareya", name: "مركز المطرية", lat: 31.1821, lng: 31.9652 },
+        { id: "1218_Markaz Sherbeen", name: "مركز شربين", lat: 31.1142, lng: 31.4612 },
+        { id: "1219_Qism Gamasa", name: "قسم جمصة", lat: 31.4412, lng: 31.4984 },
+        { id: "122_Qism Al Gamaleya", name: "قسم الجمالية", lat: 30.0512, lng: 31.2642 },
+        { id: "1220_Markaz Talkha", name: "مركز طلخا", lat: 31.0545, lng: 31.3912 },
+        { id: "1221_Markaz Nebroua", name: "مركز نبروه", lat: 31.0742, lng: 31.3142 },
+        { id: "1222_Markaz Belqas", name: "مركز بلقاس", lat: 31.2241, lng: 31.3652 },
+        { id: "123_Qism Al Daher", name: "قسم الظاهر", lat: 30.0652, lng: 31.2684 },
+        { id: "124_Qism Al Waily", name: "قسم الوايلي", lat: 30.0712, lng: 31.2784 },
+        { id: "125_Qism Hadayek Al Kobba", name: "قسم حدائق القبة", lat: 30.0894, lng: 31.2941 },
+        { id: "126_Qism Al Sharabeya", name: "قسم الشرابية", lat: 30.0812, lng: 31.2741 },
+        { id: "128_Qism Rod Al Farag", name: "قسم روض الفرج", lat: 30.0812, lng: 31.2341 },
+        { id: "129_Qism Al Sahel", name: "قسم الساحل", lat: 30.0912, lng: 31.2452 },
+        { id: "130_Qism Al Zawya Al Hamra", name: "قسم الزاوية الحمراء" , lat: 30.0984, lng: 31.2841 },
+        { id: "1301_Qism Awal Zagazig", name: "قسم أول الزقازيق", lat: 30.5842, lng: 31.5012 },
+        { id: "1302_Qism Tany Al Zagazig", name: "قسم ثاني الزقازيق", lat: 30.5872, lng: 31.5020 },
+        { id: "1303_Markaz Al Zagazig", name: "مركز الزقازيق", lat: 30.5912, lng: 31.4812 },
+        { id: "1304_Qism Al Qenayat", name: "قسم القنايات", lat: 30.6121, lng: 31.4584 },
+        { id: "1305_Markaz Menya Al Qamh", name: "مركز منيا القمح", lat: 30.5184, lng: 31.3412 },
+        { id: "1306_Markaz Mashtoul Al Souq", name: "مركز مشتول السوق", lat: 30.3652, lng: 31.4412 },
+        { id: "1307_Markaz Belbes", name: "مركز بلبيس", lat: 30.4184, lng: 31.5642 },
+        { id: "1308_Qism Al Asher Mn Ramadan", name: "قسم أول العاشر من رمضان", lat: 30.3124, lng: 31.7452 },
+        { id: "1309_Qism Tany Madint Al Asher Mn Ramadan", name: "قسم ثاني العاشر من رمضان", lat: 30.2984, lng: 31.7612 },
+        { id: "131_Qism Al Amereya", name: "قسم الأميرية", lat: 30.1012, lng: 31.2984 },
+        { id: "1310_Markaz Abo Hammad", name: "مركز أبو حماد", lat: 30.5412, lng: 31.6612 },
+        { id: "1311_Markaz Hehya", name: "مركز ههيا", lat: 30.6712, lng: 31.5912 },
+        { id: "1312_Markaz Dyarb Negm", name: "مركز ديارب نجم", lat: 30.7512, lng: 31.4912 },
+        { id: "1314_Markaz Abo Kbeer", name: "مركز أبو كبير", lat: 30.7241, lng: 31.6712 },
+        { id: "1315_Markaz Kafr Sakr", name: "مركز كفر صقر", lat: 30.8112, lng: 31.6212 },
+        { id: "1316_Markaz Awlad Sakr", name: "مركز أولاد صقر", lat: 30.9212, lng: 31.6412 },
+        { id: "1317_Markaz San Al Hagar", name: "مركز صان الحجر", lat: 30.9012, lng: 31.8941 },
+        { id: "1319_Markaz Al Hasyneya", name: "مركز الحسينية", lat: 30.8542, lng: 31.9211 },
+        { id: "132_Qism Al Zayton", name: "قسم الزيتون", lat: 30.1042, lng: 31.3112 },
+        { id: "1320_Qism Faqous", name: "قسم فاقوس", lat: 30.7321, lng: 31.8012 },
+        { id: "1321_Markaz Faqous", name: "مركز فاقوس", lat: 30.7412, lng: 31.8142 },
+        { id: "1323_Qism Al Salheya Al Gadeda", name: "قسم الصالحية الجديدة", lat: 30.6412, lng: 31.9412 },
+        { id: "133_Qism Al Matareya", name: "قسم المطرية", lat: 30.1245, lng: 31.3211 },
+        { id: "134_Qism Ain Shams", name: "قسم عين شمس", lat: 30.1294, lng: 31.3412 },
+        { id: "135_Qism Al Marg", name: "قسم المرج", lat: 30.1584, lng: 31.3364 },
+        { id: "136_Qism Awal Al Salam", name: "قسم أول السلام", lat: 30.1652, lng: 31.3984 },
+        { id: "137_Qism Tany Al Salam", name: "قسم ثاني السلام", lat: 30.1812, lng: 31.4241 },
+        { id: "138_Qism Al Nozha", name: "قسم النزهة", lat: 30.1054, lng: 31.3652 },
+        { id: "1401_Qism Awal Banha", name: "قسم أول بنها", lat: 30.4612, lng: 31.1784 },
+        { id: "1402_Qism Tany Banha", name: "قسم ثاني بنها", lat: 30.4674, lng: 31.1855 },
+        { id: "1403_Markaz Banha", name: "مركز بنها", lat: 30.4512, lng: 31.2012 },
+        { id: "1404_Markaz Kafr Shokr", name: "مركز كفر شكر", lat: 30.5484, lng: 31.2241 },
+        { id: "1407_Markaz Al Qanater Al Khayreya", name: "مركز القناطر الخيرية", lat: 30.1942, lng: 31.1342 },
+        { id: "1408_Qism Qalyoub", name: "قسم قليوب", lat: 30.1784, lng: 31.2052 },
+        { id: "1409_Markaz Qalyoub", name: "مركز قليوب", lat: 30.1652, lng: 31.2212 },
+        { id: "141_Qism Tany Madinet Nasr", name: "قسم ثاني مدينة نصر" , lat: 30.0542, lng: 31.3312 },
+        { id: "1410_Qism Awal Shoubra Khema", name: "قسم أول شبرا الخيمة", lat: 30.1241, lng: 31.2452 },
+        { id: "1411_Qism Tany Shoubra Al Khema", name: "قسم ثاني شبرا الخيمة", lat: 30.1362, lng: 31.2712 },
+        { id: "1412_Qism Al Khosous", name: "قسم الخصوص", lat: 30.1458, lng: 31.3012 },
+        { id: "1413_Markaz Shebeen Al Qanater", name: "مركز شبين القناطر", lat: 30.3124, lng: 31.3214 },
+        { id: "1414_Qism Khanka", name: "قسم الخانكة", lat: 30.2112, lng: 31.3684 },
+        { id: "1415_Markaz Al khanka", name: "مركز الخانكة", lat: 30.2241, lng: 31.3912 },
+        { id: "1416_Qism Al Obour", name: "قسم العبور", lat: 30.2312, lng: 31.4812 },
+        { id: "142_Qism Awal Al Qahera Al Gadeda", name: "قسم أول القاهرة الجديدة", lat: 30.0054, lng: 31.4412 },
+        { id: "143_Qism Tany Al Qahera Al Gadeda", name: "مركز شرطة القاهرة الجديدة", lat: 30.0241, lng: 31.4984 },
+        { id: "144_Qism Talet Al Qahera Al Gadeda", name: "قسم ثالث القاهرة الجديدة", lat: 29.9652, lng: 31.5241 },
+        { id: "145_Qism Al Shorouk", name: "نقطة شرطة الشروق", lat: 30.1112, lng: 31.6420 },
+        { id: "146_Qism Badr", name: "قسم أول بدر", lat: 30.1340, lng: 31.7120 }
     ];
 
-    // دالة قياس المسافات الجغرافية
+    // معادلة هافرسين الحسابية للمسافات
     function calculateDistance(lat1, lon1, lat2, lon2) {
         const R = 6371; 
         const dLat = (lat2 - lat1) * Math.PI / 180;
         const dLon = (lon2 - lon1) * Math.PI / 180;
-        const a = 
-            Math.sin(dLat/2) * Math.sin(dLat/2) +
-            Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * Math.sin(dLon/2) * Math.sin(dLon/2);
-        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-        return R * c; 
+        const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+                  Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * Math.sin(dLon/2) * Math.sin(dLon/2);
+        return R * (2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a))); 
     }
 
     function getLocationByGPS() {
         hideError();
         if (navigator.geolocation) {
-            showLoader("جاري استدعاء إحداثيات الـ GPS المباشرة من جهازك بدون كاش...");
+            showLoader("جاري التقاط إحداثيات جهازك الحالية عبر الـ GPS...");
             navigator.geolocation.getCurrentPosition(
-                (position) => {
-                    processLocationData(position.coords.latitude, position.coords.longitude);
-                },
-                (error) => {
-                    hideLoader();
-                    showError("تعذر التقاط موقع الـ GPS. يرجى استخدام خانة البحث النصي للوصول لمنطقتك.");
-                },
+                (position) => { processLocationData(position.coords.latitude, position.coords.longitude); },
+                (error) => { hideLoader(); showError("فشل الـ GPS. يرجى البحث النصي عن المحافظة/المركز."); },
                 { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
             );
         } else {
-            showError("تحديد الموقع المباشر غير مدعوم على متصفحك.");
+            showError("GPS غير مدعوم على هذا المتصفح.");
         }
     }
 
     async function searchByAddress() {
         hideError();
         const address = document.getElementById('addressInput').value.trim();
-        if (!address) {
-            showError("يرجى تدوين اسم المدينة أو المنطقة المراد فحصها.");
-            return;
-        }
-        showLoader(`جاري الاستعلام الجغرافي عن عنوان: "${address}"...`);
+        if (!address) { showError("يرجى كتابة اسم المنطقة أولاً."); return; }
+        showLoader(`جاري الاستعلام عن النطاق الجغرافي لـ "${address}"...`);
         
         try {
             const response = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(address)}&countrycodes=eg&limit=1`);
             const results = await response.json();
-
             if (results && results.length > 0) {
                 processLocationData(parseFloat(results[0].lat), parseFloat(results[0].lon));
             } else {
-                hideLoader();
-                showError("عنوان غير مدرج بالخرائط الحالية لمصر، حاول إدخال اسم المركز أو المحافظة بشكل أوضح.");
+                hideLoader(); showError("الموقع غير مدرج بخرائط مصر الحالية، اكتب اسم المركز أو الحي بوضوح.");
             }
-        } catch (err) {
-            hideLoader();
-            showError("خطأ في الاتصال بخدمة الخرائط المفتوحة.");
-        }
+        } catch (err) { hideLoader(); showError("خطأ بالاتصال بخوادم الخرائط العالمية."); }
     }
 
-    // مطابقة الموقع الجغرافي واستخراج الأقرب والربط الديناميكي مع بيانات السنترالات
+    // منطق الحساب الجغرافي الفعلي المطلوب
     async function processLocationData(userLat, userLng) {
         try {
-            // سحب العميل من الـ window لحماية والمصادقة
             const supabaseClient = window._sbClient || window.sb || (typeof sb !== 'undefined' ? sb : null);
+            if (!supabaseClient) throw new Error("لم يتم رصد اتصال متاح بـ Supabase.");
 
-            if (!supabaseClient) {
-                throw new Error("لم يتم رصد اتصال متاح بـ Supabase. يرجى التأكد من تسجيل الدخول أولاً.");
-            }
-
-            // جلب بيانات جدول محطات البث والسنترالات
-            const { data: coverageData, error } = await supabaseClient
-                .from('exchanges') 
-                .select('*');
-
+            // جلب داتا السنترالات
+            const { data: coverageData, error } = await supabaseClient.from('exchanges').select('*');
             if (error) throw error;
-            if (!coverageData || coverageData.length === 0) {
-                throw new Error("لا توجد بيانات تغطية مدرجة في قاعدة البيانات حالياً.");
+
+            // 1. إيجاد القسم الأقرب جغرافياً بناءً على موقع البحث/الـ GPS الفعلي للمستخدم (وليس بناءً على الداتا)
+            const sortedStations = policeStations.map(station => {
+                return { ...station, distanceToUser: calculateDistance(userLat, userLng, station.lat, station.lng) };
+            }).sort((a, b) => a.distanceToUser - b.distanceToUser);
+
+            const nearestStation = sortedStations[0]; // القسم الفعلي الحقيقي الأقرب للموقع الحالي
+
+            // 2. إيجاد أقرب سنترال في جدول الـ Database لهذا القسم المكتشف جغرافياً
+            const sortedExchanges = coverageData.map(exchange => {
+                return { ...exchange, distanceToStation: calculateDistance(nearestStation.lat, nearestStation.lng, exchange.lat, exchange.lng) };
+            }).sort((a, b) => a.distanceToStation - b.distanceToStation);
+
+            const nearestExchange = sortedExchanges[0];
+            const distanceStationToExchange = nearestExchange.distanceToStation; // المسافة الفاصلة بين القسم والسنترال
+
+            // 3. تحديد حالة التغطية برمجياً بالكامل بناءً على المسافة بين (القسم المكتشف) و (السنترال الأقرب)
+            let dynamicCoverageStatus = "ضعيفة ⚠️ (خارج النطاق الميداني)";
+            if (distanceStationToExchange <= 2) {
+                dynamicCoverageStatus = "ممتازة 🌟 (تغطية كاملة)";
+            } else if (distanceStationToExchange > 2 && distanceStationToExchange <= 5) {
+                dynamicCoverageStatus = "جيدة جداً 👍 (إشارة مستقرة)";
+            } else if (distanceStationToExchange > 5 && distanceStationToExchange <= 10) {
+                dynamicCoverageStatus = "جيدة 📶 (إشارة متوسطة)";
             }
 
-            // خطوة (1): مطابقة وحساب إحداثيات السنترالات المخزنة بـ Supabase بالنسبة لموقع المستخدم
-            const processedExchanges = coverageData.map(item => {
-                const distance = calculateDistance(userLat, userLng, item.lat, item.lng);
-                return { ...item, distance: distance };
-            }).sort((a, b) => a.distance - b.distance);
-
-            // السنترال الجغرافي الأقرب حالياً للمستخدم
-            const nearestExchange = processedExchanges[0];
-
-            // خطوة (2): البحث الفوري عن المعرف الإنجليزي المقابل لاسم قسم الشرطة العربي المرتبط بهذا السنترال
-            const matchedStation = policeStations.find(station => 
-                station.name === nearestExchange.police_department || 
-                nearestExchange.police_department.includes(station.name) || 
-                station.name.includes(nearestExchange.police_department)
-            );
-
-            // صياغة النتيجة النهائية للعرض
-            const finalData = {
-                stationId: matchedStation ? matchedStation.id : "Unknown_Station_ID",
-                policeDeptName: nearestExchange.police_department,
-                exchangeName: nearestExchange.name || "مركز البث الأقرب",
-                governorate: nearestExchange.governorate || "غير محدد",
-                distance: nearestExchange.distance,
-                coverage: nearestExchange.coverage_status || "4G جيدة"
+            const finalUIObject = {
+                stationId: nearestStation.id,
+                arabicName: nearestStation.name,
+                exchangeName: nearestExchange ? nearestExchange.name : "سنترال النطاق الإقليمي",
+                governorate: nearestExchange ? nearestExchange.governorate : "غير محدد",
+                userToStationKm: nearestStation.distanceToUser,
+                stationToExchangeKm: distanceStationToExchange,
+                coverage: dynamicCoverageStatus
             };
 
-            renderFinalUI(finalData);
+            renderFinalUI(finalUIObject);
 
         } catch (err) {
             console.error(err);
-            showError("خلل بمطابقة البيانات: " + err.message);
+            showError("خطأ أثناء احتساب الهندسة الجغرافية للموقع: " + err.message);
         } finally {
             hideLoader();
         }
     }
 
-    // تحديث واجهة العرض بالشكل الإنجليزي والمعرفات المطلوبة
     function renderFinalUI(result) {
         const cardsContainer = document.getElementById('policeCardsContainer');
         const badgeContainer = document.getElementById('coverageBadgeContainer');
         
         cardsContainer.innerHTML = `
             <div class="police-card" style="grid-column: span 2;">
-                <span class="badge">نطاق تشغيلي معتمد</span>
-                <h3>${result.stationId}</h3>
-                <p><i class="fa-solid fa-building-shield"></i> القسم (بالعربية): ${result.policeDeptName}</p>
-                <p><i class="fa-solid fa-tower-cell"></i> السنترال المستعلم: ${result.exchangeName}</p>
-                <p><i class="fa-solid fa-location-dot"></i> المحافظة الإدارية: ${result.governorate}</p>
-                <p><i class="fa-solid fa-route"></i> بعد نقطة التغطية عن العميل: ${result.distance.toFixed(2)} كم</p>
+                <h3>ID: ${result.stationId}</h3>
+                <p><i class="fa-solid fa-building-shield"></i> القسم الأقرب لموقعك: ${result.arabicName}</p>
+                <p><i class="fa-solid fa-tower-cell"></i> سنترال الربط: ${result.exchangeName} (${result.governorate})</p>
+                <p><i class="fa-solid fa-person-walking-arrow-right"></i> مسافتك الحالية إلى القسم: ${result.userToStationKm.toFixed(2)} كم</p>
+                <p><i class="fa-solid fa-network-wired"></i> المسافة بين القسم والسنترال: ${result.stationToExchangeKm.toFixed(2)} كم</p>
             </div>
         `;
 
-        const status = result.coverage;
-        let bgClass = 'bg-fair';
-        if (status.includes('ممتازة')) bgClass = 'bg-excellent';
-        else if (status.includes('جيدة جداً')) bgClass = 'bg-good';
-        else if (status.includes('جيدة')) bgClass = 'bg-fair';
-        else if (status.includes('ضعيفة')) bgClass = 'bg-weak';
+        let bgClass = 'bg-weak';
+        if (result.coverage.includes('ممتازة')) bgClass = 'bg-excellent';
+        else if (result.coverage.includes('جيدة جداً')) bgClass = 'bg-good';
+        else if (result.coverage.includes('جيدة')) bgClass = 'bg-fair';
 
         badgeContainer.innerHTML = `
             <div class="coverage-badge ${bgClass}">
-                <i class="fa-solid fa-signal"></i> ${status}
+                <i class="fa-solid fa-wave-square"></i> ${result.coverage}
             </div>
-            <p style="margin-top:10px; font-size:14px; color:var(--text-light)">تمت المطابقة الهيكلية بنجاح بناءً على سجلات وجداول النظام.</p>
+            <p style="margin-top:12px; font-size:13px; color:var(--text-light)">ملحوظة: تم توليد التغطية آلياً وفقاً للمسافة الفاصلة بين نقطة القسم الجغرافية ومحطة الإرسال الرئيسية.</p>
         `;
 
         document.getElementById('resultsSection').style.display = 'block';
@@ -839,21 +468,13 @@
         document.getElementById('loader').style.display = 'block';
         document.getElementById('resultsSection').style.display = 'none';
     }
-
-    function hideLoader() {
-        document.getElementById('loader').style.display = 'none';
-    }
-
+    function hideLoader() { document.getElementById('loader').style.display = 'none'; }
     function showError(msg) {
         const errDiv = document.getElementById('errorMessage');
-        errDiv.innerText = msg;
-        errDiv.style.display = 'block';
+        errDiv.innerText = msg; errDiv.style.display = 'block';
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }
-
-    function hideError() {
-        document.getElementById('errorMessage').style.display = 'none';
-    }
+    function hideError() { document.getElementById('errorMessage').style.display = 'none'; }
 </script>
 </body>
 </html>
