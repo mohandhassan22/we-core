@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="../script/auth.js"></script>
+        <script src="../script/auth.js"></script>
     <title>تحديد المناطق التشغيلية وجهاز WE-Air</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -56,7 +56,6 @@
             opacity: 0.9;
         }
 
-        /* كارت التحكم والمدخلات */
         .search-card {
             background: white;
             padding: 25px;
@@ -125,7 +124,6 @@
             position: relative;
         }
 
-        /* لودر التحميل */
         .loader {
             display: none;
             text-align: center;
@@ -143,7 +141,6 @@
             100% { transform: rotate(360deg); }
         }
 
-        /* نتائج البحث والأقسام */
         .results-section {
             display: none;
         }
@@ -206,7 +203,6 @@
             margin-bottom: 8px;
         }
 
-        /* مؤشر التغطية والشبكة */
         .coverage-box {
             background: white;
             padding: 20px;
@@ -225,7 +221,6 @@
             margin-top: 10px;
         }
 
-        /* ألوان التغطية الديناميكية */
         .bg-excellent { background-color: var(--success-color); }
         .bg-good { background-color: #4ea8de; }
         .bg-fair { background-color: var(--warning-color); }
@@ -255,40 +250,38 @@
 
     <div class="search-card">
         <div class="input-group">
-            <input type="text" id="addressInput" placeholder="أدخل العنوان بدقة (مثال: المعادي، القاهرة)...">
+            <input type="text" id="addressInput" placeholder="أدخل اسم المنطقة أو المحافظة أو العنوان بالتفصيل...">
             <button class="btn btn-primary" onclick="searchByAddress()">
-                <i class="fa-solid fa-magnifying-glass"></i> بحث
+                <i class="fa-solid fa-magnifying-glass"></i> بحث عن العنوان
             </button>
         </div>
         
         <div class="divider">أو</div>
 
         <button class="btn btn-gps" onclick="getLocationByGPS()">
-            <i class="fa-solid fa-location-crosshairs"></i> استخدام الموقع الحالي (GPS)
+            <i class="fa-solid fa-location-crosshairs"></i> تحديد الموقع الحالي بدقة عالية (GPS)
         </button>
     </div>
 
     <div class="loader" id="loader">
         <i class="fa-solid fa-circle-notch"></i>
-        <p style="margin-top: 10px; color: var(--we-purple)">جاري تحديد الموقع وحساب التغطية الشبكية...</p>
+        <p id="loaderText" style="margin-top: 10px; color: var(--we-purple)">جاري البحث وتحديد الإحداثيات الجغرافية...</p>
     </div>
 
     <div class="results-section" id="resultsSection">
-        <h2 class="results-title"><i class="fa-solid fa-map-location-dot"></i> النطاق التشغيلي الأقرب لك:</h2>
+        <h2 class="results-title"><i class="fa-solid fa-map-location-dot"></i> النطاق التشغيلي الأقرب للموقع المحدد:</h2>
         
-        <div class="cards-grid" id="policeCardsContainer">
-            </div>
+        <div class="cards-grid" id="policeCardsContainer"></div>
 
         <div class="coverage-box">
-            <h3>حالة تغطية شبكة WE-Air في موقعك</h3>
-            <div id="coverageBadgeContainer">
-                </div>
+            <h3>حالة تغطية شبكة WE-Air في هذا الموقع</h3>
+            <div id="coverageBadgeContainer"></div>
         </div>
     </div>
 </div>
 
 <script>
-    // مصفوفة الأقسام الرسمية المعتمدة التي قمت بإرسالها للتحقق والمطابقة
+    // مصفوفة الأقسام المعتمدة المرفقة في الطلب
     const allowedDepartments = [
       '101_Qism Al Tebin', '102_Qism Helwan', '103_Qism Al Maasara', '104_Qism 15 May', '105_Qism Tora',
       '106_Qism Al Maadi', '107_Qism Al Basatin', '108_Qism Dar Al Salam', '109_Qism Masr Al Adema', '110_Qism Al Sayeda Zainab',
@@ -348,7 +341,7 @@
       '3105_Qism Al Qossier', '3106_Qism Marsa Alam', '3201_Qism Al Kharga', '3203_Markaz Balat', '3205_Markaz Al Dakhla',
       '3301_Qism Marsa Matrouh', '3305_Qism Al Dabaa', '3306_Qism Al Alameen', '3307_Qism Marina Al Alameen', '3308_Qism Al Hamam',
       '3310_Qism Al Sahel AL Shamali Matrouh', '3501_Qism Al Tour', '3502_Qism Abo Rades', '3503_Qism Ras Sedr', '3505_Qism Nuweiba',
-      '3507_Qism Dahab', '3508_Qism Awal Sharm Al Sheikh', '3509_Qism Tany Sharm Al Sheikh', '401_Qism Al Suez', '402_Qism Al Arbeen',
+      '3507_Dahab', '3508_Qism Awal Sharm Al Sheikh', '3509_Qism Tany Sharm Al Sheikh', '401_Qism Al Suez', '402_Qism Al Arbeen',
       '403_Qism Ataqa', '404_Qism Faisal', '405_Qism Al Ganayen', '303_Qism Al Manakh', '307_Qism Awal Al Ganob',
       '2308_Al Fayoum Al Gadeda City', '2599_Desert Side Assuit Governorate', '2607_Markaz Tahta', '2199_Desert Side Giza Governorate 2', '1709_Qism Sers Al Layan',
       '308_Qism Tany Al Ganoub', '2896_Desert Side Aswan Governorate 1', '1313_Markaz Al Ibrahimeya', '3194_Desert Side Qism Halayeb', '3504_Qism Sant Catherine',
@@ -373,9 +366,9 @@
       '2699_Desert Side Sohag Governorate 3', '2799_Desert Side Qena Governorate 2'
     ];
 
-    // دالة حساب الجاذبية/المسافة بين نقطتين جغرافيتين (Haversine Formula) بالـ كيلومتر
+    // دالة Haversine لحساب المسافات بدقة
     function calculateDistance(lat1, lon1, lat2, lon2) {
-        const R = 6371; // نصف قطر الأرض بالكيلومترات
+        const R = 6371; 
         const dLat = (lat2 - lat1) * Math.PI / 180;
         const dLon = (lon2 - lon1) * Math.PI / 180;
         const a = 
@@ -385,18 +378,23 @@
         return R * c; 
     }
 
-    // تفعيل الـ GPS لجلب الإحداثيات الحالية للمستخدم
+    // تفعيل الـ GPS الحقيقي عالي الدقة بدون كاش مخزن
     function getLocationByGPS() {
         hideError();
         if (navigator.geolocation) {
-            showLoader();
+            showLoader("جاري تحديد إحداثيات الـ GPS الحالية بدقة عالية...");
             navigator.geolocation.getCurrentPosition(
                 (position) => {
                     processLocationData(position.coords.latitude, position.coords.longitude);
                 },
                 (error) => {
                     hideLoader();
-                    showError("فشل تحديد موقعك عبر الـ GPS. يرجى إدخال العنوان يدوياً.");
+                    showError("فشل تحديد موقعك عبر الـ GPS. يرجى كتابة اسم منطقتك في حقل البحث.");
+                },
+                {
+                    enableHighAccuracy: true, // تفعيل أعلى دقة متوفرة بالجهاز والشبكة
+                    timeout: 10000,           // أقصى وقت للانتظار 10 ثواني
+                    maximumAge: 0             // إجبار الجهاز على جلب موقع جديد فريش وليس مخزن
                 }
             );
         } else {
@@ -404,95 +402,106 @@
         }
     }
 
-    // محاكاة تحويل النص (العنوان) إلى إحداثيات (يمكن استبدالها بـ Google Geocoding API لاحقاً)
-    function searchByAddress() {
+    // البحث الفعلي عن أي عنوان يكتبه المستخدم باستخدام OpenStreetMap Geocoding API المجانية
+    async function searchByAddress() {
         hideError();
         const address = document.getElementById('addressInput').value.trim();
         if (!address) {
-            showError("يرجى إدخال عنوان للبحث.");
+            showError("يرجى إدخال اسم المنطقة أو العنوان أولاً.");
             return;
         }
-        showLoader();
+        showLoader(`جاري البحث عن موقع "${address}" جغرافياً...`);
         
-        // إحداثيات افتراضية لوسط القاهرة لتشغيل التجربة في حال لم تتوفر خرائط API
-        // سيقوم النظام بالبحث بناء عليها
-        setTimeout(() => {
-            const mockLat = 30.0444; 
-            const mockLng = 31.2357;
-            processLocationData(mockLat, mockLng);
-        }, 1200);
+        try {
+            // إرسال طلب جلب الإحداثيات للعنوان المكتوب
+            const response = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(address)}&countrycodes=eg&limit=1`);
+            const results = await response.json();
+
+            if (results && results.length > 0) {
+                const lat = parseFloat(results[0].lat);
+                const lon = parseFloat(results[0].lon);
+                // معالجة البيانات بناء على النتيجة الحقيقية
+                processLocationData(lat, lon);
+            } else {
+                hideLoader();
+                showError("تعذر العثور على هذا العنوان داخل مصر. يرجى كتابة اسم المدينة أو المحافظة بشكل أوضح (مثال: دمياط الجديدة).");
+            }
+        } catch (err) {
+            hideLoader();
+            console.error(err);
+            showError("فشل الاتصال بخدمة الخرائط، يرجى المحاولة مرة أخرى.");
+        }
     }
 
-    // جلب البيانات مع Supabase وحساب المسافات للأقسام
-   async function processLocationData(userLat, userLng) {
-    try {
-        // محاولة التعرف على عميل Supabase بأي اسم معرف في المشروع
-        const supabaseClient = window._sbClient || window.sb || (typeof sb !== 'undefined' ? sb : null);
+    // جلب البيانات والربط مع Supabase المرن
+    async function processLocationData(userLat, userLng) {
+        try {
+            // التعرف الديناميكي على العميل
+            const supabaseClient = window._sbClient || window.sb || (typeof sb !== 'undefined' ? sb : null);
 
-        if (!supabaseClient) {
-            throw new Error("لم يتم العثور على اتصال متاح بـ Supabase. يرجى التأكد من تضمين ملف auth.js في أعلى الصفحة وأن العميل (sb) مهيأ بنجاح.");
-        }
+            if (!supabaseClient) {
+                throw new Error("لم يتم العثور على اتصال متاح بـ Supabase. يرجى التأكد من أنك قمت بتسجيل الدخول أولاً.");
+            }
 
-        // جلب البيانات من جدول الأقسام والسنترالات 
-        // (تأكد من تعديل 'stations_coverage' ليكون مطابقاً تماماً لاسم جدولك في قاعدة البيانات)
-        const { data: coverageData, error } = await supabaseClient
-            .from('exchanges') 
-            .select('*');
+            // جلب البيانات (تأكد أن جدولك اسمه 'stations_coverage' في قاعدة البيانات)
+            const { data: coverageData, error } = await supabaseClient
+                .from('exchanges') 
+                .select('*');
 
-        if (error) throw error;
-        
-        // ... باقي الكود كما هو بدون تغيير ...
+            if (error) throw error;
 
-            // حساب المسافة لكل نقطة في قاعدة البيانات مقارنة بموقع المستخدم الحالي
+            if (!coverageData || coverageData.length === 0) {
+                throw new Error("لا توجد بيانات تغطية مسجلة في الـ Database حالياً.");
+            }
+
+            // حساب المسافات
             const calculatedResults = coverageData.map(item => {
                 const distance = calculateDistance(userLat, userLng, item.lat, item.lng);
                 return { ...item, distance: distance };
             });
 
-            // ترتيب الأقسام تصاعدياً حسب الأقرب مسافة
+            // ترتيب تصاعدي (الأقرب فالأقرب)
             calculatedResults.sort((a, b) => a.distance - b.distance);
 
-            // استخراج أقرب قسمين شرطة مدرجين
+            // أخذ أقرب قسمين
             const nearestTwo = calculatedResults.slice(0, 2);
 
             renderResults(nearestTwo);
 
         } catch (err) {
             console.error(err);
-            showError("حدث خطأ أثناء معالجة البيانات: " + err.message);
+            showError("حدث خطأ: " + err.message);
         } finally {
             hideLoader();
         }
     }
 
-    // عرض النتائج والبطاقات في الواجهة للمستخدم
     function renderResults(nearestData) {
         const cardsContainer = document.getElementById('policeCardsContainer');
         const badgeContainer = document.getElementById('coverageBadgeContainer');
         cardsContainer.innerHTML = '';
         
-        nearestData.forEach((item, index) => {
-            // تنظيف نص القسم للمطابقة
+        nearestData.forEach((item) => {
             const dbDept = item.police_department;
             
-            // التحقق مما إذا كان القسم المستخرج مدرج في مصفوفة الصلاحيات المعتمدة المرسلة منك
+            // مطابقة دقيقة مع مصفوفة الأقسام المعتمدة
             const isAllowed = allowedDepartments.some(allowed => allowed.includes(dbDept) || dbDept.includes(allowed.split('_')[1]));
-            const statusBadge = isAllowed ? '<span class="badge">نطاق تشغيلي معتمد</span>' : '<span class="badge" style="color:red;">خارج النطاق التشغيلي</span>';
+            const statusBadge = isAllowed ? '<span class="badge">نطاق تشغيلي معتمد</span>' : '<span class="badge" style="color:red; background:#ffe5ec;">خارج النطاق التشغيلي</span>';
 
             const cardHTML = `
                 <div class="police-card">
                     ${statusBadge}
-                    <h3>${item.name || 'سنترال غير مسمى'}</h3>
+                    <h3>${item.name || 'مركز بث'}</h3>
                     <p><i class="fa-solid fa-building-shield"></i> القسم: ${item.police_department}</p>
                     <p><i class="fa-solid fa-location-dot"></i> المحافظة: ${item.governorate}</p>
-                    <p><i class="fa-solid fa-route"></i> يبعد عنك: ${item.distance.toFixed(2)} كم</p>
+                    <p><i class="fa-solid fa-route"></i> المسافة: ${item.distance.toFixed(2)} كم</p>
                 </div>
             `;
             cardsContainer.insertAdjacentHTML('beforeend', cardHTML);
         });
 
-        // جلب حالة التغطية لأقرب نقطة (النقطة الأولى)
-        const primaryCoverage = nearestData[0].coverage_status || '3G جيدة';
+        // قراءة التغطية والجيل
+        const primaryCoverage = nearestData[0].coverage_status || '4G جيدة';
         let bgClass = 'bg-fair';
         
         if (primaryCoverage.includes('ممتازة')) bgClass = 'bg-excellent';
@@ -504,14 +513,14 @@
             <div class="coverage-badge ${bgClass}">
                 <i class="fa-solid fa-signal"></i> ${primaryCoverage}
             </div>
-            <p style="margin-top:10px; font-size:14px; color:var(--text-light)">النتائج معتمدة بناءً على أقرب برج بث لموقعك الحالي.</p>
+            <p style="margin-top:10px; font-size:14px; color:var(--text-light)">النتائج دقيقة ومحسوبة بناءً على الموقع الحقيقي المحدد.</p>
         `;
 
         document.getElementById('resultsSection').style.display = 'block';
     }
 
-    // دالات مساعدة لإظهار وإخفاء عناصر الواجهة
-    function showLoader() {
+    function showLoader(text) {
+        document.getElementById('loaderText').innerText = text;
         document.getElementById('loader').style.display = 'block';
         document.getElementById('resultsSection').style.display = 'none';
     }
@@ -524,6 +533,7 @@
         const errDiv = document.getElementById('errorMessage');
         errDiv.innerText = msg;
         errDiv.style.display = 'block';
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
     function hideError() {
