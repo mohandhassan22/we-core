@@ -2,8 +2,8 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-        <script src="../script/auth.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <script src="../script/auth.js"></script>
     <title>نظام النطاق التشغيلي الفعلي - WE-Air</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -126,14 +126,9 @@
 
         .cards-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: 1fr;
             gap: 20px;
             margin-bottom: 25px;
-        }
-
-        @media (max-width: 600px) {
-            .cards-grid { grid-template-columns: 1fr; }
-            .input-group { flex-direction: column; }
         }
 
         .police-card {
@@ -149,13 +144,12 @@
             font-size: 18px;
             margin-bottom: 12px;
             color: var(--text-dark);
-            font-family: 'Courier New', Courier, monospace;
         }
 
         .police-card p {
-            font-size: 14px;
+            font-size: 15px;
             color: #4a5568;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
         }
 
         .coverage-box {
@@ -180,7 +174,7 @@
             gap: 8px;
             padding: 10px 25px;
             border-radius: 50px;
-            font-size: 20px;
+            font-size: 18px;
             font-weight: bold;
             color: white;
         }
@@ -212,14 +206,14 @@
 <div class="container">
     <header>
         <h1>نظام حساب التغطية والنطاق الجغرافي الفعلي</h1>
-        <p>البحث الفعلي عن أقرب الأقسام جغرافياً وحساب قوة الإشارة ونوع الشبكة من قاعدة البيانات</p>
+        <p>البحث الفعلي والمطابقة المباشرة مع قاعدة بيانات السنترالات والأقسام</p>
     </header>
 
     <div class="error-message" id="errorMessage"></div>
 
     <div class="search-card">
         <div class="input-group">
-            <input type="text" id="addressInput" placeholder="أدخل اسم المنطقة الفعلي (مثال: حلوان، بنها، المنصورة)...">
+            <input type="text" id="addressInput" placeholder="أدخل اسم المنطقة الفعلي (مثال: التجمع، بدر، حلوان)...">
             <button class="btn btn-primary" onclick="searchByAddress()">
                 <i class="fa-solid fa-magnifying-glass"></i> تحديد جغرافياً
             </button>
@@ -236,7 +230,7 @@
     </div>
 
     <div class="results-section" id="resultsSection">
-        <h2 class="results-title"><i class="fa-solid fa-map-location-dot"></i> نتيجة التتبع الميداني والمطابقة:</h2>
+        <h2 class="results-title"><i class="fa-solid fa-map-location-dot"></i> نتيجة المطابقة من قاعدة البيانات:</h2>
         <div class="cards-grid" id="policeCardsContainer"></div>
         <div class="coverage-box">
             <h3>تحليل حالة الشبكة ونطاق التغطية</h3>
@@ -246,112 +240,9 @@
 </div>
 
 <script>
-    const policeStations = [
-     { id: "101_Qism Al Tebin", name: "قسم ثاني التبين", lat: 29.8112, lng: 31.2845 },
-        { id: "102_Qism Helwan", name: "مركز شرطة حلوان", lat: 29.8415, lng: 31.3312 },
-        { id: "103_Qism Al Maasara", name: "قسم المعصرة", lat: 29.8942, lng: 31.3121 },
-        { id: "104_Qism 15 May", name: "نقطة شرطة 15 مايو", lat: 29.9015, lng: 31.3784 },
-        { id: "105_Qism Tora", name: "قسم طرة", lat: 29.9412, lng: 31.2915 },
-        { id: "106_Qism Al Maadi", name: "نقطة شرطة المعادي", lat: 29.9617, lng: 31.2570 },
-        { id: "107_Qism Al Basatin", name: "قسم البساتين", lat: 29.9914, lng: 31.2700 },
-        { id: "108_Qism Dar Al Salam", name: "قسم دار السلام", lat: 30.0050, lng: 31.2480 },
-        { id: "109_Qism Masr Al Adema", name: "قسم ثاني مصر القديمة", lat: 30.0058, lng: 31.2290 },
-        { id: "110_Qism Al Sayeda Zainab", name: "نقطة شرطة السيدة زينب", lat: 30.0270, lng: 31.2380 },
-        { id: "1101_Qism Awal Dammietta", name: "قسم أول دمياط", lat: 31.4175, lng: 31.8144 },
-        { id: "1102_Qism Tany Dammietta", name: "قسم ثاني دمياط", lat: 31.4210, lng: 31.8250 },
-        { id: "1104_Markaz Fraskour", name: "مركز فارسكور" , lat: 31.3284, lng: 31.8712 },
-        { id: "1105_Markaz Al Zarka", name: "مركز الزرقا", lat: 31.2481, lng: 31.7452 },
-        { id: "1106_Markaz Kafr Saad", name: "مركز كفر سعد", lat: 31.3652, lng: 31.6912 },
-        { id: "1107_Markaz Kafr Al Bateekh", name: "مركز كفر البطيخ", lat: 31.3912, lng: 31.7481 },
-        { id: "1108_New Dameitta City", name: "مركز شرطة دمياط الجديدة", lat: 31.4421, lng: 31.6712 },
-        { id: "111_Qism Al Khalefa", name: "قسم الخليفة", lat: 30.0180, lng: 31.2440 },
-        { id: "112_Qism Al Mokattam", name: "نقطة شرطة المقطم", lat: 30.0047, lng: 31.3098 },
-        { id: "113_Qism Monshaat Nasr", name: "قسم منشأة ناصر", lat: 30.0321, lng: 31.2845 },
-        { id: "114_Qism Al Darb Al Ahmar", name: "قسم الدرب الأحمر", lat: 30.0412, lng: 31.2584 },
-        { id: "115_Qism Al Mosky", name: "قسم الموسكي", lat: 30.0512, lng: 31.2511 },
-        { id: "116_Qism Abdeen", name: "قسم ثاني عابدين", lat: 30.0410, lng: 31.2440 },
-        { id: "117_Qism Kasr Al Nile", name: "قسم قصر النيل", lat: 30.0452, lng: 31.2321 },
-        { id: "118_Qism Al Zamalek", name: "مركز شرطة الزمالك", lat: 30.0615, lng: 31.2210 },
-        { id: "119_Qism Boulak", name: "قسم بولاق", lat: 30.0584, lng: 31.2312 },
-        { id: "120_Qism Al Azbakeya", name: "قسم الأزبكية", lat: 30.0612, lng: 31.2458 },
-        { id: "1201_Qism Awal Al Mansoura", name: "قسم أول المنصورة", lat: 31.0421, lng: 31.3784 },
-        { id: "1202_Qism Tany Al Mansoura", name: "قسم ثاني المنصورة", lat: 31.0364, lng: 31.3895 },
-        { id: "1204_Markaz Aga", name: "مركز أجا", lat: 30.9412, lng: 31.3142 },
-        { id: "1205_Qism Met Ghamr", name: "قسم ميت غمر", lat: 30.7184, lng: 31.2612 },
-        { id: "1206_Markaz Mit Ghamr", name: "مركز ميت غمر", lat: 30.7200, lng: 31.2700 },
-        { id: "1207_Markaz Al Senbellawein", name: "مركز السنبلاوين", lat: 30.8845, lng: 31.4682 },
-        { id: "1208_Markaz Tamy Amded", name: "مركز تمي الأمديد", lat: 30.9241, lng: 31.5412 },
-        { id: "1209_Markaz Bani Abeed", name: "مركز بني عبيد", lat: 30.9521, lng: 31.4912 },
-        { id: "1211_Markaz Dekerness", name: "مركز دكرنس", lat: 31.0842, lng: 31.5912 },
-        { id: "1212_Markaz Menyet Al Nasr", name: "مركز منية النصر", lat: 31.1342, lng: 31.6481 },
-        { id: "1213_Qism Al Kordy", name: "قسم الكردي", lat: 31.1521, lng: 31.6112 },
-        { id: "1214_Markaz Mit Selseel", name: "مركز ميت سلسيل", lat: 31.1481, lng: 31.6612 },
-        { id: "1216_Markaz Al Manzala", name: "مركز المنزلة", lat: 31.1712, lng: 31.8942 },
-        { id: "1217_Markaz Al Matareya", name: "مركز المطرية", lat: 31.1821, lng: 31.9652 },
-        { id: "1218_Markaz Sherbeen", name: "مركز شربين", lat: 31.1142, lng: 31.4612 },
-        { id: "1219_Qism Gamasa", name: "قسم جمصة", lat: 31.4412, lng: 31.4984 },
-        { id: "122_Qism Al Gamaleya", name: "قسم الجمالية", lat: 30.0512, lng: 31.2642 },
-        { id: "1220_Markaz Talkha", name: "مركز طلخا", lat: 31.0545, lng: 31.3912 },
-        { id: "1221_Markaz Nebroua", name: "مركز نبروه", lat: 31.0742, lng: 31.3142 },
-        { id: "1222_Markaz Belqas", name: "مركز بلقاس", lat: 31.2241, lng: 31.3652 },
-        { id: "123_Qism Al Daher", name: "قسم الظاهر", lat: 30.0652, lng: 31.2684 },
-        { id: "124_Qism Al Waily", name: "قسم الوايلي", lat: 30.0712, lng: 31.2784 },
-        { id: "125_Qism Hadayek Al Kobba", name: "قسم حدائق القبة", lat: 30.0894, lng: 31.2941 },
-        { id: "126_Qism Al Sharabeya", name: "قسم الشرابية", lat: 30.0812, lng: 31.2741 },
-        { id: "128_Qism Rod Al Farag", name: "قسم روض الفرج", lat: 30.0812, lng: 31.2341 },
-        { id: "129_Qism Al Sahel", name: "قسم الساحل", lat: 30.0912, lng: 31.2452 },
-        { id: "130_Qism Al Zawya Al Hamra", name: "قسم الزاوية الحمراء" , lat: 30.0984, lng: 31.2841 },
-        { id: "1301_Qism Awal Zagazig", name: "قسم أول الزقازيق", lat: 30.5842, lng: 31.5012 },
-        { id: "1302_Qism Tany Al Zagazig", name: "قسم ثاني الزقازيق", lat: 30.5872, lng: 31.5020 },
-        { id: "1303_Markaz Al Zagazig", name: "مركز الزقازيق", lat: 30.5912, lng: 31.4812 },
-        { id: "1304_Qism Al Qenayat", name: "قسم القنايات", lat: 30.6121, lng: 31.4584 },
-        { id: "1305_Markaz Menya Al Qamh", name: "مركز منيا القمح", lat: 30.5184, lng: 31.3412 },
-        { id: "1306_Markaz Mashtoul Al Souq", name: "مركز مشتول السوق", lat: 30.3652, lng: 31.4412 },
-        { id: "1307_Markaz Belbes", name: "مركز بلبيس", lat: 30.4184, lng: 31.5642 },
-        { id: "1308_Qism Al Asher Mn Ramadan", name: "قسم أول العاشر من رمضان", lat: 30.3124, lng: 31.7452 },
-        { id: "1309_Qism Tany Madint Al Asher Mn Ramadan", name: "قسم ثاني العاشر من رمضان", lat: 30.2984, lng: 31.7612 },
-        { id: "131_Qism Al Amereya", name: "قسم الأميرية", lat: 30.1012, lng: 31.2984 },
-        { id: "1310_Markaz Abo Hammad", name: "مركز أبو حماد", lat: 30.5412, lng: 31.6612 },
-        { id: "1311_Markaz Hehya", name: "مركز ههيا", lat: 30.6712, lng: 31.5912 },
-        { id: "1312_Markaz Dyarb Negm", name: "مركز ديارب نجم", lat: 30.7512, lng: 31.4912 },
-        { id: "1314_Markaz Abo Kbeer", name: "مركز أبو كبير", lat: 30.7241, lng: 31.6712 },
-        { id: "1315_Markaz Kafr Sakr", name: "مركز كفر صقر", lat: 30.8112, lng: 31.6212 },
-        { id: "1316_Markaz Awlad Sakr", name: "مركز أولاد صقر", lat: 30.9212, lng: 31.6412 },
-        { id: "1317_Markaz San Al Hagar", name: "مركز صان الحجر", lat: 30.9012, lng: 31.8941 },
-        { id: "1319_Markaz Al Hasyneya", name: "مركز الحسينية", lat: 30.8542, lng: 31.9211 },
-        { id: "132_Qism Al Zayton", name: "قسم الزيتون", lat: 30.1042, lng: 31.3112 },
-        { id: "1320_Qism Faqous", name: "قسم فاقوس", lat: 30.7321, lng: 31.8012 },
-        { id: "1321_Markaz Faqous", name: "مركز فاقوس", lat: 30.7412, lng: 31.8142 },
-        { id: "1323_Qism Al Salheya Al Gadeda", name: "قسم الصالحية الجديدة", lat: 30.6412, lng: 31.9412 },
-        { id: "133_Qism Al Matareya", name: "قسم المطرية", lat: 30.1245, lng: 31.3211 },
-        { id: "134_Qism Ain Shams", name: "قسم عين شمس", lat: 30.1294, lng: 31.3412 },
-        { id: "135_Qism Al Marg", name: "قسم المرج", lat: 30.1584, lng: 31.3364 },
-        { id: "136_Qism Awal Al Salam", name: "قسم أول السلام", lat: 30.1652, lng: 31.3984 },
-        { id: "137_Qism Tany Al Salam", name: "قسم ثاني السلام", lat: 30.1812, lng: 31.4241 },
-        { id: "138_Qism Al Nozha", name: "قسم النزهة", lat: 30.1054, lng: 31.3652 },
-        { id: "1401_Qism Awal Banha", name: "قسم أول بنها", lat: 30.4612, lng: 31.1784 },
-        { id: "1402_Qism Tany Banha", name: "قسم ثاني بنها", lat: 30.4674, lng: 31.1855 },
-        { id: "1403_Markaz Banha", name: "مركز بنها", lat: 30.4512, lng: 31.2012 },
-        { id: "1404_Markaz Kafr Shokr", name: "مركز كفر شكر", lat: 30.5484, lng: 31.2241 },
-        { id: "1407_Markaz Al Qanater Al Khayreya", name: "مركز القناطر الخيرية", lat: 30.1942, lng: 31.1342 },
-        { id: "1408_Qism Qalyoub", name: "قسم قليوب", lat: 30.1784, lng: 31.2052 },
-        { id: "1409_Markaz Qalyoub", name: "مركز قليوب", lat: 30.1652, lng: 31.2212 },
-        { id: "141_Qism Tany Madinet Nasr", name: "قسم ثاني مدينة نصر" , lat: 30.0542, lng: 31.3312 },
-        { id: "1410_Qism Awal Shoubra Khema", name: "قسم أول شبرا الخيمة", lat: 30.1241, lng: 31.2452 },
-        { id: "1411_Qism Tany Shoubra Al Khema", name: "قسم ثاني شبرا الخيمة", lat: 30.1362, lng: 31.2712 },
-        { id: "1412_Qism Al Khosous", name: "قسم الخصوص", lat: 30.1458, lng: 31.3012 },
-        { id: "1413_Markaz Shebeen Al Qanater", name: "مركز شبين القناطر", lat: 30.3124, lng: 31.3214 },
-        { id: "1414_Qism Khanka", name: "قسم الخانكة", lat: 30.2112, lng: 31.3684 },
-        { id: "1415_Markaz Al khanka", name: "مركز الخانكة", lat: 30.2241, lng: 31.3912 },
-        { id: "1416_Qism Al Obour", name: "قسم العبور", lat: 30.2312, lng: 31.4812 },
-        { id: "142_Qism Awal Al Qahera Al Gadeda", name: "قسم أول القاهرة الجديدة", lat: 30.0054, lng: 31.4412 },
-        { id: "143_Qism Tany Al Qahera Al Gadeda", name: "مركز شرطة القاهرة الجديدة", lat: 30.0241, lng: 31.4984 },
-        { id: "144_Qism Talet Al Qahera Al Gadeda", name: "قسم ثالث القاهرة الجديدة", lat: 29.9652, lng: 31.5241 },
-        { id: "145_Qism Al Shorouk", name: "نقطة شرطة الشروق", lat: 30.1112, lng: 31.6420 },
-        { id: "146_Qism Badr", name: "قسم أول بدر", lat: 30.1340, lng: 31.7120 }
-    ];
-
+    // دالة حساب المسافة بين نقطتين جغرافيتين
     function calculateDistance(lat1, lon1, lat2, lon2) {
+        if (!lat1 || !lon1 || !lat2 || !lon2) return Infinity;
         const R = 6371; 
         const dLat = (lat2 - lat1) * Math.PI / 180;
         const dLon = (lon2 - lon1) * Math.PI / 180;
@@ -366,7 +257,7 @@
             showLoader("جاري التقاط إحداثيات جهازك الحالية عبر الـ GPS...");
             navigator.geolocation.getCurrentPosition(
                 (position) => { processLocationData(position.coords.latitude, position.coords.longitude); },
-                (error) => { hideLoader(); showError("فشل الـ GPS. يرجى البحث النصي عن المحافظة/المركز."); },
+                (error) => { hideLoader(); showError("فشل الـ GPS. يرجى البحث النصي عن المنطقة."); },
                 { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
             );
         } else {
@@ -396,51 +287,51 @@
             const supabaseClient = window._sbClient || window.sb || (typeof sb !== 'undefined' ? sb : null);
             if (!supabaseClient) throw new Error("لم يتم رصد اتصال متاح بـ Supabase.");
 
-            const { data: coverageData, error } = await supabaseClient.from('exchanges').select('*');
+            // جلب البيانات بالكامل من جدول exchanges حسب التسمية الجديدة
+            const { data: exchangesData, error } = await supabaseClient.from('exchanges').select('*');
             if (error) throw error;
+            if (!exchangesData || exchangesData.length === 0) throw new Error("قاعدة البيانات فارغة أو لا تحتوي على سجلات.");
 
-            // 1. إيجاد القسم الأقرب جغرافياً لموقع المستخدم
-            const sortedStations = policeStations.map(station => {
-                return { ...station, distanceToUser: calculateDistance(userLat, userLng, station.lat, station.lng) };
-            }).sort((a, b) => a.distanceToUser - b.distanceToUser);
+            // تصفية السجلات التي تحتوي على إحداثيات صالحة وحساب المسافة لموقع المستخدم
+            const sortedExchanges = exchangesData
+                .filter(item => item.latitude !== null && item.longitude !== null)
+                .map(item => {
+                    return { 
+                        ...item, 
+                        distanceToUser: calculateDistance(userLat, userLng, parseFloat(item.latitude), parseFloat(item.longitude)) 
+                    };
+                })
+                .sort((a, b) => a.distanceToUser - b.distanceToUser);
 
-            const nearestStation = sortedStations[0]; 
-
-            // 2. التعديل الجوهري: إيجاد السنترال الأقرب لموقع المستخدم مباشرة (وليس لموقع القسم) لحساب دقيق
-            const sortedExchanges = coverageData.map(exchange => {
-                return { ...exchange, distanceToUser: calculateDistance(userLat, userLng, exchange.lat, exchange.lng) };
-            }).sort((a, b) => a.distanceToUser - b.distanceToUser);
+            if (sortedExchanges.length === 0) throw new Error("لم يتم العثور على سجلات بإحداثيات صالحة للمقارنة الجغرافية.");
 
             const nearestExchange = sortedExchanges[0];
-            const userToExchangeKm = nearestExchange ? nearestExchange.distanceToUser : 0; 
 
-            // 3. حساب قوة الإشارة بناءً على المسافة الحقيقية بين المستخدم وأقرب سنترال
+            // حساب قوة الإشارة بناءً على المسافة الحقيقية للسنترال
             let signalStrength = "ضعيفة ⚠️";
-            if (userToExchangeKm <= 2) {
+            if (nearestExchange.distanceToUser <= 2) {
                 signalStrength = "ممتازة 🌟";
-            } else if (userToExchangeKm > 2 && userToExchangeKm <= 5) {
+            } else if (nearestExchange.distanceToUser > 2 && nearestExchange.distanceToUser <= 5) {
                 signalStrength = "جيدة جداً 👍";
-            } else if (userToExchangeKm > 5 && userToExchangeKm <= 10) {
+            } else if (nearestExchange.distanceToUser > 5 && nearestExchange.distanceToUser <= 10) {
                 signalStrength = "جيدة 📶";
             }
 
-            // 4. جلب نوع الإشارة الفعلي من قاعدة البيانات للسنترال الأقرب
-            const signalType = nearestExchange && nearestExchange.coverage_status ? nearestExchange.coverage_status : "3G/4G";
-
+            // تجميع البيانات النهائية للعرض من الجدول مباشرة
             const finalUIObject = {
-                stationId: nearestStation.id,
-                arabicName: nearestStation.name,
-                userToStationKm: nearestStation.distanceToUser,
-                userToExchangeKm: userToExchangeKm,
-                signalStrength: signalStrength,
-                signalType: signalType
+                id: nearestExchange.id,
+                policeDepartment: nearestExchange.القسم || "غير مدرج",
+                exchangeName: nearestExchange.السنترال || "غير مدرج",
+                networkType: nearestExchange.نوع_الشبكة || "3G, 4G",
+                distance: nearestExchange.distanceToUser,
+                signalStrength: signalStrength
             };
 
             renderFinalUI(finalUIObject);
 
         } catch (err) {
             console.error(err);
-            showError("خطأ أثناء احتساب الهندسة الجغرافية للموقع: " + err.message);
+            showError("خطأ أثناء جلب وتحليل بيانات السنترالات: " + err.message);
         } finally {
             hideLoader();
         }
@@ -451,11 +342,11 @@
         const badgeContainer = document.getElementById('badgeContainer');
         
         cardsContainer.innerHTML = `
-            <div class="police-card" style="grid-column: span 2;">
-                <h3>ID: ${result.stationId}</h3>
-                <p><i class="fa-solid fa-building-shield"></i> القسم الأقرب لموقعك: ${result.arabicName}</p>
-                <p><i class="fa-solid fa-person-walking-arrow-right"></i> مسافتك الحالية إلى القسم: ${result.userToStationKm.toFixed(2)} كم</p>
-                <p><i class="fa-solid fa-tower-cell"></i> مسافتك الفعلية إلى أقرب سنترال: ${result.userToExchangeKm.toFixed(2)} كم</p>
+            <div class="police-card">
+                <h3>كود المعرف (ID): ${result.id}</h3>
+                <p><i class="fa-solid fa-building-shield" style="color: var(--we-purple);"></i> <strong>القسم المربوط:</strong> ${result.policeDepartment}</p>
+                <p><i class="fa-solid fa-tower-cell" style="color: var(--we-pink);"></i> <strong>اسم السنترال:</strong> ${result.exchangeName}</p>
+                <p><i class="fa-solid fa-person-walking-arrow-right" style="color: #4ea8de;"></i> <strong>المسافة التقريبية إليك:</strong> ${result.distance.toFixed(2)} كم</p>
             </div>
         `;
 
@@ -469,7 +360,7 @@
                 <i class="fa-solid fa-signal"></i> قوة الإشارة: ${result.signalStrength}
             </div>
             <div class="network-badge">
-                <i class="fa-solid fa-bolt"></i> الجيل المتاح: ${result.signalType}
+                <i class="fa-solid fa-bolt"></i> الأجيال المتاحة: ${result.networkType}
             </div>
         `;
 
