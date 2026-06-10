@@ -423,24 +423,24 @@
     }
 
     // جلب البيانات مع Supabase وحساب المسافات للأقسام
-    async function processLocationData(userLat, userLng) {
-        try {
-            // التحقق من أن عميل Supabase مهيأ ومتاح في الصفحة
-            if (!window._sbClient) {
-                throw new Error("لم يتم العثور على اتصال متاح بـ Supabase. يرجى مراجعة ملف auth.js");
-            }
+   async function processLocationData(userLat, userLng) {
+    try {
+        // محاولة التعرف على عميل Supabase بأي اسم معرف في المشروع
+        const supabaseClient = window._sbClient || window.sb || (typeof sb !== 'undefined' ? sb : null);
 
-            // جلب البيانات من جدول الأقسام والسنترالات المخزن في قاعدة البيانات
-            // ملاحظة: استبدل 'stations_coverage' باسم الجدول الصحيح لديك إذا اختلف.
-            const { data: coverageData, error } = await window._sbClient
-                .from('exchanges') 
-                .select('*');
+        if (!supabaseClient) {
+            throw new Error("لم يتم العثور على اتصال متاح بـ Supabase. يرجى التأكد من تضمين ملف auth.js في أعلى الصفحة وأن العميل (sb) مهيأ بنجاح.");
+        }
 
-            if (error) throw error;
+        // جلب البيانات من جدول الأقسام والسنترالات 
+        // (تأكد من تعديل 'stations_coverage' ليكون مطابقاً تماماً لاسم جدولك في قاعدة البيانات)
+        const { data: coverageData, error } = await supabaseClient
+            .from('exchanges') 
+            .select('*');
 
-            if (!coverageData || coverageData.length === 0) {
-                throw new Error("لا توجد بيانات تغطية في قاعدة البيانات حالياً.");
-            }
+        if (error) throw error;
+        
+        // ... باقي الكود كما هو بدون تغيير ...
 
             // حساب المسافة لكل نقطة في قاعدة البيانات مقارنة بموقع المستخدم الحالي
             const calculatedResults = coverageData.map(item => {
