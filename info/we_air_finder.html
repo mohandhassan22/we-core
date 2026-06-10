@@ -2,8 +2,8 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
+    <script src="../script/auth.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <script src="../script/auth.js"></script>
     <title>نظام النطاق التشغيلي الفعلي - WE-Air</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -213,7 +213,7 @@
 
     <div class="search-card">
         <div class="input-group">
-            <input type="text" id="addressInput" placeholder="أدخل اسم المنطقة الفعلي (مثال: التجمع، بدر، حلوان)...">
+            <input type="text" id="addressInput" placeholder="أدخل اسم المنطقة الفعلي (مثال: العباسية، الشرابية، بدر)...">
             <button class="btn btn-primary" onclick="searchByAddress()">
                 <i class="fa-solid fa-magnifying-glass"></i> تحديد جغرافياً
             </button>
@@ -269,17 +269,52 @@
         hideError();
         const address = document.getElementById('addressInput').value.trim();
         if (!address) { showError("يرجى كتابة اسم المنطقة أولاً."); return; }
-        showLoader(`جاري الاستعلام عن النطاق الجغرافي لـ "${address}"...`);
+        showLoader(`جاري البحث والمطابقة لـ "${address}"...`);
         
         try {
+            const supabaseClient = window._sbClient || window.sb || (typeof sb !== 'undefined' ? sb : null);
+            if (!supabaseClient) throw new Error("لم يتم رصد اتصال متاح بـ Supabase.");
+
+            // 1. محاولة مطابقة النص المكتوب مباشرة مع السنترال أو القسم في جدولك لاستبعاد أخطاء الخريطة الخارجية
+            const { data: exactMatches, error: matchError } = await supabaseClient
+                .from('exchanges')
+                .select('*')
+                .or(`السنترال.ilike.%${address}%,القسم.ilike.%${address}%`);
+
+            if (matchError) throw matchError;
+
+            // إذا عثرنا على السنترال أو القسم باسمه الصريح داخل جدولك، نعتمده ونعرض بياناته فوراً
+            if (exactMatches && exactMatches.length > 0) {
+                const matchedItem = exactMatches[0];
+                
+                // بما أنها مطابقة نصية مباشرة من السنترال، تعتبر التغطية بأفضل جودة مدخلة له
+                const finalUIObject = {
+                    id: matchedItem.id,
+                    policeDepartment: matchedItem.القسم || "غير مدرج",
+                    exchangeName: matchedItem.السنترال || "غير مدرج",
+                    networkType: matchedItem.نوع_الشبكة || "3G, 4G",
+                    distance: 0.00, 
+                    signalStrength: "ممتازة 🌟"
+                };
+                
+                renderFinalUI(finalUIObject);
+                hideLoader();
+                return; 
+            }
+
+            // 2. كحل احتياطي (Fallback): إذا لم يطابق الاسم نصياً، نلجأ للبحث الجغرافي وحساب المسافات
             const response = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(address)}&countrycodes=eg&limit=1`);
             const results = await response.json();
             if (results && results.length > 0) {
                 processLocationData(parseFloat(results[0].lat), parseFloat(results[0].lon));
             } else {
-                hideLoader(); showError("الموقع غير مدرج بخرائط مصر الحالية، اكتب اسم المركز أو الحي بوضوح.");
+                hideLoader(); showError("الموقع غير مدرج، اكتب اسم السنترال أو القسم بوضوح كما هو مسجل.");
             }
-        } catch (err) { hideLoader(); showError("خطأ بالاتصال بخوادم الخرائط العالمية."); }
+        } catch (err) { 
+            console.error(err);
+            hideLoader(); 
+            showError("خطأ أثناء البحث والمطابقة: " + err.message); 
+        }
     }
 
     async function processLocationData(userLat, userLng) {
@@ -287,14 +322,20 @@
             const supabaseClient = window._sbClient || window.sb || (typeof sb !== 'undefined' ? sb : null);
             if (!supabaseClient) throw new Error("لم يتم رصد اتصال متاح بـ Supabase.");
 
-            // جلب البيانات بالكامل من جدول exchanges حسب التسمية الجديدة
-            const { data: exchangesData, error } = await supabaseClient.from('exchanges').select('*');
-            if (error) throw error;
-            if (!exchangesData || exchangesData.length === 0) throw new Error("قاعدة البيانات فارغة أو لا تحتوي على سجلات.");
+            // جلب البيانات التي تحتوي على إحداثيات صالحة فقط من جدول exchanges
+            const { data: exchangesData, error } = await supabaseClient
+                .from('exchanges')
+                .select('*')
+                .not('latitude', 'is', null)
+                .not('longitude', 'is', null);
 
-            // تصفية السجلات التي تحتوي على إحداثيات صالحة وحساب المسافة لموقع المستخدم
+            if (error) throw error;
+            if (!exchangesData || exchangesData.length === 0) {
+                throw new Error("لم يتم العثور على أي سنترالات تحتوي على إحداثيات جغرافية.");
+            }
+
+            // تصفية السجلات وحساب المسافة لموقع المستخدم وترتيبها من الأقرب للأبعد
             const sortedExchanges = exchangesData
-                .filter(item => item.latitude !== null && item.longitude !== null)
                 .map(item => {
                     return { 
                         ...item, 
@@ -302,8 +343,6 @@
                     };
                 })
                 .sort((a, b) => a.distanceToUser - b.distanceToUser);
-
-            if (sortedExchanges.length === 0) throw new Error("لم يتم العثور على سجلات بإحداثيات صالحة للمقارنة الجغرافية.");
 
             const nearestExchange = sortedExchanges[0];
 
@@ -317,7 +356,6 @@
                 signalStrength = "جيدة 📶";
             }
 
-            // تجميع البيانات النهائية للعرض من الجدول مباشرة
             const finalUIObject = {
                 id: nearestExchange.id,
                 policeDepartment: nearestExchange.القسم || "غير مدرج",
