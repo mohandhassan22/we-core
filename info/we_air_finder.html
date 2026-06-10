@@ -2,8 +2,8 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <script src="../script/auth.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>نظام النطاق التشغيلي الفعلي - WE-Air</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -246,9 +246,8 @@
 </div>
 
 <script>
-    // مصفوفة الأقسام الشاملة مزودة بالإحداثيات الجغرافية الفعلية لمصر
     const policeStations = [
-        { id: "101_Qism Al Tebin", name: "قسم ثاني التبين", lat: 29.8112, lng: 31.2845 },
+     { id: "101_Qism Al Tebin", name: "قسم ثاني التبين", lat: 29.8112, lng: 31.2845 },
         { id: "102_Qism Helwan", name: "مركز شرطة حلوان", lat: 29.8415, lng: 31.3312 },
         { id: "103_Qism Al Maasara", name: "قسم المعصرة", lat: 29.8942, lng: 31.3121 },
         { id: "104_Qism 15 May", name: "نقطة شرطة 15 مايو", lat: 29.9015, lng: 31.3784 },
@@ -350,6 +349,7 @@
         { id: "144_Qism Talet Al Qahera Al Gadeda", name: "قسم ثالث القاهرة الجديدة", lat: 29.9652, lng: 31.5241 },
         { id: "145_Qism Al Shorouk", name: "نقطة شرطة الشروق", lat: 30.1112, lng: 31.6420 },
         { id: "146_Qism Badr", name: "قسم أول بدر", lat: 30.1340, lng: 31.7120 }
+    ];
 
     function calculateDistance(lat1, lon1, lat2, lon2) {
         const R = 6371; 
@@ -399,39 +399,39 @@
             const { data: coverageData, error } = await supabaseClient.from('exchanges').select('*');
             if (error) throw error;
 
-            // 1. إيجاد القسم الأقرب جغرافياً بناءً على الموقع الحقيقي للمستخدم
+            // 1. إيجاد القسم الأقرب جغرافياً لموقع المستخدم
             const sortedStations = policeStations.map(station => {
                 return { ...station, distanceToUser: calculateDistance(userLat, userLng, station.lat, station.lng) };
             }).sort((a, b) => a.distanceToUser - b.distanceToUser);
 
             const nearestStation = sortedStations[0]; 
 
-            // 2. إيجاد أقرب سنترال في قاعدة البيانات لهذا القسم المكتشف جغرافياً
+            // 2. التعديل الجوهري: إيجاد السنترال الأقرب لموقع المستخدم مباشرة (وليس لموقع القسم) لحساب دقيق
             const sortedExchanges = coverageData.map(exchange => {
-                return { ...exchange, distanceToStation: calculateDistance(nearestStation.lat, nearestStation.lng, exchange.lat, exchange.lng) };
-            }).sort((a, b) => a.distanceToStation - b.distanceToStation);
+                return { ...exchange, distanceToUser: calculateDistance(userLat, userLng, exchange.lat, exchange.lng) };
+            }).sort((a, b) => a.distanceToUser - b.distanceToUser);
 
             const nearestExchange = sortedExchanges[0];
-            const distanceStationToExchange = nearestExchange ? nearestExchange.distanceToStation : 0; 
+            const userToExchangeKm = nearestExchange ? nearestExchange.distanceToUser : 0; 
 
-            // 3. حساب قوة الإشارة بناءً على المسافة بين القسم والسنترال
+            // 3. حساب قوة الإشارة بناءً على المسافة الحقيقية بين المستخدم وأقرب سنترال
             let signalStrength = "ضعيفة ⚠️";
-            if (distanceStationToExchange <= 2) {
+            if (userToExchangeKm <= 2) {
                 signalStrength = "ممتازة 🌟";
-            } else if (distanceStationToExchange > 2 && distanceStationToExchange <= 5) {
+            } else if (userToExchangeKm > 2 && userToExchangeKm <= 5) {
                 signalStrength = "جيدة جداً 👍";
-            } else if (distanceStationToExchange > 5 && distanceStationToExchange <= 10) {
+            } else if (userToExchangeKm > 5 && userToExchangeKm <= 10) {
                 signalStrength = "جيدة 📶";
             }
 
-            // 4. جلب نوع الإشارة الحقيقي مباشرة من حقل coverage_status في قاعدة البيانات
+            // 4. جلب نوع الإشارة الفعلي من قاعدة البيانات للسنترال الأقرب
             const signalType = nearestExchange && nearestExchange.coverage_status ? nearestExchange.coverage_status : "3G/4G";
 
             const finalUIObject = {
                 stationId: nearestStation.id,
                 arabicName: nearestStation.name,
                 userToStationKm: nearestStation.distanceToUser,
-                stationToExchangeKm: distanceStationToExchange,
+                userToExchangeKm: userToExchangeKm,
                 signalStrength: signalStrength,
                 signalType: signalType
             };
@@ -455,7 +455,7 @@
                 <h3>ID: ${result.stationId}</h3>
                 <p><i class="fa-solid fa-building-shield"></i> القسم الأقرب لموقعك: ${result.arabicName}</p>
                 <p><i class="fa-solid fa-person-walking-arrow-right"></i> مسافتك الحالية إلى القسم: ${result.userToStationKm.toFixed(2)} كم</p>
-                <p><i class="fa-solid fa-network-wired"></i> المسافة بين القسم والسنترال: ${result.stationToExchangeKm.toFixed(2)} كم</p>
+                <p><i class="fa-solid fa-tower-cell"></i> مسافتك الفعلية إلى أقرب سنترال: ${result.userToExchangeKm.toFixed(2)} كم</p>
             </div>
         `;
 
