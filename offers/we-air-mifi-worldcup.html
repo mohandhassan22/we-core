@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>عرض كأس العالم 2026 — WE Air & Nitro MiFi</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --we-purple:       #5B2D8E;
+    --we-purple-dark:  #3D1A6E;
+    --we-purple-light: #7B4DB5;
+    --we-purple-pale:  #F0E8FC;
+    --we-gold:         #F5C518;
+    --we-gold-bg:      #FFF8DC;
+    --bg:              #F7F4FC;
+    --white:           #ffffff;
+    --text-dark:       #1A0A2E;
+    --text-mid:        #4A3570;
+    --border:          #DDD0F0;
+    --red-soft:        #FFF4F4;
+    --red-border:      #FFCCCC;
+    --green-soft:      #F0FFF4;
+    --green-border:    #A8E6C0;
+  }
+
+  body { font-family: 'Cairo', sans-serif; background: var(--bg); color: var(--text-dark); min-height: 100vh; }
+
+  /* ── HEADER ── */
+  header {
+    background: var(--we-purple-dark);
+    padding: 18px 40px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .we-logo { font-size: 2rem; font-weight: 900; color: var(--white); letter-spacing: -1px; }
+  .we-logo span { color: var(--we-gold); }
+  .header-tag { font-size: 0.78rem; color: rgba(255,255,255,0.55); letter-spacing: 2px; text-transform: uppercase; }
+
+  /* ── HERO ── */
+  .hero {
+    background: linear-gradient(135deg, var(--we-purple-dark) 0%, var(--we-purple) 55%, var(--we-purple-light) 100%);
+    padding: 58px 40px 50px;
+    text-align: center;
+    position: relative; overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; top: -80px; left: 50%; transform: translateX(-50%);
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(245,197,24,0.13) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-eyebrow {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(245,197,24,0.15); border: 1px solid rgba(245,197,24,0.4);
+    color: var(--we-gold); font-size: 0.82rem; font-weight: 700;
+    padding: 6px 18px; border-radius: 30px; margin-bottom: 20px;
+  }
+  .hero h1 { font-size: clamp(1.8rem, 4.5vw, 2.8rem); font-weight: 900; color: var(--white); line-height: 1.4; margin-bottom: 12px; }
+  .hero h1 .gold { color: var(--we-gold); }
+  .hero p { color: rgba(255,255,255,0.72); font-size: 0.97rem; max-width: 540px; margin: 0 auto 28px; line-height: 1.85; }
+
+  .hero-pills { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; }
+  .pill {
+    background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.22);
+    backdrop-filter: blur(6px); color: var(--white);
+    font-size: 0.83rem; font-weight: 600; padding: 8px 18px; border-radius: 30px;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .pill .accent { color: var(--we-gold); }
+
+  /* ── CONTAINER ── */
+  .container { max-width: 920px; margin: 0 auto; padding: 40px 20px 60px; }
+
+  /* ── CARDS ── */
+  .card {
+    background: var(--white); border-radius: 16px;
+    border: 1px solid var(--border); overflow: hidden;
+    margin-bottom: 20px; box-shadow: 0 2px 14px rgba(91,45,142,0.07);
+  }
+  .card-header {
+    background: var(--we-purple); padding: 13px 22px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .card-header h2 { color: var(--white); font-size: 1rem; font-weight: 700; }
+  .card-icon {
+    width: 32px; height: 32px; background: rgba(255,255,255,0.15);
+    border-radius: 8px; display: flex; align-items: center; justify-content: center;
+    font-size: 1rem; flex-shrink: 0;
+  }
+  .card-body { padding: 22px 24px; font-size: 0.94rem; line-height: 1.95; color: var(--text-mid); }
+
+  /* ── OFFER DEFINITION LIST ── */
+  .def-list { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+  .def-list li {
+    display: flex; gap: 10px; align-items: flex-start;
+    background: var(--we-purple-pale); border-radius: 10px; padding: 12px 14px;
+  }
+  .def-list li .ico { font-size: 1.1rem; flex-shrink: 0; margin-top: 1px; }
+  .def-list li span { color: var(--text-mid); font-size: 0.92rem; line-height: 1.85; }
+  .def-list li span strong { color: var(--we-purple-dark); }
+
+  /* ── HIGHLIGHT GIFT ── */
+  .gift-box {
+    background: linear-gradient(135deg, var(--we-gold-bg), #FFF0A0);
+    border: 2px solid var(--we-gold);
+    border-radius: 12px; padding: 18px 20px;
+    display: flex; gap: 14px; align-items: flex-start;
+    margin-top: 14px;
+  }
+  .gift-box .ico { font-size: 2rem; flex-shrink: 0; }
+  .gift-box .text { font-size: 0.92rem; color: #4A3000; line-height: 1.85; }
+  .gift-box .text strong { color: #7A4800; font-size: 1rem; }
+  .big-num { font-size: 2rem; font-weight: 900; color: var(--we-purple); line-height: 1; }
+  .big-num small { font-size: 0.8rem; font-weight: 600; color: var(--text-mid); }
+
+  /* ── DATE BADGE ── */
+  .date-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--we-purple); color: var(--white);
+    font-size: 0.85rem; font-weight: 700; padding: 7px 16px;
+    border-radius: 8px; margin-top: 14px;
+  }
+
+  /* ── STEPS ── */
+  .steps { display: flex; flex-direction: column; gap: 12px; }
+  .step {
+    display: flex; gap: 14px; align-items: flex-start;
+    background: #FAFAFA; border: 1px solid var(--border);
+    border-radius: 12px; padding: 14px 16px;
+    transition: box-shadow 0.15s;
+  }
+  .step:hover { box-shadow: 0 4px 14px rgba(91,45,142,0.1); }
+  .step-num {
+    width: 32px; height: 32px; border-radius: 50%;
+    background: var(--we-purple); color: var(--white);
+    font-size: 0.9rem; font-weight: 800; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .step-text { font-size: 0.91rem; color: var(--text-mid); line-height: 1.85; }
+  .step-text strong { color: var(--we-purple-dark); }
+  .step-text .tag {
+    display: inline-block; background: var(--we-purple-pale);
+    color: var(--we-purple); font-size: 0.78rem; font-weight: 700;
+    padding: 2px 10px; border-radius: 20px; margin: 0 2px;
+  }
+
+  /* ── BSS TABLE ── */
+  .bss-table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
+  .bss-table th {
+    padding: 11px 14px; text-align: center; font-weight: 700; color: var(--white);
+  }
+  .bss-table th.air-col { background: var(--we-purple); }
+  .bss-table th.mifi-col { background: #4A246E; }
+  .bss-table th.sub-col { background: var(--we-purple-light); font-size: 0.8rem; }
+  .bss-table td { padding: 12px 14px; text-align: center; border-bottom: 1px solid var(--border); color: var(--text-mid); }
+  .bss-table tr:last-child td { border-bottom: none; }
+  .bss-table tr:nth-child(even) td { background: #FAF7FF; }
+  .separator-row th { background: var(--we-purple-pale); color: var(--we-purple); font-size: 0.8rem; padding: 6px 14px; }
+
+  /* ── CONDITIONS ── */
+  .cond-list { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+  .cond-item {
+    display: flex; gap: 10px; align-items: flex-start;
+    padding: 12px 14px; border-radius: 10px;
+    font-size: 0.9rem; line-height: 1.85;
+  }
+  .cond-item.green { background: var(--green-soft); border: 1.5px solid var(--green-border); color: #1A4A2E; }
+  .cond-item.red   { background: var(--red-soft);   border: 1.5px solid var(--red-border);   color: #7A1010; }
+  .cond-item.neutral { background: var(--we-purple-pale); border: 1.5px solid var(--border); color: var(--text-mid); }
+  .cond-item .ico { font-size: 1.1rem; flex-shrink: 0; margin-top: 1px; }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--we-purple-dark); color: rgba(255,255,255,0.5);
+    text-align: center; padding: 20px 40px;
+    font-size: 0.78rem; line-height: 1.8;
+  }
+  footer strong { color: rgba(255,255,255,0.8); }
+
+  @media (max-width: 600px) {
+    header { padding: 14px 20px; }
+    .hero { padding: 38px 20px 32px; }
+    .bss-table { font-size: 0.78rem; }
+    .bss-table th, .bss-table td { padding: 9px 8px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="we-logo">WE <span>●</span></div>
+  <div class="header-tag">World Cup 2026 Offer</div>
+</header>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-eyebrow">⚽ عرض كأس العالم 2026</div>
+  <h1>ميجابايتس مجانية مع كل فوز<br><span class="gold">لعملاء WE Air و Nitro MiFi</span></h1>
+  <p>تابع فريقك المفضل خلال البطولة واحصل على ميجابايتس هدية مع كل فوز — بالإضافة إلى فرصة الحصول على ميجابايتس إضافية عند التوقع الصحيح لنتائج المباريات</p>
+  <div class="hero-pills">
+    <div class="pill">📅 <span>من 11 يونيو حتى <span class="accent">19 يوليو 2026</span></span></div>
+    <div class="pill">🎁 هدية تصل إلى <span class="accent">24,000 ميجابايت</span></div>
+    <div class="pill">⏰ عرض محدود المدة</div>
+  </div>
+</div>
+
+<!-- CONTENT -->
+<div class="container">
+
+  <!-- OFFER DEFINITION -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon">📋</div>
+      <h2>تعريف العرض — WE GOLD World Cup 2026</h2>
+    </div>
+    <div class="card-body">
+      <ul class="def-list">
+        <li>
+          <div class="ico">📡</div>
+          <span>يمكن للعميل <strong>متابعة فريقه المفضل</strong> خلال البطولة، والحصول على ميجابايتس هدية مع كل فوز للفريق</span>
+        </li>
+        <li>
+          <div class="ico">🔮</div>
+          <span>بالإضافة إلى إمكانية الحصول على <strong>ميجابايتس إضافية</strong> عند التوقع الصحيح لنتائج مباريات الفريق من خلال تطبيق My WE</span>
+        </li>
+      </ul>
+
+      <div class="gift-box">
+        <div class="ico">🎁</div>
+        <div class="text">
+          <strong>الهدية الإجمالية</strong><br>
+          <div class="big-num">24,000 <small>ميجابايت</small></div>
+          هدية تصل إلى هذا المقدار خلال كامل فترة البطولة
+        </div>
+      </div>
+
+      <div class="date-badge">📅 العرض ساري من 11 يونيو 2026 حتى 19 يوليو 2026</div>
+    </div>
+  </div>
+
+  <!-- SUBSCRIPTION STEPS -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon">📲</div>
+      <h2>طريقة الاشتراك في العرض</h2>
+    </div>
+    <div class="card-body">
+      <p style="margin-bottom: 18px; color: var(--text-mid);">يجب أن يكون العميل <strong style="color: var(--we-purple-dark)">مجدد باقته</strong> خلال فترة البطولة ويشترك في العرض عبر تطبيق MyWE، ثم يدخل على لينك توقع المباريات في تفاصيل العرض. اتبع الخطوات التالية:</p>
+
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-text"><strong>تجديد الباقة</strong> — تأكد من تجديد باقتك الحالية أولًا قبل الاشتراك في العرض</div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-text">الدخول على <span class="tag">My Promotions</span> ثم <span class="tag">العروض</span> عن طريق تطبيق <strong>My WE</strong></div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-text">اختيار <strong>العرض المناسب</strong> لباقة العميل — <span class="tag">MiFi</span> أو <span class="tag">WE Air</span></div>
+        </div>
+        <div class="step">
+          <div class="step-num">4</div>
+          <div class="step-text">الضغط على <span class="tag">اشترك \ Subscribe</span> لتفعيل العرض</div>
+        </div>
+        <div class="step">
+          <div class="step-num">5</div>
+          <div class="step-text">الدخول على <strong>لينك توقع المباريات</strong> الموجود في وصف العرض</div>
+        </div>
+        <div class="step">
+          <div class="step-num">6</div>
+          <div class="step-text">كتابة <strong>رقم خط الداتا الخاص بك (015)</strong> والذي يمكن للعميل معرفته عن طريق My WE</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BSS NAMES -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon">🖥️</div>
+      <h2>اسم العرض على النظام (BSS)</h2>
+    </div>
+    <div class="card-body" style="padding: 0;">
+      <table class="bss-table">
+        <thead>
+          <tr>
+            <th colspan="2" class="air-col">WE Air</th>
+            <th colspan="2" class="mifi-col">Nitro MiFi</th>
+          </tr>
+          <tr>
+            <th class="sub-col">AR — عربي</th>
+            <th class="sub-col">EN — English</th>
+            <th class="sub-col">AR — عربي</th>
+            <th class="sub-col">EN — English</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>عرض كأس العالم – WE Air</td>
+            <td>World Cup Promo – WE Air</td>
+            <td>عرض كأس العالم – MiFi</td>
+            <td>World Cup Promo – MiFi</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- CONDITIONS -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-icon">📜</div>
+      <h2>الشروط والأحكام</h2>
+    </div>
+    <div class="card-body">
+      <ul class="cond-list">
+        <li class="cond-item neutral">
+          <div class="ico">⏳</div>
+          <span>يتم إضافة الميجابايتس الهدية <strong>بعد 24 ساعة من المباراة</strong></span>
+        </li>
+        <li class="cond-item green">
+          <div class="ico">✅</div>
+          <span>صلاحية الميجابايتس الهدية <strong>حتى نهاية يوم إضافتها</strong></span>
+        </li>
+        <li class="cond-item neutral">
+          <div class="ico">📶</div>
+          <span>تكون <strong>أولوية الاستهلاك</strong> لميجابايتس العرض ثم من باقة العميل أو باقة الموبايل انترنت</span>
+        </li>
+        <li class="cond-item neutral">
+          <div class="ico">📊</div>
+          <span>يمكن الاستعلام عن الميجابايتس المتبقية عن العرض المشترك فيه عن طريق تطبيق <strong>MyWE</strong></span>
+        </li>
+        <li class="cond-item red">
+          <div class="ico">⚠️</div>
+          <span>لن يحصل العميل على الميجابايتس الهدية إلا لو <strong>تم الاشتراك في العرض وتجديد باقته قبل الاشتراك</strong>، والذي يجب أن يكون تاريخ التجديد من يوم <strong>11 يونيو</strong> أو بعده</span>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <strong>WE — المشغل الوطني للاتصالات</strong><br>
+  جميع الشروط والأحكام سارية · العرض ساري من 11 يونيو حتى 19 يوليو 2026
+</footer>
+
+</body>
+</html>
