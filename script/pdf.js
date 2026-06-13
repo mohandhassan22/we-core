@@ -171,7 +171,7 @@ function catTag(cat) {
     "Mobile": { cls: "cat-mobile", icon: "fa-mobile-screen-button", label: "المحمول" },
     "Fixed":  { cls: "cat-fixed",  icon: "fa-phone",                label: "الأرضي"  },
     "Adsl":   { cls: "cat-adsl",   icon: "fa-wifi",                 label: "إنترنت"  },
-   'We-Pay':   { cls: 'cat-adsl',   icon: 'fa-wallet',             label: 'WE Pay' },
+   'We-Pay':   { cls: 'cat-pay',   icon: 'fa-wallet',             label: 'WE Pay' },
     "عام":    { cls: "cat-default", icon: "fa-tag",                 label: "عام"     },
     
   };
