@@ -261,6 +261,7 @@
         .cat-mobile  { background: rgba(59,130,246,0.12); border: 1px solid rgba(59,130,246,0.25); color: #7db4f7; }
         .cat-fixed   { background: rgba(16,185,129,0.12); border: 1px solid rgba(16,185,129,0.25); color: #6ee7b7; }
         .cat-adsl    { background: rgba(245,158,11,0.12); border: 1px solid rgba(245,158,11,0.25); color: #fcd34d; }
+        .cat-pay  { background: rgba(239, 68, 68, 0.12); border: 1px solid rgba(239, 68, 68, 0.25); color: #fca5a5; }
         .cat-default { background: var(--purple-d2);      border: 1px solid rgba(155,89,245,0.2); color: var(--purple2); }
 
         .form-desc {
@@ -461,7 +462,7 @@
                 'Mobile': { cls: 'cat-mobile', icon: 'fa-mobile-screen-button', label: 'المحمول' },
                 'Fixed':  { cls: 'cat-fixed',  icon: 'fa-phone',                label: 'الأرضي' },
                 'Adsl':   { cls: 'cat-adsl',   icon: 'fa-wifi',                 label: 'إنترنت' },
-                'We-Pay':   { cls: 'cat-adsl',   icon: 'fa-wallet',             label: 'WE Pay' },
+                'We-Pay':   { cls: 'cat-pay',   icon: 'fa-wallet',             label: 'WE Pay' },
             };
             const m = map[cat] || { cls: 'cat-default', icon: 'fa-tag', label: cat || 'عام' };
             return `<span class="cat-tag ${m.cls}"><i class="fa-solid ${m.icon}" style="font-size:10px"></i>${m.label}</span>`;
