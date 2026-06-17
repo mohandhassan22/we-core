@@ -1,0 +1,13 @@
+* { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Cairo', sans-serif; background: #f0ecf8; min-height: 100vh; display: flex; justify-content: center; align-items: center; padding: 20px; }
+        .login-modal { background: #fff; padding: 40px 32px 32px; border-radius: 22px; width: 100%; max-width: 390px; text-align: center; box-shadow: 0 24px 60px rgba(0,0,0,0.15); border-top: 5px solid #7b3fe4; }
+        .modal-logo { width: 80px; height: 80px; border-radius: 50%; border: 3px solid #ede3fc; margin: 0 auto 16px; object-fit: cover; }
+        h3 { color: #3d1a6e; font-size: 24px; font-weight: 900; margin-bottom: 6px; }
+        .sub { color: #aaa; font-size: 14px; margin-bottom: 28px; }
+        .field { position: relative; margin-bottom: 16px; }
+        .field i { position: absolute; right: 14px; top: 50%; transform: translateY(-50%); color: #b08af0; }
+        .field input { width: 100%; padding: 14px 44px 14px 14px; border: 2px solid #ede3fc; border-radius: 12px; font-family: 'Cairo'; outline: none; background: #faf8ff; text-align: right; }
+        .field input:focus { border-color: #7b3fe4; background: #fff; }
+        .login-btn { width: 100%; padding: 14px; border: none; border-radius: 12px; background: linear-gradient(135deg,#7b3fe4,#a066f5); color: #fff; font-weight: 700; cursor: pointer; margin-top: 6px; }
+        .err { color: #c62828; font-size: 13px; margin-top: 14px; background: #fff5f5; padding: 10px; border-radius: 10px; border: 1px solid #ffcdd2; display: none; }
+        .err.show { display: block; }
