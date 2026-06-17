@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<script src="assets/js/auth.js?v=16.0.0"></script>
+ 
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://we-core.icu/">
+<meta property="og:title" content="WE-Core | المنصة المتكاملة لفريق العمل">
+<meta property="og:description" content="تجمع WE-Core كل ما يحتاجه فريق العمل من فورمات، معلومات، وعروض في مكان واحد.">
+<meta property="og:image" content="img/we-core.png">
+<meta property="twitter:card" content="summary_large_image">
+<meta property="twitter:title" content="WE-Core | المنصة المتكاملة لفريق العمل">
+<meta property="twitter:description" content="تجمع WE-Core كل ما يحتاجه فريق العمل من فورمات، معلومات، وعروض في مكان واحد.">
+<meta property="twitter:image" content="img/we-core.png">
+
+<link rel="shortcut icon" href="img/we-core.png">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="assets/css/index.css">
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+<a href="javascript:history.back()" class="back-btn" style="position: absolute; left: 20px; top: 50%; transform: translateY(-50%); color: white; text-decoration: none; font-size: 20px; z-index: 1000;"><i class="fas fa-arrow-left"></i></a>
+
+  <div class="header-inner">
+    <div class="logo-ring">
+      <img src="img/we-core.png" class="logo" alt="WE-Core Logo" onerror="this.style.background='#5b21b6'">
+    </div>
+    <div class="main-title">WE-Core</div>
+    <div class="sub-title">Powered By Mohand Hassan – From Abassia Store</div>
+
+    <!-- Skeleton while loading -->
+    <div id="welcomeSkeleton"></div>
+
+    <!-- Welcome Banner (shown after profile loads) -->
+    <div id="welcomeBanner">
+      <div class="welcome-greeting">👋 أهلاً وسهلاً بك في WE-Core</div>
+      <div class="welcome-name" id="welcomeName">—</div>
+      <div class="welcome-title">
+        <i class="fa-solid fa-id-badge"></i>
+        <span id="welcomeJobTitle">—</span>
+      </div>
+    </div>
+
+    <div class="header-pills">
+      <button class="pill pill-ghost" onclick="openAboutModal()">
+        <i class="fa-solid fa-circle-info"></i> من نحن
+      </button>
+      <button class="pill pill-ghost" onclick="openInstructionsModal()">
+        <i class="fa-solid fa-book-open"></i> Instructions
+      </button>
+     <button class="pill pill-ghost" onclick="openWhatsNewModal()" style="background:rgba(255,200,0,0.18);border-color:rgba(255,200,0,0.4);">
+  <i class="fa-solid fa-star"></i> WHAT'S NEW
+</button>
+    </div>
+  </div>
+</div>
+
+<!-- Wave -->
+<div class="wave">
+  <svg viewBox="0 0 1440 42" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+    <path d="M0 42V20C240 40 480 0 720 20C960 40 1200 0 1440 20V42H0Z" fill="#f5f3ff"/>
+  </svg>
+</div>
+
+<!-- SEARCH BAR -->
+<div class="search-wrap" style="padding-top:22px;">
+  <div class="search-box">
+    <i class="fa-solid fa-magnifying-glass search-icon"></i>
+    <input type="text" id="siteSearch" placeholder="ابحث في كل المحتوى… (عروض، معلومات، خدمات، باقات…)" oninput="handleSearch(this.value)" autocomplete="off">
+    <button class="search-clear" id="searchClear" onclick="clearSearch()"><i class="fa-solid fa-xmark"></i></button>
+  </div>
+  <!-- Deep search results panel -->
+  <div id="deepSearchResults" class="deep-results" style="display:none;"></div>
+</div>
+
+<!-- Section head -->
+<div class="section-head">
+  <h2><i class="fa-solid fa-table-cells-large"></i> الأقسام الرئيسية</h2>
+  <span class="count-badge">10 أقسام</span>
+</div>
+
+<!-- CARDS -->
+<div class="container">
+  <div id="noResult" class="search-no-result">
+    <i class="fa-solid fa-face-frown-open"></i>
+    مفيش نتائج للبحث ده، جرب كلمة تانية
+  </div>
+  <div class="cards" id="cardsGrid">
+
+    <a href="pdf.html" class="card-link">
+      <div class="card">
+        <div class="icon-wrap"><i class="fa-solid fa-file-pdf"></i></div>
+        <h2>All PDF</h2>
+        <p>جميع ملفات PDF الخاصة بالخدمات والعروض.</p>
+        <div class="btn"><i class="fa-solid fa-arrow-left"></i> عرض التفاصيل</div>
+      </div>
+    </a>
+
+    <a href="Packages.html" class="card-link">
+      <div class="card">
+        <div class="icon-wrap"><i class="fa-solid fa-file-lines"></i></div>
+        <h2>All Info</h2>
+        <p>معلومات Mobile و ADSL و Fixed كاملة.</p>
+        <div class="btn"><i class="fa-solid fa-arrow-left"></i> عرض التفاصيل</div>
+      </div>
+    </a>
+
+    <a href="remedy.html" class="card-link">
+      <div class="card">
+        <div class="icon-wrap"><i class="fa-solid fa-headset"></i></div>
+        <h2>Remedy</h2>
+        <p>جميع التيكت للموبيل.</p>
+        <div class="btn"><i class="fa-solid fa-arrow-left"></i> عرض التفاصيل</div>
+      </div>
+    </a>
+
+    <a href="Tutorial.html" class="card-link">
+      <div class="card">
+        <div class="icon-wrap"><i class="fa-solid fa-graduation-cap"></i></div>
+        <h2>Courses</h2>
+        <p>BSS Tutorial</p>
+        <div class="btn"><i class="fa-solid fa-arrow-left"></i> عرض التفاصيل</div>
+      </div>
+    </a>
+
+    <a href="offer.html" class="card-link">
+      <div class="card">
+        <div class="icon-wrap"><i class="fa-solid fa-gift"></i></div>
+        <h2>Offers</h2>
+        <p>جميع العروض المتاحة والباقات الحالية.</p>
+        <div class="btn"><i class="fa-solid fa-arrow-left"></i> عرض التفاصيل</div>
+      </div>
+    </a>
+
+    <a href="we pay.html" class="card-link">
+      <div class="card">
+        <div class="icon-wrap"><i class="fa-solid fa-wallet"></i></div>
+        <h2>WE Pay</h2>
+        <p>محفظة WE Pay وخدمات الدفع الإلكتروني.</p>
+        <div class="btn"><i class="fa-solid fa-arrow-left"></i> عرض التفاصيل</div>
+      </div>
+    </a>
+
+    <a href="Game.html" class="card-link">
+      <div class="card">
+        <div class="icon-wrap"><i class="fa-solid fa-gamepad"></i></div>
+        <h2>Info Games</h2>
+        <p>معلومات الألعاب والحزم المتوفرة.</p>
+        <div class="btn"><i class="fa-solid fa-arrow-left"></i> عرض التفاصيل</div>
+      </div>
+    </a>
+
+    <a href="Ruls.html" class="card-link">
+      <div class="card">
+        <div class="icon-wrap"><i class="fa-solid fa-head-side-virus"></i></div>
+        <h2>Ruls</h2>
+        <p>القواعد المطلوبه لكل نظام </p>
+        <div class="btn"><i class="fa-solid fa-arrow-left"></i> عرض التفاصيل</div>
+      </div>
+    </a>
+
+    <a href="Services.html" class="card-link">
+       <div class="card">
+        <div class="icon-wrap"><i class="fa-solid fa-head-side-virus"></i></div>
+        <h2>Services</h2>
+        <p> </p>
+        <div class="btn"><i class="fa-solid fa-arrow-left"></i> عرض التفاصيل</div>
+      </div>
+    </a>
+      <a href="Devices/we-devices.html" class="card-link">
+      <div class="card">
+        <div class="icon-wrap"><i class="fa-solid fa-hard-drive"></i></div>
+        <h2>Devices</h2>
+        <p> </p>
+        <div class="btn"><i class="fa-solid fa-arrow-left"></i> عرض التفاصيل</div>
+      </div>
+    </a>
+
+  </div>
+
+  <footer>WE Core Team 2026</footer>
+</div>
+
+<!-- ABOUT MODAL -->
+<div id="aboutModal" class="about-overlay">
+  <div class="about-modal">
+    <div class="about-modal-header">
+      <img src="img/we-core.png" class="about-logo" alt="WE-Core" onerror="this.style.display='none'">
+      <h2>About Us – WE Core</h2>
+      <div class="tagline">Powered By Mohand Hassan</div>
+    </div>
+    <div class="about-body">
+      <div class="about-section-title"><i class="fa-solid fa-circle-info"></i> من نحن</div>
+      <p>منصة WE Core تم إنشاؤها لتسهيل بيئة العمل وجمع كل ما يحتاجه فريق العمل في مكان واحد منظم وسهل الوصول. هدفنا توفير الوقت وتقليل الجهد من خلال إتاحة البيانات والمعلومات بضغطة زر واحدة.</p>
+
+      <div class="about-section-title"><i class="fa-solid fa-star"></i> ماذا نقدم؟</div>
+      <ul class="about-features">
+        <li><i class="fa-solid fa-check-circle"></i> جميع الفورمات والنماذج المطلوبة للعمل</li>
+        <li><i class="fa-solid fa-check-circle"></i> أحدث المعلومات والعروض بشكل محدث ومنظم</li>
+        <li><i class="fa-solid fa-check-circle"></i> تفاصيل وإجراءات الـ Remedy بشكل واضح</li>
+        <li><i class="fa-solid fa-check-circle" style="color:#ea580c"></i>
+            <span><strong style="color:#c2410c">WE Quiz Game</strong> – لعبة تعليمية لتثبيت المعلومات ✅</span></li>
+        <li><i class="fa-solid fa-check-circle"></i> فيديوهات توضيحية وتعليمية لدعم التطوير</li>
+        <li><i class="fa-solid fa-check-circle"></i> كل ذلك في منصة واحدة متكاملة وسريعة</li>
+      </ul>
+
+      <div class="about-section-title"><i class="fa-solid fa-users"></i> فريق العمل</div>
+      <div class="team-section">
+        <div class="team-member">
+          <div class="team-avatar"><i class="fa-solid fa-user-tie"></i></div>
+          <div class="team-info">
+            <div class="name">مهند حسن</div>
+            <div class="role">مطور المنصة</div>
+          </div>
+        </div>
+       <div class="team-member">
+          <div class="team-avatar"><i class="fa-solid fa-user-tie"></i></div>
+          <div class="team-info">
+            <div class="name">مي جمال</div>
+            <div class="role">مطور المنصة</div>
+          </div>
+        </div>
+        <div class="team-member">
+          <div class="team-avatar"><i class="fa-solid fa-user-tie"></i></div>
+          <div class="team-info">
+            <div class="name">أ. محمود عبد القادر</div>
+            <div class="role">مشرف على التطوير</div>
+          </div>
+        </div>
+      </div>
+
+      <button class="about-close-btn" onclick="closeAboutModal()">
+        <i class="fa-solid fa-xmark"></i> إغلاق
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- COMING SOON -->
+<div id="comingSoonModal" class="coming-modal">
+  <div class="coming-content">
+    <i class="fa-solid fa-hourglass-half"></i>
+    <h3>جاري العمل على هذه الصفحة</h3>
+    <p>نعمل حالياً على توفير هذه الصفحة قريباً</p>
+    <button class="modal-close" onclick="closeModal()">حسناً</button>
+  </div>
+</div>
+
+<!-- INSTRUCTIONS MODAL -->
+<div id="instructionsModal" class="instr-overlay">
+  <div class="instr-modal">
+
+    <!-- Header -->
+    <div class="instr-modal-header">
+      <div class="instr-header-icon"><i class="fa-solid fa-book-open"></i></div>
+      <div class="instr-header-text">
+        <h2>Instructions</h2>
+        <p>Telecom Egypt – دليل الموظف الجديد</p>
+      </div>
+      <button class="instr-close-x" onclick="closeInstructionsModal()"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+
+    <!-- Tabs -->
+    <div class="instr-tabs">
+      <button class="instr-tab active" onclick="switchInstrTab('welcome',this)"><i class="fa-solid fa-handshake"></i> الترحيب</button>
+      <button class="instr-tab" onclick="switchInstrTab('sales',this)"><i class="fa-solid fa-chart-line"></i> Sales Mindset</button>
+      <button class="instr-tab" onclick="switchInstrTab('upsell',this)"><i class="fa-solid fa-arrow-trend-up"></i> Upselling</button>
+    </div>
+
+    <!-- Body -->
+    <div class="instr-body">
+
+      <!-- === TAB 1: WELCOME === -->
+      <div id="instr-welcome" class="instr-section active">
+
+        <div class="instr-welcome-card">
+          <h3>🎉 أهلاً بيكم في أسرة المصرية للاتصالات</h3>
+          <p>سعداء بانضمامكم لفريق العمل ونتمنى لكم بداية قوية وناجحة داخل الشركة.</p>
+        </div>
+
+        <div class="instr-block">
+          <div class="instr-block-title"><i class="fa-solid fa-shield-halved"></i> التعليمات العامة</div>
+          <ul class="instr-list">
+            <li><i class="fa-solid fa-check-circle"></i> الالتزام بالمظهر والسلوك المهني داخل بيئة العمل</li>
+            <li><i class="fa-solid fa-check-circle"></i> احترام مواعيد الحضور والانصراف</li>
+            <li><i class="fa-solid fa-check-circle"></i> تمثيل الشركة بصورة إيجابية واحترافية</li>
+            <li><i class="fa-solid fa-check-circle"></i> الحفاظ على رضا العميل كأولوية أساسية</li>
+          </ul>
+        </div>
+
+        <div class="instr-block">
+          <div class="instr-block-title"><i class="fa-solid fa-headset"></i> معايير المبيعات وخدمة العملاء</div>
+          <ul class="instr-list">
+            <li><i class="fa-solid fa-check-circle"></i> فهم جميع خدمات ومنتجات الشركة بشكل جيد</li>
+            <li><i class="fa-solid fa-check-circle"></i> التعامل مع العملاء باحترافية واحترام</li>
+            <li><i class="fa-solid fa-check-circle"></i> تقديم أفضل تجربة ممكنة للعملاء</li>
+            <li><i class="fa-solid fa-check-circle"></i> الالتزام بسياسات وإجراءات البيع المعتمدة</li>
+            <li><i class="fa-solid fa-check-circle"></i> الدقة في تسجيل بيانات العملاء أمر أساسي</li>
+          </ul>
+        </div>
+
+        <div class="instr-block">
+          <div class="instr-block-title"><i class="fa-solid fa-users"></i> العمل الجماعي والأداء</div>
+          <ul class="instr-list">
+            <li><i class="fa-solid fa-check-circle"></i> التعاون مع فريق العمل والحفاظ على بيئة إيجابية</li>
+            <li><i class="fa-solid fa-check-circle"></i> الاستفادة من فرص التعلم والتطوير</li>
+            <li><i class="fa-solid fa-check-circle"></i> تحقيق التارجت يحتاج للالتزام والاستمرارية والعمل الجماعي</li>
+            <li><i class="fa-solid fa-check-circle"></i> فرص التطور والترقي تعتمد على الأداء والانضباط والالتزام</li>
+          </ul>
+        </div>
+
+        <div class="instr-block">
+          <div class="instr-block-title"><i class="fa-solid fa-triangle-exclamation"></i> ملاحظات هامة</div>
+          <ul class="instr-list">
+            <li><i class="fa-solid fa-mobile-screen"></i> استخدام الهاتف الشخصي يجب ألا يؤثر على سير العمل</li>
+            <li><i class="fa-solid fa-lock"></i> الحفاظ على سرية بيانات الشركة والعملاء</li>
+            <li><i class="fa-solid fa-user-tie"></i> في حالة وجود أي مشكلة يتم الرجوع للمدير المباشر فوراً</li>
+          </ul>
+        </div>
+
+        <div class="instr-quote">
+          "نتمنى لكم رحلة مهنية ناجحة ومليئة بالإنجازات داخل المصرية للاتصالات."
+          <br><small style="font-weight:500;opacity:.7">— Management Team</small>
+        </div>
+
+        <button class="instr-close-btn" onclick="closeInstructionsModal()"><i class="fa-solid fa-xmark"></i> إغلاق</button>
+      </div>
+
+      <!-- === TAB 2: SALES MINDSET === -->
+      <div id="instr-sales" class="instr-section">
+
+        <div class="instr-welcome-card">
+          <h3>💡 أهم 5 قواعد لأي Sales ناجح</h3>
+          <p>Golden Rules Inside Branch – Telecom Egypt</p>
+        </div>
+
+        <div class="sales-rule">
+          <div class="sales-rule-num">1</div>
+          <h4>العميل مش جاي يشتري… جاي يحل مشكلة</h4>
+          <p>ركز تفهم احتياج العميل الأول، وبعدها قدم الخدمة المناسبة له. البيع الناجح يبدأ بالاستماع الجيد.</p>
+        </div>
+
+        <div class="sales-rule">
+          <div class="sales-rule-num">2</div>
+          <h4>الثقة بتبيع أكتر من الكلام</h4>
+          <p>طريقة كلامك، ثقتك، وطاقة الترحيب أهم من حفظ الاسكريبت. العميل لازم يحس إنك فاهم وبتساعده بصدق.</p>
+        </div>
+
+        <div class="sales-rule">
+          <div class="sales-rule-num">3</div>
+          <h4>كل عميل فرصة جديدة</h4>
+          <p>حتى لو العميل رفض، ده مش معناه فشل. كل محاولة بتقربك من الـ Target ومن تطوير مهاراتك.</p>
+        </div>
+
+        <div class="sales-rule">
+          <div class="sales-rule-num">4</div>
+          <h4>الـ Follow Up سر المبيعات</h4>
+          <p>ناس كتير بتشتري بعد المتابعة مش من أول مرة. الموظف الشاطر هو اللي يعرف يرجع للعميل بالطريقة الصح والتوقيت الصح.</p>
+        </div>
+
+        <div class="sales-rule">
+          <div class="sales-rule-num">5</div>
+          <h4>النجاح = نشاط + التزام + استمرارية</h4>
+          <p>مش لازم تبيع كل مرة… لكن لازم تحافظ على الأداء يومياً. النتائج الكبيرة بتبدأ بخطوات صغيرة ثابتة.</p>
+        </div>
+
+        <div class="instr-block" style="margin-top:20px;">
+          <div class="instr-block-title"><i class="fa-solid fa-star"></i> Golden Rules Inside Branch</div>
+          <div class="golden-grid">
+            <div class="golden-item"><span class="g-emoji">😊</span><strong>Smile First</strong><p>ابدأ دايماً بابتسامة حقيقية</p></div>
+            <div class="golden-item"><span class="g-emoji">🤝</span><strong>Build Trust Quickly</strong><p>اكسب ثقة العميل بسرعة</p></div>
+            <div class="golden-item"><span class="g-emoji">💬</span><strong>Recommend, Don't Push</strong><p>انصح ولا تضغط</p></div>
+            <div class="golden-item"><span class="g-emoji">🎁</span><strong>Know Every Offer</strong><p>اعرف كل العروض والباقات</p></div>
+            <div class="golden-item" style="grid-column:1/-1"><span class="g-emoji">⭐</span><strong>Customer Experience = Future Sales</strong><p>تجربة العميل هي مبيعات المستقبل</p></div>
+          </div>
+        </div>
+
+        <div class="instr-quote">
+          "في الـ Sales مفيش حد بيبدأ خبير… لكن الناس اللي بتتعلم بسرعة، وتلتزم، وبتشتغل على نفسها هي اللي بتوصل لأعلى عمولات وأسرع ترقيات."
+        </div>
+
+        <button class="instr-close-btn" onclick="closeInstructionsModal()"><i class="fa-solid fa-xmark"></i> إغلاق</button>
+      </div>
+
+      <!-- === TAB 3: UPSELLING === -->
+      <div id="instr-upsell" class="instr-section">
+
+        <div class="instr-welcome-card">
+          <h3>🚀 Upselling & Cross-Selling</h3>
+          <p>الفرق بين الـ Sales العادي والـ Top Seller غالباً بيكون في مهارة الـ Upselling والـ Cross-Selling.</p>
+        </div>
+
+        <!-- Upselling -->
+        <div class="instr-block">
+          <div class="instr-block-title"><i class="fa-solid fa-arrow-trend-up"></i> Upselling — بيع نسخة أعلى</div>
+          <ul class="instr-list">
+            <li><i class="fa-solid fa-circle-dot"></i> خط عادي ← باقة أعلى</li>
+            <li><i class="fa-solid fa-circle-dot"></i> نت 140GB ← 250GB</li>
+            <li><i class="fa-solid fa-circle-dot"></i> راوتر عادي ← راوتر VDSL أقوى</li>
+            <li><i class="fa-solid fa-circle-dot"></i> باقة فردية ← Family Package</li>
+          </ul>
+          <div class="compare-box" style="margin-top:12px;">
+            <div class="compare-item compare-bad">❌ "خد الباقة الأكبر"</div>
+            <div class="compare-item compare-good">✅ "الباقة دي هتوفرلك جيجا أكتر وهتمنع فصل النت آخر الشهر"</div>
+          </div>
+        </div>
+
+        <!-- Cross-selling -->
+        <div class="instr-block">
+          <div class="instr-block-title"><i class="fa-solid fa-shuffle"></i> Cross-Selling — خدمة إضافية مرتبطة</div>
+          <table class="cross-table">
+            <thead><tr><th>العميل اشترى</th><th>تعرض عليه</th></tr></thead>
+            <tbody>
+              <tr><td>خط جديد</td><td>موبايل إنترنت</td></tr>
+              <tr><td>Home Internet</td><td>خط WE أو Router</td></tr>
+              <tr><td>Recharge</td><td>باقة إضافية</td></tr>
+              <tr><td>باقة فردية</td><td>WE Pay / Family System</td></tr>
+              <tr><td>عميل Business</td><td>خطوط إضافية للفريق</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Tips -->
+        <div class="upsell-tip">
+          <h4><i class="fa-solid fa-1"></i> اسأل قبل ما تعرض</h4>
+          <p>استخدامك للنت عامل إزاي؟ كام شخص في البيت؟ استهلاكك بيخلص قبل الميعاد؟ كل إجابة بتفتح فرصة Upgrade.</p>
+        </div>
+        <div class="upsell-tip">
+          <h4><i class="fa-solid fa-2"></i> استخدم المقارنة الذكية</h4>
+          <p>"الفرق بين الباقتين 40 جنيه فقط — لكن هتاخد ضعف الجيجا تقريباً." العميل يحس إن الفرق مستاهل.</p>
+        </div>
+        <div class="upsell-tip">
+          <h4><i class="fa-solid fa-3"></i> اربط الخدمة بالراحة</h4>
+          <div class="compare-box">
+            <div class="compare-item compare-bad">❌ "دي سرعة أعلى"</div>
+            <div class="compare-item compare-good">✅ "هتريحك من التقطيع مع Netflix والشغل"</div>
+          </div>
+        </div>
+        <div class="upsell-tip">
+          <h4><i class="fa-solid fa-4"></i> اعرض اختيارين… مش اختيار واحد</h4>
+          <div class="compare-box">
+            <div class="compare-item compare-bad">❌ "تحب تعمل Upgrade؟"</div>
+            <div class="compare-item compare-good">✅ "تحب الباقة 250 ولا 400؟"</div>
+          </div>
+        </div>
+        <div class="upsell-tip">
+          <h4><i class="fa-solid fa-5"></i> الـ Timing أهم من الكلام</h4>
+          <p>أفضل وقت: أثناء إنهاء الطلب، بعد موافقة العميل، وهو مبسوط بالخدمة.<br>مثال: "بما إن حضرتك فعّلت النت، تحب أضيف خط عليه بـ Offer كويس؟"</p>
+        </div>
+
+        <!-- Mistakes -->
+        <div class="instr-block" style="margin-top:8px;">
+          <div class="instr-block-title"><i class="fa-solid fa-ban"></i> أخطاء تدمر الـ Upselling</div>
+          <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:4px;">
+            <span class="mistake-tag"><i class="fa-solid fa-xmark"></i> الإلحاح الزائد</span>
+            <span class="mistake-tag"><i class="fa-solid fa-xmark"></i> الكلام السريع</span>
+            <span class="mistake-tag"><i class="fa-solid fa-xmark"></i> عرض خدمات كتير مرة واحدة</span>
+            <span class="mistake-tag"><i class="fa-solid fa-xmark"></i> التركيز على السعر فقط</span>
+            <span class="mistake-tag"><i class="fa-solid fa-xmark"></i> الجدال مع العميل</span>
+          </div>
+        </div>
+
+        <div class="golden-formula">
+          <h4>🏆 المعادلة الذهبية في الـ Sales</h4>
+          <p>احتياج العميل + الثقة + التوقيت = بيع إضافي ناجح</p>
+        </div>
+
+        <div class="instr-quote">
+          "أفضل Sales مش اللي بيبيع أغلى حاجة… أفضل Sales هو اللي يعرف يقدّم للعميل الحل الأنسب، وفي نفس الوقت يحقق أعلى قيمة للشركة ولنفسه."
+        </div>
+
+        <button class="instr-close-btn" onclick="closeInstructionsModal()"><i class="fa-solid fa-xmark"></i> إغلاق</button>
+      </div>
+
+    </div><!-- /instr-body -->
+  </div><!-- /instr-modal -->
+</div><!-- /instructionsModal -->
+ <div id="whatsNewModal" class="wnew-overlay">
+  <div class="wnew-modal">
+
+    <div class="wnew-header">
+      <div class="wnew-header-icon"><i class="fa-solid fa-star"></i></div>
+      <div class="wnew-header-text">
+        <h2>الجديد في WE Core ✨</h2>
+        <p>آخر التحديثات والمميزات المضافة للمنصة</p>
+      </div>
+      <button class="wnew-close-x" onclick="closeWhatsNewModal()"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+
+    <div class="wnew-body">
+
+      <!-- FEATURE: WE Air Check Availability -->
+      <div class="wnew-item">
+        <div class="wnew-item-top">
+          <div class="wnew-item-icon"><i class="fa-solid fa-map-location-dot"></i></div>
+          <div class="wnew-item-info">
+            <div class="wnew-item-badge"><i class="fa-solid fa-bolt"></i> جديد الآن</div>
+            <div class="wnew-item-title">WE Air — التحقق من التغطية</div>
+            <div class="wnew-item-desc">
+              قبل ما العميل يشترك في إنترنت WE Air الهوائي، دلوقتي تقدر تتحقق من تغطية الخدمة في منطقته بالضبط في ثواني — بدل ما الاشتراك يتم وبعدين يتضح إن التغطية مش كافية.
+            </div>
+          </div>
+        </div>
+
+        <div class="wnew-steps">
+          <h4><i class="fa-solid fa-list-check"></i> إزاي بتشتغل؟</h4>
+          <ul>
+            <li><i class="fa-solid fa-circle-dot"></i> العميل بيدخل عنوانه أو موقعه الحالي على الخريطة</li>
+            <li><i class="fa-solid fa-circle-dot"></i> النظام بيتحقق من تغطية شبكة WE Air في المنطقة دي</li>
+            <li><i class="fa-solid fa-circle-dot"></i> النتيجة بتظهر فوراً — متاحة ولا لأ</li>
+            <li><i class="fa-solid fa-circle-dot"></i> لو متاحة، ينتقل للاشتراك في الباقة المناسبة مباشرة</li>
+          </ul>
+        </div>
+
+        <a href="info/we_air_finder.html" class="wnew-cta" onclick="closeWhatsNewModal()">
+          <i class="fa-solid fa-map-location-dot"></i>
+          جرب Check Availability دلوقتي
+          <i class="fa-solid fa-arrow-left"></i>
+        </a>
+      </div>
+
+    </div><!-- /wnew-body -->
+  </div>
+</div>
+
+
+<!-- SCRIPTS -->
+<script src="assets/js/active-users-widget.js"></script>
+<script src="assets/js/index.js"></script>
+
+<script src="assets/js/index_1.js"></script>
+<script src="assets/js/active-users-widget.js"></script>
+</body>
+</html>

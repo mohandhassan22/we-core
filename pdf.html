@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <script src="assets/js/auth.js?v=12.0.1"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>النماذج | WE-Core</title>
+    <link rel="shortcut icon" href="img/we-core.png" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/pdf.css">
+</head>
+<body>
+
+    <!-- HEADER -->
+    <header class="header">
+<a href="javascript:history.back()" class="back-btn" style="position: absolute; left: 20px; top: 50%; transform: translateY(-50%); color: white; text-decoration: none; font-size: 20px; z-index: 1000;"><i class="fas fa-arrow-left"></i></a>
+
+        <nav class="navbar">
+            <a href="index.html" class="logo-wrapper">
+                <img src="img/we-core.png" alt="WE-Core" class="logo">
+                <div class="logo-text">
+                    <span class="logo-title">WE-Core</span>
+                    <span class="logo-sub">بواسطة مهند حسن</span>
+                </div>
+            </a>
+            <div class="nav-links">
+                <a href="index.html">
+                    <i class="fa-solid fa-house-user"></i> الرئيسية
+                </a>
+            </div>
+        </nav>
+    </header>
+
+    <!-- HERO -->
+    <div class="page-hero">
+        <div class="page-hero-icon"><i class="fa-solid fa-file-pdf"></i></div>
+        <h1>النماذج والمستندات</h1>
+        <p>جميع ملفات PDF الخاصة بالخدمات والعروض في مكان واحد</p>
+    </div>
+
+    <!-- CONTROLS -->
+    <div class="controls">
+        <div class="search-wrap">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+            </svg>
+            <input type="text" id="searchInput" placeholder="ابحث عن نموذج...">
+            <button class="search-go" onclick="searchForms()">بحث</button>
+        </div>
+        <div class="filter-row">
+            <span class="filter-label">تصفية:</span>
+            <button class="filter-btn active" onclick="filterForms('all', this)">الكل</button>
+            <button class="filter-btn" onclick="filterForms('Mobile', this)">
+                <i class="fa-solid fa-mobile-screen-button" style="font-size:11px"></i> المحمول
+            </button>
+            <button class="filter-btn" onclick="filterForms('Fixed', this)">
+                <i class="fa-solid fa-phone" style="font-size:11px"></i> الأرضي
+            </button>
+            <button class="filter-btn" onclick="filterForms('Adsl', this)">
+                <i class="fa-solid fa-wifi" style="font-size:11px"></i> إنترنت
+            </button>
+             <button class="filter-btn" onclick="filterForms('We-Pay', this)">
+                <i class="fa-solid fa-wallet" style="font-size:11px"></i> WE Pay
+            </button>
+        </div>
+    </div>
+
+    <!-- STATS -->
+    <div class="stats-row">
+        <div class="stat-chip">
+            <i class="fa-solid fa-layer-group" style="font-size:11px;color:var(--purple2)"></i>
+            إجمالي: <strong id="stat-total">—</strong>
+        </div>
+        <div class="stat-chip" id="stat-filtered-wrap" style="display:none">
+            نتائج: <strong id="stat-filtered">—</strong>
+        </div>
+    </div>
+
+    <!-- GRID -->
+    <section class="forms-section" id="forms">
+        <div class="forms-grid" id="formsContainer">
+            <!-- Skeleton placeholders -->
+            <div class="skel-card"><div class="skel-line" style="width:30%;height:38px;border-radius:10px"></div><div class="skel-line" style="width:90%"></div><div class="skel-line" style="width:65%"></div><div class="skel-line" style="width:100%;height:34px;border-radius:8px;margin-top:4px"></div></div>
+            <div class="skel-card"><div class="skel-line" style="width:30%;height:38px;border-radius:10px"></div><div class="skel-line" style="width:80%"></div><div class="skel-line" style="width:50%"></div><div class="skel-line" style="width:100%;height:34px;border-radius:8px;margin-top:4px"></div></div>
+            <div class="skel-card"><div class="skel-line" style="width:30%;height:38px;border-radius:10px"></div><div class="skel-line" style="width:85%"></div><div class="skel-line" style="width:60%"></div><div class="skel-line" style="width:100%;height:34px;border-radius:8px;margin-top:4px"></div></div>
+        </div>
+    </section>
+
+    <footer>WE Core Team 2026</footer>
+
+    <script src="assets/js/pdf.js"></script>
+
+    <script type="module" src="assets/js/pdf.js"></script>
+    <script src="assets/js/active-users-widget.js"></script>
+
+
+</body>
+</html>

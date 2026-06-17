@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+  <script src="../script/auth.js?v=16.0.0"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--font-sans,'Segoe UI',sans-serif);background:transparent;color:var(--color-text-primary,#1a1a1a);direction:rtl}
+:root{--we-purple:#6B3FA0;--we-purple-light:#EEEDFE;--we-purple-mid:#AFA9EC;--we-purple-dark:#3C3489}
+
+.portal{max-width:900px;margin:0 auto;padding:1rem}
+
+/* Header */
+.header{background:var(--we-purple);border-radius:16px;padding:1.25rem 1.5rem;margin-bottom:1.5rem;display:flex;align-items:center;gap:1rem}
+.logo{width:48px;height:48px;border-radius:50%;background:white;display:flex;align-items:center;justify-content:center;font-weight:700;color:var(--we-purple);font-size:15px;flex-shrink:0}
+.header-text h1{color:white;font-size:18px;font-weight:500;margin:0}
+.header-text p{color:rgba(255,255,255,.75);font-size:12px;margin-top:3px}
+
+/* Tab bar */
+.tab-bar{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:1.5rem;padding:4px;background:var(--color-background-secondary,#f5f5f5);border-radius:14px}
+.tab{padding:8px 13px;border-radius:10px;border:none;background:transparent;cursor:pointer;font-size:12.5px;color:var(--color-text-secondary,#666);transition:all .18s;white-space:nowrap;display:flex;align-items:center;gap:5px;font-family:inherit}
+.tab i{font-size:15px}
+.tab.active{background:var(--we-purple);color:white;box-shadow:0 2px 8px rgba(107,63,160,.3)}
+.tab:hover:not(.active){background:var(--color-background-primary,#fff);color:var(--we-purple)}
+
+/* Sections */
+.section{display:none;animation:fadeUp .2s ease}
+.section.active{display:block}
+@keyframes fadeUp{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+
+/* Cards */
+.card{background:var(--color-background-primary,#fff);border:0.5px solid var(--color-border-tertiary,rgba(0,0,0,.1));border-radius:14px;padding:1.1rem 1.25rem;margin-bottom:1rem}
+.card-title{font-size:13.5px;font-weight:500;margin-bottom:12px;display:flex;align-items:center;gap:8px;color:var(--we-purple)}
+.card-title i{font-size:18px}
+
+/* Grid */
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:560px){.grid-2{grid-template-columns:1fr}}
+.grid-auto{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:8px;margin-top:10px}
+
+/* Info rows */
+.row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:0.5px solid var(--color-border-tertiary,rgba(0,0,0,.08));font-size:13px;gap:8px;flex-wrap:wrap}
+.row:last-child{border-bottom:none}
+.row-label{color:var(--color-text-secondary,#666);flex:1}
+.row-val{color:var(--color-text-primary,#1a1a1a);font-weight:500;text-align:left}
+
+/* Badges */
+.badge{display:inline-flex;align-items:center;padding:3px 10px;border-radius:20px;font-size:11.5px;font-weight:500;white-space:nowrap}
+.badge-purple{background:var(--we-purple-light);color:var(--we-purple-dark)}
+.badge-green{background:#E1F5EE;color:#085041}
+.badge-amber{background:#FAEEDA;color:#633806}
+.badge-red{background:#FCEBEB;color:#791F1F}
+.badge-new{background:var(--we-purple);color:white;font-size:10px;padding:2px 8px;border-radius:20px}
+
+/* Package cards */
+.pkg{border:0.5px solid var(--color-border-tertiary,rgba(0,0,0,.1));border-radius:12px;padding:12px;text-align:center;transition:.18s;background:var(--color-background-primary,#fff)}
+.pkg:hover{border-color:var(--we-purple);box-shadow:0 2px 12px rgba(107,63,160,.12)}
+.pkg-price{font-size:22px;font-weight:500;color:var(--we-purple)}
+.pkg-unit{font-size:11px;color:var(--color-text-secondary,#888);margin-top:1px}
+.pkg-name{font-size:11px;color:var(--we-purple);background:var(--we-purple-light);padding:3px 8px;border-radius:20px;display:inline-block;margin-top:6px}
+.pkg-detail{font-size:11px;color:var(--color-text-secondary,#888);margin-top:6px;padding-top:6px;border-top:0.5px solid var(--color-border-tertiary,rgba(0,0,0,.08))}
+
+/* Alerts */
+.alert{padding:10px 14px;border-radius:10px;font-size:12.5px;margin-bottom:10px;display:flex;gap:8px;align-items:flex-start;line-height:1.6}
+.alert i{flex-shrink:0;font-size:16px;margin-top:1px}
+.alert-warn{background:#FAEEDA;color:#633806;border:0.5px solid #FAC775}
+.alert-info{background:var(--we-purple-light);color:var(--we-purple-dark);border:0.5px solid var(--we-purple-mid)}
+.alert-danger{background:#FCEBEB;color:#791F1F;border:0.5px solid #F7C1C1}
+.alert-success{background:#E1F5EE;color:#085041;border:0.5px solid #9FE1CB}
+
+/* Steps */
+.step{display:flex;gap:10px;margin-bottom:10px;align-items:flex-start}
+.step-num{width:26px;height:26px;border-radius:50%;background:var(--we-purple);color:white;font-size:12px;font-weight:500;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.step-text{font-size:13px;line-height:1.7;flex:1}
+
+/* Tables */
+.tbl-wrap{overflow-x:auto;border-radius:10px;border:0.5px solid var(--color-border-tertiary,rgba(0,0,0,.1));margin-top:8px}
+.tbl{width:100%;border-collapse:collapse;font-size:12px;min-width:420px}
+.tbl th{background:var(--we-purple);color:white;padding:8px 10px;text-align:right;font-weight:500;font-size:11.5px}
+.tbl td{padding:7px 10px;border-bottom:0.5px solid var(--color-border-tertiary,rgba(0,0,0,.08));text-align:right;font-size:12px}
+.tbl tr:last-child td{border-bottom:none}
+.tbl tr:nth-child(even) td{background:rgba(107,63,160,.03)}
+
+/* Checklist */
+.checklist{list-style:none;padding:0}
+.checklist li{font-size:13px;padding:7px 0;display:flex;gap:9px;align-items:flex-start;border-bottom:0.5px solid var(--color-border-tertiary,rgba(0,0,0,.08));line-height:1.6}
+.checklist li:last-child{border-bottom:none}
+.checklist li::before{content:'✓';color:var(--we-purple);font-weight:700;flex-shrink:0;margin-top:1px}
+.checklist.warn li::before{content:'⚠';color:#BA7517}
+
+/* Section heading */
+.sec-heading{font-size:13px;font-weight:500;color:var(--we-purple);margin:16px 0 8px;padding-bottom:6px;border-bottom:2px solid var(--we-purple-light);display:flex;align-items:center;gap:6px}
+
+/* Flow */
+.flow-box{border-radius:10px;padding:8px 12px;font-size:12.5px;margin-bottom:5px;text-align:center;line-height:1.5}
+.flow-default{border:0.5px solid var(--we-purple-mid);background:var(--we-purple-light);color:var(--we-purple-dark)}
+.flow-start{border:0.5px solid #FAC775;background:#FAEEDA;color:#633806}
+.flow-ok{border:0.5px solid #9FE1CB;background:#E1F5EE;color:#085041}
+.flow-fail{border:0.5px solid #F7C1C1;background:#FCEBEB;color:#791F1F}
+.flow-arrow{text-align:center;color:var(--we-purple);font-size:16px;margin:2px 0}
+
+/* Link btn */
+.link-btn{display:inline-flex;align-items:center;gap:7px;padding:8px 16px;border-radius:10px;background:var(--we-purple);color:white;font-size:13px;font-weight:500;text-decoration:none;transition:.18s;margin-top:8px}
+.link-btn:hover{opacity:.88}
+.link-btn i{font-size:15px}
+
+@media(max-width:480px){
+  .header{padding:1rem;gap:.75rem}
+  .header-text h1{font-size:15px}
+  .card{padding:.9rem 1rem}
+  .tab{padding:6px 10px;font-size:12px}
+  .grid-auto{grid-template-columns:repeat(auto-fit,minmax(100px,1fr))}
+  .pkg-price{font-size:18px}
+}
+</style>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+<div class="portal">
+
+  <div class="header">
+<a href="javascript:history.back()" class="back-btn" style="position: absolute; left: 20px; top: 50%; transform: translateY(-50%); color: white; text-decoration: none; font-size: 20px; z-index: 1000;"><i class="fas fa-arrow-left"></i></a>
+
+    <div class="logo">WE</div>
+    <div class="header-text">
+      <h1>باقات الفاتورة — الموبايل</h1>
+      <p>المصرية للاتصالات · دليل موظف المبيعات</p>
+    </div>
+  </div>
+
+  <div class="tab-bar" role="tablist">
+    <button class="tab active" onclick="show('overview',this)" role="tab"><i class="ti ti-home" aria-hidden="true"></i> نظرة عامة</button>
+    <button class="tab" onclick="show('packages',this)" role="tab"><i class="ti ti-package" aria-hidden="true"></i> الباقات</button>
+    <button class="tab" onclick="show('to-post',this)" role="tab"><i class="ti ti-arrow-left" aria-hidden="true"></i> كارت → فاتورة</button>
+    <button class="tab" onclick="show('from-post',this)" role="tab"><i class="ti ti-arrow-right" aria-hidden="true"></i> فاتورة → كارت</button>
+    <button class="tab" onclick="show('docs',this)" role="tab"><i class="ti ti-file-text" aria-hidden="true"></i> الأوراق</button>
+    <button class="tab" onclick="show('lifecycle',this)" role="tab"><i class="ti ti-clock" aria-hidden="true"></i> دورة الحياة</button>
+    <button class="tab" onclick="show('ptp',this)" role="tab"><i class="ti ti-refresh" aria-hidden="true"></i> Promise to Pay</button>
+    <button class="tab" onclick="show('install',this)" role="tab"><i class="ti ti-device-mobile" aria-hidden="true"></i> تقسيط الأجهزة</button>
+    <button class="tab" onclick="show('alerts',this)" role="tab"><i class="ti ti-alert-triangle" aria-hidden="true"></i> تنبيهات</button>
+    <button class="tab" onclick="show('services',this)" role="tab"><i class="ti ti-settings" aria-hidden="true"></i> خدمات إضافية</button>
+    <button class="tab" onclick="show('tod',this)" role="tab"><i class="ti ti-video" aria-hidden="true"></i> TOD</button>
+    <button class="tab" onclick="show('shamel',this)" role="tab"><i class="ti ti-heart" aria-hidden="true"></i> شامل</button>
+  </div>
+
+  <!-- ═══ نظرة عامة ═══ -->
+  <div id="overview" class="section active">
+    <div class="card">
+      <div class="card-title"><i class="ti ti-info-circle" aria-hidden="true"></i> مقدمة — نظام الفاتورة</div>
+      <ul class="checklist">
+        <li>نظام دفع آجل بموجب فاتورة شهرية — متاح للعملاء من عمر 18 سنة فأكثر</li>
+        <li>عملاء الكارت يمكنهم التحويل لنظام الفاتورة بإحضار الأوراق اللازمة والتوقيع على عقد جديد</li>
+        <li>لا يمكن شراء خط جديد إذا كان العميل لديه خط قديم غير مدفوع</li>
+        <li>يمكن للعميل شراء 3 خطوط كحد أقصى في المرة الواحدة — وبعد دفع فاتورتين يمكن الشراء مجددًا</li>
+      </ul>
+    </div>
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-title"><i class="ti ti-credit-card" aria-hidden="true"></i> سعر الخط</div>
+        <div class="row"><span class="row-label">سعر الخط الأساسي</span><span class="row-val">15 ج</span></div>
+        <div class="row"><span class="row-label">رسوم إضافية</span><span class="row-val">4.67 ج</span></div>
+        <div class="row"><span class="row-label">رسوم تنمية موارد الدولة</span><span class="row-val">50 ج</span></div>
+        <div class="row"><span class="row-label">ضريبة القيمة المضافة</span><span class="row-val">11.56 ج</span></div>
+        <div class="row"><span class="row-label">الإجمالي</span><span class="row-val" style="font-size:15px;color:var(--we-purple)">81.23 ج</span></div>
+      </div>
+      <div class="card">
+        <div class="card-title"><i class="ti ti-sim-card" aria-hidden="true"></i> الشريحة الإلكترونية eSIM</div>
+        <div class="row"><span class="row-label">عند شراء خط جديد</span><span class="row-val">330 ج</span></div>
+        <div class="row"><span class="row-label">عند استبدال الشريحة</span><span class="row-val">270 ج</span></div>
+        <div class="row"><span class="row-label">الأسعار شاملة</span><span class="row-val">جميع الضرائب</span></div>
+        <div class="alert alert-warn" style="margin-top:10px"><i class="ti ti-alert-triangle" aria-hidden="true"></i> eSIM غير متاحة لجميع خطوط الداتا</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ الباقات ═══ -->
+  <div id="packages" class="section">
+    <div class="card">
+      <div class="card-title"><i class="ti ti-layout-grid" aria-hidden="true"></i> باقات WE Gold — مقارنة سريعة</div>
+      <a class="link-btn" href="https://we-core.icu/info/We%20Gold.html" target="_blank" rel="noopener"><i class="ti ti-external-link" aria-hidden="true"></i> صفحة باقات WE Gold الكاملة</a>
+      <div class="grid-auto">
+        <div class="pkg"><div class="pkg-price">260</div><div class="pkg-unit">ج/شهر</div><div class="pkg-name">WE Gold 260</div><div class="pkg-detail">تأمين: 260 ج<br>حد أقصى 2 أفراد</div></div>
+        <div class="pkg"><div class="pkg-price">525</div><div class="pkg-unit">ج/شهر</div><div class="pkg-name">WE Gold 525</div><div class="pkg-detail">تأمين: 525 ج<br>حد أقصى 3 أفراد</div></div>
+        <div class="pkg"><div class="pkg-price">775</div><div class="pkg-unit">ج/شهر</div><div class="pkg-name">WE Gold 775</div><div class="pkg-detail">تأمين: 775 ج<br>حد أقصى 4 أفراد</div></div>
+        <div class="pkg"><div class="pkg-price">1050</div><div class="pkg-unit">ج/شهر</div><div class="pkg-name">WE Gold 1050</div><div class="pkg-detail">تأمين: 1050 ج<br>حد أقصى 5 أفراد</div></div>
+        <div class="pkg"><div class="pkg-price">1300</div><div class="pkg-unit">ج/شهر</div><div class="pkg-name">WE Gold 1300</div><div class="pkg-detail">تأمين: 1300 ج<br>حد أقصى 6 أفراد</div></div>
+        <div class="pkg"><div class="pkg-price">2000</div><div class="pkg-unit">ج/شهر</div><div class="pkg-name">WE Gold 2000</div><div class="pkg-detail">تأمين: 2000 ج<br>حد أقصى 7 أفراد</div></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title"><i class="ti ti-star" aria-hidden="true"></i> مميزات باقات WE Gold</div>
+      <ul class="checklist">
+        <li>باقة واحدة وفاتورة واحدة تشمل الموبايل + الإنترنت المنزلي + الخط الأرضي</li>
+        <li>إضافة حتى 6 خطوط للعائلة مجانًا على نفس الحساب</li>
+        <li>10,000 دقيقة مجانية للمكالمات بين أفراد العائلة</li>
+        <li>التحكم في الفاتورة الشهرية وتحديد حد أقصى لكل خط</li>
+        <li>عند انتهاء موبايل إنترنت: 1 ميجا = 1 دقيقة من باقة الدقائق</li>
+        <li>عند انتهاء الدقائق: 1 ميجا موبايل = 20 ميجا من الإنترنت المنزلي</li>
+        <li>قسيمة شراء سنوية (من باقة 525 فأعلى)</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-title"><i class="ti ti-gift" aria-hidden="true"></i> قسيمة الشراء السنوية</div>
+      <div class="grid-auto">
+        <div class="pkg"><div class="pkg-price" style="font-size:16px">—</div><div class="pkg-name">WE Gold 260</div></div>
+        <div class="pkg"><div class="pkg-price" style="font-size:16px">1,000 ج</div><div class="pkg-name">WE Gold 525</div></div>
+        <div class="pkg"><div class="pkg-price" style="font-size:16px">1,500 ج</div><div class="pkg-name">WE Gold 775</div></div>
+        <div class="pkg"><div class="pkg-price" style="font-size:16px">2,000 ج</div><div class="pkg-name">WE Gold 1050</div></div>
+        <div class="pkg"><div class="pkg-price" style="font-size:16px">3,000 ج</div><div class="pkg-name">WE Gold 1300</div></div>
+        <div class="pkg"><div class="pkg-price" style="font-size:16px">5,000 ج</div><div class="pkg-name">WE Gold 2000</div></div>
+      </div>
+      <div class="alert alert-info" style="margin-top:12px"><i class="ti ti-info-circle" aria-hidden="true"></i> تُستخدم في شراء الأجهزة فقط (سماعات، هواتف، راوتر) — لا تُستخدم لدفع فاتورة أو شراء خط</div>
+    </div>
+  </div>
+
+  <!-- ═══ من كارت إلى فاتورة ═══ -->
+  <div id="to-post" class="section">
+    <div class="alert alert-warn"><i class="ti ti-alert-triangle" aria-hidden="true"></i> <strong>تنبيه للموظف:</strong> يجب اتباع الخطوات التالية عند التحويل من مسبق الدفع إلى فاتورة</div>
+    <div class="card">
+      <div class="card-title"><i class="ti ti-arrow-left" aria-hidden="true"></i> خطوات التحويل من كارت إلى فاتورة</div>
+      <div class="step"><div class="step-num">1</div><div class="step-text">إمضاء العميل على عقد جديد لنظام الاشتراك الشهري — <strong>بدون رسوم</strong> وبدون إمضاء commitment form</div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-text">تقديم مستندات إثبات القدرة على الدفع (ATP) أو دفع المبلغ التأميني حسب الباقة المطلوبة</div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-text">التحويل يتم على الشريحة القديمة — <strong>لا يتطلب تغيير الشريحة</strong></div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-text">في حالة وجود رصيد في خط الكارت، يتحول الرصيد تلقائيًا بعد التحويل مباشرة</div></div>
+      <div class="step"><div class="step-num">5</div><div class="step-text">يمكن للأرقام المحولة من الكارت تغيير الباقة في أي وقت (لم يحصل على رقم مميز)</div></div>
+      <div class="step"><div class="step-num">6</div><div class="step-text">إنشاء الـ TT التالية (إلزامي)</div></div>
+    </div>
+    <div class="card">
+      <div class="card-title"><i class="ti ti-table" aria-hidden="true"></i> الـ TT المطلوبة</div>
+      <div class="tbl-wrap">
+        <table class="tbl">
+          <tr><th>Issue Type</th><th>Category</th><th>Type</th><th>Item</th><th>Summary</th></tr>
+          <tr><td>Request</td><td>Consumer</td><td>Rate Plans</td><td>Migration from Prepaid</td><td>Migration from Prepaid</td></tr>
+        </table>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title"><i class="ti ti-info-circle" aria-hidden="true"></i> ملاحظات مهمة</div>
+      <ul class="checklist">
+        <li>التحويل من Indigo إلى WE Gold: في حالة باقة أعلى — لا حاجة لـ commitment form جديد</li>
+        <li>من عملاء الكارت/كنترول إلى WE Gold: عبر فروع WE فقط — لا يحتاجون تغيير الشريحة</li>
+        <li>من عملاء الإنترنت المنزلي (FBB standalone): عبر الفرع مع دفع رسوم الخط والشريحة</li>
+        <li>من شركة أخرى بنفس الرقم (MNP): الخط باسم صاحب الطلب بدون مستحقات، ومدة تشغيل لا تقل عن 4 شهور</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ═══ من فاتورة إلى كارت ═══ -->
+  <div id="from-post" class="section">
+    <div class="card">
+      <div class="card-title"><i class="ti ti-arrow-right" aria-hidden="true"></i> شروط التحويل من فاتورة إلى مسبق الدفع</div>
+      <div class="sec-heading">في حالة تم سداد 12 فاتورة</div>
+      <div class="row"><span class="row-label">العميل الذي سدد 12 فاتورة كاملة</span><span class="row-val"><span class="badge badge-green">مسموح بالتحويل</span></span></div>
+      <div class="row"><span class="row-label">العميل الذي لديه رقم مميز</span><span class="row-val"><span class="badge badge-red">غير مسموح قبل 12 فاتورة</span></span></div>
+      <div class="sec-heading" style="margin-top:14px">قيود تخفيض الباقة</div>
+      <div class="row"><span class="row-label">من WE Gold 260 فأعلى</span><span class="row-val">لا تغيير لباقة أقل إلا بعد 6 شهور</span></div>
+      <div class="row"><span class="row-label">من WE Gold 775 فأعلى</span><span class="row-val">لا تغيير لباقة أقل إلا بعد 12 شهر</span></div>
+    </div>
+    <div class="card">
+      <div class="card-title"><i class="ti ti-table" aria-hidden="true"></i> الـ TT — التحويل إلى مسبق الدفع</div>
+      <div class="tbl-wrap">
+        <table class="tbl">
+          <tr><th>Company</th><th>Issue Type</th><th>Category</th><th>Type</th><th>Item</th><th>Summary</th><th>SLA</th></tr>
+          <tr><td>GSM</td><td>Request</td><td>Consumer</td><td>Rateplans</td><td>Conversion to Prepaid</td><td>Conversion to Prepaid</td><td>5 Days</td></tr>
+        </table>
+      </div>
+      <div class="alert alert-info" style="margin-top:10px"><i class="ti ti-info-circle" aria-hidden="true"></i> يجب أن يحضر العميل بنفسه للفرع ببطاقة رقم قومي سارية</div>
+    </div>
+    <div class="card">
+      <div class="card-title"><i class="ti ti-table" aria-hidden="true"></i> الـ TT — إلغاء الخط</div>
+      <div class="tbl-wrap">
+        <table class="tbl">
+          <tr><th>Company</th><th>Issue Type</th><th>Category</th><th>Type</th><th>Item</th><th>SLA</th></tr>
+          <tr><td>GSM</td><td>Request</td><td>Consumer</td><td>Deactivation</td><td>WE Gold</td><td>5 WD</td></tr>
+          <tr><td>GSM</td><td>Request</td><td>Consumer</td><td>Deactivation</td><td>ADSL Cancellation</td><td>5 WD</td></tr>
+          <tr><td>GSM</td><td>Request</td><td>Consumer</td><td>Deactivation</td><td>Indigo Cancellation</td><td>5 WD</td></tr>
+        </table>
+      </div>
+    </div>
+    <div class="sec-heading" style="font-size:14px">⚠️ حالة خاصة — إلغاء خط موبايل فاتورة والحساب في حالة Suspended</div>
+    <div class="alert alert-warn"><i class="ti ti-alert-triangle" aria-hidden="true"></i> تُطبَّق عندما يطلب العميل إلغاء خط موبايل فاتورة وكان الحساب موقوفًا (Suspended) بسبب التأخر في السداد</div>
+    <div class="card">
+      <div class="card-title"><i class="ti ti-steps" aria-hidden="true"></i> خطوات إلغاء خط فاتورة FMC متوقف</div>
+      <div class="step"><div class="step-num">2</div><div class="step-text">إيقاف خط الموبايل يدويًا عبر شاشة Suspend and Bar:<br><span class="badge badge-purple" style="margin-top:5px;display:inline-flex">Operation Type: Customer Request Suspension</span><br><span class="badge badge-amber" style="margin-top:4px;display:inline-flex">Suspension Reason: Post-paid deactivation request</span></div></div>
+      <div class="step"><div class="step-num">1</div><div class="step-text">سداد أول فاتورتين فقط المستحقتين — <span style="color:#791F1F">بدون عمل Hot Bill أو Dismiss للجروب</span></div></div>
+      <div class="alert alert-warn"><i class="ti ti-alert-triangle" aria-hidden="true"></i> <strong>ملحوظه </strong> يجب ابلاغ العميل بعدم استخدام اي من الجيجات الانترنت المنزلي أو الموبيل لاستمرار عملية الالغاء </div> 
+      <div class="step"><div class="step-num">3</div><div class="step-text">إنشاء التكت على Remedy مع إرفاق نموذج الإلغاء داخل التكت:
+        <div class="tbl-wrap" style="margin-top:8px">
+          <table class="tbl"><tr><th>Company</th><th>Issue Type</th><th>Category</th><th>Type</th><th>Item</th><th>SLA</th></tr>
+          <tr><td>GSM</td><td>Request</td><td>Consumer</td><td>Deactivation</td><td>WE Gold</td><td>5 WD</td></tr></table>
+        </div>
+      </div></div>
+    </div>
+    <div class="sec-heading" style="font-size:14px">🔁 إعادة تشغيل خط فاتورة FMC متوقف بسبب Activation Team</div>
+    <div class="card">
+      <div class="card-title"><i class="ti ti-steps" aria-hidden="true"></i> خطوات إعادة التشغيل</div>
+      <div class="step"><div class="step-num">1</div><div class="step-text">الدخول على Remedy وفتح TT باسم <span class="badge badge-purple">ATP Validation</span> للاطلاع على سبب الإيقاف:<br>
+        <ul style="margin-top:8px;padding-right:16px;font-size:13px;line-height:1.9">
+          <li>إذا كان السبب <strong>عقد أو بيانات خاطئة</strong> → التصحيح ورفع الأوراق مرة أخرى</li>
+          <li>إذا كان السبب <strong>Bad History</strong> → دفع المبلغ التأميني أو ما يلزم</li>
+        </ul>
+        <div class="alert alert-warn"><i class="ti ti-alert-triangle" aria-hidden="true"></i> <strong>ملحوظه </strong> سوف يتم تواصل Activation Team لتنشيط الخط علي رقم التواصل و في حالة عدم الرد تغلق ال TT و يجب انشاء TT أخري </div>
+      </div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-text">بعد تنفيذ طلب الـ Activation، إنشاء التكت:
+        <div class="tbl-wrap" style="margin-top:8px">
+          <table class="tbl"><tr><th>Issue Type</th><th>Category</th><th>Type</th><th>Item</th><th>Summary</th><th>SLA</th></tr>
+          <tr><td>Request</td><td>Consumer</td><td>Rateplans</td><td>Remove Activation Suspension</td><td>Remove Activation Suspension</td><td>2 WH</td></tr></table>
+        </div>
+      </div></div>
+    </div>
+    <div class="sec-heading" style="font-size:14px">⏱️ إعادة تشغيل لمدة ساعة واحدة فقط</div>
+    <div class="alert alert-info"><i class="ti ti-info-circle" aria-hidden="true"></i> تُطبَّق عندما يكون الخط تابعًا لعميل تحت السن، ونحتاج تفعيله لمدة ساعة لدفع الفاتورة وإلغاء النظام</div>
+    <div class="card">
+      <div class="card-title"><i class="ti ti-steps" aria-hidden="true"></i> الخطوات</div>
+      <div class="step"><div class="step-num">1</div><div class="step-text">إرسال بريد إلكتروني إلى <strong>Ra.Approvals@te.eg</strong>:<br><em style="color:var(--color-text-secondary);font-size:12.5px">"Kindly, we request your support and approval to create a (Remove Activation Suspension) ticket in order to take the necessary corrective action"</em><br>
+        <div class="alert alert-warn" style="margin-top:8px"><i class="ti ti-alert-triangle" aria-hidden="true"></i> لا ننتظر ردًا — نرفق صورة البريد الذي أرسلناه داخل التكت</div>
+      </div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-text">إنشاء التكت على Remedy:
+        <div class="tbl-wrap" style="margin-top:8px">
+          <table class="tbl"><tr><th>Issue Type</th><th>Category</th><th>Type</th><th>Item</th><th>Summary</th></tr>
+          <tr><td>Request</td><td>Consumer</td><td>Rateplans</td><td>Remove Activation Suspension</td><td>Remove Activation Suspension</td></tr></table>
+        </div>
+        <div style="margin-top:8px;padding:8px 12px;background:var(--color-background-secondary);border-radius:8px;font-size:12.5px">
+          <strong>Description:</strong> <em style="color:var(--color-text-secondary)">Kindly we need to activate line for one hour as expression to take corrective action</em>
+        </div>
+        <div class="alert alert-danger" style="margin-top:8px"><i class="ti ti-alert-triangle" aria-hidden="true"></i> إلزامي: إرفاق صورة البريد المرسل (ليس الرد)</div>
+      </div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-text">بعد الموافقة سيتحول الخط Active لمدة ساعة — يجب المبادرة فورًا بـ: Hot Bill + دفعها + إلغاء الجروب</div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-text">إنشاء تكت الإلغاء بالإجراءات المعتادة</div></div>
+      <div class="step"><div class="step-num">5</div><div class="step-text">إذا كان العميل دفع مبلغًا تأمينيًا → يُقدَّم طلب استرداده بعد أن يتحول الخط إلى حالة <span class="badge badge-amber">Pre-deactivation</span></div></div>
+    </div>
+  </div>
+
+  <!-- ═══ الأوراق ═══ -->
+  <div id="docs" class="section">
+    <a class="link-btn" href="https://we-core.icu/info/ATP.html" target="_blank" rel="noopener"><i class="ti ti-external-link" aria-hidden="true"></i> صفحة ATP — مستندات إثبات القدرة على الدفع</a>
+    <div style="margin-top:1rem" class="grid-2">
+      <div class="card">
+        <div class="card-title"><i class="ti ti-id" aria-hidden="true"></i> البطاقة الشخصية</div>
+        <ul class="checklist">
+          <li>سارية وسليمة — غير ممزقة أو مطموسة البيانات</li>
+          <li>الاطلاع على الأصل فقط — لا تُقبل الصورة</li>
+          <li>تُقبل إذا كان بها شرخ لا يؤدي لانفصال الجزئين</li>
+          <li>أخذ صورة واضحة وملونة ومقروءة ورفعها على السيستم</li>
+          <li>الأجانب: جواز السفر بدلًا من البطاقة</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="card-title"><i class="ti ti-file-text" aria-hidden="true"></i> البنود الإلزامية في العقد</div>
+        <ul class="checklist">
+          <li>اسم العميل (أول ثلاثة أسماء متتالية في البطاقة)</li>
+          <li>الرقم القومي للمصريين / رقم جواز السفر للأجانب</li>
+          <li>رقم الخط المتعاقد عليه</li>
+          <li>الرقم المسلسل للشريحة</li>
+          <li>الباقة المتعاقد عليها</li>
+          <li>ختم الفرع واضح + اسم وتوقيع موظف المبيعات</li>
+        </ul>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title"><i class="ti ti-alert-circle" aria-hidden="true"></i> ماذا يحدث في حالة وجود أوراق ناقصة؟</div>
+      <div class="step"><div class="step-num">1</div><div class="step-text">يتصل أحد ممثلي خدمة العملاء بالعميل خلال 3 ساعات من تشغيل الخط</div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-text">يُطلب من العميل إحضار الأوراق الناقصة خلال 3 أيام</div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-text">إذا لم يُقدم العميل الأوراق خلال 72 ساعة → يتم إيقاف الخط</div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-text">في حالة أن الأوراق سليمة → يستقبل العميل welcome call</div></div>
+    </div>
+    <div class="card">
+      <div class="card-title"><i class="ti ti-shield" aria-hidden="true"></i> المبلغ التأميني</div>
+      <ul class="checklist">
+        <li>يمكن استرداد المبلغ بعد 6 شهور مع تقديم مستند قدرة على الدفع</li>
+        <li>لا يمكن الاسترداد في حالة الإلغاء أو التحويل لمسبق الدفع إلا إذا مر 7 أيام على دخول الـ Deposit</li>
+        <li>العملاء الأجانب بإقامة أقل من 6 شهور: يدفعون ضعف المبلغ التأميني</li>
+        <li>لا يمكن التحويل لباقة أعلى إلا بعد سداد فرق المبلغ التأميني (إن وجد)</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ═══ دورة الحياة ═══ -->
+  <div id="lifecycle" class="section">
+    <div class="card">
+      <div class="card-title"><i class="ti ti-clock" aria-hidden="true"></i> دورة حياة خط الفاتورة</div>
+      <div style="margin-top:8px">
+        <div class="step"><div class="step-num" style="background:#6B3FA0">1</div><div class="step-text"><strong>إصدار الفاتورة</strong> — تُرسل قيمة الفاتورة عبر رسالة قصيرة (يوم 1 أو 16 من كل شهر)</div></div>
+        <div class="step"><div class="step-num" style="background:#BA7517">2</div><div class="step-text"><strong>Hotline</strong> — بعد عدم الدفع: لا يمكن الإرسال — يجب السداد خلال 20 يومًا</div></div>
+        <div class="step"><div class="step-num" style="background:#993C1D">3</div><div class="step-text"><strong>Suspension</strong> — لا إرسال ولا استقبال لمدة 190 يومًا</div></div>
+        <div class="step"><div class="step-num" style="background:#791F1F">4</div><div class="step-text"><strong>Pre-deactivate</strong> — بعد 190 يوم من Suspension لمدة 5 أيام</div></div>
+        <div class="step"><div class="step-num" style="background:#501313">5</div><div class="step-text"><strong>Deactivate</strong> — بعد 5 أيام من Pre-deactivate</div></div>
+      </div>
+      <div class="alert alert-warn" style="margin-top:10px"><i class="ti ti-info-circle" aria-hidden="true"></i> لا يتم إخبار العميل بتاريخ دورة Dunning — نُبلغه فقط بضرورة السداد خلال 20 يومًا من تاريخ إصدار الفاتورة</div>
+    </div>
+    <div class="card">
+      <div class="card-title"><i class="ti ti-pause" aria-hidden="true"></i> الإيقاف المؤقت — Park Your Line</div>
+      <div class="row"><span class="row-label">المدة المتاحة</span><span class="row-val">شهر واحد حتى 12 شهرًا</span></div>
+      <div class="row"><span class="row-label">رسوم الخدمة</span><span class="row-val">10 ج/شهر + ضريبة القيمة المضافة</span></div>
+      <div class="row"><span class="row-label">تفعيل الخط بعد انقضاء المدة</span><span class="row-val">تلقائيًا بدون أي إجراء</span></div>
+      <div class="row"><span class="row-label">متاح لعملاء</span><span class="row-val"><span class="badge badge-green">Postpaid Standalone فقط</span></span></div>
+      <div class="row"><span class="row-label">للعملاء FMC</span><span class="row-val"><span class="badge badge-red">يجب فصل الخط أولًا</span></span></div>
+      <div class="row"><span class="row-label">أقدم استفادة بالخدمة</span><span class="row-val">بعد إصدار أول فاتورة</span></div>
+      <div class="row"><span class="row-label">فترة الالتزام بتميز الأرقام</span><span class="row-val"><span class="badge badge-red">لا تُحتسب فترة الإيقاف ضمنها</span></span></div>
+      <div class="sec-heading" style="margin-top:12px">ملاحظات مهمة</div>
+      <ul class="checklist">
+        <li>يجب عمل Hot Bill قبل البدء في تفعيل خدمة Park Your Line</li>
+        <li>يُمضي العميل إقرارًا يوضح أن الخط سيُفعَّل مرة أخرى بعد فترة الإيقاف</li>
+        <li>في حال طلب إلغاء الخدمة قبل انتهاء المدة: يتم تشغيل الخط — <span style="color:#791F1F">لا يتم استرداد قيمة الخدمة المدفوعة</span></li>
+      </ul>
+      <a class="link-btn" href="https://we-core.icu/viewpdf.html?src=https%3A%2F%2Fiygwhapcpdmsasqlfelv.supabase.co%2Fstorage%2Fv1%2Fobject%2Fauthenticated%2FAll%20Form%2FMobile%2FPark%20Your%20Line.pdf" target="_blank" rel="noopener"><i class="ti ti-file-download" aria-hidden="true"></i> فتح نموذج Park Your Line</a>
+    </div>
+  </div>
+
+  <!-- ═══ PTP ═══ -->
+  <div id="ptp" class="section">
+    <div class="alert alert-success"><i class="ti ti-check" aria-hidden="true"></i> <span class="badge-new">جديد — يناير 2025</span> &nbsp;إعادة تشغيل خط الفاتورة مؤقتًا لمدة 24 ساعة</div>
+    <div class="card">
+      <div class="card-title"><i class="ti ti-info-circle" aria-hidden="true"></i> نظرة عامة</div>
+      <ul class="checklist">
+        <li>تتيح لعملاء Postpaid إعادة تشغيل خطهم لمدة <strong>24 ساعة</strong> عند الإيقاف بسبب عدم الدفع (Bar)</li>
+        <li>الخدمة متاحة <strong>مرة واحدة فقط</strong> خلال 30 يومًا</li>
+        <li>بعد التفعيل يصل للعميل SMS تأكيد</li>
+      </ul>
+    </div>
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-title"><i class="ti ti-phone-call" aria-hidden="true"></i> تفعيل عبر IVR (500)</div>
+        <div class="flow-box flow-start">الاتصال بـ 500</div>
+        <div class="flow-arrow">↓</div>
+        <div class="flow-box flow-default">عربي: اضغط 1 / English: press 2</div>
+        <div class="flow-arrow">↓</div>
+        <div class="flow-box flow-default">حالة الخط موقوف — رسالة إخطار</div>
+        <div class="flow-arrow">↓</div>
+        <div class="flow-box flow-default">لإعادة التفعيل 24 ساعة اضغط 1</div>
+        <div class="flow-arrow">↓</div>
+        <div class="flow-box flow-ok">✓ تم تفعيل الخط بنجاح لمدة 24 ساعة</div>
+        <div class="flow-box flow-fail" style="margin-top:5px">✗ تجاوزت الحد الأقصى — تواصل مع خدمة العملاء</div>
+      </div>
+      <div class="card">
+        <div class="card-title"><i class="ti ti-hash" aria-hidden="true"></i> تفعيل عبر USSD (*155#)</div>
+        <div class="flow-box flow-start">طلب *155#</div>
+        <div class="flow-arrow">↓</div>
+        <div class="flow-box flow-default">1. الخدمات الإخبارية<br>2. خدمات الكول تون<br>3. خدمات الخصم المباشر<br><strong>4. لتشغيل خطك لمدة 24 ساعة</strong></div>
+        <div class="flow-arrow">↓ اختر 4</div>
+        <div class="flow-box flow-ok">✓ تمت إعادة تفعيل الخط لمدة 24 ساعة</div>
+        <div class="flow-box flow-fail" style="margin-top:5px">✗ تجاوزت الحد الأقصى — يرجى سداد الفاتورة</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title"><i class="ti ti-device-mobile" aria-hidden="true"></i> تفعيل عبر تطبيق My WE</div>
+      <div class="step"><div class="step-num">1</div><div class="step-text">يسجّل العميل دخوله على تطبيق WE</div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-text">حالة Bar: يظهر pop-up يخبره بإمكانية إعادة التشغيل 24 ساعة</div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-text">يضغط OK → يُعاد تشغيل الخط وتصل رسالة SMS تأكيد</div></div>
+      <div class="alert alert-info" style="margin-top:10px"><i class="ti ti-info-circle" aria-hidden="true"></i> متاح عبر التطبيق بدءًا من 17 يناير 2025</div>
+    </div>
+    <div class="card">
+      <div class="card-title"><i class="ti ti-table" aria-hidden="true"></i> الـ TT لإعادة التشغيل بعد استكمال الأوراق</div>
+      <div class="tbl-wrap">
+        <table class="tbl">
+          <tr><th>Issue Type</th><th>Category</th><th>Type</th><th>Item</th><th>Summary</th><th>SLA</th></tr>
+          <tr><td>Request</td><td>Consumer</td><td>Rate Plans</td><td>Remove activation suspension</td><td>Remove activation suspension</td><td>2 WH</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ تقسيط الأجهزة ═══ -->
+  <div id="install" class="section">
+    <div class="sec-heading" style="font-size:14px;margin-top:0">⭕ العملاء الجدد</div>
+    <div class="card">
+      <div class="card-title"><i class="ti ti-device-mobile" aria-hidden="true"></i> حدود التقسيط — العملاء الجدد</div>
+      <div class="tbl-wrap">
+        <table class="tbl">
+          <tr><th>الباقة</th><th>الحد الأقصى للتقسيط</th></tr>
+          <tr><td>WE Gold 200</td><td>5,000 ج</td></tr>
+          <tr><td>WE Gold 400</td><td>10,000 ج</td></tr>
+          <tr><td>WE Gold 600</td><td>15,000 ج</td></tr>
+          <tr><td>WE Gold 800</td><td>25,000 ج</td></tr>
+          <tr><td>WE Gold 1000</td><td>25,000 ج</td></tr>
+          <tr><td>WE Gold 1500</td><td>25,000 ج</td></tr>
+        </table>
+      </div>
+      <div class="alert alert-warn" style="margin-top:10px"><i class="ti ti-alert-triangle" aria-hidden="true"></i> استثناء: العملاء المحولين من باقات Indigo/WE Space — الحد الأقصى 15,000 ج عند التحويل لباقات 800 و1000 و1500</div>
+    </div>
+    <div class="card">
+      <div class="card-title"><i class="ti ti-list" aria-hidden="true"></i> شروط التقسيط — العملاء الجدد</div>
+      <ul class="checklist">
+        <li>مدة التقسيط: 12 شهرًا بدون فوائد من تاريخ دفع المقدم النقدي</li>
+        <li>دفع مقدم نقدي بنسبة 20% أو 50% حسب رغبة العميل</li>
+        <li>من WE Gold 200: active لمدة لا تقل عن 12 شهرًا</li>
+        <li>من WE Gold 600: active لمدة لا تقل عن 6 شهور</li>
+        <li>يشترط عدم وجود مبالغ مستحقة</li>
+        <li>أثناء وجود أقساط جارية: لا يمكن التحويل لباقة أقل</li>
+      </ul>
+    </div>
+    <div class="sec-heading" style="font-size:14px">⭕ العملاء القائمين</div>
+    <div class="card">
+      <div class="card-title"><i class="ti ti-device-mobile" aria-hidden="true"></i> حدود التقسيط — العملاء القائمين</div>
+      <div class="tbl-wrap">
+        <table class="tbl">
+          <tr><th>الباقة</th><th>الحد الأقصى للتقسيط</th></tr>
+          <tr><td>WE Gold 200</td><td>5,000 ج</td></tr>
+          <tr><td>WE Gold 400</td><td>10,000 ج</td></tr>
+          <tr><td>WE Gold 600</td><td>15,000 ج</td></tr>
+          <tr><td>WE Gold 800</td><td>25,000 ج</td></tr>
+          <tr><td>WE Gold 1000</td><td>25,000 ج</td></tr>
+          <tr><td>WE Gold 1500</td><td>25,000 ج</td></tr>
+        </table>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title"><i class="ti ti-list" aria-hidden="true"></i> شروط التقسيط — العملاء القائمين</div>
+      <ul class="checklist">
+        <li>مدة التقسيط: 12 شهرًا بدون فوائد من تاريخ دفع المقدم النقدي</li>
+        <li>عملاء Indigo الحاليين (من Indigo 150 فأعلى): الاستفادة بعد 24 ساعة من التحويل بشرط active 6 شهور</li>
+        <li>عملاء الإنترنت الأرضي على Super 200 فأعلى: الاستفادة بعد 24 ساعة بشرط active 12 شهرًا</li>
+        <li>يشترط عدم وجود مبالغ مستحقة</li>
+        <li>إذا أراد العميل إنهاء باقة WE Gold: يجب سداد جميع الأقساط المتبقية</li>
+        <li>يمكن التحويل لباقة أعلى أثناء وجود أقساط — لكن لن يبدأ تقسيط جديد إلا بعد انتهاء القسط الجاري</li>
+      </ul>
+    </div>
+    <div class="sec-heading" style="font-size:14px">📋 شروط مشتركة</div>
+    <div class="card">
+      <div class="card-title"><i class="ti ti-info-circle" aria-hidden="true"></i> قواعد عامة للتقسيط</div>
+      <ul class="checklist">
+        <li>حد أقصى 4 أجهزة أو اكسسوارات لكل حساب (Account) وليس لكل خط</li>
+        <li>تقسيط الـ 4 أجهزة يتم في عملية واحدة — الـ System Configuration يسمح بجهاز واحد للبطاقة الواحدة حاليًا</li>
+        <li>يشترط عدم وجود مبالغ مستحقة للاستفادة من التقسيط</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-title"><i class="ti ti-steps" aria-hidden="true"></i> خطوات الدفع المبكر (Early Payment)</div>
+      <div class="step"><div class="step-num">1</div><div class="step-text">الدخول على شاشة Subscriber في السيستم</div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-text">اختيار تبويب Resource لظهور عمليات التقسيط</div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-text">اختيار الجهاز المراد لظهور التفاصيل (Installment Info)</div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-text">الضغط على رقم الـ SN لظهور تفاصيل شهور التقسيط</div></div>
+      <div class="step"><div class="step-num">5</div><div class="step-text">الضغط على Early Payment في نهاية الصفحة</div></div>
+      <div class="step"><div class="step-num">6</div><div class="step-text">اختيار طريقة الدفع:<br>
+        <span class="badge badge-purple" style="margin-top:5px;display:inline-flex">Pay all remaining — دفع جميع الأقساط المتبقية</span><br>
+        <span class="badge badge-amber" style="margin-top:4px;display:inline-flex">Reduce number of remaining — دفع عدد شهور محدد</span>
+      </div></div>
+      <div class="step"><div class="step-num">7</div><div class="step-text">الضغط على Submit ثم استكمال خطوات الدفع</div></div>
+      <div class="alert alert-info" style="margin-top:10px"><i class="ti ti-info-circle" aria-hidden="true"></i> السيستم يحسب كل الأقساط ماعدا حالة Paid وحالة Charged (ستُحصَّل في موعد الـ Bill Cycle)</div>
+    </div>
+    <div class="card">
+      <div class="card-title"><i class="ti ti-file-text" aria-hidden="true"></i> نموذج إقرار التقسيط</div>
+      <a class="link-btn" href="https://we-core.icu/viewpdf.html?src=https%3A%2F%2Fiygwhapcpdmsasqlfelv.supabase.co%2Fstorage%2Fv1%2Fobject%2Fauthenticated%2FAll%20Form%2FMobile%2FInstallment%20plans%20for%20appliances.pdf" target="_blank" rel="noopener"><i class="ti ti-file-download" aria-hidden="true"></i> فتح نموذج إقرار التقسيط</a>
+    </div>
+
+    <div class="sec-heading" style="font-size:14px">🔍 الاستعلام عن الأقساط</div>
+    <div class="alert alert-info"><i class="ti ti-info-circle" aria-hidden="true"></i> طريقة الاستعلام عن أقساط الأجهزة لعملاء <strong>باقات WE Gold</strong> من خلال شاشة 360</div>
+
+    <div class="card">
+      <div class="card-title"><i class="ti ti-steps" aria-hidden="true"></i> خطوات الاستعلام عن الأقساط</div>
+      <div class="step"><div class="step-num">1</div><div class="step-text">الدخول على <strong>شاشة 360</strong> وفتح ملف العميل</div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-text">الضغط على تبويب <strong>Subscriber</strong> الموجود بأعلى الشاشة</div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-text">الضغط على زر <strong>Resource</strong> الموجود بأسفل جدول أرقام العميل</div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-text">الضغط على <strong>الدائرة الموجودة يسار اسم الجهاز</strong> لظهور جدول <strong>Installment Info</strong> الخاص بالأقساط</div></div>
+      <div class="step"><div class="step-num">5</div><div class="step-text">الضغط على <strong>الدائرة الموجودة يسار رقم الـ SN</strong> لظهور الجدول التفصيلي بحالة كل قسط</div></div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><i class="ti ti-layout-grid" aria-hidden="true"></i> بيانات جدول Installment Info</div>
+      <div class="tbl-wrap">
+        <table class="tbl">
+          <tr><th>الحقل</th><th>الوصف</th></tr>
+          <tr><td><strong>Total Amount</strong></td><td>إجمالي قيمة الجهاز</td></tr>
+          <tr><td><strong>Remained Amount</strong></td><td>المبلغ المتبقي من الأقساط</td></tr>
+          <tr><td><strong>Total periods</strong></td><td>إجمالي عدد الشهور</td></tr>
+          <tr><td><strong>Remained periods</strong></td><td>عدد الشهور المتبقية</td></tr>
+          <tr><td><strong>Begin Date</strong></td><td>تاريخ بداية التقسيط</td></tr>
+          <tr><td><strong>End Date</strong></td><td>تاريخ انتهاء التقسيط</td></tr>
+          <tr><td><strong>Status</strong></td><td>حالة التقسيط (Active / ...)</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><i class="ti ti-tags" aria-hidden="true"></i> حالات الأقساط في جدول Installment Detail</div>
+      <div class="tbl-wrap">
+        <table class="tbl">
+          <tr><th>الحالة</th><th>المعنى</th></tr>
+          <tr><td><span class="badge badge-green">Paid</span></td><td>قسط تم إضافته على فاتورة العميل وقام العميل بسداده</td></tr>
+          <tr><td><span class="badge badge-amber">Billed</span></td><td>قسط تم إضافته على فاتورة العميل ولم يقم العميل بسداده بعد</td></tr>
+          <tr><td><span class="badge badge-purple">Charged</span></td><td>قسط تم إضافته كـ unbilled ولم يتم إصدار فاتورة له بعد</td></tr>
+          <tr><td><span class="badge" style="background:#f0f0f0;color:#444">Normal</span></td><td>قسط لم يأتِ تاريخ تحصيله بعد — ويمكن سداده عبر Early Payment</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><i class="ti ti-cash" aria-hidden="true"></i> طرق تحصيل الأقساط حسب الحالة</div>
+
+      <div class="sec-heading">الأقساط ذات الحالة Billed</div>
+      <p style="font-size:13px;line-height:1.8;margin-bottom:8px">يتم دفعها عن طريق شاشة الـ Payment — سواء كل الأقساط لنفس الحالة أو قسط واحد / فاتورة واحدة بشكل منفصل</p>
+
+      <div class="sec-heading" style="margin-top:14px">الأقساط ذات الحالة Charged</div>
+      <div class="alert alert-warn" style="margin-bottom:8px"><i class="ti ti-alert-triangle" aria-hidden="true"></i> يتم عمل <strong>Hot Bill</strong> لتحويل قيمة القسط من unbilled إلى outstanding — ثم يتم معاملته نفس معاملة الأقساط ذات الحالة Billed</div>
+      <div class="step"><div class="step-num">1</div><div class="step-text">الذهاب إلى Sitemap ← Invoicing ← <strong>Create Hot Billing</strong></div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-text">البحث برقم الخط والضغط على Search</div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-text">الضغط على Create ثم Refresh لظهور الـ Record</div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-text">بعد تحويل القيمة لـ outstanding — المتابعة كالأقساط ذات الحالة Billed</div></div>
+
+      <div class="sec-heading" style="margin-top:14px">الأقساط ذات الحالة Normal (Early Payment)</div>
+      <p style="font-size:13px;line-height:1.8;margin-bottom:8px">أقساط مستقبلية غير مستحقة حاليًا — يمكن سدادها مبكرًا عبر زر <strong>Early Payment</strong> أسفل جدول الأقساط</p>
+      <div class="step"><div class="step-num">1</div><div class="step-text">الضغط على <strong>Early payment</strong> بأسفل جدول الأقساط — يظهر تلقائيًا إجمالي قيمة الأقساط ذات الحالة Normal</div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-text">اختيار طريقة الدفع المبكر:<br>
+        <span class="badge badge-purple" style="margin-top:5px;display:inline-flex">Pay all remaining — دفع جميع الأقساط المتبقية</span><br>
+        <span class="badge badge-amber" style="margin-top:4px;display:inline-flex">Reduce number of remaining — دفع عدد شهور محدد فقط</span>
+      </div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-text">الضغط على <strong>Submit</strong> — يتم الانتقال تلقائيًا إلى شاشة السداد</div></div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><i class="ti ti-file-invoice" aria-hidden="true"></i> شكل الفواتير للقسط ذي الحالة Billed</div>
+      <div class="sec-heading" style="margin-top:4px">النوع الأول — فاتورة بها اشتراك الباقة + القسط</div>
+      <p style="font-size:13px;line-height:1.8">فاتورة بها قيمة اشتراك الباقة الأساسية ومضاف عليها القسط الشهري — تظهر تفاصيل التقسيط في أسفل الفاتورة</p>
+      <div class="sec-heading" style="margin-top:14px">النوع الثاني — فاتورة بها القسط فقط (بدون اشتراك الباقة)</div>
+      <p style="font-size:13px;line-height:1.8">تظهر عندما تكون حالة الخط <strong>Suspend</strong> — وتم إضافة القسط على العميل بالفواتير السابقة التي لم تُسدَّد حتى تاريخ الاستعلام</p>
+      <div class="alert alert-info" style="margin-top:8px"><i class="ti ti-info-circle" aria-hidden="true"></i> يظهر بها جدول في أسفل الفاتورة لتوضيح الأقساط المستحقة إجمالًا ونوع الجهاز</div>
+    </div>
+  </div>
+
+  <!-- ═══ تنبيهات ═══ -->
+  <div id="alerts" class="section">
+    <div class="alert alert-danger"><i class="ti ti-alert-triangle" aria-hidden="true"></i> <strong>تنبيهات إلزامية — يجب الالتزام بها لتجنب المشكلات</strong></div>
+    <div class="card">
+      <div class="card-title"><i class="ti ti-alert-circle" aria-hidden="true"></i> عند دفع الفواتير</div>
+      <ul class="checklist warn">
+        <li>عند دفع فاتورة WE Gold أو Indigo — يجب التأكد من أن عملية الدفع تتم على <strong>رقم الموبايل وليس الرقم الأرضي</strong>، وذلك لتحصيل نقاط WE Bonus</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-title"><i class="ti ti-alert-circle" aria-hidden="true"></i> عند إنشاء خط جديد</div>
+      <ul class="checklist warn">
+        <li>التحقق من عدم وجود أي مستحقات سابقة على العميل قبل بيع أي خط فاتورة</li>
+        <li>التحقق بعناية من كتابة الرقم القومي بشكل صحيح أثناء الاشتراك على السيستم — وخصوصًا أثناء إنشاء نظام FMC</li>
+        <li>يجب على مشرف أو مسؤول المبيعات متابعة عملية بيع أنظمة الفاتورة بشكل مستمر لتجنب الإيقاف من فريق Activation</li>
+        <li>التأكد من إرفاق جميع مستندات التعاقد على نظام BSS قبل مغادرة العميل للفرع</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ═══ خدمات إضافية ═══ -->
+  <div id="services" class="section">
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-title"><i class="ti ti-phone-call" aria-hidden="true"></i> خدمات الاتصال الأساسية</div>
+        <div class="row"><span class="row-label">تحويل المكالمات</span><span class="row-val"><span class="badge badge-green">متاح</span></span></div>
+        <div class="row"><span class="row-label">انتظار المكالمات</span><span class="row-val">*43# / ##43#</span></div>
+        <div class="row"><span class="row-label">المؤتمر التليفوني</span><span class="row-val">حتى 5 أشخاص</span></div>
+        <div class="row"><span class="row-label">ادفعلهم (Auto Collect)</span><span class="row-val">*210# — 5 ج/شهر</span></div>
+        <div class="row"><span class="row-label">عدم الإزعاج</span><span class="row-val">*066*15# — مجاني</span></div>
+        <div class="row"><span class="row-label">WiFi Calling</span><span class="row-val"><span class="badge badge-green">مجاني</span></span></div>
+      </div>
+      <div class="card">
+        <div class="card-title"><i class="ti ti-wifi" aria-hidden="true"></i> البيانات والاستعلام</div>
+        <div class="row"><span class="row-label">تحويل ميجابايتس</span><span class="row-val">*552# — حتى 500 ميجا</span></div>
+        <div class="row"><span class="row-label">استعلام الرصيد</span><span class="row-val">*550# — مجاني</span></div>
+        <div class="row"><span class="row-label">معرفة رقمك</span><span class="row-val">#*688</span></div>
+        <div class="row"><span class="row-label">استعلام عن الباقة</span><span class="row-val">#*882</span></div>
+        <div class="row"><span class="row-label">الخدمات المشترك فيها</span><span class="row-val">*155# — مجاني</span></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title"><i class="ti ti-globe" aria-hidden="true"></i> التجوال والمكالمات الدولية</div>
+      <div class="row"><span class="row-label">باقات تجوال مجانية سنويًا</span><span class="row-val">مرتان/سنة (أسبوع لكل مرة)</span></div>
+      <div class="row"><span class="row-label">تفعيل إنترنت التجوال المجاني</span><span class="row-val">#*800 → 6 → 2 → 2</span></div>
+      <div class="row"><span class="row-label">سعر الدقيقة الدولية بعد المجانية</span><span class="row-val">8 ج/دقيقة + 1.5 ج رسوم</span></div>
+      <div class="row"><span class="row-label">سعر استقبال أثناء التجوال</span><span class="row-val">5 ج/دقيقة كحد أدنى</span></div>
+      <div class="row"><span class="row-label">دقائق دولية مجانية شهريًا</span><span class="row-val">من WE Gold 525 فأعلى</span></div>
+    </div>
+  </div>
+
+  <!-- ═══ TOD ═══ -->
+  <div id="tod" class="section">
+    <div class="alert alert-success"><i class="ti ti-check" aria-hidden="true"></i> <span class="badge-new">جديد — أكتوبر 2025</span> &nbsp;اشتراك شهري مجاني في TOD لعملاء WE Gold — اعتبارًا من 30 أكتوبر 2025</div>
+    <div class="card">
+      <div class="card-title"><i class="ti ti-video" aria-hidden="true"></i> ما هي منصة TOD؟</div>
+      <p style="font-size:13px;line-height:1.8">منصة بث رقمية مقدَّمة من مجموعة beIN الإعلامية، تتيح مشاهدة المحتوى الرياضي والترفيهي عبر الإنترنت بما في ذلك الأفلام والمسلسلات والأحداث الرياضية المباشرة، إلى جانب برامج الأطفال وإنتاجات TOD Originals الأصلية.</p>
+      <div class="sec-heading" style="margin-top:12px">فئات الاشتراك</div>
+      <div class="tbl-wrap">
+        <table class="tbl">
+          <tr><th>الفئة</th><th>طريقة المشاهدة</th><th>المحتوى</th></tr>
+          <tr><td><strong>TOD Mobile</strong></td><td>موبايل أو تابلت فقط</td><td>كل المحتوى المتاح</td></tr>
+          <tr><td><strong>TOD HD / TV</strong></td><td>موبايل / تابلت / شاشة ذكية</td><td>كل المحتوى المتاح</td></tr>
+          <tr><td><strong>TOD 4K</strong></td><td>موبايل / تابلت / شاشة ذكية</td><td>كل المحتوى + بعضه بجودة 4K</td></tr>
+        </table>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title"><i class="ti ti-layout-grid" aria-hidden="true"></i> الباقات وحدود الاشتراك</div>
+      <div class="tbl-wrap">
+        <table class="tbl">
+          <tr><th>الباقة</th><th>الباقة المتاحة</th><th>الحد الأقصى</th></tr>
+          <tr><td>WE Gold 260</td><td><span class="badge badge-purple">TOD Mobile</span></td><td>3 مرات فقط (3 شهور — يمكن أن تكون منفصلة)</td></tr>
+          <tr><td>WE Gold 525</td><td><span class="badge badge-purple">TOD Mobile</span></td><td>لا يوجد حد أقصى (مرة شهريًا)</td></tr>
+          <tr><td>WE Gold 775</td><td><span class="badge badge-purple">TOD Mobile</span></td><td>لا يوجد حد أقصى (مرة شهريًا)</td></tr>
+          <tr><td>WE Gold 1,050</td><td><span class="badge badge-amber">TOD HD</span></td><td>لا يوجد حد أقصى (مرة شهريًا)</td></tr>
+          <tr><td>WE Gold 1,300</td><td><span class="badge badge-amber">TOD HD</span></td><td>لا يوجد حد أقصى (مرة شهريًا)</td></tr>
+          <tr><td>WE Gold 2,000</td><td><span class="badge badge-amber">TOD HD</span></td><td>لا يوجد حد أقصى (مرة شهريًا)</td></tr>
+        </table>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title"><i class="ti ti-steps" aria-hidden="true"></i> طريقة الاشتراك</div>
+      <div class="step"><div class="step-num">1</div><div class="step-text">يقوم العميل بإرسال الرقم <strong>5</strong> إلى <strong>111</strong></div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-text">يستقبل العميل رسالة تحتوي على رابط التسجيل في منصة TOD</div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-text">يتم التسجيل باستخدام رقم هاتف WE Gold لتفعيل الاشتراك المجاني</div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-text">بعد التسجيل يمكن الدخول لتطبيق TOD باستخدام اسم المستخدم وكلمة السر التي تم إنشاؤها</div></div>
+    </div>
+    <div class="card">
+      <div class="card-title"><i class="ti ti-list" aria-hidden="true"></i> شروط وأحكام</div>
+      <ul class="checklist">
+        <li>يحصل العميل على الاشتراك المجاني مرة واحدة كل 30 يومًا</li>
+        <li>لا يمكن استبدال أو تغيير رابط الاشتراك الذي تم إرساله للعميل</li>
+        <li>عميل WE Gold 260 يحصل على 3 اشتراكات فقط — يمكن استخدامها في شهور منفصلة</li>
+        <li>في حال تغيير الباقة لغير مؤهَّلة → يتم إيقاف الخدمة في نهاية الشهر ولا يمكن إعادة تفعيلها</li>
+        <li>لا يمكن تغيير فئة الاشتراك الممنوح — عميل 260 لا يمكنه ترقية اشتراكه من TOD Mobile إلى TOD HD</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-title"><i class="ti ti-alert-circle" aria-hidden="true"></i> عند ظهور مشكلة في التجديد (Expired Coupon Code)</div>
+      <div class="tbl-wrap">
+        <table class="tbl">
+          <tr><th>Issue Type</th><th>Category</th><th>Type</th><th>Item</th><th>Summary</th></tr>
+          <tr><td>Problem</td><td>Consumer</td><td>Offers and Promotions</td><td>SMS Notification Issue</td><td>WE Gold - TOD Vouchers</td></tr>
+        </table>
+      </div>
+      <div style="margin-top:10px;padding:10px 14px;background:var(--color-background-secondary);border-radius:8px;font-size:12.5px">
+        <strong>Description:</strong> <em style="color:var(--color-text-secondary)">Customer sent SMS containing 5 to 111 and he received a message with expired coupon code.</em>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ شامل ═══ -->
+  <div id="shamel" class="section">
+    <div class="alert alert-success"><i class="ti ti-check" aria-hidden="true"></i> <span class="badge-new">جديد — فبراير 2025</span> &nbsp;خدمة شامل من Vezeeta لعملاء WE Gold — اعتبارًا من 8 فبراير 2025</div>
+    <div class="card">
+      <div class="card-title"><i class="ti ti-heart" aria-hidden="true"></i> ما هي خدمة شامل؟</div>
+      <p style="font-size:13px;line-height:1.8">اشتراك سنوي مجاني من Vezeeta يتيح خصمًا يصل إلى <strong>80%</strong> على جميع خدمات الرعاية الصحية، تشمل: العيادات، العمليات الجراحية، التحاليل، الأشعة، مستلزمات الصيدلية، وكشوفات الدكتور — كل ذلك عبر تطبيق Vezeeta.</p>
+      <div class="sec-heading" style="margin-top:12px">مميزات الخدمة</div>
+      <ul class="checklist">
+        <li>شبكة طبية واسعة تضم أكثر من 8,000 مقدم خدمة طبية</li>
+        <li>لا توجد قيود على عدد الزيارات أو الاستشارات</li>
+        <li>لا تحتاج إلى موافقات مسبقة — مرونة كاملة</li>
+        <li>متاح لجميع عملاء WE Gold الحاليين والجدد</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-title"><i class="ti ti-users" aria-hidden="true"></i> المستفيدون من العرض</div>
+      <div class="row"><span class="row-label">WE Gold 260 و WE Gold 525</span><span class="row-val"><span class="badge badge-purple">شامل الفردي — لشخص واحد — مجانًا لمدة عام</span></span></div>
+      <div class="row"><span class="row-label">WE Gold 775 و 1050 و 1300 و 2000</span><span class="row-val"><span class="badge badge-green">شامل العائلي — حتى 4 أفراد — مجانًا لمدة عام</span></span></div>
+    </div>
+    <div class="card">
+      <div class="card-title"><i class="ti ti-steps" aria-hidden="true"></i> طريقة الاستفادة</div>
+      <div class="step"><div class="step-num">1</div><div class="step-text">إرسال رسالة بها الرقم <strong>1</strong> إلى <strong>111</strong></div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-text">يستقبل العميل رسالة بها رابط الاشتراك</div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-text">يدخل العميل على الرابط ويسجّل حسابه باستخدام رقم موبايل WE Gold</div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-text">يحمّل تطبيق Vezeeta ويدخل على الحساب لتفعيل الاشتراك</div></div>
+      <div class="alert alert-info" style="margin-top:8px"><i class="ti ti-info-circle" aria-hidden="true"></i> لا يوجد كارت اشتراك — جميع المعاملات تتم من خلال حساب العميل على تطبيق Vezeeta</div>
+    </div>
+    <div class="card">
+      <div class="card-title"><i class="ti ti-alert-circle" aria-hidden="true"></i> ملاحظات مهمة</div>
+      <ul class="checklist warn">
+        <li>في حال تغيير تعريفة الاشتراك من WE Gold لأي نظام آخر → سيتم إلغاء اشتراك شامل تلقائيًا</li>
+        <li>للاستفسار عن الشبكة الطبية أو الدعم الفني: عبر تطبيق Vezeeta أو الاتصال بـ 16676</li>
+      </ul>
+    </div>
+</div>
+
+<script>
+function show(id, btn) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+}
+</script>
+  <script>
+  const $=id=>document.getElementById(id);
+  function openAboutModal(){$('aboutModal').classList.add('active');}
+  function closeAboutModal(){$('aboutModal').classList.remove('active');}
+  function showComingSoonModal(){$('comingSoonModal').classList.add('active');}
+  function closeModal(){$('comingSoonModal').classList.remove('active');}
+
+  $('aboutModal').addEventListener('click',function(e){if(e.target===this)closeAboutModal();});
+  $('comingSoonModal').addEventListener('click',function(e){if(e.target===this)closeModal();});
+
+  window.addEventListener('load',function(){
+    if(typeof ActiveUsersWidget!=='undefined')ActiveUsersWidget.init({position:'corner'});
+  });
+</script>
+  <script src="../script/active-users-widget.js"></script>
+
+
+
+<footer style="text-align: center; padding: 20px; border-top: 1px solid #ddd;">WE Core Team 2026</footer>
+</body>
+</html>

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <script src="assets/js/auth.js?v=15.0.1"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>WE Core | جاري التحميل...</title>
+  <link rel="shortcut icon" href="img/we-core.png" type="image/x-icon">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="assets/css/viewpdf.css">
+</head>
+<body>
+
+  <div class="toolbar">
+    <!-- Brand / Back -->
+    <a class="brand" href="pdf.html" title="رجوع إلى القائمة">
+      <div class="brand-logo"><i class="fas fa-layer-group"></i></div>
+      <span class="brand-text">WE Core</span>
+    </a>
+
+    <div class="divider"></div>
+
+    <!-- Document Title -->
+    <div class="title-wrap">
+      <div class="file-icon"><i class="fas fa-file-pdf"></i></div>
+      <div class="title-meta">
+        <div class="doc-label">ملف PDF</div>
+        <div class="doc-title" id="docTitle">جاري التحميل...</div>
+      </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="actions">
+      <button class="tb-btn" onclick="printPDF()" title="طباعة (Ctrl+P)">
+        <i class="fas fa-print"></i>
+        <span>طباعة</span>
+        <span class="kbd"></span>
+      </button>
+      <button class="tb-btn primary" onclick="downloadPDF()">
+        <i class="fas fa-download"></i>
+        <span>تحميل</span>
+      </button>
+    </div>
+  </div>
+
+  <div id="viewerContainer">
+    <div id="loadingScreen" id="loadingScreen">
+      <div class="loader-icon"><i class="fas fa-file-pdf"></i></div>
+      <div class="loader-bar"><div class="loader-bar-fill"></div></div>
+      <p class="loader-text">جاري تحميل النموذج...</p>
+    </div>
+    <iframe id="pdfFrame" title="عارض PDF"></iframe>
+  </div>
+
+  <script src="assets/js/viewpdf.js"></script>
+
+
+
+<footer style="text-align: center; padding: 20px; border-top: 1px solid #ddd;">WE Core Team 2026</footer>
+<script src="assets/js/active-users-widget.js"></script>
+</body>
+</html>

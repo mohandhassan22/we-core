@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+<script src="assets/js/auth.js?v=12.0.1"></script>
+
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Remedy Guide – Telecom Egypt</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="assets/css/remedy.css">
+  <script src="assets/js/active-users-widget.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+  <body>
+      <header class="header">
+<a href="javascript:history.back()" class="back-btn" style="position: absolute; left: 20px; top: 50%; transform: translateY(-50%); color: white; text-decoration: none; font-size: 20px; z-index: 1000;"><i class="fas fa-arrow-left"></i></a>
+
+        <nav class="navbar">
+            <a href="#" class="logo-wrapper">
+                <img src="img/we-core.png" alt="WE-Core" class="logo">
+      <div class="hdr">
+        <div class="brand">
+          <div class="brand-ico">R</div>
+          <div>
+            <div class="brand-name">REMEDY GUIDE</div>
+            <div class="brand-sub"></div>
+          </div>
+        </div>
+      </div>
+               <div class="nav-links">
+                <a href="index.html">
+                    <i class="fa-solid fa-house-user"></i>
+                    الرئيسية
+                </a>
+            </div>
+        </nav>
+    </header>
+
+
+    <main>
+      <div class="hero">
+        <h1>دليل مسارات <span>Remedy</span></h1>
+        <p>تصفح وابحث في كافة المسارات المتاحة على السيستم</p>
+      </div>
+
+      <div class="search-area">
+        <span class="search-ico">🔍</span>
+        <input
+          id="srch"
+          type="text"
+          placeholder="ابحث باسم المشكلة، المسار، أو الوصف..."
+          oninput="doSearch()"
+        />
+      </div>
+
+      <div class="grid" id="grid"></div>
+      <div id="empty">لم يتم العثور على نتائج تطابق بحثك</div>
+    </main>
+
+    <div class="overlay" id="overlay" onclick="closePanel()">
+      <div class="panel" onclick="event.stopPropagation()">
+        <div class="panel-hdr">
+          <div class="panel-title" id="p-title"></div>
+          <div class="panel-path" id="p-path"></div>
+          <button class="close-btn" onclick="closePanel()">✕</button>
+        </div>
+        <div class="panel-body">
+          <div class="info-sec">
+            <span class="info-label">وصف المشكلة (Template)</span>
+            <div class="info-content" id="p-desc"></div>
+          </div>
+          <div class="info-sec">
+            <span class="info-label">الإجراء المطلوب (Action)</span>
+            <div class="info-content action-box" id="p-action"></div>
+          </div>
+          <div class="info-sec" id="sla-sec">
+            <span class="info-label">SLA</span>
+            <div class="info-content" id="p-sla"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="assets/js/remedy.js"></script>
+  
+<script src="assets/js/remedy_1.js"></script>
+
+
+
+<footer style="text-align: center; padding: 20px; border-top: 1px solid #ddd;">WE Core Team 2026</footer>
+</body>
+</html>

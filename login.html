@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WE-Core | تسجيل الدخول</title>
+    <link rel="shortcut icon" href="img/we-core.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/login.css">
+</head>
+<body>
+
+<div class="login-modal">
+    <img src="img/we-core.png" class="modal-logo" alt="WE-Core">
+    <h3>WE-Core</h3>
+    <p class="sub">سجّل دخولك للمتابعة</p>
+    <div class="field">
+        <i class="fa-solid fa-user"></i>
+        <input id="uname" type="text" placeholder="اسم المستخدم" autocomplete="off">
+    </div>
+    <div class="field">
+        <i class="fa-solid fa-lock"></i>
+        <input id="upass" type="password" placeholder="كلمة المرور">
+    </div>
+    <button class="login-btn" id="loginBtn" onclick="doLogin()">
+        تسجيل الدخول
+    </button>
+    <div class="err" id="errMsg"></div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="assets/js/login.js"></script>
+</body>
+</html>
