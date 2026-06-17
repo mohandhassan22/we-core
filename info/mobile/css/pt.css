@@ -1,0 +1,150 @@
+body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f3ff;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+       
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+       
+        header {
+            background-color: #6a0dad;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            border-radius: 10px 10px 0 0;
+            margin-bottom: 20px;
+        }
+       
+        h1, h2 {
+            margin: 0;
+        }
+       
+        h1 {
+            font-size: 28px;
+        }
+       
+        h2 {
+            color: #6a0dad;
+            text-align: center;
+            margin: 30px 0 20px;
+        }
+       
+        .banner {
+            width: 100%;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+       
+        .pricing-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 30px;
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(106, 13, 173, 0.1);
+        }
+       
+        .pricing-table th, .pricing-table td {
+            padding: 15px;
+            text-align: center;
+            border: 1px solid #e0d0f0;
+        }
+       
+        .pricing-table th {
+            background-color: #6a0dad;
+            color: white;
+            font-weight: bold;
+        }
+       
+        .pricing-table tr:nth-child(even) {
+            background-color: #f5e9ff;
+        }
+       
+        .pricing-table tr:hover {
+            background-color: #ebd6ff;
+        }
+       
+        .highlight {
+            font-weight: bold;
+            color: #6a0dad;
+        }
+       
+        .note {
+            background-color: #fff;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border-right: 4px solid #6a0dad;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            text-align: center;
+        }
+       
+        .services {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            margin: 30px 0;
+        }
+       
+        .service-card {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            width: 200px;
+            text-align: center;
+            margin: 10px;
+            box-shadow: 0 4px 8px rgba(106, 13, 173, 0.1);
+            transition: transform 0.3s;
+        }
+       
+        .service-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(106, 13, 173, 0.15);
+        }
+       
+        .service-icon {
+            font-size: 40px;
+            color: #6a0dad;
+            margin-bottom: 15px;
+        }
+       
+        .service-title {
+            font-weight: bold;
+            color: #6a0dad;
+            font-size: 18px;
+        }
+       
+        footer {
+            text-align: center;
+            padding: 20px;
+            background-color: #6a0dad;
+            color: white;
+            border-radius: 0 0 10px 10px;
+            margin-top: 30px;
+        }
+        
+        .info-box {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border-left: 4px solid #6a0dad;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        
+        .faq-item {
+            margin-bottom: 15px;
+        }
+        
+        .faq-question {
+            font-weight: bold;
+            color: #6a0dad;
+        }
