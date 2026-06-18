@@ -1,25 +1,41 @@
 // ── Supabase Config ──
 const SB_URL = 'https://iygwhapcpdmsasqlfelv.supabase.co';
 const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml5Z3doYXBjcGRtc2FzcWxmZWx2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzEzNDk5MDQsImV4cCI6MjA4NjkyNTkwNH0.jqU1fEc9kBkXcCfazH6aTnS2XWWzPv0bbixHZgjtrnQ';
+const BUCKET  = 'All Form';
+const FOLDERS = ['Mobile', 'Fixed', 'Adsl', 'We-Pay'];
 
-// ── Fetch forms from Supabase ──
+// ── List files inside a folder ──
+async function listFolder(folder) {
+    const res = await fetch(`${SB_URL}/storage/v1/object/list/${encodeURIComponent(BUCKET)}`, {
+        method: 'POST',
+        headers: {
+            'apikey': SB_KEY,
+            'Authorization': `Bearer ${SB_KEY}`,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ prefix: folder + '/', limit: 200, offset: 0 })
+    });
+    if (!res.ok) throw new Error(`Folder ${folder}: HTTP ${res.status}`);
+    const files = await res.json();
+    // map each file to the renderForms-compatible shape
+    return files
+        .filter(f => f.name && f.name !== '.emptyFolderPlaceholder')
+        .map(f => ({
+            category: folder,
+            title: f.name.replace(/\.[^.]+$/, ''),          // strip extension
+            description: '',
+            link: `${SB_URL}/storage/v1/object/public/${encodeURIComponent(BUCKET)}/${encodeURIComponent(folder)}/${encodeURIComponent(f.name)}`
+        }));
+}
+
+// ── Load all folders in parallel ──
 async function loadForms() {
     try {
-        const res = await fetch(`${SB_URL}/rest/v1/pdf_forms?select=*&order=id.asc`, {
-            headers: {
-                'apikey': SB_KEY,
-                'Authorization': `Bearer ${SB_KEY}`,
-                'Content-Type': 'application/json'
-            }
-        });
-
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-
-        const data = await res.json();
+        const results = await Promise.all(FOLDERS.map(listFolder));
+        const data = results.flat();
         window.renderForms(data);
-
     } catch (err) {
-        console.error('Supabase fetch error:', err);
+        console.error('Storage fetch error:', err);
         window.showFormsError();
     }
 }
