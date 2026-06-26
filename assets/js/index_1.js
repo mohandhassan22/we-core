@@ -45,7 +45,7 @@
 
       // استدعاء REST مباشر مع Authorization header عشان يتجاوز RLS
       const res = await fetch(
-        `${SB_URL}/rest/v1/profiles?select=full_name,title&id=eq.${user.id}&limit=1`,
+        `${SB_URL}/rest/v1/profiles?select=full_name,role&id=eq.${user.id}&limit=1`,
         {
           headers: {
             'apikey':        SB_KEY,
