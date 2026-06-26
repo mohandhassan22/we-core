@@ -412,3 +412,7 @@ body.dark .act-card-hd .act-ico.green{background:#064e3b;color:#6ee7b7}
   td:nth-child(3){display:none}
   th:nth-child(3){display:none}
 }
+
+/* ── Loading spinner ── */
+@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+.ti-loader { display: inline-block; animation: spin 1s linear infinite; }
