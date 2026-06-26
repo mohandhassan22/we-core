@@ -67,7 +67,7 @@
       $('welcomeName').textContent     = profile.full_name || user.email || 'زميلنا';
       $('welcomeJobTitle').textContent = profile.role || '—';
 
-      if (!profile.role) document.querySelector('.welcome-role').style.display = 'none';
+      if (!profile.role) document.querySelector('.welcome-titel').style.display = 'none';
 
       $('welcomeBanner').style.display = 'block';
 
