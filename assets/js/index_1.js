@@ -65,9 +65,9 @@
 
       // اعرض الاسم والمسمى الوظيفي
       $('welcomeName').textContent     = profile.full_name || user.email || 'زميلنا';
-      $('welcomeJobTitle').textContent = profile.title || '—';
+      $('welcomeJobTitle').textContent = profile.role || '—';
 
-      if (!profile.title) document.querySelector('.welcome-title').style.display = 'none';
+      if (!profile.role) document.querySelector('.welcome-role').style.display = 'none';
 
       $('welcomeBanner').style.display = 'block';
 
