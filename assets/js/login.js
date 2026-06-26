@@ -39,9 +39,19 @@
             // 3. تخزين الـ Cookie للـ Edge Functions (اختياري)
             document.cookie = `sb-access-token=${data.session.access_token}; path=/; max-age=86400; SameSite=Lax`;
             
-            // 4. استخراج الرتبة (Role) مباشرة من بيانات الـ Session لتوفير طلب إضافي
+            // 4. جلب الرتبة (Role) من جدول profiles للتأكد من الصلاحيات
             const user = data.user;
-            const userRole = user?.user_metadata?.role || user?.app_metadata?.role;
+            const { data: profileData, error: profileErr } = await sb
+                .from('profiles')
+                .select('role')
+                .eq('id', user.id)
+                .single();
+
+            if (profileErr) {
+                console.warn('Error fetching profile role:', profileErr);
+            }
+
+            const userRole = profileData?.role || user?.user_metadata?.role || user?.app_metadata?.role;
 
             // 5. التوجيه بناءً على الرتبة
             if (userRole === 'admin') {
