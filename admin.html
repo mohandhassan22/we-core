@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WE-Core | لوحة التحكم الإدارية</title>
+  <link rel="shortcut icon" href="img/we-core.png">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/admin.css">
+</head>
+<body>
+  <div class="admin-container">
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <img src="img/we-core.png" alt="WE-Core Logo" class="logo">
+        <h2>WE-Core</h2>
+      </div>
+      <nav class="sidebar-nav">
+        <button class="nav-btn active" data-section="users">
+          <i class="fas fa-users"></i>
+          <span>إدارة المستخدمين</span>
+        </button>
+        <button class="nav-btn" data-section="create">
+          <i class="fas fa-user-plus"></i>
+          <span>إنشاء مستخدم جديد</span>
+        </button>
+        <button class="nav-btn" data-section="actions">
+          <i class="fas fa-envelope"></i>
+          <span>إجراءات الحساب</span>
+        </button>
+        <button class="nav-btn" data-section="settings">
+          <i class="fas fa-cog"></i>
+          <span>الإعدادات</span>
+        </button>
+      </nav>
+      <div class="sidebar-footer">
+        <button class="logout-btn" id="logoutBtn">
+          <i class="fas fa-sign-out-alt"></i>
+          <span>تسجيل الخروج</span>
+        </button>
+      </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Header -->
+      <header class="header">
+        <h1 id="pageTitle">إدارة المستخدمين</h1>
+        <div class="header-right">
+          <span class="user-info" id="userInfo">المسؤول</span>
+          <button class="menu-toggle" id="menuToggle">
+            <i class="fas fa-bars"></i>
+          </button>
+        </div>
+      </header>
+
+      <!-- Content Sections -->
+      <div class="content">
+        <!-- Users Management Section -->
+        <section id="users-section" class="section active">
+          <div class="section-header">
+            <h2>قائمة المستخدمين</h2>
+            <div class="search-box">
+              <i class="fas fa-search"></i>
+              <input type="text" id="userSearch" placeholder="ابحث عن مستخدم...">
+            </div>
+          </div>
+          
+          <div class="users-table-container">
+            <table class="users-table">
+              <thead>
+                <tr>
+                  <th>البريد الإلكتروني</th>
+                  <th>اسم المستخدم</th>
+                  <th>الدور</th>
+                  <th>تاريخ الإنشاء</th>
+                  <th>الإجراءات</th>
+                </tr>
+              </thead>
+              <tbody id="usersTableBody">
+                <tr class="loading">
+                  <td colspan="5">
+                    <i class="fas fa-spinner fa-spin"></i> جاري التحميل...
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- Create User Section -->
+        <section id="create-section" class="section">
+          <div class="section-header">
+            <h2>إنشاء مستخدم جديد</h2>
+          </div>
+          
+          <form id="createUserForm" class="form">
+            <div class="form-group">
+              <label for="newEmail">البريد الإلكتروني</label>
+              <input type="email" id="newEmail" placeholder="example@domain.com" required>
+            </div>
+
+            <div class="form-group">
+              <label for="newUsername">اسم المستخدم</label>
+              <input type="text" id="newUsername" placeholder="اسم المستخدم" required>
+            </div>
+
+            <div class="form-group">
+              <label for="newPassword">كلمة المرور</label>
+              <input type="password" id="newPassword" placeholder="كلمة المرور (6 أحرف على الأقل)" required minlength="6">
+            </div>
+
+            <div class="form-group">
+              <label for="newRole">الدور</label>
+              <select id="newRole" required>
+                <option value="user">مستخدم عادي</option>
+                <option value="admin">مسؤول</option>
+              </select>
+            </div>
+
+            <button type="submit" class="btn btn-primary">
+              <i class="fas fa-plus"></i> إنشاء المستخدم
+            </button>
+            <div class="form-message" id="createMessage"></div>
+          </form>
+        </section>
+
+        <!-- Account Actions Section -->
+        <section id="actions-section" class="section">
+          <div class="section-header">
+            <h2>إجراءات الحساب</h2>
+            <p class="section-desc">إرسال طلبات إعادة تعيين كلمة المرور أو روابط السحر للمستخدمين</p>
+          </div>
+
+          <div class="actions-container">
+            <!-- Password Reset -->
+            <div class="action-card">
+              <div class="card-header">
+                <h3><i class="fas fa-key"></i> إعادة تعيين كلمة المرور</h3>
+              </div>
+              <form id="resetPasswordForm" class="action-form">
+                <div class="form-group">
+                  <label for="resetEmail">البريد الإلكتروني</label>
+                  <input type="email" id="resetEmail" placeholder="أدخل البريد الإلكتروني للمستخدم" required>
+                </div>
+                <button type="submit" class="btn btn-warning">
+                  <i class="fas fa-envelope"></i> إرسال رابط إعادة التعيين
+                </button>
+                <div class="form-message" id="resetMessage"></div>
+              </form>
+            </div>
+
+            <!-- Magic Link -->
+            <div class="action-card">
+              <div class="card-header">
+                <h3><i class="fas fa-magic"></i> رابط السحر (Magic Link)</h3>
+              </div>
+              <form id="magicLinkForm" class="action-form">
+                <div class="form-group">
+                  <label for="magicEmail">البريد الإلكتروني</label>
+                  <input type="email" id="magicEmail" placeholder="أدخل البريد الإلكتروني للمستخدم" required>
+                </div>
+                <p class="action-desc">يسمح للمستخدم بتسجيل الدخول بدون كلمة مرور</p>
+                <button type="submit" class="btn btn-info">
+                  <i class="fas fa-link"></i> إرسال رابط السحر
+                </button>
+                <div class="form-message" id="magicMessage"></div>
+              </form>
+            </div>
+
+            <!-- OTP -->
+            <div class="action-card">
+              <div class="card-header">
+                <h3><i class="fas fa-mobile-alt"></i> رمز التحقق (OTP)</h3>
+              </div>
+              <form id="otpForm" class="action-form">
+                <div class="form-group">
+                  <label for="otpEmail">البريد الإلكتروني</label>
+                  <input type="email" id="otpEmail" placeholder="أدخل البريد الإلكتروني للمستخدم" required>
+                </div>
+                <p class="action-desc">إرسال رمز تحقق لمرة واحدة</p>
+                <button type="submit" class="btn btn-success">
+                  <i class="fas fa-sms"></i> إرسال OTP
+                </button>
+                <div class="form-message" id="otpMessage"></div>
+              </form>
+            </div>
+          </div>
+        </section>
+
+        <!-- Settings Section -->
+        <section id="settings-section" class="section">
+          <div class="section-header">
+            <h2>الإعدادات</h2>
+          </div>
+
+          <div class="settings-container">
+            <div class="setting-item">
+              <h3>معلومات الحساب</h3>
+              <div class="setting-content">
+                <p><strong>البريد الإلكتروني:</strong> <span id="adminEmail">-</span></p>
+                <p><strong>الدور:</strong> <span id="adminRole">-</span></p>
+                <p><strong>معرّف المستخدم:</strong> <span id="adminId" class="code">-</span></p>
+              </div>
+            </div>
+
+            <div class="setting-item">
+            <h3>إعدادات النظام</h3>
+              <div class="setting-content">
+                <label class="checkbox-label">
+                  <input type="checkbox" id="darkMode">
+                  <span>الوضع الليلي</span>
+                </label>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <!-- Modals -->
+  <!-- Delete Confirmation Modal -->
+  <div id="deleteModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>تأكيد الحذف</h2>
+        <button class="close-btn" id="closeDeleteModal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p>هل أنت متأكد من رغبتك في حذف هذا المستخدم؟</p>
+        <p class="warning"><i class="fas fa-exclamation-triangle"></i> لا يمكن التراجع عن هذا الإجراء</p>
+        <p id="deleteUserInfo" class="user-info-text"></p>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" id="cancelDeleteBtn">إلغاء</button>
+        <button class="btn btn-danger" id="confirmDeleteBtn">حذف</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Success Modal -->
+  <div id="successModal" class="modal">
+    <div class="modal-content modal-sm">
+      <div class="modal-body text-center">
+        <i class="fas fa-check-circle success-icon"></i>
+        <h2 id="successTitle">تم بنجاح!</h2>
+        <p id="successMessage"></p>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" id="closeSuccessBtn">حسناً</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Error Modal -->
+  <div id="errorModal" class="modal">
+    <div class="modal-content modal-sm">
+      <div class="modal-body text-center">
+        <i class="fas fa-exclamation-circle error-icon"></i>
+        <h2>خطأ</h2>
+        <p id="errorMessage"></p>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" id="closeErrorBtn">حسناً</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="assets/js/admin.js"></script>
+</body>
+</html>
