@@ -12,37 +12,43 @@ const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY, {
 
 // ─── Global Variables ───
 let currentUser = null;
-let currentUserToken = null;
 let deleteTargetUserId = null;
+const sections = { users: 'إدارة المستخدمين', create: 'إنشاء مستخدم جديد', actions: 'إجراءات الحساب', settings: 'الإعدادات' };
 
 // ─── Utility Functions ───
 const $ = (id) => document.getElementById(id);
+
 const showSection = (sectionName) => {
   document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-  $(`${sectionName}-section`).classList.add('active');
-  $('pageTitle').textContent = document.querySelector(`[data-section="${sectionName}"] span`).textContent;
+  const targetSection = $(`${sectionName}-section`);
+  if (targetSection) targetSection.classList.add('active');
+  
+  const pageTitle = $('pageTitle');
+  if (pageTitle) pageTitle.textContent = sections[sectionName] || sectionName;
 };
 
 const showModal = (modalId) => {
-  $(modalId).classList.add('show');
+  const modal = $(modalId);
+  if (modal) modal.classList.add('show');
 };
 
 const hideModal = (modalId) => {
-  $(modalId).classList.remove('show');
+  const modal = $(modalId);
+  if (modal) modal.classList.remove('show');
 };
 
 const showMessage = (elementId, message, type = 'success') => {
   const element = $(elementId);
+  if (!element) return;
   element.textContent = message;
   element.className = `form-message show ${type}`;
-  setTimeout(() => {
-    element.classList.remove('show');
-  }, 5000);
+  setTimeout(() => { element.classList.remove('show'); }, 5000);
 };
 
 const showSuccessModal = (title, message) => {
   $('successTitle').textContent = title;
-  $('successMessage').textContent = message;
+  const msgEl = $('successMessage') || $('successMsg');
+  if (msgEl) msgEl.textContent = message;
   showModal('successModal');
 };
 
@@ -67,7 +73,6 @@ async function callEdgeFunction(action, body = {}) {
     });
 
     const data = await response.json();
-
     if (!response.ok) {
       throw new Error(data.error || 'حدث خطأ في الطلب');
     }
@@ -99,14 +104,15 @@ async function checkAuth() {
 
     currentUser = user;
     
-    // جلب الرتبة من جدول profiles للتأكد
-    const { data: profile, error: profileErr } = await sb
+    // جلب الرتبة من جدول profiles
+    const { data: profile } = await sb
       .from('profiles')
       .select('role')
       .eq('id', user.id)
       .single();
 
-    const role = profile?.role || user.user_metadata?.role || user.app_metadata?.role;
+    // الأمان: نعتمد على الـ profile أو الـ app_metadata الصادرة من السيرفر فقط وممنوع اعتماد user_metadata
+    const role = profile?.role || user.app_metadata?.role;
     
     if (role !== 'admin') {
       showErrorModal('ليس لديك صلاحيات إدارية');
@@ -116,7 +122,7 @@ async function checkAuth() {
 
     $('userInfo').textContent = user.user_metadata?.username || user.email;
     $('adminEmail').textContent = user.email;
-    $('adminRole').textContent = role === 'admin' ? 'مسؤول' : 'مستخدم';
+    $('adminRole').textContent = 'مسؤول';
     $('adminId').textContent = user.id.substring(0, 12) + '...';
 
     loadUsers();
@@ -138,13 +144,15 @@ async function loadUsers() {
 
 function displayUsers(users) {
   const tbody = $('usersTableBody');
+  if (!tbody) return;
+  
   if (users.length === 0) {
-    tbody.innerHTML = '<tr><td colspan="5" class="loading">لا توجد مستخدمين</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="5" class="loading">لا يوجد مستخدمين</td></tr>';
     return;
   }
 
   tbody.innerHTML = users.map(user => {
-    const role = user.user_metadata?.role || user.app_metadata?.role || 'user';
+    const role = user.app_metadata?.role || user.user_metadata?.role || 'user';
     const createdDate = new Date(user.created_at).toLocaleDateString('ar-EG');
     const username = user.user_metadata?.username || '-';
 
@@ -175,14 +183,6 @@ function displayUsers(users) {
   }).join('');
 }
 
-function filterUsers(query) {
-  const rows = document.querySelectorAll('#usersTableBody tr');
-  rows.forEach(row => {
-    const text = row.textContent.toLowerCase();
-    row.style.display = text.includes(query.toLowerCase()) ? '' : 'none';
-  });
-}
-
 // ─── Create User ───
 $('createUserForm').addEventListener('submit', async (e) => {
   e.preventDefault();
@@ -198,13 +198,7 @@ $('createUserForm').addEventListener('submit', async (e) => {
   btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري الإنشاء...';
 
   try {
-    await callEdgeFunction('create_user', {
-      email,
-      username,
-      password,
-      role
-    });
-
+    await callEdgeFunction('create_user', { email, username, password, role });
     showSuccessModal('تم بنجاح!', `تم إنشاء المستخدم ${username} بنجاح`);
     $('createUserForm').reset();
     loadUsers();
@@ -232,10 +226,7 @@ $('confirmDeleteBtn').addEventListener('click', async () => {
   btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري الحذف...';
 
   try {
-    await callEdgeFunction('delete_user', {
-      userId: deleteTargetUserId
-    });
-
+    await callEdgeFunction('delete_user', { userId: deleteTargetUserId });
     hideModal('deleteModal');
     showSuccessModal('تم بنجاح!', 'تم حذف المستخدم بنجاح');
     loadUsers();
@@ -251,157 +242,129 @@ $('confirmDeleteBtn').addEventListener('click', async () => {
 // ─── Account Actions ───
 async function sendPasswordReset(email) {
   try {
-    await callEdgeFunction('send_password_reset', {
-      email: email
-    });
+    await callEdgeFunction('send_password_reset', { email });
     showSuccessModal('تم الإرسال!', `تم إرسال رابط إعادة تعيين كلمة المرور إلى ${email}`);
-  } catch (error) {
-    showErrorModal(error.message);
-  }
+  } catch (error) { showErrorModal(error.message); }
 }
 
 async function sendMagicLink(email) {
   try {
-    await callEdgeFunction('send_magic_link', {
-      email: email
-    });
+    await callEdgeFunction('send_magic_link', { email });
     showSuccessModal('تم الإرسال!', `تم إرسال رابط السحر إلى ${email}`);
-  } catch (error) {
-    showErrorModal(error.message);
-  }
+  } catch (error) { showErrorModal(error.message); }
 }
 
 async function sendOTP(email) {
   try {
-    await callEdgeFunction('send_otp', {
-      email: email
-    });
+    await callEdgeFunction('send_otp', { email });
     showSuccessModal('تم الإرسال!', `تم إرسال رمز التحقق إلى ${email}`);
-  } catch (error) {
-    showErrorModal(error.message);
-  }
+  } catch (error) { showErrorModal(error.message); }
 }
 
-// ─── Form Handlers ───
-$('resetPasswordForm').addEventListener('submit', async (e) => {
-  e.preventDefault();
-  const email = $('resetEmail').value.trim();
-  const btn = e.target.querySelector('button[type="submit"]');
-  const originalText = btn.innerHTML;
-  btn.disabled = true;
-  btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري الإرسال...';
+// ─── Action Forms Handlers ───
+const handleFormAction = (formId, msgId, actionFn) => {
+  const form = $(formId);
+  if (!form) return;
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const email = form.querySelector('input[type="email"]').value.trim();
+    const btn = e.target.querySelector('button[type="submit"]');
+    const originalText = btn.innerHTML;
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري الإرسال...';
 
-  try {
-    await sendPasswordReset(email);
-    $('resetPasswordForm').reset();
-    showMessage('resetMessage', 'تم إرسال الرابط بنجاح', 'success');
-  } catch (error) {
-    showMessage('resetMessage', error.message, 'error');
-  } finally {
-    btn.disabled = false;
-    btn.innerHTML = originalText;
-  }
-});
-
-$('magicLinkForm').addEventListener('submit', async (e) => {
-  e.preventDefault();
-  const email = $('magicEmail').value.trim();
-  const btn = e.target.querySelector('button[type="submit"]');
-  const originalText = btn.innerHTML;
-  btn.disabled = true;
-  btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري الإرسال...';
-
-  try {
-    await sendMagicLink(email);
-    $('magicLinkForm').reset();
-    showMessage('magicMessage', 'تم إرسال الرابط بنجاح', 'success');
-  } catch (error) {
-    showMessage('magicMessage', error.message, 'error');
-  } finally {
-    btn.disabled = false;
-    btn.innerHTML = originalText;
-  }
-});
-
-$('otpForm').addEventListener('submit', async (e) => {
-  e.preventDefault();
-  const email = $('otpEmail').value.trim();
-  const btn = e.target.querySelector('button[type="submit"]');
-  const originalText = btn.innerHTML;
-  btn.disabled = true;
-  btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري الإرسال...';
-
-  try {
-    await sendOTP(email);
-    $('otpForm').reset();
-    showMessage('otpMessage', 'تم إرسال الرمز بنجاح', 'success');
-  } catch (error) {
-    showMessage('otpMessage', error.message, 'error');
-  } finally {
-    btn.disabled = false;
-    btn.innerHTML = originalText;
-  }
-});
-
-// ─── Navigation ───
-document.querySelectorAll('.nav-btn').forEach(btn => {
-  btn.addEventListener('click', () => {
-    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    const section = btn.getAttribute('data-section');
-    showSection(section);
-    if (window.innerWidth <= 768) {
-      $('sidebar').classList.remove('open');
+    try {
+      await actionFn(email);
+      form.reset();
+      showMessage(msgId, 'تم إرسال الرابط/الرمز بنجاح', 'success');
+    } catch (error) {
+      showMessage(msgId, error.message, 'error');
+    } finally {
+      btn.disabled = false;
+      btn.innerHTML = originalText;
     }
+  });
+};
+
+handleFormAction('resetPasswordForm', 'resetMessage', sendPasswordReset);
+handleFormAction('magicLinkForm', 'magicMessage', sendMagicLink);
+handleFormAction('otpForm', 'otpMessage', sendOTP);
+
+// ─── Navigation & Sidebar ───
+const closeSidebar = () => {
+  if ($('sidebar')) $('sidebar').classList.remove('open');
+  if ($('sidebarOverlay')) $('sidebarOverlay').classList.remove('show');
+};
+
+document.querySelectorAll('.nav-btn, .nav-item').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.nav-btn, .nav-item').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const section = btn.getAttribute('data-section') || btn.dataset.section;
+    showSection(section);
+    closeSidebar();
   });
 });
 
+const menuBtn = $('menuToggle') || $('menuBtn');
+if (menuBtn) {
+  menuBtn.addEventListener('click', () => {
+    if ($('sidebar')) $('sidebar').classList.toggle('open');
+    if ($('sidebarOverlay')) $('sidebarOverlay').classList.toggle('show');
+  });
+}
+if ($('sidebarOverlay')) $('sidebarOverlay').addEventListener('click', closeSidebar);
+
 // ─── Search ───
-$('userSearch').addEventListener('input', (e) => {
-  filterUsers(e.target.value);
-});
+const searchInput = $('userSearch');
+if (searchInput) {
+  searchInput.addEventListener('input', (e) => {
+    const q = e.target.value.toLowerCase();
+    document.querySelectorAll('#usersTableBody tr').forEach(r => {
+      r.style.display = r.textContent.toLowerCase().includes(q) ? '' : 'none';
+    });
+  });
+}
 
 // ─── Logout ───
-$('logoutBtn').addEventListener('click', async () => {
-  await sb.auth.signOut();
-  window.location.href = 'login.html';
-});
+if ($('logoutBtn')) {
+  $('logoutBtn').addEventListener('click', async () => {
+    await sb.auth.signOut();
+    window.location.href = 'login.html';
+  });
+}
 
-// ─── Modal Controls ───
-$('closeDeleteModal').addEventListener('click', () => hideModal('deleteModal'));
-$('cancelDeleteBtn').addEventListener('click', () => hideModal('deleteModal'));
-$('closeSuccessBtn').addEventListener('click', () => hideModal('successModal'));
-$('closeErrorBtn').addEventListener('click', () => hideModal('errorModal'));
+// ─── Modal Close Triggers ───
+['closeDeleteModal', 'cancelDeleteBtn'].forEach(id => { if ($(id)) $(id).addEventListener('click', () => hideModal('deleteModal')); });
+if ($('closeSuccessBtn')) $('closeSuccessBtn').addEventListener('click', () => hideModal('successModal'));
+if ($('closeErrorBtn')) $('closeErrorBtn').addEventListener('click', () => hideModal('errorModal'));
 
-// ─── Mobile Menu Toggle ───
-$('menuToggle').addEventListener('click', () => {
-  const sidebar = document.querySelector('.sidebar');
-  sidebar.classList.toggle('open');
+document.querySelectorAll('.modal, .modal-backdrop').forEach(m => {
+  m.addEventListener('click', (e) => { if (e.target === m) m.classList.remove('show'); });
 });
 
 // ─── Dark Mode ───
-const darkModeToggle = $('darkMode');
-darkModeToggle.addEventListener('change', () => {
-  document.body.classList.toggle('dark-mode');
-  localStorage.setItem('darkMode', document.body.classList.contains('dark-mode'));
-});
+const darkToggle = $('darkMode') || $('darkModeToggle');
+const darkBtn = $('darkToggleBtn');
+const darkIcon = $('darkIcon');
 
-// Load dark mode preference
-if (localStorage.getItem('darkMode') === 'true') {
-  document.body.classList.add('dark-mode');
-  darkModeToggle.checked = true;
+function applyDark(on) {
+  document.body.classList.toggle('dark', on);
+  document.body.classList.toggle('dark-mode', on);
+  if (darkIcon) darkIcon.className = on ? 'ti ti-sun' : 'ti ti-moon';
+  if (darkToggle) darkToggle.checked = on;
+  try { localStorage.setItem('wc-dark', on); } catch (e) {}
 }
+
+if (darkBtn) darkBtn.addEventListener('click', () => applyDark(!document.body.classList.contains('dark')));
+if (darkToggle) darkToggle.addEventListener('change', () => applyDark(darkToggle.checked));
+
+try {
+  const savedDark = localStorage.getItem('wc-dark') || localStorage.getItem('darkMode');
+  if (savedDark === 'true') applyDark(true);
+} catch (e) {}
 
 // ─── Initialize ───
 document.addEventListener('DOMContentLoaded', () => {
   checkAuth();
-});
-
-// Close modals when clicking outside
-document.querySelectorAll('.modal').forEach(modal => {
-  modal.addEventListener('click', (e) => {
-    if (e.target === modal) {
-      hideModal(modal.id);
-    }
-  });
 });
