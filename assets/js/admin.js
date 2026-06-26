@@ -47,7 +47,7 @@ const showMessage = (elementId, message, type = 'success') => {
 
 const showSuccessModal = (title, message) => {
   $('successTitle').textContent = title;
-  const msgEl = $('successMessage') || $('successMsg');
+  const msgEl = $('successMessage');
   if (msgEl) msgEl.textContent = message;
   showModal('successModal');
 };
@@ -289,7 +289,7 @@ function displayUsers(users) {
 }
 
 // ─── Create User ───
-$('createUserForm').addEventListener('submit', async (e) => {
+if ($('createUserForm')) $('createUserForm').addEventListener('submit', async (e) => {
   e.preventDefault();
 
   const email = $('newEmail').value.trim();
@@ -322,7 +322,7 @@ function confirmDelete(userId, email) {
   showModal('deleteModal');
 }
 
-$('confirmDeleteBtn').addEventListener('click', async () => {
+if ($('confirmDeleteBtn')) $('confirmDeleteBtn').addEventListener('click', async () => {
   if (!deleteTargetUserId) return;
 
   const btn = $('confirmDeleteBtn');
