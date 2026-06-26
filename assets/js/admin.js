@@ -98,7 +98,16 @@ async function checkAuth() {
     }
 
     currentUser = user;
-    const role = user.user_metadata?.role || user.app_metadata?.role;
+    
+    // جلب الرتبة من جدول profiles للتأكد
+    const { data: profile, error: profileErr } = await sb
+      .from('profiles')
+      .select('role')
+      .eq('id', user.id)
+      .single();
+
+    const role = profile?.role || user.user_metadata?.role || user.app_metadata?.role;
+    
     if (role !== 'admin') {
       showErrorModal('ليس لديك صلاحيات إدارية');
       setTimeout(() => window.location.href = 'index.html', 2000);
