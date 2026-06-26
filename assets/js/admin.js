@@ -120,10 +120,21 @@ async function checkAuth() {
       return;
     }
 
-    $('userInfo').textContent = user.user_metadata?.username || user.email;
+    const displayName = user.user_metadata?.username || user.email;
+    $('userInfo').textContent = displayName;
     $('adminEmail').textContent = user.email;
     $('adminRole').textContent = 'مسؤول';
     $('adminId').textContent = user.id.substring(0, 12) + '...';
+    
+    // Update header avatar initials
+    const headerAvatar = $('headerAvatar');
+    if (headerAvatar) {
+      const name = user.user_metadata?.username || user.email;
+      const parts = name.trim().split(/[\s@]/);
+      headerAvatar.textContent = parts.length >= 2 
+        ? (parts[0][0] + parts[1][0]).toUpperCase() 
+        : parts[0].substring(0, 2).toUpperCase();
+    }
 
     loadUsers();
   } catch (error) {
@@ -142,39 +153,133 @@ async function loadUsers() {
   }
 }
 
+// ─── Avatar Helpers ───
+const AVATAR_COLORS = [
+  'linear-gradient(135deg,#6366f1,#4f46e5)',
+  'linear-gradient(135deg,#10b981,#059669)',
+  'linear-gradient(135deg,#f59e0b,#d97706)',
+  'linear-gradient(135deg,#ef4444,#dc2626)',
+  'linear-gradient(135deg,#3b82f6,#2563eb)',
+  'linear-gradient(135deg,#8b5cf6,#7c3aed)',
+  'linear-gradient(135deg,#ec4899,#db2777)',
+  'linear-gradient(135deg,#14b8a6,#0d9488)',
+];
+
+function getAvatarColor(str) {
+  let hash = 0;
+  for (let i = 0; i < str.length; i++) hash = str.charCodeAt(i) + ((hash << 5) - hash);
+  return AVATAR_COLORS[Math.abs(hash) % AVATAR_COLORS.length];
+}
+
+function getInitials(name, email) {
+  if (name && name !== '-') {
+    const parts = name.trim().split(' ');
+    return parts.length >= 2
+      ? (parts[0][0] + parts[1][0]).toUpperCase()
+      : parts[0].substring(0, 2).toUpperCase();
+  }
+  return email.substring(0, 2).toUpperCase();
+}
+
+function getRoleBadge(role) {
+  const map = {
+    admin:           { label: 'مسؤول',         icon: 'ti-shield',    cls: 'admin' },
+    manager:         { label: 'مدير',           icon: 'ti-briefcase', cls: 'manager' },
+    'store-manager': { label: 'مدير متجر',      icon: 'ti-briefcase', cls: 'manager' },
+    agent:           { label: 'Agent',          icon: 'ti-user',      cls: 'user' },
+    user:            { label: 'مستخدم',         icon: 'ti-user',      cls: 'user' },
+  };
+  const r = map[role?.toLowerCase()] || { label: role || 'مستخدم', icon: 'ti-user', cls: 'user' };
+  return `<span class="badge ${r.cls}"><i class="ti ${r.icon}" style="font-size:11px"></i> ${r.label}</span>`;
+}
+
+function getStatusBadge(user) {
+  // Supabase: last_sign_in_at null = never logged in, banned_until, etc.
+  const lastSeen = user.last_sign_in_at;
+  const banned = user.banned_until && new Date(user.banned_until) > new Date();
+  if (banned) return `<span class="badge" style="background:#fee2e2;color:#991b1b">⊗ محظور</span>`;
+  if (!lastSeen) return `<span class="badge" style="background:#f3f4f6;color:#6b7280">○ لم يسجل</span>`;
+  const daysSince = (Date.now() - new Date(lastSeen)) / 86400000;
+  if (daysSince <= 30) return `<span class="badge" style="background:#d1fae5;color:#065f46">● نشط</span>`;
+  return `<span class="badge" style="background:#fef3c7;color:#92400e">◌ غير نشط</span>`;
+}
+
+function updateStats(users) {
+  const total = users.length;
+  const admins = users.filter(u => (u.app_metadata?.role || u.user_metadata?.role) === 'admin').length;
+  const active = users.filter(u => {
+    if (!u.last_sign_in_at) return false;
+    return (Date.now() - new Date(u.last_sign_in_at)) / 86400000 <= 30;
+  }).length;
+  const newThisMonth = users.filter(u => {
+    const d = new Date(u.created_at);
+    const now = new Date();
+    return d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear();
+  }).length;
+
+  // Update stat cards (by querying the stat-val elements)
+  const statVals = document.querySelectorAll('.stat-val');
+  if (statVals[0]) statVals[0].textContent = total;
+  if (statVals[1]) statVals[1].textContent = active;
+  if (statVals[2]) statVals[2].textContent = admins;
+  if (statVals[3]) statVals[3].textContent = newThisMonth;
+
+  // Update sidebar badge
+  const navBadge = document.querySelector('.nav-item[data-section="users"] .nav-badge');
+  if (navBadge) navBadge.textContent = total;
+
+  // Update trends
+  const trends = document.querySelectorAll('.stat-trend');
+  if (trends[0]) trends[0].textContent = `↑ +${newThisMonth} هذا الشهر`;
+  if (trends[1] && total > 0) trends[1].textContent = `↑ ${Math.round(active / total * 100)}% معدل النشاط`;
+}
+
 function displayUsers(users) {
   const tbody = $('usersTableBody');
   if (!tbody) return;
-  
+
+  updateStats(users);
+
   if (users.length === 0) {
-    tbody.innerHTML = '<tr><td colspan="5" class="loading">لا يوجد مستخدمين</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;padding:40px;color:var(--text-muted)">لا يوجد مستخدمين</td></tr>';
     return;
   }
 
   tbody.innerHTML = users.map(user => {
     const role = user.app_metadata?.role || user.user_metadata?.role || 'user';
+    const username = user.user_metadata?.username || '';
+    const displayName = username || user.email.split('@')[0];
+    const initials = getInitials(username, user.email);
+    const avatarColor = getAvatarColor(user.id || user.email);
     const createdDate = new Date(user.created_at).toLocaleDateString('ar-EG');
-    const username = user.user_metadata?.username || '-';
 
     return `
       <tr>
-        <td>${user.email}</td>
-        <td>${username}</td>
-        <td><span class="role-badge ${role}">${role === 'admin' ? 'مسؤول' : 'مستخدم'}</span></td>
+        <td>
+          <div class="user-cell">
+            <div class="u-avatar" style="background:${avatarColor}">${initials}</div>
+            <div>
+              <div class="u-name">${displayName}</div>
+              <div class="u-email">${user.email}</div>
+            </div>
+          </div>
+        </td>
+        <td>${getRoleBadge(role)}</td>
+        <td>${getStatusBadge(user)}</td>
         <td>${createdDate}</td>
         <td>
-          <div class="action-buttons">
-            <button class="action-btn reset" onclick="sendPasswordReset('${user.email}')">
-              <i class="fas fa-key"></i> إعادة تعيين
+          <div class="acts">
+            <button class="act-btn reset" title="إعادة تعيين كلمة المرور" onclick="sendPasswordReset('${user.email}')">
+              <i class="ti ti-key" style="font-size:13px"></i> إعادة تعيين
             </button>
-            <button class="action-btn magic" onclick="sendMagicLink('${user.email}')">
-              <i class="fas fa-magic"></i> سحر
+            <button class="act-btn magic" title="إرسال Magic Link" onclick="sendMagicLink('${user.email}')">
+              <i class="ti ti-wand" style="font-size:13px"></i> سحر
             </button>
-            <button class="action-btn otp" onclick="sendOTP('${user.email}')">
-              <i class="fas fa-sms"></i> OTP
+            <button class="act-btn otp" title="إرسال OTP" onclick="sendOTP('${user.email}')">
+              <i class="ti ti-message" style="font-size:13px"></i> OTP
             </button>
-            <button class="action-btn delete" onclick="confirmDelete('${user.id}', '${user.email}')">
-              <i class="fas fa-trash"></i> حذف
+            <button class="act-btn del" title="حذف المستخدم" onclick="confirmDelete('${user.id}', '${user.email}')">
+              <i class="ti ti-trash" style="font-size:13px"></i>
             </button>
           </div>
         </td>
