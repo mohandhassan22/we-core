@@ -64,8 +64,8 @@
           <i class="ti ti-moon" style="font-size:18px" id="darkIcon"></i>
         </div>
         <div class="user-chip">
-          <div class="user-avatar">AD</div>
-          <span class="user-name">المسؤول</span>
+          <div class="user-avatar" id="headerAvatar">AD</div>
+          <span class="user-name" id="userInfo">المسؤول</span>
         </div>
       </div>
     </header>
@@ -134,70 +134,7 @@
                 </tr>
               </thead>
               <tbody id="usersTableBody">
-                <tr>
-                  <td>
-                    <div class="user-cell">
-                      <div class="u-avatar">أح</div>
-                      <div><div class="u-name">أحمد محمد</div><div class="u-email">ahmed@wecore.com</div></div>
-                    </div>
-                  </td>
-                  <td><span class="badge admin"><i class="ti ti-shield" style="font-size:11px"></i> مسؤول</span></td>
-                  <td><span class="badge" style="background:#d1fae5;color:#065f46">● نشط</span></td>
-                  <td>١ يناير ٢٠٢٥</td>
-                  <td><div class="acts">
-                    <button class="act-btn reset"><i class="ti ti-key" style="font-size:13px"></i> إعادة تعيين</button>
-                    <button class="act-btn magic"><i class="ti ti-wand" style="font-size:13px"></i> سحر</button>
-                    <button class="act-btn del" onclick="showDeleteModal('1','ahmed@wecore.com')"><i class="ti ti-trash" style="font-size:13px"></i></button>
-                  </div></td>
-                </tr>
-                <tr>
-                  <td>
-                    <div class="user-cell">
-                      <div class="u-avatar" style="background:linear-gradient(135deg,#10b981,#059669)">سم</div>
-                      <div><div class="u-name">سمر علي</div><div class="u-email">samar@wecore.com</div></div>
-                    </div>
-                  </td>
-                  <td><span class="badge manager"><i class="ti ti-briefcase" style="font-size:11px"></i> مدير متجر</span></td>
-                  <td><span class="badge" style="background:#d1fae5;color:#065f46">● نشط</span></td>
-                  <td>١٥ فبراير ٢٠٢٥</td>
-                  <td><div class="acts">
-                    <button class="act-btn reset"><i class="ti ti-key" style="font-size:13px"></i> إعادة تعيين</button>
-                    <button class="act-btn otp"><i class="ti ti-message" style="font-size:13px"></i> OTP</button>
-                    <button class="act-btn del" onclick="showDeleteModal('2','samar@wecore.com')"><i class="ti ti-trash" style="font-size:13px"></i></button>
-                  </div></td>
-                </tr>
-                <tr>
-                  <td>
-                    <div class="user-cell">
-                      <div class="u-avatar" style="background:linear-gradient(135deg,#f59e0b,#d97706)">خا</div>
-                      <div><div class="u-name">خالد يوسف</div><div class="u-email">khaled@wecore.com</div></div>
-                    </div>
-                  </td>
-                  <td><span class="badge user"><i class="ti ti-user" style="font-size:11px"></i> Agent</span></td>
-                  <td><span class="badge" style="background:#fef3c7;color:#92400e">◌ غير نشط</span></td>
-                  <td>٣ مارس ٢٠٢٥</td>
-                  <td><div class="acts">
-                    <button class="act-btn magic"><i class="ti ti-wand" style="font-size:13px"></i> سحر</button>
-                    <button class="act-btn otp"><i class="ti ti-message" style="font-size:13px"></i> OTP</button>
-                    <button class="act-btn del" onclick="showDeleteModal('3','khaled@wecore.com')"><i class="ti ti-trash" style="font-size:13px"></i></button>
-                  </div></td>
-                </tr>
-                <tr>
-                  <td>
-                    <div class="user-cell">
-                      <div class="u-avatar" style="background:linear-gradient(135deg,#ec4899,#be185d)">نو</div>
-                      <div><div class="u-name">نور حسن</div><div class="u-email">nour@wecore.com</div></div>
-                    </div>
-                  </td>
-                  <td><span class="badge manager"><i class="ti ti-map" style="font-size:11px"></i> مدير منطقة</span></td>
-                  <td><span class="badge" style="background:#d1fae5;color:#065f46">● نشط</span></td>
-                  <td>٢٠ أبريل ٢٠٢٥</td>
-                  <td><div class="acts">
-                    <button class="act-btn reset"><i class="ti ti-key" style="font-size:13px"></i> إعادة تعيين</button>
-                    <button class="act-btn magic"><i class="ti ti-wand" style="font-size:13px"></i> سحر</button>
-                    <button class="act-btn del" onclick="showDeleteModal('4','nour@wecore.com')"><i class="ti ti-trash" style="font-size:13px"></i></button>
-                  </div></td>
-                </tr>
+                <tr><td colspan="5" style="text-align:center;padding:40px;color:#9ca3af"><i class="ti ti-loader" style="font-size:20px;animation:spin 1s linear infinite"></i><br>جاري تحميل المستخدمين...</td></tr>
               </tbody>
             </table>
           </div>
@@ -321,15 +258,15 @@
             <h3><i class="ti ti-user-circle"></i> معلومات الحساب</h3>
             <div class="set-row">
               <span class="set-key">البريد الإلكتروني</span>
-              <span class="set-val">admin@wecore.com</span>
+              <span class="set-val" id="adminEmail">...</span>
             </div>
             <div class="set-row">
               <span class="set-key">الدور</span>
-              <span class="badge admin"><i class="ti ti-shield" style="font-size:11px"></i> مسؤول</span>
+              <span class="badge admin" id="adminRole"><i class="ti ti-shield" style="font-size:11px"></i> مسؤول</span>
             </div>
             <div class="set-row">
               <span class="set-key">معرّف المستخدم</span>
-              <span class="code-val">a1b2c3d4e5f6...</span>
+              <span class="code-val" id="adminId">...</span>
             </div>
             <div class="set-row">
               <span class="set-key">آخر تسجيل دخول</span>
