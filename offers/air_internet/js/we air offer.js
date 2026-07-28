@@ -11,14 +11,24 @@
         buttonLink: "we-air.html" // تأكد من صحة هذا المسار
     },
          {   
-        title: "we air &Mifi World Cup",
+        title: "عرض WE Air الخاص بعملاء FBB المميزين",
         badge: "عرض خاص",
         highlight: "فترة محدودة",
         details: [
             
         ],
         buttonText: "تفاصيل أكثر",
-        buttonLink: "we-air-mifi-worldcup.html" // تأكد من صحة هذا المسار
+        buttonLink: "we-air-offers.html" // تأكد من صحة هذا المسار
+        },
+                {   
+        title: "عروض WE Air لخطوط الانتظار والخط الأرضي",
+        badge: "عرض خاص",
+        highlight: "فترة محدودة",
+        details: [
+            
+        ],
+        buttonText: "تفاصيل أكثر",
+        buttonLink: "we-air-offers-guide.html" // تأكد من صحة هذا المسار
         }
            
         // يمكنك إضافة المزيد من العروض هنا
