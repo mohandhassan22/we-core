@@ -24,7 +24,7 @@
                     ""
                 ],
                 buttonText: "لتفاصيل اكثر ",
-                buttonLink: "adsl-offer.html"
+                buttonLink: "we_space_offer.html"
             },
            
           
