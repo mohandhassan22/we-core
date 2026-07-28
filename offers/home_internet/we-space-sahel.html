@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>عرض الساحل | WE Space Sahel</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@500;700;800;900&family=Cairo:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --purple-deep:#3D1D63;
+    --purple:#5B2A86;
+    --purple-light:#8C5FBF;
+    --sea:#0E8C86;
+    --sea-light:#2FB6AC;
+    --sand:#F3E6C8;
+    --sand-light:#FAF4E4;
+    --ink:#161226;
+    --coral:#FF7A59;
+    --white:#FFFFFF;
+    --radius:18px;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    font-family:'Cairo', sans-serif;
+    background:var(--sand-light);
+    color:var(--ink);
+    line-height:1.7;
+    overflow-x:hidden;
+  }
+  h1,h2,h3,.display{ font-family:'Tajawal', sans-serif; }
+  a{ color:inherit; text-decoration:none; }
+  img,svg{ display:block; max-width:100%; }
+  .wrap{ max-width:1120px; margin:0 auto; padding:0 24px; }
+
+  /* ---------- NAV ---------- */
+  nav{
+    position:sticky; top:0; z-index:50;
+    background:rgba(61,29,99,0.92);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid rgba(255,255,255,0.08);
+  }
+  .navrow{ display:flex; align-items:center; justify-content:space-between; height:68px; }
+  .brand{ display:flex; align-items:center; gap:10px; color:var(--sand); font-family:'Tajawal'; font-weight:800; font-size:1.05rem; }
+  .brand .dot{ width:10px; height:10px; border-radius:50%; background:var(--coral); box-shadow:0 0 0 4px rgba(255,122,89,0.25); }
+  .navlinks{ display:flex; gap:28px; font-size:0.92rem; color:rgba(255,255,255,0.75); }
+  .navlinks a{ transition:color .2s; }
+  .navlinks a:hover{ color:var(--sand); }
+  @media (max-width:720px){ .navlinks{ display:none; } }
+
+  /* ---------- HERO ---------- */
+  .hero{
+    position:relative;
+    background:linear-gradient(160deg, var(--purple-deep) 0%, var(--purple) 55%, var(--sea) 130%);
+    color:var(--white);
+    padding:76px 0 120px;
+    overflow:hidden;
+  }
+  .hero::before{
+    content:"";
+    position:absolute; inset:0;
+    background-image:
+      radial-gradient(circle at 15% 20%, rgba(255,255,255,0.08) 0, transparent 40%),
+      radial-gradient(circle at 85% 0%, rgba(255,255,255,0.10) 0, transparent 35%);
+  }
+  .hero-inner{ position:relative; display:grid; grid-template-columns:1.15fr 0.85fr; gap:48px; align-items:center; }
+  @media (max-width:860px){ .hero-inner{ grid-template-columns:1fr; } }
+  .eyebrow{
+    display:inline-flex; align-items:center; gap:8px;
+    background:rgba(255,255,255,0.12); border:1px solid rgba(255,255,255,0.25);
+    padding:6px 16px; border-radius:999px; font-size:0.85rem; color:var(--sand);
+    margin-bottom:22px;
+  }
+  .hero h1{ font-size:clamp(2.1rem, 4.2vw, 3.4rem); font-weight:900; line-height:1.25; margin-bottom:18px; }
+  .hero h1 span{ color:var(--sand); }
+  .hero p.lead{ font-size:1.08rem; color:rgba(255,255,255,0.85); max-width:520px; margin-bottom:30px; }
+  .cta-row{ display:flex; gap:14px; flex-wrap:wrap; }
+  .btn{
+    display:inline-flex; align-items:center; gap:8px;
+    padding:13px 26px; border-radius:999px; font-weight:700; font-size:0.95rem;
+    cursor:pointer; border:none; transition:transform .18s, box-shadow .18s;
+  }
+  .btn-primary{ background:var(--coral); color:var(--white); box-shadow:0 10px 24px rgba(255,122,89,0.35); }
+  .btn-primary:hover{ transform:translateY(-2px); box-shadow:0 14px 30px rgba(255,122,89,0.45); }
+  .btn-ghost{ background:transparent; border:1px solid rgba(255,255,255,0.4); color:var(--white); }
+  .btn-ghost:hover{ background:rgba(255,255,255,0.1); }
+
+  /* ---------- TIDE GAUGE (signature element) ---------- */
+  .gauge-card{
+    background:rgba(255,255,255,0.07);
+    border:1px solid rgba(255,255,255,0.18);
+    border-radius:24px;
+    padding:28px;
+    text-align:center;
+    backdrop-filter:blur(6px);
+  }
+  .gauge-wrap{ position:relative; width:220px; height:220px; margin:0 auto 14px; }
+  .gauge-wrap svg{ width:100%; height:100%; }
+  .gauge-label{ position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; }
+  .gauge-label .num{ font-family:'Tajawal'; font-weight:900; font-size:2.5rem; color:var(--white); }
+  .gauge-label .unit{ font-size:0.95rem; color:var(--sand); font-weight:700; }
+  .gauge-caption{ color:rgba(255,255,255,0.75); font-size:0.9rem; }
+  .tide-fill{ animation:tide 5s ease-in-out infinite; }
+  @keyframes tide{
+    0%,100%{ transform:translateY(0); }
+    50%{ transform:translateY(-6px); }
+  }
+  @media (prefers-reduced-motion:reduce){ .tide-fill{ animation:none; } }
+
+  .wave-divider{ display:block; width:100%; line-height:0; margin-top:-2px; }
+  .wave-divider svg{ width:100%; height:80px; }
+
+  /* ---------- SECTION SHELL ---------- */
+  section{ padding:84px 0; }
+  .section-head{ margin-bottom:44px; max-width:640px; }
+  .section-head .eyebrow-small{ color:var(--sea); font-weight:700; font-size:0.85rem; letter-spacing:.02em; margin-bottom:10px; display:block; }
+  .section-head h2{ font-size:clamp(1.6rem,3vw,2.2rem); font-weight:800; color:var(--purple-deep); }
+  .section-head p{ color:#5a5266; margin-top:10px; font-size:1rem; }
+
+  /* ---------- OFFER CARDS ---------- */
+  .offer-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:20px; }
+  @media (max-width:860px){ .offer-grid{ grid-template-columns:1fr 1fr; } }
+  @media (max-width:560px){ .offer-grid{ grid-template-columns:1fr; } }
+  .offer-card{
+    background:var(--white); border-radius:var(--radius); padding:26px 22px;
+    border:1px solid #EFE3C8; box-shadow:0 6px 18px rgba(61,29,99,0.06);
+    transition:transform .2s, box-shadow .2s;
+  }
+  .offer-card:hover{ transform:translateY(-4px); box-shadow:0 14px 28px rgba(61,29,99,0.12); }
+  .offer-card .icon{
+    width:44px; height:44px; border-radius:12px; background:linear-gradient(135deg,var(--purple),var(--sea));
+    display:flex; align-items:center; justify-content:center; color:white; font-weight:800; margin-bottom:16px; font-size:1.1rem;
+  }
+  .offer-card h3{ font-size:1.02rem; color:var(--purple-deep); margin-bottom:8px; }
+  .offer-card p{ color:#5a5266; font-size:0.92rem; }
+  .offer-card .tag{
+    display:inline-block; margin-top:12px; font-size:0.78rem; font-weight:700; color:var(--sea);
+    background:rgba(14,140,134,0.09); padding:4px 12px; border-radius:999px;
+  }
+
+  /* ---------- TERMS ---------- */
+  .terms-panel{
+    background:linear-gradient(135deg, var(--purple-deep), var(--purple));
+    border-radius:24px; padding:40px; color:white; position:relative; overflow:hidden;
+  }
+  .terms-panel::after{ content:"";position:absolute; left:-40px; bottom:-40px; width:200px; height:200px; border-radius:50%; background:rgba(255,255,255,0.06); }
+  .terms-list{ list-style:none; display:grid; gap:18px; position:relative; }
+  .terms-list li{ display:flex; gap:14px; align-items:flex-start; }
+  .terms-list .num{
+    flex:0 0 auto; width:32px; height:32px; border-radius:50%; background:rgba(255,255,255,0.14);
+    border:1px solid rgba(255,255,255,0.3); display:flex; align-items:center; justify-content:center;
+    font-family:'Tajawal'; font-weight:800; font-size:0.88rem; color:var(--sand);
+  }
+  .terms-list .txt{ color:rgba(255,255,255,0.92); font-size:0.98rem; padding-top:4px; }
+  .terms-note{
+    margin-top:28px; background:rgba(255,122,89,0.14); border:1px solid rgba(255,122,89,0.4);
+    border-radius:14px; padding:16px 18px; font-size:0.9rem; color:var(--sand); display:flex; gap:10px; position:relative;
+  }
+
+  /* ---------- SMS PREVIEW ---------- */
+  .sms-section{ display:grid; grid-template-columns:0.9fr 1.1fr; gap:48px; align-items:center; }
+  @media (max-width:860px){ .sms-section{ grid-template-columns:1fr; } }
+  .phone{
+    background:var(--ink); border-radius:34px; padding:14px; max-width:290px; margin:0 auto;
+    box-shadow:0 24px 50px rgba(22,18,38,0.25);
+  }
+  .phone-screen{ background:#F6F3FB; border-radius:22px; padding:18px 14px; min-height:340px; }
+  .phone-bubble{
+    background:var(--white); border-radius:16px 16px 16px 4px; padding:14px 16px; font-size:0.85rem;
+    box-shadow:0 2px 8px rgba(0,0,0,0.06); margin-bottom:10px; color:var(--ink);
+  }
+  .phone-sender{ font-size:0.72rem; color:var(--sea); font-weight:700; margin-bottom:8px; }
+  .lang-toggle{ display:flex; gap:8px; margin-bottom:16px; }
+  .lang-toggle button{
+    border:1px solid #E1D3B0; background:white; padding:6px 16px; border-radius:999px; font-size:0.82rem;
+    font-family:'Cairo'; cursor:pointer; font-weight:700; color:#8a7f63;
+  }
+  .lang-toggle button.active{ background:var(--purple); color:white; border-color:var(--purple); }
+
+  /* ---------- FAQ ---------- */
+  .faq-item{ border-bottom:1px solid #E9DDC0; }
+  .faq-q{
+    width:100%; text-align:right; background:none; border:none; padding:20px 4px; cursor:pointer;
+    display:flex; justify-content:space-between; align-items:center; font-family:'Cairo'; font-weight:700;
+    font-size:1rem; color:var(--purple-deep);
+  }
+  .faq-q .plus{
+    flex:0 0 auto; width:28px; height:28px; border-radius:50%; border:1.5px solid var(--purple);
+    display:flex; align-items:center; justify-content:center; color:var(--purple); transition:transform .25s;
+    font-size:1rem;
+  }
+  .faq-item.open .faq-q .plus{ transform:rotate(45deg); background:var(--purple); color:white; }
+  .faq-a{ max-height:0; overflow:hidden; transition:max-height .3s ease; }
+  .faq-a-inner{ padding:0 4px 20px; color:#5a5266; font-size:0.95rem; }
+  .faq-item.open .faq-a{ max-height:200px; }
+
+  /* ---------- POPS SEARCH ---------- */
+  .pop-tabs{ display:flex; gap:10px; margin-bottom:20px; }
+  .pop-tab{
+    padding:9px 20px; border-radius:999px; border:1px solid #E1D3B0; background:white;
+    font-family:'Cairo'; font-weight:700; font-size:0.88rem; cursor:pointer; color:#8a7f63;
+  }
+  .pop-tab.active{ background:var(--sea); border-color:var(--sea); color:white; }
+  .pop-search{
+    width:100%; padding:14px 18px; border-radius:14px; border:1.5px solid #E1D3B0;
+    font-family:'Cairo'; font-size:0.95rem; margin-bottom:18px; background:white;
+  }
+  .pop-search:focus{ outline:none; border-color:var(--sea); }
+  .pop-count{ font-size:0.85rem; color:#8a7f63; margin-bottom:14px; }
+  .pop-grid{
+    display:grid; grid-template-columns:repeat(auto-fill,minmax(180px,1fr)); gap:10px;
+    max-height:420px; overflow-y:auto; padding-left:4px;
+  }
+  .pop-grid::-webkit-scrollbar{ width:6px; }
+  .pop-grid::-webkit-scrollbar-thumb{ background:#D9C89C; border-radius:10px; }
+  .pop-chip{
+    background:white; border:1px solid #EFE3C8; border-radius:12px; padding:10px 14px;
+    font-size:0.85rem; color:var(--ink); display:flex; align-items:center; gap:8px;
+  }
+  .pop-chip::before{ content:""; width:6px; height:6px; border-radius:50%; background:var(--sea-light); flex:0 0 auto; }
+  .pop-empty{ padding:30px; text-align:center; color:#8a7f63; font-size:0.9rem; }
+
+  /* ---------- FOOTER ---------- */
+  footer{ background:var(--purple-deep); color:rgba(255,255,255,0.6); padding:36px 0; font-size:0.85rem; text-align:center; }
+  footer strong{ color:var(--sand); }
+
+  .reveal{ opacity:0; transform:translateY(18px); transition:opacity .6s ease, transform .6s ease; }
+  .reveal.show{ opacity:1; transform:translateY(0); }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap navrow">
+    <div class="brand"><span class="dot"></span> WE Space Sahel</div>
+    <div class="navlinks">
+      <a href="#offer">تفاصيل العرض</a>
+      <a href="#terms">الشروط والأحكام</a>
+      <a href="#faq">الأسئلة الشائعة</a>
+      <a href="#pops">السنترالات المؤهلة</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap hero-inner">
+    <div>
+      <span class="eyebrow">🌊 عرض الجيجابايت الإضافية — باقة الساحل 2026 · يبدأ 16 يوليو</span>
+      <h1>150 جيجابايت <span>هدية</span> على باقة WE Space Sahel</h1>
+      <p class="lead">
+        يحصل عملاء الإنترنت الأرضي على جيجابايتس هدية عند التجديد أو التجديد المبكر على باقة WE SPACE SAHEL،
+        أو عند التحويل إليها — تُضاف تلقائيًا بدون أي إجراء إضافي.
+      </p>
+      <div class="cta-row">
+        <a href="#offer" class="btn btn-primary">تفاصيل العرض ↓</a>
+        <a href="#pops" class="btn btn-ghost">تحقق من السنترال</a>
+      </div>
+    </div>
+
+    <div class="gauge-card">
+      <div class="gauge-wrap">
+        <svg viewBox="0 0 220 220">
+          <circle cx="110" cy="110" r="92" fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="14"/>
+          <circle cx="110" cy="110" r="92" fill="none" stroke="url(#tideGrad)" stroke-width="14"
+                  stroke-linecap="round" stroke-dasharray="578" stroke-dashoffset="60"
+                  transform="rotate(-90 110 110)"/>
+          <defs>
+            <linearGradient id="tideGrad" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#FF7A59"/>
+              <stop offset="100%" stop-color="#F3E6C8"/>
+            </linearGradient>
+            <clipPath id="tideClip"><circle cx="110" cy="110" r="78"/></clipPath>
+          </defs>
+          <g clip-path="url(#tideClip)">
+            <rect class="tide-fill" x="0" y="90" width="220" height="140" fill="#2FB6AC" opacity="0.35"/>
+            <rect class="tide-fill" x="0" y="100" width="220" height="140" fill="#0E8C86" opacity="0.45" style="animation-delay:-2.5s"/>
+          </g>
+        </svg>
+        <div class="gauge-label">
+          <div class="num">150</div>
+          <div class="unit">GB لمدة 30 يوم</div>
+        </div>
+      </div>
+      <p class="gauge-caption">مرة واحدة فقط لكل عميل · أولوية استهلاك للجيجابايتس الهدية</p>
+    </div>
+  </div>
+
+  <div class="wave-divider">
+    <svg viewBox="0 0 1440 100" preserveAspectRatio="none">
+      <path fill="#F3E6C8" d="M0,40 C240,100 480,0 720,40 C960,80 1200,20 1440,50 L1440,100 L0,100 Z"/>
+    </svg>
+  </div>
+</header>
+
+<main>
+
+  <section id="offer">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow-small">عرض الساحل</span>
+        <h2>تفاصيل العرض بنظرة سريعة</h2>
+        <p>كل ما يحتاج فريق المبيعات والدعم معرفته عن باقة WE Space Sahel وعرض الجيجابايتس الإضافية.</p>
+      </div>
+
+      <div class="offer-grid">
+        <div class="offer-card reveal">
+          <div class="icon">i</div>
+          <h3>التعريف بالعرض</h3>
+          <p>جيجابايتس هدية عند التجديد أو التجديد المبكر على باقة WE Space Sahel، أو عند التحويل إليها.</p>
+        </div>
+        <div class="offer-card reveal">
+          <div class="icon">Aa</div>
+          <h3>اسم العرض على القنوات الرقمية</h3>
+          <p>Main Quota <span style="color:#b5a877">/</span> الباقة الأساسية</p>
+          <span class="tag">Digital Channels</span>
+        </div>
+        <div class="offer-card reveal">
+          <div class="icon">↻</div>
+          <h3>طريقة الاشتراك</h3>
+          <p>بمجرد التجديد، أو التجديد المبكر، أو التحويل إلى الباقة — يُطبَّق تلقائيًا عبر النظام.</p>
+        </div>
+        <div class="offer-card reveal">
+          <div class="icon">150</div>
+          <h3>الكمية والتكرار</h3>
+          <p>150 جيجابايت تُمنح مرة واحدة فقط لكل عميل مؤهل.</p>
+        </div>
+        <div class="offer-card reveal">
+          <div class="icon">⏱</div>
+          <h3>مدة صلاحية الهدية</h3>
+          <p>الرصيد الإضافي صالح للاستخدام لمدة 30 يومًا من تاريخ الإضافة.</p>
+        </div>
+        <div class="offer-card reveal">
+          <div class="icon">📅</div>
+          <h3>مدة العرض في السوق</h3>
+          <p>العرض متاح لمدة 3 شهور بدءًا من الخميس 16 يوليو 2026.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="terms" style="background:var(--sand); padding-top:0;">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow-small">مهم لفرق التنفيذ</span>
+        <h2>الشروط والأحكام</h2>
+      </div>
+      <div class="terms-panel reveal">
+        <ul class="terms-list">
+          <li><span class="num">1</span><span class="txt">يحصل العميل على 150 جيجابايت مرة واحدة فقط، ولا يتكرر العرض على نفس الخط.</span></li>
+          <li><span class="num">2</span><span class="txt">أولوية الاستهلاك تكون دائمًا للجيجابايتس الهدية قبل الباقة الأساسية.</span></li>
+          <li><span class="num">3</span><span class="txt">الباقة المتاح عليها العرض هي باقة WE Space Sahel فقط.</span></li>
+          <li><span class="num">4</span><span class="txt">يتم تطبيق العرض تلقائيًا من خلال النظام عند إنشاء الخدمة أو تجديدها.</span></li>
+        </ul>
+        <div class="terms-note">⚠️ يرجى عدم إزالة العرض يدويًا أثناء تنفيذ عملية إنشاء الخدمة — يُطبَّق تلقائيًا.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sms-section wrap">
+    <div class="reveal">
+      <div class="lang-toggle">
+        <button class="active" data-lang="ar">عربي</button>
+        <button data-lang="en">English</button>
+      </div>
+      <div class="phone">
+        <div class="phone-screen">
+          <div class="phone-sender">WE</div>
+          <div class="phone-bubble" id="smsBubble" dir="rtl">
+            لديك <strong>150</strong> GB هدية على الإنترنت الأرضي (الرقم) 0<span id="smsLine"></span>.
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="reveal">
+      <span class="eyebrow-small">رسالة التأكيد</span>
+      <h2 style="font-size:1.7rem; color:var(--purple-deep); margin-bottom:14px;">هذا ما يستقبله العميل بعد إضافة الرصيد</h2>
+      <p style="color:#5a5266;">
+        فور إضافة الحصة المخصصة (Dedicated Quota) على الخط، تصل رسالة نصية تلقائية للعميل تُبلغه برصيد
+        الـ150 جيجابايت الجديد المضاف على خط الإنترنت الأرضي الخاص به. جرّب التبديل بين اللغتين لمعاينة الصياغتين.
+      </p>
+    </div>
+  </section>
+
+  <section id="faq" style="background:white;">
+    <div class="wrap" style="max-width:820px;">
+      <div class="section-head reveal">
+        <span class="eyebrow-small">أسئلة متكررة</span>
+        <h2>الأسئلة الشائعة</h2>
+      </div>
+      <div id="faqList"></div>
+    </div>
+  </section>
+
+  <section id="pops">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow-small">تحقق من التغطية</span>
+        <h2>السنترالات والكمبوندات المؤهلة</h2>
+        <p>ابحث باسم السنترال (XDSL) أو الكمبوند (FTTH) للتأكد من أهلية الخط للعرض.</p>
+      </div>
+      <div class="reveal">
+        <div class="pop-tabs">
+          <button class="pop-tab active" data-tab="xdsl">XDSL <span id="cnt-xdsl"></span></button>
+          <button class="pop-tab" data-tab="ftth">FTTH <span id="cnt-ftth"></span></button>
+        </div>
+        <input type="text" class="pop-search" id="popSearch" placeholder="ابحث عن اسم السنترال أو الكمبوند...">
+        <div class="pop-count" id="popCount"></div>
+        <div class="pop-grid" id="popGrid"></div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <strong>WE Space Sahel</strong> — عرض الجيجابايت الإضافية، باقة الساحل 2026 · يُطبَّق تلقائيًا عبر النظام
+  </div>
+</footer>
+
+<script>
+  // ---------- data ----------
+  const XDSL = ["hamamat","KARAWAN","MONTAZAH","MINA","Marbilla","Marina 2","GREEN BEACH","Marina-1","Virginia cabinet 1","abo talat - Cabinet 1","abo talat - Cabinet 2","abo talat - Cabinet 5","Karawan - Mina3-Cabinet2","BADR WA VERGINIA Cabinet 8","Abo Talat Cabinet 12","Abo Talat Cabinet 11","Abo Talat Cabinet 14","Abo Talat Cabinet 9","Abo Talat Cabinet 15","Abo Talat Cabinet 17","Abo Talat Cabinet 16","Ramsis Alex Cabinet 8","Maraqia Cabinet 2","Marina 1 Cabinet 13","Marina 1 Cabinet 2","Marina 1 Cabinet 3","Marina 1 Cabinet 4","Marina 1 Cabinet 5","Marina 1 Cabinet 6","Marina 1 Cabinet 9","Marbilla Cabinet 3","Marbilla Cabinet 5","Maraqia Cabinet 6","Sidi Kreer Cabinet 17","Sidi Kreer Cabinet 16","Montzah Cabinet 1","Ramsis Alex Cabinet 24","Abo Talat Cabinet 44","Zomoroda cabinet 15","Zomoroda cabinet 16","ABOTALAT2","Green Beach cabinet 2","Green Beach cabinet 3","Sidi Abd El Rahaman Cabinet 901","Karawan - kazabianca-Cabinet1","Karawan - Mina4-Cabinet5","GREEN BEACH - Diamond Beach - Cabinet 5","Marina 2 Cabinet 03","Marina 2 Cabinet 22","Marina 2 Cabinet 23","Zomoroda cabinet 1","Maraqia Cabinet 13","Marina 1 Cabinet 12","Zomoroda cabinet 2","Maraqia Cabinet 11","Ramsis Alex Cabinet 10","Marina 2 Cabinet 19","Ramsis Alex Cabinet 9","Ramsis Village Cabinet 21","Maraqia Alex","abo talat - Cabinet 3","Green Beach cabinet 10","Marina 1 Cabinet 1","Zomoroda cabinet 3","Maraqia cabinet 1","Mina Cabinet 1","Marina 1 Cabinet 8","Marina 2 Cabinet 10","Marina 2 Cabinet 18","Marbilla Cabinet 4","Marina 2 Cabinet 04","Marina 2 Cabinet 14","Marina 2 Cabinet 17","Marina 2 Cabinet 12","Virginia - ELSa7feen-Cabinet2","Marina 2 Cabinet 56","Virginia - ELma3ady-Cabinet4","Green Beach cabinet 1","RAMSISVILLAGE","ELFAYROUZ - Cabinet 1","GREENBEACH","Karawan - ELMohandeseen-Cabinet3","Mina Cabinet 3"];
+  const FTTH = ["Sidi Kerir","Tellal","Sea Shell","Hacienda Red","Hacienda White","Amwaj","Diplo 3","La Vista Bay","La Vista Bay East","Sidi Kreer Alex","Al Abd Resort","krir lagoon","Neis 2","غزالة باي","ماونتن فيو راس الحكمة","Palm Hills New Alamein","Lazorde Bay"];
+
+  const FAQS = [
+    ["ما هو العرض المقدم من شركة WE؟","يحصل عملاء الإنترنت الأرضي على جيجابايت هدية عند التجديد أو التجديد المبكر على باقة WE SPACE SAHEL أو التحويل اليها."],
+    ["ما هي الباقات المتاح عليها العرض؟","الباقة المتاح عليها العرض هي باقة WE SPACE SAHEL فقط."],
+    ["ما هي كمية الجيجابايتس وعدد مرات حصول العميل عليها؟","يحصل العميل على 150 جيجابايت مرة واحدة فقط."],
+    ["ما هي مدة صلاحية الجيجابايت الإضافية؟","صالحة للاستخدام لمدة 30 يومًا من تاريخ الإضافة."],
+    ["ما هي أولوية استهلاك الجيجابايتس الهدية؟","أولوية الاستهلاك تكون دائمًا للجيجابايتس الهدية أولًا."],
+    ["ما هي مدة العرض في السوق؟","مدة العرض في السوق 3 شهور، بدءًا من 16 يوليو 2026."],
+    ["متى تُضاف الـ150 جيجابايت للعملاء؟","بمجرد التجديد، أو التجديد المبكر، أو التحويل إلى الباقة."]
+  ];
+
+  // ---------- FAQ render ----------
+  const faqList = document.getElementById('faqList');
+  FAQS.forEach(([q,a]) => {
+    const item = document.createElement('div');
+    item.className = 'faq-item';
+    item.innerHTML = `
+      <button class="faq-q"><span>${q}</span><span class="plus">+</span></button>
+      <div class="faq-a"><div class="faq-a-inner">${a}</div></div>`;
+    item.querySelector('.faq-q').addEventListener('click', () => {
+      const open = item.classList.contains('open');
+      document.querySelectorAll('.faq-item.open').forEach(el => el.classList.remove('open'));
+      if (!open) item.classList.add('open');
+    });
+    faqList.appendChild(item);
+  });
+
+  // ---------- SMS toggle ----------
+  const smsBubble = document.getElementById('smsBubble');
+  document.querySelectorAll('.lang-toggle button').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.lang-toggle button').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      if (btn.dataset.lang === 'ar') {
+        smsBubble.setAttribute('dir','rtl');
+        smsBubble.innerHTML = 'لديك <strong>150</strong> GB هدية على الإنترنت الأرضي (الرقم) 0.';
+      } else {
+        smsBubble.setAttribute('dir','ltr');
+        smsBubble.innerHTML = 'You have <strong>150</strong> GB as a gift on the fixed internet 0(landline).';
+      }
+    });
+  });
+
+  // ---------- POPs search ----------
+  let currentTab = 'xdsl';
+  const popGrid = document.getElementById('popGrid');
+  const popCount = document.getElementById('popCount');
+  const popSearch = document.getElementById('popSearch');
+  document.getElementById('cnt-xdsl').textContent = `(${XDSL.length})`;
+  document.getElementById('cnt-ftth').textContent = `(${FTTH.length})`;
+
+  function renderPops(){
+    const list = currentTab === 'xdsl' ? XDSL : FTTH;
+    const q = popSearch.value.trim().toLowerCase();
+    const filtered = q ? list.filter(x => x.toLowerCase().includes(q)) : list;
+    popCount.textContent = `عرض ${filtered.length} من ${list.length} نتيجة`;
+    popGrid.innerHTML = filtered.length
+      ? filtered.map(x => `<div class="pop-chip">${x}</div>`).join('')
+      : `<div class="pop-empty">لا توجد نتائج مطابقة لبحثك</div>`;
+  }
+  document.querySelectorAll('.pop-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.pop-tab').forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      currentTab = tab.dataset.tab;
+      popSearch.value = '';
+      renderPops();
+    });
+  });
+  popSearch.addEventListener('input', renderPops);
+  renderPops();
+
+  // ---------- reveal on scroll ----------
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('show'); });
+  }, { threshold:0.15 });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+</script>
+
+</body>
+</html>

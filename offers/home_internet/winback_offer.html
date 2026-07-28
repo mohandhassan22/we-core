@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>عرض الصيف Win-Back – سعة إضافية 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --amber-deep:#9a4b12;
+    --amber:#d9791f;
+    --amber-mid:#f0a445;
+    --amber-light:#fdf0e2;
+    --teal:#1f6f6b;
+    --line:#f0dcc0;
+    --ink:#2c2113;
+    --paper:#fefaf4;
+    --white:#ffffff;
+  }
+
+  *{box-sizing:border-box;margin:0;padding:0;}
+
+  body{
+    background:linear-gradient(180deg,#fdf5ea 0%, #f8e9d3 100%);
+    font-family:'IBM Plex Sans Arabic','Tajawal',sans-serif;
+    color:var(--ink);
+    padding:36px 16px 60px;
+    min-height:100vh;
+  }
+
+  .sheet{
+    max-width:960px;
+    margin:0 auto;
+    background:var(--white);
+    border-radius:22px;
+    overflow:hidden;
+    box-shadow:0 30px 70px -25px rgba(154,75,18,0.4), 0 2px 8px rgba(154,75,18,0.08);
+  }
+
+  /* ===== HERO ===== */
+  .hero{
+    background:
+      radial-gradient(circle at 88% -15%, rgba(31,111,107,0.35), transparent 45%),
+      linear-gradient(120deg, var(--amber-deep) 0%, var(--amber) 55%, var(--amber-mid) 100%);
+    color:var(--white);
+    padding:44px 40px 30px;
+    position:relative;
+    overflow:hidden;
+  }
+  .reconnect-line{
+    position:absolute;
+    left:0; right:0; bottom:-2px;
+    height:70px;
+    z-index:0;
+    opacity:0.9;
+  }
+  .hero-top{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:16px;
+    position:relative;
+    z-index:1;
+  }
+  .brand{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    font-weight:900;
+    font-size:15px;
+    letter-spacing:0.5px;
+  }
+  .brand-mark{
+    width:34px;height:34px;border-radius:9px;
+    background:var(--white);
+    display:flex;align-items:center;justify-content:center;
+    color:var(--amber-deep);
+    font-family:'Tajawal',sans-serif;
+    font-weight:900;
+    font-size:16px;
+  }
+  .badge-season{
+    font-size:12px;
+    background:rgba(255,255,255,0.16);
+    border:1px solid rgba(255,255,255,0.38);
+    padding:6px 14px;
+    border-radius:999px;
+    font-weight:600;
+    letter-spacing:0.3px;
+  }
+  .hero-title{
+    position:relative;z-index:1;
+    margin-top:26px;
+    font-size:27px;
+    font-weight:900;
+    line-height:1.5;
+    max-width:620px;
+  }
+  .hero-title span{color:var(--teal);background:rgba(255,255,255,0.92);padding:1px 8px;border-radius:6px;}
+  .hero-sub{
+    position:relative;z-index:1;
+    margin-top:16px;
+    font-size:13.5px;
+    line-height:1.9;
+    max-width:640px;
+    color:rgba(255,255,255,0.94);
+    background:rgba(255,255,255,0.1);
+    border-right:3px solid var(--teal);
+    padding:12px 16px;
+    border-radius:8px;
+  }
+  .hero-sub ul{margin-top:6px;padding-right:18px;}
+  .hero-sub li{margin-bottom:2px;}
+
+  /* ===== SECTION HEADERS ===== */
+  .section{padding:32px 40px;}
+  .section + .section{border-top:1px solid var(--line);}
+  .section-head{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-bottom:18px;
+  }
+  .section-dot{
+    width:9px;height:9px;border-radius:50%;
+    background:var(--teal);
+    flex-shrink:0;
+  }
+  .section-title{
+    font-size:19px;
+    font-weight:800;
+    color:var(--amber-deep);
+  }
+  .lead-text{
+    font-size:13.5px;
+    line-height:1.9;
+    color:#5c4a35;
+    margin-bottom:16px;
+  }
+
+  /* ===== OFFER SPEC TABLE ===== */
+  table.spec-table{
+    width:100%;
+    border-collapse:collapse;
+    font-size:13px;
+    border:1px solid var(--line);
+    border-radius:14px;
+    overflow:hidden;
+  }
+  table.spec-table thead th{
+    background:var(--amber-deep);
+    color:#fff;
+    font-weight:700;
+    padding:11px 10px;
+    text-align:center;
+  }
+  table.spec-table tbody td{
+    padding:13px 10px;
+    text-align:center;
+    border-left:1px solid var(--line);
+  }
+  table.spec-table tbody td:last-child{border-left:none;}
+  .addon-name{font-weight:800;color:var(--amber-deep);background:var(--amber-light);}
+  .quota-cell{font-weight:800;color:var(--teal);}
+  .fee-free{
+    display:inline-block;
+    font-weight:800;
+    color:#fff;
+    background:var(--teal);
+    padding:2px 12px;
+    border-radius:999px;
+    font-size:12px;
+  }
+
+  /* ===== ELIGIBLE CUSTOMERS ===== */
+  .eligible-box{
+    background:var(--paper);
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:18px 20px;
+  }
+  .eligible-line{
+    font-size:13.5px;
+    line-height:1.9;
+    margin-bottom:12px;
+  }
+  .exclude-label{
+    font-weight:800;
+    color:var(--amber-deep);
+    font-size:13px;
+    margin-bottom:8px;
+  }
+  .exclude-tags{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+  }
+  .exclude-tag{
+    background:#fff;
+    border:1px solid var(--amber-mid);
+    color:var(--amber-deep);
+    font-weight:700;
+    font-size:12px;
+    padding:6px 12px;
+    border-radius:999px;
+  }
+
+  /* ===== METHOD ===== */
+  .method-flow{
+    display:flex;
+    align-items:stretch;
+    gap:0;
+    border:1px solid var(--line);
+    border-radius:14px;
+    overflow:hidden;
+  }
+  .method-step{
+    flex:1;
+    padding:18px 16px;
+    text-align:center;
+    position:relative;
+  }
+  .method-step:not(:last-child)::after{
+    content:"←";
+    position:absolute;
+    left:-12px;
+    top:50%;
+    transform:translateY(-50%);
+    color:var(--amber-mid);
+    font-size:18px;
+    font-weight:900;
+    z-index:2;
+  }
+  .method-step:nth-child(odd){background:var(--paper);}
+  .method-step:nth-child(even){background:#fff;}
+  .method-num{
+    width:26px;height:26px;
+    border-radius:50%;
+    background:var(--teal);
+    color:#fff;
+    font-weight:800;
+    font-size:12px;
+    display:flex;align-items:center;justify-content:center;
+    margin:0 auto 10px;
+  }
+  .method-step p{font-size:12.5px;line-height:1.8;color:var(--ink);}
+
+  /* ===== SMS PREVIEW ===== */
+  .sms-wrap{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:14px;
+    margin-top:18px;
+  }
+  .sms-bubble{
+    background:var(--paper);
+    border:1px solid var(--line);
+    border-radius:16px;
+    padding:16px 18px;
+    position:relative;
+  }
+  .sms-lang{
+    font-size:11px;
+    font-weight:800;
+    color:var(--teal);
+    margin-bottom:8px;
+    letter-spacing:0.5px;
+  }
+  .sms-text{
+    font-size:12.5px;
+    line-height:1.9;
+    color:var(--ink);
+  }
+  .sms-text.en{direction:ltr;text-align:left;font-family:'IBM Plex Sans Arabic',sans-serif;}
+
+  /* ===== TERMS ===== */
+  .terms{list-style:none;}
+  .terms li{
+    display:flex;
+    gap:10px;
+    align-items:flex-start;
+    font-size:13.5px;
+    line-height:1.9;
+    padding:9px 0;
+    border-bottom:1px dashed var(--line);
+  }
+  .terms li:last-child{border-bottom:none;}
+  .terms li::before{
+    content:"";
+    width:6px;height:6px;
+    border-radius:50%;
+    background:var(--teal);
+    margin-top:9px;
+    flex-shrink:0;
+  }
+
+  /* ===== DURATION BAR ===== */
+  .duration-bar{
+    background:linear-gradient(90deg, var(--amber-deep), var(--amber));
+    color:#fff;
+    padding:16px 40px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    font-size:14px;
+    font-weight:700;
+  }
+  .duration-bar .date{
+    background:rgba(255,255,255,0.18);
+    padding:5px 16px;
+    border-radius:999px;
+    font-weight:800;
+  }
+
+  .footer-bar{
+    background:var(--amber-deep);
+    color:rgba(255,255,255,0.75);
+    text-align:center;
+    padding:16px;
+    font-size:11.5px;
+    letter-spacing:0.3px;
+  }
+
+  @media(max-width:640px){
+    .section{padding:24px 20px;}
+    .hero{padding:30px 22px 26px;}
+    .hero-title{font-size:20px;}
+    .method-flow{flex-direction:column;}
+    .method-step:not(:last-child)::after{content:"↓";left:50%;top:auto;bottom:-14px;transform:translateX(50%);}
+    .sms-wrap{grid-template-columns:1fr;}
+    .duration-bar{flex-direction:column;gap:8px;padding:16px 20px;text-align:center;}
+  }
+</style>
+</head>
+<body>
+
+<div class="sheet">
+
+  <!-- HERO -->
+  <div class="hero">
+    <svg class="reconnect-line" viewBox="0 0 800 70" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <path d="M0,50 Q200,10 400,50 T800,50" fill="none" stroke="rgba(255,255,255,0.25)" stroke-width="3" stroke-dasharray="2 10"/>
+      <path d="M400,50 Q600,20 800,50" fill="none" stroke="#1f6f6b" stroke-width="3"/>
+      <circle cx="400" cy="50" r="6" fill="#1f6f6b"/>
+    </svg>
+    <div class="hero-top">
+      <div class="brand">
+        <div class="brand-mark">WE</div>
+        <span>WE Space</span>
+      </div>
+      <div class="badge-season">عرض الصيف Win-Back 2026</div>
+    </div>
+    <div class="hero-title">جدّد اشتراكك واستمتع بـ<span>50% سعة إضافية</span> مجانًا لمدة 3 أشهر</div>
+    <div class="hero-sub">
+      عرض مخصص لعملاء الإنترنت المنزلي الذين تم إيقاف خدمتهم بسبب عدم السداد لمدة تزيد عن 31 يومًا.
+      <ul>
+        <li>يحصل العميل على 50% سعة إضافية (Extra Quota) من سعة الباقة الأساسية لمدة 3 أشهر بحد أقصى 3 مرات فقط، وذلك عند تجديد الاشتراك خلال فترة العرض.</li>
+        <li>العرض متاح لمدة شهر واحد فقط.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="duration-bar">
+    <span>مدة العرض</span>
+    <span class="date">20 أغسطس 2026</span>
+  </div>
+
+  <!-- OFFER SPEC -->
+  <div class="section">
+    <div class="section-head">
+      <span class="section-dot"></span>
+      <span class="section-title">اسم العرض</span>
+    </div>
+    <table class="spec-table">
+      <thead>
+        <tr>
+          <th>Add-On Name</th>
+          <th>Quota</th>
+          <th>Fees</th>
+          <th>Resources Validity</th>
+          <th>Payment Mode</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="addon-name">Win Back 50% Extra Quota – 3 Month Offer – 2026</td>
+          <td class="quota-cell">50% Extra Quota</td>
+          <td><span class="fee-free">Free</span></td>
+          <td>30 Days (Monthly for 3 Months)</td>
+          <td>Pre &amp; Postpaid</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- SUBSCRIPTION METHOD -->
+  <div class="section">
+    <div class="section-head">
+      <span class="section-dot"></span>
+      <span class="section-title">طريقة الإشتراك</span>
+    </div>
+    <p class="lead-text">يستفيد العميل من العرض بمجرد تجديد الاشتراك، في حال استيفاء شروط العرض. تُضاف 50% سعة إضافية تلقائيًا مع الباقة الأساسية لمدة 30 يومًا، وتُجدَّد شهريًا لمدة 3 أشهر بحد أقصى 3 مرات فقط طالما استمر العميل في تجديد اشتراكه.</p>
+
+    <div class="method-flow">
+      <div class="method-step">
+        <div class="method-num">1</div>
+        <p>يجدد العميل اشتراك الإنترنت الأرضي ويسدد المستحقات</p>
+      </div>
+      <div class="method-step">
+        <div class="method-num">2</div>
+        <p>يتم التحقق تلقائيًا من استيفاء شروط العرض</p>
+      </div>
+      <div class="method-step">
+        <div class="method-num">3</div>
+        <p>تُضاف 50% سعة إضافية تلقائيًا لمدة 30 يومًا</p>
+      </div>
+      <div class="method-step">
+        <div class="method-num">4</div>
+        <p>تتجدد تلقائيًا شهريًا حتى 3 مرات كحد أقصى</p>
+      </div>
+    </div>
+
+    <div class="sms-wrap">
+      <div class="sms-bubble">
+        <div class="sms-lang">SMS · عربي</div>
+        <div class="sms-text">جدد دلوقتي اشتراك الإنترنت الأرضي على الرقم (#) واستمتع بـ 50% سعة إضافية مجانًا لمدة 3 شهور 🎁<br>ما تفوتش العرض!</div>
+      </div>
+      <div class="sms-bubble">
+        <div class="sms-lang">SMS · English</div>
+        <div class="sms-text en">Renew now your fixed internet subscription on (#) and enjoy 50% extra quota FREE for 3 months 🎁<br>Don't miss the offer!</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ELIGIBLE CUSTOMERS -->
+  <div class="section">
+    <div class="section-head">
+      <span class="section-dot"></span>
+      <span class="section-title">العملاء المستحقين</span>
+    </div>
+    <div class="eligible-box">
+      <div class="eligible-line">العرض متاح فقط لعملاء <strong>WE Space الشهري</strong>، ويُستثنى منه العملاء على الباقات التالية:</div>
+      <div class="exclude-label">الباقات المستثناة من العرض</div>
+      <div class="exclude-tags">
+        <span class="exclude-tag">Super Speed 20 GB</span>
+        <span class="exclude-tag">Super Speed 50 GB</span>
+        <span class="exclude-tag">Super Speed Fallback 100 GB</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- TERMS -->
+  <div class="section">
+    <div class="section-head">
+      <span class="section-dot"></span>
+      <span class="section-title">الشروط والأحكام</span>
+    </div>
+    <ul class="terms">
+      <li>تُطبَّق عليها أولوية الاستخدام للأقرب في الانتهاء بين الباقة الأساسية وأي باقات شحن إضافية.</li>
+      <li>يشترط أن تكون خدمة الإنترنت الأرضي متوقفة لمدة تزيد عن 31 يومًا.</li>
+      <li>يشترط أن يكون سبب التوقف تلقائيًا بسبب عدم السداد، وليس لأي سبب آخر (مثل طلب العميل للإيقاف).</li>
+      <li>لن يتم ترحيل أي جيجابايت متبقية بعد انتهاء فترة صلاحية السعة الإضافية.</li>
+      <li>يمكن للعميل الاشتراك في باقات شحن إضافية أخرى مع العرض في نفس الوقت، سواء كانت تجدد تلقائيًا أو مرة واحدة.</li>
+      <li>يُرسَل للعملاء المستوفين للشروط رسالة نصية بتفاصيل العرض، كما يظهر الـ Add-on على الخط، ويُفعَّل تلقائيًا فور تجديد وسداد اشتراك الإنترنت الأرضي.</li>
+    </ul>
+  </div>
+
+  <div class="footer-bar">العرض خاص بعملاء WE Space المتوقفين لعدم السداد — سارٍ حتى 20 أغسطس 2026</div>
+
+</div>
+
+</body>
+</html>
