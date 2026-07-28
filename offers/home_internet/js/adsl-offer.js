@@ -13,6 +13,19 @@
                 buttonText: "لتفاصيل اكثر ",
                 buttonLink: "adslX2.html"
             },
+                {
+                title: " عرض الصيف على باقات WE SPACE  السنوية",
+                badge: "عرض خاص",
+                highlight: "لعرض هو اتاحة سعة إضافية هدية للعملاء عند الاشتراك على الباقات السنوية ",
+                details: [
+                    "",
+                    "",
+                    "",
+                    ""
+                ],
+                buttonText: "لتفاصيل اكثر ",
+                buttonLink: "adsl-offer.html"
+            },
            
           
         
