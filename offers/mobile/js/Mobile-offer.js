@@ -11,14 +11,14 @@
         buttonLink: "el-abtal-promo.html" // تأكد من صحة هذا المسار
     },
          {   
-        title: "we-gold-tod-offer",
+        title: "nitro mifi offer",
         badge: "عرض خاص",
         highlight: "فترة محدودة",
         details: [
             
         ],
         buttonText: "تفاصيل أكثر",
-        buttonLink: "we-gold-tod-offer.html" // تأكد من صحة هذا المسار
+        buttonLink: "nitro_mifi_offer.html" // تأكد من صحة هذا المسار
         }
            
         // يمكنك إضافة المزيد من العروض هنا
