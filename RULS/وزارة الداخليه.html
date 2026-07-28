@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>تحديثات BSS — إجراء تعديل بيانات خطوط No Name</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #0B1220;
+    --bg-raised: #121B2E;
+    --bg-card: #16213A;
+    --line: #263352;
+    --text: #E7ECF7;
+    --text-dim: #8D9AB8;
+    --text-faint: #5C6889;
+    --amber: #F2994A;
+    --amber-dim: #4A3320;
+    --teal: #45D0C4;
+    --teal-dim: #163A38;
+    --red: #E5566B;
+    --red-dim: #3E1C24;
+    --mono: 'IBM Plex Mono', monospace;
+    --sans: 'IBM Plex Sans Arabic', sans-serif;
+  }
+  *{ box-sizing: border-box; margin:0; padding:0; }
+  html{ scroll-behavior: smooth; }
+  body{
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+  body::before{
+    content:'';
+    position: fixed; inset:0;
+    background-image:
+      linear-gradient(var(--line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--line) 1px, transparent 1px);
+    background-size: 64px 64px;
+    opacity: 0.12;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .wrap{ position: relative; z-index: 1; max-width: 920px; margin: 0 auto; padding: 0 24px; }
+
+  header{ padding: 56px 0 40px; border-bottom: 1px solid var(--line); }
+  .eyebrow{
+    font-family: var(--mono); font-size: 12.5px; letter-spacing: 0.12em;
+    color: var(--red); display:flex; align-items:center; gap:10px; margin-bottom: 22px;
+  }
+  .eyebrow .dot{ width:7px; height:7px; border-radius:50%; background: var(--red); box-shadow: 0 0 0 3px var(--red-dim); }
+  h1{ font-size: clamp(28px, 4.2vw, 40px); font-weight:700; letter-spacing:-0.01em; margin-bottom:16px; }
+  h1 span{ color: var(--amber); }
+  .lede{ color: var(--text-dim); font-size: 16.5px; max-width: 640px; }
+  .lede b{ color: var(--text); font-weight:600; }
+  .meta-row{
+    display:flex; gap: 22px; flex-wrap: wrap; margin-top: 26px;
+    font-family: var(--mono); font-size: 12.5px; color: var(--text-faint);
+  }
+  .meta-row span b{ color: var(--text-dim); font-weight: 500; }
+
+  section{ padding: 52px 0; border-bottom: 1px solid var(--line); }
+  section:last-of-type{ border-bottom:none; }
+  .section-head{ margin-bottom: 30px; }
+  .section-num{ font-family: var(--mono); font-size: 12px; color: var(--text-faint); letter-spacing:0.1em; margin-bottom:8px; }
+  h2{ font-size: 22px; font-weight:600; }
+
+  /* screenshots */
+  .shots{ display:grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 4px; }
+  @media (max-width: 720px){ .shots{ grid-template-columns: 1fr; } }
+  .shot{
+    background: var(--bg-card); border: 1px solid var(--line); border-radius: 12px;
+    overflow: hidden;
+  }
+  .shot img{ width: 100%; display:block; }
+  .shot-cap{
+    font-family: var(--mono); font-size: 11.5px; color: var(--text-faint);
+    padding: 10px 14px; border-top: 1px solid var(--line);
+  }
+  .shot-cap b{ color: var(--text-dim); }
+
+  /* steps */
+  .steps{ counter-reset: step; display:flex; flex-direction:column; gap: 0; }
+  .step{
+    display:flex; gap: 18px; padding: 20px 0;
+    border-bottom: 1px dashed var(--line);
+  }
+  .step:last-child{ border-bottom: none; }
+  .step-num{
+    counter-increment: step;
+    font-family: var(--mono); font-size: 13px; font-weight: 600;
+    width: 34px; height: 34px; flex-shrink:0;
+    border-radius: 8px;
+    background: var(--bg-card); border: 1px solid var(--line);
+    display:flex; align-items:center; justify-content:center;
+    color: var(--teal);
+  }
+  .step-num::before{ content: counter(step); }
+  .step-body{ padding-top: 4px; }
+  .step-title{ font-weight: 600; font-size: 15.5px; margin-bottom: 4px; }
+  .step-desc{ font-size: 14px; color: var(--text-dim); }
+
+  /* documents checklist */
+  .docs{ display:grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  @media (max-width: 720px){ .docs{ grid-template-columns: 1fr; } }
+  .doc-card{
+    background: var(--bg-card); border: 1px solid var(--line); border-radius: 12px;
+    padding: 20px 18px;
+  }
+  .doc-icon{
+    width: 34px; height: 34px; border-radius: 8px;
+    background: var(--teal-dim); color: var(--teal);
+    display:flex; align-items:center; justify-content:center;
+    margin-bottom: 14px;
+  }
+  .doc-title{ font-weight: 600; font-size: 14.5px; margin-bottom: 6px; }
+  .doc-desc{ font-size: 13px; color: var(--text-dim); }
+
+  /* ticket path */
+  .path-strip{
+    display:flex; align-items:center; flex-wrap: wrap; gap: 0;
+    background: var(--bg-raised); border: 1px solid var(--line);
+    border-radius: 12px; padding: 22px;
+  }
+  .path-node{
+    font-family: var(--mono); font-size: 13px;
+    background: var(--bg-card); border: 1px solid var(--line);
+    color: var(--text);
+    padding: 10px 16px; border-radius: 8px;
+    white-space: nowrap;
+  }
+  .path-node.final{ border-color: var(--amber); color: var(--amber); background: var(--amber-dim); }
+  .path-arrow{ color: var(--text-faint); padding: 0 10px; font-size: 15px; flex-shrink:0; }
+  .path-tag{
+    margin-top: 16px;
+    display:inline-flex; align-items:center; gap: 8px;
+    font-family: var(--mono); font-size: 12.5px;
+    color: var(--red);
+    background: var(--red-dim);
+    border: 1px solid rgba(229,86,107,0.3);
+    padding: 8px 14px; border-radius: 999px;
+  }
+
+  .note-strip{
+    margin-top: 24px;
+    background: var(--red-dim);
+    border: 1px solid rgba(229,86,107,0.3);
+    border-radius: 10px;
+    padding: 14px 18px;
+    font-size: 14px;
+    color: #F0A5B0;
+    display:flex; gap: 10px; align-items: flex-start;
+  }
+  .note-strip svg{ flex-shrink:0; margin-top: 3px; }
+  .note-strip b{ color: #fff; }
+
+  footer{
+    padding: 32px 0 56px; text-align:center;
+    color: var(--text-faint); font-family: var(--mono); font-size: 12px;
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <header>
+    <div class="eyebrow"><span class="dot"></span>BSS &nbsp;·&nbsp; إجراء تعديل بيانات الخطوط المسجلة بدون بيانات</div>
+    <h1>إجراء التعامل مع خطوط <span>No Name</span> عند توجه العميل للفرع</h1>
+    <p class="lede">عند توجّه عميل يملك خطًا مسجّلًا بدون بيانات (<b>No Name</b>) إلى الفرع، يجب اتباع الخطوات التالية بالترتيب قبل تعديل أي بيانات أو باقات على الخط.</p>
+    <div class="meta-row">
+      <span>النوع: <b>No Name Line</b></span>
+      <span>الجهة المسؤولة: <b>الإدارة المختصة</b></span>
+      <span>الحالة المطلوبة: <b>MOI</b></span>
+    </div>
+  </header>
+
+  <section id="context">
+    <div class="section-head">
+      <div class="section-num">مثال من النظام</div>
+      <h2>كيف تظهر بيانات الخط في BSS</h2>
+    </div>
+    <div class="shots">
+      <div class="shot">
+        <img src="data:image/png;base64,__B_B64__" alt="Confidential Data Comments History">
+        <div class="shot-cap"><b>سجل الملاحظات (Comments History)</b> — يظهر سبب التحويل: تعديل خصوصية وزارة الداخلية من أنظمة الشركات إلى الأفراد</div>
+      </div>
+      <div class="shot">
+        <img src="data:image/png;base64,__A_B64__" alt="Customer Info noname">
+        <div class="shot-cap"><b>بيانات العميل (Customer Info)</b> — الاسم الأول يظهر كـ "noname" والرصيد الحالي 0.00</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="steps">
+    <div class="section-head">
+      <div class="section-num">خطوة بخطوة</div>
+      <h2>إجراءات الفرع</h2>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num"></div>
+        <div class="step-body">
+          <div class="step-title">التأكد من وجود الشريحة مع العميل</div>
+          <div class="step-desc">لا تُستكمل أي خطوة تالية قبل التحقق الفعلي من أن الشريحة (SIM) بحوزة العميل.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num"></div>
+        <div class="step-body">
+          <div class="step-title">توقيع العميل على عقد جديد</div>
+          <div class="step-desc">يوقّع العميل عقدًا جديدًا يوثّق بياناته الشخصية على الخط.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num"></div>
+        <div class="step-body">
+          <div class="step-title">رفع المستندات على BSS</div>
+          <div class="step-desc">يتم عمل Scan ورفع العقد الجديد وبطاقة الرقم القومي السارية (ملونة) بالإضافة إلى الشريحة على نظام BSS.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num"></div>
+        <div class="step-body">
+          <div class="step-title">إنشاء تيكت تعديل البيانات</div>
+          <div class="step-desc">إنشاء التيكت عبر مسار الإدارة المختصة (موضح أدناه)، مع إرفاق نفس المستندات وكتابة <b>MOI</b> في نص التيكت.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="docs">
+    <div class="section-head">
+      <div class="section-num">المستندات المطلوبة</div>
+      <h2>ماذا يُرفق في التيكت</h2>
+    </div>
+    <div class="docs">
+      <div class="doc-card">
+        <div class="doc-icon">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 1.5H10L13 4.5V14.5H4V1.5Z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/><path d="M10 1.5V4.5H13" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg>
+        </div>
+        <div class="doc-title">العقد الجديد</div>
+        <div class="doc-desc">موقّع من العميل، وممسوح ضوئيًا (Scan) على BSS.</div>
+      </div>
+      <div class="doc-card">
+        <div class="doc-icon">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="1.5" y="3.5" width="13" height="9" rx="1.2" stroke="currentColor" stroke-width="1.3"/><circle cx="5" cy="8" r="1.3" stroke="currentColor" stroke-width="1.1"/><path d="M8.5 6.5H12.5M8.5 9.5H11" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/></svg>
+        </div>
+        <div class="doc-title">بطاقة الرقم القومي</div>
+        <div class="doc-desc">نسخة سارية وملوّنة (غير أبيض وأسود).</div>
+      </div>
+      <div class="doc-card">
+        <div class="doc-icon">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="5" width="12" height="7" rx="1.2" stroke="currentColor" stroke-width="1.3"/><path d="M5 5V3.8C5 3 5.6 2.5 6.5 2.5H9.5C10.4 2.5 11 3 11 3.8V5" stroke="currentColor" stroke-width="1.3"/></svg>
+        </div>
+        <div class="doc-title">الشريحة (SIM)</div>
+        <div class="doc-desc">نسخة ممسوحة ضوئيًا (Scan) من الشريحة نفسها.</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="ticket">
+    <div class="section-head">
+      <div class="section-num">مسار التيكت</div>
+      <h2>من خلال أي إدارة يُفتح التيكت</h2>
+    </div>
+    <div class="path-strip">
+      <div class="path-node">GSM</div><div class="path-arrow">←</div>
+      <div class="path-node">Request</div><div class="path-arrow">←</div>
+      <div class="path-node">Corporate SPOC</div><div class="path-arrow">←</div>
+      <div class="path-node">Registration</div><div class="path-arrow">←</div>
+      <div class="path-node final">Corp New Account</div>
+    </div>
+    <div class="path-tag">
+      <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 1L11 10H1L6 1Z" stroke="#E5566B" stroke-width="1" stroke-linejoin="round"/></svg>
+      يجب كتابة "MOI" في نص التيكت
+    </div>
+
+    <div class="note-strip">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 1L15 14H1L8 1Z" stroke="#F0A5B0" stroke-width="1.3" stroke-linejoin="round"/><path d="M8 6V9.5" stroke="#F0A5B0" stroke-width="1.3" stroke-linecap="round"/><circle cx="8" cy="11.8" r="0.9" fill="#F0A5B0"/></svg>
+      <span><b>ملحوظة هامة:</b> لا يتم تعديل أي باقات للعميل إلا بعد تعديل البيانات من الإدارة المختصة أولًا.</span>
+    </div>
+  </section>
+
+  <footer>
+    منقول من إيميل داخلي — إجراء خطوط No Name — للاستخدام الداخلي فقط
+  </footer>
+
+</div>
+
+</body>
+</html>

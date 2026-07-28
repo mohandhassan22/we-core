@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>تحديثات BSS — آلية استلام جهاز ONT</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #0B1220;
+    --bg-raised: #121B2E;
+    --bg-card: #16213A;
+    --line: #263352;
+    --text: #E7ECF7;
+    --text-dim: #8D9AB8;
+    --text-faint: #5C6889;
+    --amber: #F2994A;
+    --amber-dim: #4A3320;
+    --teal: #45D0C4;
+    --teal-dim: #163A38;
+    --mono: 'IBM Plex Mono', monospace;
+    --sans: 'IBM Plex Sans Arabic', sans-serif;
+  }
+  *{ box-sizing: border-box; margin:0; padding:0; }
+  html{ scroll-behavior: smooth; }
+  body{
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+  body::before{
+    content:'';
+    position: fixed; inset:0;
+    background-image:
+      linear-gradient(var(--line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--line) 1px, transparent 1px);
+    background-size: 64px 64px;
+    opacity: 0.12;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .wrap{ position: relative; z-index: 1; max-width: 1080px; margin: 0 auto; padding: 0 24px; }
+
+  /* ---- Header / hero ---- */
+  header{
+    padding: 56px 0 40px;
+    border-bottom: 1px solid var(--line);
+  }
+  .eyebrow{
+    font-family: var(--mono);
+    font-size: 12.5px;
+    letter-spacing: 0.12em;
+    color: var(--teal);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 22px;
+  }
+  .eyebrow .dot{
+    width: 7px; height: 7px; border-radius: 50%;
+    background: var(--teal);
+    box-shadow: 0 0 0 3px var(--teal-dim);
+  }
+  h1{
+    font-size: clamp(30px, 4.4vw, 44px);
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    margin-bottom: 16px;
+  }
+  h1 span{ color: var(--amber); }
+  .lede{
+    color: var(--text-dim);
+    font-size: 16.5px;
+    max-width: 640px;
+    margin-bottom: 6px;
+  }
+  .lede b{ color: var(--text); font-weight: 600; }
+  .meta-row{
+    display:flex; gap: 22px; flex-wrap: wrap;
+    margin-top: 26px;
+    font-family: var(--mono);
+    font-size: 12.5px;
+    color: var(--text-faint);
+  }
+  .meta-row span b{ color: var(--text-dim); font-weight: 500; }
+
+  /* ---- Signature: route legend ---- */
+  .route-legend{
+    display:flex; gap: 14px; margin-top: 28px; flex-wrap: wrap;
+  }
+  .route-chip{
+    display:flex; align-items:center; gap:9px;
+    padding: 9px 14px;
+    background: var(--bg-raised);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    font-size: 13.5px;
+    color: var(--text-dim);
+  }
+  .route-chip svg{ flex-shrink:0; }
+  .route-chip.indoor svg circle{ fill: var(--teal); }
+  .route-chip.visit svg circle{ fill: var(--amber); }
+
+  /* ---- Sections ---- */
+  section{ padding: 52px 0; border-bottom: 1px solid var(--line); }
+  .section-head{ margin-bottom: 30px; }
+  .section-num{
+    font-family: var(--mono);
+    font-size: 12px; color: var(--text-faint);
+    letter-spacing: 0.1em;
+    margin-bottom: 8px;
+  }
+  h2{ font-size: 24px; font-weight: 600; }
+
+  /* ---- Rule cards (the 3 cases) ---- */
+  .rules{ display:grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  @media (max-width: 860px){ .rules{ grid-template-columns: 1fr; } }
+  .rule-card{
+    background: var(--bg-card);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 22px 20px;
+    position: relative;
+    overflow: hidden;
+  }
+  .rule-card::before{
+    content: attr(data-case);
+    position: absolute;
+    top: -14px; left: -6px;
+    font-family: var(--mono);
+    font-size: 76px;
+    font-weight: 600;
+    color: var(--line);
+    line-height: 1;
+    z-index: 0;
+    user-select: none;
+  }
+  .rule-card > *{ position: relative; z-index: 1; }
+  .rule-title{
+    font-weight: 600;
+    font-size: 16px;
+    margin-bottom: 14px;
+    min-height: 44px;
+  }
+  .badges{ display:flex; gap: 8px; margin-bottom: 14px; flex-wrap: wrap; }
+  .badge{
+    font-family: var(--mono);
+    font-size: 11.5px;
+    padding: 5px 10px;
+    border-radius: 999px;
+    letter-spacing: 0.02em;
+  }
+  .badge.indoor{ background: var(--teal-dim); color: var(--teal); border: 1px solid rgba(69,208,196,0.3); }
+  .badge.visit{ background: var(--amber-dim); color: var(--amber); border: 1px solid rgba(242,153,74,0.3); }
+  .rule-desc{ font-size: 13.5px; color: var(--text-dim); }
+  .rule-desc + .rule-desc{ margin-top: 10px; padding-top: 10px; border-top: 1px dashed var(--line); }
+  .rule-desc b{ color: var(--text); font-weight: 600; }
+
+  .note-strip{
+    margin-top: 20px;
+    background: var(--amber-dim);
+    border: 1px solid rgba(242,153,74,0.3);
+    border-radius: 10px;
+    padding: 14px 18px;
+    font-size: 14px;
+    color: #F3C89A;
+    display:flex; gap: 10px; align-items: flex-start;
+  }
+  .note-strip svg{ flex-shrink:0; margin-top: 3px; }
+
+  /* ---- Table section ---- */
+  .table-controls{
+    display:flex; gap: 12px; margin-bottom: 22px; flex-wrap: wrap;
+    align-items: center;
+  }
+  #search{
+    flex: 1; min-width: 220px;
+    background: var(--bg-raised);
+    border: 1px solid var(--line);
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 14.5px;
+    padding: 12px 16px;
+    border-radius: 8px;
+    outline: none;
+    transition: border-color 0.15s;
+  }
+  #search:focus{ border-color: var(--amber); }
+  #search::placeholder{ color: var(--text-faint); }
+  .city-filters{ display:flex; gap: 8px; }
+  .city-btn{
+    font-family: var(--mono);
+    font-size: 12.5px;
+    background: var(--bg-raised);
+    border: 1px solid var(--line);
+    color: var(--text-dim);
+    padding: 11px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .city-btn:hover{ border-color: var(--text-faint); }
+  .city-btn.active{ background: var(--amber-dim); border-color: var(--amber); color: var(--amber); }
+
+  .count-line{
+    font-family: var(--mono); font-size: 12.5px; color: var(--text-faint);
+    margin-bottom: 14px;
+  }
+  .count-line b{ color: var(--teal); font-weight: 500; }
+
+  .table-scroll{
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  table{ width: 100%; border-collapse: collapse; font-size: 13.5px; }
+  thead th{
+    background: var(--bg-raised);
+    color: var(--text-faint);
+    font-family: var(--mono);
+    font-weight: 500;
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    text-align: right;
+    padding: 12px 14px;
+    border-bottom: 1px solid var(--line);
+    white-space: nowrap;
+  }
+  tbody td{
+    padding: 12px 14px;
+    border-bottom: 1px solid var(--line);
+    color: var(--text-dim);
+    white-space: nowrap;
+  }
+  tbody tr:last-child td{ border-bottom: none; }
+  tbody tr:hover{ background: var(--bg-card); }
+  tbody tr:hover td{ color: var(--text); }
+  td.sn{ font-family: var(--mono); color: var(--text-faint); }
+  td.compound{ color: var(--text); font-weight: 500; }
+  td.city-cell{
+    font-family: var(--mono); font-size: 12px;
+  }
+  td.pop{ font-family: var(--mono); font-size: 12px; }
+  .no-results{
+    text-align:center; padding: 40px 20px; color: var(--text-faint);
+    font-family: var(--mono); font-size: 13px;
+  }
+  .table-scroll-inner{ overflow-x: auto; }
+
+  footer{
+    padding: 32px 0 56px;
+    text-align: center;
+    color: var(--text-faint);
+    font-family: var(--mono);
+    font-size: 12px;
+  }
+
+  @media (max-width: 640px){
+    .table-controls{ flex-direction: column; align-items: stretch; }
+    .city-filters{ width: 100%; }
+    .city-btn{ flex: 1; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <header>
+    <div class="eyebrow"><span class="dot"></span>BSS &nbsp;·&nbsp; تحديث آلية تسليم جهاز ONT / ONU</div>
+    <h1>مين بياخد الجهاز <span>Installation Visit</span> ومين بياخده <span>Indoor</span>؟</h1>
+    <p class="lede">تم تحديث آلية استلام جهاز <b>ONT</b> في الحالتين (2) و(3)، بحيث يتم تسليم الجهاز من خلال <b>Installation Visit</b> أو <b>Indoor</b> وفقًا لاختيار العميل — باستثناء الكمبوندات الموضحة أدناه، والتي تُسلَّم عن طريق <b>Installation Visit</b> فقط.</p>
+    <div class="meta-row">
+      <span>من: <b>Mahmoud Abdelkader</b></span>
+      <span>الموضوع: <b>تحديثات BSS</b></span>
+      <span>عدد الكمبوندات المستثناة: <b>41</b></span>
+    </div>
+    <div class="route-legend">
+      <div class="route-chip indoor">
+        <svg width="10" height="10"><circle cx="5" cy="5" r="5"/></svg>
+        Indoor — يتم التسليم داخل مقر العميل عند التركيب
+      </div>
+      <div class="route-chip visit">
+        <svg width="10" height="10"><circle cx="5" cy="5" r="5"/></svg>
+        Installation Visit — يتم التسليم أثناء زيارة فنية مجدولة
+      </div>
+    </div>
+  </header>
+
+  <section id="rules">
+    <div class="section-head">
+      <div class="section-num">القاعدة العامة</div>
+      <h2>حالات استلام الجهاز الثلاث</h2>
+    </div>
+    <div class="rules">
+
+      <div class="rule-card" data-case="01">
+        <div class="rule-title">خط أرضي وإنترنت جديدَين معًا</div>
+        <div class="badges"><span class="badge indoor">Indoor فقط</span></div>
+        <div class="rule-desc">عميل يريد التعاقد على <b>خط أرضي جديد فقط</b> → يُسلَّم جهاز ONU عن طريق Indoor.</div>
+        <div class="rule-desc">عميل يريد التعاقد على <b>خط أرضي وإنترنت جديدَين معًا</b> → يُسلَّم جهاز ONT عن طريق Indoor.</div>
+      </div>
+
+      <div class="rule-card" data-case="02">
+        <div class="rule-title">خط أرضي قائم، وطلب إنترنت جديد</div>
+        <div class="badges"><span class="badge visit">Installation Visit</span><span class="badge indoor">Indoor</span></div>
+        <div class="rule-desc">عميل لديه <b>خط أرضي قائم</b> ويريد التعاقد على إنترنت جديد → يُسلَّم جهاز ONT وفقًا <b>لاختيار العميل</b>، عن طريق Installation Visit أو Indoor.</div>
+      </div>
+
+      <div class="rule-card" data-case="03">
+        <div class="rule-title">خط أرضي وإنترنت قائمَين</div>
+        <div class="badges"><span class="badge visit">Installation Visit</span><span class="badge indoor">Indoor</span></div>
+        <div class="rule-desc">عميل لديه <b>خط أرضي وإنترنت قائمَين</b> ويريد استلام جهاز → يُسلَّم جهاز ONT وفقًا <b>لاختيار العميل</b>، عن طريق Installation Visit أو Indoor.</div>
+      </div>
+
+    </div>
+
+    <div class="note-strip">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 1L15 14H1L8 1Z" stroke="#F3C89A" stroke-width="1.3" stroke-linejoin="round"/><path d="M8 6V9.5" stroke="#F3C89A" stroke-width="1.3" stroke-linecap="round"/><circle cx="8" cy="11.8" r="0.9" fill="#F3C89A"/></svg>
+      <span>استثناء: الكمبوندات الموضحة في الجدول أدناه — في الحالتين (2) و(3) — يتم تسليم الجهاز فيها عن طريق <b>Installation Visit</b> فقط، بغض النظر عن اختيار العميل.</span>
+    </div>
+  </section>
+
+  <section id="compounds">
+    <div class="section-head">
+      <div class="section-num">استثناء التسليم</div>
+      <h2>كمبوندات Installation Visit الإلزامية</h2>
+    </div>
+
+    <div class="table-controls">
+      <input id="search" type="text" placeholder="ابحث باسم الكمبوند، المنطقة، أو Compound ID…">
+      <div class="city-filters">
+        <button class="city-btn active" data-city="all">الكل</button>
+        <button class="city-btn" data-city="Cairo">Cairo</button>
+        <button class="city-btn" data-city="Marsa Matrouh">Marsa Matrouh</button>
+      </div>
+    </div>
+
+    <div class="count-line">عرض <b id="count">41</b> من 41 كمبوند</div>
+
+    <div class="table-scroll">
+      <div class="table-scroll-inner">
+      <table>
+        <thead>
+          <tr>
+            <th>S/N</th>
+            <th>City</th>
+            <th>Sector</th>
+            <th>Zone</th>
+            <th>PopID</th>
+            <th>Pop Name</th>
+            <th>Compound ID</th>
+            <th>Compound Name</th>
+          </tr>
+        </thead>
+        <tbody id="table-body"></tbody>
+      </table>
+      </div>
+      <div class="no-results" id="no-results" style="display:none;">لا توجد نتائج مطابقة للبحث</div>
+    </div>
+  </section>
+
+  <footer>
+    منقول من إيميل &laquo;تحديثات BSS&raquo; — للاستخدام الداخلي فقط
+  </footer>
+
+</div>
+
+<script>
+  const rows = [["1", "2", "Cairo", "قطاع القاهرة الجديدة", "المنطقة الاولى بالقاهرة الجديدة", "10", "Kattamia dunes", "5", "Diar Elnargess"], ["2", "2", "Cairo", "قطاع القاهرة الجديدة", "المنطقة الاولى بالقاهرة الجديدة", "10", "Kattamia dunes", "156", "Diar Elnargis"], ["3", "2", "Cairo", "قطاع القاهرة الجديدة", "المنطقة الاولى بالقاهرة الجديدة", "17", "Shamal Elmostasmereen", "297", "Porto New Cairo"], ["4", "2", "Cairo", "قطاع القاهرة الجديدة", "المنطقة الاولى بالقاهرة الجديدة", "17", "Shamal Elmostasmereen", "36", "Park View"], ["5", "2", "Cairo", "قطاع القاهرة الجديدة", "المنطقة الاولى بالقاهرة الجديدة", "17", "Shamal Elmostasmereen", "56", "Emerald Park"], ["6", "2", "Cairo", "قطاع القاهرة الجديدة", "المنطقة الاولى بالقاهرة الجديدة", "17", "Shamal Elmostasmereen", "59", "Water way"], ["7", "2", "Cairo", "قطاع القاهرة الجديدة", "المنطقة الاولى بالقاهرة الجديدة", "17", "Shamal Elmostasmereen", "1203", "Jayd"], ["8", "2", "Cairo", "قطاع القاهرة الجديدة", "المنطقة الاولى بالقاهرة الجديدة", "12", "MADENTY", "1271", "East Hub"], ["9", "2", "Cairo", "قطاع القاهرة الجديدة", "المنطقة الاولى بالقاهرة الجديدة", "12", "MADENTY", "1041", "Open Air Mall"], ["10", "2", "Cairo", "اكتوبر", "الاولي اكتوبر", "44", "SHEIKHZAYED", "145", "CBP-2"], ["11", "2", "Cairo", "اكتوبر", "الاولي اكتوبر", "97", "SHEIKHZAYED2", "25", "Capital Business Park"], ["12", "2", "Cairo", "اكتوبر", "الاولي اكتوبر", "28", "Shik zayed 3", "12", "Sodic"], ["13", "2", "Cairo", "اكتوبر", "الاولي اكتوبر", "42", "SMARTVILLAGEHEADQUARTER", "32", "DAMACPARK"], ["14", "2", "Cairo", "اكتوبر", "الاولي اكتوبر", "44", "SHEIKHZAYED", "1141", "ZED West"], ["15", "2", "Cairo", "اكتوبر", "الاولي اكتوبر", "23", "6-Oct-04", "213", "Aeon"], ["16", "2", "Cairo", "اكتوبر", "الثانيه اكتوبر", "16", "Souk ElGomla", "867", "Palm Parks"], ["17", "2", "Cairo", "اكتوبر", "الاولي اكتوبر", "66", "PALMHILLSCABIN3", "173", "Palm Hills"], ["18", "2", "Cairo", "اكتوبر", "الاولي اكتوبر", "66", "PALMHILLSCABIN3", "875", "Palm Hills October"], ["19", "2", "Cairo", "اكتوبر", "الاولي اكتوبر", "66", "PALMHILLSCABIN3", "397", "Palm Valley"], ["20", "2", "Cairo", "اكتوبر", "الاولي اكتوبر", "66", "PALMHILLSCABIN3", "444", "Palm Central"], ["21", "2", "Cairo", "اكتوبر", "الاولي اكتوبر", "66", "PALMHILLSCABIN3", "1136", "Palm Height"], ["22", "2", "Cairo", "اكتوبر", "الثانيه اكتوبر", "135", "6-Oct-05", "1111", "Badya Palm Hills"], ["23", "46", "Marsa Matrouh", "الساحل الشمالي", "المنطقة الثالثة الساحل الشمالي", "328", "Alameen", "930", "Modryat Amn Alameen"], ["24", "46", "Marsa Matrouh", "الساحل الشمالي", "المنطقة الثالثة الساحل الشمالي", "328", "Alameen", "1214", "Fnade2 R2aset El Gomhoreya"], ["25", "46", "Marsa Matrouh", "الساحل الشمالي", "المنطقة الثالثة الساحل الشمالي", "328", "Alameen", "1249", "Montaga3 Wezaret EL Da5leya"], ["26", "46", "Marsa Matrouh", "الساحل الشمالي", "المنطقة الثالثة الساحل الشمالي", "328", "Alameen", "1299", "City Edge Project"], ["27", "46", "Marsa Matrouh", "الساحل الشمالي", "المنطقة الثالثة الساحل الشمالي", "29", "DABAAH", "78", "Tellal"], ["28", "46", "Marsa Matrouh", "الساحل الشمالي", "المنطقة الثالثة الساحل الشمالي", "29", "DABAAH", "327", "La Vista Bay"], ["29", "46", "Marsa Matrouh", "الساحل الشمالي", "المنطقة الثالثة الساحل الشمالي", "29", "DABAAH", "512", "La Vista Bay East"], ["30", "46", "Marsa Matrouh", "الساحل الشمالي", "المنطقة الثالثة الساحل الشمالي", "29", "DABAAH", "576", "El Mofael El Nawawy El Dabaa"], ["31", "46", "Marsa Matrouh", "الساحل الشمالي", "المنطقة الثالثة الساحل الشمالي", "29", "DABAAH", "1213", "Ghazala Bay"], ["32", "46", "Marsa Matrouh", "الساحل الشمالي", "المنطقة الثالثة الساحل الشمالي", "94", "Sidi Abd El Rahaman Cabinet 901", "223", "Diplo 3"], ["33", "46", "Marsa Matrouh", "الساحل الشمالي", "المنطقة الثالثة الساحل الشمالي", "226", "Sidi Henesh", "826", "Al Abd Resort"], ["34", "46", "Marsa Matrouh", "الساحل الشمالي", "المنطقة الثالثة الساحل الشمالي", "226", "Sidi Henesh", "1209", "Cesar El Abd"], ["35", "46", "Marsa Matrouh", "الساحل الشمالي", "المنطقة الثالثة الساحل الشمالي", "226", "Sidi Henesh", "1238", "Mountain View Ras El Hekma"], ["36", "46", "Marsa Matrouh", "الساحل الشمالي", "المنطقة الثالثة الساحل الشمالي", "226", "Sidi Henesh", "1399", "One Almaza"], ["37", "46", "Marsa Matrouh", "الساحل الشمالي", "المنطقة الثالثة الساحل الشمالي", "38", "SIDIABDELRAHMAN", "97", "Sea Shell"], ["38", "46", "Marsa Matrouh", "الساحل الشمالي", "المنطقة الثالثة الساحل الشمالي", "38", "SIDIABDELRAHMAN", "326", "Hacienda White"], ["39", "46", "Marsa Matrouh", "الساحل الشمالي", "المنطقة الثالثة الساحل الشمالي", "38", "SIDIABDELRAHMAN", "328", "Hacienda Red"], ["40", "46", "Marsa Matrouh", "الساحل الشمالي", "المنطقة الثالثة الساحل الشمالي", "38", "SIDIABDELRAHMAN", "823", "Diplo"], ["41", "46", "Marsa Matrouh", "الساحل الشمالي", "المنطقة الثالثة الساحل الشمالي", "38", "SIDIABDELRAHMAN", "895", "Amwaj"]];
+
+  const tbody = document.getElementById('table-body');
+  const searchInput = document.getElementById('search');
+  const countEl = document.getElementById('count');
+  const noResults = document.getElementById('no-results');
+  const cityBtns = document.querySelectorAll('.city-btn');
+  let activeCity = 'all';
+
+  function renderRow(r){
+    const [sn, areaCode, city, sector, zone, popId, popName, compId, compName] = r;
+    return `<tr>
+      <td class="sn">${sn}</td>
+      <td class="city-cell">${city}</td>
+      <td>${sector}</td>
+      <td>${zone}</td>
+      <td class="pop">${popId}</td>
+      <td>${popName}</td>
+      <td class="pop">${compId}</td>
+      <td class="compound">${compName}</td>
+    </tr>`;
+  }
+
+  function render(){
+    const q = searchInput.value.trim().toLowerCase();
+    const filtered = rows.filter(r => {
+      const cityMatch = activeCity === 'all' || r[2] === activeCity;
+      if(!cityMatch) return false;
+      if(!q) return true;
+      return r.some(field => field.toLowerCase().includes(q));
+    });
+    tbody.innerHTML = filtered.map(renderRow).join('');
+    countEl.textContent = filtered.length;
+    noResults.style.display = filtered.length ? 'none' : 'block';
+    document.querySelector('.table-scroll-inner').style.display = filtered.length ? 'block' : 'none';
+  }
+
+  searchInput.addEventListener('input', render);
+  cityBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      cityBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      activeCity = btn.dataset.city;
+      render();
+    });
+  });
+
+  render();
+</script>
+
+</body>
+</html>
