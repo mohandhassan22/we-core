@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>دليل عروض WE Air الداخلي</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;700;800;900&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --purple-deep:#3E1A5B;
+    --purple:#54277A;
+    --purple-soft:#EFE7F7;
+    --magenta:#E6007E;
+    --amber:#F5B700;
+    --bg:#F7F5FB;
+    --card:#FFFFFF;
+    --ink:#241B33;
+    --ink-soft:#6B6178;
+    --line:#E4DCF1;
+    --green:#1E8F6F;
+    --old-price:#A79BB8;
+    --radius:14px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'Tajawal', sans-serif;
+    font-size:16px;
+    line-height:1.8;
+  }
+  h1,h2,h3,h4,.brand,.nav a,.tag,.stat-num{
+    font-family:'Cairo', sans-serif;
+  }
+
+  /* ---------- Layout shell ---------- */
+  .shell{
+    display:flex;
+    min-height:100vh;
+  }
+  .sidebar{
+    width:270px;
+    flex-shrink:0;
+    background:linear-gradient(180deg,var(--purple-deep),var(--purple) 70%);
+    color:#fff;
+    position:sticky;
+    top:0;
+    height:100vh;
+    padding:28px 22px;
+    display:flex;
+    flex-direction:column;
+    gap:26px;
+  }
+  .brand{
+    font-weight:900;
+    font-size:1.5rem;
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  .brand .dot{
+    width:12px;height:12px;border-radius:50%;
+    background:var(--magenta);
+    box-shadow:0 0 0 4px rgba(230,0,126,.25);
+  }
+  .brand-sub{
+    font-size:.82rem;
+    color:#D9CBEE;
+    margin-top:-14px;
+  }
+  .nav{
+    display:flex;
+    flex-direction:column;
+    gap:4px;
+    margin-top:6px;
+  }
+  .nav a{
+    color:#EAE1F7;
+    text-decoration:none;
+    font-size:.95rem;
+    font-weight:700;
+    padding:11px 14px;
+    border-radius:10px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+    transition:.15s;
+    border:1px solid transparent;
+  }
+  .nav a .num{
+    font-family:'Cairo',sans-serif;
+    font-weight:800;
+    font-size:.75rem;
+    color:var(--magenta);
+    background:#fff;
+    width:22px;height:22px;
+    border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    flex-shrink:0;
+  }
+  .nav a:hover, .nav a.active{
+    background:rgba(255,255,255,.1);
+    border-color:rgba(255,255,255,.18);
+  }
+  .sidebar-foot{
+    margin-top:auto;
+    font-size:.78rem;
+    color:#C7B7E5;
+    border-top:1px solid rgba(255,255,255,.15);
+    padding-top:16px;
+  }
+  .main{
+    flex:1;
+    min-width:0;
+    padding:36px 44px 80px;
+  }
+  .mobile-toggle{display:none;}
+
+  /* ---------- Hero / finder ---------- */
+  .hero{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:20px;
+    padding:30px 34px;
+    margin-bottom:30px;
+    position:relative;
+    overflow:hidden;
+  }
+  .hero::before{
+    content:"";
+    position:absolute; inset:0;
+    background:radial-gradient(600px 200px at 100% 0%, rgba(230,0,126,.08), transparent 60%);
+    pointer-events:none;
+  }
+  .eyebrow{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    font-size:.78rem;
+    font-weight:700;
+    color:var(--magenta);
+    background:#FDEAF3;
+    padding:5px 12px;
+    border-radius:100px;
+    margin-bottom:14px;
+  }
+  .hero h1{
+    font-size:1.9rem;
+    margin:0 0 8px;
+    color:var(--purple-deep);
+  }
+  .hero p.lead{
+    color:var(--ink-soft);
+    max-width:640px;
+    margin:0 0 22px;
+    font-size:.98rem;
+  }
+  .finder-label{
+    font-weight:700;
+    font-size:.92rem;
+    color:var(--ink);
+    margin-bottom:12px;
+    display:block;
+  }
+  .finder-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:12px;
+  }
+  .finder-btn{
+    background:var(--purple-soft);
+    border:1.5px solid transparent;
+    border-radius:12px;
+    padding:16px 14px;
+    text-align:right;
+    cursor:pointer;
+    font-family:'Tajawal',sans-serif;
+    transition:.15s;
+    color:var(--ink);
+  }
+  .finder-btn:hover{
+    border-color:var(--magenta);
+    background:#fff;
+    transform:translateY(-2px);
+  }
+  .finder-btn .ft-title{
+    font-weight:700;
+    font-size:.92rem;
+    display:block;
+    margin-bottom:4px;
+    color:var(--purple-deep);
+  }
+  .finder-btn .ft-sub{
+    font-size:.78rem;
+    color:var(--ink-soft);
+  }
+
+  /* ---------- Sections ---------- */
+  section.block{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:20px;
+    padding:32px 34px;
+    margin-bottom:26px;
+    scroll-margin-top:24px;
+    transition:box-shadow .4s, border-color .4s;
+  }
+  section.block.flash{
+    box-shadow:0 0 0 3px var(--magenta);
+    border-color:var(--magenta);
+  }
+  .block-head{
+    display:flex;
+    align-items:flex-start;
+    gap:14px;
+    margin-bottom:6px;
+  }
+  .block-icon{
+    width:44px;height:44px;
+    border-radius:12px;
+    background:var(--purple-soft);
+    color:var(--purple-deep);
+    display:flex;align-items:center;justify-content:center;
+    font-size:1.3rem;
+    flex-shrink:0;
+  }
+  .block-head h2{
+    font-size:1.35rem;
+    margin:0;
+    color:var(--purple-deep);
+  }
+  .date-chip{
+    display:inline-block;
+    font-size:.78rem;
+    color:var(--green);
+    background:#E5F5F0;
+    padding:3px 10px;
+    border-radius:100px;
+    font-weight:700;
+    margin-top:6px;
+  }
+  .block p.intro{
+    color:var(--ink-soft);
+    font-size:.95rem;
+    margin:14px 0 22px;
+    line-height:1.9;
+  }
+  h3.sub{
+    font-family:'Cairo',sans-serif;
+    font-size:1.02rem;
+    color:var(--purple);
+    margin:24px 0 12px;
+    padding-right:14px;
+    border-right:4px solid var(--magenta);
+  }
+  ol.steps{
+    margin:0 0 8px;
+    padding-right:22px;
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+  }
+  ol.steps li{
+    font-size:.94rem;
+  }
+  ul.bullets{
+    margin:0 0 8px;
+    padding-right:22px;
+    display:flex;
+    flex-direction:column;
+    gap:9px;
+  }
+  ul.bullets li{
+    font-size:.94rem;
+  }
+  mark.hl{
+    background:#FFF1B8;
+    padding:1px 5px;
+    border-radius:4px;
+  }
+  code.tag{
+    background:var(--purple-soft);
+    color:var(--purple-deep);
+    padding:2px 8px;
+    border-radius:6px;
+    font-family:'Cairo',sans-serif;
+    font-size:.85em;
+    font-weight:700;
+  }
+
+  /* ---------- Tables ---------- */
+  .table-wrap{
+    overflow-x:auto;
+    border-radius:14px;
+    border:1px solid var(--line);
+  }
+  table{
+    border-collapse:collapse;
+    width:100%;
+    min-width:560px;
+    font-size:.92rem;
+  }
+  thead th{
+    background:var(--purple-deep);
+    color:#fff;
+    font-family:'Cairo',sans-serif;
+    font-weight:700;
+    text-align:center;
+    padding:12px 10px;
+    font-size:.85rem;
+  }
+  tbody td{
+    text-align:center;
+    padding:12px 10px;
+    border-top:1px solid var(--line);
+  }
+  tbody tr:nth-child(even){ background:#FBF9FE; }
+  tbody tr:hover{ background:var(--purple-soft); }
+  td.amount{
+    font-family:'Cairo',sans-serif;
+    font-weight:800;
+    color:var(--purple-deep);
+    font-size:1.02rem;
+  }
+  td.addon-name{
+    font-family:'Cairo',sans-serif;
+    font-weight:700;
+    font-size:.82rem;
+    color:var(--ink);
+  }
+  td.price-old{
+    color:var(--old-price);
+    text-decoration:line-through;
+    font-size:.85rem;
+  }
+  td.price-new{
+    font-family:'Cairo',sans-serif;
+    font-weight:800;
+    color:var(--green);
+  }
+  td.plan-name{
+    font-family:'Cairo',sans-serif;
+    font-weight:800;
+    color:#fff;
+    background:var(--magenta);
+    border-radius:8px;
+  }
+
+  /* ---------- Notes / callouts ---------- */
+  .callout{
+    display:flex;
+    gap:12px;
+    background:#FFF8E8;
+    border:1px solid #F3DE9E;
+    border-radius:12px;
+    padding:16px 18px;
+    margin-top:18px;
+    font-size:.92rem;
+  }
+  .callout.warn{
+    background:#FDECEE;
+    border-color:#F3B9C3;
+  }
+  .callout .ic{ font-size:1.1rem; flex-shrink:0; }
+
+  /* ---------- Footer notes section ---------- */
+  .notes-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:18px;
+  }
+  .note-card{
+    background:var(--purple-deep);
+    color:#fff;
+    border-radius:16px;
+    padding:22px 24px;
+  }
+  .note-card h4{
+    font-size:1rem;
+    margin:0 0 10px;
+    color:#FBD5E9;
+    display:flex;align-items:center;gap:8px;
+  }
+  .note-card p{
+    font-size:.88rem;
+    color:#E8DEF5;
+    margin:0;
+    line-height:1.9;
+  }
+
+  footer.page-foot{
+    text-align:center;
+    color:var(--ink-soft);
+    font-size:.8rem;
+    margin-top:20px;
+  }
+
+  @media (max-width: 900px){
+    .sidebar{
+      position:fixed;
+      right:0; top:0;
+      transform:translateX(100%);
+      z-index:50;
+      transition:transform .25s;
+      box-shadow:-10px 0 30px rgba(0,0,0,.2);
+    }
+    .sidebar.open{ transform:translateX(0); }
+    .main{ padding:20px 16px 60px; }
+    .mobile-toggle{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      background:var(--purple-deep);
+      color:#fff;
+      border:none;
+      padding:12px 16px;
+      border-radius:12px;
+      font-family:'Cairo',sans-serif;
+      font-weight:700;
+      margin-bottom:16px;
+      cursor:pointer;
+    }
+    .finder-grid{ grid-template-columns:1fr 1fr; }
+    .notes-grid{ grid-template-columns:1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="shell">
+  <aside class="sidebar" id="sidebar">
+    <div>
+      <div class="brand"><span class="dot"></span>WE Air</div>
+      <div class="brand-sub">دليل العروض الداخلي</div>
+    </div>
+    <nav class="nav" id="navLinks">
+      <a href="#waitlist"><span class="num">1</span> عروض عملاء قوائم الانتظار</a>
+      <a href="#landline"><span class="num">2</span> عرض بديل الخط الأرضي</a>
+      <a href="#pricing"><span class="num">3</span> جدول الأسعار الجديد</a>
+      <a href="#cashout"><span class="num">4</span> جدول Cash-out للراوتر</a>
+      <a href="#notes"><span class="num">!</span> ملاحظات هامة</a>
+    </nav>
+    <div class="sidebar-foot">
+      للاستخدام الداخلي لموظفي المبيعات وخدمة العملاء فقط — يُرجى مراجعة أحقية العميل عبر Customer 360 قبل أي تعاقد.
+    </div>
+  </aside>
+
+  <main class="main">
+    <button class="mobile-toggle" id="mobileToggle">☰ القائمة</button>
+
+    <div class="hero">
+      <span class="eyebrow">● مرجع سريع لفريق البيع</span>
+      <h1>دليل عروض WE Air لخطوط الانتظار والخط الأرضي</h1>
+      <p class="lead">مرجع موحّد لكل عروض WE Air الخاصة بالعملاء غير المتاح لهم إمكانية فنية للتعاقد على خط أرضي: تفاصيل العرض، خطوات الاشتراك، جدول الأسعار المحدّث، وجدول استرداد قيمة الراوتر (Cash-out).</p>
+
+      <span class="finder-label">🔍 حدّد حالة العميل لعرض القسم المناسب مباشرة:</span>
+      <div class="finder-grid">
+        <button class="finder-btn" data-target="waitlist">
+          <span class="ft-title">عميل من قوائم الانتظار</span>
+          <span class="ft-sub">عرض 50% جيجابايت + راوتر بالإيجار</span>
+        </button>
+        <button class="finder-btn" data-target="landline">
+          <span class="ft-title">عميل جديد بدون خط أرضي</span>
+          <span class="ft-sub">عرض 650 جيجابايت + راوتر بالإيجار</span>
+        </button>
+        <button class="finder-btn" data-target="pricing">
+          <span class="ft-title">سؤال عن سعر الباقة</span>
+          <span class="ft-sub">مقارنة السعر القديم والجديد</span>
+        </button>
+        <button class="finder-btn" data-target="cashout">
+          <span class="ft-title">عميل يريد إلغاء/استبدال الراوتر</span>
+          <span class="ft-sub">جدول قيمة الاسترداد حسب المدة</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- ============ SECTION 1: WAITLIST ============ -->
+    <section class="block" id="waitlist">
+      <div class="block-head">
+        <div class="block-icon">⏳</div>
+        <div>
+          <h2>عرض WE Air لعملاء قوائم الانتظار</h2>
+        </div>
+      </div>
+      <p class="intro">بعض العملاء الذين ليس لديهم إمكانية فنية للتعاقد على الخط الأرضي يحصلون على العرض التالي على باقات WE Air:</p>
+
+      <ul class="bullets">
+        <li>عرض <strong>50%</strong> جيجابايتس زيادة على باقة WE Air لمدة سنة.</li>
+        <li>راوتر إيجار WE Air موديل <code class="tag">ZTE K10 CAT4</code> بمقابل <strong>50 جنيه</strong> شهريًا.</li>
+      </ul>
+
+      <h3 class="sub">كيفية الحصول على العرض</h3>
+      <ol class="steps">
+        <li>يقوم أحد ممثلي خدمة العملاء بالاتصال ببعض العملاء المستحقين للعرض لإخبارهم بالعرض الموضح أعلاه وتوجيه العميل لأقرب فرع.</li>
+        <li>يتحقق موظف المبيعات من أحقية العميل للعرض عن طريق <mark class="hl">"Customer 360"</mark>.</li>
+        <li>يتقدم العميل للفرع بمستندات التعاقد ويتعاقد على إحدى باقات WE Air والحصول على راوتر بإيجار شهري (50 جنيه)، أو يمكن للعميل شراء الراوتر كاش حسب رغبته.</li>
+      </ol>
+
+      <div class="callout warn">
+        <span class="ic">⚠️</span>
+        <span>في حالة طلب العميل الحصول على راوتر آخر، أو إلغاء الخدمة، أو الحصول على إيجار آخر — يجب على العميل دفع ثمن الراوتر الحالي <strong>بالكامل</strong> حسب عدد السنين، كما هو موضح في جدول الـ Cash-out (قسم 4).</span>
+      </div>
+    </section>
+
+    <!-- ============ SECTION 2: LANDLINE ALTERNATIVE ============ -->
+    <section class="block" id="landline">
+      <div class="block-head">
+        <div class="block-icon">🏠</div>
+        <div>
+          <h2>عرض بديل الخط الأرضي على باقات WE Air</h2>
+          <span class="date-chip">سريان اعتبارًا من الأحد 12 أبريل 2026</span>
+        </div>
+      </div>
+      <p class="intro">يُطلق عرض على باقات WE Air للعملاء الغير متاح لهم إمكانية فنية للتعاقد على خط أرضي.</p>
+
+      <ul class="bullets">
+        <li>عرض <strong>650 جيجابايت</strong> زيادة على باقة WE Air لمدة سنة.</li>
+        <li>راوتر إيجار WE Air موديل <code class="tag">ZTE K10 CAT4</code> بمقابل <strong>50 جنيه</strong> شهريًا.</li>
+      </ul>
+
+      <h3 class="sub">كيفية الحصول على العرض</h3>
+      <ol class="steps">
+        <li>يقوم أحد ممثلي خدمة العملاء بالاتصال بالعملاء المستحقين لإخبارهم بالعرض الموضح أعلاه وتوجيه العميل لأقرب فرع.</li>
+        <li>يتحقق موظف المبيعات من أحقية العميل للعرض عن طريق <mark class="hl">"Customer 360"</mark>.</li>
+        <li>يتقدم العميل للفرع بمستندات التعاقد ويتعاقد على إحدى باقات WE Air ويحصل على راوتر بإيجار شهري (50 جنيه)، أو يمكن للعميل شراء الراوتر كاش حسب رغبته.</li>
+        <li>تتم إضافة جيجابايتس العرض خلال <strong>24 ساعة</strong> من تاريخ التعاقد.</li>
+      </ol>
+
+      <h3 class="sub">خطوات تفعيل إيجار الراوتر حسب نظام الدفع</h3>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px;">
+        <div>
+          <strong style="font-family:'Cairo',sans-serif;color:var(--purple);">WE Air مسبق الدفع</strong>
+          <ol class="steps" style="margin-top:10px;">
+            <li>إضافة الجهاز عبر <code class="tag">Change Offering – Waiting List</code>.</li>
+            <li>إضافة الـ Add-on الخاصة برسوم استخدام الراوتر <em>(ZTE K10 CAT4 Router – Home 4G – Rental)</em> خلال عملية التعاقد، مع شحن رصيد العميل بمبلغ 50 جنيه بدون الضريبة.</li>
+          </ol>
+        </div>
+        <div>
+          <strong style="font-family:'Cairo',sans-serif;color:var(--purple);">WE Air الفاتورة</strong>
+          <ol class="steps" style="margin-top:10px;">
+            <li>إضافة الجهاز عبر <code class="tag">Change Offering – Waiting List</code>.</li>
+            <li>إضافة الـ Add-on الخاصة برسوم استخدام الراوتر <em>(ZTE K10 CAT4 Router – Home 4G – Rental)</em>، مع التأكد من أن الـ Credit Limit الخاص بالعميل يسمح بدفع 50 جنيه قبل ميعاد تجديد الفاتورة.</li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="callout warn">
+        <span class="ic">⚠️</span>
+        <span>في حالة طلب العميل الحصول على راوتر آخر، أو إلغاء الخدمة، أو الحصول على إيجار آخر — يجب على العميل دفع ثمن الراوتر الحالي بالكامل حسب عدد السنين الموضحة في جدول الـ Cash-out (قسم 4).</span>
+      </div>
+    </section>
+
+    <!-- ============ SECTION 3: NEW PRICING TABLE ============ -->
+    <section class="block" id="pricing">
+      <div class="block-head">
+        <div class="block-icon">💳</div>
+        <div>
+          <h2>إعادة تسعير باقات WE Air</h2>
+          <span class="date-chip">سريان اعتبارًا من السبت 9 مايو 2026</span>
+        </div>
+      </div>
+      <p class="intro">يتم إعادة تسعير باقات WE Air للعملاء الغير متاح لهم إمكانية فنية للتعاقد على خط أرضي، وذلك نتيجة المتغيرات الاقتصادية والتشغيلية التي أثّرت مباشرة على تكلفة خدمات الاتصالات: ارتفاع سعر الصرف، وارتفاع أسعار الكهرباء، وزيادة تكاليف التشغيل والعمالة، وارتفاع تكاليف إنشاء الشبكات.</p>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>الباقة</th>
+              <th>الجيجابايتس الأساسية</th>
+              <th>الجيجابايتس الهدية</th>
+              <th>عدد مناطق التشغيل</th>
+              <th>السعر الجديد<br>غير شامل الضريبة</th>
+              <th>السعر الجديد شامل الضريبة<br>(نظام الدفع المسبق)</th>
+              <th>السعر الجديد شامل الضريبة<br>(عملاء الفاتورة)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="plan-name">WE Air 290</td>
+              <td>40 جيجابايت</td>
+              <td>20 جيجابايت</td>
+              <td rowspan="3">منطقتا تشغيل للعملاء الحاصلين على العرض بدلاً من منطقة واحدة، بدون رسوم إضافية</td>
+              <td class="price-new">290</td>
+              <td class="price-new">414.28</td>
+              <td class="price-new">370.18</td>
+            </tr>
+            <tr>
+              <td class="plan-name">WE Air 460</td>
+              <td>105 جيجابايت</td>
+              <td>52.5 جيجابايت</td>
+              <td class="price-new">460</td>
+              <td class="price-new">657.14</td>
+              <td class="price-new">579.49</td>
+            </tr>
+            <tr>
+              <td class="plan-name">WE Air 690</td>
+              <td>200 جيجابايت</td>
+              <td>100 جيجابايت</td>
+              <td class="price-new">690</td>
+              <td class="price-new">985.72</td>
+              <td class="price-new">862.66</td>
+            </tr>
+            <tr>
+              <td class="plan-name">WE Air 1040</td>
+              <td>325 جيجابايت</td>
+              <td>162.5 جيجابايت</td>
+              <td rowspan="3">منطقتا تشغيل كما هو متبع</td>
+              <td class="price-new">1040</td>
+              <td class="price-new">1485.71</td>
+              <td class="price-new">1293.58</td>
+            </tr>
+            <tr>
+              <td class="plan-name">WE Air 1270</td>
+              <td>400 جيجابايت</td>
+              <td>200 جيجابايت</td>
+              <td class="price-new">1270</td>
+              <td class="price-new">1814.29</td>
+              <td class="price-new">1576.76</td>
+            </tr>
+            <tr>
+              <td class="plan-name">WE Air 1600</td>
+              <td>500 جيجابايت</td>
+              <td>250 جيجابايت</td>
+              <td class="price-new">1600</td>
+              <td class="price-new">2285.71</td>
+              <td class="price-new">1983.06</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="callout">
+        <span class="ic">💡</span>
+        <span>العملاء الحاصلون على العرض تكون لهم <strong>أولوية</strong> عند توافر التعاقد على خطوط FTTH، مع إمكانية تركيب خطوط الـ FTTH متاحة لهذه الفئة من العملاء.</span>
+      </div>
+    </section>
+
+    <!-- ============ SECTION 4: CASH-OUT ============ -->
+    <section class="block" id="cashout">
+      <div class="block-head">
+        <div class="block-icon">🔁</div>
+        <div>
+          <h2>جدول Cash-out لراوتر WE Air 4G</h2>
+        </div>
+      </div>
+      <p class="intro">في حالة رغبة العميل في إلغاء الخدمة أو استبدال الراوتر أو الحصول على إيجار آخر قبل انتهاء المدة، يُستحق عليه سداد قيمة استرداد (Cash-out) للراوتر حسب عدد سنوات الاشتراك التالية:</p>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>اسم الـ Add-On</th>
+              <th>الشروط</th>
+              <th>المبلغ</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="addon-name">WE Air 4G Router Cash-out – 1 Year</td>
+              <td>خلال السنة الأولى</td>
+              <td class="amount">1,888 جنيه</td>
+            </tr>
+            <tr>
+              <td class="addon-name">WE Air 4G Router Cash-out – 2 Years</td>
+              <td>خلال السنة الثانية</td>
+              <td class="amount">1,313 جنيه</td>
+            </tr>
+            <tr>
+              <td class="addon-name">WE Air 4G Router Cash-out – 3 Years</td>
+              <td>خلال السنة الثالثة</td>
+              <td class="amount">1,033 جنيه</td>
+            </tr>
+            <tr>
+              <td class="addon-name">WE Air 4G Router Cash-out – 4 Years</td>
+              <td>خلال السنة الرابعة</td>
+              <td class="amount">744 جنيه</td>
+            </tr>
+            <tr>
+              <td class="addon-name">WE Air 4G Router Cash-out – 5+ Years</td>
+              <td>خلال السنة الخامسة أو أكثر</td>
+              <td class="amount">529 جنيه</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3 class="sub">خطوات الاحتساب والتوثيق</h3>
+      <ul class="bullets">
+        <li>يتم ملء <mark class="hl">الإقرار</mark> واستيفاء توقيع العميل عليه، وإرفاقه مع مستندات التعاقد على السيستم (مرفق).</li>
+        <li>تكون أولوية الخصم عند شحن رصيد العميل لراوتر الـ Cash-out أولاً، ثم تحديث الباقة الرئيسية.</li>
+        <li>العملاء الذين تعاقدوا على هذا العرض من خدمة FTTH يمكنهم استبدال راوتر WE Air بجهاز ONT بدون دفع مبلغ الـ Cash-out، وبنفس مبلغ الإيجار الشهري.</li>
+      </ul>
+
+      <h3 class="sub">العملاء المستحقين</h3>
+      <p style="font-size:.94rem;">بعض العملاء الذين ليس لديهم إمكانية فنية للتعاقد على الخط الأرضي، ويمكن لموظفي المبيعات التحقق من أحقية العميل للعرض عن طريق <mark class="hl">"Customer 360"</mark>.</p>
+
+      <h3 class="sub">الشروط والأحكام</h3>
+      <ul class="bullets">
+        <li>يمكن الاستفادة من العرض مرة واحدة فقط كل شهر/عام ولفاتورة واحدة ولمدة سنة.</li>
+        <li>يمكن لعملاء WE Air الاستفادة من هذا العرض أو أي عروض أخرى مثل عروض (رمضان والصيف) على باقات WE Air.</li>
+        <li>يمكن للعملاء الذين استفادوا من هذا العرض الاستفادة من عرض الخصم على أجهزة WE Air في حالة رغبة العميل في شراء الراوتر كاش بدلاً من نظام الإيجار.</li>
+      </ul>
+
+      <h3 class="sub">صلاحية الجيجابايتس الإضافية</h3>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+        <div class="callout" style="margin-top:0;">
+          <span class="ic">📅</span>
+          <span><strong>WE Air مسبق الدفع:</strong> 30 يومًا.</span>
+        </div>
+        <div class="callout" style="margin-top:0;">
+          <span class="ic">📅</span>
+          <span><strong>WE Air الفاتورة:</strong> حتى ميعاد تجديد الباقة (Bill Cycle).</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ NOTES ============ -->
+    <section class="block" id="notes">
+      <div class="block-head">
+        <div class="block-icon">📌</div>
+        <div><h2>ملاحظات هامة لموظفي البيع</h2></div>
+      </div>
+      <div class="notes-grid">
+        <div class="note-card">
+          <h4>⚙️ إضافة الجهاز بشكل صحيح</h4>
+          <p>يجب التأكد من إضافة الجهاز من خلال <strong>Change Offering</strong>، بالإضافة إلى الـ Add-on الخاصة بإيجار الجهاز، وذلك لتفادي الأخطاء في التعاقد.</p>
+        </div>
+        <div class="note-card">
+          <h4>🔒 التحقق من أحقية العميل</h4>
+          <p>يجب التأكد من أحقية العميل للعرض من خلال <strong>Customer 360</strong>، وذلك لتفادي المساءلة القانونية من قِبل الشركة في حالة عدم أحقية العميل للعرض.</p>
+        </div>
+      </div>
+    </section>
+
+    <footer class="page-foot">
+      دليل داخلي لفريق البيع وخدمة العملاء — WE Air &middot; محتوى مرجعي مبني على تعميمات العروض الداخلية
+    </footer>
+  </main>
+</div>
+
+<script>
+  // mobile sidebar toggle
+  const sidebar = document.getElementById('sidebar');
+  document.getElementById('mobileToggle').addEventListener('click', ()=>{
+    sidebar.classList.toggle('open');
+  });
+  document.querySelectorAll('#navLinks a').forEach(a=>{
+    a.addEventListener('click', ()=> sidebar.classList.remove('open'));
+  });
+
+  // finder buttons: scroll + flash highlight
+  document.querySelectorAll('.finder-btn').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const id = btn.dataset.target;
+      const el = document.getElementById(id);
+      if(!el) return;
+      el.scrollIntoView({behavior:'smooth', block:'start'});
+      el.classList.add('flash');
+      setTimeout(()=> el.classList.remove('flash'), 1600);
+    });
+  });
+
+  // active nav link on scroll
+  const sections = document.querySelectorAll('section.block');
+  const links = document.querySelectorAll('#navLinks a');
+  const obs = new IntersectionObserver((entries)=>{
+    entries.forEach(entry=>{
+      if(entry.isIntersecting){
+        links.forEach(l=>l.classList.remove('active'));
+        const match = document.querySelector(`#navLinks a[href="#${entry.target.id}"]`);
+        if(match) match.classList.add('active');
+      }
+    });
+  }, {rootMargin:'-20% 0px -70% 0px'});
+  sections.forEach(s=>obs.observe(s));
+</script>
+
+</body>
+</html>
