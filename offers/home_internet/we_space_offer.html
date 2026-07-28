@@ -253,6 +253,119 @@
     flex-shrink:0;
   }
 
+  .lead-text{
+    font-size:13.5px;
+    line-height:1.9;
+    color:#4a3a52;
+    margin-bottom:16px;
+  }
+
+  /* ===== BONUS TABLE ===== */
+  .bonus-table{
+    width:100%;
+    border-collapse:collapse;
+    font-size:13px;
+    border:1px solid var(--line);
+    border-radius:14px;
+    overflow:hidden;
+  }
+  .bonus-table thead th{
+    background:var(--purple-deep);
+    color:#fff;
+    font-weight:700;
+    padding:11px 10px;
+    text-align:center;
+  }
+  .bonus-table tbody td{
+    padding:10px 10px;
+    text-align:center;
+    border-bottom:1px solid var(--line);
+    border-left:1px solid var(--line);
+  }
+  .bonus-table tbody tr:last-child td{border-bottom:none;}
+  .plan-cell{
+    font-weight:800;
+    color:var(--purple);
+    background:var(--purple-light);
+    font-size:14px;
+  }
+  .speed-cell{
+    font-size:12px;
+    color:#6b5a73;
+    background:var(--paper);
+  }
+  .gift-cell{
+    font-weight:700;
+    color:#a3720a;
+    background:#fff9ec;
+  }
+
+  /* ===== MINI FAQ ===== */
+  .mini-faq{
+    margin-top:18px;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+  }
+  .mini-faq-item{
+    background:var(--paper);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:14px 16px;
+  }
+  .mini-faq-q{
+    font-weight:800;
+    font-size:13.5px;
+    color:var(--purple-deep);
+    margin-bottom:6px;
+  }
+  .mini-faq-a{
+    font-size:12.5px;
+    line-height:1.8;
+    color:#544860;
+  }
+
+  /* ===== TOP-UP ===== */
+  .topup-grid{
+    display:grid;
+    grid-template-columns:repeat(5,1fr);
+    gap:10px;
+    margin-top:6px;
+  }
+  .topup-card{
+    background:linear-gradient(160deg, var(--purple-light), #fff);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:14px 8px;
+    text-align:center;
+    display:flex;
+    flex-direction:column;
+    gap:4px;
+  }
+  .topup-size{
+    font-weight:800;
+    font-size:15px;
+    color:var(--purple-deep);
+  }
+  .topup-price{
+    font-weight:700;
+    font-size:12.5px;
+    color:var(--gold);
+    background:var(--purple-deep);
+    border-radius:999px;
+    padding:2px 8px;
+    margin:0 auto;
+  }
+  .resource-note{
+    margin-top:14px;
+    font-size:12px;
+    color:#6b5a73;
+    background:var(--paper);
+    border-radius:8px;
+    padding:10px 14px;
+    border-right:3px solid var(--purple-mid);
+  }
+
   .footer-bar{
     background:var(--purple-deep);
     color:rgba(255,255,255,0.7);
@@ -270,6 +383,9 @@
     table{font-size:12px;}
     thead th, tbody td{padding:8px 6px;}
     .hero-top{flex-wrap:wrap;}
+    .mini-faq{grid-template-columns:1fr;}
+    .topup-grid{grid-template-columns:repeat(2,1fr);}
+    .bonus-table{font-size:11.5px;}
   }
 </style>
 </head>
@@ -378,6 +494,91 @@
         </tbody>
       </table>
     </div>
+  </div>
+
+  <!-- BONUS CAPACITY DETAILS -->
+  <div class="section">
+    <div class="section-head">
+      <span class="section-dot"></span>
+      <span class="section-title">تفاصيل السعة الإضافية الهدية</span>
+    </div>
+    <p class="lead-text">يوضح الجدول التالي تفاصيل العرض على الباقات السنوية عند الاشتراك أو التحويل من الباقات الشهرية إلى الباقات السنوية:</p>
+
+    <table class="bonus-table">
+      <thead>
+        <tr>
+          <th>الباقة</th>
+          <th>السرعة</th>
+          <th>السعة الأساسية</th>
+          <th>السعة الإضافية الهدية</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td rowspan="7" class="plan-cell">Super</td>
+          <td rowspan="7" class="speed-cell">تصل إلى<br>30 ميجابت/ث</td>
+          <td>2400 جيجابايت</td><td class="gift-cell">100 جيجابايت</td>
+        </tr>
+        <tr><td>3000 جيجابايت</td><td class="gift-cell">500 جيجابايت</td></tr>
+        <tr><td>3600 جيجابايت</td><td class="gift-cell">500 جيجابايت</td></tr>
+        <tr><td>4800 جيجابايت</td><td class="gift-cell">500 جيجابايت</td></tr>
+        <tr><td>6000 جيجابايت</td><td class="gift-cell">500 جيجابايت</td></tr>
+        <tr><td>9000 جيجابايت</td><td class="gift-cell">1 تيرابايت</td></tr>
+        <tr><td>18 تيرابايت</td><td class="gift-cell">2 تيرابايت</td></tr>
+
+        <tr>
+          <td rowspan="4" class="plan-cell">Mega</td>
+          <td rowspan="4" class="speed-cell">تصل إلى<br>70 ميجابت/ث</td>
+          <td>3000 جيجابايت</td><td class="gift-cell">500 جيجابايت</td>
+        </tr>
+        <tr><td>6000 جيجابايت</td><td class="gift-cell">500 جيجابايت</td></tr>
+        <tr><td>9000 جيجابايت</td><td class="gift-cell">1 تيرابايت</td></tr>
+        <tr><td>18 تيرابايت</td><td class="gift-cell">2 تيرابايت</td></tr>
+
+        <tr>
+          <td rowspan="3" class="plan-cell">Ultra</td>
+          <td rowspan="3" class="speed-cell">تصل إلى<br>100 ميجابت/ث</td>
+          <td>3000 جيجابايت</td><td class="gift-cell">500 جيجابايت</td>
+        </tr>
+        <tr><td>6000 جيجابايت</td><td class="gift-cell">500 جيجابايت</td></tr>
+        <tr><td>9000 جيجابايت</td><td class="gift-cell">1 تيرابايت</td></tr>
+
+        <tr>
+          <td class="plan-cell">Max</td>
+          <td class="speed-cell">تصل إلى<br>200 ميجابت/ث</td>
+          <td>18 تيرابايت</td><td class="gift-cell">2 تيرابايت</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="mini-faq">
+      <div class="mini-faq-item">
+        <div class="mini-faq-q">متى تُضاف السعة الإضافية؟</div>
+        <div class="mini-faq-a">تُضاف السعة الإضافية الهدية عند التحويل أو الاشتراك في الباقات السنوية، مباشرة بعد تفعيل الخدمة، وتُضاف مرة واحدة فقط.</div>
+      </div>
+      <div class="mini-faq-item">
+        <div class="mini-faq-q">هل العرض متاح للعملاء الجدد والحاليين؟</div>
+        <div class="mini-faq-a">نعم، العرض متاح للعملاء الجدد عند الاشتراك في الباقات السنوية، وللعملاء الحاليين على الباقات الشهرية عند التحويل إلى الباقات السنوية.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- WHEN DATA RUNS OUT -->
+  <div class="section">
+    <div class="section-head">
+      <span class="section-dot"></span>
+      <span class="section-title">ماذا يحدث عند انتهاء السعة؟</span>
+    </div>
+    <p class="lead-text">في حالة انتهاء السعة الأساسية، تنخفض سرعة الباقة إلى <strong>256 كيلوبت/ث</strong>. يمكن للعميل عمل تجديد مبكر أو شحن أي من باقات الشحن الإضافية من خلال التطبيق، الموقع الإلكتروني، خدمة العملاء بعد الشحن، أو بزيارة أقرب فرع.</p>
+
+    <div class="topup-grid">
+      <div class="topup-card"><span class="topup-size">20GB</span><span class="topup-price">60 ج.م</span></div>
+      <div class="topup-card"><span class="topup-size">50GB</span><span class="topup-price">120 ج.م</span></div>
+      <div class="topup-card"><span class="topup-size">100GB</span><span class="topup-price">190 ج.م</span></div>
+      <div class="topup-card"><span class="topup-size">400GB</span><span class="topup-price">500 ج.م</span></div>
+      <div class="topup-card"><span class="topup-size">2000GB</span><span class="topup-price">2000 ج.م</span></div>
+    </div>
+    <div class="resource-note">اسم باقات الشحن على القنوات الرقمية: <strong>WE TOPUP</strong> (بالإنجليزية) / <strong>باقات الشحن WE</strong> (بالعربية)</div>
   </div>
 
   <!-- SUBSCRIPTION METHOD -->
