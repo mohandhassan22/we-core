@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>عرض الصيف على باقات Nitro MiFi</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --rose-deep:#5c0f3d;
+    --rose:#9c1660;
+    --rose-mid:#c23b83;
+    --rose-light:#fbe9f2;
+    --amber:#ffb648;
+    --ink:#2b1524;
+    --paper:#fdf7fa;
+    --line:#f0d3e2;
+    --white:#ffffff;
+  }
+
+  *{box-sizing:border-box;margin:0;padding:0;}
+
+  body{
+    background:linear-gradient(180deg,#fbf0f6 0%, #f6e0ec 100%);
+    font-family:'IBM Plex Sans Arabic','Tajawal',sans-serif;
+    color:var(--ink);
+    padding:36px 16px 60px;
+    min-height:100vh;
+  }
+
+  .sheet{
+    max-width:960px;
+    margin:0 auto;
+    background:var(--white);
+    border-radius:22px;
+    overflow:hidden;
+    box-shadow:0 30px 70px -25px rgba(92,15,61,0.45), 0 2px 8px rgba(92,15,61,0.08);
+  }
+
+  /* ===== HERO ===== */
+  .hero{
+    background:
+      radial-gradient(circle at 88% -15%, rgba(255,182,72,0.35), transparent 45%),
+      linear-gradient(120deg, var(--rose-deep) 0%, var(--rose) 55%, var(--rose-mid) 100%);
+    color:var(--white);
+    padding:44px 40px 30px;
+    position:relative;
+    overflow:hidden;
+  }
+  .signal-rings{
+    position:absolute;
+    left:-40px;
+    bottom:-50px;
+    width:220px;
+    height:220px;
+    z-index:0;
+    opacity:0.9;
+  }
+  .hero-top{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:16px;
+    position:relative;
+    z-index:1;
+  }
+  .brand{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    font-weight:900;
+    font-size:15px;
+    letter-spacing:0.5px;
+  }
+  .brand-mark{
+    width:34px;height:34px;border-radius:9px;
+    background:var(--white);
+    display:flex;align-items:center;justify-content:center;
+    color:var(--rose-deep);
+    font-family:'Tajawal',sans-serif;
+    font-weight:900;
+    font-size:13px;
+  }
+  .badge-season{
+    font-size:12px;
+    background:rgba(255,255,255,0.14);
+    border:1px solid rgba(255,255,255,0.35);
+    padding:6px 14px;
+    border-radius:999px;
+    font-weight:600;
+    letter-spacing:0.3px;
+  }
+  .hero-title{
+    position:relative;z-index:1;
+    margin-top:26px;
+    font-size:29px;
+    font-weight:900;
+    line-height:1.45;
+    max-width:600px;
+  }
+  .hero-title span{color:var(--amber);}
+  .hero-pills{
+    position:relative;z-index:1;
+    display:flex;
+    gap:12px;
+    margin-top:20px;
+    flex-wrap:wrap;
+  }
+  .hero-pill{
+    background:rgba(255,255,255,0.1);
+    border:1px solid rgba(255,255,255,0.3);
+    border-radius:12px;
+    padding:12px 16px;
+    font-size:12.5px;
+    line-height:1.8;
+    max-width:290px;
+  }
+  .hero-pill b{
+    display:block;
+    color:var(--amber);
+    font-size:13.5px;
+    margin-bottom:3px;
+  }
+  .hero-note{
+    position:relative;z-index:1;
+    margin-top:16px;
+    font-size:12.5px;
+    color:rgba(255,255,255,0.85);
+  }
+
+  /* ===== SECTION HEADERS ===== */
+  .section{padding:32px 40px;}
+  .section + .section{border-top:1px solid var(--line);}
+  .section-head{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-bottom:18px;
+  }
+  .section-dot{
+    width:9px;height:9px;border-radius:50%;
+    background:var(--amber);
+    flex-shrink:0;
+  }
+  .section-title{
+    font-size:19px;
+    font-weight:800;
+    color:var(--rose-deep);
+  }
+  .lead-text{
+    font-size:13.5px;
+    line-height:1.9;
+    color:#5c4152;
+    margin-bottom:16px;
+  }
+
+  /* ===== NITRO TABLE ===== */
+  .validity-wrap{
+    display:flex;
+    gap:14px;
+    align-items:stretch;
+    border:1px solid var(--line);
+    border-radius:16px;
+    overflow:hidden;
+  }
+  .validity-badge{
+    background:linear-gradient(160deg, var(--rose-deep), var(--rose));
+    color:#fff;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    padding:20px 22px;
+    min-width:120px;
+    text-align:center;
+    flex-shrink:0;
+  }
+  .validity-badge .num{font-size:34px;font-weight:900;line-height:1;}
+  .validity-badge .lbl{font-size:12px;margin-top:6px;opacity:0.9;}
+
+  table.nitro-table{
+    width:100%;
+    border-collapse:collapse;
+    font-size:13px;
+  }
+  table.nitro-table thead th{
+    background:var(--paper);
+    color:var(--rose-deep);
+    font-weight:700;
+    padding:11px 10px;
+    border-bottom:2px solid var(--line);
+    text-align:center;
+  }
+  table.nitro-table tbody td{
+    padding:11px 10px;
+    text-align:center;
+    border-bottom:1px solid var(--line);
+  }
+  table.nitro-table tbody tr:last-child td{border-bottom:none;}
+  table.nitro-table tbody tr:nth-child(even) td{background:#fffaf3;}
+  .plan-name{
+    font-weight:800;
+    color:var(--rose);
+    font-size:13.5px;
+  }
+  .base-cell{color:#6b5a73;}
+  .new-cell{
+    font-weight:700;
+    color:var(--rose-deep);
+    background:var(--rose-light) !important;
+  }
+  .cur-cell{
+    font-weight:700;
+    color:#a3720a;
+  }
+
+  /* ===== SUBSCRIPTION ===== */
+  .method-cards{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:14px;
+  }
+  .method-card{
+    background:var(--paper);
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:18px;
+  }
+  .method-tag{
+    display:inline-block;
+    font-size:11px;
+    font-weight:800;
+    color:#fff;
+    background:var(--rose);
+    padding:3px 10px;
+    border-radius:999px;
+    margin-bottom:10px;
+  }
+  .method-card p{
+    font-size:13px;
+    line-height:1.9;
+    color:var(--ink);
+  }
+  .method-card p a{color:var(--rose);font-weight:700;}
+
+  /* ===== TERMS ===== */
+  .terms{list-style:none;}
+  .terms li{
+    display:flex;
+    gap:10px;
+    align-items:flex-start;
+    font-size:13.5px;
+    line-height:1.9;
+    padding:9px 0;
+    border-bottom:1px dashed var(--line);
+  }
+  .terms li:last-child{border-bottom:none;}
+  .terms li::before{
+    content:"";
+    width:6px;height:6px;
+    border-radius:50%;
+    background:var(--amber);
+    margin-top:9px;
+    flex-shrink:0;
+  }
+
+  .footer-bar{
+    background:var(--rose-deep);
+    color:rgba(255,255,255,0.7);
+    text-align:center;
+    padding:16px;
+    font-size:11.5px;
+    letter-spacing:0.3px;
+  }
+
+  @media(max-width:640px){
+    .section{padding:24px 20px;}
+    .hero{padding:30px 22px 26px;}
+    .hero-title{font-size:22px;}
+    table.nitro-table{font-size:11.5px;}
+    thead th, tbody td{padding:8px 5px;}
+    .validity-wrap{flex-direction:column;}
+    .validity-badge{flex-direction:row;gap:10px;min-width:0;padding:12px 18px;}
+    .validity-badge .num{font-size:24px;}
+    .method-cards{grid-template-columns:1fr;}
+  }
+</style>
+</head>
+<body>
+
+<div class="sheet">
+
+  <!-- HERO -->
+  <div class="hero">
+    <svg class="signal-rings" viewBox="0 0 220 220" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <circle cx="30" cy="190" r="24" fill="none" stroke="rgba(255,255,255,0.18)" stroke-width="10"/>
+      <circle cx="30" cy="190" r="60" fill="none" stroke="rgba(255,255,255,0.13)" stroke-width="10"/>
+      <circle cx="30" cy="190" r="96" fill="none" stroke="rgba(255,182,72,0.28)" stroke-width="10"/>
+      <circle cx="30" cy="190" r="10" fill="#ffb648"/>
+    </svg>
+    <div class="hero-top">
+      <div class="brand">
+        <div class="brand-mark">Nitro</div>
+        <span>Nitro MiFi</span>
+      </div>
+      <div class="badge-season">عرض الصيف 2026</div>
+    </div>
+    <div class="hero-title">استمتع بـ<span>ضعف الباقة</span> أو <span>50% زيادة</span> على باقات Nitro MiFi</div>
+    <div class="hero-pills">
+      <div class="hero-pill"><b>عملاء جدد</b>ضعف باقة Nitro MiFi هدية لأول مرة عند الاشتراك، صالحة لمدة 28 يوم.</div>
+      <div class="hero-pill"><b>عملاء حاليين</b>50% زيادة على الباقة عند التجديد، صالحة لمدة 28 يوم.</div>
+    </div>
+    <div class="hero-note">العرض ساري خلال فترة الصيف، ويمكن للعميل الاستفادة منه مرة واحدة في الشهر.</div>
+  </div>
+
+  <!-- PRICING / DATA TABLE -->
+  <div class="section">
+    <div class="section-head">
+      <span class="section-dot"></span>
+      <span class="section-title">الميجابايت الإضافية وسعة باقات Nitro</span>
+    </div>
+
+    <div class="validity-wrap">
+      <div class="validity-badge">
+        <span class="num">28</span>
+        <span class="lbl">يوم صلاحية<br>ميجابايت العرض</span>
+      </div>
+      <table class="nitro-table">
+        <thead>
+          <tr>
+            <th>الباقة</th>
+            <th>الباقة الأساسية</th>
+            <th>ميجابايت العرض للعملاء الجدد<br><span style="font-weight:500;font-size:10.5px;">(ضعف الباقة)</span></th>
+            <th>ميجابايت العرض للعملاء الحاليين<br><span style="font-weight:500;font-size:10.5px;">(زيادة 50%)</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="plan-name">Nitro MiFi 15</td>
+            <td class="base-cell">625 ميجابايت</td>
+            <td class="new-cell">625 ميجابايت</td>
+            <td class="cur-cell">312.5 ميجابايت</td>
+          </tr>
+          <tr>
+            <td class="plan-name">Nitro MiFi 29</td>
+            <td class="base-cell">1,375 ميجابايت</td>
+            <td class="new-cell">1,375 ميجابايت</td>
+            <td class="cur-cell">687.5 ميجابايت</td>
+          </tr>
+          <tr>
+            <td class="plan-name">Nitro MiFi 58</td>
+            <td class="base-cell">3,250 ميجابايت</td>
+            <td class="new-cell">3,250 ميجابايت</td>
+            <td class="cur-cell">1,625 ميجابايت</td>
+          </tr>
+          <tr>
+            <td class="plan-name">Nitro MiFi 105</td>
+            <td class="base-cell">6,250 ميجابايت</td>
+            <td class="new-cell">6,250 ميجابايت</td>
+            <td class="cur-cell">3,125 ميجابايت</td>
+          </tr>
+          <tr>
+            <td class="plan-name">Nitro MiFi 150</td>
+            <td class="base-cell">10,000 ميجابايت</td>
+            <td class="new-cell">10,000 ميجابايت</td>
+            <td class="cur-cell">5,000 ميجابايت</td>
+          </tr>
+          <tr>
+            <td class="plan-name">Nitro MiFi 300</td>
+            <td class="base-cell">23,500 ميجابايت</td>
+            <td class="new-cell">23,500 ميجابايت</td>
+            <td class="cur-cell">11,750 ميجابايت</td>
+          </tr>
+          <tr>
+            <td class="plan-name">Nitro MiFi 675</td>
+            <td class="base-cell">50,000 ميجابايت</td>
+            <td class="new-cell">50,000 ميجابايت</td>
+            <td class="cur-cell">25,000 ميجابايت</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- SUBSCRIPTION METHOD -->
+  <div class="section">
+    <div class="section-head">
+      <span class="section-dot"></span>
+      <span class="section-title">طريقة الإشتراك</span>
+    </div>
+    <div class="method-cards">
+      <div class="method-card">
+        <span class="method-tag">العملاء الجدد</span>
+        <p>يحصل عملاء Nitro MiFi الجدد على عرض ضعف الباقة تلقائيًا عند الاشتراك في باقات Nitro MiFi.</p>
+      </div>
+      <div class="method-card">
+        <span class="method-tag">العملاء الحاليين</span>
+        <p>يمكن الاستفادة من عرض 50% زيادة على الباقة عند التجديد، من خلال الاشتراك عبر تطبيق <a href="#">MyWE</a> أو عن طريق GUI قبل تجديد الباقة.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- TERMS -->
+  <div class="section">
+    <div class="section-head">
+      <span class="section-dot"></span>
+      <span class="section-title">الشروط والأحكام</span>
+    </div>
+    <ul class="terms">
+      <li>يمكن الاستفادة من العرض بحد أقصى مرة واحدة في الشهر خلال فترة العرض (فترة الصيف).</li>
+      <li>صلاحية الميجابايت (ضعف الباقة أو 50% زيادة على الباقة) هي 28 يوم من تاريخ الاشتراك في العرض.</li>
+      <li>تكون أولوية الاستهلاك للميجابايت الأساسية أولًا، ثم ميجابايت العرض لباقة Nitro.</li>
+    </ul>
+  </div>
+
+  <div class="footer-bar">جميع الكميات بالميجابايت — العرض ساري خلال فترة الصيف من WE</div>
+
+</div>
+
+</body>
+</html>
