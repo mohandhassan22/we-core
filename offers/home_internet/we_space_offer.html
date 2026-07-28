@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>عرض الصيف على باقات WE Space السنوية</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --purple-deep:#3d1152;
+    --purple:#6b1f8c;
+    --purple-mid:#8c3aa8;
+    --purple-light:#f4e9f8;
+    --gold:#f2b134;
+    --ink:#241830;
+    --paper:#fbf8fc;
+    --line:#e2d0e8;
+    --white:#ffffff;
+  }
+
+  *{box-sizing:border-box;margin:0;padding:0;}
+
+  body{
+    background:linear-gradient(180deg,#f7f1fa 0%, #efe3f5 100%);
+    font-family:'IBM Plex Sans Arabic','Tajawal',sans-serif;
+    color:var(--ink);
+    padding:36px 16px 60px;
+    min-height:100vh;
+  }
+
+  .sheet{
+    max-width:920px;
+    margin:0 auto;
+    background:var(--white);
+    border-radius:22px;
+    overflow:hidden;
+    box-shadow:0 30px 70px -25px rgba(61,17,82,0.45), 0 2px 8px rgba(61,17,82,0.08);
+    position:relative;
+  }
+
+  /* ===== HERO ===== */
+  .hero{
+    background:
+      radial-gradient(circle at 85% -10%, rgba(242,177,52,0.35), transparent 45%),
+      linear-gradient(120deg, var(--purple-deep) 0%, var(--purple) 55%, var(--purple-mid) 100%);
+    color:var(--white);
+    padding:44px 40px 36px;
+    position:relative;
+    overflow:hidden;
+  }
+  .hero::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background-image:
+      repeating-linear-gradient(115deg, rgba(255,255,255,0.045) 0px, rgba(255,255,255,0.045) 2px, transparent 2px, transparent 34px);
+    pointer-events:none;
+  }
+  .hero-top{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:16px;
+    position:relative;
+    z-index:1;
+  }
+  .brand{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    font-weight:900;
+    font-size:15px;
+    letter-spacing:0.5px;
+  }
+  .brand-mark{
+    width:34px;height:34px;border-radius:9px;
+    background:var(--white);
+    display:flex;align-items:center;justify-content:center;
+    color:var(--purple-deep);
+    font-family:'Tajawal',sans-serif;
+    font-weight:900;
+    font-size:16px;
+  }
+  .badge-season{
+    font-size:12px;
+    background:rgba(255,255,255,0.14);
+    border:1px solid rgba(255,255,255,0.35);
+    padding:6px 14px;
+    border-radius:999px;
+    font-weight:600;
+    letter-spacing:0.3px;
+  }
+  .hero-title{
+    position:relative;z-index:1;
+    margin-top:26px;
+    font-size:30px;
+    font-weight:900;
+    line-height:1.4;
+    max-width:560px;
+  }
+  .hero-title span{color:var(--gold);}
+  .hero-sub{
+    position:relative;z-index:1;
+    margin-top:14px;
+    font-size:14.5px;
+    line-height:1.9;
+    max-width:600px;
+    color:rgba(255,255,255,0.92);
+    background:rgba(255,255,255,0.08);
+    border-right:3px solid var(--gold);
+    padding:12px 16px;
+    border-radius:8px;
+  }
+
+  /* ===== SECTION HEADERS ===== */
+  .section{padding:34px 40px;}
+  .section + .section{border-top:1px solid var(--line);}
+  .section-head{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-bottom:18px;
+  }
+  .section-dot{
+    width:9px;height:9px;border-radius:50%;
+    background:var(--gold);
+    flex-shrink:0;
+  }
+  .section-title{
+    font-size:19px;
+    font-weight:800;
+    color:var(--purple-deep);
+  }
+
+  /* ===== PRICING TABLE ===== */
+  .plan-group{
+    border:1px solid var(--line);
+    border-radius:16px;
+    overflow:hidden;
+    margin-bottom:14px;
+  }
+  .plan-group-head{
+    background:var(--purple-light);
+    padding:12px 18px;
+    font-weight:800;
+    font-size:15px;
+    color:var(--purple-deep);
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+  .plan-group-head small{
+    font-weight:500;
+    font-size:12px;
+    color:var(--purple-mid);
+  }
+
+  table{
+    width:100%;
+    border-collapse:collapse;
+    font-size:13.5px;
+  }
+  thead th{
+    background:var(--paper);
+    color:var(--purple-deep);
+    font-weight:700;
+    padding:11px 10px;
+    border-bottom:2px solid var(--line);
+    text-align:center;
+    white-space:nowrap;
+  }
+  thead th:first-child{text-align:center;}
+  tbody td{
+    padding:11px 10px;
+    text-align:center;
+    border-bottom:1px solid var(--line);
+    color:var(--ink);
+  }
+  tbody tr:last-child td{border-bottom:none;}
+  tbody tr:nth-child(4n+1) td,
+  tbody tr:nth-child(4n+2) td{background:#fffdf7;}
+  .cap-cell{
+    font-weight:800;
+    color:var(--purple);
+    font-size:14px;
+  }
+  .price-cell{font-weight:700;}
+  .vat-yes{color:var(--purple-deep);}
+  .vat-no{color:#8a7690;font-size:12.5px;}
+  .dash{color:#c8bcd0;}
+  .price-note{
+    display:block;
+    font-size:10.5px;
+    font-weight:500;
+    color:#9a8aa3;
+    margin-top:1px;
+  }
+
+  /* ===== STEPS ===== */
+  .steps{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:12px;
+  }
+  .step-card{
+    background:var(--paper);
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:16px 14px;
+    text-align:center;
+  }
+  .step-num{
+    width:28px;height:28px;
+    border-radius:50%;
+    background:var(--purple);
+    color:#fff;
+    font-weight:800;
+    font-size:13px;
+    display:flex;align-items:center;justify-content:center;
+    margin:0 auto 10px;
+  }
+  .step-card p{font-size:12.5px;line-height:1.6;color:var(--ink);}
+  .step-card a{color:var(--purple);font-weight:700;text-decoration:none;word-break:break-all;}
+  .new-cust-note{
+    background:linear-gradient(90deg, var(--purple-light), transparent);
+    border-right:3px solid var(--purple);
+    padding:12px 16px;
+    border-radius:8px;
+    font-size:13.5px;
+    line-height:1.8;
+    margin-bottom:18px;
+  }
+
+  /* ===== TERMS ===== */
+  .terms{list-style:none;}
+  .terms li{
+    display:flex;
+    gap:10px;
+    align-items:flex-start;
+    font-size:13.5px;
+    line-height:1.9;
+    padding:9px 0;
+    border-bottom:1px dashed var(--line);
+  }
+  .terms li:last-child{border-bottom:none;}
+  .terms li::before{
+    content:"";
+    width:6px;height:6px;
+    border-radius:50%;
+    background:var(--gold);
+    margin-top:9px;
+    flex-shrink:0;
+  }
+
+  .footer-bar{
+    background:var(--purple-deep);
+    color:rgba(255,255,255,0.7);
+    text-align:center;
+    padding:16px;
+    font-size:11.5px;
+    letter-spacing:0.3px;
+  }
+
+  @media(max-width:640px){
+    .section{padding:26px 20px;}
+    .hero{padding:32px 22px 28px;}
+    .hero-title{font-size:23px;}
+    .steps{grid-template-columns:repeat(2,1fr);}
+    table{font-size:12px;}
+    thead th, tbody td{padding:8px 6px;}
+    .hero-top{flex-wrap:wrap;}
+  }
+</style>
+</head>
+<body>
+
+<div class="sheet">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-top">
+      <div class="brand">
+        <div class="brand-mark">WE</div>
+        <span>WE Space</span>
+      </div>
+      <div class="badge-season">عرض الصيف 2026</div>
+    </div>
+    <div class="hero-title">سعة إضافية <span>هدية</span> عند الاشتراك في الباقات السنوية</div>
+    <div class="hero-sub">
+      العرض هو إتاحة سعة إضافية هدية للعملاء عند الاشتراك على الباقات السنوية، بإستثناء باقة سوبر 1800 جيجابايت.
+    </div>
+  </div>
+
+  <!-- PRICING -->
+  <div class="section">
+    <div class="section-head">
+      <span class="section-dot"></span>
+      <span class="section-title">الأسعار والباقات الجديدة</span>
+    </div>
+
+    <div class="plan-group">
+      <div class="plan-group-head">Family <small>(حتى 4 أفراد)</small></div>
+      <table>
+        <thead>
+          <tr>
+            <th>السمة</th>
+            <th>السعر</th>
+            <th>Super</th>
+            <th>Mega</th>
+            <th>Ultra</th>
+            <th>Max</th>
+            <th>Vezeeta</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td rowspan="2" class="cap-cell">1800<br><span class="price-note">جيجابايت</span></td>
+            <td class="price-cell vat-yes">شامل ض.ق.م</td>
+            <td class="price-cell">3,556.80</td>
+            <td class="dash">-</td>
+            <td class="dash">-</td>
+            <td class="dash">-</td>
+            <td rowspan="8" class="dash">-</td>
+          </tr>
+          <tr>
+            <td class="price-cell vat-no">غير شامل ض.ق.م</td>
+            <td class="price-cell">3,120</td>
+            <td class="dash">-</td>
+            <td class="dash">-</td>
+            <td class="dash">-</td>
+          </tr>
+          <tr>
+            <td rowspan="2" class="cap-cell">2400<br><span class="price-note">جيجابايت</span></td>
+            <td class="price-cell vat-yes">شامل ض.ق.م</td>
+            <td class="price-cell">4,514.40</td>
+            <td class="dash">-</td>
+            <td class="dash">-</td>
+            <td class="dash">-</td>
+          </tr>
+          <tr>
+            <td class="price-cell vat-no">غير شامل ض.ق.م</td>
+            <td class="price-cell">3,960</td>
+            <td class="dash">-</td>
+            <td class="dash">-</td>
+            <td class="dash">-</td>
+          </tr>
+          <tr>
+            <td rowspan="2" class="cap-cell">3600<br><span class="price-note">جيجابايت</span></td>
+            <td class="price-cell vat-yes">شامل ض.ق.م</td>
+            <td class="price-cell">5,768.40</td>
+            <td class="dash">-</td>
+            <td class="dash">-</td>
+            <td class="dash">-</td>
+          </tr>
+          <tr>
+            <td class="price-cell vat-no">غير شامل ض.ق.م</td>
+            <td class="price-cell">5,060</td>
+            <td class="dash">-</td>
+            <td class="dash">-</td>
+            <td class="dash">-</td>
+          </tr>
+          <tr>
+            <td rowspan="2" class="cap-cell">6000<br><span class="price-note">جيجابايت</span></td>
+            <td class="price-cell vat-yes">شامل ض.ق.م</td>
+            <td class="price-cell">7,900.20</td>
+            <td class="price-cell">10,773</td>
+            <td class="price-cell">13,765.50</td>
+            <td class="dash">-</td>
+          </tr>
+          <tr>
+            <td class="price-cell vat-no">غير شامل ض.ق.م</td>
+            <td class="price-cell">6,930</td>
+            <td class="price-cell">9,450</td>
+            <td class="price-cell">12,075</td>
+            <td class="dash">-</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- SUBSCRIPTION METHOD -->
+  <div class="section">
+    <div class="section-head">
+      <span class="section-dot"></span>
+      <span class="section-title">طريقة الإشتراك</span>
+    </div>
+
+    <div class="new-cust-note">
+      للعملاء الجدد: يمكن الاشتراك في العرض من خلال زيارة أقرب فرع للاشتراك في الباقات السنوية.
+    </div>
+
+    <div class="steps">
+      <div class="step-card">
+        <div class="step-num">1</div>
+        <p>من خلال تطبيق<br><a href="https://www.te.eg/App" target="_blank">www.te.eg/App</a></p>
+      </div>
+      <div class="step-card">
+        <div class="step-num">2</div>
+        <p>من خلال موقعنا الإلكتروني<br><a href="https://my.te.eg" target="_blank">my.te.eg</a></p>
+      </div>
+      <div class="step-card">
+        <div class="step-num">3</div>
+        <p>من خلال الاتصال بـ<br>19777 أو 111 بعد الشحن</p>
+      </div>
+      <div class="step-card">
+        <div class="step-num">4</div>
+        <p>بزيارة أقرب فرع</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- TERMS -->
+  <div class="section">
+    <div class="section-head">
+      <span class="section-dot"></span>
+      <span class="section-title">الشروط والأحكام</span>
+    </div>
+    <ul class="terms">
+      <li>يمكن للعميل تغيير الباقة مرة أخرى إلى الباقات الشهرية أو السنوية مع الاحتفاظ بالسعة الإضافية الهدية حتى انتهاء صلاحيتها.</li>
+      <li>السعة الإضافية الهدية صالحة لمدة 90 يوم من تاريخ الاشتراك في العرض.</li>
+      <li>تُطبق جميع الشروط والأحكام الخاصة بباقات WE Space السنوية.</li>
+      <li>يستفيد العميل بالتصفح على المواقع التعليمية والحكومية ضمن قيمة الباقة.</li>
+    </ul>
+  </div>
+
+  <div class="footer-bar">جميع الأسعار بالجنيه المصري — العرض ساري حتى إشعار آخر من WE</div>
+
+</div>
+
+</body>
+</html>
