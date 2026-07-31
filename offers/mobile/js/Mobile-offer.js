@@ -19,6 +19,16 @@
         ],
         buttonText: "تفاصيل أكثر",
         buttonLink: "nitro_mifi_offer.html" // تأكد من صحة هذا المسار
+        },
+                 {   
+        title: "we-gold-summer.html",
+        badge: "عرض خاص",
+        highlight: "فترة محدودة",
+        details: [
+            
+        ],
+        buttonText: "تفاصيل أكثر",
+        buttonLink: "we-gold-summer-2026.html" // تأكد من صحة هذا المسار
         }
            
         // يمكنك إضافة المزيد من العروض هنا
