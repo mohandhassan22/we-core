@@ -50,6 +50,16 @@ const offers = [
         ],
         buttonText: "لتفاصيل اكثر ",
         buttonLink: "summer-topup-2026.html"
+    },
+    {
+        title: "we-nokia-mesh-offer",
+        badge: "عرض خاص",
+        highlight: "",
+        details: [
+        
+        ],
+        buttonText: "لتفاصيل اكثر ",
+        buttonLink: "we-nokia-mesh-offer.html"
     }
 ];
 
