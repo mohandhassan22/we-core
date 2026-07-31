@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>عرض الصيف على جهاز Nokia mesh-WiFi | WE</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+  :root{
+    --purple-950:#2A1247;
+    --purple-800:#4A1E7A;
+    --purple-700:#5B2A86;
+    --purple-600:#7136A8;
+    --purple-400:#9D5FD1;
+    --lavender-100:#F4EEFC;
+    --lavender-50:#FBF9FE;
+    --gold:#F0A93A;
+    --gold-dark:#D98A1F;
+    --sea:#1E9E93;
+    --ink:#2A1B3D;
+    --ink-soft:#5B4A72;
+    --white:#FFFFFF;
+    --line:#E6DCF5;
+    --shadow: 0 10px 30px -12px rgba(74,30,122,0.25);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    font-family:'Cairo',sans-serif;
+    background:var(--lavender-50);
+    color:var(--ink);
+    line-height:1.75;
+    -webkit-font-smoothing:antialiased;
+  }
+  img,svg{display:block;max-width:100%;}
+  .wrap{max-width:1100px;margin:0 auto;padding:0 24px;}
+  a:focus-visible, button:focus-visible, summary:focus-visible{outline:3px solid var(--gold); outline-offset:3px;}
+
+  /* NAV */
+  .nav{position:sticky; top:0; z-index:50; background:rgba(255,255,255,0.85); backdrop-filter:blur(10px); border-bottom:1px solid var(--line);}
+  .nav-inner{display:flex;align-items:center;justify-content:space-between;padding:14px 24px;max-width:1100px;margin:0 auto;}
+  .logo{display:flex;align-items:center;gap:10px;font-weight:800;color:var(--purple-800);}
+  .logo-badge{width:38px;height:38px;border-radius:50%;background:var(--purple-700);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:900;font-size:15px;}
+  .nav-cta{background:var(--purple-700); color:#fff; border:none; border-radius:30px; padding:10px 22px; font-family:'Cairo',sans-serif; font-weight:700; font-size:14px; cursor:pointer; transition:.25s; box-shadow:var(--shadow);}
+  .nav-cta:hover{background:var(--purple-800); transform:translateY(-1px);}
+
+  /* HERO */
+  .hero{position:relative; overflow:hidden; background:radial-gradient(120% 140% at 85% -10%, #7136A8 0%, #4A1E7A 42%, #2A1247 100%); color:#fff; padding:76px 24px 90px;}
+  .hero-decor{position:absolute; inset:0; pointer-events:none;}
+  .ring{position:absolute; border-radius:50%; border:2px solid rgba(255,255,255,0.18);}
+  .ring1{width:340px; height:340px; top:-100px; right:-80px; animation:pulse 6s ease-in-out infinite;}
+  .ring2{width:220px; height:220px; top:20px; right:20px; animation:pulse 6s ease-in-out infinite 1s;}
+  .ring3{width:120px; height:120px; top:100px; right:130px; animation:pulse 6s ease-in-out infinite 2s;}
+  @keyframes pulse{0%,100%{opacity:.5; transform:scale(1);}50%{opacity:1; transform:scale(1.06);}}
+  .hero-content{position:relative; z-index:2; max-width:1100px; margin:0 auto; text-align:center;}
+  .eyebrow{display:inline-flex; align-items:center; gap:8px; background:rgba(255,255,255,0.14); border:1px solid rgba(255,255,255,0.3); padding:8px 18px; border-radius:30px; font-size:13px; font-weight:700; margin-bottom:22px;}
+  .hero h1{font-size:clamp(30px,5.4vw,54px); font-weight:900; margin:0 0 14px; line-height:1.25;}
+  .hero h1 span{color:var(--gold);}
+  .hero p.lead{font-size:clamp(16px,2.1vw,19px); color:#E8DDFB; max-width:680px; margin:0 auto 8px; font-weight:500;}
+  .hero-date{font-size:14px; color:#D8C6F5; margin-bottom:34px;}
+  .hero-ctas{display:flex; gap:14px; justify-content:center; flex-wrap:wrap;}
+  .btn{display:inline-flex; align-items:center; gap:10px; padding:14px 28px; border-radius:30px; font-weight:800; font-size:15px; text-decoration:none; transition:.25s; border:2px solid transparent; cursor:pointer;}
+  .btn-gold{background:var(--gold); color:#3A2405;}
+  .btn-gold:hover{background:#FFC15E; transform:translateY(-2px);}
+  .btn-outline{border-color:rgba(255,255,255,0.5); color:#fff;}
+  .btn-outline:hover{background:rgba(255,255,255,0.12);}
+
+  /* GIFT STRIP (signature element) */
+  .gift-strip{max-width:1100px; margin:-46px auto 0; position:relative; z-index:5; background:#fff; border:1px solid var(--line); border-radius:20px; box-shadow:var(--shadow); padding:30px 26px; display:flex; align-items:center; justify-content:center; gap:26px; flex-wrap:wrap;}
+  .gift-total{text-align:center;}
+  .gift-total .num{font-size:44px; font-weight:900; color:var(--purple-800); line-height:1;}
+  .gift-total .unit{font-size:13px; font-weight:700; color:var(--ink-soft);}
+  .gift-plus{font-size:26px; color:var(--line); font-weight:300;}
+  .month-cell{background:var(--lavender-100); border-radius:14px; padding:14px 20px; text-align:center; min-width:96px;}
+  .month-cell .m-num{font-size:20px; font-weight:900; color:var(--purple-700);}
+  .month-cell .m-lbl{font-size:11.5px; color:var(--ink-soft); font-weight:700; margin-top:2px;}
+  .arrow-eq{font-size:20px; color:var(--ink-soft);}
+
+  /* SECTION HEAD */
+  .section{padding:64px 24px;}
+  .section-head{text-align:center; max-width:640px; margin:0 auto 40px;}
+  .section-head .tag{display:inline-block; background:var(--lavender-100); color:var(--purple-700); font-weight:800; font-size:13px; padding:6px 16px; border-radius:20px; margin-bottom:14px;}
+  .section-head h2{font-size:clamp(24px,3.4vw,34px); font-weight:900; margin:0 0 10px; color:var(--purple-950);}
+  .section-head p{color:var(--ink-soft); font-size:15.5px; margin:0;}
+
+  /* ELIGIBILITY */
+  .elig-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:20px;}
+  .elig-card{background:#fff; border:1px solid var(--line); border-radius:18px; padding:26px; text-align:center; box-shadow:0 4px 14px -8px rgba(74,30,122,0.15);}
+  .elig-card .ico{width:52px; height:52px; margin:0 auto 14px; border-radius:14px; background:var(--purple-700); color:#fff; display:flex; align-items:center; justify-content:center; font-size:21px;}
+  .elig-card h3{margin:0 0 8px; font-size:16px; font-weight:800; color:var(--purple-950);}
+  .elig-card p{margin:0; font-size:14px; color:var(--ink-soft);}
+
+  /* STEPS */
+  .steps{display:grid; grid-template-columns:repeat(3,1fr); gap:0; position:relative;}
+  .step{background:#fff; border:1px solid var(--line); border-radius:18px; padding:26px; position:relative; box-shadow:0 4px 14px -8px rgba(74,30,122,0.15); margin:0 10px;}
+  .step .num-badge{width:34px; height:34px; border-radius:50%; background:var(--gold); color:#3A2405; font-weight:900; display:flex; align-items:center; justify-content:center; font-size:14px; margin-bottom:14px;}
+  .step h3{margin:0 0 8px; font-size:15.5px; font-weight:800; color:var(--purple-950);}
+  .step p{margin:0; font-size:13.5px; color:var(--ink-soft);}
+  .step-connector{position:absolute; top:38px; right:-14px; color:var(--purple-400); font-size:20px; z-index:2;}
+
+  /* TERMS */
+  .terms-card{background:#fff; border:1px solid var(--line); border-radius:18px; box-shadow:var(--shadow); overflow:hidden; max-width:820px; margin:0 auto;}
+  .terms-card .t-head{background:var(--purple-700); color:#fff; padding:18px 24px; font-weight:800; font-size:16px; display:flex; align-items:center; gap:10px;}
+  .terms-list{list-style:none; margin:0; padding:8px 0;}
+  .terms-list li{display:flex; gap:12px; align-items:flex-start; padding:16px 24px; border-bottom:1px solid var(--line);}
+  .terms-list li:last-child{border-bottom:none;}
+  .terms-list i{color:var(--gold-dark); font-size:15px; margin-top:4px;}
+  .terms-list p{margin:0; font-size:14.5px; color:var(--ink); line-height:1.8;}
+  .terms-list b{color:var(--purple-800);}
+
+  /* FAQ ACCORDION */
+  .faq-wrap{max-width:820px; margin:0 auto;}
+  details{background:#fff; border:1px solid var(--line); border-radius:14px; margin-bottom:12px; overflow:hidden; box-shadow:0 4px 14px -8px rgba(74,30,122,0.12);}
+  summary{cursor:pointer; list-style:none; padding:18px 22px; font-weight:700; font-size:15px; color:var(--purple-950); display:flex; justify-content:space-between; align-items:center; gap:12px;}
+  summary::-webkit-details-marker{display:none;}
+  summary .chev{color:var(--purple-600); transition:transform .25s; flex:0 0 auto;}
+  details[open] summary .chev{transform:rotate(180deg);}
+  details[open] summary{border-bottom:1px solid var(--line);}
+  .faq-body{padding:18px 22px; font-size:14.5px; color:var(--ink-soft); line-height:1.85;}
+
+  /* CHANNELS reuse */
+  .channels{display:grid; grid-template-columns:repeat(4,1fr); gap:18px;}
+  .channel-card{background:#fff; border:1px solid var(--line); border-radius:16px; padding:22px; text-align:center; transition:.2s;}
+  .channel-card:hover{border-color:var(--purple-400); transform:translateY(-3px);}
+  .channel-card .ico{width:50px; height:50px; margin:0 auto 12px; border-radius:50%; background:var(--lavender-100); color:var(--purple-700); display:flex; align-items:center; justify-content:center; font-size:20px;}
+  .channel-card h4{margin:0 0 4px; font-size:14.5px; font-weight:800; color:var(--purple-950);}
+  .channel-card span{font-size:13px; color:var(--ink-soft); word-break:break-word;}
+
+  footer{background:var(--purple-950); color:#D8C6F5; padding:40px 24px 26px; text-align:center;}
+  footer .logo-badge{background:var(--gold); color:var(--purple-950);}
+  footer .foot-logo{display:flex; align-items:center; justify-content:center; gap:10px; font-weight:800; color:#fff; margin-bottom:14px;}
+  footer p{font-size:13px; margin:4px 0; color:#B8A2DA;}
+
+  @media (max-width:900px){
+    .elig-grid{grid-template-columns:1fr;}
+    .steps{grid-template-columns:1fr; gap:16px;}
+    .step{margin:0;}
+    .step-connector{display:none;}
+    .channels{grid-template-columns:1fr 1fr;}
+  }
+  @media (max-width:560px){
+    .channels{grid-template-columns:1fr;}
+    .hero{padding:60px 18px 80px;}
+    .section{padding:48px 18px;}
+    .gift-strip{margin:-36px 16px 0; padding:22px 18px;}
+  }
+  @media (prefers-reduced-motion: reduce){ *{animation:none !important; transition:none !important;} }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <div class="logo"><span class="logo-badge">we</span><span>Nokia mesh-WiFi</span></div>
+    <button class="nav-cta" onclick="document.getElementById('subscribe').scrollIntoView()">اعرف أكتر</button>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="hero-decor">
+    <div class="ring ring1"></div>
+    <div class="ring ring2"></div>
+    <div class="ring ring3"></div>
+  </div>
+  <div class="hero-content">
+    <span class="eyebrow"><i class="fa-solid fa-wifi"></i> عرض جديد على جهاز Nokia mesh-WiFi</span>
+    <h1>اشترِ جهاز <span>Nokia mesh-WiFi</span><br>واحصل على جيجابايت هدية</h1>
+    <p class="lead">عند شراء جهاز Nokia mesh-WiFi جديد من WE، يحصل العميل على 300 جيجابايت هدية موزّعة على 3 أشهر.</p>
+    <div class="hero-date">تحية طيبة وبعد، اعتبارًا من يوم الثلاثاء الموافق 28 يوليو 2026، تم إطلاق عرض الصيف على جهاز Nokia mesh-WiFi</div>
+    <div class="hero-ctas">
+      <a class="btn btn-gold" href="tel:111"><i class="fa-solid fa-headset"></i> اتصل بـ 111</a>
+      <a class="btn btn-outline" href="https://te.eg" target="_blank" rel="noopener"><i class="fa-solid fa-globe"></i> te.eg</a>
+    </div>
+  </div>
+</header>
+
+<div class="gift-strip">
+  <div class="gift-total">
+    <div class="num">300</div>
+    <div class="unit">جيجابايت هدية</div>
+  </div>
+  <div class="arrow-eq"><i class="fa-solid fa-equals"></i></div>
+  <div class="month-cell"><div class="m-num">100 GB</div><div class="m-lbl">الشهر الأول</div></div>
+  <div class="gift-plus">+</div>
+  <div class="month-cell"><div class="m-num">100 GB</div><div class="m-lbl">الشهر الثاني</div></div>
+  <div class="gift-plus">+</div>
+  <div class="month-cell"><div class="m-num">100 GB</div><div class="m-lbl">الشهر الثالث</div></div>
+</div>
+
+<main>
+
+  <section class="section" id="eligibility">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="tag">من يستفيد من العرض؟</span>
+        <h2>العرض متاح لجميع عملاء WE للإنترنت الأرضي</h2>
+      </div>
+      <div class="elig-grid">
+        <div class="elig-card">
+          <div class="ico"><i class="fa-solid fa-user-plus"></i></div>
+          <h3>العملاء الجدد</h3>
+          <p>عند شراء جهاز Nokia mesh-WiFi جديد من WE مع الاشتراك في خدمة الإنترنت.</p>
+        </div>
+        <div class="elig-card">
+          <div class="ico"><i class="fa-solid fa-user-check"></i></div>
+          <h3>العملاء الحاليون</h3>
+          <p>يستفيدون بنفس الشروط عند شراء جهاز Nokia mesh-WiFi جديد من WE.</p>
+        </div>
+        <div class="elig-card">
+          <div class="ico"><i class="fa-solid fa-ethernet"></i></div>
+          <h3>جميع تقنيات الخط</h3>
+          <p>العرض يشمل عملاء XDSL و FTTH على حدٍ سواء.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="how" style="background:var(--lavender-100);">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="tag">طريقة الاشتراك</span>
+        <h2>خطوتين وتستفيد من العرض تلقائيًا</h2>
+      </div>
+      <div class="steps">
+        <div class="step">
+          <div class="num-badge">1</div>
+          <h3>اشترِ الجهاز</h3>
+          <p>قم بشراء جهاز Nokia mesh-WiFi جديد من أحد قنوات WE المعتمدة.</p>
+          <span class="step-connector"><i class="fa-solid fa-chevron-left"></i></span>
+        </div>
+        <div class="step">
+          <div class="num-badge">2</div>
+          <h3>الإضافة التلقائية</h3>
+          <p>تتم إضافة الجيجابايت الإضافية تلقائيًا خلال 48 ساعة من الشراء.</p>
+          <span class="step-connector"><i class="fa-solid fa-chevron-left"></i></span>
+        </div>
+        <div class="step">
+          <div class="num-badge">3</div>
+          <h3>استمتع بالهدية</h3>
+          <p>تحصل على 100 جيجابايت شهريًا لمدة 3 أشهر، فترة إتاحة العرض بالكامل.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="terms">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="tag">الشروط والأحكام</span>
+        <h2>تفاصيل مهمة قبل الاشتراك</h2>
+      </div>
+      <div class="terms-card">
+        <div class="t-head"><i class="fa-solid fa-file-contract"></i> الشروط والأحكام</div>
+        <ul class="terms-list">
+          <li>
+            <i class="fa-solid fa-circle-exclamation"></i>
+            <p>في حالة إرجاع العميل للجهاز خلال <b>14 يومًا</b> طبقًا لقانون حماية المستهلك، لا يستفيد العميل من باقي العرض، ولكن يستفيد <b>بالشهر الأول فقط</b>.</p>
+          </li>
+          <li>
+            <i class="fa-solid fa-calendar-check"></i>
+            <p>فترة إتاحة العرض <b>ثلاثة أشهر</b> من تاريخ الشراء.</p>
+          </li>
+          <li>
+            <i class="fa-solid fa-bolt"></i>
+            <p>يبدأ استهلاك الباقات من <b>الباقة الأقرب للانتهاء (Nearest Expiry)</b>، سواء كانت الباقة الرئيسية أو الجيجابايت الإضافية المجانية.</p>
+          </li>
+          <li>
+            <i class="fa-solid fa-globe"></i>
+            <p>العرض متاح لجميع عملاء WE الحاليين والجدد <b>(XDSL – FTTH)</b> عند شراء جهاز Nokia mesh-WiFi جديد من WE.</p>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="faq" style="background:var(--lavender-100);">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="tag">الأسئلة الشائعة</span>
+        <h2>عايز تعرف أكتر؟</h2>
+      </div>
+      <div class="faq-wrap">
+        <details open>
+          <summary>ما هو العرض؟ <i class="fa-solid fa-chevron-down chev"></i></summary>
+          <div class="faq-body">عند شراء جهاز Nokia mesh-WiFi جديد من WE، يحصل العميل على 300 جيجابايت هدية مقسّمة على ثلاثة أشهر، بواقع 100 جيجابايت كل شهر.</div>
+        </details>
+        <details>
+          <summary>هل العرض متاح لجميع عملاء WE للإنترنت الأرضي؟ <i class="fa-solid fa-chevron-down chev"></i></summary>
+          <div class="faq-body">نعم، العرض متاح لجميع العملاء الحاليين والجدد (XDSL - FTTH) عند شراء جهاز Nokia mesh-WiFi جديد من WE.</div>
+        </details>
+        <details>
+          <summary>كيف يتم الاشتراك في العرض؟ <i class="fa-solid fa-chevron-down chev"></i></summary>
+          <div class="faq-body">عند شراء جهاز Nokia mesh-WiFi جديد من WE، يتم إضافة الجيجابايت الإضافية بشكل تلقائي خلال 48 ساعة من الشراء.</div>
+        </details>
+        <details>
+          <summary>ما هي فترة إتاحة العرض؟ <i class="fa-solid fa-chevron-down chev"></i></summary>
+          <div class="faq-body">فترة إتاحة العرض ثلاثة أشهر.</div>
+        </details>
+        <details>
+          <summary>ما هي الحالات التي لا يستفيد فيها العميل من العرض؟ <i class="fa-solid fa-chevron-down chev"></i></summary>
+          <div class="faq-body">في حالة إرجاع العميل للجهاز خلال 14 يومًا طبقًا لقانون حماية المستهلك، لا يستفيد العميل من باقي العرض، ولكن يستفيد بالشهر الأول فقط.</div>
+        </details>
+        <details>
+          <summary>هل يبدأ الاستهلاك من الجيجابايت الإضافية المجانية أولاً أم من الباقة الرئيسية؟ <i class="fa-solid fa-chevron-down chev"></i></summary>
+          <div class="faq-body">يتم الاستهلاك من الباقة الأقرب للانتهاء (Nearest Expiry)، بغض النظر عن كونها الباقة الرئيسية أو الجيجابايت الإضافية.</div>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="subscribe">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="tag">قنوات الشراء والدعم</span>
+        <h2>احصل على جهازك من أقرب فرع</h2>
+      </div>
+      <div class="channels">
+        <div class="channel-card">
+          <div class="ico"><i class="fa-solid fa-shop"></i></div>
+          <h4>زيارة أقرب فرع</h4>
+          <span>من فروع WE</span>
+        </div>
+        <div class="channel-card">
+          <div class="ico"><i class="fa-solid fa-headset"></i></div>
+          <h4>خدمة العملاء</h4>
+          <span>الاتصال بـ 111</span>
+        </div>
+        <div class="channel-card">
+          <div class="ico"><i class="fa-solid fa-globe"></i></div>
+          <h4>الموقع الإلكتروني</h4>
+          <span>https://te.eg</span>
+        </div>
+        <div class="channel-card">
+          <div class="ico"><i class="fa-solid fa-mobile-screen"></i></div>
+          <h4>تطبيق</h4>
+          <span>WE My</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="foot-logo"><span class="logo-badge">we</span> Nokia mesh-WiFi</div>
+  <p>عرض الصيف على جهاز Nokia mesh-WiFi &mdash; ساري من 28/07/2026 لمدة 3 أشهر من تاريخ الشراء</p>
+  <p>تطبق الشروط والأحكام الخاصة بالعرض</p>
+</footer>
+
+</body>
+</html>
