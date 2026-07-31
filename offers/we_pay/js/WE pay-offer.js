@@ -11,6 +11,15 @@
                 ],
                 buttonText: "تفاصيل أكثر",
                 buttonLink: "we-pay.html"
+            },
+                 {
+                title: "we-pay-gigabytes",
+                badge: "عرض خاص",
+                highlight: "لفترة محدودة",
+                details: [
+                ],
+                buttonText: "تفاصيل أكثر",
+                buttonLink: "we-pay-gigabytes.html"
             }
         ];
 
