@@ -21,7 +21,7 @@
         buttonLink: "nitro_mifi_offer.html" // تأكد من صحة هذا المسار
         },
                  {   
-        title: "we-gold-summer.html",
+        title: "we-gold-summer",
         badge: "عرض خاص",
         highlight: "فترة محدودة",
         details: [
@@ -29,6 +29,16 @@
         ],
         buttonText: "تفاصيل أكثر",
         buttonLink: "we-gold-summer-2026.html" // تأكد من صحة هذا المسار
+        },
+                 {   
+        title: "Summer Prepaid",
+        badge: "عرض خاص",
+        highlight: "فترة محدودة",
+        details: [
+            
+        ],
+        buttonText: "تفاصيل أكثر",
+        buttonLink: "Summer-Prepaid.html" // تأكد من صحة هذا المسار
         }
            
         // يمكنك إضافة المزيد من العروض هنا
