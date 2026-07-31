@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WE Gold | عرض الصيف 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Almarai:wght@400;700;800&family=IBM+Plex+Sans+Arabic:wght@300;400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#221A2E;
+    --purple-deep:#31134F;
+    --purple:#5B2A8C;
+    --purple-soft:#8C63B8;
+    --gold:#C9A227;
+    --gold-bright:#F0CE68;
+    --cream:#FBF6EC;
+    --line:#E7DCC2;
+    --card:#FFFFFF;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    font-family:'IBM Plex Sans Arabic', sans-serif;
+    background:var(--cream);
+    color:var(--ink);
+    line-height:1.7;
+    overflow-x:hidden;
+  }
+  h1,h2,h3,.display{font-family:'Almarai', sans-serif;}
+  .num{font-family:'Space Grotesk', sans-serif;}
+  a{color:inherit;}
+
+  /* ---------- nav ---------- */
+  nav{
+    position:sticky; top:0; z-index:50;
+    display:flex; align-items:center; justify-content:space-between;
+    padding:16px 6vw;
+    background:rgba(251,246,236,0.88);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  .brand{display:flex; align-items:center; gap:10px; font-weight:800; font-size:1.15rem; letter-spacing:.5px;}
+  .brand .dot{width:10px; height:10px; border-radius:50%; background:linear-gradient(135deg,var(--gold-bright),var(--gold)); box-shadow:0 0 12px rgba(201,162,39,.6);}
+  nav .links{display:flex; gap:28px; font-size:.92rem; color:var(--purple-deep);}
+  nav .links a{opacity:.75; transition:opacity .2s;}
+  nav .links a:hover{opacity:1;}
+  nav .cta{
+    background:var(--purple-deep); color:var(--gold-bright);
+    padding:10px 20px; border-radius:999px; font-size:.85rem; font-weight:600;
+    border:1px solid var(--gold);
+  }
+  @media (max-width:800px){ nav .links{display:none;} }
+
+  /* ---------- hero ---------- */
+  .hero{
+    position:relative;
+    padding:8vw 6vw 6vw;
+    display:grid; grid-template-columns:1.1fr .9fr; gap:6vw; align-items:center;
+    background:
+      radial-gradient(1200px 500px at 85% -10%, rgba(201,162,39,.16), transparent 60%),
+      radial-gradient(900px 500px at -10% 100%, rgba(91,42,140,.10), transparent 60%);
+  }
+  @media (max-width:900px){ .hero{grid-template-columns:1fr; padding-top:14vw;} }
+  .eyebrow{
+    display:inline-flex; align-items:center; gap:8px;
+    font-size:.78rem; font-weight:600; color:var(--purple-deep);
+    background:#fff; border:1px solid var(--line); padding:6px 14px; border-radius:999px;
+    margin-bottom:22px;
+  }
+  .eyebrow .sq{width:6px; height:6px; background:var(--gold); border-radius:1px; transform:rotate(45deg);}
+  .hero h1{
+    font-size:clamp(2.4rem, 4.6vw, 3.6rem);
+    font-weight:800; line-height:1.28; color:var(--purple-deep);
+  }
+  .hero h1 span{color:var(--gold); }
+  .hero p.lead{
+    margin-top:22px; font-size:1.08rem; color:#4a3f57; max-width:46ch;
+  }
+  .hero .datebar{
+    margin-top:32px; display:flex; gap:14px; flex-wrap:wrap;
+  }
+  .datebar .chip{
+    background:var(--card); border:1px solid var(--line); border-radius:14px;
+    padding:14px 18px; min-width:170px;
+  }
+  .datebar .chip .k{font-size:.72rem; color:var(--purple-soft); font-weight:600;}
+  .datebar .chip .v{font-family:'Space Grotesk'; font-weight:700; font-size:1.05rem; color:var(--purple-deep); margin-top:4px;}
+
+  /* ---------- gold card (signature element) ---------- */
+  .card-wrap{position:relative; display:flex; justify-content:center;}
+  .gold-card{
+    width:min(380px, 88vw); aspect-ratio:1.58/1; border-radius:22px;
+    background:linear-gradient(135deg,#2c1350 0%, #4b1e78 45%, #6d3aa0 100%);
+    position:relative; overflow:hidden;
+    box-shadow:0 30px 60px -20px rgba(49,19,79,.55), 0 0 0 1px rgba(240,206,104,.25) inset;
+    padding:26px 28px;
+    color:#f4ecff;
+    transform:rotate(-4deg);
+    transition:transform .5s ease;
+  }
+  .card-wrap:hover .gold-card{transform:rotate(0deg) scale(1.02);}
+  .gold-card::before{
+    content:""; position:absolute; inset:0;
+    background:linear-gradient(115deg, transparent 20%, rgba(240,206,104,.35) 34%, transparent 48%);
+    background-size:220% 220%;
+    animation:shine 5s ease-in-out infinite;
+  }
+  @keyframes shine{
+    0%{background-position:120% -20%;}
+    50%{background-position:-20% 120%;}
+    100%{background-position:120% -20%;}
+  }
+  .gold-card .top-row{display:flex; justify-content:space-between; align-items:flex-start; position:relative; z-index:2;}
+  .gold-card .chipicon{width:42px; height:32px; border-radius:6px; background:linear-gradient(135deg,var(--gold-bright),var(--gold)); position:relative;}
+  .gold-card .chipicon::after{content:""; position:absolute; inset:5px; border:1px solid rgba(49,19,79,.4); border-radius:3px;}
+  .gold-card .tier{font-family:'Almarai'; font-weight:800; font-size:1.1rem; letter-spacing:1px;}
+  .gold-card .tier b{color:var(--gold-bright);}
+  .gold-card .num-line{margin-top:34px; font-family:'Space Grotesk'; font-size:1.25rem; letter-spacing:3px; position:relative; z-index:2;}
+  .gold-card .bottom-row{display:flex; justify-content:space-between; align-items:flex-end; margin-top:22px; position:relative; z-index:2;}
+  .gold-card .label{font-size:.68rem; color:#cdb8ec; letter-spacing:.5px;}
+  .gold-card .val{font-weight:700; margin-top:3px;}
+  .badge-float{
+    position:absolute; bottom:-16px; left:50%; transform:translateX(-50%);
+    background:var(--gold-bright); color:var(--purple-deep); font-weight:700; font-size:.78rem;
+    padding:8px 16px; border-radius:999px; box-shadow:0 8px 20px rgba(201,162,39,.4);
+    white-space:nowrap;
+  }
+
+  /* ---------- section shell ---------- */
+  section{padding:5.5vw 6vw;}
+  .section-head{max-width:640px; margin-bottom:3vw;}
+  .section-head .tag{color:var(--gold); font-weight:700; font-size:.82rem; letter-spacing:1px;}
+  .section-head h2{font-size:clamp(1.7rem,3vw,2.3rem); color:var(--purple-deep); margin-top:8px; font-weight:800;}
+  .section-head p{margin-top:12px; color:#584c66; font-size:.98rem;}
+
+  /* ---------- who: comparison ---------- */
+  .compare{
+    display:grid; grid-template-columns:1fr auto 1fr; gap:0; align-items:stretch;
+    background:var(--card); border:1px solid var(--line); border-radius:20px; overflow:hidden;
+  }
+  @media (max-width:860px){ .compare{grid-template-columns:1fr;} .compare .divider{display:none;} }
+  .panel{padding:38px 32px;}
+  .panel.existing{background:linear-gradient(180deg,#fff, #FBF6EC);}
+  .panel.new{background:linear-gradient(180deg,#31134F, #4b1e78); color:#f2eaff;}
+  .panel .who{font-size:.78rem; font-weight:700; letter-spacing:.5px; opacity:.75;}
+  .panel h3{font-size:1.5rem; margin-top:8px; font-weight:800;}
+  .panel.new h3{color:var(--gold-bright);}
+  .panel.existing h3{color:var(--purple-deep);}
+  .rowline{display:flex; justify-content:space-between; gap:14px; padding:14px 0; border-bottom:1px dashed rgba(0,0,0,.08);}
+  .panel.new .rowline{border-bottom:1px dashed rgba(255,255,255,.14);}
+  .rowline:last-child{border-bottom:none;}
+  .rowline .k{font-size:.86rem; opacity:.7; max-width:45%;}
+  .rowline .v{font-weight:700; font-size:.94rem; text-align:left;}
+  .divider{width:1px; background:var(--line);}
+
+  /* ---------- prizes ---------- */
+  .prizes{display:grid; grid-template-columns:repeat(3,1fr); gap:22px;}
+  @media (max-width:860px){ .prizes{grid-template-columns:1fr;} }
+  .prize-card{
+    background:var(--card); border:1px solid var(--line); border-radius:20px; padding:32px 26px;
+    position:relative;
+  }
+  .prize-card.grand{
+    background:linear-gradient(160deg,#31134F,#5B2A8C);
+    color:#f4ecff; border:1px solid var(--purple-soft);
+  }
+  .prize-card .pnum{font-family:'Space Grotesk'; font-weight:700; font-size:2.1rem; color:var(--purple-deep);}
+  .prize-card.grand .pnum{color:var(--gold-bright);}
+  .prize-card .pcur{font-size:.9rem; opacity:.6; margin-inline-start:6px;}
+  .prize-card .plabel{margin-top:10px; font-weight:600; font-size:1rem;}
+  .prize-card .pdesc{margin-top:8px; font-size:.86rem; opacity:.7;}
+
+  /* ---------- steps ---------- */
+  .steps{display:grid; grid-template-columns:1fr 1fr; gap:36px;}
+  @media (max-width:860px){ .steps{grid-template-columns:1fr;} }
+  .step-track .track-title{font-weight:700; color:var(--purple-deep); margin-bottom:18px; font-size:1.05rem;}
+  .step{display:flex; gap:16px; align-items:flex-start; margin-bottom:20px;}
+  .step .idx{
+    font-family:'Space Grotesk'; font-weight:700; color:var(--gold);
+    border:1px solid var(--line); background:#fff; width:38px; height:38px; border-radius:50%;
+    display:flex; align-items:center; justify-content:center; flex-shrink:0; font-size:.9rem;
+  }
+  .step .txt{font-size:.94rem; color:#413656; padding-top:6px;}
+
+  /* ---------- faq ---------- */
+  .tabs{display:flex; gap:10px; flex-wrap:wrap; margin-bottom:28px;}
+  .tab-btn{
+    padding:10px 18px; border-radius:999px; border:1px solid var(--line); background:#fff;
+    font-size:.86rem; font-weight:600; color:#584c66; cursor:pointer; transition:.2s;
+  }
+  .tab-btn.active{background:var(--purple-deep); color:var(--gold-bright); border-color:var(--purple-deep);}
+  .faq-group{display:none;}
+  .faq-group.active{display:block;}
+  .faq-item{border-bottom:1px solid var(--line);}
+  .faq-q{
+    display:flex; justify-content:space-between; align-items:center; gap:16px;
+    padding:20px 4px; cursor:pointer; font-weight:600; color:var(--ink); font-size:.98rem;
+  }
+  .faq-q .plus{
+    font-family:'Space Grotesk'; font-size:1.3rem; color:var(--gold); flex-shrink:0;
+    transition:transform .25s;
+  }
+  .faq-item.open .plus{transform:rotate(135deg);}
+  .faq-a{max-height:0; overflow:hidden; transition:max-height .3s ease;}
+  .faq-a p{padding:0 4px 20px; color:#584c66; font-size:.92rem; max-width:70ch;}
+
+  /* ---------- footer ---------- */
+  footer{padding:5vw 6vw 3vw; border-top:1px solid var(--line); margin-top:2vw;}
+  footer .foot-grid{display:flex; justify-content:space-between; gap:20px; flex-wrap:wrap; align-items:flex-start;}
+  footer .note{font-size:.82rem; color:#7c7089; max-width:60ch; line-height:1.9;}
+  footer .brand{margin-bottom:12px;}
+  .thread{height:3px; width:100%; background:linear-gradient(90deg, transparent, var(--gold), transparent); margin:0 0 2vw;}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="brand"><span class="dot"></span> WE <span style="color:var(--gold)">Gold</span></div>
+  <div class="links">
+    <a href="#who">لمين العرض</a>
+    <a href="#prizes">الجوائز</a>
+    <a href="#how">إزاي تستفيد</a>
+    <a href="#faq">الأسئلة الشائعة</a>
+  </div>
+  <a class="cta" href="#faq">التفاصيل كاملة</a>
+</nav>
+
+<!-- HERO -->
+<header class="hero">
+  <div>
+    <div class="eyebrow"><span class="sq"></span> عرض صيف WE Gold 2026</div>
+    <h1>صيف يستاهل باقة <span>ذهب</span>.<br>لكل عملاء WE Gold.</h1>
+    <p class="lead">مضاعفة في الباقة لكل عميل جديد، وفرصة دخول سحب بجوائز نقدية تصل لـ 2,000,000 جنيه لكل عملاء WE Gold، حاليين وجدد.</p>
+    <div class="datebar">
+      <div class="chip">
+        <div class="k">إطلاق عرض العملاء الحاليين</div>
+        <div class="v num">الأربعاء 29 يوليو 2026</div>
+      </div>
+      <div class="chip">
+        <div class="k">فترة العرض</div>
+        <div class="v">حتى نهاية فترة الصيف</div>
+      </div>
+    </div>
+  </div>
+  <div class="card-wrap">
+    <div class="gold-card">
+      <div class="top-row">
+        <div class="chipicon"></div>
+        <div class="tier">WE <b>GOLD</b></div>
+      </div>
+      <div class="num-line">•••• •••• •••• 2026</div>
+      <div class="bottom-row">
+        <div>
+          <div class="label">العضوية</div>
+          <div class="val">عميل WE Gold</div>
+        </div>
+        <div>
+          <div class="label">الجائزة الكبرى</div>
+          <div class="val num">2,000,000 EGP</div>
+        </div>
+      </div>
+    </div>
+    <div class="badge-float">سحب أسبوعي وشهري طوال الصيف</div>
+  </div>
+</header>
+
+<div class="thread"></div>
+
+<!-- WHO -->
+<section id="who">
+  <div class="section-head">
+    <div class="tag">لمين العرض</div>
+    <h2>عميل حالي أو عميل جديد — لكل واحد استحقاقه</h2>
+    <p>العرض بيتفعّل تلقائيًا حسب نوع العميل، وطريقة الاستفادة مختلفة لكل فئة.</p>
+  </div>
+
+  <div class="compare">
+    <div class="panel existing">
+      <div class="who">العملاء الحاليون</div>
+      <h3>مشترك بالفعل في WE Gold</h3>
+      <div class="rowline"><div class="k">الإنترنت المنزلي</div><div class="v">لا يوجد مضاعفة</div></div>
+      <div class="rowline"><div class="k">موبايل إنترنت</div><div class="v">لا يوجد مضاعفة</div></div>
+      <div class="rowline"><div class="k">WE Air</div><div class="v">لا توجد زيادة</div></div>
+      <div class="rowline"><div class="k">جوائز الصيف</div><div class="v">مؤهل عند دفع الفاتورة + الاشتراك بالسحب</div></div>
+      <div class="rowline"><div class="k">طريقة الاستفادة</div><div class="v">دفع الفاتورة والاشتراك عبر <span class="num">*1#</span></div></div>
+      <div class="rowline"><div class="k">التفعيل</div><div class="v">يتطلب الاشتراك بعد سداد الفاتورة</div></div>
+    </div>
+    <div class="divider"></div>
+    <div class="panel new">
+      <div class="who">العملاء الجدد</div>
+      <h3>أول اشتراك في باقة WE Gold</h3>
+      <div class="rowline"><div class="k">الإنترنت المنزلي</div><div class="v">ضعف الباقة لمدة 3 أشهر</div></div>
+      <div class="rowline"><div class="k">موبايل إنترنت</div><div class="v">ضعف الباقة لمدة 3 أشهر</div></div>
+      <div class="rowline"><div class="k">WE Air</div><div class="v">زيادة 50% لمدة 3 أشهر</div></div>
+      <div class="rowline"><div class="k">جوائز الصيف</div><div class="v">دخول تلقائي بالسحب الشهري + الجائزة الكبرى</div></div>
+      <div class="rowline"><div class="k">طريقة الاستفادة</div><div class="v">شراء خط WE Gold جديد، أو التحويل لإحدى باقات WE Gold</div></div>
+      <div class="rowline"><div class="k">التفعيل</div><div class="v">تلقائي مع كل فاتورة</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- PRIZES -->
+<section id="prizes">
+  <div class="section-head">
+    <div class="tag">جوائز الصيف</div>
+    <h2>سحب أسبوعي، وجائزة كبرى في نهاية الصيف</h2>
+    <p>كل عملاء WE Gold المشتركين في العرض مؤهلين للسحب، سواء حاليين عند دفع الفاتورة، أو جدد تلقائيًا.</p>
+  </div>
+  <div class="prizes">
+    <div class="prize-card">
+      <div><span class="pnum">250,000</span><span class="pcur">جنيه</span></div>
+      <div class="plabel">3 فائزين شهريًا</div>
+      <div class="pdesc">فائز واحد يتم اختياره في الأسبوع الرابع من كل شهر خلال فترة العرض.</div>
+    </div>
+    <div class="prize-card grand">
+      <div><span class="pnum">2,000,000</span><span class="pcur" style="color:#cdb8ec">جنيه</span></div>
+      <div class="plabel">الجائزة الكبرى</div>
+      <div class="pdesc">تُمنح لفائز واحد في نهاية عرض الصيف من بين جميع المشتركين.</div>
+    </div>
+    <div class="prize-card">
+      <div><span class="pnum">1</span><span class="pcur">اتصال فقط</span></div>
+      <div class="plabel">التحقق من الفائز</div>
+      <div class="pdesc">يتم إبلاغ الفائز هاتفيًا، والتحقق من هويته قبل استلام الجائزة شخصيًا من مقر الشركة.</div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW -->
+<section id="how">
+  <div class="section-head">
+    <div class="tag">إزاي تستفيد</div>
+    <h2>خطوات الاستفادة من العرض</h2>
+  </div>
+  <div class="steps">
+    <div class="step-track">
+      <div class="track-title">للعملاء الحاليين</div>
+      <div class="step"><div class="idx num">01</div><div class="txt">سدّد فاتورة WE Gold الشهرية كالمعتاد.</div></div>
+      <div class="step"><div class="idx num">02</div><div class="txt">اشترك في السحب عبر <span class="num">*1#</span>.</div></div>
+      <div class="step"><div class="idx num">03</div><div class="txt">تصبح مؤهلاً تلقائيًا لسحوبات الصيف حتى نهاية الفترة.</div></div>
+    </div>
+    <div class="step-track">
+      <div class="track-title">للعملاء الجدد</div>
+      <div class="step"><div class="idx num">01</div><div class="txt">اشترِ خط WE Gold جديد خلال فترة العرض، أو حوّل خطك الحالي (Prepaid / Indigo) لإحدى باقات WE Gold.</div></div>
+      <div class="step"><div class="idx num">02</div><div class="txt">يتم تفعيل مضاعفة الباقة تلقائيًا حسب نوع باقتك.</div></div>
+      <div class="step"><div class="idx num">03</div><div class="txt">تتجدد المضاعفة تلقائيًا مع كل فاتورة لمدة 3 أشهر، وتدخل السحب الشهري والجائزة الكبرى.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq">
+  <div class="section-head">
+    <div class="tag">الأسئلة الشائعة</div>
+    <h2>كل التفاصيل والشروط</h2>
+  </div>
+
+  <div class="tabs">
+    <button class="tab-btn active" data-tab="g1">عن العرض</button>
+    <button class="tab-btn" data-tab="g2">الباقات والميجابايتس</button>
+    <button class="tab-btn" data-tab="g3">الجوائز والسحب</button>
+    <button class="tab-btn" data-tab="g4">حالات خاصة</button>
+  </div>
+
+  <div class="faq-group active" id="g1">
+    <div class="faq-item">
+      <div class="faq-q">ما هو عرض الصيف للعملاء الجدد؟<span class="plus">+</span></div>
+      <div class="faq-a"><p>عرض مخصص لعملاء WE Gold الجدد، يمنحهم عند شراء خط جديد مضاعفة تصل لضعف الباقة شهريًا لمدة 3 أشهر من تاريخ الاشتراك (حسب نوع الباقة)، بالإضافة لسحب شهري على 250,000 جنيه والجائزة الكبرى 2,000,000 جنيه.</p></div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">ما هو عرض الصيف للعملاء الحاليين؟<span class="plus">+</span></div>
+      <div class="faq-a"><p>يُطلق اعتبارًا من الأربعاء 29 يوليو 2026 لكل عملاء WE Gold الحاليين، ويتيح لهم فرصة دخول السحب عند دفع الفاتورة والاشتراك عبر *1#، دون مضاعفة في الباقة.</p></div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">إزاي أحصل على العرض؟<span class="plus">+</span></div>
+      <div class="faq-a"><p>العميل الجديد يحصل على العرض تلقائيًا عند شراء الخط، ويتجدد مع كل فاتورة. العميل الحالي يستفيد بدفع الفاتورة والاشتراك في السحب عبر *1#.</p></div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">ما هي فترة العرض؟<span class="plus">+</span></div>
+      <div class="faq-a"><p>العرض ساري لكل من العملاء الحاليين والجدد حتى انتهاء فترة الصيف.</p></div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">هل يمكن الجمع بين أكثر من عرض من عروض WE Gold؟<span class="plus">+</span></div>
+      <div class="faq-a"><p>لا، يمكن للعميل الاستفادة بعرض واحد فقط خلال فترة عرض الصيف، ولا يمكن الجمع بين عرضين في نفس الوقت.</p></div>
+    </div>
+  </div>
+
+  <div class="faq-group" id="g2">
+    <div class="faq-item">
+      <div class="faq-q">ما هي الباقات المتاحة في العرض؟<span class="plus">+</span></div>
+      <div class="faq-a"><p>جميع باقات WE Gold: باقات WE Gold الإنترنت المنزلي، باقات WE Gold standalone (موبايل)، وباقات WE Gold WE Air.</p></div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">هل يحصل العميل الحالي على مضاعفة في باقته؟<span class="plus">+</span></div>
+      <div class="faq-a"><p>لا، لا يوجد مضاعفة أو زيادة على باقة الإنترنت المنزلي أو الموبايل أو WE Air بالنسبة للعميل الحالي. المضاعفة مخصصة للعملاء الجدد فقط.</p></div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">ما هي صلاحية الميجابايتس الهدية؟<span class="plus">+</span></div>
+      <div class="faq-a"><p>الميجابايتس المجانية صالحة حتى موعد انتهاء دورة الفاتورة الخاصة بالعميل.</p></div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">ما هي أولوية استهلاك الميجابايتس؟<span class="plus">+</span></div>
+      <div class="faq-a"><p>يتم استهلاك باقة العميل الأساسية أولاً، ثم ميجابايتس عرض الصيف.</p></div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">هل يمكن مشاركة الباقة الهدية مع أفراد المجموعة؟<span class="plus">+</span></div>
+      <div class="faq-a"><p>لا، لا يمكن مشاركة الباقة الهدية (عرض الصيف) مع أي فرد من أفراد المجموعة.</p></div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">هل يتم ترحيل الميجابايتس الخاصة بالعرض؟<span class="plus">+</span></div>
+      <div class="faq-a"><p>لا، لا يتم ترحيل ميجابايتس العرض أو تحويلها لأي رقم آخر للاستفادة منها.</p></div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">ماذا يحدث عند التحويل لباقة أخرى داخل WE Gold بعد الحصول على العرض؟<span class="plus">+</span></div>
+      <div class="faq-a"><p>يستمر العميل في الاستفادة من العرض حسب الباقة التي اشترك بها أولاً قبل التحويل، ولا يمكن الحصول على العرض مرة أخرى بعد التحويل لباقة أخرى. مثال: عميل جديد على WE Gold 600 موبايل حصل على عرض الصيف وحوّل بعدها لباقة WE Gold 890، يظل مستفيدًا بعرض مضاعفة باقة الـ600 حتى نهاية الشهر، ومع الفاتورة التالية يتجدد العرض تلقائيًا على أساس باقته الجديدة WE Gold 890، والعكس صحيح عند التحويل لباقة أقل. نفس المبدأ ينطبق على كل عروض المضاعفة أو الزيادة 50%.</p></div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">ماذا يحدث في حالة إيقاف خط العميل؟<span class="plus">+</span></div>
+      <div class="faq-a"><p>يجب إعادة تشغيل الخط للاستفادة من العرض. في حالة حصول العميل على العرض ثم إيقاف الخط، لن يستطيع الاستفادة من الميجابايتس المجانية لحين إعادة تشغيل الخط.</p></div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">هل يمكن لعملاء Prepaid وIndigo الاستفادة من العرض؟<span class="plus">+</span></div>
+      <div class="faq-a"><p>نعم، عند التحويل لإحدى باقات WE Gold يحصل العميل على ضعف باقة الإنترنت المنزلي، ضعف باقة الموبايل إنترنت، وزيادة 50% على WE Air، بالإضافة لدخول جوائز الصيف.</p></div>
+    </div>
+  </div>
+
+  <div class="faq-group" id="g3">
+    <div class="faq-item">
+      <div class="faq-q">ما هي جوائز الصيف المتاحة للعميل الحالي؟<span class="plus">+</span></div>
+      <div class="faq-a"><p>يكون العميل الحالي مؤهلاً لدخول السحب عند دفع الفاتورة والاشتراك عبر *1#.</p></div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">كم عدد الفائزين؟<span class="plus">+</span></div>
+      <div class="faq-a"><p>إجمالي 3 فائزين بجائزة 250,000 جنيه طوال فترة الصيف (فائز واحد في الأسبوع الرابع من كل شهر)، بالإضافة لفائز واحد بالجائزة الكبرى 2,000,000 جنيه في نهاية العرض. الفائز بالجائزة الشهرية يُستبعد من الجائزة الكبرى.</p></div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">إزاي بيتم تنفيذ السحب؟<span class="plus">+</span></div>
+      <div class="faq-a"><p>يتم إجراء سحب عشوائي بين عملاء WE Gold المشتركين في العرض، ثم التواصل مع الفائز هاتفيًا والتحقق من هويته وملكيته للخط. بعد نجاح التحقق، يُبلَّغ العميل بموعد ومكان استلام الشيك من مقر الشركة، ويشترط حضوره شخصيًا ببطاقة رقم قومي سليمة وسارية.</p></div>
+    </div>
+  </div>
+
+  <div class="faq-group" id="g4">
+    <div class="faq-item">
+      <div class="faq-q">من هي الفئة المستهدفة من عرض العملاء الحاليين؟<span class="plus">+</span></div>
+      <div class="faq-a"><p>العملاء المشتركون حاليًا في أي من باقات WE Gold الشهرية.</p></div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">كيف يحصل العميل الحالي على العرض تحديدًا؟<span class="plus">+</span></div>
+      <div class="faq-a"><p>يتطلب الاشتراك في السحب بعد سداد فاتورة العميل — لا يوجد تفعيل تلقائي كما هو الحال مع العملاء الجدد.</p></div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">ما هي فترة عرض الصيف للعملاء الحاليين تحديدًا؟<span class="plus">+</span></div>
+      <div class="faq-a"><p>العرض ساري من تاريخ الإطلاق في 29 يوليو 2026 وحتى انتهاء فترة الصيف.</p></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="thread"></div>
+  <div class="foot-grid">
+    <div>
+      <div class="brand">WE <span style="color:var(--gold)">Gold</span></div>
+      <div class="note">العرض متاح لعملاء باقات WE Gold الشهرية (الإنترنت المنزلي، الموبايل، وWE Air). التفاصيل والشروط أعلاه مبنية على مستندات العرض الداخلية، وقد تخضع للتحديث من WE.</div>
+    </div>
+    <div class="note">جميع القيم النقدية بالجنيه المصري. آخر تحديث للمحتوى: يوليو 2026.</div>
+  </div>
+</footer>
+
+<script>
+  // FAQ accordion
+  document.querySelectorAll('.faq-q').forEach(q=>{
+    q.addEventListener('click', ()=>{
+      const item = q.parentElement;
+      const a = item.querySelector('.faq-a');
+      const open = item.classList.contains('open');
+      // close siblings in same group
+      item.parentElement.querySelectorAll('.faq-item.open').forEach(i=>{
+        i.classList.remove('open');
+        i.querySelector('.faq-a').style.maxHeight = null;
+      });
+      if(!open){
+        item.classList.add('open');
+        a.style.maxHeight = a.scrollHeight + 'px';
+      }
+    });
+  });
+
+  // tabs
+  document.querySelectorAll('.tab-btn').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+      document.querySelectorAll('.faq-group').forEach(g=>g.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById(btn.dataset.tab).classList.add('active');
+    });
+  });
+</script>
+
+</body>
+</html>
