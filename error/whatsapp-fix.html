@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>دليل حل مشكلة تسجيل واتساب | فريق الدعم</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Almarai:wght@400;700;800&family=IBM+Plex+Sans+Arabic:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0E2A2B;
+    --line:#0F4C4E;
+    --line-light:#3E8E8A;
+    --copper:#C87C3E;
+    --paper:#F3F0E7;
+    --card:#FFFFFF;
+    --ok:#2E7D5B;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'IBM Plex Sans Arabic', sans-serif;
+    line-height:1.75;
+    min-height:100vh;
+  }
+  .wrap{max-width:760px;margin:0 auto;padding:0 20px 80px;}
+
+  /* ---- Header : the "line" trace ---- */
+  header{
+    padding:56px 20px 40px;
+    position:relative;
+    overflow:hidden;
+    background:
+      radial-gradient(600px 300px at 85% -10%, rgba(200,124,62,0.16), transparent 60%),
+      var(--line);
+    color:#F3F0E7;
+  }
+  header .wrap{position:relative;z-index:2;}
+  .eyebrow{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12.5px;
+    letter-spacing:.14em;
+    color:#BEE3DF;
+    text-transform:uppercase;
+    display:flex;align-items:center;gap:10px;
+    margin-bottom:18px;
+  }
+  .eyebrow .dot{width:7px;height:7px;border-radius:50%;background:#7CE0A6;box-shadow:0 0 0 4px rgba(124,224,166,.18);}
+  h1{
+    font-family:'Almarai', sans-serif;
+    font-weight:800;
+    font-size:clamp(28px,5vw,40px);
+    line-height:1.35;
+    max-width:16ch;
+  }
+  header p.sub{
+    margin-top:16px;
+    color:#D6EAE7;
+    font-size:16px;
+    max-width:52ch;
+  }
+  .traceline{
+    position:absolute;
+    inset:0;
+    z-index:1;
+    opacity:.55;
+    pointer-events:none;
+  }
+
+  /* ---- Case card ---- */
+  .case{
+    margin-top:-34px;
+    position:relative;
+    z-index:3;
+    background:var(--card);
+    border-radius:14px;
+    box-shadow:0 16px 40px rgba(15,76,78,.18);
+    padding:22px 24px;
+    display:flex;
+    gap:16px;
+    align-items:center;
+    border:1px solid rgba(15,76,78,.08);
+  }
+  .case .status{
+    flex-shrink:0;
+    width:44px;height:44px;border-radius:10px;
+    background:rgba(46,125,91,.12);
+    display:flex;align-items:center;justify-content:center;
+    color:var(--ok);
+    font-size:20px;
+  }
+  .case .title{font-weight:700;font-size:15px;}
+  .case .meta{font-family:'IBM Plex Mono', monospace;font-size:12px;color:#6b7f80;margin-top:3px;}
+
+  /* ---- Sections ---- */
+  section{margin-top:52px;}
+  .step-head{display:flex;align-items:baseline;gap:14px;margin-bottom:14px;}
+  .step-num{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:13px;
+    color:var(--copper);
+    border:1px solid rgba(200,124,62,.4);
+    padding:3px 9px;
+    border-radius:20px;
+    flex-shrink:0;
+  }
+  h2{
+    font-family:'Almarai', sans-serif;
+    font-weight:700;
+    font-size:20px;
+    color:var(--line);
+  }
+  p{color:#2c4344;font-size:15.5px;}
+  a.inline-link{color:var(--copper);font-weight:600;text-decoration:none;border-bottom:1px dashed var(--copper);}
+  a.inline-link:hover{border-bottom-style:solid;}
+
+  .field-list{
+    margin-top:16px;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:10px;
+  }
+  @media (max-width:520px){.field-list{grid-template-columns:1fr;}}
+  .field{
+    background:var(--card);
+    border:1px solid rgba(15,76,78,.12);
+    border-radius:10px;
+    padding:12px 14px;
+    font-size:13.5px;
+  }
+  .field b{display:block;color:var(--line);font-size:12px;margin-bottom:4px;font-family:'IBM Plex Mono',monospace;letter-spacing:.03em;}
+
+  /* ---- Template block ---- */
+  .template{
+    margin-top:16px;
+    background:var(--ink);
+    border-radius:12px;
+    overflow:hidden;
+    border:1px solid rgba(0,0,0,.2);
+  }
+  .template .bar{
+    display:flex;justify-content:space-between;align-items:center;
+    padding:10px 16px;
+    background:rgba(255,255,255,.04);
+    border-bottom:1px solid rgba(255,255,255,.08);
+  }
+  .template .bar span{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11.5px;
+    color:#9fc9c6;
+    letter-spacing:.08em;
+  }
+  .copy-btn{
+    font-family:'IBM Plex Sans Arabic', sans-serif;
+    font-size:12.5px;
+    background:var(--copper);
+    color:#1a1108;
+    border:none;
+    padding:6px 14px;
+    border-radius:7px;
+    cursor:pointer;
+    font-weight:600;
+    transition:transform .15s ease, background .15s ease;
+  }
+  .copy-btn:hover{background:#DA9354;}
+  .copy-btn:active{transform:scale(.96);}
+  .copy-btn:focus-visible{outline:2px solid #fff;outline-offset:2px;}
+  pre{
+    direction:ltr;
+    text-align:left;
+    padding:18px 20px 22px;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:13px;
+    line-height:1.85;
+    color:#E7F2F1;
+    white-space:pre-wrap;
+    word-break:break-word;
+  }
+  pre .hl{color:#7CE0A6;}
+
+  /* ---- Result callout ---- */
+  .result{
+    margin-top:16px;
+    display:flex;
+    gap:12px;
+    align-items:flex-start;
+    background:rgba(46,125,91,.08);
+    border:1px solid rgba(46,125,91,.25);
+    border-radius:10px;
+    padding:14px 16px;
+  }
+  .result .tick{
+    width:22px;height:22px;border-radius:50%;
+    background:var(--ok);color:#fff;
+    display:flex;align-items:center;justify-content:center;
+    font-size:13px;flex-shrink:0;margin-top:2px;
+  }
+  .result p{margin:0;color:#1e4a37;font-size:14.5px;}
+
+  /* ---- CTA ---- */
+  .cta{
+    margin-top:52px;
+    background:var(--line);
+    border-radius:14px;
+    padding:26px 28px;
+    color:#F3F0E7;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:20px;
+    flex-wrap:wrap;
+  }
+  .cta h3{font-family:'Almarai',sans-serif;font-size:17px;margin-bottom:4px;}
+  .cta p{color:#BFE0DD;font-size:13.5px;margin:0;}
+  .go-btn{
+    font-family:'IBM Plex Sans Arabic', sans-serif;
+    background:var(--copper);
+    color:#1a1108;
+    font-weight:700;
+    font-size:14px;
+    text-decoration:none;
+    padding:12px 22px;
+    border-radius:9px;
+    white-space:nowrap;
+    transition:transform .15s ease;
+  }
+  .go-btn:hover{transform:translateY(-2px);}
+  .go-btn:focus-visible{outline:2px solid #fff;outline-offset:2px;}
+
+  footer{
+    margin-top:40px;
+    text-align:center;
+    font-size:12px;
+    color:#7c9190;
+    font-family:'IBM Plex Mono', monospace;
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{transition:none !important; scroll-behavior:auto !important;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <svg class="traceline" viewBox="0 0 760 220" preserveAspectRatio="none">
+    <path d="M -20 180 C 120 120, 220 200, 340 140 S 560 40, 780 90" stroke="#3E8E8A" stroke-width="2" fill="none" stroke-dasharray="1 10" stroke-linecap="round"/>
+    <path d="M -20 60 C 140 20, 260 90, 400 60 S 620 -10, 780 30" stroke="#C87C3E" stroke-width="1.5" fill="none" stroke-dasharray="1 8" stroke-linecap="round" opacity="0.5"/>
+  </svg>
+  <div class="wrap">
+    <div class="eyebrow"><span class="dot"></span>دليل دعم داخلي — حالات الخطوط المحوّلة</div>
+    <h1>حل مشكلة "تعذر تسجيل الدخول" في واتساب</h1>
+    <p class="sub">للأرقام المشتراة حديثًا والتي كانت مسجّلة سابقًا لمالك آخر على واتساب. تم تجربة هذه الخطوات فعليًا وأثبتت نجاحها.</p>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="case">
+    <div class="status">✓</div>
+    <div>
+      <div class="title">الحالة: تم التحقق من نجاح الحل</div>
+      <div class="meta">متوسط وقت الاستجابة من واتساب: نحو ٥ دقائق</div>
+    </div>
+  </div>
+
+  <section>
+    <div class="step-head"><span class="step-num">01</span><h2>افتح صفحة الدعم من واتساب</h2></div>
+    <p>ادخل على رابط الدعم الرسمي (noclient) عبر جوجل، واملأ الحقول التالية بدقة:</p>
+    <div class="field-list">
+      <div class="field"><b>رقم الهاتف</b>الرقم المستخدم لحساب واتساب (بالكود الدولي)</div>
+      <div class="field"><b>البريد الإلكتروني</b>بريد فعّال يمكن الوصول له لتلقي الرد</div>
+    </div>
+  </section>
+
+  <section>
+    <div class="step-head"><span class="step-num">02</span><h2>الصق نص الرسالة التالي</h2></div>
+    <p>في حقل "الرسالة"، استخدم النص جاهزًا — استبدل الرقم فقط بالرقم الفعلي للعميل:</p>
+    <div class="template">
+      <div class="bar">
+        <span>MESSAGE TEMPLATE · EN</span>
+        <button class="copy-btn" onclick="copyTemplate(this)">نسخ النص</button>
+      </div>
+      <pre id="template-text">Hello WhatsApp Support Team,
+
+I purchased this phone number <span class="hl">+20xxxxxxxxx</span> as a new SIM card from my carrier 2 months ago. I believe the previous owner had a WhatsApp account on this number.
+
+I am unable to register and I get the error "Login not available right now. For security reasons, we can't log you in right now."
+
+Please remove any restrictions on this number so I can create my own WhatsApp account. I can provide proof of ownership from my carrier if needed.
+
+Thank you.</pre>
+    </div>
+  </section>
+
+  <section>
+    <div class="step-head"><span class="step-num">03</span><h2>انتظر رد الفريق</h2></div>
+    <div class="result">
+      <div class="tick">✓</div>
+      <p>يصل بريد إلكتروني من واتساب خلال دقائق قليلة يفيد بإزالة القيد عن الرقم. بعدها تتم محاولة التسجيل مباشرة من التطبيق وتنجح.</p>
+    </div>
+  </section>
+
+  <div class="cta">
+    <div>
+      <h3>رابط صفحة الدعم</h3>
+      <p>whatsapp.com/contact/noclient</p>
+    </div>
+    <a class="go-btn" href="https://www.whatsapp.com/contact/noclient?lang=en_US" target="_blank" rel="noopener">فتح الصفحة ↗</a>
+  </div>
+
+  <footer>مرجع داخلي لفريق الدعم — يُحدَّث كلما تغيّر إجراء واتساب</footer>
+</div>
+
+<script>
+function copyTemplate(btn){
+  const raw = document.getElementById('template-text').innerText;
+  navigator.clipboard.writeText(raw).then(()=>{
+    const old = btn.textContent;
+    btn.textContent = 'تم النسخ ✓';
+    setTimeout(()=>{ btn.textContent = old; }, 1800);
+  }).catch(()=>{
+    btn.textContent = 'تعذر النسخ';
+  });
+}
+</script>
+
+</body>
+</html>
