@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>عرض صيف الجيجابيتس من WE Pay</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0F0D13;
+    --panel:#17141D;
+    --panel-2:#1D1926;
+    --violet:#9B5DE0;
+    --violet-deep:#6C2FB5;
+    --lilac:#C9AEEA;
+    --ink:#EFEAF6;
+    --muted:#9C93AE;
+    --ok:#3FBF8F;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'Tajawal', sans-serif;
+    line-height:1.8;
+  }
+  .wrap{max-width:760px;margin:0 auto;padding:0 20px 90px;}
+
+  /* ---- Hero ---- */
+  header{
+    position:relative;
+    padding:64px 20px 56px;
+    overflow:hidden;
+    background:
+      radial-gradient(520px 320px at 88% -8%, rgba(155,93,224,.35), transparent 65%),
+      radial-gradient(400px 260px at 5% 100%, rgba(108,47,181,.22), transparent 60%),
+      var(--bg);
+  }
+  header .wrap{position:relative;z-index:2;}
+  .badge{
+    display:inline-flex;align-items:center;gap:8px;
+    font-family:'Cairo',sans-serif;font-weight:700;font-size:12.5px;
+    color:var(--lilac);
+    background:rgba(155,93,224,.12);
+    border:1px solid rgba(155,93,224,.35);
+    padding:6px 14px;border-radius:20px;
+    letter-spacing:.02em;
+    margin-bottom:22px;
+  }
+  .badge .dot{width:6px;height:6px;border-radius:50%;background:var(--violet);}
+  h1{
+    font-family:'Cairo',sans-serif;
+    font-weight:800;
+    font-size:clamp(26px,5.2vw,36px);
+    line-height:1.5;
+  }
+  h1 .hi{color:var(--violet);}
+  header p.greet{color:var(--muted);font-size:15px;margin-top:14px;}
+  header p.lede{margin-top:18px;font-size:16px;color:#DCD4EC;max-width:56ch;}
+
+  /* ---- Gauge card ---- */
+  .gauge-card{
+    margin-top:38px;
+    background:var(--panel);
+    border:1px solid rgba(155,93,224,.18);
+    border-radius:16px;
+    padding:24px;
+    display:flex;
+    align-items:center;
+    gap:22px;
+    box-shadow:0 20px 44px rgba(0,0,0,.35);
+  }
+  .gauge{flex-shrink:0;width:96px;height:96px;position:relative;}
+  .gauge svg{transform:rotate(-90deg);}
+  .gauge .val{
+    position:absolute;inset:0;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+  }
+  .gauge .val b{font-family:'Cairo',sans-serif;font-size:19px;color:var(--ink);}
+  .gauge .val span{font-size:10.5px;color:var(--muted);}
+  .gauge-copy h3{font-family:'Cairo',sans-serif;font-size:16px;margin-bottom:6px;}
+  .gauge-copy p{font-size:13.5px;color:var(--muted);}
+  .gauge-copy .tag{
+    display:inline-block;margin-top:10px;
+    font-size:11.5px;color:var(--ok);
+    background:rgba(63,191,143,.1);
+    border:1px solid rgba(63,191,143,.3);
+    padding:3px 10px;border-radius:20px;
+  }
+
+  /* ---- Sections ---- */
+  section{margin-top:56px;}
+  .section-head{margin-bottom:20px;}
+  .eyebrow{
+    font-family:'Cairo',sans-serif;font-size:12px;font-weight:700;
+    color:var(--violet);letter-spacing:.08em;text-transform:uppercase;
+    margin-bottom:8px;
+  }
+  h2{font-family:'Cairo',sans-serif;font-size:21px;font-weight:700;}
+
+  /* ---- Info grid ---- */
+  .info-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+  @media (max-width:540px){.info-grid{grid-template-columns:1fr;}}
+  .info-item{
+    background:var(--panel);
+    border:1px solid rgba(255,255,255,.06);
+    border-radius:12px;
+    padding:16px 18px;
+  }
+  .info-item b{
+    display:block;font-family:'Cairo',sans-serif;font-size:12px;color:var(--lilac);
+    margin-bottom:6px;
+  }
+  .info-item p{font-size:14px;color:#D8D2E4;}
+
+  /* ---- FAQ accordion ---- */
+  .faq{border-top:1px solid rgba(255,255,255,.08);}
+  .faq-item{border-bottom:1px solid rgba(255,255,255,.08);}
+  .faq-q{
+    width:100%;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:16px;
+    background:none;border:none;
+    color:var(--ink);
+    font-family:'Cairo',sans-serif;
+    font-size:15px;
+    font-weight:600;
+    text-align:right;
+    padding:19px 4px;
+    cursor:pointer;
+  }
+  .faq-q .plus{
+    flex-shrink:0;
+    width:26px;height:26px;border-radius:50%;
+    border:1px solid rgba(155,93,224,.4);
+    color:var(--violet);
+    display:flex;align-items:center;justify-content:center;
+    font-size:15px;
+    transition:transform .25s ease, background .25s ease;
+  }
+  .faq-item.open .faq-q .plus{transform:rotate(45deg);background:rgba(155,93,224,.15);}
+  .faq-a{
+    max-height:0;
+    overflow:hidden;
+    transition:max-height .3s ease;
+  }
+  .faq-a p, .faq-a ul{
+    padding:0 4px 20px;
+    color:#C9C1DA;
+    font-size:14px;
+  }
+  .faq-a ul{padding-right:20px;padding-left:4px;}
+  .faq-a li{margin-bottom:6px;}
+
+  /* ---- Terms ---- */
+  .terms{
+    background:var(--panel);
+    border:1px solid rgba(255,255,255,.06);
+    border-radius:14px;
+    padding:22px 24px;
+  }
+  .terms li{
+    list-style:none;
+    position:relative;
+    padding-right:20px;
+    margin-bottom:12px;
+    font-size:14px;
+    color:#D8D2E4;
+  }
+  .terms li::before{
+    content:'';
+    position:absolute;
+    right:0;top:8px;
+    width:7px;height:7px;
+    border-radius:50%;
+    background:var(--violet);
+  }
+  .terms li:last-child{margin-bottom:0;}
+  .terms li .accent{color:var(--lilac);font-weight:700;}
+
+  /* ---- Validity strip ---- */
+  .validity{
+    margin-top:56px;
+    background:linear-gradient(135deg, var(--violet-deep), var(--violet));
+    border-radius:16px;
+    padding:26px 28px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    flex-wrap:wrap;
+    gap:16px;
+  }
+  .validity h3{font-family:'Cairo',sans-serif;font-size:16px;margin-bottom:4px;}
+  .validity p{font-size:13px;color:#EEE6FA;}
+  .validity .dates{
+    font-family:'Cairo',sans-serif;
+    font-weight:800;
+    font-size:15px;
+    background:rgba(255,255,255,.14);
+    padding:9px 18px;
+    border-radius:10px;
+    white-space:nowrap;
+  }
+
+  footer{
+    margin-top:44px;
+    text-align:center;
+    font-size:12px;
+    color:#5C5470;
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{transition:none !important; scroll-behavior:auto !important;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div class="badge"><span class="dot"></span>إعلان لجميع الزملاء</div>
+    <p class="greet">الزملاء الأعزاء، تحية طيبة وبعد ،،،</p>
+    <h1>عرض <span class="hi">صيف الجيجابيتس</span> من محفظة WE Pay</h1>
+    <p class="lede">يرجى العلم بأنه اعتبارًا من يوم السبت الموافق 4 يوليو 2026 تم اطلاق عرض الصيف الجيجابيتس من محفظة WE Pay، وذلك وفقًا لما يلي:</p>
+
+    <div class="gauge-card">
+      <div class="gauge">
+        <svg width="96" height="96" viewBox="0 0 96 96">
+          <circle cx="48" cy="48" r="42" fill="none" stroke="#2A2534" stroke-width="9"/>
+          <circle cx="48" cy="48" r="42" fill="none" stroke="url(#g)" stroke-width="9" stroke-linecap="round"
+            stroke-dasharray="264" stroke-dashoffset="64"/>
+          <defs>
+            <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#C9AEEA"/>
+              <stop offset="100%" stop-color="#9B5DE0"/>
+            </linearGradient>
+          </defs>
+        </svg>
+        <div class="val"><b>3.25</b><span>جيجابيت</span></div>
+      </div>
+      <div class="gauge-copy">
+        <h3>هدية لمرة واحدة لكل مشترك جديد</h3>
+        <p>يحصل مشتركو WE Pay الجدد على 3.25 جيجابيت، صالحة لمدة 28 يومًا من تاريخ الحصول عليها.</p>
+        <span class="tag">مفعّل الآن</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <section>
+    <div class="section-head">
+      <div class="eyebrow">نظرة سريعة</div>
+      <h2>تفاصيل العرض</h2>
+    </div>
+    <div class="info-grid">
+      <div class="info-item"><b>طريقة الحصول على العرض</b><p>يحصل العميل الجديد المشترك في محفظة WE Pay عليها مرة واحدة فقط.</p></div>
+      <div class="info-item"><b>العملاء المستفيدون</b><p>مشتركو WE Pay الجدد فقط.</p></div>
+      <div class="info-item"><b>صلاحية الباقة</b><p>28 يومًا من تاريخ الحصول عليها.</p></div>
+      <div class="info-item"><b>هل تتجدد الباقة؟</b><p>لا تتجدد، والجيجابيتس المتبقية لا ترحّل للشهر التالي.</p></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-head">
+      <div class="eyebrow">الأسئلة الشائعة</div>
+      <h2>كل ما تحتاج معرفته عن العرض</h2>
+    </div>
+    <div class="faq" id="faq">
+
+      <div class="faq-item">
+        <button class="faq-q"><span>ما هو "عرض الجيجابيتس" من WE Pay؟</span><span class="plus">+</span></button>
+        <div class="faq-a"><p>يحصل مشتركو WE Pay الجدد على 3.25 جيجابيت لمرة واحدة فقط، صالحة لمدة 28 يومًا.</p></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q"><span>من هم العملاء المستفيدون من العرض؟</span><span class="plus">+</span></button>
+        <div class="faq-a"><p>مشتركو WE Pay الجدد فقط.</p></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q"><span>ما هي صلاحية الباقة؟</span><span class="plus">+</span></button>
+        <div class="faq-a"><p>28 يومًا من تاريخ الحصول عليها.</p></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q"><span>هل يمكن أن يستفيد عميل WE Pay الجديد بالباقة أكثر من مرة؟</span><span class="plus">+</span></button>
+        <div class="faq-a"><p>لا، يحصل العميل الجديد المشترك في محفظة WE Pay على الباقة مرة واحدة فقط.</p></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q"><span>هل يتم ترحيل الجيجابيتس المتبقية للشهر التالي؟</span><span class="plus">+</span></button>
+        <div class="faq-a"><p>لا، الجيجابيتس المتبقية لا ترحّل.</p></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q"><span>هل يتم تجديد الباقة؟</span><span class="plus">+</span></button>
+        <div class="faq-a"><p>لا، الباقة لا تُجدَّد.</p></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q"><span>ما هي سياسة استهلاك الباقة؟</span><span class="plus">+</span></button>
+        <div class="faq-a"><p>في حالة الاستخدام أو التحميل، يتم خصم 1 ميجابايت من الباقة لكل ميجابايت استخدام. وتكون الأولوية لاستهلاك الباقة الجديدة أولًا، ثم الباقة الأساسية.</p></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q"><span>كيف تكون المحاسبة بعد انتهاء الباقة؟</span><span class="plus">+</span></button>
+        <div class="faq-a"><p>بعد استهلاك 100% من الباقة، تكون المحاسبة خارج الباقة على حسب نظام الخط وطبقًا للباقة الأساسية.</p></div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q"><span>ما هي شروط وأحكام "عرض الجيجابيتس"؟</span><span class="plus">+</span></button>
+        <div class="faq-a">
+          <ul>
+            <li>يحصل العميل الجديد المشترك في محفظة WE Pay على 3.25 جيجابيت لمرة واحدة فقط.</li>
+            <li>الباقة متاحة لجميع عملاء أنظمة الدفع المسبق والفاتورة وخطوط الداتا، الحاليين والجدد.</li>
+            <li>في حالة الاستخدام أو التحميل يتم خصم 1 ميجابايت من الباقة لكل ميجابايت استخدام.</li>
+            <li>أولوية الاستهلاك للباقة الجديدة، ثم الباقة الأساسية.</li>
+            <li>تتحمل الشركة المصرية للاتصالات ضريبة القيمة المضافة على الباقة المجانية.</li>
+            <li>الباقة لا تُجدَّد، والجيجابيتس المتبقية لا ترحّل.</li>
+            <li>بعد استهلاك 100% من الباقة تكون المحاسبة خارج الباقة على حسب نظام الخط وطبقًا للباقة الأساسية.</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <section>
+    <div class="section-head">
+      <div class="eyebrow">ملاحظات هامة</div>
+      <h2>باختصار</h2>
+    </div>
+    <ul class="terms">
+      <li>الباقة متاحة لجميع عملاء <span class="accent">أنظمة الدفع المسبق والفاتورة وخطوط الداتا</span>، الحاليين والجدد.</li>
+      <li>أولوية الاستهلاك للباقة الجديدة ثم الباقة الأساسية.</li>
+      <li>تتحمل الشركة المصرية للاتصالات ضريبة القيمة المضافة على الباقة المجانية.</li>
+      <li>الباقة لا تُجدَّد، والجيجابيتس المتبقية لا ترحّل.</li>
+      <li>بعد استهلاك 100% من الباقة، تكون المحاسبة خارج الباقة حسب نظام الخط وطبقًا للباقة الأساسية.</li>
+    </ul>
+  </section>
+
+  <div class="validity">
+    <div>
+      <h3>مدة سريان العرض</h3>
+      <p>من 1 يوليو 2026 وحتى 30 سبتمبر 2026</p>
+    </div>
+    <div class="dates">1 يوليو ← 30 سبتمبر 2026</div>
+  </div>
+
+  <footer>WE Pay — عرض صيف الجيجابيتس · إصدار 1</footer>
+</div>
+
+<script>
+document.querySelectorAll('.faq-item').forEach(item=>{
+  const q = item.querySelector('.faq-q');
+  const a = item.querySelector('.faq-a');
+  q.addEventListener('click', ()=>{
+    const isOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item.open').forEach(other=>{
+      if(other!==item){
+        other.classList.remove('open');
+        other.querySelector('.faq-a').style.maxHeight = null;
+      }
+    });
+    if(isOpen){
+      item.classList.remove('open');
+      a.style.maxHeight = null;
+    } else {
+      item.classList.add('open');
+      a.style.maxHeight = a.scrollHeight + 'px';
+    }
+  });
+});
+</script>
+
+</body>
+</html>
