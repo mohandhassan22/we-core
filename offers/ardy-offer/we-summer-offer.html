@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>عرض الصيف 2026 | باقات WE أرضي</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+  :root{
+    --purple-950:#2A1247;
+    --purple-800:#4A1E7A;
+    --purple-700:#5B2A86;
+    --purple-600:#7136A8;
+    --purple-400:#9D5FD1;
+    --lavender-100:#F4EEFC;
+    --lavender-50:#FBF9FE;
+    --gold:#F0A93A;
+    --gold-dark:#D98A1F;
+    --sea:#1E9E93;
+    --ink:#2A1B3D;
+    --ink-soft:#5B4A72;
+    --white:#FFFFFF;
+    --line:#E6DCF5;
+    --shadow: 0 10px 30px -12px rgba(74,30,122,0.25);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    font-family:'Cairo',sans-serif;
+    background:var(--lavender-50);
+    color:var(--ink);
+    line-height:1.75;
+    -webkit-font-smoothing:antialiased;
+  }
+  img,svg{display:block;max-width:100%;}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 24px;}
+  a{color:inherit;}
+
+  /* ---------- Skip link / focus ---------- */
+  a:focus-visible, button:focus-visible{outline:3px solid var(--gold); outline-offset:3px;}
+
+  /* ---------- NAV ---------- */
+  .nav{
+    position:sticky; top:0; z-index:50;
+    background:rgba(255,255,255,0.85);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  .nav-inner{display:flex;align-items:center;justify-content:space-between;padding:14px 24px;max-width:1180px;margin:0 auto;}
+  .logo{display:flex;align-items:center;gap:10px;font-weight:800;color:var(--purple-800);}
+  .logo-badge{
+    width:38px;height:38px;border-radius:50%;
+    background:var(--purple-700);
+    display:flex;align-items:center;justify-content:center;
+    color:#fff;font-weight:900;font-size:15px;letter-spacing:.5px;
+  }
+  .nav-cta{
+    background:var(--purple-700); color:#fff; border:none; border-radius:30px;
+    padding:10px 22px; font-family:'Cairo',sans-serif; font-weight:700; font-size:14px;
+    cursor:pointer; transition:.25s; box-shadow:var(--shadow);
+  }
+  .nav-cta:hover{background:var(--purple-800); transform:translateY(-1px);}
+
+  /* ---------- HERO ---------- */
+  .hero{
+    position:relative;
+    overflow:hidden;
+    background:radial-gradient(120% 140% at 15% -10%, #7136A8 0%, #4A1E7A 42%, #2A1247 100%);
+    color:#fff;
+    padding:76px 24px 64px;
+  }
+  .hero-decor{position:absolute; inset:0; pointer-events:none; opacity:.9;}
+  .sun{
+    position:absolute; top:-40px; left:-40px; width:220px; height:220px; border-radius:50%;
+    background:radial-gradient(circle at 35% 35%, #FFD98A, var(--gold) 55%, var(--gold-dark) 100%);
+    filter:blur(0px);
+    box-shadow:0 0 90px 20px rgba(240,169,58,0.35);
+    animation:sunFloat 9s ease-in-out infinite;
+  }
+  @keyframes sunFloat{0%,100%{transform:translateY(0);}50%{transform:translateY(14px);}}
+  .wave{position:absolute; bottom:-2px; left:0; width:100%; line-height:0;}
+  .hero-content{position:relative; z-index:2; max-width:1180px; margin:0 auto; text-align:center;}
+  .eyebrow{
+    display:inline-flex; align-items:center; gap:8px;
+    background:rgba(255,255,255,0.14); border:1px solid rgba(255,255,255,0.3);
+    padding:8px 18px; border-radius:30px; font-size:13px; font-weight:700;
+    letter-spacing:.3px; margin-bottom:22px;
+  }
+  .hero h1{
+    font-size:clamp(36px,6vw,64px);
+    font-weight:900;
+    margin:0 0 10px;
+    line-height:1.15;
+  }
+  .hero h1 span{color:var(--gold);}
+  .hero p.lead{
+    font-size:clamp(16px,2.1vw,19px);
+    color:#E8DDFB;
+    max-width:680px; margin:0 auto 34px; font-weight:500;
+  }
+  .hero-dates{
+    display:flex; flex-wrap:wrap; gap:14px; justify-content:center; margin-bottom:38px;
+  }
+  .date-chip{
+    background:rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.28);
+    border-radius:16px; padding:14px 22px; min-width:150px;
+    backdrop-filter:blur(6px);
+  }
+  .date-chip .lbl{font-size:12px; color:#D8C6F5; font-weight:600;}
+  .date-chip .val{font-size:19px; font-weight:800; margin-top:4px;}
+
+  /* countdown */
+  .countdown{
+    display:flex; gap:12px; justify-content:center; flex-wrap:wrap; margin-bottom:10px;
+  }
+  .cd-box{
+    background:rgba(255,255,255,0.92); color:var(--purple-800);
+    border-radius:14px; padding:14px 10px; min-width:76px; text-align:center;
+    box-shadow:var(--shadow);
+  }
+  .cd-box .num{font-size:26px; font-weight:900; font-variant-numeric:tabular-nums;}
+  .cd-box .unit{font-size:11px; font-weight:700; color:var(--ink-soft); margin-top:2px;}
+  .cd-caption{font-size:13px; color:#D8C6F5; margin-top:14px;}
+
+  .hero-ctas{display:flex; gap:14px; justify-content:center; flex-wrap:wrap; margin-top:30px;}
+  .btn{
+    display:inline-flex; align-items:center; gap:10px;
+    padding:14px 28px; border-radius:30px; font-weight:800; font-size:15px;
+    text-decoration:none; transition:.25s; border:2px solid transparent; cursor:pointer;
+  }
+  .btn-gold{background:var(--gold); color:#3A2405;}
+  .btn-gold:hover{background:#FFC15E; transform:translateY(-2px);}
+  .btn-outline{border-color:rgba(255,255,255,0.5); color:#fff;}
+  .btn-outline:hover{background:rgba(255,255,255,0.12);}
+
+  /* ---------- SECTION HEADER ---------- */
+  .section{padding:64px 24px;}
+  .section-tight{padding-top:0;}
+  .section-head{text-align:center; max-width:640px; margin:0 auto 40px;}
+  .section-head .tag{
+    display:inline-block; background:var(--lavender-100); color:var(--purple-700);
+    font-weight:800; font-size:13px; padding:6px 16px; border-radius:20px; margin-bottom:14px;
+  }
+  .section-head h2{font-size:clamp(24px,3.4vw,34px); font-weight:900; margin:0 0 10px; color:var(--purple-950);}
+  .section-head p{color:var(--ink-soft); font-size:15.5px; margin:0;}
+
+  /* ---------- NOTE BANNER ---------- */
+  .note-banner{
+    max-width:1180px; margin:-30px auto 0; position:relative; z-index:5;
+    background:#fff; border:1px solid var(--line); border-radius:18px;
+    box-shadow:var(--shadow); padding:20px 26px;
+    display:flex; align-items:flex-start; gap:16px;
+  }
+  .note-banner i{color:var(--gold-dark); font-size:22px; margin-top:2px;}
+  .note-banner strong{color:var(--purple-800);}
+  .note-banner p{margin:0; font-size:14.5px; color:var(--ink-soft);}
+
+  /* ---------- OFFER DESCRIPTION ---------- */
+  .desc-list{list-style:none; margin:0; padding:0; max-width:880px; margin:0 auto;}
+  .desc-list li{
+    display:flex; gap:14px; align-items:flex-start;
+    background:#fff; border:1px solid var(--line); border-radius:16px;
+    padding:20px 22px; margin-bottom:14px; box-shadow:0 4px 14px -8px rgba(74,30,122,0.15);
+  }
+  .desc-list .ico{
+    flex:0 0 auto; width:38px; height:38px; border-radius:10px;
+    background:var(--lavender-100); color:var(--purple-700);
+    display:flex; align-items:center; justify-content:center; font-size:16px;
+  }
+  .desc-list p{margin:0; font-size:15.5px; color:var(--ink);}
+  .desc-list b{color:var(--purple-800);}
+
+  /* ---------- PRICING TABLE ---------- */
+  .table-scroll{overflow-x:auto; border-radius:18px; box-shadow:var(--shadow); border:1px solid var(--line);}
+  table{width:100%; border-collapse:collapse; background:#fff; min-width:760px;}
+  thead th{
+    background:var(--purple-700); color:#fff; font-weight:800; font-size:14px;
+    padding:16px 14px; text-align:center; white-space:nowrap;
+  }
+  tbody td{padding:16px 14px; text-align:center; font-size:14.5px; border-bottom:1px solid var(--line); color:var(--ink);}
+  tbody tr:last-child td{border-bottom:none;}
+  tbody tr:nth-child(even){background:var(--lavender-50);}
+  tbody td.plan-name{font-weight:800; color:var(--purple-800); text-align:right;}
+  td.price-new{font-weight:900; color:var(--sea); font-size:16px;}
+  td.price-old{color:#9A8CB2; text-decoration:line-through; font-size:13.5px;}
+  td.install-new{font-weight:900; color:var(--gold-dark);}
+  .table-foot-note{font-size:13px; color:var(--ink-soft); text-align:center; margin-top:14px;}
+
+  /* ---------- INFO CARDS (3-col) ---------- */
+  .grid3{display:grid; grid-template-columns:repeat(3,1fr); gap:20px;}
+  .info-card{
+    background:#fff; border:1px solid var(--line); border-radius:18px; padding:26px;
+    box-shadow:0 4px 14px -8px rgba(74,30,122,0.15);
+  }
+  .info-card .head{display:flex; align-items:center; gap:12px; margin-bottom:16px;}
+  .info-card .head .ico{
+    width:44px; height:44px; border-radius:12px; background:var(--lavender-100);
+    color:var(--purple-700); display:flex; align-items:center; justify-content:center; font-size:19px;
+  }
+  .info-card .head h3{margin:0; font-size:16.5px; font-weight:800; color:var(--purple-950);}
+  .info-card ul{margin:0; padding-inline-start:18px; font-size:14.5px; color:var(--ink-soft);}
+  .info-card ul li{margin-bottom:8px;}
+  .info-card .big-date{font-size:20px; font-weight:900; color:var(--purple-800); text-align:center; padding:6px 0;}
+  .info-card .to{text-align:center; color:var(--ink-soft); font-size:13px; font-weight:700; margin:2px 0;}
+
+  /* ---------- BENEFITS (gold section) ---------- */
+  .benefits{
+    background:linear-gradient(180deg, var(--lavender-100), var(--lavender-50));
+  }
+  .grid4{display:grid; grid-template-columns:repeat(4,1fr); gap:20px;}
+  .benefit-card{
+    background:#fff; border-radius:18px; padding:26px 20px; text-align:center;
+    border:1px solid var(--line); box-shadow:0 4px 14px -8px rgba(74,30,122,0.15);
+    transition:.25s;
+  }
+  .benefit-card:hover{transform:translateY(-4px); box-shadow:var(--shadow);}
+  .benefit-card .ico{
+    width:56px; height:56px; margin:0 auto 14px; border-radius:16px;
+    background:var(--purple-700); color:#fff; display:flex; align-items:center; justify-content:center; font-size:22px;
+  }
+  .benefit-card .stat{font-size:26px; font-weight:900; color:var(--purple-800); margin-bottom:6px;}
+  .benefit-card p{margin:0; font-size:14px; color:var(--ink-soft);}
+
+  /* ---------- CHANNELS ---------- */
+  .channels{display:grid; grid-template-columns:repeat(4,1fr); gap:18px;}
+  .channel-card{
+    background:#fff; border:1px solid var(--line); border-radius:16px; padding:22px;
+    text-align:center; transition:.2s;
+  }
+  .channel-card:hover{border-color:var(--purple-400); transform:translateY(-3px);}
+  .channel-card .ico{
+    width:50px; height:50px; margin:0 auto 12px; border-radius:50%;
+    background:var(--lavender-100); color:var(--purple-700);
+    display:flex; align-items:center; justify-content:center; font-size:20px;
+  }
+  .channel-card h4{margin:0 0 4px; font-size:14.5px; font-weight:800; color:var(--purple-950);}
+  .channel-card span{font-size:13px; color:var(--ink-soft); word-break:break-word;}
+
+  /* ---------- FOOTER ---------- */
+  footer{
+    background:var(--purple-950); color:#D8C6F5; padding:40px 24px 26px; text-align:center;
+  }
+  footer .logo-badge{background:var(--gold); color:var(--purple-950);}
+  footer .foot-logo{display:flex; align-items:center; justify-content:center; gap:10px; font-weight:800; color:#fff; margin-bottom:14px;}
+  footer p{font-size:13px; margin:4px 0; color:#B8A2DA;}
+
+  /* ---------- RESPONSIVE ---------- */
+  @media (max-width:900px){
+    .grid3{grid-template-columns:1fr;}
+    .grid4{grid-template-columns:1fr 1fr;}
+    .channels{grid-template-columns:1fr 1fr;}
+  }
+  @media (max-width:560px){
+    .grid4{grid-template-columns:1fr;}
+    .channels{grid-template-columns:1fr;}
+    .hero{padding:60px 18px 50px;}
+    .section{padding:48px 18px;}
+    .note-banner{flex-direction:column; margin:-20px 16px 0;}
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .sun{animation:none;}
+    *{transition:none !important;}
+  }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <div class="logo">
+      <span class="logo-badge">we</span>
+      <span>WE أرضي</span>
+    </div>
+    <button class="nav-cta" onclick="document.getElementById('subscribe').scrollIntoView()">اشترك الآن</button>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="hero-decor">
+    <div class="sun"></div>
+  </div>
+  <div class="hero-content">
+    <span class="eyebrow"><i class="fa-solid fa-umbrella-beach"></i> عرض محدود حتى نهاية الصيف</span>
+    <h1>عرض الصيف <span>2026</span><br>على باقات WE أرضي</h1>
+    <p class="lead">خصومات على قيمة الاشتراك، وتخفيض 50% على مصاريف التركيب للمتعاقدين الجدد على باقات WE أرضي 50 و80 السنوية والربع سنوية.</p>
+
+    <div class="hero-dates">
+      <div class="date-chip">
+        <div class="lbl">بداية العرض</div>
+        <div class="val">29 / 07 / 2026</div>
+      </div>
+      <div class="date-chip">
+        <div class="lbl">نهاية العرض</div>
+        <div class="val">30 / 09 / 2026</div>
+      </div>
+    </div>
+
+    <div id="countdown" class="countdown" aria-live="polite"></div>
+    <div class="cd-caption">الوقت المتبقي للاستفادة من العرض</div>
+
+    <div class="hero-ctas">
+      <a class="btn btn-gold" href="tel:111"><i class="fa-solid fa-headset"></i> اتصل بـ 111</a>
+      <a class="btn btn-outline" href="https://te.eg" target="_blank" rel="noopener"><i class="fa-solid fa-globe"></i> te.eg</a>
+    </div>
+  </div>
+</header>
+
+<div class="note-banner">
+  <i class="fa-solid fa-circle-info"></i>
+  <p><strong>يرجى العلم:</strong> العرض السنوي لجهاز ONT المجاني متاح فقط للعملاء المشتركين في الباقات السنوية التي تبدأ من Super 4800 فأعلى.</p>
+</div>
+
+<main>
+
+  <section class="section" id="about">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="tag">وصف العرض</span>
+        <h2>ماذا يقدّم لك العرض؟</h2>
+      </div>
+      <ul class="desc-list">
+        <li>
+          <div class="ico"><i class="fa-solid fa-house-chimney"></i></div>
+          <p>يحصل <b>المتعاقدون الجدد فقط</b> عند الاشتراك في باقات WE أرضي 50 السنوي أو WE أرضي 80 السنوي على <b>تخفيض 50%</b> على مصاريف التركيب خلال فترة العرض.</p>
+        </li>
+        <li>
+          <div class="ico"><i class="fa-solid fa-arrows-rotate"></i></div>
+          <p>يحصل <b>العملاء الجدد والحاليون</b> عند الاشتراك أو التحويل لباقات WE أرضي 50 أو 80 (ربع سنوي / سنوي) على <b>تخفيض على قيمة اشتراك الباقة</b> كما هو موضح في الجدول التالي.</p>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section section-tight" id="pricing">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="tag">تفاصيل الأسعار</span>
+        <h2>باقات WE أرضي والأسعار خلال العرض</h2>
+        <p>كل الأسعار موضحة بالجنيه المصري</p>
+      </div>
+
+      <div class="table-scroll">
+        <table>
+          <thead>
+            <tr>
+              <th>اسم الباقة</th>
+              <th>مدة تخفيض الاشتراك</th>
+              <th>الاشتراك الحالي</th>
+              <th>الاشتراك أثناء العرض</th>
+              <th>مصاريف التركيب قبل العرض</th>
+              <th>مصاريف التركيب أثناء العرض</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="plan-name">WE أرضي 50 الربع سنوي</td>
+              <td>شهر</td>
+              <td class="price-old">150 جنيه</td>
+              <td class="price-new">100 جنيه</td>
+              <td>150 جنيه</td>
+              <td>150 جنيه</td>
+            </tr>
+            <tr>
+              <td class="plan-name">WE أرضي 80 الربع سنوي</td>
+              <td>شهر ونصف</td>
+              <td class="price-old">240 جنيه</td>
+              <td class="price-new">120 جنيه</td>
+              <td>150 جنيه</td>
+              <td>150 جنيه</td>
+            </tr>
+            <tr>
+              <td class="plan-name">WE أرضي 50 السنوي</td>
+              <td>شهر</td>
+              <td class="price-old">600 جنيه</td>
+              <td class="price-new">550 جنيه</td>
+              <td>150 جنيه</td>
+              <td class="install-new">75 جنيه</td>
+            </tr>
+            <tr>
+              <td class="plan-name">WE أرضي 80 السنوي</td>
+              <td>شهرين</td>
+              <td class="price-old">960 جنيه</td>
+              <td class="price-new">800 جنيه</td>
+              <td>150 جنيه</td>
+              <td class="install-new">75 جنيه</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="table-foot-note">تخفيض مصاريف التركيب (75 جنيه) متاح فقط للمتعاقدين الجدد على الباقات السنوية.</p>
+    </div>
+  </section>
+
+  <section class="section" id="details">
+    <div class="wrap">
+      <div class="grid3">
+        <div class="info-card">
+          <div class="head">
+            <div class="ico"><i class="fa-solid fa-users"></i></div>
+            <h3>العملاء المستهدفين</h3>
+          </div>
+          <p style="font-size:14.5px;color:var(--ink-soft);margin:0;">المتعاقدون الجدد والحاليون عند الاشتراك أو التحويل لباقات WE أرضي 50 أو 80 السنوية / الربع سنوية (فئة المنزلي).</p>
+        </div>
+
+        <div class="info-card">
+          <div class="head">
+            <div class="ico"><i class="fa-solid fa-calendar-days"></i></div>
+            <h3>مدة العرض</h3>
+          </div>
+          <div class="big-date">29 / 07 / 2026</div>
+          <div class="to">حتى</div>
+          <div class="big-date">30 / 09 / 2026</div>
+        </div>
+
+        <div class="info-card">
+          <div class="head">
+            <div class="ico"><i class="fa-solid fa-file-contract"></i></div>
+            <h3>الشروط والأحكام</h3>
+          </div>
+          <ul>
+            <li>يُطبَّق تخفيض مصاريف التركيب على العملاء الجدد عند الاشتراك بباقات WE أرضي 50 أو 80 السنوية فقط.</li>
+            <li>يتحمّل العميل قيمة الضريبة على مصاريف التركيب قبل التخفيض.</li>
+            <li>تُطبَّق الشروط والأحكام الخاصة بباقات WE أرضي.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section benefits" id="benefits">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="tag">أبرز مزايا العرض</span>
+        <h2>لماذا تشترك الآن؟</h2>
+      </div>
+      <div class="grid4">
+        <div class="benefit-card">
+          <div class="ico"><i class="fa-solid fa-percent"></i></div>
+          <div class="stat">50%</div>
+          <p>تخفيض على مصاريف التركيب للمتعاقدين الجدد على الباقات السنوية فقط</p>
+        </div>
+        <div class="benefit-card">
+          <div class="ico"><i class="fa-solid fa-tags"></i></div>
+          <div class="stat">حتى شهرين</div>
+          <p>تخفيض على قيمة اشتراك الباقة حسب الباقة والمدة</p>
+        </div>
+        <div class="benefit-card">
+          <div class="ico"><i class="fa-solid fa-handshake"></i></div>
+          <div class="stat">الكل مشمول</div>
+          <p>العرض متاح للعملاء الجدد والحاليين عند الاشتراك أو التحويل</p>
+        </div>
+        <div class="benefit-card">
+          <div class="ico"><i class="fa-solid fa-hourglass-half"></i></div>
+          <div class="stat">فترة محدودة</div>
+          <p>من 29/07/2026 حتى 30/09/2026</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="subscribe">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="tag">قنوات الاشتراك</span>
+        <h2>اشترك من أي مكان</h2>
+      </div>
+      <div class="channels">
+        <div class="channel-card">
+          <div class="ico"><i class="fa-solid fa-shop"></i></div>
+          <h4>زيارة أقرب فرع</h4>
+          <span>من فروع WE</span>
+        </div>
+        <div class="channel-card">
+          <div class="ico"><i class="fa-solid fa-headset"></i></div>
+          <h4>خدمة العملاء</h4>
+          <span>الاتصال بـ 111</span>
+        </div>
+        <div class="channel-card">
+          <div class="ico"><i class="fa-solid fa-globe"></i></div>
+          <h4>الموقع الإلكتروني</h4>
+          <span>https://te.eg</span>
+        </div>
+        <div class="channel-card">
+          <div class="ico"><i class="fa-solid fa-mobile-screen"></i></div>
+          <h4>تطبيق</h4>
+          <span>WE My</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="foot-logo"><span class="logo-badge">we</span> WE أرضي</div>
+  <p>عرض الصيف 2026 &mdash; متاح من 29/07/2026 حتى 30/09/2026</p>
+  <p>تطبق الشروط والأحكام الخاصة بباقات WE أرضي</p>
+</footer>
+
+<script>
+  // Countdown to campaign end date
+  const endDate = new Date('2026-09-30T23:59:59+02:00').getTime();
+  const cdEl = document.getElementById('countdown');
+
+  function render(days, hours, mins, secs){
+    cdEl.innerHTML = `
+      <div class="cd-box"><div class="num">${days}</div><div class="unit">يوم</div></div>
+      <div class="cd-box"><div class="num">${hours}</div><div class="unit">ساعة</div></div>
+      <div class="cd-box"><div class="num">${mins}</div><div class="unit">دقيقة</div></div>
+      <div class="cd-box"><div class="num">${secs}</div><div class="unit">ثانية</div></div>
+    `;
+  }
+
+  function tick(){
+    const now = Date.now();
+    const diff = endDate - now;
+    if(diff <= 0){
+      cdEl.innerHTML = '<div class="cd-box" style="min-width:220px;">انتهى العرض</div>';
+      clearInterval(timer);
+      return;
+    }
+    const days = Math.floor(diff / (1000*60*60*24));
+    const hours = Math.floor((diff / (1000*60*60)) % 24);
+    const mins = Math.floor((diff / (1000*60)) % 60);
+    const secs = Math.floor((diff / 1000) % 60);
+    render(days, hours, mins, secs);
+  }
+
+  tick();
+  const timer = setInterval(tick, 1000);
+</script>
+
+</body>
+</html>
