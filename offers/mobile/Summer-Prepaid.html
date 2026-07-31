@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>عرض الصيف 2026 | عملاء الدفع المسبق</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lalezar&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --purple-deep:#3D1A54;
+    --purple-mid:#5B2A86;
+    --gold:#F4A628;
+    --coral:#EE5D6C;
+    --cream:#FBF7FF;
+    --ink:#241933;
+    --ink-soft:#5B4F6E;
+    --line:#E4D9F2;
+    --card:#FFFFFF;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--cream);
+    color:var(--ink);
+    font-family:'IBM Plex Sans Arabic', sans-serif;
+    line-height:1.7;
+  }
+  h1,h2,h3,.display{
+    font-family:'Lalezar', 'IBM Plex Sans Arabic', sans-serif;
+    font-weight:400;
+    letter-spacing:.5px;
+  }
+  .wrap{max-width:1080px;margin:0 auto;padding:0 24px;}
+
+  /* ---------- HERO ---------- */
+  .hero{
+    position:relative;
+    background:
+      radial-gradient(circle at 15% 20%, rgba(244,166,40,.35), transparent 45%),
+      radial-gradient(circle at 85% 80%, rgba(238,93,108,.30), transparent 45%),
+      linear-gradient(160deg, var(--purple-deep), var(--purple-mid) 70%);
+    color:#fff;
+    overflow:hidden;
+    padding:72px 0 96px;
+  }
+  .hero-sun{
+    position:absolute;
+    top:-120px; left:50%;
+    transform:translateX(-50%);
+    width:520px; height:520px;
+    opacity:.14;
+  }
+  .hero-sun svg{width:100%;height:100%;animation:spin 60s linear infinite;}
+  @keyframes spin{to{transform:rotate(360deg);}}
+  .eyebrow{
+    display:inline-flex;align-items:center;gap:8px;
+    background:rgba(255,255,255,.14);
+    border:1px solid rgba(255,255,255,.35);
+    padding:7px 18px;border-radius:999px;
+    font-size:14px;font-weight:600;
+    backdrop-filter:blur(4px);
+  }
+  .hero-inner{position:relative;text-align:center;}
+  .hero h1{
+    font-size:clamp(48px, 9vw, 96px);
+    margin:22px 0 6px;
+    background:linear-gradient(180deg,#fff, #F4DFAE);
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+  }
+  .hero p.sub{
+    font-size:clamp(17px,2.4vw,22px);
+    color:#EFE6FA;
+    max-width:640px;margin:0 auto;
+  }
+  .hero .dates{
+    margin-top:28px;
+    display:inline-flex;gap:10px;align-items:center;
+    font-size:15px;font-weight:600;
+    background:rgba(0,0,0,.18);
+    padding:10px 22px;border-radius:14px;
+  }
+  .hero .dates b{color:var(--gold);}
+
+  /* ---------- OFFER CARDS ---------- */
+  .offers{
+    display:grid;grid-template-columns:1fr 1fr;gap:28px;
+    margin-top:-64px;position:relative;z-index:3;
+  }
+  @media(max-width:760px){.offers{grid-template-columns:1fr;}}
+  .offer-card{
+    background:var(--card);
+    border-radius:24px;
+    padding:34px 30px;
+    box-shadow:0 24px 48px -20px rgba(61,26,84,.35);
+    border-top:6px solid var(--gold);
+  }
+  .offer-card.tagdid{border-top-color:var(--coral);}
+  .offer-tag{
+    display:inline-block;font-size:13px;font-weight:700;
+    color:var(--purple-mid);background:#F1E8FB;
+    padding:5px 14px;border-radius:999px;margin-bottom:14px;
+  }
+  .offer-card h2{font-size:30px;margin:0 0 10px;color:var(--purple-deep);}
+  .offer-card .headline-num{
+    font-size:44px;color:var(--gold);
+    display:block;margin:10px 0;
+  }
+  .offer-card.tagdid .headline-num{color:var(--coral);}
+  .offer-card p{color:var(--ink-soft);font-size:15.5px;margin:6px 0;}
+  .code-pill{
+    display:inline-flex;align-items:center;gap:8px;
+    margin-top:16px;font-weight:700;font-size:15px;
+    background:var(--purple-deep);color:#fff;
+    padding:10px 20px;border-radius:12px;
+  }
+  .offer-card ul{margin:14px 0 0;padding-inline-start:20px;font-size:14.5px;color:var(--ink-soft);}
+  .offer-card li{margin-bottom:4px;}
+
+  section{padding:70px 0;}
+  .section-title{text-align:center;margin-bottom:14px;}
+  .section-title h2{font-size:38px;color:var(--purple-deep);margin:0 0 8px;}
+  .section-title p{color:var(--ink-soft);max-width:560px;margin:0 auto;font-size:15.5px;}
+
+  /* ---------- CALCULATOR (signature) ---------- */
+  .calc-wrap{
+    background:linear-gradient(135deg,#2E1440,var(--purple-mid));
+    border-radius:28px;color:#fff;
+    padding:44px clamp(20px,5vw,56px);
+    display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center;
+    position:relative;overflow:hidden;
+  }
+  @media(max-width:760px){.calc-wrap{grid-template-columns:1fr;}}
+  .calc-wrap::before{
+    content:"";position:absolute;inset:0;
+    background:radial-gradient(circle at 90% 10%, rgba(244,166,40,.25), transparent 50%);
+  }
+  .calc-left,.calc-right{position:relative;z-index:2;}
+  .calc-left h3{font-size:26px;margin:0 0 10px;}
+  .calc-left p{color:#DCCBEE;font-size:15px;margin:0 0 26px;}
+  .amount-display{
+    font-size:15px;color:#DCCBEE;margin-bottom:4px;
+  }
+  .amount-display b{font-size:34px;color:var(--gold);display:block;}
+  input[type=range]{
+    width:100%;margin-top:20px;accent-color:var(--gold);
+  }
+  .calc-right{
+    background:rgba(255,255,255,.08);
+    border:1px solid rgba(255,255,255,.18);
+    border-radius:20px;padding:28px;text-align:center;
+  }
+  .mb-result{font-size:56px;color:#fff;font-family:'Lalezar';}
+  .mb-result span{color:var(--gold);}
+  .mb-breakdown{
+    display:flex;justify-content:center;gap:22px;margin-top:18px;font-size:13.5px;color:#DCCBEE;
+  }
+  .mb-breakdown b{display:block;color:#fff;font-size:16px;}
+
+  /* ---------- BENEFITS TABLE ---------- */
+  .table-card{
+    background:var(--card);border-radius:20px;overflow:hidden;
+    box-shadow:0 18px 40px -24px rgba(61,26,84,.28);
+    border:1px solid var(--line);
+  }
+  table{width:100%;border-collapse:collapse;font-size:15px;}
+  thead th{
+    background:var(--purple-deep);color:#fff;
+    padding:16px 18px;text-align:right;font-weight:600;font-size:15px;
+  }
+  tbody td{padding:15px 18px;border-top:1px solid var(--line);color:var(--ink-soft);}
+  tbody tr:nth-child(even){background:#FAF6FF;}
+  tbody td.strong{color:var(--purple-deep);font-weight:700;}
+  .note-line{font-size:13.5px;color:var(--ink-soft);margin-top:12px;text-align:center;}
+
+  /* ---------- ELIGIBLE PACKAGES ---------- */
+  .pack-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px;}
+  @media(max-width:760px){.pack-grid{grid-template-columns:1fr;}}
+  .pack-card{
+    background:var(--card);border:1px solid var(--line);border-radius:18px;padding:24px;
+  }
+  .pack-card h4{margin:0 0 12px;color:var(--purple-mid);font-size:18px;font-family:'IBM Plex Sans Arabic';font-weight:700;}
+  .pack-card ul{margin:0;padding-inline-start:20px;color:var(--ink-soft);font-size:14.5px;}
+  .pack-card li{margin-bottom:6px;}
+  .excluded{
+    margin-top:18px;font-size:13.5px;background:#FDECEC;color:#B23A3A;
+    padding:12px 16px;border-radius:12px;
+  }
+
+  /* ---------- PRIZES ---------- */
+  .prize-grid{display:grid;grid-template-columns:1fr 1fr;gap:26px;}
+  @media(max-width:760px){.prize-grid{grid-template-columns:1fr;}}
+  .prize-card{
+    border-radius:22px;padding:32px;color:#fff;position:relative;overflow:hidden;
+  }
+  .prize-card.weekly{background:linear-gradient(140deg,#5B2A86,#7A3FA8);}
+  .prize-card.grand{background:linear-gradient(140deg,#EE5D6C,#F4A628);}
+  .prize-card h3{margin:0 0 6px;font-size:22px;}
+  .prize-card .amount{font-size:40px;font-family:'Lalezar';margin:8px 0;}
+  .prize-card p{font-size:14.5px;opacity:.95;margin:6px 0 0;}
+
+  /* ---------- FAQ ---------- */
+  .faq-item{
+    border-bottom:1px solid var(--line);
+  }
+  .faq-q{
+    width:100%;text-align:right;background:none;border:none;cursor:pointer;
+    padding:20px 4px;font-size:16.5px;font-weight:600;color:var(--purple-deep);
+    display:flex;justify-content:space-between;align-items:center;
+    font-family:'IBM Plex Sans Arabic';
+  }
+  .faq-q .plus{font-size:22px;color:var(--gold);transition:transform .25s ease;flex-shrink:0;margin-inline-start:16px;}
+  .faq-item.open .plus{transform:rotate(45deg);}
+  .faq-a{
+    max-height:0;overflow:hidden;transition:max-height .3s ease, padding .3s ease;
+    color:var(--ink-soft);font-size:15px;padding:0 4px;
+  }
+  .faq-item.open .faq-a{padding-bottom:20px;}
+
+  footer{
+    background:var(--purple-deep);color:#DCCBEE;padding:38px 0;font-size:13.5px;
+  }
+  footer .wrap{text-align:center;}
+  footer b{color:#fff;}
+
+  @media(prefers-reduced-motion:reduce){
+    .hero-sun svg{animation:none;}
+    html{scroll-behavior:auto;}
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-sun">
+    <svg viewBox="0 0 200 200"><circle cx="100" cy="100" r="42" fill="#F4A628"/>
+      <g stroke="#F4A628" stroke-width="8" stroke-linecap="round">
+        <line x1="100" y1="8" x2="100" y2="34"/>
+        <line x1="100" y1="166" x2="100" y2="192"/>
+        <line x1="8" y1="100" x2="34" y2="100"/>
+        <line x1="166" y1="100" x2="192" y2="100"/>
+        <line x1="32" y1="32" x2="52" y2="52"/>
+        <line x1="148" y1="148" x2="168" y2="168"/>
+        <line x1="32" y1="168" x2="52" y2="148"/>
+        <line x1="148" y1="52" x2="168" y2="32"/>
+      </g>
+    </svg>
+  </div>
+  <div class="wrap hero-inner">
+    <span class="eyebrow">✦ من 29 يوليو حتى 15 أكتوبر 2026</span>
+    <h1>عرض الصيف</h1>
+    <p class="sub">لعملاء الدفع المسبق من WE — اشحن أو جدد باقتك واستمتع بميجابايتس إضافية، وادخل تلقائيًا سحوبات جوائز الصيف.</p>
+    <div class="dates">🔥 سارٍ حاليًا · اشترك بكود <b>#501*</b> أو <b>#701*</b></div>
+  </div>
+</div>
+
+<div class="wrap">
+  <div class="offers">
+    <div class="offer-card">
+      <span class="offer-tag">عرض الشحن</span>
+      <h2>اشحن وخد ١٠٠ ضعف</h2>
+      <span class="headline-num">×100 ميجابايت</span>
+      <p>اشحن ب10 جنيه أو أكتر من أي قناة شحن، وخد 100 ضعف قيمة الشحن ميجابايتس. صالحة لمدة 7 أيام من تاريخ الشحن.</p>
+      <ul>
+        <li>لكل عملاء الدفع المسبق (ما عدا خطوط الداتا والطلاب)</li>
+        <li>يشمل الخطوط النشطة والمحظورة والموقوفة</li>
+      </ul>
+      <div class="code-pill">📲 اتصل بكود #501*</div>
+    </div>
+
+    <div class="offer-card tagdid">
+      <span class="offer-tag" style="color:var(--coral);background:#FDECEE;">عرض التجديد</span>
+      <h2>جدد باقتك واكسب أكتر</h2>
+      <span class="headline-num">حتى 50% ميجابايتس</span>
+      <p>زيادة تصل لـ50% على ميجابيتس باقتك عند التجديد، أو خصم يصل لـ25% على رسوم التجديد — حسب تاريخ آخر تجديد.</p>
+      <ul>
+        <li>لعملاء باقات الكنترول: كيكس، تظبيط، سوبر كيكس وغيرها</li>
+        <li>الميجابايتس الإضافية صالحة 28 يوم</li>
+      </ul>
+      <div class="code-pill" style="background:var(--coral);">📲 اتصل بكود #701* أو My WE</div>
+    </div>
+  </div>
+</div>
+
+<section>
+  <div class="wrap">
+    <div class="section-title">
+      <h2>احسب هدية شحنتك</h2>
+      <p>حرّك الشريط عشان تشوف كام ميجا هتاخد لو اشتركت في عرض الشحن وشحنت المبلغ ده.</p>
+    </div>
+    <div class="calc-wrap">
+      <div class="calc-left">
+        <h3>💰 قيمة الشحن</h3>
+        <p>أول 10 أضعاف من قيمة شحنتك هدية مجانية، والباقي بيتحاسب بسعر 1 قرش لكل ميجا فقط.</p>
+        <div class="amount-display">جنيه مصري
+          <b id="amtLabel">10</b>
+        </div>
+        <input type="range" id="amtSlider" min="10" max="200" step="5" value="10">
+      </div>
+      <div class="calc-right">
+        <div class="mb-result"><span id="mbResult">1,000</span> ميجا</div>
+        <div class="mb-breakdown">
+          <div><b id="freeMb">100</b>هدية مجانية</div>
+          <div><b id="paidMb">900</b>بسعر 1 قرش/ميجا</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section style="background:#F3ECFB;">
+  <div class="wrap">
+    <div class="section-title">
+      <h2>هتاخد إيه لو جددت باقتك؟</h2>
+      <p>الميزة بتتحدد حسب تاريخ آخر تجديد ليك قبل بداية العرض، وهتفضل ثابتة طول فترة العرض.</p>
+    </div>
+    <div class="table-card">
+      <table>
+        <thead>
+          <tr><th>آخر تجديد</th><th>الميزة</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>عميل جديد (بدون اشتراك سابق)</td><td class="strong">ضعف الباقة عند التجديد</td></tr>
+          <tr><td>خلال آخر 0–29 يوم</td><td class="strong">زيادة 50% على الباقة</td></tr>
+          <tr><td>من 30 لـ 59 يوم</td><td class="strong">خصم 15% على رسوم التجديد</td></tr>
+          <tr><td>60 يوم أو أكتر</td><td class="strong">خصم 25% على رسوم التجديد</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note-line">تقدر تستفيد من عرض التجديد لحد 3 مرات خلال فترة الحملة.</p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="section-title">
+      <h2>باقات الكنترول المؤهلة</h2>
+      <p>عرض التجديد متاح للعملاء الجدد والحاليين على الباقات التالية.</p>
+    </div>
+    <div class="pack-grid">
+      <div class="pack-card">
+        <h4>🎯 عائلة كيكس</h4>
+        <ul>
+          <li>كيكس (القديمة والجديدة)</li>
+          <li>كيكس بلس</li>
+          <li>سوبر كيكس</li>
+        </ul>
+      </div>
+      <div class="pack-card">
+        <h4>⚙️ عائلة تظبيط</h4>
+        <ul>
+          <li>تظبيط (القديمة والجديدة)</li>
+          <li>نيو كنترول تظبيط</li>
+        </ul>
+      </div>
+    </div>
+    <div class="excluded">⚠️ عملاء ذوي الاحتياجات الخاصة الحاصلين على باقات خاصة مستبعدين من عرض التجديد.</div>
+  </div>
+</section>
+
+<section style="background:#F3ECFB;">
+  <div class="wrap">
+    <div class="section-title">
+      <h2>جوائز الصيف</h2>
+      <p>كل اشتراك مؤهل في العرض بيسجلك تلقائيًا في سحوبات جوائز الصيف غير الاتصالية.</p>
+    </div>
+    <div class="prize-grid">
+      <div class="prize-card weekly">
+        <h3>🎁 الجوائز الأسبوعية</h3>
+        <div class="amount">250,000 جنيه</div>
+        <p>يتم اختيار عميل كل أسبوعين على مدار 12 أسبوع، عشوائيًا من أعلى 10,000 عميل قيمة للشحن.</p>
+      </div>
+      <div class="prize-card grand">
+        <h3>🏆 الجائزة الكبرى</h3>
+        <div class="amount">2,000,000 جنيه</div>
+        <p>عميل واحد من أعلى 5,000 عميل قيمة للشحن طوال فترة العرض يفوز بالجائزة الكبرى.</p>
+      </div>
+    </div>
+    <p class="note-line">يتم استبعاد قيم تحويل الرصيد من قيم الشحن عند إجراء السحب. التبليغ يكون عن طريق اتصال هاتفي من الشركة.</p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="section-title">
+      <h2>الأسئلة الشائعة</h2>
+      <p>كل اللي محتاج تعرفه عن عرض الصيف 2026.</p>
+    </div>
+    <div id="faqList"></div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p><b>ملحوظة:</b> تفعيل العرض متاح فقط عبر تطبيق My WE و E-care، أو حصريًا عبر أكواد إصلاح USSD صباح الغد.</p>
+    <p>العرض ساري من 29 يوليو 2026 حتى 15 أكتوبر 2026 — للتفاصيل اتصل على 111.</p>
+  </div>
+</footer>
+
+<script>
+  // Recharge calculator
+  const slider = document.getElementById('amtSlider');
+  const amtLabel = document.getElementById('amtLabel');
+  const mbResult = document.getElementById('mbResult');
+  const freeMb = document.getElementById('freeMb');
+  const paidMb = document.getElementById('paidMb');
+
+  function updateCalc(){
+    const amt = parseInt(slider.value, 10);
+    const totalMb = amt * 100;
+    const freeChunk = amt * 10;      // first 10x free
+    const paidChunk = totalMb - freeChunk; // remaining 90x
+    amtLabel.textContent = amt.toLocaleString('en-US');
+    mbResult.textContent = totalMb.toLocaleString('en-US');
+    freeMb.textContent = freeChunk.toLocaleString('en-US');
+    paidMb.textContent = paidChunk.toLocaleString('en-US');
+  }
+  slider.addEventListener('input', updateCalc);
+  updateCalc();
+
+  // FAQ data
+  const faqs = [
+    ["إيه هو عرض الصيف؟", "عرض الصيف من WE بيقدم لعملاء الدفع المسبق عرضين: عرض التجديد (زيادة تصل لـ50% ميجابيتس أو خصم يصل لـ25% على رسوم التجديد) وعرض الشحن (100 ضعف قيمة الشحن ميجابايتس). العرضين ساريين من 29 يوليو 2026 لحد 15 أكتوبر 2026."],
+    ["مين يقدر يستفيد من عرض التجديد؟", "العرض متاح للعملاء الجدد والحاليين على باقات كيكس (القديمة والجديدة)، كيكس بلس، سوبر كيكس، تظبيط (القديمة والجديدة)، ونيو كنترول تظبيط. عملاء ذوي الاحتياجات الخاصة مستبعدين من عرض التجديد."],
+    ["مين يقدر يستفيد من عرض الشحن؟", "كل عملاء الموبايل مسبق الدفع، ما عدا خطوط الداتا والطلاب. العرض متاح كمان للخطوط النشطة والمحظورة والموقوفة وما قبل إلغاء التفعيل."],
+    ["إزاي أشترك في عرض التجديد؟", "اتصل بكود #701* أو من خلال تطبيق My WE، أكد اشتراكك، وبعدين جدد باقتك عشان تستفيد من العرض. أو اتصل على 111 لمعرفة التفاصيل والاشتراك."],
+    ["إزاي أشترك في عرض الشحن؟", "اتصل بكود #501* عشان تشترك، وبعدين اشحن ب10 جنيه أو أكتر من أي قناة شحن عشان تاخد الميجابايتس الهدية. أو اتصل على 111 لمعرفة التفاصيل والاشتراك."],
+    ["ليه المبلغ الظاهر قبل التجديد مش شامل الخصم بتاعي؟", "المبلغ اللي بيظهرلك قبل ما تكمل عملية التجديد هو سعر الباقة الأساسي، قبل ما يتطبق عليه الخصم. الخصم بيتحسب ويتطبق على قيمة التجديد النهائية اللي هتدفعها فعليًا."],
+    ["هستفيد من عرض التجديد كام مرة؟", "تقدر تستفيد من عرض التجديد لحد 3 مرات (3 تجديدات) خلال فترة العرض."],
+    ["الميجابايتس بتاعة عرض التجديد صالحة لمدة قد إيه؟", "الميجابايتس الإضافية صالحة لمدة 28 يوم من تاريخ استلامها، وبتتحسب بعد استهلاك الباقة الأساسية وباقة Nitro (لو موجودة)."],
+    ["الميجابايتس بتاعة عرض الشحن صالحة لمدة قد إيه؟", "الميجابايتس الهدية والمدفوعة من عرض الشحن صالحة لمدة 7 أيام من تاريخ الشحن. أولوية الاستهلاك: الميجابايتس المهداة أولًا، ثم الباقة الأساسية، ثم الميجابايتس الإضافية المدفوعة."],
+    ["إزاي بيتحسب عرض الشحن؟", "لما تشحن ب10 جنيه أو أكتر بعد الاشتراك، هتاخد 100 ضعف قيمة الشحن ميجابايتس: أول 10 أضعاف هدية مجانية، وباقي الـ90 ضعف بيتحاسب بسعر 1 قرش لكل ميجا. مثال: شحن 10 جنيه = 1,000 ميجا (100 ميجا مجانية + 900 ميجا بسعر 1 قرش لكل ميجا)."],
+    ["لازم أشحن بعد الاشتراك ولا الشحن اللي فات بيتحسب؟", "لازم تشحن بعد ما تشترك في العرض. أي شحن تم قبل الاشتراك مش هيتحسب."],
+    ["علامة الاشتراك في عرض الشحن صالحة لحد إمتى؟", "علامة الاشتراك (Opt-in) في عرض الشحن صالحة لمدة 24 ساعة من وقت الاشتراك."],
+    ["هل الميجابايتس بتتحول أو تتراكم؟", "لا، ميجابايتس عرض التجديد وعرض الشحن للاستخدام المحلي فقط، ومش بتترحل أو تتحول لخط تاني."],
+    ["هل العرض شغال أثناء التجوال (Roaming)؟", "لا، الميجابايتس الإضافية والهدية للاستخدام المحلي فقط ومش صالحة أثناء التجوال."],
+    ["هل ممكن أشترك في العرضين مع بعض؟", "أيوه، لو أنت مؤهل للعرضين تقدر تشترك في عرض التجديد وعرض الشحن مع بعض، كل واحد باشتراك منفصل."],
+    ["إيه اللي بيحصل لما تنتهي فترة العرض؟", "بعد انتهاء حملة الصيف في 15 أكتوبر 2026، العميل هيستفيد من باقته بشكل عادي زي قبل العرض، ولكن مش هيتم منح تسجيل في سحوبات الصيف بعد نهاية فترة العرض."],
+    ["هل الاشتراك في العرض بيدخلني في سحب على جوائز؟", "أيوه، العملاء المؤهلين اللي بيشتركوا ويستوفوا شروط العرض بيتسجلوا تلقائيًا في سحب الجوائز غير الاتصالية: 250 ألف جنيه كل أسبوعين، أو 2 مليون جنيه جايزة كبرى في نهاية العرض."],
+    ["هل ممكن أستفيد من عرض تاني في نفس الوقت؟", "لأ، طبقًا لشروط العرض المعتمدة، العميل لا يستفيد بأي عروض أخرى خلال عرض الصيف."],
+    ["إيه اللي بيحصل لو غيرت باقتي لباقة كنترول تانية مؤهلة؟", "لو انتقلت من باقة غير مؤهلة لباقة كنترول مؤهلة، تقدر تشترك في العرض من باقتك الحالية وتستفيد منه تلقائيًا بعد نجاح الانتقال للباقة المؤهلة الجديدة."]
+  ];
+
+  const faqList = document.getElementById('faqList');
+  faqs.forEach(([q, a]) => {
+    const item = document.createElement('div');
+    item.className = 'faq-item';
+    item.innerHTML = `
+      <button class="faq-q">${q}<span class="plus">+</span></button>
+      <div class="faq-a"><p>${a}</p></div>
+    `;
+    const btn = item.querySelector('.faq-q');
+    const ans = item.querySelector('.faq-a');
+    btn.addEventListener('click', () => {
+      const isOpen = item.classList.contains('open');
+      document.querySelectorAll('.faq-item.open').forEach(o => {
+        o.classList.remove('open');
+        o.querySelector('.faq-a').style.maxHeight = null;
+      });
+      if(!isOpen){
+        item.classList.add('open');
+        ans.style.maxHeight = ans.scrollHeight + 40 + 'px';
+      }
+    });
+    faqList.appendChild(item);
+  });
+</script>
+
+</body>
+</html>
