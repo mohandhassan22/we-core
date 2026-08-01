@@ -29,6 +29,16 @@
         ],
         buttonText: "تفاصيل أكثر",
         buttonLink: "we-air-offers-guide.html" // تأكد من صحة هذا المسار
+        },
+                 {   
+        title: "we-air-summer-promo",
+        badge: "عرض خاص",
+        highlight: "فترة محدودة",
+        details: [
+            
+        ],
+        buttonText: "تفاصيل أكثر",
+        buttonLink: "we-air-summer-promo.html" // تأكد من صحة هذا المسار
         }
            
         // يمكنك إضافة المزيد من العروض هنا
