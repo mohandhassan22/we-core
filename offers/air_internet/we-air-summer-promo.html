@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>عرض الصيف على باقات WE Air 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Almarai:wght@400;700;800&family=Tajawal:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --purple-950:#22083f;
+    --purple-800:#3d1069;
+    --purple-700:#5a1b96;
+    --purple-600:#7526bd;
+    --purple-500:#9645dd;
+    --lavender-100:#f4ecfc;
+    --lavender-050:#faf7fe;
+    --gold-400:#f0b940;
+    --gold-500:#e0a324;
+    --ink:#1c1027;
+    --ink-soft:#5c4d70;
+    --white:#ffffff;
+    --line: rgba(90,27,150,0.14);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    font-family:'Tajawal',sans-serif;
+    background:var(--lavender-050);
+    color:var(--ink);
+    line-height:1.7;
+    overflow-x:hidden;
+  }
+  h1,h2,h3,.display{font-family:'Almarai',sans-serif;}
+
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important;}
+  }
+
+  /* ===== Ambient background texture ===== */
+  .sky-noise{
+    position:fixed; inset:0; z-index:-1; pointer-events:none;
+    background:
+      radial-gradient(ellipse 700px 400px at 85% -5%, rgba(150,69,221,0.16), transparent 60%),
+      radial-gradient(ellipse 600px 500px at -5% 30%, rgba(240,185,64,0.10), transparent 60%);
+  }
+
+  /* ===== Header ===== */
+  header{
+    padding:22px 6vw;
+    display:flex; align-items:center; justify-content:space-between;
+    border-bottom:1px solid var(--line);
+    background:rgba(255,255,255,0.7);
+    backdrop-filter:blur(10px);
+    position:sticky; top:0; z-index:50;
+  }
+  .brand{
+    display:flex; align-items:center; gap:10px;
+    font-family:'Almarai',sans-serif; font-weight:800; font-size:1.15rem;
+    color:var(--purple-800);
+  }
+  .brand-mark{
+    width:34px;height:34px;border-radius:9px;
+    background:linear-gradient(135deg,var(--purple-600),var(--purple-500));
+    display:flex;align-items:center;justify-content:center;
+    color:white;font-size:0.95rem;font-weight:800;
+    box-shadow:0 4px 14px rgba(90,27,150,0.35);
+  }
+  .eff-date{
+    font-size:0.8rem; color:var(--ink-soft); font-weight:500;
+  }
+
+  /* ===== Hero ===== */
+  .hero{
+    padding:9vh 6vw 8vh;
+    position:relative;
+    overflow:hidden;
+  }
+  .hero-grid{
+    display:grid; grid-template-columns:1.15fr 1fr; gap:6vw; align-items:center;
+  }
+  .eyebrow{
+    display:inline-flex; align-items:center; gap:8px;
+    background:var(--lavender-100); color:var(--purple-700);
+    border:1px solid var(--line);
+    padding:7px 16px; border-radius:999px;
+    font-size:0.82rem; font-weight:700; letter-spacing:0.2px;
+    margin-bottom:22px;
+  }
+  .eyebrow::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--gold-500);}
+  .hero h1{
+    font-size:clamp(2.1rem, 4.2vw, 3.4rem);
+    font-weight:800;
+    color:var(--purple-950);
+    line-height:1.28;
+    margin-bottom:20px;
+  }
+  .hero h1 .accent{
+    color:var(--purple-600);
+    position:relative;
+    white-space:nowrap;
+  }
+  .hero p.lede{
+    font-size:1.08rem; color:var(--ink-soft); max-width:46ch;
+    margin-bottom:32px;
+  }
+  .hero-cta{
+    display:flex; gap:14px; flex-wrap:wrap;
+  }
+  .btn{
+    font-family:'Tajawal',sans-serif; font-weight:700; font-size:0.95rem;
+    padding:14px 28px; border-radius:12px; border:none; cursor:pointer;
+    transition:transform 0.15s ease, box-shadow 0.15s ease;
+  }
+  .btn-primary{
+    background:linear-gradient(135deg,var(--purple-700),var(--purple-600));
+    color:white; box-shadow:0 10px 24px rgba(90,27,150,0.32);
+  }
+  .btn-primary:hover{transform:translateY(-2px); box-shadow:0 14px 30px rgba(90,27,150,0.4);}
+  .btn-primary:focus-visible, a:focus-visible, button:focus-visible{outline:3px solid var(--gold-500); outline-offset:2px;}
+  .btn-ghost{
+    background:transparent; color:var(--purple-700); border:1.5px solid var(--purple-600);
+  }
+  .btn-ghost:hover{background:var(--lavender-100);}
+
+  /* ===== Signature: signal bars dial ===== */
+  .signature{
+    position:relative;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .dial-card{
+    background:var(--purple-950);
+    border-radius:28px;
+    padding:40px 34px 34px;
+    width:100%; max-width:380px;
+    box-shadow:0 30px 60px rgba(34,8,63,0.35);
+    position:relative;
+    overflow:hidden;
+  }
+  .dial-card::after{
+    content:"";
+    position:absolute; inset:0;
+    background:radial-gradient(circle at 25% 15%, rgba(150,69,221,0.4), transparent 55%);
+  }
+  .dial-label{
+    font-size:0.78rem; color:rgba(255,255,255,0.6); font-weight:500;
+    display:flex; justify-content:space-between; margin-bottom:26px;
+    position:relative; z-index:1;
+  }
+  .dial-bars{
+    display:flex; align-items:flex-end; justify-content:center;
+    gap:8px; height:150px; position:relative; z-index:1;
+    margin-bottom:8px;
+  }
+  .bar-group{
+    display:flex; flex-direction:column; align-items:center; gap:6px;
+    flex:1;
+  }
+  .bar{
+    width:100%; max-width:26px;
+    border-radius:6px 6px 3px 3px;
+    position:relative;
+  }
+  .bar .base{
+    background:rgba(255,255,255,0.22);
+    border-radius:6px 6px 3px 3px;
+  }
+  .bar .boost{
+    background:linear-gradient(180deg,var(--gold-400),var(--gold-500));
+    border-radius:6px 6px 0 0;
+    animation:grow 1.4s cubic-bezier(.2,.9,.25,1) forwards;
+    transform-origin:bottom;
+    transform:scaleY(0);
+  }
+  @keyframes grow{ to{ transform:scaleY(1); } }
+  .bar-group:nth-child(1) .boost{animation-delay:0.1s;}
+  .bar-group:nth-child(2) .boost{animation-delay:0.22s;}
+  .bar-group:nth-child(3) .boost{animation-delay:0.34s;}
+  .bar-group:nth-child(4) .boost{animation-delay:0.46s;}
+  .bar-group:nth-child(5) .boost{animation-delay:0.58s;}
+  .bar-group:nth-child(6) .boost{animation-delay:0.7s;}
+  .bar-tag{
+    font-size:0.62rem; color:rgba(255,255,255,0.55); font-weight:500;
+  }
+  .dial-headline{
+    text-align:center; position:relative; z-index:1;
+    margin-top:14px;
+  }
+  .dial-headline .big{
+    font-family:'Almarai',sans-serif; font-weight:800;
+    font-size:2.6rem; color:var(--gold-400); line-height:1;
+  }
+  .dial-headline .small{
+    font-size:0.85rem; color:rgba(255,255,255,0.75); margin-top:8px;
+  }
+
+  /* ===== Section shell ===== */
+  section{padding:6vh 6vw;}
+  .section-head{
+    max-width:640px; margin-bottom:44px;
+  }
+  .section-head .tag{
+    color:var(--purple-600); font-weight:700; font-size:0.82rem;
+    letter-spacing:0.3px; margin-bottom:10px; display:block;
+  }
+  .section-head h2{
+    font-size:clamp(1.5rem,2.6vw,2.1rem); color:var(--purple-950); font-weight:800;
+  }
+
+  /* ===== Package table ===== */
+  .table-wrap{
+    background:var(--white);
+    border:1px solid var(--line);
+    border-radius:20px;
+    overflow:hidden;
+    box-shadow:0 20px 44px rgba(34,8,63,0.06);
+  }
+  table{width:100%; border-collapse:collapse;}
+  thead th{
+    background:var(--purple-800);
+    color:white;
+    font-family:'Almarai',sans-serif;
+    font-weight:700;
+    font-size:0.92rem;
+    padding:18px 20px;
+    text-align:center;
+  }
+  tbody td{
+    padding:17px 20px;
+    text-align:center;
+    font-size:0.95rem;
+    border-bottom:1px solid var(--line);
+    color:var(--ink);
+  }
+  tbody tr:last-child td{border-bottom:none;}
+  tbody tr:nth-child(even){background:var(--lavender-050);}
+  tbody tr:hover{background:var(--lavender-100);}
+  td.pkg-name{
+    font-family:'Almarai',sans-serif; font-weight:700; color:var(--purple-700);
+  }
+  td.boost-cell{
+    font-weight:700; color:var(--gold-500);
+  }
+  td.validity{
+    color:var(--ink-soft); font-size:0.85rem;
+  }
+
+  /* ===== Info panels (subscription / terms) ===== */
+  .panels{
+    display:grid; grid-template-columns:1fr 1fr; gap:28px;
+  }
+  .panel{
+    background:var(--white);
+    border:1px solid var(--line);
+    border-radius:20px;
+    padding:34px 32px;
+    box-shadow:0 16px 36px rgba(34,8,63,0.05);
+  }
+  .panel h3{
+    font-size:1.15rem; color:var(--purple-800); margin-bottom:20px;
+    display:flex; align-items:center; gap:10px;
+  }
+  .panel h3::before{
+    content:""; width:6px; height:22px; border-radius:4px;
+    background:linear-gradient(180deg,var(--gold-400),var(--purple-600));
+    display:inline-block;
+  }
+  .panel .subhead{
+    font-weight:700; color:var(--purple-600); font-size:0.92rem;
+    margin:18px 0 8px;
+  }
+  .panel .subhead:first-of-type{margin-top:0;}
+  .panel ul{list-style:none;}
+  .panel li{
+    position:relative; padding-right:20px; margin-bottom:10px;
+    font-size:0.92rem; color:var(--ink-soft);
+  }
+  .panel li::before{
+    content:"○"; position:absolute; right:0; top:2px; color:var(--purple-500); font-size:0.7rem;
+  }
+  .panel li strong{color:var(--ink); font-weight:700;}
+  .panel .divider{height:1px; background:var(--line); margin:22px 0;}
+  .terms-list{list-style:none;}
+  .terms-list li{
+    position:relative; padding-right:26px; margin-bottom:14px;
+    font-size:0.92rem; color:var(--ink-soft);
+  }
+  .terms-list li::before{
+    content:"✓"; position:absolute; right:0; top:0;
+    width:18px; height:18px; border-radius:50%;
+    background:var(--lavender-100); color:var(--purple-600);
+    font-size:0.65rem; display:flex; align-items:center; justify-content:center;
+  }
+  .terms-list li strong{color:var(--purple-700); font-weight:700;}
+
+  /* ===== Offer name strip ===== */
+  .offer-strip{
+    background:linear-gradient(120deg,var(--purple-950),var(--purple-800));
+    border-radius:20px;
+    padding:38px 40px;
+    display:flex; align-items:center; justify-content:space-between;
+    flex-wrap:wrap; gap:20px;
+    color:white;
+    position:relative; overflow:hidden;
+  }
+  .offer-strip::before{
+    content:"";
+    position:absolute; left:-40px; top:-60px;
+    width:220px; height:220px; border-radius:50%;
+    background:radial-gradient(circle, rgba(240,185,64,0.28), transparent 70%);
+  }
+  .offer-strip .label{
+    font-size:0.8rem; color:rgba(255,255,255,0.6); margin-bottom:6px;
+  }
+  .offer-strip .name{
+    font-family:'Almarai',sans-serif; font-weight:800; font-size:1.5rem;
+  }
+  .offer-code{
+    font-family:'Tajawal',sans-serif; font-weight:700;
+    background:rgba(255,255,255,0.1);
+    border:1px solid rgba(255,255,255,0.2);
+    padding:12px 22px; border-radius:12px;
+    font-size:0.95rem; letter-spacing:0.5px;
+  }
+
+  /* ===== Footer ===== */
+  footer{
+    padding:34px 6vw 40px;
+    text-align:center;
+    color:var(--ink-soft);
+    font-size:0.82rem;
+    border-top:1px solid var(--line);
+  }
+
+  @media (max-width:880px){
+    .hero-grid{grid-template-columns:1fr;}
+    .panels{grid-template-columns:1fr;}
+    table{font-size:0.85rem;}
+    thead th, tbody td{padding:12px 8px;}
+  }
+</style>
+</head>
+<body>
+<div class="sky-noise"></div>
+
+<header>
+  <div class="brand">
+    <span class="brand-mark">WE</span>
+    <span>WE Air</span>
+  </div>
+  <span class="eff-date">ساري اعتبارًا من 30 يوليو 2026</span>
+</header>
+
+<section class="hero">
+  <div class="hero-grid">
+    <div>
+      <span class="eyebrow">عرض الصيف 2026</span>
+      <h1>زيادة <span class="accent">50%</span> على باقة WE Air<br>عند الاشتراك أو التجديد</h1>
+      <p class="lede">
+        بمناسبة إطلاق عرض الصيف، تحصل تلقائيًا على جيجابايت إضافية بنسبة 50% فوق سعة باقتك الأساسية، سارية لمدة 30 يومًا من تاريخ الاشتراك.
+      </p>
+      <div class="hero-cta">
+        <button class="btn btn-primary">استعرض الباقات المؤهلة</button>
+        <button class="btn btn-ghost">الشروط والأحكام</button>
+      </div>
+    </div>
+
+    <div class="signature">
+      <div class="dial-card">
+        <div class="dial-label">
+          <span>الباقة الأساسية</span>
+          <span>+ عرض الصيف</span>
+        </div>
+        <div class="dial-bars">
+          <div class="bar-group">
+            <div class="bar" style="height:44px;"><div class="boost" style="height:22px;"></div><div class="base" style="height:44px;margin-top:-44px;"></div></div>
+            <span class="bar-tag">290</span>
+          </div>
+          <div class="bar-group">
+            <div class="bar" style="height:70px;"><div class="boost" style="height:35px;"></div><div class="base" style="height:70px;margin-top:-70px;"></div></div>
+            <span class="bar-tag">460</span>
+          </div>
+          <div class="bar-group">
+            <div class="bar" style="height:96px;"><div class="boost" style="height:48px;"></div><div class="base" style="height:96px;margin-top:-96px;"></div></div>
+            <span class="bar-tag">690</span>
+          </div>
+          <div class="bar-group">
+            <div class="bar" style="height:112px;"><div class="boost" style="height:56px;"></div><div class="base" style="height:112px;margin-top:-112px;"></div></div>
+            <span class="bar-tag">1040</span>
+          </div>
+          <div class="bar-group">
+            <div class="bar" style="height:128px;"><div class="boost" style="height:64px;"></div><div class="base" style="height:128px;margin-top:-128px;"></div></div>
+            <span class="bar-tag">1270</span>
+          </div>
+          <div class="bar-group">
+            <div class="bar" style="height:150px;"><div class="boost" style="height:75px;"></div><div class="base" style="height:150px;margin-top:-150px;"></div></div>
+            <span class="bar-tag">1600</span>
+          </div>
+        </div>
+        <div class="dial-headline">
+          <div class="big">50%+</div>
+          <div class="small">جيجابايت إضافية على كل باقات WE Air</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-head">
+    <span class="tag">الجيجابايت الإضافية وسعة الباقات</span>
+    <h2>تفاصيل عرض الصيف على باقات WE Air</h2>
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>الباقة</th>
+          <th>سعة الباقة الأساسية</th>
+          <th>الجيجابايت الإضافية بالعرض</th>
+          <th>صلاحية العرض</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="pkg-name">WE Air 290</td>
+          <td>40 جيجابايت</td>
+          <td class="boost-cell">+20 جيجابايت</td>
+          <td class="validity">30 يوم</td>
+        </tr>
+        <tr>
+          <td class="pkg-name">WE Air 460</td>
+          <td>105 جيجابايت</td>
+          <td class="boost-cell">+52.5 جيجابايت</td>
+          <td class="validity">30 يوم</td>
+        </tr>
+        <tr>
+          <td class="pkg-name">WE Air 690</td>
+          <td>200 جيجابايت</td>
+          <td class="boost-cell">+100 جيجابايت</td>
+          <td class="validity">30 يوم</td>
+        </tr>
+        <tr>
+          <td class="pkg-name">WE Air 1040</td>
+          <td>325 جيجابايت</td>
+          <td class="boost-cell">+162.5 جيجابايت</td>
+          <td class="validity">30 يوم</td>
+        </tr>
+        <tr>
+          <td class="pkg-name">WE Air 1270</td>
+          <td>400 جيجابايت</td>
+          <td class="boost-cell">+200 جيجابايت</td>
+          <td class="validity">30 يوم</td>
+        </tr>
+        <tr>
+          <td class="pkg-name">WE Air 1600</td>
+          <td>500 جيجابايت</td>
+          <td class="boost-cell">+250 جيجابايت</td>
+          <td class="validity">30 يوم</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section>
+  <div class="section-head">
+    <span class="tag">التطبيق والاستفادة من العرض</span>
+    <h2>طريقة الاشتراك والشروط والأحكام</h2>
+  </div>
+
+  <div class="panels">
+    <div class="panel">
+      <h3>طريقة الاشتراك</h3>
+
+      <div class="subhead">عملاء WE Air الدفع المسبق</div>
+      <ul>
+        <li><strong>العملاء الجدد:</strong> يحصلون على عرض الصيف لباقات WE Air تلقائيًا عند الاشتراك.</li>
+        <li><strong>العملاء الحاليون:</strong> يمكن الاستفادة من العرض عن طريق الاشتراك من خلال تطبيق My WE أو الـ GUI قبل التجديد، ويجب تكرار ذلك كل مرة قبل تجديد الباقة.</li>
+      </ul>
+
+      <div class="divider"></div>
+
+      <div class="subhead">عملاء WE Air الفاتورة</div>
+      <ul>
+        <li><strong>العملاء الجدد:</strong> يحصلون على العرض أوتوماتيكيًا عند الاشتراك في باقات WE Air.</li>
+        <li><strong>العملاء الحاليون:</strong> يمكن الاستفادة من العرض عن طريق الاشتراك من خلال تطبيق My WE أو الـ GUI.</li>
+      </ul>
+    </div>
+
+    <div class="panel">
+      <h3>الشروط والأحكام</h3>
+      <ul class="terms-list">
+        <li>العرض متاح لكل عملاء WE Air الحاليين والجدد.</li>
+        <li>صلاحية الباقة الإضافية <strong>30 يومًا</strong> من تاريخ الاشتراك.</li>
+        <li>يمكن الاستفادة من العرض بحد أقصى <strong>مرة واحدة في الشهر</strong>، خلال مدة العرض البالغة <strong>3 شهور</strong>.</li>
+        <li>تُجدَّد الباقة بعد انتهاء العرض على نفس الجيجابايت الأساسية لباقات WE Air بنفس حجم الباقات الأساسية.</li>
+        <li>لا يمكن الجمع بين عرض الصيف والفاتورة المسبقة والاستفادة من عرض الصيف في نفس الوقت، فيما عدا عملاء WE Air Gold.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="offer-strip">
+    <div>
+      <div class="label">اسم العرض في نظام BSS</div>
+      <div class="name">WE Air Summer Promo</div>
+    </div>
+    <div class="offer-code">يرجى الاطلاع على أسماء العروض في نظام BSS قبل تجديد اشتراك العميل</div>
+  </div>
+</section>
+
+<footer>
+  عرض الصيف على باقات WE Air 2026 — ساري اعتبارًا من الخميس 30 يوليو 2026
+</footer>
+
+</body>
+</html>
