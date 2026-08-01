@@ -7,8 +7,8 @@
     <title>عروض WE - المصرية للاتصالات</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script src="../../assets/js/active-users-widget.js"></script>
-  <stayle>
-      * {
+    <style>
+        * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
@@ -28,6 +28,7 @@
         }
 
         header {
+            position: relative;
             background: linear-gradient(135deg, #7c3aed 0%, #a855f7 100%);
             color: white;
             padding: 40px 30px;
@@ -46,6 +47,23 @@
         header p {
             font-size: 1.1em;
             opacity: 0.95;
+        }
+
+        .back-btn {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: white;
+            text-decoration: none;
+            font-size: 20px;
+            z-index: 10;
+            opacity: 0.9;
+            transition: opacity 0.2s;
+        }
+
+        .back-btn:hover {
+            opacity: 1;
         }
 
         .offers-grid {
@@ -173,12 +191,12 @@
             header h1 { font-size: 1.8em; }
             .offers-grid { grid-template-columns: 1fr; }
         }
-  </stayle>
+    </style>
 </head>
 <body>
     <div class="container">
         <header>
-<a href="javascript:history.back()" class="back-btn" style="position: absolute; left: 20px; top: 50%; transform: translateY(-50%); color: white; text-decoration: none; font-size: 20px; z-index: 1000;"><i class="fas fa-arrow-left"></i></a>
+            <a href="javascript:history.back()" class="back-btn"><i class="fas fa-arrow-left"></i></a>
 
             <h1>🎁 عروض WE</h1>
             <p>احصل على أفضل العروض والخصومات من المصرية للاتصالات</p>
@@ -195,17 +213,21 @@
         <footer>WE Core Team 2026</footer>
     </div>
 
-    <script>// مصفوفة العروض بعد تصحيح الـ Syntax
+    <script>
+        // مصفوفة العروض
         const offers = [
             {
-                title: "we ardy summer",
+                title: "عرض الصيف WE Air",
                 badge: "عرض خاص",
-                highlight: "لفترة محدودة",
+                highlight: "زيادة 50% على الباقة",
                 details: [
-                   
+                    "زيادة 50% على سعة باقتك عند الاشتراك أو التجديد",
+                    "الباقة الإضافية سارية لمدة 30 يوم",
+                    "متاح لعملاء الدفع المسبق والفاتورة، الجدد والحاليين",
+                    "يمكن الاستفادة مرة واحدة كل شهر خلال فترة العرض"
                 ],
                 buttonText: "تفاصيل أكثر",
-                buttonLink: "we-summer-offer.html"
+                buttonLink: "we-air-summer-promo.html"
             }
         ];
 
@@ -213,7 +235,7 @@
             const container = document.getElementById('offersContainer');
             const noOffers = document.getElementById('noOffersMessage');
 
-            if (offers.length === 0) {
+            if (!offers || offers.length === 0) {
                 container.innerHTML = '';
                 noOffers.style.display = 'block';
                 return;
@@ -223,6 +245,10 @@
 
             let html = '<div class="offers-grid">';
             offers.forEach(offer => {
+                const detailsHtml = (offer.details && offer.details.length)
+                    ? offer.details.map(d => `<li>${d}</li>`).join('')
+                    : '<li>التفاصيل الكاملة متاحة عبر صفحة العرض</li>';
+
                 html += `
                     <div class="offer-card">
                         <div class="offer-header">
@@ -235,7 +261,7 @@
                             </div>
                             <div class="offer-details">
                                 <ul>
-                                    ${offer.details.map(d => `<li>${d}</li>`).join('')}
+                                    ${detailsHtml}
                                 </ul>
                             </div>
                             <a href="${offer.buttonLink}" class="offer-button">
@@ -256,8 +282,7 @@
             if (typeof ActiveUsersWidget !== 'undefined') {
                 ActiveUsersWidget.init({ position: 'corner' });
             }
-        });</script>
-
-
+        });
+    </script>
 </body>
 </html>
