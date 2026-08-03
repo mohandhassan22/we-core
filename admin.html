@@ -33,6 +33,10 @@
         <i class="ti ti-user-plus"></i>
         <span class="nav-label">مستخدم جديد</span>
       </button>
+      <button class="nav-item" data-section="tables">
+        <i class="ti ti-database"></i>
+        <span class="nav-label">إدارة الجداول</span>
+      </button>
       <button class="nav-item" data-section="actions">
         <i class="ti ti-send"></i>
         <span class="nav-label">إجراءات الحساب</span>
@@ -257,6 +261,72 @@
         </div>
       </section>
 
+      <!-- Tables Management Section -->
+      <section class="section" id="tables-section">
+
+        <!-- Tables List View -->
+        <div id="tablesListView">
+          <div class="sec-hd">
+            <h2>كل الجداول</h2>
+            <div class="sec-actions">
+              <div class="search-wrap">
+                <i class="ti ti-search"></i>
+                <input type="text" id="tablesSearch" placeholder="بحث عن جدول...">
+              </div>
+              <button class="btn btn-secondary" id="refreshTablesBtn" style="padding:8px 14px;font-size:.85rem">
+                <i class="ti ti-refresh" style="font-size:16px"></i> تحديث
+              </button>
+            </div>
+          </div>
+          <div class="tables-grid" id="tablesGrid">
+            <div style="text-align:center;padding:40px;color:#9ca3af;grid-column:1/-1">
+              <i class="ti ti-loader" style="font-size:20px;animation:spin 1s linear infinite"></i><br>جاري تحميل الجداول...
+            </div>
+          </div>
+        </div>
+
+        <!-- Single Table Data View -->
+        <div id="tableDataView" style="display:none">
+          <div class="sec-hd">
+            <div style="display:flex;align-items:center;gap:10px">
+              <button class="btn btn-secondary" id="backToTablesBtn" style="padding:8px 12px">
+                <i class="ti ti-arrow-right" style="font-size:16px"></i>
+              </button>
+              <h2 id="tableDataTitle">اسم الجدول</h2>
+              <span class="badge" id="tableRowCount" style="background:#eef2ff;color:#4338ca">0 صف</span>
+            </div>
+            <div class="sec-actions">
+              <div class="search-wrap">
+                <i class="ti ti-search"></i>
+                <input type="text" id="tableRowSearch" placeholder="بحث في الجدول...">
+              </div>
+              <button class="btn btn-primary" id="addRowBtn" style="padding:8px 14px;font-size:.85rem">
+                <i class="ti ti-plus" style="font-size:16px"></i> إضافة صف
+              </button>
+            </div>
+          </div>
+
+          <div class="table-wrap">
+            <div class="table-scroll">
+              <table id="dynamicTable">
+                <thead id="dynamicTableHead"></thead>
+                <tbody id="dynamicTableBody">
+                  <tr><td style="text-align:center;padding:40px;color:#9ca3af"><i class="ti ti-loader" style="font-size:20px;animation:spin 1s linear infinite"></i><br>جاري تحميل البيانات...</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="table-footer">
+              <span id="tablePageInfo">عرض البيانات</span>
+              <div class="pager" id="tablePager">
+                <button class="pager-btn" id="prevPageBtn"><i class="ti ti-chevron-right" style="font-size:14px"></i></button>
+                <button class="pager-btn active" id="currentPageBtn">1</button>
+                <button class="pager-btn" id="nextPageBtn"><i class="ti ti-chevron-left" style="font-size:14px"></i></button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <!-- Settings Section -->
       <section class="section" id="settings-section">
         <div class="sec-hd"><h2>الإعدادات</h2></div>
@@ -319,6 +389,47 @@
     <div class="modal-ft">
       <button class="btn btn-secondary" onclick="hideModal('deleteModal')">إلغاء</button>
       <button class="btn" id="confirmDeleteBtn" style="background:var(--danger);color:#fff">
+        <i class="ti ti-trash" style="font-size:16px"></i> حذف
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Row Add/Edit Modal -->
+<div class="modal-backdrop" id="rowModal">
+  <div class="modal" style="max-width:560px">
+    <div class="modal-hd">
+      <h2 id="rowModalTitle">إضافة صف</h2>
+      <button class="close-btn" onclick="hideModal('rowModal')"><i class="ti ti-x"></i></button>
+    </div>
+    <div class="modal-body">
+      <form id="rowForm">
+        <div id="rowFormFields"></div>
+      </form>
+      <div id="rowFormMessage" class="form-message"></div>
+    </div>
+    <div class="modal-ft">
+      <button class="btn btn-secondary" onclick="hideModal('rowModal')">إلغاء</button>
+      <button class="btn btn-primary" id="rowSaveBtn"><i class="ti ti-device-floppy" style="font-size:16px"></i> حفظ</button>
+    </div>
+  </div>
+</div>
+
+<!-- Row Delete Modal -->
+<div class="modal-backdrop" id="deleteRowModal">
+  <div class="modal">
+    <div class="modal-hd">
+      <h2>تأكيد الحذف</h2>
+      <button class="close-btn" onclick="hideModal('deleteRowModal')"><i class="ti ti-x"></i></button>
+    </div>
+    <div class="modal-body">
+      <p>هل أنت متأكد من رغبتك في حذف هذا الصف؟</p>
+      <p class="warn-text"><i class="ti ti-alert-triangle"></i> لا يمكن التراجع عن هذا الإجراء</p>
+      <div class="user-info-box" id="deleteRowInfo"></div>
+    </div>
+    <div class="modal-ft">
+      <button class="btn btn-secondary" onclick="hideModal('deleteRowModal')">إلغاء</button>
+      <button class="btn" id="confirmDeleteRowBtn" style="background:var(--danger);color:#fff">
         <i class="ti ti-trash" style="font-size:16px"></i> حذف
       </button>
     </div>
