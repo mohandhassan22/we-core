@@ -15,21 +15,28 @@
     <img src="img/we-core.png" class="modal-logo" alt="WE-Core">
     <h3>WE-Core</h3>
     <p class="sub">سجّل دخولك للمتابعة</p>
-    <div class="field">
-        <i class="fa-solid fa-user"></i>
-        <input id="uname" type="text" placeholder="اسم المستخدم" autocomplete="off">
-    </div>
-    <div class="field">
-        <i class="fa-solid fa-lock"></i>
-        <input id="upass" type="password" placeholder="كلمة المرور">
-    </div>
-    <button class="login-btn" id="loginBtn" onclick="doLogin()">
-        تسجيل الدخول
-    </button>
+
+    <form id="loginForm" onsubmit="return false;">
+        <div class="field">
+            <i class="fa-solid fa-user"></i>
+            <input id="uname" type="text" placeholder="اسم المستخدم" autocomplete="off">
+        </div>
+        <div class="field">
+            <i class="fa-solid fa-lock"></i>
+            <input id="upass" type="password" placeholder="كلمة المرور">
+        </div>
+        <!-- تم حذف inline onclick واستبداله بزر داخل form -->
+        <button class="login-btn" id="loginBtn" type="submit">
+            تسجيل الدخول
+        </button>
+    </form>
+    
     <div class="err" id="errMsg"></div>
 </div>
 
+<!-- مكتبة Supabase -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="assets/js/login.js"></script>
+<!-- السكربت الخاص بك -->
+<script src="assets/js/login.js" defer></script>
 </body>
 </html>
