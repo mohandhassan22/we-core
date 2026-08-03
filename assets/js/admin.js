@@ -13,7 +13,7 @@ const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY, {
 // ─── Global Variables ───
 let currentUser = null;
 let deleteTargetUserId = null;
-const sections = { users: 'إدارة المستخدمين', create: 'إنشاء مستخدم جديد', actions: 'إجراءات الحساب', settings: 'الإعدادات' };
+const sections = { users: 'إدارة المستخدمين', create: 'إنشاء مستخدم جديد', actions: 'إجراءات الحساب', tables: 'إدارة الجداول', settings: 'الإعدادات' };
 
 // ─── Utility Functions ───
 const $ = (id) => document.getElementById(id);
@@ -408,6 +408,10 @@ document.querySelectorAll('.nav-btn, .nav-item').forEach(btn => {
     const section = btn.getAttribute('data-section') || btn.dataset.section;
     showSection(section);
     closeSidebar();
+    if (section === 'tables') {
+      showTablesListView();
+      if (!tablesLoaded) loadTables();
+    }
   });
 });
 
@@ -468,6 +472,342 @@ try {
   const savedDark = localStorage.getItem('wc-dark') || localStorage.getItem('darkMode');
   if (savedDark === 'true') applyDark(true);
 } catch (e) {}
+
+// ═══════════════════════════════════════════════════════════════
+// ─── Tables Management (إدارة كل جداول قاعدة البيانات) ─────────
+// ═══════════════════════════════════════════════════════════════
+
+let allTables = [];
+let tablesLoaded = false;
+let currentTable = null;
+let currentTableColumns = [];
+let currentPage = 1;
+const TABLE_PAGE_SIZE = 25;
+let currentRowSearch = '';
+let editingRowPkValue = null;
+let deleteRowTarget = { pkCol: null, pkValue: null, label: '' };
+
+const TABLE_ICONS = ['ti-table', 'ti-database', 'ti-list', 'ti-folder', 'ti-file-text', 'ti-tags'];
+function tableIconFor(name) {
+  let hash = 0;
+  for (let i = 0; i < name.length; i++) hash = name.charCodeAt(i) + ((hash << 5) - hash);
+  return TABLE_ICONS[Math.abs(hash) % TABLE_ICONS.length];
+}
+
+function getPkColumn(columns) {
+  const pk = (columns || []).find(c => c.is_primary_key);
+  return pk ? pk.column_name : null;
+}
+
+function isNumericType(dataType) {
+  return ['integer', 'bigint', 'smallint', 'numeric', 'real', 'double precision', 'decimal'].includes(dataType);
+}
+function isBooleanType(dataType) { return dataType === 'boolean'; }
+function isDateType(dataType) { return dataType === 'date'; }
+function isTimestampType(dataType) { return dataType && dataType.startsWith('timestamp'); }
+
+// ─── Tables List View ───
+function showTablesListView() {
+  $('tablesListView').style.display = '';
+  $('tableDataView').style.display = 'none';
+}
+function showTableDataView() {
+  $('tablesListView').style.display = 'none';
+  $('tableDataView').style.display = '';
+}
+
+async function loadTables() {
+  try {
+    const data = await callEdgeFunction('list_tables');
+    allTables = data.tables || [];
+    tablesLoaded = true;
+    renderTablesGrid(allTables);
+  } catch (error) {
+    $('tablesGrid').innerHTML = `<div style="text-align:center;padding:40px;color:var(--danger);grid-column:1/-1">خطأ: ${error.message}</div>`;
+  }
+}
+
+function renderTablesGrid(tables) {
+  const grid = $('tablesGrid');
+  if (!grid) return;
+  if (!tables.length) {
+    grid.innerHTML = `<div style="text-align:center;padding:40px;color:#9ca3af;grid-column:1/-1">لا توجد جداول</div>`;
+    return;
+  }
+  grid.innerHTML = tables.map(t => `
+    <div class="table-card" onclick="openTable('${t.table_name}')">
+      <div class="table-card-ico"><i class="ti ${tableIconFor(t.table_name)}"></i></div>
+      <div class="table-card-info">
+        <div class="table-card-name">${t.table_name}</div>
+        <div class="table-card-cols">${(t.columns || []).length} عمود</div>
+      </div>
+      <i class="ti ti-chevron-left table-card-arrow"></i>
+    </div>
+  `).join('');
+}
+
+if ($('tablesSearch')) {
+  $('tablesSearch').addEventListener('input', (e) => {
+    const q = e.target.value.trim().toLowerCase();
+    renderTablesGrid(allTables.filter(t => t.table_name.toLowerCase().includes(q)));
+  });
+}
+if ($('refreshTablesBtn')) $('refreshTablesBtn').addEventListener('click', loadTables);
+
+// ─── Single Table Data View ───
+async function openTable(tableName) {
+  currentTable = tableName;
+  currentPage = 1;
+  currentRowSearch = '';
+  if ($('tableRowSearch')) $('tableRowSearch').value = '';
+  $('tableDataTitle').textContent = tableName;
+  showTableDataView();
+  await loadTableData();
+}
+
+if ($('backToTablesBtn')) $('backToTablesBtn').addEventListener('click', showTablesListView);
+
+async function loadTableData() {
+  const tbody = $('dynamicTableBody');
+  tbody.innerHTML = `<tr><td style="text-align:center;padding:40px;color:#9ca3af"><i class="ti ti-loader" style="font-size:20px;animation:spin 1s linear infinite"></i><br>جاري تحميل البيانات...</td></tr>`;
+  try {
+    const data = await callEdgeFunction('get_table_data', {
+      table: currentTable,
+      page: currentPage,
+      pageSize: TABLE_PAGE_SIZE,
+      search: currentRowSearch,
+    });
+    currentTableColumns = data.columns || [];
+    renderTableHead(currentTableColumns);
+    renderTableRows(data.rows || [], currentTableColumns);
+    updatePager(data.total || 0, data.page || 1, data.pageSize || TABLE_PAGE_SIZE);
+  } catch (error) {
+    tbody.innerHTML = `<tr><td style="text-align:center;padding:30px;color:var(--danger)">خطأ: ${error.message}</td></tr>`;
+  }
+}
+
+function renderTableHead(columns) {
+  const thead = $('dynamicTableHead');
+  thead.innerHTML = `<tr>${columns.map(c => `<th>${c.column_name}${c.is_primary_key ? ' <i class="ti ti-key" style="font-size:11px;opacity:.6"></i>' : ''}</th>`).join('')}<th>الإجراءات</th></tr>`;
+}
+
+function formatCellValue(value, column) {
+  if (value === null || value === undefined) return '<span style="color:#c4c9d4">NULL</span>';
+  if (isBooleanType(column.data_type)) {
+    return value ? '<span class="badge" style="background:#d1fae5;color:#065f46">✓ صح</span>' : '<span class="badge" style="background:#fee2e2;color:#991b1b">✗ خطأ</span>';
+  }
+  let str = String(value);
+  if (typeof value === 'object') str = JSON.stringify(value);
+  if (str.length > 60) return `<span title="${str.replace(/"/g, '&quot;')}">${str.substring(0, 60)}…</span>`;
+  return str;
+}
+
+function renderTableRows(rows, columns) {
+  const tbody = $('dynamicTableBody');
+  if (!rows.length) {
+    tbody.innerHTML = `<tr><td colspan="${columns.length + 1}" style="text-align:center;padding:40px;color:#9ca3af">لا توجد بيانات</td></tr>`;
+    return;
+  }
+  const pkCol = getPkColumn(columns);
+  tbody.innerHTML = rows.map((row, idx) => `
+    <tr>
+      ${columns.map(c => `<td>${formatCellValue(row[c.column_name], c)}</td>`).join('')}
+      <td>
+        <div class="acts">
+          <button class="act-btn magic" onclick='openEditRowModal(${JSON.stringify(row).replace(/'/g, "&#39;")})'>
+            <i class="ti ti-edit" style="font-size:13px"></i> تعديل
+          </button>
+          <button class="act-btn del" onclick='confirmDeleteRow(${JSON.stringify(pkCol ? row[pkCol] : null)}, ${JSON.stringify((pkCol ? row[pkCol] : '') + '')})'>
+            <i class="ti ti-trash" style="font-size:13px"></i>
+          </button>
+        </div>
+      </td>
+    </tr>
+  `).join('');
+}
+
+function updatePager(total, page, pageSize) {
+  const totalPages = Math.max(1, Math.ceil(total / pageSize));
+  $('tableRowCount').textContent = `${total} صف`;
+  $('tablePageInfo').textContent = `صفحة ${page} من ${totalPages}`;
+  $('currentPageBtn').textContent = page;
+  $('prevPageBtn').disabled = page <= 1;
+  $('nextPageBtn').disabled = page >= totalPages;
+}
+
+if ($('prevPageBtn')) $('prevPageBtn').addEventListener('click', () => {
+  if (currentPage > 1) { currentPage--; loadTableData(); }
+});
+if ($('nextPageBtn')) $('nextPageBtn').addEventListener('click', () => {
+  currentPage++; loadTableData();
+});
+
+let rowSearchTimeout = null;
+if ($('tableRowSearch')) $('tableRowSearch').addEventListener('input', (e) => {
+  clearTimeout(rowSearchTimeout);
+  rowSearchTimeout = setTimeout(() => {
+    currentRowSearch = e.target.value.trim();
+    currentPage = 1;
+    loadTableData();
+  }, 400);
+});
+
+// ─── Dynamic Add/Edit Row Form ───
+function inputForColumn(column, value) {
+  const name = column.column_name;
+  const readonly = column.is_primary_key ? 'readonly' : '';
+  const disabledStyle = column.is_primary_key ? 'style="background:var(--bg);color:var(--text-muted)"' : '';
+
+  if (isBooleanType(column.data_type)) {
+    const checked = value === true ? 'checked' : '';
+    return `
+      <div class="form-group">
+        <label>${name}</label>
+        <label class="toggle-wrap">
+          <div class="toggle">
+            <input type="checkbox" data-col="${name}" data-type="boolean" ${checked}>
+            <div class="toggle-track"></div>
+            <div class="toggle-thumb"></div>
+          </div>
+        </label>
+      </div>`;
+  }
+  if (isNumericType(column.data_type)) {
+    return `
+      <div class="form-group">
+        <label>${name}${column.is_foreign_key ? ` <span style="color:var(--text-muted);font-size:.75rem">(مرتبط بـ ${column.foreign_table})</span>` : ''}</label>
+        <input type="number" step="any" class="form-input" data-col="${name}" data-type="number" value="${value ?? ''}" ${readonly} ${disabledStyle}>
+      </div>`;
+  }
+  if (isDateType(column.data_type)) {
+    const v = value ? String(value).substring(0, 10) : '';
+    return `
+      <div class="form-group">
+        <label>${name}</label>
+        <input type="date" class="form-input" data-col="${name}" data-type="date" value="${v}" ${readonly} ${disabledStyle}>
+      </div>`;
+  }
+  if (isTimestampType(column.data_type)) {
+    const v = value ? String(value).substring(0, 16) : '';
+    return `
+      <div class="form-group">
+        <label>${name}</label>
+        <input type="datetime-local" class="form-input" data-col="${name}" data-type="timestamp" value="${v}" ${readonly} ${disabledStyle}>
+      </div>`;
+  }
+  // نص افتراضي
+  const strVal = value === null || value === undefined ? '' : (typeof value === 'object' ? JSON.stringify(value) : value);
+  return `
+    <div class="form-group">
+      <label>${name}${column.is_foreign_key ? ` <span style="color:var(--text-muted);font-size:.75rem">(مرتبط بـ ${column.foreign_table})</span>` : ''}</label>
+      <input type="text" class="form-input" data-col="${name}" data-type="text" value="${String(strVal).replace(/"/g, '&quot;')}" ${readonly} ${disabledStyle}>
+    </div>`;
+}
+
+function buildRowForm(columns, rowData) {
+  const container = $('rowFormFields');
+  container.innerHTML = columns.map(col => inputForColumn(col, rowData ? rowData[col.column_name] : null)).join('');
+}
+
+function openAddRowModal() {
+  editingRowPkValue = null;
+  $('rowModalTitle').textContent = `إضافة صف جديد - ${currentTable}`;
+  // نخفي عمود الـ primary key عند الإضافة لو مفيهوش قيمة افتراضية مطلوبة (عادة auto-increment)
+  const columns = currentTableColumns.filter(c => !c.is_primary_key || c.column_default);
+  buildRowForm(columns.length ? columns : currentTableColumns, null);
+  showModal('rowModal');
+}
+
+function openEditRowModal(rowData) {
+  const pkCol = getPkColumn(currentTableColumns);
+  editingRowPkValue = pkCol ? rowData[pkCol] : null;
+  $('rowModalTitle').textContent = `تعديل صف - ${currentTable}`;
+  buildRowForm(currentTableColumns, rowData);
+  showModal('rowModal');
+}
+window.openEditRowModal = openEditRowModal;
+window.openTable = openTable;
+
+if ($('addRowBtn')) $('addRowBtn').addEventListener('click', openAddRowModal);
+
+function collectRowFormValues() {
+  const inputs = document.querySelectorAll('#rowFormFields [data-col]');
+  const result = {};
+  inputs.forEach(input => {
+    const col = input.dataset.col;
+    const type = input.dataset.type;
+    if (input.hasAttribute('readonly') && editingRowPkValue !== null) return; // متجاهلين الـ pk عند التعديل
+    if (type === 'boolean') {
+      result[col] = input.checked;
+    } else if (type === 'number') {
+      result[col] = input.value === '' ? null : Number(input.value);
+    } else if (type === 'date') {
+      result[col] = input.value || null;
+    } else if (type === 'timestamp') {
+      result[col] = input.value ? new Date(input.value).toISOString() : null;
+    } else {
+      result[col] = input.value === '' ? null : input.value;
+    }
+  });
+  return result;
+}
+
+if ($('rowSaveBtn')) $('rowSaveBtn').addEventListener('click', async () => {
+  const btn = $('rowSaveBtn');
+  const originalText = btn.innerHTML;
+  btn.disabled = true;
+  btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري الحفظ...';
+
+  try {
+    const rowValues = collectRowFormValues();
+    if (editingRowPkValue !== null) {
+      await callEdgeFunction('update_row', { table: currentTable, id: editingRowPkValue, row: rowValues });
+    } else {
+      await callEdgeFunction('insert_row', { table: currentTable, row: rowValues });
+    }
+    hideModal('rowModal');
+    showMessage('rowFormMessage', 'تم الحفظ بنجاح', 'success');
+    loadTableData();
+  } catch (error) {
+    showMessage('rowFormMessage', error.message, 'error');
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = originalText;
+  }
+});
+
+// ─── Delete Row ───
+function confirmDeleteRow(pkValue, label) {
+  const pkCol = getPkColumn(currentTableColumns);
+  deleteRowTarget = { pkCol, pkValue, label };
+  $('deleteRowInfo').textContent = `${pkCol}: ${label}`;
+  showModal('deleteRowModal');
+}
+window.confirmDeleteRow = confirmDeleteRow;
+
+if ($('confirmDeleteRowBtn')) $('confirmDeleteRowBtn').addEventListener('click', async () => {
+  if (deleteRowTarget.pkValue === null || deleteRowTarget.pkValue === undefined) {
+    showErrorModal('لا يمكن حذف هذا الصف: الجدول ليس له Primary Key محدد');
+    hideModal('deleteRowModal');
+    return;
+  }
+  const btn = $('confirmDeleteRowBtn');
+  const originalText = btn.innerHTML;
+  btn.disabled = true;
+  btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري الحذف...';
+
+  try {
+    await callEdgeFunction('delete_row', { table: currentTable, id: deleteRowTarget.pkValue });
+    hideModal('deleteRowModal');
+    showSuccessModal('تم بنجاح!', 'تم حذف الصف بنجاح');
+    loadTableData();
+  } catch (error) {
+    showErrorModal(error.message);
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = originalText;
+  }
+});
 
 // ─── Initialize ───
 document.addEventListener('DOMContentLoaded', () => {
