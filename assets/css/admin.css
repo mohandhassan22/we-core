@@ -325,6 +325,26 @@ body.dark .act-card-hd .act-ico.green{background:#064e3b;color:#6ee7b7}
 
 /* ── Toggle ── */
 .toggle-wrap{display:flex;align-items:center;gap:10px;cursor:pointer;font-size:.9rem;font-weight:500}
+
+/* ── Tables Management ── */
+.tables-grid{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px;
+}
+.table-card{
+  background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
+  padding:16px;display:flex;align-items:center;gap:12px;cursor:pointer;
+  box-shadow:var(--shadow);transition:transform var(--transition),box-shadow var(--transition);
+}
+.table-card:hover{transform:translateY(-2px);box-shadow:var(--shadow-md);border-color:var(--accent)}
+.table-card-ico{
+  width:42px;height:42px;border-radius:10px;background:var(--primary-light);color:var(--primary);
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:19px;
+}
+body.dark .table-card-ico{background:#1e3a8a;color:#93c5fd}
+.table-card-info{flex:1;min-width:0}
+.table-card-name{font-weight:600;font-size:.92rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.table-card-cols{font-size:.78rem;color:var(--text-muted);margin-top:2px}
+.table-card-arrow{color:var(--text-muted);font-size:16px;flex-shrink:0}
 .toggle{position:relative;width:42px;height:22px}
 .toggle input{opacity:0;width:0;height:0;position:absolute}
 .toggle-track{
