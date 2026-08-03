@@ -1,70 +1,90 @@
-(function() {
-    const $ = id => document.getElementById(id);
-    const showErr = msg => { 
-        $('errMsg').textContent = msg; 
-        $('errMsg').classList.add('show'); 
-    };
-    
-    const sb = supabase.createClient(
-        'https://iygwhapcpdmsasqlfelv.supabase.co',
-        'sb_publishable_rD9naqrpu1dI-iwchAS0GQ_JkgGysqP',
-        { auth: { persistSession: true, autoRefreshToken: true } }
-    );
+// ==== إعداد Supabase ====
+const SUPABASE_URL = "YOUR_SUPABASE_URL";
+const SUPABASE_ANON_KEY = "YOUR_SUPABASE_ANON_KEY";
+const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-    window.doLogin = async function() {
-        const username = $('uname').value.trim();
-        const password = $('upass').value;
-        if (!username || !password) return showErr('أدخل البيانات كاملة');
-        
-        const btn = $('loginBtn');
-        btn.disabled = true;
-        btn.innerHTML = 'جاري التحقق...';
+const loginBtn = document.getElementById("loginBtn");
+const errMsg = document.getElementById("errMsg");
 
-        try {
-            // 1. جلب الإيميل من الـ Edge Function باستخدام اسم المستخدم
-            const { data: emailData, error: emailErr } = await sb.functions.invoke('hyper-task', {
-                body: { action: 'get_email', username: username }
-            });
+async function doLogin() {
+  const username = document.getElementById("uname").value.trim();
+  const password = document.getElementById("upass").value;
 
-            if (emailErr || !emailData?.email) throw new Error('المستخدم غير موجود');
+  errMsg.textContent = "";
 
-            // 2. تسجيل الدخول
-            const { data, error } = await sb.auth.signInWithPassword({
-                email: emailData.email,
-                password: password
-            });
+  if (!username || !password) {
+    errMsg.textContent = "من فضلك ادخل اسم المستخدم وكلمة المرور";
+    return;
+  }
 
-            if (error) throw error;
+  loginBtn.disabled = true;
+  loginBtn.textContent = "جاري تسجيل الدخول...";
 
-            // 3. تخزين الـ Cookie للـ Edge Functions (اختياري)
-            document.cookie = `sb-access-token=${data.session.access_token}; path=/; max-age=86400; SameSite=Lax`;
-            
-            // 4. جلب الرتبة (Role) من جدول profiles للتأكد من الصلاحيات
-            const user = data.user;
-            const { data: profileData, error: profileErr } = await sb
-                .from('profiles')
-                .select('role')
-                .eq('id', user.id)
-                .single();
+  // لو بتسجل بالإيميل مباشرة، وإلا حوّل اليوزرنيم لإيميل حسب نظامك
+  const { data, error } = await supabase.auth.signInWithPassword({
+    email: username,
+    password: password,
+  });
 
-            if (profileErr) {
-                console.warn('Error fetching profile role:', profileErr);
-            }
+  if (error) {
+    errMsg.textContent = "اسم المستخدم أو كلمة المرور غير صحيحة";
+    loginBtn.disabled = false;
+    loginBtn.textContent = "تسجيل الدخول";
+    return;
+  }
 
-            const userRole = profileData?.role || user?.user_metadata?.role || user?.app_metadata?.role;
+  const user = data.user;
 
-            // 5. التوجيه بناءً على الرتبة
-            if (userRole === 'admin') {
-                window.location.href = 'admin.html';
-            } else {
-                window.location.href = 'index.html';
-            }
+  // حفظ الجلسة محليًا
+  localStorage.setItem("we_core_user", JSON.stringify(user));
 
-        } catch (e) {
-            btn.disabled = false;
-            btn.innerHTML = 'تسجيل الدخول';
-            // إظهار رسالة الخطأ المحددة أو رسالة عامة
-            showErr(e.message === 'المستخدم غير موجود' ? e.message : 'بيانات الدخول غير صحيحة');
-        }
-    };
-})();
+  await afterLoginSuccess(user);
+}
+
+async function afterLoginSuccess(user) {
+  const { data: profile, error } = await supabase
+    .from("profiles")      // غيّر اسم الجدول لو مختلف عندك
+    .select("role")        // أو is_admin لو عندك عمود boolean
+    .eq("id", user.id)
+    .single();
+
+  loginBtn.disabled = false;
+  loginBtn.textContent = "تسجيل الدخول";
+
+  if (error) {
+    console.error(error);
+    window.location.href = "home.html"; // fallback
+    return;
+  }
+
+  const isAdmin = profile?.role === "admin"; // عدّل الشرط حسب تسمية الدور عندك
+
+  if (isAdmin) {
+    showAdminChoiceModal();
+  } else {
+    window.location.href = "home.html";
+  }
+}
+
+function showAdminChoiceModal() {
+  const modal = document.createElement("div");
+  modal.className = "admin-choice-overlay";
+  modal.innerHTML = `
+    <div class="admin-choice-box">
+      <h3>مرحباً بيك أدمن 👋</h3>
+      <p>تحب تدخل لوحة التحكم ولا الصفحة الرئيسية؟</p>
+      <div class="admin-choice-actions">
+        <button id="goAdminBtn" class="btn-primary">لوحة تحكم الأدمن</button>
+        <button id="goHomeBtn" class="btn-secondary">الصفحة الرئيسية</button>
+      </div>
+    </div>
+  `;
+  document.body.appendChild(modal);
+
+  document.getElementById("goAdminBtn").onclick = () => {
+    window.location.href = "admin.html"; // غيّر لاسم صفحة الأدمن الفعلي
+  };
+  document.getElementById("goHomeBtn").onclick = () => {
+    window.location.href = "home.html";
+  };
+}
