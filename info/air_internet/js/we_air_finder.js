@@ -1,5 +1,16 @@
 // ============================================================
-//  قاعدة البيانات — جميع أقسام الشرطة بإحداثياتها التقريبية
+//  ملاحظة: عدّل السطرين التاليين بمعلومات مشروعك في Supabase
+//  - SUPABASE_FUNCTION_URL: من Edge Functions > geocode > Details
+//  - SUPABASE_ANON_KEY: من Project Settings > API > anon public
+// ============================================================
+// ============================================================
+//  إعدادات Supabase — عدّل القيم دي بمعلومات مشروعك
+// ============================================================
+const SUPABASE_FUNCTION_URL = 'https://iygwhapcpdmsasqlfelv.supabase.co/functions/v1/hyper-task';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml5Z3doYXBjcGRtc2FzcWxmZWx2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzEzNDk5MDQsImV4cCI6MjA4NjkyNTkwNH0.jqU1fEc9kBkXcCfazH6aTnS2XWWzPv0bbixHZgjtrnQ';
+
+// ============================================================
+//  قاعدة البيانات — جميع أقسام الشرطة بإحداثياتها (محلي بالكامل)
 // ============================================================
 const policeStations = [
   // ─── القاهرة ───
@@ -473,10 +484,17 @@ function haversineKm(lat1, lng1, lat2, lng2) {
   return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 }
 
+function findNearest(userLat, userLng) {
+  return policeStations
+    .map(s => ({ ...s, distance: haversineKm(userLat, userLng, s.lat, s.lng) }))
+    .sort((a, b) => a.distance - b.distance)
+    .slice(0, 2);
+}
+
 // ============================================================
 //  UI Helpers
 // ============================================================
-function setStatus(msg, type='') {
+function setStatus(msg, type = '') {
   const el = document.getElementById('status');
   el.className = type ? `status-${type}` : '';
   el.innerHTML = msg;
@@ -529,18 +547,12 @@ function showResults(nearest) {
   });
 }
 
-function findNearest(userLat, userLng) {
-  const sorted = policeStations
-    .map(s => ({ ...s, distance: haversineKm(userLat, userLng, s.lat, s.lng) }))
-    .sort((a, b) => a.distance - b.distance);
-  return sorted.slice(0, 2);
-}
-
 // ============================================================
 //  GPS Locator
 // ============================================================
 function locateByGPS() {
   hideChip();
+  closeSuggestions();
   setStatus('<span class="spinner"></span> جاري تحديد موقعك عبر GPS…', 'loading');
 
   if (!navigator.geolocation) {
@@ -564,306 +576,137 @@ function locateByGPS() {
 }
 
 // ============================================================
-//  Step 1 — Local Egyptian Address Normalizer (no API needed)
-//  Cleans colloquial Egyptian Arabic into a geocodable string
-//  and resolves well-known landmarks to direct coordinates.
+//  الاتصال بالـ Edge Function (LocationIQ عبر Supabase)
 // ============================================================
-
-// Well-known Egyptian landmarks / areas with direct coordinates
-const KNOWN_PLACES = [
-  // ═══════════════════════════════════════════════
-  // القاهرة — أحياء ومناطق
-  // ═══════════════════════════════════════════════
-  { keys: ['وسط البلد','التحرير','ميدان التحرير','downtown cairo','وسط القاهرة'], lat: 30.0444, lng: 31.2357, name: 'وسط البلد، القاهرة' },
-  { keys: ['المعادي','معادي','maadi'],                                lat: 29.9602, lng: 31.2569, name: 'المعادي، القاهرة' },
-  { keys: ['مدينة نصر','nasr city','نصر سيتي'],                     lat: 30.0626, lng: 31.3361, name: 'مدينة نصر، القاهرة' },
-  { keys: ['هليوبوليس','مصر الجديدة','heliopolis'],                  lat: 30.0874, lng: 31.3224, name: 'مصر الجديدة، القاهرة' },
-  { keys: ['الزمالك','zamalek'],                                     lat: 30.0595, lng: 31.2194, name: 'الزمالك، القاهرة' },
-  { keys: ['العباسية','abbasiya','عباسية'],                          lat: 30.0706, lng: 31.2818, name: 'العباسية، القاهرة' },
-  { keys: ['شبرا الخيمة','شبرا الخيمه'],                             lat: 30.1286, lng: 31.2428, name: 'شبرا الخيمة' },
-  { keys: ['شبرا'],                                                  lat: 30.0981, lng: 31.2430, name: 'شبرا، القاهرة' },
-  { keys: ['الشرابية','شرابية'],                                     lat: 30.0934, lng: 31.2603, name: 'الشرابية، القاهرة' },
-  { keys: ['روض الفرج','روض الفرج'],                                 lat: 30.0869, lng: 31.2488, name: 'روض الفرج، القاهرة' },
-  { keys: ['المطرية','مطرية'],                                       lat: 30.1107, lng: 31.3136, name: 'المطرية، القاهرة' },
-  { keys: ['عين شمس','عين شمس'],                                     lat: 30.1100, lng: 31.3400, name: 'عين شمس، القاهرة' },
-  { keys: ['المرج','مرج'],                                           lat: 30.1366, lng: 31.3666, name: 'المرج، القاهرة' },
-  { keys: ['النزهة','نزهة'],                                         lat: 30.0956, lng: 31.3347, name: 'النزهة، القاهرة' },
-  { keys: ['الزيتون','زيتون'],                                       lat: 30.0856, lng: 31.3020, name: 'الزيتون، القاهرة' },
-  { keys: ['حدائق القبة','حدايق القبة'],                             lat: 30.0847, lng: 31.2847, name: 'حدائق القبة، القاهرة' },
-  { keys: ['بولاق','بولاق الدكرور'],                                 lat: 30.0572, lng: 31.2275, name: 'بولاق، القاهرة' },
-  { keys: ['الأميرية','اميرية'],                                     lat: 30.0726, lng: 31.3060, name: 'الأميرية، القاهرة' },
-  { keys: ['السلام','مدينة السلام'],                                 lat: 30.1218, lng: 31.3880, name: 'مدينة السلام، القاهرة' },
-  { keys: ['المقطم','mokattam'],                                     lat: 30.0218, lng: 31.2892, name: 'المقطم، القاهرة' },
-  { keys: ['حلوان','helwan'],                                        lat: 29.8499, lng: 31.3341, name: 'حلوان، القاهرة' },
-  { keys: ['المعصرة','معصرة'],                                       lat: 29.8914, lng: 31.2867, name: 'المعصرة، القاهرة' },
-  { keys: ['التبين','تبين'],                                         lat: 29.8659, lng: 31.3185, name: 'التبين، القاهرة' },
-  { keys: ['بشتيل'],                                                 lat: 29.9904, lng: 31.1240, name: 'بشتيل، الجيزة' },
-  { keys: ['التجمع الخامس','new cairo','القاهرة الجديدة','تجمع خامس'], lat: 30.0076, lng: 31.4913, name: 'التجمع الخامس، القاهرة الجديدة' },
-  { keys: ['مدينتي','madinaty'],                                     lat: 30.1135, lng: 31.6469, name: 'مدينتي' },
-  { keys: ['الشروق','el shorouk'],                                   lat: 30.1490, lng: 31.6060, name: 'مدينة الشروق' },
-  { keys: ['العبور','عبور','el obour'],                              lat: 30.2100, lng: 31.5900, name: 'مدينة العبور' },
-  { keys: ['العاشر من رمضان','عاشر رمضان','10th ramadan'],          lat: 30.2989, lng: 31.7482, name: 'العاشر من رمضان' },
-  { keys: ['بدر','badr city','مدينة بدر'],                          lat: 30.1228, lng: 31.7400, name: 'مدينة بدر' },
-  { keys: ['المظلوم','مساكن المظلوم','الشرابية مساكن'],             lat: 30.0934, lng: 31.2603, name: 'الشرابية، القاهرة' },
-  { keys: ['عزبة النخل','عزبة النخل'],                              lat: 30.1050, lng: 31.3500, name: 'عزبة النخل، القاهرة' },
-  { keys: ['منشية ناصر','منشية'],                                    lat: 30.0340, lng: 31.2670, name: 'منشية ناصر، القاهرة' },
-  { keys: ['بستان','المنيل'],                                        lat: 30.0110, lng: 31.2240, name: 'المنيل، القاهرة' },
-  { keys: ['الدرب الأحمر','درب الاحمر'],                             lat: 30.0390, lng: 31.2560, name: 'الدرب الأحمر، القاهرة' },
-  { keys: ['السيدة زينب','سيدة زينب'],                               lat: 30.0330, lng: 31.2490, name: 'السيدة زينب، القاهرة' },
-  { keys: ['الخليفة','حي الخليفة'],                                  lat: 30.0240, lng: 31.2620, name: 'الخليفة، القاهرة' },
-  { keys: ['مصر القديمة','فسطاط','old cairo'],                       lat: 29.9990, lng: 31.2320, name: 'مصر القديمة، القاهرة' },
-  { keys: ['الباسل','باسل'],                                         lat: 29.9700, lng: 31.2300, name: 'الباسل، القاهرة' },
-  { keys: ['الخصوص','خصوص'],                                        lat: 30.1594, lng: 31.2489, name: 'الخصوص، القليوبية' },
-  { keys: ['كوبري القبة','كوبري القبه','قبة'],                       lat: 30.0807, lng: 31.2941, name: 'كوبري القبة، القاهرة' },
-  { keys: ['مصطفى النحاس','النحاس'],                                 lat: 30.0700, lng: 31.3450, name: 'مدينة نصر، القاهرة' },
-  // ═══════════════════════════════════════════════
-  // الجيزة
-  // ═══════════════════════════════════════════════
-  { keys: ['المهندسين','mohandessin','مهندسين'],                     lat: 30.0577, lng: 31.2013, name: 'المهندسين، الجيزة' },
-  { keys: ['الدقي','dokki','دقي'],                                   lat: 30.0373, lng: 31.2108, name: 'الدقي، الجيزة' },
-  { keys: ['الهرم','pyramids','أهرامات','هرم'],                      lat: 29.9762, lng: 31.1313, name: 'الهرم، الجيزة' },
-  { keys: ['فيصل','شارع فيصل'],                                      lat: 29.9926, lng: 31.1440, name: 'فيصل، الجيزة' },
-  { keys: ['الوراق','وراق'],                                         lat: 30.0784, lng: 31.2074, name: 'الوراق، الجيزة' },
-  { keys: ['أكتوبر','6 أكتوبر','6th october','سادس اكتوبر','٦ اكتوبر'], lat: 29.9308, lng: 30.9228, name: 'مدينة 6 أكتوبر، الجيزة' },
-  { keys: ['الشيخ زايد','sheikh zayed','زايد'],                      lat: 30.0121, lng: 30.9988, name: 'الشيخ زايد، الجيزة' },
-  { keys: ['حدائق أكتوبر','حدائق اكتوبر'],                          lat: 29.9600, lng: 30.9900, name: 'حدائق أكتوبر، الجيزة' },
-  { keys: ['أبو النمرس','ابو النمرس'],                               lat: 29.9200, lng: 31.0900, name: 'أبو النمرس، الجيزة' },
-  { keys: ['الواحات','الواحات البحرية'],                             lat: 28.3500, lng: 28.8700, name: 'الواحات البحرية، الجيزة' },
-  { keys: ['العياط','عياط'],                                         lat: 29.5700, lng: 31.2300, name: 'العياط، الجيزة' },
-  { keys: ['الصف','صف'],                                             lat: 29.5700, lng: 31.2900, name: 'الصف، الجيزة' },
-  { keys: ['أطفيح','اطفيح'],                                         lat: 29.4200, lng: 31.2600, name: 'أطفيح، الجيزة' },
-  { keys: ['كرداسة','كرداسه'],                                       lat: 30.0140, lng: 31.0850, name: 'كرداسة، الجيزة' },
-  { keys: ['أوسيم','اوسيم'],                                         lat: 30.0600, lng: 31.0900, name: 'أوسيم، الجيزة' },
-  { keys: ['الجيزة','giza','جيزة'],                                  lat: 30.0131, lng: 31.2089, name: 'الجيزة' },
-  // ═══════════════════════════════════════════════
-  // القليوبية
-  // ═══════════════════════════════════════════════
-  { keys: ['القليوبية','قليوبية','بنها','benha'],                    lat: 30.4667, lng: 31.1833, name: 'بنها، القليوبية' },
-  { keys: ['شبين القناطر','شبين القناطره'],                          lat: 30.3167, lng: 31.3167, name: 'شبين القناطر، القليوبية' },
-  { keys: ['قليوب'],                                                  lat: 30.1847, lng: 31.2247, name: 'قليوب، القليوبية' },
-  { keys: ['كفر شكر'],                                               lat: 30.5300, lng: 31.2600, name: 'كفر شكر، القليوبية' },
-  { keys: ['طوخ'],                                                   lat: 30.3700, lng: 31.1800, name: 'طوخ، القليوبية' },
-  // ═══════════════════════════════════════════════
-  // الإسكندرية
-  // ═══════════════════════════════════════════════
-  { keys: ['الإسكندرية','اسكندرية','اسكندريه','alexandria'],        lat: 31.2001, lng: 29.9187, name: 'الإسكندرية' },
-  { keys: ['المنتزه','montaza'],                                     lat: 31.2854, lng: 30.0118, name: 'المنتزه، الإسكندرية' },
-  { keys: ['سيدي جابر','sidi gaber'],                               lat: 31.2184, lng: 29.9452, name: 'سيدي جابر، الإسكندرية' },
-  { keys: ['كليوباترا','كليوبترا'],                                   lat: 31.2300, lng: 29.9700, name: 'كليوباترا، الإسكندرية' },
-  { keys: ['سموحة','سموحه'],                                         lat: 31.2050, lng: 29.9470, name: 'سموحة، الإسكندرية' },
-  { keys: ['لوران','لوران اسكندرية'],                                lat: 31.2370, lng: 29.9600, name: 'لوران، الإسكندرية' },
-  { keys: ['المحطة','محطة مصر اسكندرية','رمل اسكندرية'],            lat: 31.1975, lng: 29.9088, name: 'وسط الإسكندرية' },
-  { keys: ['عامرية','العامرية'],                                     lat: 30.9800, lng: 29.7900, name: 'العامرية، الإسكندرية' },
-  { keys: ['برج العرب','برج العرب'],                                 lat: 30.8800, lng: 29.5200, name: 'برج العرب، الإسكندرية' },
-  { keys: ['أبو قير','ابو قير','abu qir'],                          lat: 31.3200, lng: 30.0700, name: 'أبو قير، الإسكندرية' },
-  { keys: ['المكس','مكس'],                                           lat: 31.1700, lng: 29.8400, name: 'المكس، الإسكندرية' },
-  { keys: ['الدخيلة','دخيلة'],                                       lat: 31.1500, lng: 29.8700, name: 'الدخيلة، الإسكندرية' },
-  { keys: ['العجمي','عجمي'],                                         lat: 31.0800, lng: 29.7900, name: 'العجمي، الإسكندرية' },
-  // ═══════════════════════════════════════════════
-  // القاهرة الكبرى / المدن الجديدة
-  // ═══════════════════════════════════════════════
-  { keys: ['العاصمة الإدارية','العاصمة الادارية'],                   lat: 30.0330, lng: 31.7394, name: 'العاصمة الإدارية الجديدة' },
-  // ═══════════════════════════════════════════════
-  // الدلتا
-  // ═══════════════════════════════════════════════
-  { keys: ['طنطا','tanta'],                                          lat: 30.7865, lng: 30.9985, name: 'طنطا، الغربية' },
-  { keys: ['كفر الشيخ','كفر الشيخ','kafr el sheikh'],               lat: 31.1107, lng: 30.9388, name: 'كفر الشيخ' },
-  { keys: ['دسوق','دسوق'],                                           lat: 31.1831, lng: 30.6467, name: 'دسوق، كفر الشيخ' },
-  { keys: ['فوه'],                                                   lat: 31.1900, lng: 30.5700, name: 'فوه، كفر الشيخ' },
-  { keys: ['بيلا'],                                                  lat: 31.1700, lng: 30.8500, name: 'بيلا، كفر الشيخ' },
-  { keys: ['سمنود'],                                                 lat: 30.9600, lng: 31.2400, name: 'سمنود، الغربية' },
-  { keys: ['المحلة الكبرى','المحلة','mahalla'],                      lat: 30.9760, lng: 31.1651, name: 'المحلة الكبرى، الغربية' },
-  { keys: ['زفتى','زفتا'],                                           lat: 30.7000, lng: 31.2400, name: 'زفتى، الغربية' },
-  { keys: ['المنصورة','mansoura'],                                   lat: 31.0409, lng: 31.3785, name: 'المنصورة، الدقهلية' },
-  { keys: ['ميت غمر','ميت غمر'],                                     lat: 30.7200, lng: 31.2600, name: 'ميت غمر، الدقهلية' },
-  { keys: ['دكرنس'],                                                 lat: 31.0800, lng: 31.5000, name: 'دكرنس، الدقهلية' },
-  { keys: ['أجا','اجا'],                                             lat: 30.9100, lng: 31.4800, name: 'أجا، الدقهلية' },
-  { keys: ['شربين'],                                                 lat: 31.2000, lng: 31.3900, name: 'شربين، الدقهلية' },
-  { keys: ['تلا'],                                                   lat: 30.6900, lng: 30.9400, name: 'تلا، المنوفية' },
-  { keys: ['المنوفية','منوفية','شبين الكوم','شبين الكوم'],          lat: 30.5640, lng: 30.9764, name: 'شبين الكوم، المنوفية' },
-  { keys: ['أشمون','اشمون'],                                         lat: 30.2900, lng: 30.9800, name: 'أشمون، المنوفية' },
-  { keys: ['قويسنا'],                                                lat: 30.5900, lng: 31.0700, name: 'قويسنا، المنوفية' },
-  { keys: ['السادات','مدينة السادات'],                               lat: 30.3800, lng: 30.5300, name: 'مدينة السادات، المنوفية' },
-  { keys: ['الزقازيق','زقازيق','zagazig'],                          lat: 30.5873, lng: 31.5020, name: 'الزقازيق، الشرقية' },
-  { keys: ['العاشر من رمضان','عاشر رمضان'],                         lat: 30.2989, lng: 31.7482, name: 'العاشر من رمضان' },
-  { keys: ['بلبيس','بلبيس'],                                        lat: 30.8667, lng: 31.5500, name: 'بلبيس، الشرقية' },
-  { keys: ['أبو حماد','ابو حماد'],                                   lat: 30.7500, lng: 31.6700, name: 'أبو حماد، الشرقية' },
-  { keys: ['فاقوس'],                                                 lat: 30.7300, lng: 31.8000, name: 'فاقوس، الشرقية' },
-  { keys: ['ههيا'],                                                  lat: 30.6900, lng: 31.8900, name: 'ههيا، الشرقية' },
-  { keys: ['دمياط','damietta'],                                      lat: 31.4165, lng: 31.8133, name: 'دمياط' },
-  { keys: ['رأس البر','رأس البر'],                                   lat: 31.4800, lng: 31.8600, name: 'رأس البر، دمياط' },
-  { keys: ['الجمالية'],                                              lat: 31.4800, lng: 31.7600, name: 'الجمالية، دمياط' },
-  { keys: ['فارسكور'],                                               lat: 31.3300, lng: 31.7200, name: 'فارسكور، دمياط' },
-  { keys: ['كفر سعد'],                                              lat: 31.3800, lng: 31.7800, name: 'كفر سعد، دمياط' },
-  { keys: ['دمنهور','damanhur'],                                     lat: 31.0367, lng: 30.4680, name: 'دمنهور، البحيرة' },
-  { keys: ['كفر الدوار','كفر الدوار'],                               lat: 31.1300, lng: 30.1200, name: 'كفر الدوار، البحيرة' },
-  { keys: ['إيتاي البارود','ايتاي البارود'],                         lat: 30.8700, lng: 30.6600, name: 'إيتاي البارود، البحيرة' },
-  { keys: ['أبو المطامير','ابو المطامير'],                           lat: 30.7800, lng: 30.3400, name: 'أبو المطامير، البحيرة' },
-  { keys: ['رشيد','rosetta'],                                        lat: 31.4023, lng: 30.4180, name: 'رشيد، البحيرة' },
-  { keys: ['الدلنجات'],                                              lat: 30.8800, lng: 30.5000, name: 'الدلنجات، البحيرة' },
-  { keys: ['أبو حمص','ابو حمص'],                                     lat: 30.9400, lng: 30.3800, name: 'أبو حمص، البحيرة' },
-  // ═══════════════════════════════════════════════
-  // قناة السويس
-  // ═══════════════════════════════════════════════
-  { keys: ['السويس','suez','سويس'],                                  lat: 29.9668, lng: 32.5498, name: 'السويس' },
-  { keys: ['الإسماعيلية','اسماعيلية','ismailia'],                   lat: 30.5965, lng: 32.2715, name: 'الإسماعيلية' },
-  { keys: ['بورسعيد','بورسعيد','port said'],                        lat: 31.2565, lng: 32.2841, name: 'بورسعيد' },
-  { keys: ['الفيوم','fayoum','فيوم'],                                lat: 29.3084, lng: 30.8428, name: 'الفيوم' },
-  { keys: ['سنورس'],                                                 lat: 29.2800, lng: 30.8500, name: 'سنورس، الفيوم' },
-  { keys: ['إطسا','اطسا'],                                           lat: 29.4300, lng: 30.9800, name: 'إطسا، الفيوم' },
-  { keys: ['بني سويف','beni suef'],                                  lat: 29.0669, lng: 31.0969, name: 'بني سويف' },
-  { keys: ['الواسطى','واسطى'],                                       lat: 29.3300, lng: 31.2700, name: 'الواسطى، بني سويف' },
-  { keys: ['ناصر بني سويف','ناصر'],                                  lat: 29.2600, lng: 31.0900, name: 'ناصر، بني سويف' },
-  { keys: ['المنيا','minia','منيا'],                                  lat: 28.0871, lng: 30.7618, name: 'المنيا' },
-  { keys: ['مغاغة'],                                                 lat: 28.6500, lng: 30.7800, name: 'مغاغة، المنيا' },
-  { keys: ['بني مزار','بني مزار'],                                   lat: 28.4900, lng: 30.7900, name: 'بني مزار، المنيا' },
-  { keys: ['ملوي','ملوي'],                                           lat: 27.7300, lng: 30.8500, name: 'ملوي، المنيا' },
-  { keys: ['أسيوط','اسيوط','asyut'],                                 lat: 27.1783, lng: 31.1859, name: 'أسيوط' },
-  { keys: ['ديروط','ديروط'],                                         lat: 27.5400, lng: 30.8100, name: 'ديروط، أسيوط' },
-  { keys: ['القوصية','قوصية'],                                       lat: 27.4400, lng: 30.8200, name: 'القوصية، أسيوط' },
-  { keys: ['سوهاج','sohag'],                                         lat: 26.5590, lng: 31.6948, name: 'سوهاج' },
-  { keys: ['طهطا','طهطا'],                                           lat: 26.7800, lng: 31.5000, name: 'طهطا، سوهاج' },
-  { keys: ['جرجا','جرجا'],                                           lat: 26.3400, lng: 31.8980, name: 'جرجا، سوهاج' },
-  { keys: ['قنا','qena'],                                            lat: 26.1667, lng: 32.7167, name: 'قنا' },
-  { keys: ['نجع حمادي','نجع حمادي'],                                 lat: 26.0480, lng: 32.2460, name: 'نجع حمادي، قنا' },
-  { keys: ['الأقصر','luxor','اقصر'],                                 lat: 25.6872, lng: 32.6396, name: 'الأقصر' },
-  { keys: ['أسوان','aswan','اسوان'],                                 lat: 24.0889, lng: 32.8998, name: 'أسوان' },
-  { keys: ['كوم أمبو','كوم امبو'],                                   lat: 24.4740, lng: 32.9490, name: 'كوم أمبو، أسوان' },
-  { keys: ['إدفو','ادفو'],                                           lat: 24.9780, lng: 32.8740, name: 'إدفو، أسوان' },
-  // ═══════════════════════════════════════════════
-  // سيناء والبحر الأحمر
-  // ═══════════════════════════════════════════════
-  { keys: ['شرم الشيخ','sharm el sheikh','شرم'],                     lat: 27.9157, lng: 34.3300, name: 'شرم الشيخ' },
-  { keys: ['الغردقة','hurghada','هرجادة'],                           lat: 27.2579, lng: 33.8116, name: 'الغردقة' },
-  { keys: ['مرسى علم','مرسى علم'],                                   lat: 25.0650, lng: 34.8900, name: 'مرسى علم، البحر الأحمر' },
-  { keys: ['سفاجا'],                                                 lat: 26.7430, lng: 33.9380, name: 'سفاجا، البحر الأحمر' },
-  { keys: ['العريش','areesh'],                                       lat: 31.1300, lng: 33.8000, name: 'العريش، شمال سيناء' },
-  { keys: ['رفح','rafah'],                                           lat: 31.2840, lng: 34.2520, name: 'رفح، شمال سيناء' },
-  { keys: ['الطور','طور سيناء'],                                     lat: 28.6000, lng: 33.6260, name: 'الطور، جنوب سيناء' },
-  { keys: ['دهب','dahab'],                                           lat: 28.4870, lng: 34.5110, name: 'دهب، جنوب سيناء' },
-  { keys: ['نويبع','nuweiba'],                                       lat: 29.0650, lng: 34.6710, name: 'نويبع، جنوب سيناء' },
-  { keys: ['طابا','taba'],                                           lat: 29.5020, lng: 34.9000, name: 'طابا، جنوب سيناء' },
-  // ═══════════════════════════════════════════════
-  // الصعيد الأوسط والأعلى
-  // ═══════════════════════════════════════════════
-  { keys: ['الغردقة','hurghada'],                                    lat: 27.2579, lng: 33.8116, name: 'الغردقة' },
-  { keys: ['مرسى مطروح','مطروح','matrouh'],                          lat: 31.3543, lng: 27.2373, name: 'مرسى مطروح' },
-  { keys: ['العلمين','العلمين الجديدة','alamein'],                   lat: 30.8380, lng: 28.9600, name: 'العلمين' },
-  { keys: ['السلوم','سلوم'],                                         lat: 31.5530, lng: 25.1600, name: 'السلوم، مطروح' },
-  { keys: ['الخارجة','خارجة','وادي الجديد'],                        lat: 25.4469, lng: 30.5520, name: 'الخارجة، الوادي الجديد' },
-  { keys: ['الداخلة','داخلة'],                                       lat: 25.4890, lng: 28.9800, name: 'الداخلة، الوادي الجديد' },
-  { keys: ['الفرافرة','فرافرة'],                                     lat: 27.0550, lng: 27.9700, name: 'الفرافرة، الوادي الجديد' },
-  { keys: ['سيوه','سيوة','siwa'],                                    lat: 29.2000, lng: 25.5200, name: 'سيوة، مطروح' },
-];
-
-// Colloquial → formal substitutions
-const COLLOQUIAL_MAP = [
-  // street / area terms
-  [/\bبلوك\b/g,          'بلوك'],          // keep but let geocoder handle
-  [/\bكمبوند\b/g,        'مجمع سكني'],
-  [/\bميدان\b/g,         'ميدان'],
-  [/\bع\s+الكوبري\b/gi,  'كوبري'],
-  [/\bكورنيش\b/g,        'كورنيش'],
-  // common shorthand
-  [/\bوسط\s+البلد\b/g,   'وسط البلد القاهرة'],
-  [/\bمدن\s+نصر\b/g,     'مدينة نصر القاهرة'],
-  [/\bالقاهره\b/g,       'القاهرة'],
-  [/\bاسكندريه\b/g,      'الإسكندرية'],
-  [/\bالجيزه\b/g,        'الجيزة'],
-  [/\bالزقازيق\b/g,      'الزقازيق، الشرقية'],
-  [/\bطنطا\b/g,          'طنطا، الغربية'],
-  [/\bالمنصوره\b/g,      'المنصورة، الدقهلية'],
-  [/\bالمنصورة\b/g,      'المنصورة، الدقهلية'],
-  [/\bاسيوط\b|أسيوط/g,  'أسيوط'],
-  [/\bبني سويف\b/g,      'بني سويف'],
-  [/\bالفيوم\b/g,        'الفيوم'],
-  [/\bمرسي مطروح\b/g,    'مرسى مطروح'],
-];
-
-function localNormalizeAddress(raw) {
-  const q = raw.trim();
-
-  // 1. Check direct coordinate lookup (landmark match)
-  const lower = q.toLowerCase();
-  for (const place of KNOWN_PLACES) {
-    if (place.keys.some(k => lower.includes(k.toLowerCase()))) {
-      return { normalizedQuery: place.name, lat: place.lat, lng: place.lng, displayName: place.name };
-    }
+async function callGeocodeFunction(action, query) {
+  const resp = await fetch(SUPABASE_FUNCTION_URL, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+      'apikey': SUPABASE_ANON_KEY,
+    },
+    body: JSON.stringify({ action, query }),
+  });
+  const data = await resp.json().catch(() => ({}));
+  if (!resp.ok) {
+    throw new Error(data.error || 'حدث خطأ أثناء الاتصال بالخادم');
   }
-
-  // 2. Apply colloquial substitutions
-  let normalized = q;
-  for (const [pattern, replacement] of COLLOQUIAL_MAP) {
-    normalized = normalized.replace(pattern, replacement);
-  }
-
-  // 3. Strip very specific sub-address noise (block numbers, apartment details)
-  //    that confuse geocoders — keep the district/city part
-  normalized = normalized
-    .replace(/بلوك\s*\d+/g, '')         // بلوك 21 → removed
-    .replace(/شقة\s*\d+/g, '')          // شقة 5 → removed
-    .replace(/دور\s*\d+/g, '')          // دور 3 → removed
-    .replace(/عمارة\s*\w+/g, '')        // عمارة أ → removed
-    .replace(/\s{2,}/g, ' ')
-    .trim();
-
-  // 4. If still looks like a very vague single word, append مصر for geocoder
-  const wordCount = normalized.split(/\s+/).length;
-  if (wordCount === 1) normalized = normalized + '، مصر';
-
-  return { normalizedQuery: normalized, lat: null, lng: null, displayName: normalized };
+  return data;
 }
 
 // ============================================================
-//  Geocoding — Nominatim مع CORS proxies كـ fallback
-//  يعمل سواء من file:// أو أي سيرفر
+//  Autocomplete — اقتراحات فورية أثناء الكتابة
 // ============================================================
+let debounceTimer = null;
+let currentSuggestions = [];
+let activeSuggestionIndex = -1;
 
-// قائمة endpoints — يجرب كل واحد بالترتيب
-const NOMINATIM_ENDPOINTS = [
-  // 1. Direct (يشتغل من localhost وأي موقع مستضاف)
-  q => `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(q)}&format=json&limit=1&accept-language=ar&countrycodes=eg`,
-  // 2. CORS proxy مجاني — يحل مشكلة file://
-  q => `https://corsproxy.io/?url=${encodeURIComponent('https://nominatim.openstreetmap.org/search?q=' + encodeURIComponent(q) + '&format=json&limit=1&accept-language=ar&countrycodes=eg')}`,
-  // 3. proxy بديل
-  q => `https://api.allorigins.win/get?url=${encodeURIComponent('https://nominatim.openstreetmap.org/search?q=' + encodeURIComponent(q) + '&format=json&limit=1&accept-language=ar&countrycodes=eg')}`,
-];
+function getSuggestionsBox() {
+  let box = document.getElementById('suggestions-box');
+  if (!box) {
+    box = document.createElement('div');
+    box.id = 'suggestions-box';
+    box.className = 'suggestions-box';
+    document.querySelector('.input-wrap').appendChild(box);
+  }
+  return box;
+}
 
-async function geocodeNominatim(query) {
-  // تأكد إن الـ query لا يزيد عن 200 حرف
-  const safeQuery = query.length > 200 ? query.substring(0, 200) : query;
-  const q = safeQuery + (safeQuery.includes('مصر') ? '' : ' مصر');
+function closeSuggestions() {
+  const box = document.getElementById('suggestions-box');
+  if (box) box.innerHTML = '';
+  currentSuggestions = [];
+  activeSuggestionIndex = -1;
+}
 
-  for (let i = 0; i < NOMINATIM_ENDPOINTS.length; i++) {
+function renderSuggestions(suggestions) {
+  const box = getSuggestionsBox();
+  currentSuggestions = suggestions;
+  activeSuggestionIndex = -1;
+
+  if (!suggestions.length) {
+    box.innerHTML = '';
+    return;
+  }
+
+  box.innerHTML = suggestions
+    .map((s, i) => `<div class="suggestion-item" data-index="${i}">${s.displayName}</div>`)
+    .join('');
+
+  box.querySelectorAll('.suggestion-item').forEach(item => {
+    item.addEventListener('click', () => {
+      const idx = parseInt(item.dataset.index, 10);
+      selectSuggestion(currentSuggestions[idx]);
+    });
+  });
+}
+
+function selectSuggestion(suggestion) {
+  document.getElementById('address-input').value = suggestion.displayName;
+  closeSuggestions();
+  setStatus('✅ تم تحديد الموقع بنجاح', 'success');
+  showChip(`📍 ${suggestion.displayName}`);
+  showResults(findNearest(suggestion.lat, suggestion.lng));
+}
+
+async function handleAddressInput() {
+  const rawQuery = document.getElementById('address-input').value.trim();
+
+  clearTimeout(debounceTimer);
+
+  if (rawQuery.length < 3) {
+    closeSuggestions();
+    return;
+  }
+
+  debounceTimer = setTimeout(async () => {
     try {
-      const url = NOMINATIM_ENDPOINTS[i](safeQuery);
-      const resp = await fetch(url, {
-        headers: i === 0 ? { 'Accept-Language': 'ar', 'User-Agent': 'EgyptPoliceFinderApp/1.0' } : {}
-      });
-      if (!resp.ok) continue;
-
-      let raw = await resp.json();
-
-      // allorigins بيرجع الداتا جوه .contents كـ string
-      if (i === 2 && raw.contents) {
-        try { raw = JSON.parse(raw.contents); } catch { continue; }
-      }
-
-      const data = Array.isArray(raw) ? raw : [];
-      if (!data.length) continue;
-
-      const { lat, lon, display_name } = data[0];
-      const shortName = display_name.split(',').slice(0, 2).join('،');
-      return { lat: parseFloat(lat), lng: parseFloat(lon), displayName: shortName };
+      const data = await callGeocodeFunction('autocomplete', rawQuery);
+      renderSuggestions(data.suggestions || []);
     } catch (e) {
-      console.warn(`Geocoder endpoint ${i} failed:`, e.message);
+      // فشل صامت أثناء الكتابة — مفيش داعي نزعج المستخدم بكل حرف
+      closeSuggestions();
     }
+  }, 400);
+}
+
+function handleAddressKeydown(e) {
+  const box = document.getElementById('suggestions-box');
+  const items = box ? box.querySelectorAll('.suggestion-item') : [];
+
+  if (e.key === 'ArrowDown') {
+    e.preventDefault();
+    if (!items.length) return;
+    activeSuggestionIndex = (activeSuggestionIndex + 1) % items.length;
+    updateActiveSuggestion(items);
+  } else if (e.key === 'ArrowUp') {
+    e.preventDefault();
+    if (!items.length) return;
+    activeSuggestionIndex = (activeSuggestionIndex - 1 + items.length) % items.length;
+    updateActiveSuggestion(items);
+  } else if (e.key === 'Enter') {
+    e.preventDefault();
+    if (activeSuggestionIndex >= 0 && currentSuggestions[activeSuggestionIndex]) {
+      selectSuggestion(currentSuggestions[activeSuggestionIndex]);
+    } else {
+      searchByText();
+    }
+  } else if (e.key === 'Escape') {
+    closeSuggestions();
   }
-  return null;
+}
+
+function updateActiveSuggestion(items) {
+  items.forEach(item => item.classList.remove('active'));
+  if (activeSuggestionIndex >= 0) {
+    items[activeSuggestionIndex].classList.add('active');
+    items[activeSuggestionIndex].scrollIntoView({ block: 'nearest' });
+  }
 }
 
 // ============================================================
-//  Main search — local normalize → geocode → show results
+//  البحث المباشر (fallback لو المستخدم كتب واختار من غير اقتراحات)
 // ============================================================
 async function searchByText() {
   const rawQuery = document.getElementById('address-input').value.trim();
@@ -872,54 +715,36 @@ async function searchByText() {
     return;
   }
 
+  closeSuggestions();
   hideChip();
-  setStatus('<span class="spinner"></span> جاري تحليل العنوان…', 'loading');
-
-  // ── Step 1: Local normalization (instant, no API) ──
-  const normalized = localNormalizeAddress(rawQuery);
-
-  // إذا عرفنا الموقع من الـ KNOWN_PLACES مباشرة
-  if (normalized.lat && normalized.lng) {
-    setStatus('✅ تم تحديد الموقع بنجاح', 'success');
-    showChip(`📍 ${normalized.displayName}`);
-    showResults(findNearest(normalized.lat, normalized.lng));
-    return;
-  }
-
-  // ── Step 2: Geocode ──
   setStatus('<span class="spinner"></span> جاري تحديد الموقع…', 'loading');
 
-  const searchQuery = normalized.normalizedQuery || rawQuery;
-  let result = null;
-
-  // محاولة أولى: الـ query المعالج
-  result = await geocodeNominatim(searchQuery);
-
-  // محاولة ثانية: الـ query الأصلي إذا كان مختلفاً
-  if (!result && searchQuery !== rawQuery) {
-    result = await geocodeNominatim(rawQuery);
+  try {
+    const data = await callGeocodeFunction('search', rawQuery);
+    setStatus('✅ تم تحديد الموقع بنجاح', 'success');
+    showChip(`📍 ${data.displayName}`);
+    showResults(findNearest(data.lat, data.lng));
+  } catch (e) {
+    setStatus(`⚠️ ${e.message}`, 'error');
   }
-
-  if (!result) {
-    setStatus('⚠️ لم يتم التعرف على العنوان. جرّب: "المعادي، القاهرة" أو "طنطا، الغربية".', 'error');
-    return;
-  }
-
-  setStatus('✅ تم تحديد الموقع بنجاح', 'success');
-  showChip(`📍 ${result.displayName}`);
-  showResults(findNearest(result.lat, result.lng));
 }
 
-// ─── Allow Enter key to trigger search ───
-document.getElementById('address-input').addEventListener('keydown', e => {
-  if (e.key === 'Enter') searchByText();
-});
+// ============================================================
+//  ربط الأحداث
+// ============================================================
+document.addEventListener('DOMContentLoaded', () => {
+  const input = document.getElementById('address-input');
+  input.addEventListener('input', handleAddressInput);
+  input.addEventListener('keydown', handleAddressKeydown);
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('.input-wrap')) closeSuggestions();
+  });
 
-// ─── Update count badge ───
-document.getElementById('stations-count').textContent = policeStations.length;
-  
-  window.addEventListener('load', function() {
+  document.getElementById('stations-count').textContent = policeStations.length;
+
+  window.addEventListener('load', function () {
     if (typeof ActiveUsersWidget !== 'undefined') {
       ActiveUsersWidget.init({ position: 'corner' });
     }
   });
+});
