@@ -491,3 +491,42 @@
     h1 { font-size: 1.8rem; }
     .stats-bar { gap: 1.2rem; }
   }
+/* ============================================================
+   أضف الكود ده في نهاية ملف we_air_finder.css الأصلي
+   ============================================================ */
+
+.input-wrap { position: relative; }
+
+.suggestions-box {
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  left: 0;
+  background: #fff;
+  border: 1.5px solid rgba(107,33,168,0.2);
+  border-radius: 12px;
+  box-shadow: 0 12px 32px rgba(107,33,168,0.18);
+  z-index: 50;
+  max-height: 260px;
+  overflow-y: auto;
+  direction: rtl;
+}
+
+.suggestions-box:empty { display: none; }
+
+.suggestion-item {
+  padding: .75rem 1rem;
+  font-size: .9rem;
+  color: var(--text-main);
+  cursor: pointer;
+  border-bottom: 1px solid rgba(107,33,168,0.08);
+  transition: background .15s;
+}
+
+.suggestion-item:last-child { border-bottom: none; }
+
+.suggestion-item:hover,
+.suggestion-item.active {
+  background: rgba(107,33,168,0.08);
+  color: var(--we-purple);
+}
