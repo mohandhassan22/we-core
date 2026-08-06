@@ -45,6 +45,10 @@
         <i class="ti ti-settings"></i>
         <span class="nav-label">الإعدادات</span>
       </button>
+      <button class="nav-item" data-section="train">
+        <i class="ti ti-brain"></i>
+        <span class="nav-label">تدريب الذكاء الاصطناعي</span>
+      </button>
     </nav>
     <div class="sidebar-footer">
       <button class="logout-btn" id="logoutBtn">
@@ -366,6 +370,74 @@
               <span class="set-key">اللغة</span>
               <span class="set-val">العربية</span>
             </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Training Section -->
+      <section class="section" id="train-section">
+        <div id="kai-train-panel">
+          <!-- رسالة لو الحساب مش أدمن أو مش مسجل دخول -->
+          <div id="kt-gate" class="kt-card" style="display:none;">
+            <h3>🔒 محتاج تسجل دخول كأدمن</h3>
+            <p id="kt-gate-msg" style="color:#a32020;font-size:13px;"></p>
+          </div>
+
+          <div id="kt-content" style="display:none;">
+
+            <div class="kt-card">
+              <h3>📝 تدريب من نص</h3>
+              <label>عنوان/تصنيف (اختياري)</label>
+              <input type="text" id="kt-text-label" placeholder="مثلاً: سياسة الاسترجاع" />
+              <label>النص</label>
+              <textarea id="kt-text-content" placeholder="الصق أو اكتب أي نص عايز الذكاء الاصطناعي يتعلم منه..."></textarea>
+              <button class="kt-btn" id="kt-train-text-btn">درّب من النص ده</button>
+              <div class="kt-msg" id="kt-text-msg"></div>
+            </div>
+
+            <div class="kt-card">
+              <h3>🌐 تدريب من رابط صفحة في موقعك</h3>
+              <label>رابط الصفحة</label>
+              <input type="url" id="kt-url-input" placeholder="https://your-site.com/page" />
+              <button class="kt-btn" id="kt-train-url-btn">درّب من الرابط ده</button>
+              <div class="kt-msg" id="kt-url-msg"></div>
+            </div>
+
+            <div class="kt-card">
+              <h3>📄 تدريب من ملف</h3>
+              <label>اختار ملف (txt, md, csv, pdf, docx)</label>
+              <input type="file" id="kt-file-input" accept=".txt,.md,.csv,.pdf,.docx" />
+              <button class="kt-btn" id="kt-train-file-btn">درّب من الملف ده</button>
+              <div class="kt-msg" id="kt-file-msg"></div>
+            </div>
+
+            <div class="kt-card">
+              <h3>🖼️ تدريب من صورة</h3>
+              <label>اختار صورة</label>
+              <input type="file" id="kt-image-input" accept="image/*" />
+              <button class="kt-btn" id="kt-train-image-btn">درّب من الصورة دي</button>
+              <div class="kt-msg" id="kt-image-msg"></div>
+            </div>
+
+            <div class="kt-card">
+              <h3>🗃️ تدريب من جدول سوبابيز</h3>
+              <label>اسم الجدول</label>
+              <input type="text" id="kt-table-name" placeholder="مثلاً: products" />
+              <label>الأعمدة (مفصولة بفاصلة)</label>
+              <input type="text" id="kt-table-columns" placeholder="مثلاً: name,description,price" />
+              <button class="kt-btn" id="kt-train-table-btn">درّب من الجدول ده</button>
+              <div class="kt-msg" id="kt-table-msg"></div>
+            </div>
+
+            <div class="kt-card">
+              <h3>📚 كل مواد التدريب</h3>
+              <button class="kt-btn secondary" id="kt-refresh-btn">تحديث القائمة</button>
+              <table id="kt-chunks-table">
+                <thead><tr><th>المصدر</th><th>المحتوى</th><th>تاريخ</th><th></th></tr></thead>
+                <tbody></tbody>
+              </table>
+            </div>
+
           </div>
         </div>
       </section>
