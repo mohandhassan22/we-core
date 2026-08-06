@@ -433,6 +433,31 @@ body.dark .table-card-ico{background:#1e3a8a;color:#93c5fd}
   th:nth-child(3){display:none}
 }
 
+/* ── Training Panel Styles ── */
+#kai-train-panel{max-width:900px;margin:0 auto;direction:rtl}
+#kai-train-panel .kt-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px;margin-bottom:18px;box-shadow:var(--shadow)}
+#kai-train-panel h3{margin:0 0 12px;color:var(--text);font-size:16px;font-weight:600}
+#kai-train-panel label{display:block;font-size:13px;color:var(--text-sec);margin:10px 0 4px;font-weight:500}
+#kai-train-panel input[type=text], #kai-train-panel input[type=url], #kai-train-panel textarea, #kai-train-panel select, #kai-train-panel input[type=file]{
+  width:100%;padding:9px 12px;border:1px solid var(--border);border-radius:8px;font-size:13.5px;
+  box-sizing:border-box;font-family:inherit;background:var(--bg);color:var(--text)}
+#kai-train-panel textarea{min-height:90px;resize:vertical}
+#kai-train-panel .kt-btn{background:linear-gradient(120deg,var(--primary),var(--primary-dark));color:#fff;border:none;
+  padding:10px 20px;border-radius:8px;cursor:pointer;font-size:13.5px;font-weight:600;margin-top:12px;transition:var(--transition)}
+#kai-train-panel .kt-btn:hover{opacity:.9;transform:translateY(-1px);box-shadow:var(--shadow-md)}
+#kai-train-panel .kt-btn:disabled{opacity:.5;cursor:default}
+#kai-train-panel .kt-btn.secondary{background:var(--bg);color:var(--primary);border:1px solid var(--border)}
+#kai-train-panel .kt-msg{font-size:12.5px;margin-top:8px;padding:8px 12px;border-radius:8px;display:none}
+#kai-train-panel .kt-msg.ok{display:block;background:#ecfdf5;color:var(--success);border:1px solid var(--success)}
+#kai-train-panel .kt-msg.err{display:block;background:#fef2f2;color:var(--danger);border:1px solid var(--danger)}
+#kai-train-panel table{width:100%;border-collapse:collapse;font-size:12.5px;margin-top:10px}
+#kai-train-panel th, #kai-train-panel td{padding:8px 10px;border-bottom:1px solid var(--border);text-align:right}
+#kai-train-panel th{color:var(--text-sec);font-weight:600}
+#kai-train-panel .kt-tag{background:var(--primary-light);color:var(--primary);padding:2px 8px;border-radius:20px;font-size:10.5px}
+#kai-train-panel .kt-del{color:var(--danger);cursor:pointer;background:none;border:none;font-size:12px;padding:4px 8px}
+#kai-train-panel .kt-del:hover{background:var(--bg);border-radius:6px}
+#kai-train-panel #kt-gate{max-width:360px;margin:40px auto;text-align:center}
+
 /* ── Loading spinner ── */
 @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 .ti-loader { display: inline-block; animation: spin 1s linear infinite; }
