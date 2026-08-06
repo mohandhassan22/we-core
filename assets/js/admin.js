@@ -13,7 +13,7 @@ const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY, {
 // ─── Global Variables ───
 let currentUser = null;
 let deleteTargetUserId = null;
-const sections = { users: 'إدارة المستخدمين', create: 'إنشاء مستخدم جديد', actions: 'إجراءات الحساب', tables: 'إدارة الجداول', settings: 'الإعدادات' };
+const sections = { users: 'إدارة المستخدمين', create: 'إنشاء مستخدم جديد', actions: 'إجراءات الحساب', tables: 'إدارة الجداول', settings: 'الإعدادات', train: 'تدريب الذكاء الاصطناعي' };
 
 // ─── Utility Functions ───
 const $ = (id) => document.getElementById(id);
@@ -809,7 +809,203 @@ if ($('confirmDeleteRowBtn')) $('confirmDeleteRowBtn').addEventListener('click',
   }
 });
 
+// ─── Training AI Panel ───
+(function () {
+  const SUPABASE_PROJECT_REF = SUPABASE_URL.split('.')[0].replace('https://', '');
+  const TRAIN_FUNCTION_URL = `${SUPABASE_URL}/functions/v1/admin-train`;
+
+  const gate = document.getElementById("kt-gate");
+  const content = document.getElementById("kt-content");
+  const gateMsg = document.getElementById("kt-gate-msg");
+
+  // بيجيب توكن الأدمن من نفس نظام تسجيل الدخول بتاع موقعك
+  function getUserToken() {
+    try {
+      const key = `sb-${SUPABASE_PROJECT_REF}-auth-token`;
+      const raw = localStorage.getItem(key);
+      if (!raw) return null;
+      const parsed = JSON.parse(raw);
+      return parsed?.access_token || parsed?.currentSession?.access_token || null;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  function showMsg(el, text, ok) {
+    el.textContent = text;
+    el.className = "kt-msg " + (ok ? "ok" : "err");
+  }
+
+  async function callTrain(action, payload, btn) {
+    if (btn) btn.disabled = true;
+    const token = getUserToken() || (await getAccessToken());
+    try {
+      const res = await fetch(TRAIN_FUNCTION_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "Authorization": "Bearer " + (token || "") },
+        body: JSON.stringify({ action, ...payload }),
+      });
+      const data = await res.json();
+      if (btn) btn.disabled = false;
+      if (res.status === 401 || res.status === 403) {
+        return { ok: false, error: data.error, forbidden: true };
+      }
+      if (data.error) return { ok: false, error: data.error };
+      return { ok: true, data };
+    } catch (e) {
+      if (btn) btn.disabled = false;
+      return { ok: false, error: String(e) };
+    }
+  }
+
+  async function init() {
+    const result = await callTrain("list_chunks", {});
+    if (!result.ok && result.forbidden) {
+      gate.style.display = "block";
+      content.style.display = "none";
+      showMsg(gateMsg, result.error || "الحساب ده مش عنده صلاحية أدمن", false);
+      return;
+    }
+    gate.style.display = "none";
+    content.style.display = "block";
+    loadChunks();
+  }
+
+  window.initTrainPanel = init;
+
+  // ---------- نص ----------
+  document.getElementById("kt-train-text-btn")?.addEventListener("click", async () => {
+    const btn = document.getElementById("kt-train-text-btn");
+    const label = document.getElementById("kt-text-label").value.trim();
+    const text = document.getElementById("kt-text-content").value.trim();
+    const msg = document.getElementById("kt-text-msg");
+    if (!text) return showMsg(msg, "اكتب نص الأول", false);
+    const r = await callTrain("train_text", { text, label }, btn);
+    if (r.ok) {
+      showMsg(msg, `تم! تمت إضافة ${r.data.chunks_added || 1} قطعة معرفة.`, true);
+      document.getElementById("kt-text-content").value = "";
+      loadChunks();
+    } else showMsg(msg, r.error, false);
+  });
+
+  // ---------- رابط ----------
+  document.getElementById("kt-train-url-btn")?.addEventListener("click", async () => {
+    const btn = document.getElementById("kt-train-url-btn");
+    const url = document.getElementById("kt-url-input").value.trim();
+    const msg = document.getElementById("kt-url-msg");
+    if (!url) return showMsg(msg, "حط رابط الأول", false);
+    showMsg(msg, "بيقرا الصفحة...", true);
+    const r = await callTrain("train_website", { url, label: url }, btn);
+    if (r.ok) {
+      showMsg(msg, `تم! تمت إضافة ${r.data.chunks_added || 1} قطعة معرفة من الصفحة.`, true);
+      loadChunks();
+    } else showMsg(msg, r.error, false);
+  });
+
+  // ---------- ملف ----------
+  document.getElementById("kt-train-file-btn")?.addEventListener("click", async () => {
+    const btn = document.getElementById("kt-train-file-btn");
+    const fileInput = document.getElementById("kt-file-input");
+    const msg = document.getElementById("kt-file-msg");
+    const file = fileInput.files[0];
+    if (!file) return showMsg(msg, "اختار ملف الأول", false);
+    showMsg(msg, "بيرفع ويحلل الملف...", true);
+    const reader = new FileReader();
+    reader.onload = async () => {
+      const base64 = reader.result.split(",")[1];
+      const r = await callTrain(
+        "train_file",
+        { file_base64: base64, file_name: file.name, mime_type: file.type },
+        btn
+      );
+      if (r.ok) {
+        showMsg(msg, `تم! تمت إضافة ${r.data.chunks_added || 1} قطعة معرفة من الملف.`, true);
+        fileInput.value = "";
+        loadChunks();
+      } else showMsg(msg, r.error, false);
+    };
+    reader.readAsDataURL(file);
+  });
+
+  // ---------- صورة ----------
+  document.getElementById("kt-train-image-btn")?.addEventListener("click", async () => {
+    const btn = document.getElementById("kt-train-image-btn");
+    const fileInput = document.getElementById("kt-image-input");
+    const msg = document.getElementById("kt-image-msg");
+    const file = fileInput.files[0];
+    if (!file) return showMsg(msg, "اختار صورة الأول", false);
+    showMsg(msg, "بيحلل الصورة...", true);
+    const reader = new FileReader();
+    reader.onload = async () => {
+      const base64 = reader.result.split(",")[1];
+      const r = await callTrain(
+        "train_image",
+        { image_base64: base64, mime_type: file.type, label: file.name },
+        btn
+      );
+      if (r.ok) {
+        showMsg(msg, `تم! الوصف اللي فهمه: "${r.data.description?.slice(0, 80) || 'تم الحفظ'}..."`, true);
+        fileInput.value = "";
+        loadChunks();
+      } else showMsg(msg, r.error, false);
+    };
+    reader.readAsDataURL(file);
+  });
+
+  // ---------- جدول ----------
+  document.getElementById("kt-train-table-btn")?.addEventListener("click", async () => {
+    const btn = document.getElementById("kt-train-table-btn");
+    const tableName = document.getElementById("kt-table-name").value.trim();
+    const columns = document.getElementById("kt-table-columns").value.trim().split(",").map((c) => c.trim()).filter(Boolean);
+    const msg = document.getElementById("kt-table-msg");
+    if (!tableName || columns.length === 0) return showMsg(msg, "حط اسم الجدول والأعمدة", false);
+    const r = await callTrain("train_table", { table_name: tableName, columns, label: tableName }, btn);
+    if (r.ok) {
+      showMsg(msg, `تم! تمت إضافة ${r.data.chunks_added || 1} صف من الجدول.`, true);
+      loadChunks();
+    } else showMsg(msg, r.error, false);
+  });
+
+  // ---------- عرض/حذف ----------
+  async function loadChunks() {
+    const r = await callTrain("list_chunks", {});
+    const tbody = document.querySelector("#kt-chunks-table tbody");
+    tbody.innerHTML = "";
+    if (!r.ok) return;
+    if (!r.data.chunks || r.data.chunks.length === 0) {
+      tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;color:var(--text-muted)">لا توجد مواد تدريب حتى الآن</td></tr>';
+      return;
+    }
+    r.data.chunks.forEach((c) => {
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td><span class="kt-tag">${c.source_type || 'نص'}</span><br><small>${c.source_label || ""}</small></td>
+        <td>${c.content.slice(0, 90)}...</td>
+        <td>${new Date(c.created_at).toLocaleDateString("ar-EG")}</td>
+        <td><button class="kt-del" data-id="${c.id}">حذف</button></td>
+      `;
+      tbody.appendChild(tr);
+    });
+    tbody.querySelectorAll(".kt-del").forEach((btn) => {
+      btn.addEventListener("click", async () => {
+        if (confirm("هل أنت متأكد من حذف هذه القطعة؟")) {
+          await callTrain("delete_chunk", { id: Number(btn.dataset.id) });
+          loadChunks();
+        }
+      });
+    });
+  }
+  document.getElementById("kt-refresh-btn")?.addEventListener("click", loadChunks);
+})();
+
 // ─── Initialize ───
 document.addEventListener('DOMContentLoaded', () => {
   checkAuth();
+  // Initialize training panel when train section is shown
+  const trainBtn = document.querySelector('[data-section="train"]');
+  if (trainBtn) {
+    trainBtn.addEventListener('click', () => {
+      setTimeout(() => window.initTrainPanel && window.initTrainPanel(), 100);
+    });
+  }
 });
