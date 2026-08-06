@@ -812,7 +812,7 @@ if ($('confirmDeleteRowBtn')) $('confirmDeleteRowBtn').addEventListener('click',
 // ─── Training AI Panel ───
 (function () {
   const SUPABASE_PROJECT_REF = SUPABASE_URL.split('.')[0].replace('https://', '');
-  const TRAIN_FUNCTION_URL = `${SUPABASE_URL}/functions/v1/admin-train`;
+  const TRAIN_FUNCTION_URL = `${SUPABASE_URL}/functions/v1/hyper-task`;
 
   const gate = document.getElementById("kt-gate");
   const content = document.getElementById("kt-content");
