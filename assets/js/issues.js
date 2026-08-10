@@ -1,18 +1,54 @@
 (function () {
   const $ = (id) => document.getElementById(id);
 
+  // ===== بيانات الاتصال بـ Supabase (نفس بيانات auth.js) =====
+  const SB_URL = 'https://iygwhapcpdmsasqlfelv.supabase.co';
+  const SB_KEY = 'sb_publishable_rD9naqrpu1dI-iwchAS0GQ_JkgGysqP';
+
   const PAGE_SIZE = 9;
   let allIssues = [];      // كل الداتا الجايه من Supabase
   let filteredIssues = []; // بعد تطبيق البحث/الفلتر
   let visibleCount = PAGE_SIZE;
 
-  // auth.js بيتولى التحقق من التوكن وبيبعت الحدث ده لما ينجح، وبيديلنا window._sbClient جاهز
-  window.addEventListener('authSuccess', () => {
+  function getCookie(name) {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop().split(';').shift();
+  }
+
+  // بيعمل كلاينت خاص بالصفحة دي، ومربوط بتوكن المستخدم (نفس التوكن اللي auth.js خزّنه في الكوكي)
+  // عشان الـ RLS تعرف مين المستخدم وتسمحله يقرأ الجدول
+  function createIssuesClient() {
+    const token = getCookie('sb-access-token');
+    if (!token) return null;
+
+    return supabase.createClient(SB_URL, SB_KEY, {
+      auth: { persistSession: false, autoRefreshToken: false, detectSessionInUrl: false },
+      global: { headers: { Authorization: `Bearer ${token}` } }
+    });
+  }
+
+  let sb = null;
+
+  async function init() {
+    sb = createIssuesClient();
+    if (!sb) {
+      // مفيش توكن؛ auth.js المفروض يكون بالفعل رجّع المستخدم لـ login.html
+      // لكن للاحتياط بنعرض رسالة بدل ما الصفحة تفضل عالقة في التحميل
+      return showError('لازم تسجّل الدخول الأول');
+    }
     loadIssues();
+  }
+
+  // لو auth.js اشتغل ونجح، منستنى الحدث ده كمان كطبقة أمان إضافية
+  window.addEventListener('authSuccess', () => {
+    if (!sb) init();
   });
 
+  // نبدأ بمجرد ما الصفحة تجهز (مش لازم ننتظر authSuccess تحديدًا)
+  document.addEventListener('DOMContentLoaded', init);
+
   async function loadIssues() {
-    const sb = window._sbClient;
     if (!sb) return showError('تعذر الاتصال بقاعدة البيانات');
 
     try {
