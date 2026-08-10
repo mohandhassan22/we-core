@@ -1,56 +1,113 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<script src="assets/js/auth.js?v=12.0.1"></script>
-
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WE-Core</title>
-        <link rel="shortcut icon" href="img/we-core.png" type="image/x-icon">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-
-    <link rel="stylesheet" href="assets/css/postpaid.css">
-<script src="assets/js/active-users-widget.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WE-Core | مشاكل النظام</title>
+<link rel="shortcut icon" href="img/we-core.png">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/issues.css">
 </head>
-
 <body>
 
-    <!-- Header -->
-    <div class="header">
-<a href="javascript:history.back()" class="back-btn" style="position: absolute; left: 20px; top: 50%; transform: translateY(-50%); color: white; text-decoration: none; font-size: 20px; z-index: 1000;"><i class="fas fa-arrow-left"></i></a>
+<div id="app" style="display:none;">
 
-        <img src="img/we-core.png" alt="Logo" class="logo">
-        <div class="main-title">WE-Core</div>
-        <div class="sub-title">
-            Powered By Mohand Hassan – From Abassia Store
-             <br>
-            
+  <header class="page-header">
+    <div class="header-inner">
+      <div class="brand">
+        <img src="img/we-core.png" class="brand-logo" alt="WE-Core">
+        <div>
+          <h1>مشاكل النظام</h1>
+          <p>سجل الأعطال والحلول الخاصة بمنصة WE-Core</p>
         </div>
+      </div>
+      <div class="header-actions">
+        <div class="search-box">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <input id="searchInput" type="text" placeholder="ابحث عن مشكلة...">
+        </div>
+        <select id="typeFilter" class="type-filter">
+          <option value="">كل الأنواع</option>
+        </select>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <div id="loadingState" class="state-box">
+      <div class="spinner"></div>
+      <p>جاري تحميل المشاكل...</p>
     </div>
 
-    <!-- Cards -->
-    <div class="container">
-        <div class="cards">
-
-            <a href="error/whatsapp-fix.html" class="card-link">
-                <div class="card">
-                    <div class="icon">
-                        <i class="fa-solid fa-triangle-exclamation"></i>
-                    </div>
-                    <h2>whatsapp-fix</h2>
-                    <p></p>
-                    <div class="btn">View Details</div>
-                </div>
-            </a>
-
-            
-        </div>
-         <footer>WE Core Team 2026</footer>
+    <div id="emptyState" class="state-box" style="display:none;">
+      <i class="fa-solid fa-circle-check"></i>
+      <p>مفيش مشاكل مسجلة حالياً</p>
     </div>
 
+    <div id="errorState" class="state-box" style="display:none;">
+      <i class="fa-solid fa-triangle-exclamation"></i>
+      <p id="errorStateMsg">حصل خطأ أثناء تحميل البيانات</p>
+    </div>
 
-<script src="assets/js/postpaid.js"></script>
+    <div id="cardsGrid" class="cards-grid"></div>
 
+    <div id="loadMoreWrap" class="load-more-wrap" style="display:none;">
+      <button id="loadMoreBtn" class="load-more-btn">
+        <span id="loadMoreText">تحميل المزيد</span>
+        <i class="fa-solid fa-chevron-down"></i>
+      </button>
+      <p id="resultsCount" class="results-count"></p>
+    </div>
 
+  </main>
+
+</div>
+
+<!-- Modal / الفقاعة -->
+<div id="issueModal" class="modal-overlay">
+  <div class="modal-box">
+    <button class="modal-close" id="modalCloseBtn"><i class="fa-solid fa-xmark"></i></button>
+
+    <span id="modalType" class="badge"></span>
+    <h2 id="modalTitle"></h2>
+
+    <div class="modal-section">
+      <h4><i class="fa-solid fa-circle-info"></i> وصف المشكلة</h4>
+      <p id="modalDescription"></p>
+    </div>
+
+    <div class="modal-section" id="modalProblemImageWrap">
+      <h4><i class="fa-solid fa-image"></i> صورة توضيحية للمشكلة</h4>
+      <img id="modalProblemImage" class="modal-img" alt="صورة المشكلة">
+    </div>
+
+    <div class="modal-section">
+      <h4><i class="fa-solid fa-wand-magic-sparkles"></i> الحل</h4>
+      <p id="modalSolution"></p>
+    </div>
+
+    <div class="modal-section" id="modalSolutionImagesWrap">
+      <h4><i class="fa-solid fa-images"></i> صور توضيحية للحل</h4>
+      <div id="modalSolutionImages" class="solution-images"></div>
+    </div>
+
+    <div class="modal-section" id="modalLinkWrap">
+      <a id="modalLink" href="#" target="_blank" rel="noopener" class="modal-link-btn">
+        <i class="fa-solid fa-link"></i> رابط ذو صلة
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- Lightbox لعرض الصور بحجم كبير -->
+<div id="lightbox" class="lightbox-overlay">
+  <img id="lightboxImg" src="" alt="">
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="assets/js/auth.js"></script>
+<script src="assets/js/issues.js"></script>
 </body>
 </html>
