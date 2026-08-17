@@ -4,28 +4,29 @@
 <meta charset="UTF-8">
   <script src="../assets/js/auth.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>إجراء عدم حيازة الخط | دليل الموظف</title>
+<title>إجراءات الحيازة وعدم الحيازة | خطوط الشركات والأفراد | دليل الموظف</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&family=Cairo:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg: #150F1F;
-    --bg-panel: #1D1629;
-    --line: #322648;
+    --bg: #FAF8FC;
+    --bg-panel: #FFFFFF;
+    --line: #E5DEF2;
     --purple-deep: #5B21B6;
     --purple: #7C3AED;
-    --purple-soft: #A78BFA;
-    --amber: #D9A441;
-    --text: #F2EEF7;
-    --muted: #A99BC2;
-    --danger: #E15757;
+    --purple-soft: #8B5CF6;
+    --purple-tint: #F3ECFC;
+    --amber: #B4791C;
+    --text: #2B2140;
+    --muted: #7A6E92;
+    --danger: #C23B3B;
   }
   *{box-sizing:border-box; margin:0; padding:0;}
   html{scroll-behavior:smooth;}
   body{
     background:
-      radial-gradient(1100px 600px at 85% -10%, rgba(124,58,237,0.18), transparent 60%),
-      radial-gradient(900px 500px at -10% 20%, rgba(91,33,182,0.15), transparent 55%),
+      radial-gradient(1100px 600px at 85% -10%, rgba(124,58,237,0.08), transparent 60%),
+      radial-gradient(900px 500px at -10% 20%, rgba(91,33,182,0.06), transparent 55%),
       var(--bg);
     color:var(--text);
     font-family:'Cairo', sans-serif;
@@ -47,9 +48,9 @@
     font-size:13px;
     font-weight:700;
     letter-spacing:0.5px;
-    color:var(--purple-soft);
-    background:rgba(124,58,237,0.12);
-    border:1px solid rgba(124,58,237,0.35);
+    color:var(--purple-deep);
+    background:var(--purple-tint);
+    border:1px solid rgba(124,58,237,0.3);
     padding:6px 16px;
     border-radius:999px;
     margin-bottom:22px;
@@ -59,13 +60,48 @@
     font-weight:900;
     line-height:1.35;
     margin-bottom:16px;
+    color:var(--text);
   }
-  h1 span{color:var(--purple-soft);}
+  h1 span{color:var(--purple);}
   .subtitle{
     color:var(--muted);
     font-size:16px;
     max-width:640px;
     margin:0 auto;
+  }
+
+  /* ===== Section divider (procedure switch) ===== */
+  .section-head{
+    max-width:760px;
+    margin:64px auto 28px;
+    padding:0 24px;
+    display:flex;
+    align-items:center;
+    gap:16px;
+  }
+  .section-head .pill{
+    flex-shrink:0;
+    font-family:'Tajawal', sans-serif;
+    font-weight:900;
+    font-size:14px;
+    color:#fff;
+    padding:9px 20px;
+    border-radius:999px;
+    white-space:nowrap;
+  }
+  .section-head .pill.ok{background:linear-gradient(135deg, #7C3AED, #5B21B6);}
+  .section-head .pill.deny{background:linear-gradient(135deg, #B4791C, #8C5A12);}
+  .section-head .rule{
+    flex:1;
+    height:2px;
+    background:linear-gradient(90deg, var(--line), transparent);
+  }
+  .section-desc{
+    max-width:760px;
+    margin:0 auto 8px;
+    padding:0 24px;
+    color:var(--muted);
+    font-size:15px;
   }
 
   /* ===== Signature: the "line" connecting steps ===== */
@@ -83,7 +119,10 @@
     right:calc(24px + 27px);
     width:3px;
     background:linear-gradient(180deg, transparent, var(--purple) 6%, var(--purple-deep) 94%, transparent);
-    opacity:0.55;
+    opacity:0.35;
+  }
+  .path-wrap.deny::before{
+    background:linear-gradient(180deg, transparent, var(--amber) 6%, #8C5A12 94%, transparent);
   }
 
   .step{
@@ -106,17 +145,22 @@
     font-family:'Tajawal',sans-serif;
     font-weight:900;
     font-size:22px;
-    box-shadow: 0 0 0 6px var(--bg), 0 8px 22px rgba(124,58,237,0.35);
+    box-shadow: 0 0 0 6px var(--bg), 0 8px 22px rgba(124,58,237,0.18);
     flex-shrink:0;
+  }
+  .deny .step-num{
+    background:radial-gradient(circle at 30% 30%, #C9922F, #8C5A12);
+    box-shadow: 0 0 0 6px var(--bg), 0 8px 22px rgba(180,121,28,0.18);
   }
   .step-title{
     font-size:21px;
     font-weight:700;
     margin-bottom:10px;
     padding-top:12px;
+    color:var(--text);
   }
   .step-body{
-    color:#DCD4EA;
+    color:#463A5E;
     font-size:15.5px;
   }
   .step-card{
@@ -125,9 +169,11 @@
     border-radius:16px;
     padding:20px 22px;
     margin-top:14px;
+    box-shadow:0 4px 18px rgba(91,33,182,0.05);
   }
   .step-card p + p{margin-top:10px;}
-  .step-card strong{color:var(--purple-soft); font-weight:700;}
+  .step-card strong{color:var(--purple-deep); font-weight:700;}
+  .deny .step-card strong{color:var(--amber);}
 
   .checklist{list-style:none; margin-top:12px;}
   .checklist li{
@@ -137,7 +183,7 @@
     padding:10px 0;
     border-bottom:1px solid var(--line);
     font-size:15px;
-    color:#E4DEF0;
+    color:#3A2F52;
   }
   .checklist li:last-child{border-bottom:none;}
   .checklist li::before{
@@ -148,7 +194,11 @@
     margin-top:3px;
     border-radius:5px;
     border:2px solid var(--purple-soft);
-    background:rgba(124,58,237,0.08);
+    background:var(--purple-tint);
+  }
+  .deny .checklist li::before{
+    border-color:#C9922F;
+    background:#FBF1E1;
   }
 
   .tag-row{display:flex; flex-wrap:wrap; gap:8px; margin-top:14px;}
@@ -157,11 +207,51 @@
     font-weight:700;
     padding:6px 12px;
     border-radius:8px;
-    background:rgba(217,164,65,0.12);
-    border:1px solid rgba(217,164,65,0.4);
-    color:var(--amber);
+    background:var(--purple-tint);
+    border:1px solid rgba(124,58,237,0.3);
+    color:var(--purple-deep);
     font-family:'Tajawal',sans-serif;
   }
+  .deny .tag{
+    background:#FBF1E1;
+    border:1px solid rgba(180,121,28,0.35);
+    color:var(--amber);
+  }
+
+  /* ===== Add-on highlight card ===== */
+  .addon-card{
+    background:linear-gradient(135deg, var(--purple-tint), #FFFFFF);
+    border:1px solid rgba(124,58,237,0.3);
+    border-radius:16px;
+    padding:20px 22px;
+    margin-top:14px;
+  }
+  .deny .addon-card{
+    background:linear-gradient(135deg, #FBF1E1, #FFFFFF);
+    border:1px solid rgba(180,121,28,0.32);
+  }
+  .addon-card .addon-label{
+    display:inline-block;
+    font-family:'Tajawal',sans-serif;
+    font-weight:900;
+    font-size:12.5px;
+    letter-spacing:0.3px;
+    color:#fff;
+    background:var(--purple);
+    padding:5px 14px;
+    border-radius:999px;
+    margin-bottom:10px;
+  }
+  .deny .addon-card .addon-label{background:var(--amber);}
+  .addon-card code{
+    display:block;
+    font-family:'Tajawal',sans-serif;
+    font-weight:700;
+    font-size:16px;
+    color:var(--text);
+    margin-bottom:8px;
+  }
+  .addon-card p{color:#4A3E64; font-size:14.5px;}
 
   /* ===== Table ===== */
   .table-scroll{overflow-x:auto; margin-top:16px; border-radius:14px; border:1px solid var(--line);}
@@ -185,17 +275,17 @@
     padding:14px 10px;
     text-align:center;
     vertical-align:top;
-    color:#DCD4EA;
+    color:#463A5E;
     border-top:1px solid var(--line);
   }
   tbody td.desc{
     text-align:right;
-    color:#F2EEF7;
+    color:var(--text);
   }
   tbody td.desc .badge{
     display:inline-block;
-    background:rgba(124,58,237,0.25);
-    color:var(--purple-soft);
+    background:var(--purple-tint);
+    color:var(--purple-deep);
     font-weight:700;
     font-size:12px;
     padding:3px 10px;
@@ -205,16 +295,21 @@
 
   /* ===== CTA / Link block ===== */
   .cta-card{
-    background:linear-gradient(135deg, rgba(124,58,237,0.14), rgba(91,33,182,0.06));
-    border:1px solid rgba(124,58,237,0.4);
+    background:linear-gradient(135deg, var(--purple-tint), #FFFFFF);
+    border:1px solid rgba(124,58,237,0.3);
     border-radius:18px;
     padding:26px 24px;
     margin-top:16px;
+  }
+  .deny .cta-card{
+    background:linear-gradient(135deg, #FBF1E1, #FFFFFF);
+    border:1px solid rgba(180,121,28,0.32);
   }
   .cta-card h4{
     font-family:'Tajawal',sans-serif;
     font-size:17px;
     margin-bottom:8px;
+    color:var(--text);
   }
   .cta-btn{
     display:inline-flex;
@@ -230,22 +325,24 @@
     padding:13px 26px;
     border-radius:12px;
     transition:transform .15s ease, box-shadow .15s ease, background .15s ease;
-    box-shadow:0 8px 20px rgba(124,58,237,0.3);
+    box-shadow:0 8px 20px rgba(124,58,237,0.2);
   }
-  .cta-btn:hover{background:var(--purple-deep); transform:translateY(-2px); box-shadow:0 12px 26px rgba(124,58,237,0.4);}
+  .deny .cta-btn{background:var(--amber); box-shadow:0 8px 20px rgba(180,121,28,0.2);}
+  .cta-btn:hover{background:var(--purple-deep); transform:translateY(-2px); box-shadow:0 12px 26px rgba(124,58,237,0.3);}
+  .deny .cta-btn:hover{background:#8C5A12;}
   .cta-btn:focus-visible{outline:3px solid var(--purple-soft); outline-offset:3px;}
 
   .caution{
     display:flex;
     gap:10px;
     align-items:flex-start;
-    background:rgba(225,87,87,0.08);
-    border:1px solid rgba(225,87,87,0.35);
+    background:#FBEAEA;
+    border:1px solid rgba(194,59,59,0.3);
     border-radius:12px;
     padding:12px 14px;
     margin-top:16px;
     font-size:13.5px;
-    color:#F2C9C9;
+    color:#7A2B2B;
   }
   .caution b{color:var(--danger);}
 
@@ -267,6 +364,7 @@
     .step{padding-right:64px;}
     .step-num{width:46px; height:46px; font-size:18px;}
     .path-wrap::before{right:calc(24px + 22px);}
+    .section-head{flex-wrap:wrap;}
   }
 </style>
 </head>
@@ -274,13 +372,118 @@
 
 <header>
   <span class="eyebrow">ضوابط الجهاز القومي لتنظيم الاتصالات</span>
-  <h1>إجراء <span>عدم حيازة الخط</span><br>عند حضور عميل بخط مسجل باسم غيره</h1>
-  <p class="subtitle">دليل تشغيلي لموظفي نقاط البيع والإبلاغ — يوضح خطوات التوثيق وإنشاء الـTT ورفع المستندات، خطوة بخطوة.</p>
+  <h1>إجراءات <span>حيازة وعدم حيازة</span><br>خطوط الشركات والأفراد</h1>
+  <p class="subtitle">دليل تشغيلي لموظفي نقاط البيع — يجمع إجراءات حيازة وعدم حيازة خطوط الشركات، بالإضافة إلى إجراء عدم حيازة خطوط الأفراد، خطوة بخطوة.</p>
 </header>
+
+<!-- ============ إجراء الحيازة ============ -->
+<div class="section-head">
+  <span class="pill ok">1 · إجراء الحيازة</span>
+  <span class="rule"></span>
+</div>
+<p class="section-desc">تحديد وتوثيق المستخدم الفعلي لخطوط الشركات، وذلك من خلال عقد موقّع من المستخدم النهائي للخط.</p>
 
 <div class="path-wrap">
 
   <div class="step">
+    <div class="step-num">1</div>
+    <div class="step-title">حضور العميل والتحقق من الهوية</div>
+    <div class="step-body">
+      <div class="step-card">
+        <p>يحضر <strong>العميل (المستخدم النهائي للخط)</strong> إلى الفرع شخصيًا.</p>
+        <p>يتأكد الموظف من بيانات العميل عن طريق <strong>بطاقة الرقم القومي</strong> قبل استكمال الإجراء.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">2</div>
+    <div class="step-title">توقيع عقد حيازة الخط</div>
+    <div class="step-body">
+      <div class="step-card">
+        <p>يوقّع العميل على <strong>عقد حيازة الخط</strong> بحضوره الشخصي في الفرع.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">3</div>
+    <div class="step-title">رفع العقد وإضافة الـ Add-on</div>
+    <div class="step-body">
+      <ul class="checklist">
+        <li>يرفع الموظف <strong>عقد الحيازة</strong> على السيستم.</li>
+        <li>يضيف الموظف الـ Add-on الخاص بالحالة كما هو موضح أدناه.</li>
+      </ul>
+      <div class="addon-card">
+        <span class="addon-label">ADD-ON</span>
+        <code>Corporate Confirmed Ownership Add-on</code>
+        <p>عقد حيازة استخدام وحيازة خط تليفون محمول لأنظمة الشركات.</p>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ============ إجراء عدم الحيازة ============ -->
+<div class="section-head">
+  <span class="pill deny">2 · إجراء عدم الحيازة</span>
+  <span class="rule"></span>
+</div>
+<p class="section-desc">يُستخدم هذا الإجراء عندما لا يكون المستخدم حائزًا للخط، أو عندما ينكر ملكيته له.</p>
+
+<div class="path-wrap deny">
+
+  <div class="step deny">
+    <div class="step-num">1</div>
+    <div class="step-title">حضور العميل والتحقق من الهوية</div>
+    <div class="step-body">
+      <div class="step-card">
+        <p>يحضر العميل إلى الفرع، ويتأكد الموظف من بياناته عن طريق <strong>بطاقة الرقم القومي</strong>.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="step deny">
+    <div class="step-num">2</div>
+    <div class="step-title">توقيع استمارة عدم الحيازة</div>
+    <div class="step-body">
+      <div class="step-card">
+        <p>يوقّع العميل على <strong>استمارة عدم الحيازة</strong> بعد التأكد من هويته.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="step deny">
+    <div class="step-num">3</div>
+    <div class="step-title">رفع العقد ووقف الخط وإضافة الـ Add-on</div>
+    <div class="step-body">
+      <ul class="checklist">
+        <li>يرفع الموظف عقد <strong>عدم الحيازة</strong> على السيستم.</li>
+        <li>يتم <strong>وقف الخط إرسالًا واستقبالًا</strong> في وقت توقيع الاستمارة.</li>
+        <li>يضيف الموظف الـ Add-on الخاص بالحالة كما هو موضح أدناه.</li>
+      </ul>
+      <div class="addon-card">
+        <span class="addon-label">ADD-ON</span>
+        <code>Corporate Denied Ownership Add-on</code>
+      </div>
+      <div class="caution">
+        <b>تنبيه:</b> يجب التأكد من إيقاف الخط فورًا عند توقيع استمارة عدم الحيازة، قبل استكمال باقي خطوات النظام.
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ============ إجراء عدم حيازة خط الأفراد ============ -->
+<div class="section-head">
+  <span class="pill deny">3 · إجراء عدم حيازة خط الأفراد</span>
+  <span class="rule"></span>
+</div>
+<p class="section-desc">يُتبع عند حضور عميل بخط مسجل باسم غيره، ويشمل استيفاء الاستمارة، إنشاء تذكرة TT، وحفظ المستندات على النظامين.</p>
+
+<div class="path-wrap deny">
+
+  <div class="step deny">
     <div class="step-num">1</div>
     <div class="step-title">استيفاء استمارة عدم حيازة الخط</div>
     <div class="step-body">
@@ -310,7 +513,7 @@
               <td>Deny of ownership</td>
               <td class="desc">
                 <span class="badge">Will be created as SR</span>
-                CCA Should add <strong>Full description</strong> for الحالة، وأن يتم إنشاء الـ SR على <strong>الرقم المُنكَر (denied number)</strong>.
+                CCA Should add <strong>Full description</strong> للحالة، وأن يتم إنشاء الـ SR على <strong>الرقم المُنكَر (denied number)</strong>.
               </td>
             </tr>
           </tbody>
@@ -319,7 +522,7 @@
     </div>
   </div>
 
-  <div class="step">
+  <div class="step deny">
     <div class="step-num">2</div>
     <div class="step-title">حفظ وتوثيق المستندات</div>
     <div class="step-body">
@@ -337,18 +540,16 @@
     </div>
   </div>
 
-  <div class="step">
+  <div class="step deny">
     <div class="step-num">3</div>
     <div class="step-title">الرجوع لنموذج عقد إلغاء الخط</div>
     <div class="step-body">
       <div class="cta-card">
         <h4>نموذج «Mobile Phone Line Contract Opt-Out Form»</h4>
-        <p style="color:#DCD4EA; font-size:14.5px;">استخدم الرابط التالي لعرض نموذج العقد وطباعته عند الحاجة أثناء استيفاء إجراءات العميل.</p>
+        <p style="color:#4A3E64; font-size:14.5px;">استخدم الرابط التالي لعرض نموذج العقد وطباعته عند الحاجة أثناء استيفاء إجراءات العميل.</p>
         <a class="cta-btn" href="https://we-core.icu/viewpdf.html?src=https%3A%2F%2Fiygwhapcpdmsasqlfelv.supabase.co%2Fstorage%2Fv1%2Fobject%2Fauthenticated%2FAll%20Form%2FMobile%2FNon-possession%20form.pdf" target="_blank" rel="noopener noreferrer">
           فتح نموذج العقد ↗
         </a>
-        
-        </div>
       </div>
     </div>
   </div>
