@@ -1,49 +1,55 @@
 <!doctype html>
 <html lang="ar" dir="rtl">
   <head>
-<script src="assets/js/auth.js?v=12.0.1"></script>
+    <script src="assets/js/auth.js?v=12.0.1"></script>
 
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Remedy Guide – Telecom Egypt</title>
     <link
-      href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&family=Manrope:wght@400;600;700&family=JetBrains+Mono:wght@500&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="assets/css/remedy.css">
-  <script src="assets/js/active-users-widget.js"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-</head>
+    <link rel="stylesheet" href="assets/css/remedy.css" />
+    <script src="assets/js/active-users-widget.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+  </head>
   <body>
-      <header class="header">
-<a href="javascript:history.back()" class="back-btn" style="position: absolute; left: 20px; top: 50%; transform: translateY(-50%); color: white; text-decoration: none; font-size: 20px; z-index: 1000;"><i class="fas fa-arrow-left"></i></a>
-
-        <nav class="navbar">
-            <a href="#" class="logo-wrapper">
-                <img src="img/we-core.png" alt="WE-Core" class="logo">
+    <header class="site-header">
       <div class="hdr">
-        <div class="brand">
-          <div class="brand-ico">R</div>
-          <div>
-            <div class="brand-name">REMEDY GUIDE</div>
-            <div class="brand-sub"></div>
-          </div>
+        <div class="hdr-left">
+          <a href="javascript:history.back()" class="back-btn" aria-label="رجوع">
+            <i class="fas fa-arrow-right"></i>
+          </a>
+          <a href="index.html" class="brand">
+            <div class="brand-ico">R</div>
+            <div class="brand-text">
+              <div class="brand-name">REMEDY GUIDE</div>
+              <div class="brand-sub">WE-Core</div>
+            </div>
+          </a>
+        </div>
+        <div class="nav-links">
+          <a href="index.html">
+            <i class="fa-solid fa-house-user"></i>
+            الرئيسية
+          </a>
         </div>
       </div>
-               <div class="nav-links">
-                <a href="index.html">
-                    <i class="fa-solid fa-house-user"></i>
-                    الرئيسية
-                </a>
-            </div>
-        </nav>
     </header>
-
 
     <main>
       <div class="hero">
         <h1>دليل مسارات <span>Remedy</span></h1>
         <p>تصفح وابحث في كافة المسارات المتاحة على السيستم</p>
+      </div>
+
+      <div class="status-bar" id="status-bar">
+        <span class="status-dot"></span>
+        <span id="status-text">جاري التحقق من الجلسة...</span>
       </div>
 
       <div class="search-area">
@@ -57,7 +63,10 @@
       </div>
 
       <div class="grid" id="grid"></div>
-      <div id="empty">لم يتم العثور على نتائج تطابق بحثك</div>
+      <div id="empty">
+        <div class="empty-title">لا توجد نتائج</div>
+        <div>لم يتم العثور على نتائج تطابق بحثك</div>
+      </div>
     </main>
 
     <div class="overlay" id="overlay" onclick="closePanel()">
@@ -85,11 +94,8 @@
     </div>
 
     <script src="assets/js/remedy.js"></script>
-  
-<script src="assets/js/remedy_1.js"></script>
+    <script src="assets/js/remedy_1.js"></script>
 
-
-
-<footer style="text-align: center; padding: 20px; border-top: 1px solid #ddd;">WE Core Team 2026</footer>
-</body>
+    <footer class="site-footer">WE Core Team 2026</footer>
+  </body>
 </html>
