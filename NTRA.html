@@ -232,7 +232,7 @@
     async function checkAuthAndLoad() {
       const { data, error } = await sb.auth.getSession();
       if (error || !data.session) {
-        window.location.href = LOGIN_URL;
+        window.location.href = login_URL;
         return;
       }
       await loadRules();
@@ -243,7 +243,7 @@
     // لو الـ Session بتتلغي وإنت فاتح الصفحة، ارجع للوجن على طول
     sb.auth.onAuthStateChange((event, session) => {
       if (event === "SIGNED_OUT" || !session) {
-        window.location.href = LOGIN_URL;
+        window.location.href = login_URL;
       }
     });
 
