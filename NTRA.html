@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>قواعد الفرع | WE-Core</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --surface:#fff7fd;
+    --surface-dim:#e1d7e0;
+    --surface-container-lowest:#ffffff;
+    --surface-container-low:#fbf1fa;
+    --surface-container:#f5ebf4;
+    --surface-container-high:#efe5ee;
+    --on-surface:#1e1a20;
+    --on-surface-variant:#4d4451;
+    --outline:#7e7382;
+    --outline-variant:#cfc2d2;
+    --primary:#3d0063;
+    --on-primary:#ffffff;
+    --primary-container:#591685;
+    --on-primary-container:#cc8afa;
+    --secondary:#6e547f;
+    --secondary-container:#ecccfd;
+    --on-secondary-container:#6d537e;
+    --tertiary-container:#533500;
+    --on-tertiary-container:#ca9e60;
+    --background:#fff7fd;
+
+    --radius-sm:8px;
+    --radius-lg:16px;
+    --radius-full:9999px;
+    --space-sm:8px;
+    --space-md:16px;
+    --space-lg:32px;
+    --container-padding:32px;
+  }
+
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--background);
+    color:var(--on-surface);
+    font-family:'Manrope',Tahoma,Arial,sans-serif;
+    line-height:1.5;
+  }
+
+  /* -- شاشة التحقق قبل ظهور أي محتوى -- */
+  #gate{
+    position:fixed;inset:0;
+    display:flex;align-items:center;justify-content:center;
+    flex-direction:column;gap:var(--space-md);
+    background:var(--background);
+    z-index:1000;
+  }
+  #gate .spinner{
+    width:36px;height:36px;border-radius:50%;
+    border:3px solid var(--outline-variant);
+    border-top-color:var(--primary);
+    animation:spin 0.8s linear infinite;
+  }
+  #gate p{color:var(--on-surface-variant);font-size:14px;margin:0;}
+  @keyframes spin{to{transform:rotate(360deg);}}
+
+  main{display:none;}
+  main.ready{display:block;}
+
+  header.page-header{
+    padding:var(--space-lg) var(--container-padding) var(--space-md);
+    max-width:1120px;margin:0 auto;
+  }
+  header.page-header h1{
+    font-size:32px;font-weight:600;line-height:40px;letter-spacing:-0.01em;
+    margin:0 0 6px;color:var(--primary);
+  }
+  header.page-header p{
+    color:var(--on-surface-variant);font-size:16px;margin:0;
+  }
+
+  .filters{
+    display:flex;gap:8px;flex-wrap:wrap;
+    padding:0 var(--container-padding) var(--space-md);
+    max-width:1120px;margin:0 auto;
+  }
+  .filters button{
+    font-family:'JetBrains Mono',monospace;
+    font-size:12px;font-weight:500;letter-spacing:0.05em;text-transform:uppercase;
+    border:1px solid var(--outline-variant);
+    background:var(--surface-container-lowest);
+    color:var(--on-surface-variant);
+    padding:6px 14px;border-radius:var(--radius-full);
+    cursor:pointer;transition:border-color .15s, color .15s;
+  }
+  .filters button.active,
+  .filters button:hover{
+    border-color:var(--primary);
+    color:var(--primary);
+  }
+
+  .grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
+    gap:var(--space-md);
+    padding:0 var(--container-padding) var(--space-lg);
+    max-width:1120px;margin:0 auto;
+  }
+
+  .card{
+    background:var(--surface-container-lowest);
+    border-radius:var(--radius-lg);
+    padding:var(--space-md);
+    box-shadow:0px 4px 20px rgba(89, 22, 133, 0.06);
+    display:flex;flex-direction:column;gap:8px;
+    border-right:4px solid var(--primary-container);
+  }
+  .card .eyebrow{
+    font-family:'JetBrains Mono',monospace;
+    font-size:12px;color:var(--on-secondary-container);
+  }
+  .card h3{
+    margin:0;font-size:18px;font-weight:600;color:var(--on-surface);
+  }
+  .card p{
+    margin:0;color:var(--on-surface-variant);font-size:14px;
+    flex:1;
+  }
+  .card button.more{
+    align-self:flex-start;
+    margin-top:6px;
+    background:transparent;
+    border:1px solid var(--primary);
+    color:var(--primary);
+    font-size:13px;font-weight:600;
+    padding:8px 16px;border-radius:var(--radius-sm);
+    cursor:pointer;transition:background .15s,color .15s;
+  }
+  .card button.more:hover{
+    background:var(--primary);color:var(--on-primary);
+  }
+
+  .empty{
+    text-align:center;color:var(--on-surface-variant);
+    padding:var(--space-lg);
+  }
+
+  /* -- ودجيت التفاصيل -- */
+  #overlay{
+    position:fixed;inset:0;background:rgba(30,26,32,.45);
+    display:none;align-items:flex-end;justify-content:center;
+    z-index:900;
+  }
+  #overlay.open{display:flex;}
+  #detail{
+    background:var(--surface-container-lowest);
+    width:100%;max-width:640px;
+    max-height:82vh;overflow-y:auto;
+    border-radius:16px 16px 0 0;
+    padding:var(--space-lg) var(--container-padding);
+    box-shadow:0px 12px 32px rgba(89, 22, 133, 0.12);
+    animation:slideUp .2s ease-out;
+  }
+  @media(min-width:720px){
+    #overlay{align-items:center;}
+    #detail{border-radius:16px;max-height:78vh;}
+  }
+  @keyframes slideUp{from{transform:translateY(24px);opacity:0;}to{transform:translateY(0);opacity:1;}}
+
+  #detail .close{
+    float:left;background:none;border:none;font-size:22px;color:var(--on-surface-variant);cursor:pointer;
+  }
+  #detail .eyebrow{
+    font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--on-secondary-container);
+  }
+  #detail h2{
+    color:var(--primary);margin:4px 0 var(--space-md);font-size:24px;
+  }
+  #detail .body{
+    white-space:pre-wrap;font-size:15px;color:var(--on-surface);
+  }
+
+  @media(prefers-reduced-motion:reduce){
+    #gate .spinner{animation:none;}
+    #detail{animation:none;}
+  }
+</style>
+</head>
+<body>
+
+  <!-- شاشة التحقق: محتوى الصفحة ميظهرش غير بعد التأكد من الـ Session -->
+  <div id="gate">
+    <div class="spinner"></div>
+    <p>جاري التحقق من الجلسة...</p>
+  </div>
+
+  <main id="main">
+    <header class="page-header">
+      <h1>قواعد الفرع</h1>
+      <p>اللوائح وطرق التعامل والمسارات المتبعة في العمل</p>
+    </header>
+
+    <div class="filters" id="filters"></div>
+
+    <section class="grid" id="grid">
+      <!-- الكروت هتتحط هنا ديناميكيًا -->
+    </section>
+  </main>
+
+  <div id="overlay">
+    <div id="detail">
+      <button class="close" id="closeDetail" aria-label="إغلاق">×</button>
+      <div class="eyebrow" id="detailCategory"></div>
+      <h2 id="detailTitle"></h2>
+      <div class="body" id="detailContent"></div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+  <script>
+    const SUPABASE_URL = "https://iygwhapcpdmsasqlfelv.supabase.co";
+    const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml5Z3doYXBjcGRtc2FzcWxmZWx2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzEzNDk5MDQsImV4cCI6MjA4NjkyNTkwNH0.jqU1fEc9kBkXcCfazH6aTnS2XWWzPv0bbixHZgjtrnQ";
+
+    // لو الموقع أصلاً عنده client جاهز على window.supabaseClient استخدمه، غير كده اعمل واحد
+    const sb = window.supabaseClient || supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    const LOGIN_URL = "/login.html"; // غيّر المسار ده لمسار صفحة تسجيل الدخول عندك لو مختلف
+
+    let allRules = [];
+    let activeCategory = "الكل";
+
+    async function checkAuthAndLoad() {
+      const { data, error } = await sb.auth.getSession();
+      if (error || !data.session) {
+        window.location.href = LOGIN_URL;
+        return;
+      }
+      await loadRules();
+      document.getElementById("gate").style.display = "none";
+      document.getElementById("main").classList.add("ready");
+    }
+
+    // لو الـ Session بتتلغي وإنت فاتح الصفحة، ارجع للوجن على طول
+    sb.auth.onAuthStateChange((event, session) => {
+      if (event === "SIGNED_OUT" || !session) {
+        window.location.href = LOGIN_URL;
+      }
+    });
+
+    async function loadRules() {
+      const { data, error } = await sb
+        .from("intra_rules")
+        .select("id, title, summary, content, category, order")
+        .eq("is_active", true)
+        .order("category", { ascending: true })
+        .order("order", { ascending: true });
+
+      if (error) {
+        document.getElementById("grid").innerHTML =
+          '<p class="empty">حصل خطأ في تحميل القواعد، حاول تاني.</p>';
+        console.error(error);
+        return;
+      }
+      allRules = data || [];
+      buildFilters();
+      renderGrid();
+    }
+
+    function buildFilters() {
+      const cats = ["الكل", ...new Set(allRules.map(r => r.category).filter(Boolean))];
+      const wrap = document.getElementById("filters");
+      wrap.innerHTML = "";
+      cats.forEach(cat => {
+        const b = document.createElement("button");
+        b.textContent = cat;
+        if (cat === activeCategory) b.classList.add("active");
+        b.addEventListener("click", () => {
+          activeCategory = cat;
+          buildFilters();
+          renderGrid();
+        });
+        wrap.appendChild(b);
+      });
+    }
+
+    function renderGrid() {
+      const grid = document.getElementById("grid");
+      const list = activeCategory === "الكل"
+        ? allRules
+        : allRules.filter(r => r.category === activeCategory);
+
+      if (!list.length) {
+        grid.innerHTML = '<p class="empty">مفيش قواعد مضافة هنا لسه.</p>';
+        return;
+      }
+
+      grid.innerHTML = "";
+      list.forEach(rule => {
+        const card = document.createElement("div");
+        card.className = "card";
+        card.innerHTML = `
+          ${rule.category ? `<div class="eyebrow">${escapeHtml(rule.category)}</div>` : ""}
+          <h3>${escapeHtml(rule.title)}</h3>
+          <p>${escapeHtml(rule.summary || "")}</p>
+          <button class="more">اعرض المزيد</button>
+        `;
+        card.querySelector(".more").addEventListener("click", () => openDetail(rule));
+        grid.appendChild(card);
+      });
+    }
+
+    function openDetail(rule) {
+      document.getElementById("detailCategory").textContent = rule.category || "";
+      document.getElementById("detailTitle").textContent = rule.title;
+      document.getElementById("detailContent").textContent = rule.content;
+      document.getElementById("overlay").classList.add("open");
+    }
+
+    document.getElementById("closeDetail").addEventListener("click", () => {
+      document.getElementById("overlay").classList.remove("open");
+    });
+    document.getElementById("overlay").addEventListener("click", (e) => {
+      if (e.target.id === "overlay") e.currentTarget.classList.remove("open");
+    });
+
+    function escapeHtml(str) {
+      const div = document.createElement("div");
+      div.textContent = String(str == null ? "" : str);
+      return div.innerHTML;
+    }
+
+    checkAuthAndLoad();
+  </script>
+</body>
+</html>
