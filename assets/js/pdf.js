@@ -22,13 +22,6 @@ async function translateOne(text) {
   const cleaned = text.replace(/\.pdf$/i, "").replace(/[-_]/g, " ").trim();
   if (translationCache[cleaned.toLowerCase()]) return translationCache[cleaned.toLowerCase()];
 
-  const dictMatch = customDictionary[cleaned.toLowerCase()];
-  if (dictMatch) {
-    translationCache[cleaned.toLowerCase()] = dictMatch;
-    saveCache();
-    return dictMatch;
-  }
-
   try {
     const res = await fetch(TRANSLATE_API, {
       method: "POST",
