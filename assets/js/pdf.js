@@ -17,17 +17,17 @@ function getAuthToken() {
 let translationCache = JSON.parse(localStorage.getItem("translationCache") || "{}");
 function saveCache() { localStorage.setItem("translationCache", JSON.stringify(translationCache)); }
 
-// تحكم بمعدل الطلبات عشان نحترم حد Gemini المجاني (5 طلبات/دقيقة)
+// تحكم بمعدل الطلبات لتفادي خطأ 429 (تم رفع الفترة إلى 16 ثانية للأمان)
 let lastGeminiCall = 0;
-const MIN_GAP_MS = 13000; // 13 ثانية بين كل طلب فعلي وطلب
+const MIN_GAP_MS = 16000; 
 async function throttleGemini() {
   const wait = MIN_GAP_MS - (Date.now() - lastGeminiCall);
   if (wait > 0) await new Promise(r => setTimeout(r, wait));
   lastGeminiCall = Date.now();
 }
 
-// دالة الترجمة الذكية للدفعة كلها بطلب واحد
-async function translateBatch(rawNames) {
+// دالة الترجمة الذكية مع نظام إعادة المحاولة (Retry) عند حدوث خطأ 429 أو 502
+async function translateBatch(rawNames, retries = 3) {
   const cleanedList = rawNames.map(n => n.replace(/\.pdf$/i, "").replace(/[-_]/g, " ").trim());
   const result = {};
   const toFetch = [];
@@ -40,35 +40,57 @@ async function translateBatch(rawNames) {
 
   if (toFetch.length === 0) return result;
 
-  await throttleGemini();
+  for (let attempt = 1; attempt <= retries; attempt++) {
+    await throttleGemini();
 
-  try {
-    const res = await fetch(TRANSLATE_API, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${SUPABASE_ANON}`,
-        "apikey": SUPABASE_ANON
-      },
-      body: JSON.stringify({ texts: toFetch })
-    });
-    const data = await res.json();
-    if (!res.ok || !Array.isArray(data?.translations)) {
-      console.warn("Batch translation failed:", data);
-      toFetch.forEach(c => { result[c] = c; });
+    try {
+      const res = await fetch(TRANSLATE_API, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${SUPABASE_ANON}`,
+          "apikey": SUPABASE_ANON
+        },
+        body: JSON.stringify({ texts: toFetch })
+      });
+
+      // إذا حدث خطأ 429 (ضغط طلبات)، انتظر وأعد المحاولة
+      if (res.status === 429 && attempt < retries) {
+        console.warn(`Rate limited (429). Retrying attempt ${attempt + 1} after 20 seconds...`);
+        await new Promise(r => setTimeout(r, 20000));
+        continue;
+      }
+
+      const data = await res.json();
+      if (!res.ok || !Array.isArray(data?.translations)) {
+        console.warn("Batch translation failed:", data);
+        if (attempt === retries) {
+          toFetch.forEach(c => { result[c] = c; });
+          return result;
+        }
+        await new Promise(r => setTimeout(r, 5000));
+        continue;
+      }
+
+      toFetch.forEach((c, i) => {
+        const t = data.translations[i] || c;
+        translationCache[c.toLowerCase()] = t;
+        result[c] = t;
+      });
+      saveCache();
       return result;
+
+    } catch (e) {
+      console.warn(`Batch translation error (Attempt ${attempt}):`, e);
+      if (attempt === retries) {
+        toFetch.forEach(c => { result[c] = c; });
+        return result;
+      }
+      await new Promise(r => setTimeout(r, 5000)); // انتظار قصير قبل إعادة المحاولة
     }
-    toFetch.forEach((c, i) => {
-      const t = data.translations[i] || c;
-      translationCache[c.toLowerCase()] = t;
-      result[c] = t;
-    });
-    saveCache();
-  } catch (e) {
-    console.warn("Batch translation error:", e);
-    toFetch.forEach(c => { result[c] = c; });
   }
 
+  toFetch.forEach(c => { result[c] = c; });
   return result;
 }
 
@@ -123,7 +145,7 @@ async function fetchPdfsInBatches(onBatchLoaded) {
         const pdfFiles = items.filter(item => item.name.toLowerCase().endsWith(".pdf"));
 
         if (pdfFiles.length > 0) {
-          // ترجمة كل أسماء الدفعة بطلب واحد بدل طلب لكل ملف
+          // ترجمة كل أسماء الدفعة بطلب واحد مع آلية المعالجة الآمنة
           const titleMap = await translateBatch(pdfFiles.map(f => f.name));
           const batchResults = pdfFiles.map(f => {
             const folderCategory = prefix || "عام";
@@ -276,3 +298,4 @@ window.searchForms = () => {
 
 // تنفيذ الكود
 init();
+```[cite: 1]
