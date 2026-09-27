@@ -2,7 +2,6 @@
 const SUPABASE_URL  = "https://iygwhapcpdmsasqlfelv.supabase.co";
 const SUPABASE_ANON = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml5Z3doYXBjcGRtc2FzcWxmZWx2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzEzNDk5MDQsImV4cCI6MjA4NjkyNTkwNH0.jqU1fEc9kBkXcCfazH6aTnS2XWWzPv0bbixHZgjtrnQ";
 const BUCKET_NAME   = "All Form";
-const TRANSLATE_API = `${SUPABASE_URL}/functions/v1/translate-gemini`;
 const BATCH_SIZE    = 5; // عدد الملفات في كل دفعة
 
 // جلب التوكن من الكوكيز
@@ -17,17 +16,18 @@ function getAuthToken() {
 let translationCache = JSON.parse(localStorage.getItem("translationCache") || "{}");
 function saveCache() { localStorage.setItem("translationCache", JSON.stringify(translationCache)); }
 
-// تحكم بمعدل الطلبات لتفادي خطأ 429
-let lastGeminiCall = 0;
-const MIN_GAP_MS = 16000; 
-async function throttleGemini() {
-  const wait = MIN_GAP_MS - (Date.now() - lastGeminiCall);
-  if (wait > 0) await new Promise(r => setTimeout(r, wait));
-  lastGeminiCall = Date.now();
+// ترجمة نص واحد فورًا باستخدام Google Translate المجاني (بدون مفتاح، بدون حد يومي عملي)
+async function translateViaGoogle(text) {
+  const url = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=en&tl=ar&dt=t&q=${encodeURIComponent(text)}`;
+  const res = await fetch(url);
+  if (!res.ok) throw new Error(`Google Translate HTTP ${res.status}`);
+  const data = await res.json();
+  // شكل الرد: [[["الترجمة","النص الأصلي",...], ...], ...]
+  return data[0].map(chunk => chunk[0]).join("");
 }
 
-// دالة الترجمة الذكية مع نظام إعادة المحاولة (Retry)
-async function translateBatch(rawNames, retries = 3) {
+// دالة الترجمة الذكية للدفعة كلها (كل ملف بيتترجم فورًا ومتوازي)
+async function translateBatch(rawNames) {
   const cleanedList = rawNames.map(n => n.replace(/\.pdf$/i, "").replace(/[-_]/g, " ").trim());
   const result = {};
   const toFetch = [];
@@ -40,56 +40,18 @@ async function translateBatch(rawNames, retries = 3) {
 
   if (toFetch.length === 0) return result;
 
-  for (let attempt = 1; attempt <= retries; attempt++) {
-    await throttleGemini();
-
+  await Promise.all(toFetch.map(async (c) => {
     try {
-      const res = await fetch(TRANSLATE_API, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${SUPABASE_ANON}`,
-          "apikey": SUPABASE_ANON
-        },
-        body: JSON.stringify({ texts: toFetch })
-      });
-
-      if (res.status === 429 && attempt < retries) {
-        console.warn(`Rate limited (429). Retrying attempt ${attempt + 1} after 20 seconds...`);
-        await new Promise(r => setTimeout(r, 20000));
-        continue;
-      }
-
-      const data = await res.json();
-      if (!res.ok || !Array.isArray(data?.translations)) {
-        console.warn("Batch translation failed:", data);
-        if (attempt === retries) {
-          toFetch.forEach(c => { result[c] = c; });
-          return result;
-        }
-        await new Promise(r => setTimeout(r, 5000));
-        continue;
-      }
-
-      toFetch.forEach((c, i) => {
-        const t = data.translations[i] || c;
-        translationCache[c.toLowerCase()] = t;
-        result[c] = t;
-      });
-      saveCache();
-      return result;
-
+      const t = await translateViaGoogle(c);
+      translationCache[c.toLowerCase()] = t;
+      result[c] = t;
     } catch (e) {
-      console.warn(`Batch translation error (Attempt ${attempt}):`, e);
-      if (attempt === retries) {
-        toFetch.forEach(c => { result[c] = c; });
-        return result;
-      }
-      await new Promise(r => setTimeout(r, 5000));
+      console.warn("Translation failed for:", c, e);
+      result[c] = c;
     }
-  }
+  }));
+  saveCache();
 
-  toFetch.forEach(c => { result[c] = c; });
   return result;
 }
 
@@ -115,16 +77,19 @@ async function fetchStorageList(prefix = "", limit = 100, offset = 0) {
 // مصفوفة عامة لحفظ كافة الملفات المحملة
 let allLoadedForms = [];
 
-// الدالة الرئيسية لجلب الملفات على دفعات
+// الدالة الرئيسية لجلب الملفات على دفعات (5 ملفات لكل دفعة)
 async function fetchPdfsInBatches(onBatchLoaded) {
   try {
+    // 1. جلب قائمة المجلدات بالكامل أولاً
     const initialList = await fetchStorageList("", 100, 0);
     const folderNames = initialList
       .filter(item => !item.id && !item.name.includes("."))
       .map(f => f.name);
 
+    // إضافة الجذر "" كأول مجلد
     const prefixes = ["", ...folderNames];
 
+    // 2. المرور على المجلدات وجلب الملفات بـ Batch Size = 5
     for (const prefix of prefixes) {
       let offset = 0;
       let hasMore = true;
@@ -137,9 +102,11 @@ async function fetchPdfsInBatches(onBatchLoaded) {
           break;
         }
 
+        // تصفية ملفات PDF فقط
         const pdfFiles = items.filter(item => item.name.toLowerCase().endsWith(".pdf"));
 
         if (pdfFiles.length > 0) {
+          // ترجمة كل أسماء الدفعة بطلب واحد بدل طلب لكل ملف
           const titleMap = await translateBatch(pdfFiles.map(f => f.name));
           const batchResults = pdfFiles.map(f => {
             const folderCategory = prefix || "عام";
@@ -154,9 +121,11 @@ async function fetchPdfsInBatches(onBatchLoaded) {
             };
           });
 
+          // تمرير الدفعة المكتملة لواجهة المستخدم مباشرة
           onBatchLoaded(batchResults);
         }
 
+        // إذا كان عدد العناصر المجلوبة أقل من الـ Batch Size فهذا يعني نهاية العناصر في هذا المجلد
         if (items.length < BATCH_SIZE) {
           hasMore = false;
         } else {
@@ -169,7 +138,7 @@ async function fetchPdfsInBatches(onBatchLoaded) {
   }
 }
 
-// مساعد: تحديد tag الفئة
+// ── مساعد: تحديد tag الفئة ──
 function catTag(cat) {
   const map = {
     "Mobile": { cls: "cat-mobile", icon: "fa-mobile-screen-button", label: "المحمول" },
@@ -183,7 +152,7 @@ function catTag(cat) {
   </span>`;
 }
 
-// عرض الكروت بالتصميم الجديد
+// ── عرض الكروت بالتصميم الجديد ──
 function renderCards(forms) {
   const container = document.getElementById("formsContainer");
   if (!container) return;
@@ -223,11 +192,12 @@ function renderCards(forms) {
     </div>`).join("");
 }
 
-// بدء التشغيل
+// ── بدء التشغيل ──
 async function init() {
   const container = document.getElementById("formsContainer");
   allLoadedForms = [];
 
+  // Skeleton أثناء التحميل المبدئي
   if (container) {
     container.innerHTML = `
       ${[1, 2, 3].map(() => `
@@ -239,9 +209,12 @@ async function init() {
         </div>`).join("")}`;
   }
 
+  // البدء في جلب الملفات دفعات (5 بـ 5)
   await fetchPdfsInBatches((newBatch) => {
+    // إضافة العناصر الجديدة للمصفوفة العامة
     allLoadedForms.push(...newBatch);
 
+    // إعادة تطبيق البحث والفلترة الحاليين لإظهار العناصر الجديدة فوراً
     const activeBtn = document.querySelector(".filter-btn.active");
     const currentCat = activeBtn?.dataset?.folder || "all";
     
@@ -250,7 +223,7 @@ async function init() {
   });
 }
 
-// الفلترة والبحث
+// ── الفلترة والبحث ──
 window.filterForms = (cat, btn) => {
   document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
   if (btn) btn.classList.add("active");
