@@ -33,11 +33,17 @@ async function translateOne(text) {
       body: JSON.stringify({ text: cleaned })
     });
     const data = await res.json();
-    const translated = data?.translated || cleaned;
-    translationCache[cleaned.toLowerCase()] = translated;
+    if (!res.ok || !data?.translated) {
+      console.warn("Translation failed for:", cleaned, data);
+      return cleaned;
+    }
+    translationCache[cleaned.toLowerCase()] = data.translated;
     saveCache();
-    return translated;
-  } catch { return cleaned; }
+    return data.translated;
+  } catch (e) {
+    console.warn("Translation error for:", cleaned, e);
+    return cleaned;
+  }
 }
 
 // دالة مساعدة لجلب قائمة العناصر بحد أقصى وإزاحة (Pagination)
