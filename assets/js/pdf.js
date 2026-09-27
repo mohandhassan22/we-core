@@ -17,7 +17,7 @@ function getAuthToken() {
 let translationCache = JSON.parse(localStorage.getItem("translationCache") || "{}");
 function saveCache() { localStorage.setItem("translationCache", JSON.stringify(translationCache)); }
 
-// تحكم بمعدل الطلبات لتفادي خطأ 429 (تم رفع الفترة إلى 16 ثانية للأمان)
+// تحكم بمعدل الطلبات لتفادي خطأ 429
 let lastGeminiCall = 0;
 const MIN_GAP_MS = 16000; 
 async function throttleGemini() {
@@ -26,7 +26,7 @@ async function throttleGemini() {
   lastGeminiCall = Date.now();
 }
 
-// دالة الترجمة الذكية مع نظام إعادة المحاولة (Retry) عند حدوث خطأ 429 أو 502
+// دالة الترجمة الذكية مع نظام إعادة المحاولة (Retry)
 async function translateBatch(rawNames, retries = 3) {
   const cleanedList = rawNames.map(n => n.replace(/\.pdf$/i, "").replace(/[-_]/g, " ").trim());
   const result = {};
@@ -54,7 +54,6 @@ async function translateBatch(rawNames, retries = 3) {
         body: JSON.stringify({ texts: toFetch })
       });
 
-      // إذا حدث خطأ 429 (ضغط طلبات)، انتظر وأعد المحاولة
       if (res.status === 429 && attempt < retries) {
         console.warn(`Rate limited (429). Retrying attempt ${attempt + 1} after 20 seconds...`);
         await new Promise(r => setTimeout(r, 20000));
@@ -86,7 +85,7 @@ async function translateBatch(rawNames, retries = 3) {
         toFetch.forEach(c => { result[c] = c; });
         return result;
       }
-      await new Promise(r => setTimeout(r, 5000)); // انتظار قصير قبل إعادة المحاولة
+      await new Promise(r => setTimeout(r, 5000));
     }
   }
 
@@ -116,19 +115,16 @@ async function fetchStorageList(prefix = "", limit = 100, offset = 0) {
 // مصفوفة عامة لحفظ كافة الملفات المحملة
 let allLoadedForms = [];
 
-// الدالة الرئيسية لجلب الملفات على دفعات (5 ملفات لكل دفعة)
+// الدالة الرئيسية لجلب الملفات على دفعات
 async function fetchPdfsInBatches(onBatchLoaded) {
   try {
-    // 1. جلب قائمة المجلدات بالكامل أولاً
     const initialList = await fetchStorageList("", 100, 0);
     const folderNames = initialList
       .filter(item => !item.id && !item.name.includes("."))
       .map(f => f.name);
 
-    // إضافة الجذر "" كأول مجلد
     const prefixes = ["", ...folderNames];
 
-    // 2. المرور على المجلدات وجلب الملفات بـ Batch Size = 5
     for (const prefix of prefixes) {
       let offset = 0;
       let hasMore = true;
@@ -141,11 +137,9 @@ async function fetchPdfsInBatches(onBatchLoaded) {
           break;
         }
 
-        // تصفية ملفات PDF فقط
         const pdfFiles = items.filter(item => item.name.toLowerCase().endsWith(".pdf"));
 
         if (pdfFiles.length > 0) {
-          // ترجمة كل أسماء الدفعة بطلب واحد مع آلية المعالجة الآمنة
           const titleMap = await translateBatch(pdfFiles.map(f => f.name));
           const batchResults = pdfFiles.map(f => {
             const folderCategory = prefix || "عام";
@@ -160,11 +154,9 @@ async function fetchPdfsInBatches(onBatchLoaded) {
             };
           });
 
-          // تمرير الدفعة المكتملة لواجهة المستخدم مباشرة
           onBatchLoaded(batchResults);
         }
 
-        // إذا كان عدد العناصر المجلوبة أقل من الـ Batch Size فهذا يعني نهاية العناصر في هذا المجلد
         if (items.length < BATCH_SIZE) {
           hasMore = false;
         } else {
@@ -177,7 +169,7 @@ async function fetchPdfsInBatches(onBatchLoaded) {
   }
 }
 
-// ── مساعد: تحديد tag الفئة ──
+// مساعد: تحديد tag الفئة
 function catTag(cat) {
   const map = {
     "Mobile": { cls: "cat-mobile", icon: "fa-mobile-screen-button", label: "المحمول" },
@@ -191,7 +183,7 @@ function catTag(cat) {
   </span>`;
 }
 
-// ── عرض الكروت بالتصميم الجديد ──
+// عرض الكروت بالتصميم الجديد
 function renderCards(forms) {
   const container = document.getElementById("formsContainer");
   if (!container) return;
@@ -231,12 +223,11 @@ function renderCards(forms) {
     </div>`).join("");
 }
 
-// ── بدء التشغيل ──
+// بدء التشغيل
 async function init() {
   const container = document.getElementById("formsContainer");
   allLoadedForms = [];
 
-  // Skeleton أثناء التحميل المبدئي
   if (container) {
     container.innerHTML = `
       ${[1, 2, 3].map(() => `
@@ -248,12 +239,9 @@ async function init() {
         </div>`).join("")}`;
   }
 
-  // البدء في جلب الملفات دفعات (5 بـ 5)
   await fetchPdfsInBatches((newBatch) => {
-    // إضافة العناصر الجديدة للمصفوفة العامة
     allLoadedForms.push(...newBatch);
 
-    // إعادة تطبيق البحث والفلترة الحاليين لإظهار العناصر الجديدة فوراً
     const activeBtn = document.querySelector(".filter-btn.active");
     const currentCat = activeBtn?.dataset?.folder || "all";
     
@@ -262,7 +250,7 @@ async function init() {
   });
 }
 
-// ── الفلترة والبحث ──
+// الفلترة والبحث
 window.filterForms = (cat, btn) => {
   document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
   if (btn) btn.classList.add("active");
@@ -298,4 +286,3 @@ window.searchForms = () => {
 
 // تنفيذ الكود
 init();
-```[cite: 1]
