@@ -2,7 +2,61 @@
 const SUPABASE_URL  = "https://iygwhapcpdmsasqlfelv.supabase.co";
 const SUPABASE_ANON = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml5Z3doYXBjcGRtc2FzcWxmZWx2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzEzNDk5MDQsImV4cCI6MjA4NjkyNTkwNH0.jqU1fEc9kBkXcCfazH6aTnS2XWWzPv0bbixHZgjtrnQ";
 const BUCKET_NAME   = "All Form";
+const TRANSLATE_API = "https://api.mymemory.translated.net/get";
 const BATCH_SIZE    = 5; // عدد الملفات في كل دفعة
+
+// القاموس المحدث والمصحح تقنياً لشركة WE
+const customDictionary = {
+  "mobile": "موبايل",
+  "sim card": "شريحة",
+  "mnp": "تحويل رقم",
+  "adsl": "إنترنت منزلي",
+  "form": "نموذج",
+  "service": "خدمة",
+  "complaint": "شكوى",
+  "customer": "عميل",
+  "request": "طلب",
+  "cancel": "إلغاء",
+  "subscription": "اشتراك",
+  "transfer": "نقل",
+  "ownership": "ملكية",
+  "sim swap": "استبدال شريحة",
+  "fixed": "الخط الأرضي",
+  "cancellation adsl": "إلغاء الإنترنت المنزلي",
+  "cash receipt": "إيصال نقدي",
+  "router installment approval": "إقرار تقسيط الراوتر",
+  "landline internet fine contract": "عقد غرامة الإنترنت الأرضي",
+  "ntra_fore-new-landlaien": "الجهاز القومي لتنظيم الاتصالات - أرضي جديد",
+  "ntra_fore-old-landlaien": "الجهاز القومي لتنظيم الاتصالات - أرضي قديم",
+  "personal data modification form": "نموذج تعديل البيانات الشخصية",
+  "request to transfer adsl phone number": "طلب نقل رقم الإنترنت المنزلي",
+  "request to transfer adsl service from another provider": "طلب نقل خدمة الإنترنت المنزلي من مشغل آخر",
+  "guide 140": "دليل 140",
+  "home personal number service subscription form": "نموذج اشتراك خدمة الرقم الشخصي المنزلي",
+  "request for a new landline": "طلب خط أرضي جديد",
+  "request for transfer of landline telephone line": "طلب تحويل خط تليفون أرضي",
+  "request to cancel a landline telephone service": "طلب إلغاء خدمة التليفون الأرضي",
+  "request to pay phone bills in installments": "طلب تقسيط فواتير التليفون",
+  "request to subscribe to additional mobile packages": "طلب اشتراك في باقات موبايل إضافية",
+  "request to transfer landline telephone": "طلب نقل تليفون أرضي",
+  "requesting added features and services": "طلب ميزات وخدمات مضافة",
+  "added a new landline for an existing we gold customer": "إضافة خط أرضي جديد لعميل وي جولد حالي",
+  "approval of temporary suspension of the billing line": "إقرار تعليق مؤقت لخط الفاتورة",
+  "cancel mnp": "إلغاء تحويل الرقم",
+  "contract for providing promotional call services for individual lines": "عقد تقديم خدمات مكالمات ترويجية لخطوط الأفراد",
+  "declaration of 12 months": "إقرار 12 شهر",
+  "diplomatic pledge and declaration": "تعهد وإقرار دبلوماسي",
+  "e-sim": "شريحة إلكترونية",
+  "more than one line form for the customer": "نموذج أكثر من خط للعميل",
+  "ownership transfer form": "نموذج نقل الملكية",
+  "parental approval": "موافقة ولي الأمر",
+  "request to add a new landline for a new we gold customer": "طلب إضافة خط أرضي جديد لعميل وي جولد جديد",
+  "request to add an existing landline for a new we gold customer": "طلب إضافة خط أرضي حالي لعميل وي جولد جديد",
+  "request to cancel a prepaid sim card": "طلب إلغاء شريحة مسبقة الدفع",
+  "request to cancel wallet": "طلب إلغاء المحفظة الإلكترونية",
+  "request to cancel we gold line": "طلب إلغاء خط وي جولد",
+  "request to transfer ownership of student data sim card": "طلب نقل ملكية شريحة بيانات الطلاب"
+};
 
 // جلب التوكن من الكوكيز
 function getAuthToken() {
@@ -16,43 +70,26 @@ function getAuthToken() {
 let translationCache = JSON.parse(localStorage.getItem("translationCache") || "{}");
 function saveCache() { localStorage.setItem("translationCache", JSON.stringify(translationCache)); }
 
-// ترجمة نص واحد فورًا باستخدام Google Translate المجاني (بدون مفتاح، بدون حد يومي عملي)
-async function translateViaGoogle(text) {
-  const url = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=en&tl=ar&dt=t&q=${encodeURIComponent(text)}`;
-  const res = await fetch(url);
-  if (!res.ok) throw new Error(`Google Translate HTTP ${res.status}`);
-  const data = await res.json();
-  // شكل الرد: [[["الترجمة","النص الأصلي",...], ...], ...]
-  return data[0].map(chunk => chunk[0]).join("");
-}
+// دالة الترجمة الذكية
+async function translateOne(text) {
+  const cleaned = text.replace(/\.pdf$/i, "").replace(/[-_]/g, " ").trim();
+  if (translationCache[cleaned.toLowerCase()]) return translationCache[cleaned.toLowerCase()];
 
-// دالة الترجمة الذكية للدفعة كلها (كل ملف بيتترجم فورًا ومتوازي)
-async function translateBatch(rawNames) {
-  const cleanedList = rawNames.map(n => n.replace(/\.pdf$/i, "").replace(/[-_]/g, " ").trim());
-  const result = {};
-  const toFetch = [];
+  const dictMatch = customDictionary[cleaned.toLowerCase()];
+  if (dictMatch) {
+    translationCache[cleaned.toLowerCase()] = dictMatch;
+    saveCache();
+    return dictMatch;
+  }
 
-  cleanedList.forEach(c => {
-    const key = c.toLowerCase();
-    if (translationCache[key]) result[c] = translationCache[key];
-    else toFetch.push(c);
-  });
-
-  if (toFetch.length === 0) return result;
-
-  await Promise.all(toFetch.map(async (c) => {
-    try {
-      const t = await translateViaGoogle(c);
-      translationCache[c.toLowerCase()] = t;
-      result[c] = t;
-    } catch (e) {
-      console.warn("Translation failed for:", c, e);
-      result[c] = c;
-    }
-  }));
-  saveCache();
-
-  return result;
+  try {
+    const res = await fetch(`${TRANSLATE_API}?q=${encodeURIComponent(cleaned)}&langpair=en|ar`);
+    const data = await res.json();
+    const translated = data?.responseData?.translatedText || cleaned;
+    translationCache[cleaned.toLowerCase()] = translated;
+    saveCache();
+    return translated;
+  } catch { return cleaned; }
 }
 
 // دالة مساعدة لجلب قائمة العناصر بحد أقصى وإزاحة (Pagination)
@@ -106,20 +143,20 @@ async function fetchPdfsInBatches(onBatchLoaded) {
         const pdfFiles = items.filter(item => item.name.toLowerCase().endsWith(".pdf"));
 
         if (pdfFiles.length > 0) {
-          // ترجمة كل أسماء الدفعة بطلب واحد بدل طلب لكل ملف
-          const titleMap = await translateBatch(pdfFiles.map(f => f.name));
-          const batchResults = pdfFiles.map(f => {
+          const batchResults = [];
+          for (const f of pdfFiles) {
             const folderCategory = prefix || "عام";
             const fullPath = prefix ? `${prefix}/${f.name}` : f.name;
-            const cleaned = f.name.replace(/\.pdf$/i, "").replace(/[-_]/g, " ").trim();
-            return {
+            const title = await translateOne(f.name);
+
+            batchResults.push({
               filename: f.name,
               fullPath: fullPath,
               category: folderCategory,
-              title: titleMap[cleaned] || cleaned,
+              title: title,
               size: f.metadata ? (f.metadata.size / 1024).toFixed(1) + " KB" : ""
-            };
-          });
+            });
+          }
 
           // تمرير الدفعة المكتملة لواجهة المستخدم مباشرة
           onBatchLoaded(batchResults);
