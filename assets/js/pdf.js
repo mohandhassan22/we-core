@@ -5,59 +5,6 @@ const BUCKET_NAME   = "All Form";
 const TRANSLATE_API = `${SUPABASE_URL}/functions/v1/translate-gemini`;
 const BATCH_SIZE    = 5; // عدد الملفات في كل دفعة
 
-// القاموس المحدث والمصحح تقنياً لشركة WE
-const customDictionary = {
-  "mobile": "موبايل",
-  "sim card": "شريحة",
-  "mnp": "تحويل رقم",
-  "adsl": "إنترنت منزلي",
-  "form": "نموذج",
-  "service": "خدمة",
-  "complaint": "شكوى",
-  "customer": "عميل",
-  "request": "طلب",
-  "cancel": "إلغاء",
-  "subscription": "اشتراك",
-  "transfer": "نقل",
-  "ownership": "ملكية",
-  "sim swap": "استبدال شريحة",
-  "fixed": "الخط الأرضي",
-  "cancellation adsl": "إلغاء الإنترنت المنزلي",
-  "cash receipt": "إيصال نقدي",
-  "router installment approval": "إقرار تقسيط الراوتر",
-  "landline internet fine contract": "عقد غرامة الإنترنت الأرضي",
-  "ntra_fore-new-landlaien": "الجهاز القومي لتنظيم الاتصالات - أرضي جديد",
-  "ntra_fore-old-landlaien": "الجهاز القومي لتنظيم الاتصالات - أرضي قديم",
-  "personal data modification form": "نموذج تعديل البيانات الشخصية",
-  "request to transfer adsl phone number": "طلب نقل رقم الإنترنت المنزلي",
-  "request to transfer adsl service from another provider": "طلب نقل خدمة الإنترنت المنزلي من مشغل آخر",
-  "guide 140": "دليل 140",
-  "home personal number service subscription form": "نموذج اشتراك خدمة الرقم الشخصي المنزلي",
-  "request for a new landline": "طلب خط أرضي جديد",
-  "request for transfer of landline telephone line": "طلب تحويل خط تليفون أرضي",
-  "request to cancel a landline telephone service": "طلب إلغاء خدمة التليفون الأرضي",
-  "request to pay phone bills in installments": "طلب تقسيط فواتير التليفون",
-  "request to subscribe to additional mobile packages": "طلب اشتراك في باقات موبايل إضافية",
-  "request to transfer landline telephone": "طلب نقل تليفون أرضي",
-  "requesting added features and services": "طلب ميزات وخدمات مضافة",
-  "added a new landline for an existing we gold customer": "إضافة خط أرضي جديد لعميل وي جولد حالي",
-  "approval of temporary suspension of the billing line": "إقرار تعليق مؤقت لخط الفاتورة",
-  "cancel mnp": "إلغاء تحويل الرقم",
-  "contract for providing promotional call services for individual lines": "عقد تقديم خدمات مكالمات ترويجية لخطوط الأفراد",
-  "declaration of 12 months": "إقرار 12 شهر",
-  "diplomatic pledge and declaration": "تعهد وإقرار دبلوماسي",
-  "e-sim": "شريحة إلكترونية",
-  "more than one line form for the customer": "نموذج أكثر من خط للعميل",
-  "ownership transfer form": "نموذج نقل الملكية",
-  "parental approval": "موافقة ولي الأمر",
-  "request to add a new landline for a new we gold customer": "طلب إضافة خط أرضي جديد لعميل وي جولد جديد",
-  "request to add an existing landline for a new we gold customer": "طلب إضافة خط أرضي حالي لعميل وي جولد جديد",
-  "request to cancel a prepaid sim card": "طلب إلغاء شريحة مسبقة الدفع",
-  "request to cancel wallet": "طلب إلغاء المحفظة الإلكترونية",
-  "request to cancel we gold line": "طلب إلغاء خط وي جولد",
-  "request to transfer ownership of student data sim card": "طلب نقل ملكية شريحة بيانات الطلاب"
-};
-
 // جلب التوكن من الكوكيز
 function getAuthToken() {
   const value = `; ${document.cookie}`;
