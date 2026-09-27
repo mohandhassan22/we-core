@@ -17,10 +17,30 @@ function getAuthToken() {
 let translationCache = JSON.parse(localStorage.getItem("translationCache") || "{}");
 function saveCache() { localStorage.setItem("translationCache", JSON.stringify(translationCache)); }
 
-// دالة الترجمة الذكية
-async function translateOne(text) {
-  const cleaned = text.replace(/\.pdf$/i, "").replace(/[-_]/g, " ").trim();
-  if (translationCache[cleaned.toLowerCase()]) return translationCache[cleaned.toLowerCase()];
+// تحكم بمعدل الطلبات عشان نحترم حد Gemini المجاني (5 طلبات/دقيقة)
+let lastGeminiCall = 0;
+const MIN_GAP_MS = 13000; // 13 ثانية بين كل طلب فعلي وطلب
+async function throttleGemini() {
+  const wait = MIN_GAP_MS - (Date.now() - lastGeminiCall);
+  if (wait > 0) await new Promise(r => setTimeout(r, wait));
+  lastGeminiCall = Date.now();
+}
+
+// دالة الترجمة الذكية للدفعة كلها بطلب واحد
+async function translateBatch(rawNames) {
+  const cleanedList = rawNames.map(n => n.replace(/\.pdf$/i, "").replace(/[-_]/g, " ").trim());
+  const result = {};
+  const toFetch = [];
+
+  cleanedList.forEach(c => {
+    const key = c.toLowerCase();
+    if (translationCache[key]) result[c] = translationCache[key];
+    else toFetch.push(c);
+  });
+
+  if (toFetch.length === 0) return result;
+
+  await throttleGemini();
 
   try {
     const res = await fetch(TRANSLATE_API, {
@@ -30,20 +50,26 @@ async function translateOne(text) {
         "Authorization": `Bearer ${SUPABASE_ANON}`,
         "apikey": SUPABASE_ANON
       },
-      body: JSON.stringify({ text: cleaned })
+      body: JSON.stringify({ texts: toFetch })
     });
     const data = await res.json();
-    if (!res.ok || !data?.translated) {
-      console.warn("Translation failed for:", cleaned, data);
-      return cleaned;
+    if (!res.ok || !Array.isArray(data?.translations)) {
+      console.warn("Batch translation failed:", data);
+      toFetch.forEach(c => { result[c] = c; });
+      return result;
     }
-    translationCache[cleaned.toLowerCase()] = data.translated;
+    toFetch.forEach((c, i) => {
+      const t = data.translations[i] || c;
+      translationCache[c.toLowerCase()] = t;
+      result[c] = t;
+    });
     saveCache();
-    return data.translated;
   } catch (e) {
-    console.warn("Translation error for:", cleaned, e);
-    return cleaned;
+    console.warn("Batch translation error:", e);
+    toFetch.forEach(c => { result[c] = c; });
   }
+
+  return result;
 }
 
 // دالة مساعدة لجلب قائمة العناصر بحد أقصى وإزاحة (Pagination)
@@ -97,20 +123,20 @@ async function fetchPdfsInBatches(onBatchLoaded) {
         const pdfFiles = items.filter(item => item.name.toLowerCase().endsWith(".pdf"));
 
         if (pdfFiles.length > 0) {
-          const batchResults = [];
-          for (const f of pdfFiles) {
+          // ترجمة كل أسماء الدفعة بطلب واحد بدل طلب لكل ملف
+          const titleMap = await translateBatch(pdfFiles.map(f => f.name));
+          const batchResults = pdfFiles.map(f => {
             const folderCategory = prefix || "عام";
             const fullPath = prefix ? `${prefix}/${f.name}` : f.name;
-            const title = await translateOne(f.name);
-
-            batchResults.push({
+            const cleaned = f.name.replace(/\.pdf$/i, "").replace(/[-_]/g, " ").trim();
+            return {
               filename: f.name,
               fullPath: fullPath,
               category: folderCategory,
-              title: title,
+              title: titleMap[cleaned] || cleaned,
               size: f.metadata ? (f.metadata.size / 1024).toFixed(1) + " KB" : ""
-            });
-          }
+            };
+          });
 
           // تمرير الدفعة المكتملة لواجهة المستخدم مباشرة
           onBatchLoaded(batchResults);
