@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <script src="../../assets/js/auth.js?v=16.0.3"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Supervisor Dashboard | WE Target Manager</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <link rel="stylesheet" href="../css/global.css">
+    <link rel="stylesheet" href="../css/dashboard.css">
+    <link rel="stylesheet" href="../css/components.css">
+    <link rel="stylesheet" href="../css/responsive.css">
+</head>
+<body>
+    <div class="app-layout">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-brand-logo"><i class="fa-solid fa-user-tie"></i></div>
+                <div>
+                    <div class="sidebar-title">WE Target Manager</div>
+                    <div class="sidebar-sub">لوحة الإشراف العام</div>
+                </div>
+            </div>
+            <nav class="sidebar-nav" id="sidebarNav"></nav>
+            <div class="sidebar-footer">
+                <button class="btn btn-secondary w-full" id="darkToggleBtn">
+                    <i class="fa-solid fa-moon" id="darkToggleIcon"></i> <span>الوضع الداكن</span>
+                </button>
+            </div>
+        </aside>
+
+        <div class="sidebar-overlay"></div>
+
+        <!-- Main Content -->
+        <main class="main-wrapper">
+            <header class="top-navbar">
+                <div class="header-left">
+                    <button class="mobile-menu-btn" id="mobileMenuBtn"><i class="fa-solid fa-bars"></i></button>
+                    <nav class="breadcrumbs">
+                        <span class="breadcrumb-item"><a href="../index.html"><i class="fa-solid fa-house"></i> الرئيسية</a></span>
+                        <span class="breadcrumb-separator"><i class="fa-solid fa-chevron-left"></i></span>
+                        <span class="breadcrumb-item active">لوحة المشرف (Supervisor)</span>
+                    </nav>
+                </div>
+                <div class="header-right">
+                    <div class="user-badge">
+                        <div class="user-avatar" id="headerUserAvatar">SV</div>
+                        <div class="user-info-text">
+                            <span class="user-name-str" id="headerUserName">جاري التحميل...</span>
+                            <span class="user-role-tag" id="headerUserRole">Supervisor</span>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <div class="dashboard-content">
+                <section class="dashboard-hero">
+                    <div>
+                        <h1 class="hero-title">لوحة إشراف المناطق والقطاعات 👔</h1>
+                        <p class="hero-subtitle">استعراض أداء كافة المناطق المصرح بها، والتنقل الهيكلي من المنطقة إلى الفرع والموظف.</p>
+                    </div>
+                </section>
+
+                <div id="supervisorDashboardContainer">
+                    <div class="skeleton" style="height: 300px;"></div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../js/target-calculator.js"></script>
+    <script src="../js/utils.js"></script>
+    <script src="../js/api.js"></script>
+    <script src="../js/permissions.js"></script>
+    <script src="../js/charts.js"></script>
+    <script src="../js/ai.js"></script>
+    <script src="../js/dashboard.js"></script>
+    <script src="../js/app.js"></script>
+</body>
+</html>

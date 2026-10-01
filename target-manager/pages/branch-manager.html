@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <script src="../../assets/js/auth.js?v=16.0.3"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Branch Manager Dashboard | WE Target Manager</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <link rel="stylesheet" href="../css/global.css">
+    <link rel="stylesheet" href="../css/dashboard.css">
+    <link rel="stylesheet" href="../css/components.css">
+    <link rel="stylesheet" href="../css/responsive.css">
+</head>
+<body>
+    <div class="app-layout">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-brand-logo"><i class="fa-solid fa-store"></i></div>
+                <div>
+                    <div class="sidebar-title">WE Target Manager</div>
+                    <div class="sidebar-sub">لوحة مدير الفرع</div>
+                </div>
+            </div>
+            <nav class="sidebar-nav" id="sidebarNav"></nav>
+            <div class="sidebar-footer">
+                <button class="btn btn-secondary w-full" id="darkToggleBtn">
+                    <i class="fa-solid fa-moon" id="darkToggleIcon"></i> <span>الوضع الداكن</span>
+                </button>
+            </div>
+        </aside>
+
+        <div class="sidebar-overlay"></div>
+
+        <!-- Main Content -->
+        <main class="main-wrapper">
+            <header class="top-navbar">
+                <div class="header-left">
+                    <button class="mobile-menu-btn" id="mobileMenuBtn"><i class="fa-solid fa-bars"></i></button>
+                    <nav class="breadcrumbs">
+                        <span class="breadcrumb-item"><a href="../index.html"><i class="fa-solid fa-house"></i> الرئيسية</a></span>
+                        <span class="breadcrumb-separator"><i class="fa-solid fa-chevron-left"></i></span>
+                        <span class="breadcrumb-item active">أداء الفرع (Branch Manager)</span>
+                    </nav>
+                </div>
+                <div class="header-right">
+                    <div class="user-badge">
+                        <div class="user-avatar" id="headerUserAvatar">BM</div>
+                        <div class="user-info-text">
+                            <span class="user-name-str" id="headerUserName">جاري التحميل...</span>
+                            <span class="user-role-tag" id="headerUserRole">Branch Manager</span>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <div class="dashboard-content">
+                <section class="dashboard-hero">
+                    <div>
+                        <h1 class="hero-title">لوحة أداء الفرع الموحدة 🏬</h1>
+                        <p class="hero-subtitle">متابعة الأهداف الإجمالية للفرع، توزيع التارجت على الموظفين تلقائياً، والتحليل التنبؤي للمبيعات.</p>
+                    </div>
+                    <div class="hero-actions">
+                        <button class="btn btn-primary" onclick="Utils.openModal('branchTargetModal')">
+                            <i class="fa-solid fa-bullseye"></i> تسجيل توتل تارجت الفرع
+                        </button>
+                        <button class="btn btn-secondary" onclick="Utils.exportToExcel('Branch_Performance', Dashboard.state.subordinates, ['الاسم', 'الفرع', 'المنطقة'])">
+                            <i class="fa-solid fa-file-excel"></i> تصدير إكسيل
+                        </button>
+                    </div>
+                </section>
+
+                <div id="branchDashboardContainer">
+                    <div class="skeleton" style="height: 300px;"></div>
+                </div>
+
+                <section class="charts-grid margin-top">
+                    <div class="chart-card">
+                        <div class="chart-header">
+                            <h4 class="chart-title"><i class="fa-solid fa-users"></i> مقارنة إنجاز الموظفين داخل الفرع</h4>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="chartBranchEmployees"></canvas>
+                        </div>
+                    </div>
+                    <div class="chart-card">
+                        <div class="chart-header">
+                            <h4 class="chart-title"><i class="fa-solid fa-chart-line"></i> الأداء اليومي التراكمي للفرع</h4>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="chartBranchDaily"></canvas>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <!-- Branch Target Distribution Modal -->
+    <div class="modal-overlay" id="branchTargetModal">
+        <div class="modal-container" style="max-width: 680px;">
+            <div class="modal-header">
+                <h3 class="modal-title"><i class="fa-solid fa-calculator"></i> إدخال توتل تارجت الفرع وتوزيعه تلقائياً</h3>
+                <button class="btn-icon" onclick="Utils.closeModal('branchTargetModal')"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="modal-body">
+                <p class="text-muted" style="margin-bottom: 1rem; font-size: 0.9rem;">
+                    قم بإدخال المستهدف الكلي للفرع بالكامل، وسيقوم النظام بتوزيع وتطبيق التارجت بالتساوي على جميع موظفي الفرع المعتمدين.
+                </p>
+                <form id="branchTargetForm">
+                    <div class="items-grid" style="grid-template-columns: repeat(2, 1fr);">
+                        <div class="form-group"><label class="form-label">توتل PT12 للفرع</label><input type="number" min="0" class="form-input branch-tgt-input" id="btgt_pt12" value="150"></div>
+                        <div class="form-group"><label class="form-label">توتل Super Kix للفرع</label><input type="number" min="0" class="form-input branch-tgt-input" id="btgt_super_kix" value="150"></div>
+                        <div class="form-group"><label class="form-label">توتل Control Tazbeet للفرع</label><input type="number" min="0" class="form-input branch-tgt-input" id="btgt_tazbeet" value="150"></div>
+                        <div class="form-group"><label class="form-label">توتل Data Lines للفرع</label><input type="number" min="0" class="form-input branch-tgt-input" id="btgt_data" value="150"></div>
+                        <div class="form-group"><label class="form-label">توتل WE Space ADSL للفرع</label><input type="number" min="0" class="form-input branch-tgt-input" id="btgt_adsl" value="50"></div>
+                        <div class="form-group"><label class="form-label">توتل Fixed Line للفرع</label><input type="number" min="0" class="form-input branch-tgt-input" id="btgt_fixed" value="50"></div>
+                        <div class="form-group" style="grid-column: span 2;"><label class="form-label">توتل WE Pay Wallet للفرع</label><input type="number" min="0" class="form-input branch-tgt-input" id="btgt_we_pay" value="100"></div>
+                    </div>
+                    <div class="glass-card margin-top" style="background:var(--bg-subtle); padding: 1rem;">
+                        <div class="flex justify-between items-center">
+                            <span class="font-bold">عدد موظفي الفرع: <span id="branchEmpCountDisplay">10</span> موظف</span>
+                            <span class="font-bold text-purple" id="perEmpTargetDisplay">تارجت الموظف الواحد: 60 خط أسطر</span>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="Utils.closeModal('branchTargetModal')">إلغاء</button>
+                <button class="btn btn-primary" id="saveBranchTargetBtn"><i class="fa-solid fa-check-double"></i> توزيع وتطبيق التارجت</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Employee Drilldown Modal -->
+    <div class="modal-overlay" id="employeeModal">
+        <div class="modal-container" style="max-width: 720px;">
+            <div class="modal-header">
+                <h3 class="modal-title"><i class="fa-solid fa-id-card"></i> تفاصيل أداء الموظف</h3>
+                <button class="btn-icon" onclick="Utils.closeModal('employeeModal')"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="modal-body" id="employeeModalBody">
+                <div class="kpi-grid" style="grid-template-columns: repeat(3, 1fr);">
+                    <div class="kpi-card"><span class="kpi-title">الهدف</span><div class="kpi-value">60</div></div>
+                    <div class="kpi-card"><span class="kpi-title">المحقق</span><div class="kpi-value">42</div></div>
+                    <div class="kpi-card"><span class="kpi-title">النسبة</span><div class="kpi-value">70%</div></div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="Utils.closeModal('employeeModal')">إغلاق</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../js/target-calculator.js"></script>
+    <script src="../js/utils.js"></script>
+    <script src="../js/api.js"></script>
+    <script src="../js/permissions.js"></script>
+    <script src="../js/charts.js"></script>
+    <script src="../js/ai.js"></script>
+    <script src="../js/dashboard.js"></script>
+    <script src="../js/app.js"></script>
+
+    <script>
+        function updateBranchTargetDistributionUI() {
+            const totalTargets = {
+                pt12: parseFloat(document.getElementById('btgt_pt12').value) || 0,
+                super_kix: parseFloat(document.getElementById('btgt_super_kix').value) || 0,
+                tazbeet: parseFloat(document.getElementById('btgt_tazbeet').value) || 0,
+                data: parseFloat(document.getElementById('btgt_data').value) || 0,
+                adsl: parseFloat(document.getElementById('btgt_adsl').value) || 0,
+                fixed: parseFloat(document.getElementById('btgt_fixed').value) || 0,
+                we_pay: parseFloat(document.getElementById('btgt_we_pay').value) || 0,
+            };
+
+            const empCount = Dashboard.state.subordinates.length || 10;
+            document.getElementById('branchEmpCountDisplay').textContent = empCount;
+
+            const calc = TargetCalculator.calculateEmployeeTargetsFromBranchTotal(totalTargets, empCount);
+            document.getElementById('perEmpTargetDisplay').textContent = `تارجت الموظف الواحد: ${calc.perEmployeeTotalLines} خط أسطر`;
+        }
+
+        document.querySelectorAll('.branch-tgt-input').forEach(input => {
+            input.addEventListener('input', updateBranchTargetDistributionUI);
+        });
+
+        document.getElementById('saveBranchTargetBtn').addEventListener('click', async function() {
+            const totalTargets = {
+                pt12: parseFloat(document.getElementById('btgt_pt12').value) || 0,
+                super_kix: parseFloat(document.getElementById('btgt_super_kix').value) || 0,
+                tazbeet: parseFloat(document.getElementById('btgt_tazbeet').value) || 0,
+                data: parseFloat(document.getElementById('btgt_data').value) || 0,
+                adsl: parseFloat(document.getElementById('btgt_adsl').value) || 0,
+                fixed: parseFloat(document.getElementById('btgt_fixed').value) || 0,
+                we_pay: parseFloat(document.getElementById('btgt_we_pay').value) || 0,
+            };
+
+            const empCount = Dashboard.state.subordinates.length || 10;
+            const calc = TargetCalculator.calculateEmployeeTargetsFromBranchTotal(totalTargets, empCount);
+
+            Utils.showToast(`تم توزيع التارجت بنجاح على ${empCount} موظف بمعدل ${calc.perEmployeeTotalLines} خط لكل موظف!`, 'success');
+            Utils.closeModal('branchTargetModal');
+        });
+    </script>
+</body>
+</html>

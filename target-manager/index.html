@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <script src="../assets/js/auth.js?v=16.0.3"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WE Target Manager | نظام إدارة الأداء والمبيعات</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+    <div class="app-layout">
+        <!-- Sidebar Navigation Drawer -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-brand-logo">
+                    <i class="fa-solid fa-bullseye"></i>
+                </div>
+                <div>
+                    <div class="sidebar-title">WE Target Manager</div>
+                    <div class="sidebar-sub">نظام متابعة الأداء والمبيعات</div>
+                </div>
+            </div>
+            <nav class="sidebar-nav" id="sidebarNav">
+                <!-- Dynamic Navigation Items Populated by permissions.js -->
+            </nav>
+            <div class="sidebar-footer">
+                <button class="btn btn-secondary w-full" id="darkToggleBtn">
+                    <i class="fa-solid fa-moon" id="darkToggleIcon"></i>
+                    <span>الوضع الداكن</span>
+                </button>
+            </div>
+        </aside>
+
+        <!-- Sidebar Mobile Overlay -->
+        <div class="sidebar-overlay"></div>
+
+        <!-- Main Wrapper -->
+        <main class="main-wrapper">
+            <!-- Header Top Bar -->
+            <header class="top-navbar">
+                <div class="header-left">
+                    <button class="mobile-menu-btn" id="mobileMenuBtn">
+                        <i class="fa-solid fa-bars"></i>
+                    </button>
+                    <nav class="breadcrumbs" id="breadcrumbsNav">
+                        <span class="breadcrumb-item"><i class="fa-solid fa-house"></i> الرئيسية</span>
+                        <span class="breadcrumb-separator"><i class="fa-solid fa-chevron-left"></i></span>
+                        <span class="breadcrumb-item active" id="currentBreadcrumbPage">لوحة الأداء</span>
+                    </nav>
+                </div>
+                <div class="header-right">
+                    <div class="user-badge">
+                        <div class="user-avatar" id="headerUserAvatar">WE</div>
+                        <div class="user-info-text">
+                            <span class="user-name-str" id="headerUserName">جاري التحميل...</span>
+                            <span class="user-role-tag" id="headerUserRole">—</span>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Loading View / Router Placeholder -->
+            <div class="dashboard-content" id="mainDashboardContent">
+                <div class="empty-state">
+                    <i class="fa-solid fa-spinner fa-spin" style="font-size: 2.5rem; color: var(--we-purple);"></i>
+                    <h2>جاري التحقق من الصلاحيات وتوجيه المستخدم...</h2>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- JavaScript Modules -->
+    <script src="js/target-calculator.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/permissions.js"></script>
+    <script src="js/charts.js"></script>
+    <script src="js/ai.js"></script>
+    <script src="js/dashboard.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>

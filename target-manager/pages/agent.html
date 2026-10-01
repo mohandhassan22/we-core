@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <script src="../../assets/js/auth.js?v=16.0.3"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agent Dashboard | WE Target Manager</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <link rel="stylesheet" href="../css/global.css">
+    <link rel="stylesheet" href="../css/dashboard.css">
+    <link rel="stylesheet" href="../css/components.css">
+    <link rel="stylesheet" href="../css/responsive.css">
+</head>
+<body>
+    <div class="app-layout">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-brand-logo"><i class="fa-solid fa-bullseye"></i></div>
+                <div>
+                    <div class="sidebar-title">WE Target Manager</div>
+                    <div class="sidebar-sub">لوحة أداء الموظف</div>
+                </div>
+            </div>
+            <nav class="sidebar-nav" id="sidebarNav"></nav>
+            <div class="sidebar-footer">
+                <button class="btn btn-secondary w-full" id="darkToggleBtn">
+                    <i class="fa-solid fa-moon" id="darkToggleIcon"></i> <span>الوضع الداكن</span>
+                </button>
+            </div>
+        </aside>
+
+        <div class="sidebar-overlay"></div>
+
+        <!-- Main Content -->
+        <main class="main-wrapper">
+            <header class="top-navbar">
+                <div class="header-left">
+                    <button class="mobile-menu-btn" id="mobileMenuBtn"><i class="fa-solid fa-bars"></i></button>
+                    <nav class="breadcrumbs">
+                        <span class="breadcrumb-item"><a href="../index.html"><i class="fa-solid fa-house"></i> الرئيسية</a></span>
+                        <span class="breadcrumb-separator"><i class="fa-solid fa-chevron-left"></i></span>
+                        <span class="breadcrumb-item active">لوحة الموظف (Agent)</span>
+                    </nav>
+                </div>
+                <div class="header-right">
+                    <div class="user-badge">
+                        <div class="user-avatar" id="headerUserAvatar">AG</div>
+                        <div class="user-info-text">
+                            <span class="user-name-str" id="headerUserName">جاري التحميل...</span>
+                            <span class="user-role-tag" id="headerUserRole">Agent</span>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <div class="dashboard-content">
+                <!-- Hero Banner -->
+                <section class="dashboard-hero">
+                    <div>
+                        <h1 class="hero-title">أهلاً بك، متابعة الأداء الشخصي 🎯</h1>
+                        <p class="hero-subtitle">استعرض إنجازك اليومي، المستهدفات الفردية، وتوصيات الذكاء الاصطناعي لتطوير مبيعاتك.</p>
+                    </div>
+                    <div class="hero-actions">
+                        <button class="btn btn-primary" onclick="Utils.openModal('dailyModal')">
+                            <i class="fa-solid fa-plus-circle"></i> إضافة أداء اليوم
+                        </button>
+                    </div>
+                </section>
+
+                <!-- KPI Cards Grid -->
+                <section class="kpi-grid" id="kpiGridContainer">
+                    <div class="skeleton" style="height: 120px;"></div>
+                    <div class="skeleton" style="height: 120px;"></div>
+                    <div class="skeleton" style="height: 120px;"></div>
+                    <div class="skeleton" style="height: 120px;"></div>
+                    <div class="skeleton" style="height: 120px;"></div>
+                </section>
+
+                <!-- Product Breakdown Items -->
+                <section>
+                    <h3 class="font-bold margin-bottom" style="font-size:1.15rem; margin-bottom: 1rem;">
+                        <i class="fa-solid fa-layer-group" style="color:var(--we-purple);"></i> تفاصيل المستهدف حسب المنتج
+                    </h3>
+                    <div class="items-grid" id="itemsGridContainer">
+                        <div class="skeleton" style="height: 100px;"></div>
+                        <div class="skeleton" style="height: 100px;"></div>
+                        <div class="skeleton" style="height: 100px;"></div>
+                    </div>
+                </section>
+
+                <!-- Charts Section -->
+                <section class="charts-grid">
+                    <div class="chart-card">
+                        <div class="chart-header">
+                            <h4 class="chart-title"><i class="fa-solid fa-chart-column"></i> الهدف vs المحقق الفعلي</h4>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="chartTargetVsAchieve"></canvas>
+                        </div>
+                    </div>
+                    <div class="chart-card">
+                        <div class="chart-header">
+                            <h4 class="chart-title"><i class="fa-solid fa-chart-pie"></i> توزيع مبيعات المنتجات</h4>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="chartProductBreakdown"></canvas>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- WE AI Coach Card -->
+                <section class="ai-coach-card" id="ai-section">
+                    <div class="ai-coach-header">
+                        <span class="ai-badge"><i class="fa-solid fa-wand-magic-sparkles"></i> WE AI Coach</span>
+                        <button class="btn btn-sm btn-secondary" onclick="Dashboard.loadAiCoach(Dashboard.state.currentMetrics, Dashboard.state.userProfile, Dashboard.state.targetPeriod?.id, true)">
+                            <i class="fa-solid fa-rotate"></i> تحديث التحليل
+                        </button>
+                    </div>
+                    <div class="ai-content-box" id="aiCoachText">
+                        جاري تحليل البيانات بواسطة مستشار الذكاء الاصطناعي...
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <!-- Daily Entry Modal -->
+    <div class="modal-overlay" id="dailyModal">
+        <div class="modal-container">
+            <div class="modal-header">
+                <h3 class="modal-title"><i class="fa-solid fa-calendar-plus"></i> تسجيل أداء اليوم</h3>
+                <button class="btn-icon" onclick="Utils.closeModal('dailyModal')"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="modal-body">
+                <form id="dailyEntryForm">
+                    <div class="form-group">
+                        <label class="form-label">تاريخ الأداء</label>
+                        <input type="date" class="form-input" id="entryDate" required>
+                    </div>
+                    <div class="items-grid" style="grid-template-columns: repeat(2, 1fr);">
+                        <div class="form-group">
+                            <label class="form-label">PT12</label>
+                            <input type="number" min="0" class="form-input" id="entry_pt12" value="0">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Super Kix</label>
+                            <input type="number" min="0" class="form-input" id="entry_super_kix" value="0">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">New Control Tazbeet</label>
+                            <input type="number" min="0" class="form-input" id="entry_tazbeet" value="0">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Data Lines</label>
+                            <input type="number" min="0" class="form-input" id="entry_data" value="0">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">WE Space ADSL</label>
+                            <input type="number" min="0" class="form-input" id="entry_adsl" value="0">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Fixed Line</label>
+                            <input type="number" min="0" class="form-input" id="entry_fixed" value="0">
+                        </div>
+                        <div class="form-group" style="grid-column: span 2;">
+                            <label class="form-label">WE Pay Wallet</label>
+                            <input type="number" min="0" class="form-input" id="entry_we_pay" value="0">
+                        </div>
+                    </div>
+                    <div class="form-group" style="margin-top: 1rem;">
+                        <label class="form-label">ملاحظات إضافية (اختياري)</label>
+                        <input type="text" class="form-input" id="entryNotes" placeholder="أدخل أي ملاحظات حول أداء اليوم...">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="Utils.closeModal('dailyModal')">إلغاء</button>
+                <button class="btn btn-primary" id="saveDailyBtn"><i class="fa-solid fa-floppy-disk"></i> حفظ الإنجاز</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../js/target-calculator.js"></script>
+    <script src="../js/utils.js"></script>
+    <script src="../js/api.js"></script>
+    <script src="../js/permissions.js"></script>
+    <script src="../js/charts.js"></script>
+    <script src="../js/ai.js"></script>
+    <script src="../js/dashboard.js"></script>
+    <script src="../js/app.js"></script>
+
+    <script>
+        document.getElementById('entryDate').valueAsDate = new Date();
+        document.getElementById('saveDailyBtn').addEventListener('click', async function() {
+            const date = document.getElementById('entryDate').value;
+            const itemsData = {
+                pt12: document.getElementById('entry_pt12').value,
+                super_kix: document.getElementById('entry_super_kix').value,
+                tazbeet: document.getElementById('entry_tazbeet').value,
+                data: document.getElementById('entry_data').value,
+                adsl: document.getElementById('entry_adsl').value,
+                fixed: document.getElementById('entry_fixed').value,
+                we_pay: document.getElementById('entry_we_pay').value
+            };
+            const notes = document.getElementById('entryNotes').value;
+
+            try {
+                const periodId = Dashboard.state.targetPeriod?.id || 'default-period';
+                await TargetAPI.saveDailyPerformance(periodId, Dashboard.state.userProfile.id, date, itemsData, notes);
+                Utils.showToast('تم حفظ أداء اليوم بنجاح!', 'success');
+                Utils.closeModal('dailyModal');
+                await Dashboard.loadDashboardData(new Date().getMonth() + 1, new Date().getFullYear());
+            } catch (err) {
+                Utils.showToast('حدث خطأ أثناء الحفظ', 'error');
+            }
+        });
+    </script>
+</body>
+</html>
