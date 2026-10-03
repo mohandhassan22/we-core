@@ -1,0 +1,172 @@
+/* ====================================================================
+   WE Target Manager - Polish & Full Responsive Layer
+   Loaded LAST (after responsive.css). Fluid sizing, better tables,
+   cards, focus states, safe-areas, and breakpoints:
+   1280+ desktop | <=1024 tablet | <=768 mobile | <=480 small | <=360 tiny
+   ==================================================================== */
+
+:root {
+  --fluid-gap: clamp(0.85rem, 2vw, 1.5rem);
+  --fluid-pad: clamp(0.9rem, 2.5vw, 2rem);
+}
+
+html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+body { overflow-x: hidden; }
+img, svg, canvas, video { max-width: 100%; }
+
+/* ---------- Layout ---------- */
+.app-layout { min-height: 100vh; min-height: 100dvh; }
+.sidebar { height: 100vh; height: 100dvh; }
+.main-wrapper { max-width: 100%; }
+.dashboard-content {
+  padding: var(--fluid-pad);
+  gap: var(--fluid-gap);
+  width: 100%;
+  max-width: 1680px;
+  margin-inline: auto;
+}
+.top-navbar { padding-inline: var(--fluid-pad); height: 64px; }
+
+/* ---------- Hero ---------- */
+.hero-title { font-size: clamp(1.15rem, 3.2vw, 1.6rem); line-height: 1.35; }
+.hero-subtitle { font-size: clamp(0.8rem, 2vw, 0.92rem); max-width: 60ch; }
+.dashboard-hero { padding: clamp(1rem, 3vw, 1.9rem) clamp(1rem, 3vw, 2rem); }
+
+/* ---------- KPI cards ---------- */
+.kpi-grid { grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr)); gap: var(--fluid-gap); }
+.kpi-card { padding: clamp(1rem, 2.5vw, 1.4rem); }
+.kpi-card::before {
+  content: ''; position: absolute; inset-inline: 0; top: 0; height: 3px;
+  background: linear-gradient(90deg, var(--we-purple), var(--we-purple-accent));
+  opacity: .85;
+}
+.kpi-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
+.kpi-value { font-size: clamp(1.35rem, 4vw, 1.9rem); font-variant-numeric: tabular-nums; }
+
+/* ---------- Spacing helper used by dashboards ---------- */
+.margin-top { margin-top: var(--fluid-gap); }
+
+/* ---------- Grids ---------- */
+.charts-grid { grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr)); gap: var(--fluid-gap); }
+.items-grid  { gap: var(--fluid-gap); }
+.chart-container { position: relative; width: 100%; min-height: 240px; }
+.chart-container canvas { width: 100% !important; }
+
+/* ---------- Tables (scrollable, sticky header, hint shadow) ---------- */
+.table-card-wrapper {
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-x: contain;
+  background:
+    linear-gradient(to left, var(--bg-surface) 30%, transparent) left center / 24px 100% no-repeat local,
+    linear-gradient(to right, var(--bg-surface) 30%, transparent) right center / 24px 100% no-repeat local,
+    radial-gradient(farthest-side at 0 50%, rgba(94,39,80,.18), transparent) left center / 10px 100% no-repeat scroll,
+    radial-gradient(farthest-side at 100% 50%, rgba(94,39,80,.18), transparent) right center / 10px 100% no-repeat scroll,
+    var(--bg-surface);
+}
+.table-card-wrapper .table-toolbar { position: sticky; inset-inline-start: 0; }
+.data-table { min-width: 560px; font-variant-numeric: tabular-nums; }
+.data-table th { position: sticky; top: 0; z-index: 1; font-size: .82rem; letter-spacing: .01em; }
+.data-table td { padding: .85rem 1.1rem; }
+.data-table tbody tr:nth-child(even) { background: color-mix(in srgb, var(--bg-subtle) 55%, var(--bg-surface)); }
+.data-table tbody tr:hover { background: var(--we-light-purple); }
+.data-table td.font-bold:first-child, .data-table th:first-child { position: sticky; inset-inline-start: 0; background: inherit; z-index: 2; }
+.data-table tbody td:first-child { background: var(--bg-surface); }
+.data-table tbody tr:nth-child(even) td:first-child { background: color-mix(in srgb, var(--bg-subtle) 55%, var(--bg-surface)); }
+.data-table tbody tr:hover td:first-child { background: var(--we-light-purple); }
+.data-table th:first-child { background: var(--bg-subtle); }
+
+/* ---------- Controls ---------- */
+.btn, .filter-pill, .btn-icon { min-height: 40px; touch-action: manipulation; }
+.btn:focus-visible, .filter-pill:focus-visible, .form-input:focus-visible,
+.form-select:focus-visible, .sidebar-nav a:focus-visible, button:focus-visible {
+  outline: 2px solid var(--we-purple-accent); outline-offset: 2px;
+}
+.form-input, .form-select { font-size: 1rem; } /* avoids iOS zoom-on-focus */
+.table-search-box { min-width: min(100%, 260px); flex: 1 1 220px; }
+.table-filter-pills { flex-wrap: wrap; }
+
+/* ---------- Modals ---------- */
+.modal-overlay { padding: 1rem; overflow-y: auto; }
+.modal-overlay > * { max-width: min(100%, 560px); max-height: 92dvh; overflow-y: auto; }
+
+/* ---------- Large screens ---------- */
+@media (min-width: 1600px) {
+  html { font-size: 17px; }
+  .sidebar { width: 280px; }
+}
+
+/* ---------- Tablet ---------- */
+@media (max-width: 1024px) {
+  .sidebar { width: 220px; }
+  .sidebar-title { font-size: .95rem; }
+  .breadcrumbs { font-size: .85rem; }
+}
+
+/* ---------- Mobile ---------- */
+@media (max-width: 768px) {
+  .sidebar {
+    width: min(82vw, 300px);
+    padding-top: env(safe-area-inset-top);
+    padding-bottom: env(safe-area-inset-bottom);
+    z-index: 110;
+  }
+  .sidebar-overlay { z-index: 105; }
+  .top-navbar { height: 58px; padding-inline: .85rem; }
+  .breadcrumbs .breadcrumb-item:not(.active),
+  .breadcrumbs .breadcrumb-separator { display: none; }
+  .breadcrumb-item.active { font-weight: 700; font-size: .9rem; }
+  .user-info-text { display: none; }
+  .dashboard-content { padding: .85rem; padding-bottom: calc(1.25rem + env(safe-area-inset-bottom)); }
+  .hero-actions { width: 100%; flex-wrap: wrap; }
+  .hero-actions .btn { flex: 1 1 100%; }
+  /* inline repeat(2/3, 1fr) grids must be overridden with !important */
+  .items-grid { grid-template-columns: repeat(2, 1fr) !important; }
+  .kpi-grid[style*="repeat(3"] { grid-template-columns: repeat(2, 1fr) !important; }
+  .kpi-grid { grid-template-columns: repeat(2, 1fr); gap: .75rem; }
+  .kpi-card { padding: .9rem; }
+  .charts-grid { grid-template-columns: 1fr !important; }
+  .data-table { min-width: 520px; font-size: .84rem; }
+  .data-table th, .data-table td { padding: .7rem .8rem; }
+  .table-toolbar { padding: .9rem 1rem; }
+  .modal-overlay { align-items: flex-end; padding: 0; }
+  .modal-overlay > * { max-width: 100%; width: 100%; border-radius: var(--radius-lg) var(--radius-lg) 0 0; }
+}
+
+/* ---------- Small phones ---------- */
+@media (max-width: 480px) {
+  .kpi-grid, .items-grid,
+  .kpi-grid[style*="repeat(3"] { grid-template-columns: 1fr !important; }
+  .hero-title { font-size: 1.1rem; }
+  .btn { width: auto; padding-inline: 1rem; }
+  .table-filter-pills { overflow-x: auto; flex-wrap: nowrap; scrollbar-width: none; }
+  .table-filter-pills::-webkit-scrollbar { display: none; }
+  .filter-pill { white-space: nowrap; }
+  .chart-container { min-height: 200px; }
+}
+
+/* ---------- Tiny phones ---------- */
+@media (max-width: 360px) {
+  html { font-size: 14px; }
+  .dashboard-content { padding: .6rem; }
+}
+
+/* ---------- Landscape phones: keep navbar compact ---------- */
+@media (max-height: 480px) and (orientation: landscape) {
+  .top-navbar { height: 50px; position: static; }
+  .sidebar { overflow-y: auto; }
+}
+
+/* ---------- Accessibility ---------- */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition: none !important; animation: none !important; scroll-behavior: auto !important; }
+}
+
+/* ---------- Print (reports) ---------- */
+@media print {
+  .sidebar, .sidebar-overlay, .top-navbar, .hero-actions, .mobile-menu-btn { display: none !important; }
+  .dashboard-content { padding: 0; max-width: none; }
+  .table-card-wrapper { overflow: visible; }
+  .data-table { min-width: 0; }
+}
