@@ -187,9 +187,12 @@ const ActiveUsersWidget = (() => {
     if (!userIds.length) return {};
     try {
       const ids = userIds.join(',');
+      // use the logged-in user's token when available (falls back to the public key: anon can only read id + full_name)
+      const m = document.cookie.match(/(?:^|;\s*)sb-access-token=([^;]*)/);
+      const bearer = (m && m[1]) || CONFIG.supabaseKey;
       const res = await fetch(
         `${CONFIG.supabaseUrl}/rest/v1/profiles?select=id,full_name&id=in.(${ids})`,
-        { headers: { apikey: CONFIG.supabaseKey, Authorization: `Bearer ${CONFIG.supabaseKey}` } }
+        { headers: { apikey: CONFIG.supabaseKey, Authorization: `Bearer ${bearer}` } }
       );
       if (!res.ok) return {};
       const rows = await res.json();
