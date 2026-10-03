@@ -39,6 +39,11 @@
                 this.state.dailyLogs = await TargetAPI.fetchDailyPerformance(period.id, profile.id);
             }
 
+            // Fetch the area's branches from the branches table (so branches with no agents still show)
+            if (this.state.activeRoleView === 'area_manager' && profile.area_id) {
+                this.state.areaBranches = await TargetAPI.fetchAllowedBranches(profile.area_id);
+            }
+
             // Fetch subordinates if manager/supervisor
             if (['branch_manager', 'area_manager', 'supervisor', 'admin'].includes(this.state.activeRoleView)) {
                 this.state.subordinates = await TargetAPI.fetchSubordinates(
@@ -351,6 +356,12 @@
             let areaTarget = 0; let areaAchieve = 0;
             const branchesMap = {};
             const employeeRows = [];
+
+            (this.state.areaBranches || []).forEach(br => {
+                if (br && br.name && !branchesMap[br.name]) {
+                    branchesMap[br.name] = { name: br.name, employeesCount: 0, target: 0, achieve: 0 };
+                }
+            });
 
             subs.forEach(emp => {
                 if (emp.role !== 'agent') return; // Only count agent targets to avoid double counting
