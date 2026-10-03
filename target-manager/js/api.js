@@ -1,319 +1,191 @@
 /**
- * WE-Core Target Manager - API & Supabase Data Access Layer
+ * WE Target Manager - API layer
+ *
+ * - Uses the session the site's assets/js/auth.js already verified (cookie sb-access-token).
+ * - Every request carries the USER's JWT, so Postgres RLS decides what is visible/writable.
+ * - There are NO demo fallbacks: an error is thrown and shown, never replaced with fake data.
  */
-
 (function (global) {
-    const SB_URL = 'https://iygwhapcpdmsasqlfelv.supabase.co';
-    const SB_KEY = 'sb_publishable_rD9naqrpu1dI-iwchAS0GQ_JkgGysqP';
+    var SB_URL = 'https://iygwhapcpdmsasqlfelv.supabase.co';
+    var SB_KEY = 'sb_publishable_rD9naqrpu1dI-iwchAS0GQ_JkgGysqP'; // public (publishable) key - safe in the browser
+    var UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+    var ITEMS = ['pt12', 'super_kix', 'tazbeet', 'data', 'adsl', 'fixed', 'we_pay'];
 
-    function getCookieToken() {
-        const v = `; ${document.cookie}`;
-        const p = v.split(`; sb-access-token=`);
-        if (p.length === 2) return p.pop().split(';').shift();
-        return null;
+    function ApiError(status, message, code) {
+        this.name = 'ApiError';
+        this.status = status;
+        this.code = code || '';
+        this.message = message;
+    }
+    ApiError.prototype = Object.create(Error.prototype);
+
+    function getToken() {
+        var m = document.cookie.match(/(?:^|;\s*)sb-access-token=([^;]*)/);
+        return m ? m[1] : null;
     }
 
-    async function restFetch(endpoint, options = {}) {
-        const token = getCookieToken();
-        const headers = {
-            'apikey': SB_KEY,
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
-            ...(token ? { 'Authorization': `Bearer ${token}` } : {}),
-            ...(options.headers || {})
-        };
+    function friendly(status, body) {
+        var code = body && (body.code || body.error);
+        var msg = body && (body.message || body.error);
+        if (status === 401 || /jwt/i.test(String(msg))) return 'انتهت جلسة الدخول، سجّل الدخول مرة أخرى';
+        if (status === 403 || code === '42501' || code === 'forbidden') return 'غير مسموح لك بهذه العملية';
+        if (code === '23505') return 'هذه البيانات مسجلة بالفعل';
+        if (code === '23514' || code === '23502') return 'قيمة غير صالحة';
+        if (code === 'invalid_month' || code === 'invalid_year') return 'الشهر غير صالح';
+        if (status === 404) return 'غير موجود';
+        return msg ? 'تعذر تنفيذ الطلب' : 'تعذر الاتصال بالخادم';
+    }
 
-        const res = await fetch(`${SB_URL}/rest/v1/${endpoint}`, {
-            ...options,
-            headers
-        });
+    function loginPath() {
+        return window.location.pathname.indexOf('/pages/') !== -1 ? '../../login.html' : '../login.html';
+    }
+
+    async function http(url, opts) {
+        var token = getToken();
+        if (!token) {
+            window.location.replace(loginPath());
+            throw new ApiError(401, 'لا توجد جلسة دخول', 'no_session');
+        }
+        var headers = Object.assign({
+            'apikey': SB_KEY,
+            'Authorization': 'Bearer ' + token,
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        }, (opts && opts.headers) || {});
+
+        var res;
+        try {
+            res = await fetch(url, Object.assign({}, opts, { headers: headers }));
+        } catch (e) {
+            throw new ApiError(0, 'تعذر الاتصال بالخادم، تحقق من الإنترنت', 'network');
+        }
+        var text = await res.text();
+        var body = null;
+        if (text) { try { body = JSON.parse(text); } catch (e) { body = { message: text }; } }
 
         if (!res.ok) {
-            const errText = await res.text();
-            console.warn(`Supabase REST note (${endpoint}):`, res.status, errText);
-            throw new Error(`API Request Failed: ${res.statusText}`);
+            if (res.status === 401) setTimeout(function () { window.location.replace(loginPath()); }, 1800);
+            console.warn('API error', res.status, url, body);
+            throw new ApiError(res.status, friendly(res.status, body), body && (body.code || body.error));
         }
-
-        if (options.method === 'DELETE' || res.status === 204) return true;
-        return await res.json();
+        return body;
     }
 
-    const TargetAPI = {
-        /**
-         * Fetches current user profile from profiles table with graceful fallback
-         */
-        fetchUserProfile: async function (userId) {
-            const user = window._sbUser;
-            const defaultProfile = {
-                id: userId || 'demo-user',
-                full_name: user?.user_metadata?.username || user?.user_metadata?.full_name || user?.email?.split('@')[0] || 'مهند حسن',
-                role: user?.app_metadata?.role || user?.user_metadata?.role || 'admin',
-                branch: 'فرع العباسية',
-                area: 'منطقة القاهرة الكبرى'
+    function rest(path, opts) { return http(SB_URL + '/rest/v1/' + path, opts); }
+    function rpc(name, args) { return rest('rpc/' + name, { method: 'POST', body: JSON.stringify(args || {}) }); }
+    function edge(name, payload) {
+        return http(SB_URL + '/functions/v1/' + name, { method: 'POST', body: JSON.stringify(payload || {}) });
+    }
+    function idList(ids) {
+        ids.forEach(function (i) { if (!UUID.test(i)) throw new ApiError(400, 'معرّف غير صالح', 'invalid_id'); });
+        return ids.join(',');
+    }
+
+    var TargetAPI = {
+        ApiError: ApiError,
+        ITEMS: ITEMS,
+
+        /** Who am I + what do I manage. Role comes from the SERVER (app_role), not from user_metadata. */
+        getContext: async function (userId) {
+            var r = await Promise.all([
+                rest('profiles?id=eq.' + userId + '&select=id,full_name,username,role,branch_id,area_id&limit=1'),
+                rpc('app_role'),
+                rpc('is_admin'),
+                rest('areas?select=id,name,manager_id&order=name'),
+                rest('branches?select=id,name,code,area_id,manager_id&order=name')
+            ]);
+            var profile = r[0] && r[0][0];
+            if (!profile) throw new ApiError(404, 'لم يتم العثور على ملفك الشخصي في النظام', 'profile_not_found');
+            var isAdmin = r[2] === true;
+            var areas = r[3] || [], branches = r[4] || [];
+            var role = isAdmin ? 'admin' : (r[1] || 'agent');
+            var managedAreas = isAdmin ? areas : areas.filter(function (a) { return a.manager_id === userId; });
+            var managedBranches = branches.filter(function (b) { return b.manager_id === userId; });
+            return {
+                userId: userId,
+                profile: profile,
+                role: role,
+                isAdmin: isAdmin,
+                areas: areas,
+                branches: branches,
+                managedAreas: managedAreas,
+                managedBranches: managedBranches,
+                myBranch: branches.find(function (b) { return b.id === profile.branch_id; }) || null
             };
+        },
 
-            try {
-                if (window._sbClient) {
-                    const { data, error } = await window._sbClient
-                        .from('profiles')
-                        .select('id, full_name, role, branch, area, area_id, branch_id, supervisor_id')
-                        .eq('id', userId)
-                        .single();
-                    if (!error && data) {
-                        return { ...defaultProfile, ...data };
-                    }
-                }
-                const rows = await restFetch(`profiles?id=eq.${userId}&select=*&limit=1`);
-                if (rows && rows[0]) {
-                    return { ...defaultProfile, ...rows[0] };
-                }
-                return defaultProfile;
-            } catch (err) {
-                console.warn('Profile load using safe session fallback:', defaultProfile);
-                return defaultProfile;
-            }
+        /** Aggregated, server-authorised dashboard data: view = me | employee | branch | area */
+        dashboard: function (payload) { return edge('get-dashboard-data', payload); },
+
+        /** Existing plans (period + 7 targets) for these employees in a month - used to pre-fill the targets form */
+        fetchPlans: async function (userIds, month, year) {
+            if (!userIds.length) return [];
+            return await rest('target_periods?select=id,user_id,period_type,start_date,end_date,target_days,targets(item,target_value)'
+                + '&month=eq.' + Number(month) + '&year=eq.' + Number(year) + '&user_id=in.(' + idList(userIds) + ')') || [];
         },
 
         /**
-         * Fetches relational Areas allowed for current user
+         * Manager writes ONE employee's period + 7 targets. Throws on any failure (RLS decides who may).
+         * plan: { userId, month, year, period_type, start_date, end_date, target_days, items:{pt12:..} }
          */
-        fetchAllowedAreas: async function () {
-            try {
-                return await restFetch('areas?select=*,branches(*)&order=name.asc');
-            } catch (err) {
-                return [
-                    { id: 'area-1', name: 'منطقة القاهرة الكبرى' },
-                    { id: 'area-2', name: 'منطقة الجيزة' },
-                    { id: 'area-3', name: 'منطقة الإسكندرية والقناة' }
-                ];
-            }
-        },
-
-        /**
-         * Fetches relational Branches for a specific area or for current user scope
-         */
-        fetchAllowedBranches: async function (areaId = null) {
-            try {
-                let query = 'branches?select=*,areas(name)&order=name.asc';
-                if (areaId) query += `&area_id=eq.${areaId}`;
-                return await restFetch(query);
-            } catch (err) {
-                return [
-                    { id: 'b-1', name: 'فرع العباسية', area: 'منطقة القاهرة الكبرى' },
-                    { id: 'b-2', name: 'فرع مدينة نصر', area: 'منطقة القاهرة الكبرى' },
-                    { id: 'b-3', name: 'فرع مصر الجديدة', area: 'منطقة القاهرة الكبرى' },
-                    { id: 'b-4', name: 'فرع الدقي', area: 'منطقة الجيزة' }
-                ];
-            }
-        },
-
-        /**
-         * Fetches active target period for given user or scope
-         */
-        fetchTargetPeriod: async function (month, year, userId = null, branch = null, area = null) {
-            let query = `target_periods?month=eq.${month}&year=eq.${year}&select=*,targets(*)`;
-            if (userId) query += `&user_id=eq.${userId}`;
-            else if (branch) query += `&branch=eq.${encodeURIComponent(branch)}`;
-            else if (area) query += `&area=eq.${encodeURIComponent(area)}`;
-            query += '&limit=1';
-
-            try {
-                const rows = await restFetch(query);
-                return (rows && rows[0]) ? rows[0] : null;
-            } catch (err) {
-                return null;
-            }
-        },
-
-        /**
-         * Fetches subordinates (employees or branches) based on user role and relations
-         */
-        fetchSubordinates: async function (role, branch = null, area = null, supervisorId = null) {
-            try {
-                let query = 'profiles?select=id,full_name,role,branch,area,area_id,branch_id';
-                if (role === 'branch_manager' && branch) {
-                    query += `&branch=eq.${encodeURIComponent(branch)}&role=eq.agent`;
-                } else if (role === 'area_manager' && area) {
-                    query += `&area=eq.${encodeURIComponent(area)}`;
-                } else if (role === 'supervisor') {
-                    if (supervisorId) query += `&supervisor_id=eq.${supervisorId}`;
-                    else if (area) query += `&area=eq.${encodeURIComponent(area)}`;
-                } else if (role === 'admin') {
-                    query += `&limit=100`;
-                }
-                return await restFetch(query);
-            } catch (err) {
-                return [];
-            }
-        },
-
-        /**
-         * Fetches all target periods and performance for a team (branch or area)
-         */
-        fetchTeamData: async function (month, year, branch = null, area = null) {
-            let periodQuery = `target_periods?month=eq.${month}&year=eq.${year}&select=*,targets(*),profiles(full_name,role)`;
-            if (branch) periodQuery += `&branch=eq.${encodeURIComponent(branch)}`;
-            else if (area) periodQuery += `&area=eq.${encodeURIComponent(area)}`;
-            
-            try {
-                const periods = await restFetch(periodQuery);
-                if (!periods || periods.length === 0) return { periods: [], logs: [] };
-                
-                const periodIds = periods.map(p => p.id).join(',');
-                const logsQuery = `daily_performance?period_id=in.(${periodIds})&select=*`;
-                const logs = await restFetch(logsQuery);
-                
-                return { periods, logs: logs || [] };
-            } catch (err) {
-                console.error('Failed to fetch team data:', err);
-                return { periods: [], logs: [] };
-            }
-        },
-        /**
-         * Fetches daily performance logs for target period and user(s)
-         */
-        fetchDailyPerformance: async function (periodId, userId = null) {
-            if (!periodId) return [];
-            let query = `daily_performance?period_id=eq.${periodId}&select=*&order=performance_date.asc`;
-            if (userId) query += `&user_id=eq.${userId}`;
-
-            try {
-                return await restFetch(query);
-            } catch (err) {
-                return [];
-            }
-        },
-
-        /**
-         * Upserts daily performance record
-         */
-        saveDailyPerformance: async function (periodId, userId, date, itemsData, notes = '') {
-            const body = {
-                period_id: periodId,
-                user_id: userId,
-                performance_date: date,
-                pt12: parseFloat(itemsData.pt12) || 0,
-                super_kix: parseFloat(itemsData.super_kix) || 0,
-                tazbeet: parseFloat(itemsData.tazbeet) || 0,
-                data: parseFloat(itemsData.data) || 0,
-                adsl: parseFloat(itemsData.adsl) || 0,
-                fixed: parseFloat(itemsData.fixed) || 0,
-                we_pay: parseFloat(itemsData.we_pay) || 0,
-                notes: notes,
-                updated_at: new Date().toISOString()
-            };
-
-            try {
-                return await restFetch('daily_performance', {
-                    method: 'POST',
-                    headers: { 'Prefer': 'resolution=merge-duplicates' },
-                    body: JSON.stringify(body)
-                });
-            } catch (err) {
-                return body;
-            }
-        },
-
-        /**
-         * Saves or updates target period with targets
-         */
-        saveTargetPeriod: async function (periodData, itemTargets) {
-            try {
-                const savedPeriodRows = await restFetch('target_periods', {
-                    method: 'POST',
-                    headers: { 'Prefer': 'return=representation' },
-                    body: JSON.stringify(periodData)
-                });
-                const period = savedPeriodRows[0];
-                if (!period) throw new Error('Failed to create target period');
-
-                // Upsert targets
-                const targetRecords = Object.keys(itemTargets).map(item => ({
-                    period_id: period.id,
-                    item,
-                    target_value: parseFloat(itemTargets[item]) || 0
-                }));
-
-                await restFetch('targets', {
-                    method: 'POST',
-                    headers: { 'Prefer': 'resolution=merge-duplicates' },
-                    body: JSON.stringify(targetRecords)
-                });
-
-                return period;
-            } catch (err) {
-                return periodData;
-            }
-        },
-
-        /**
-         * AI Analysis cache lookup
-         */
-        fetchAiAnalysisCache: async function (userId, periodId) {
-            try {
-                const query = `ai_analysis?user_id=eq.${userId}&period_id=eq.${periodId}&order=created_at.desc&limit=1`;
-                const rows = await restFetch(query);
-                return rows[0] || null;
-            } catch (err) {
-                return null;
-            }
-        },
-
-        saveAiAnalysisCache: async function (userId, periodId, type, inputData, response) {
-            try {
-                return await restFetch('ai_analysis', {
-                    method: 'POST',
-                    body: JSON.stringify({
-                        user_id: userId,
-                        period_id: periodId,
-                        analysis_type: type,
-                        input_data: inputData,
-                        response: response
-                    })
-                });
-            } catch (err) {
-                console.warn('Failed to save AI cache:', err);
-            }
-        },
-
-        /**
-         * Edge Function invocation helper
-         */
-        callEdgeFunction: async function (functionName, payload) {
-            const token = getCookieToken();
-            const res = await fetch(`${SB_URL}/functions/v1/${functionName}`, {
+        saveTargetPlan: async function (plan) {
+            var rows = await rest('target_periods?on_conflict=user_id,month,year', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    ...(token ? { 'Authorization': `Bearer ${token}` } : {})
-                },
-                body: JSON.stringify(payload)
+                headers: { 'Prefer': 'resolution=merge-duplicates,return=representation' },
+                body: JSON.stringify({
+                    user_id: plan.userId, month: plan.month, year: plan.year,
+                    period_type: plan.period_type, start_date: plan.start_date, end_date: plan.end_date,
+                    target_days: plan.target_days, updated_at: new Date().toISOString()
+                })
             });
-
-            if (!res.ok) {
-                const err = await res.json().catch(() => ({ error: res.statusText }));
-                throw new Error(err.error || 'Edge Function execution failed');
-            }
-            return await res.json();
+            var period = rows && rows[0];
+            if (!period) throw new ApiError(500, 'لم يتم حفظ الفترة', 'no_period');
+            await rest('targets?on_conflict=period_id,item', {
+                method: 'POST',
+                headers: { 'Prefer': 'resolution=merge-duplicates,return=minimal' },
+                body: JSON.stringify(ITEMS.map(function (k) {
+                    return { period_id: period.id, item: k, target_value: Math.max(Number(plan.items[k]) || 0, 0) };
+                }))
+            });
+            return period;
         },
 
-        /**
-         * Logs audit action
-         */
-        logAuditAction: async function (action, details = {}) {
-            try {
-                const user = window._sbUser;
-                await restFetch('audit_logs', {
-                    method: 'POST',
-                    body: JSON.stringify({
-                        user_id: user ? user.id : null,
-                        action,
-                        details
-                    })
-                });
-            } catch (err) {
-                // Silent fail for logging
+        /** Save many plans; never stops at the first failure. Returns {saved:n, failed:[{userId,message}]} */
+        saveTargetPlans: async function (plans) {
+            var failed = [], saved = 0;
+            for (var i = 0; i < plans.length; i++) {
+                try { await this.saveTargetPlan(plans[i]); saved++; }
+                catch (e) { failed.push({ userId: plans[i].userId, message: e.message }); }
             }
+            return { saved: saved, failed: failed };
+        },
+
+        /** Employee records ONE day against HIS OWN period (RLS enforces owner + date inside the period) */
+        saveDailyPerformance: async function (periodId, userId, date, items, notes) {
+            if (!UUID.test(periodId || '')) throw new ApiError(400, 'لا توجد فترة Target لهذا الشهر، اطلب من مدير الفرع تحديدها', 'no_period');
+            var body = { period_id: periodId, user_id: userId, performance_date: date, notes: notes || '', updated_at: new Date().toISOString() };
+            ITEMS.forEach(function (k) { body[k] = Math.max(Number(items[k]) || 0, 0); });
+            await rest('daily_performance?on_conflict=period_id,user_id,performance_date', {
+                method: 'POST',
+                headers: { 'Prefer': 'resolution=merge-duplicates,return=minimal' },
+                body: JSON.stringify(body)
+            });
+            return true;
+        },
+
+        fetchDailyLogs: async function (periodId, userId) {
+            if (!UUID.test(periodId || '') || !UUID.test(userId || '')) return [];
+            return await rest('daily_performance?period_id=eq.' + periodId + '&user_id=eq.' + userId
+                + '&select=performance_date,pt12,super_kix,tazbeet,data,adsl,fixed,we_pay,notes&order=performance_date.desc') || [];
+        },
+
+        /** The user may only change their own display name (column grant + RLS) */
+        updateMyName: function (userId, fullName) {
+            return rest('profiles?id=eq.' + userId, {
+                method: 'PATCH',
+                headers: { 'Prefer': 'return=minimal' },
+                body: JSON.stringify({ full_name: String(fullName || '').trim().slice(0, 80) })
+            });
         }
     };
 

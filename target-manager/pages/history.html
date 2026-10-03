@@ -4,39 +4,44 @@
     <script src="../../assets/js/auth.js?v=16.0.3"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>History & Export | WE Target Manager</title>
+    <title>السجل والتقارير | WE Target Manager</title>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
 
     <link rel="stylesheet" href="../css/global.css">
     <link rel="stylesheet" href="../css/dashboard.css">
     <link rel="stylesheet" href="../css/components.css">
     <link rel="stylesheet" href="../css/responsive.css">
 </head>
-<body>
+<body data-page="history">
     <div class="app-layout">
         <aside class="sidebar">
             <div class="sidebar-header">
-                <div class="sidebar-brand-logo"><i class="fa-solid fa-clock-rotate-left"></i></div>
+                <div class="sidebar-brand-logo"><i class="fa-solid fa-bullseye"></i></div>
                 <div>
                     <div class="sidebar-title">WE Target Manager</div>
                     <div class="sidebar-sub">السجل والتقارير</div>
                 </div>
             </div>
             <nav class="sidebar-nav" id="sidebarNav"></nav>
+            <div class="sidebar-footer">
+                <button class="btn btn-secondary w-full" id="darkToggleBtn" type="button">
+                    <i class="fa-solid fa-moon" id="darkToggleIcon"></i> <span>الوضع الداكن</span>
+                </button>
+            </div>
         </aside>
-
         <div class="sidebar-overlay"></div>
 
         <main class="main-wrapper">
             <header class="top-navbar">
                 <div class="header-left">
-                    <button class="mobile-menu-btn" id="mobileMenuBtn"><i class="fa-solid fa-bars"></i></button>
-                    <nav class="breadcrumbs">
-                        <span class="breadcrumb-item"><a href="../index.html"><i class="fa-solid fa-house"></i> الرئيسية</a></span>
+                    <button class="mobile-menu-btn" id="mobileMenuBtn" type="button" aria-label="القائمة"><i class="fa-solid fa-bars"></i></button>
+                    <nav class="breadcrumbs" id="breadcrumbsNav">
+                        <span class="breadcrumb-item"><i class="fa-solid fa-house"></i> الرئيسية</span>
                         <span class="breadcrumb-separator"><i class="fa-solid fa-chevron-left"></i></span>
-                        <span class="breadcrumb-item active">السجل والتصدير</span>
+                        <span class="breadcrumb-item active">السجل والتقارير</span>
                     </nav>
                 </div>
                 <div class="header-right">
@@ -50,70 +55,24 @@
                 </div>
             </header>
 
-            <div class="dashboard-content">
+            <div class="dashboard-content" id="mainDashboardContent">
                 <section class="dashboard-hero">
                     <div>
-                        <h1 class="hero-title">السجل التاريخي وتصدير التقارير 📊</h1>
-                        <p class="hero-subtitle">استخراج تقارير الأداء التفصيلية بصيغة Excel وتصدير البيانات إلى Google Sheets.</p>
+                        <h1 class="hero-title" id="heroTitle">السجل والتقارير</h1>
+                        <p class="hero-subtitle" id="heroSubtitle"></p>
                     </div>
-                    <div class="hero-actions">
-                        <button class="btn btn-secondary" onclick="exportDataToExcel()">
-                            <i class="fa-solid fa-file-excel"></i> تصدير Excel
-                        </button>
-                        <button class="btn btn-primary" onclick="exportToGoogleSheets()">
-                            <i class="fa-solid fa-table"></i> Google Sheets Export
-                        </button>
-                    </div>
+                    <div class="hero-actions" id="heroActions"></div>
                 </section>
-
-                <div class="table-card-wrapper">
-                    <div class="table-toolbar">
-                        <h3 class="font-bold">سجل الفترات والتارجت السابقة</h3>
-                        <div class="flex gap-2">
-                            <select class="form-select" id="monthFilterSelect">
-                                <option value="10">أكتوبر 2026</option>
-                                <option value="9">سبتمبر 2026</option>
-                                <option value="8">أغسطس 2026</option>
-                            </select>
-                        </div>
+                <div id="stateHost" style="display:none;"></div>
+                <div id="pageBody">
+                    <section class="kpi-grid" id="kpiGridContainer"></section>
+                    <div class="table-card-wrapper">
+                        <div class="table-toolbar"><h3 class="font-bold" id="tblTitle1">—</h3><button class="btn btn-secondary btn-sm" id="exp1" type="button"><i class="fa-solid fa-file-excel"></i> تصدير Excel</button></div>
+                        <div class="data-table-container"><table class="data-table"><thead id="head1"></thead><tbody id="body1"></tbody></table></div>
                     </div>
-                    <div class="data-table-container">
-                        <table class="data-table">
-                            <thead>
-                                <tr>
-                                    <th>الشهر/السنة</th>
-                                    <th>نوع الفترة</th>
-                                    <th>أيام الفترة</th>
-                                    <th>Target الأسطر</th>
-                                    <th>Achieve الأسطر</th>
-                                    <th>نسبة التحقيق</th>
-                                    <th>التوقع (Projection)</th>
-                                    <th>الحالة</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td class="font-bold">أكتوبر 2026</td>
-                                    <td>شهر كامل</td>
-                                    <td>20 يوم</td>
-                                    <td>60</td>
-                                    <td>35</td>
-                                    <td>58.3%</td>
-                                    <td>50</td>
-                                    <td><span class="badge-status status-warning">يحتاج انتباه</span></td>
-                                </tr>
-                                <tr>
-                                    <td class="font-bold">سبتمبر 2026</td>
-                                    <td>شهر كامل</td>
-                                    <td>20 يوم</td>
-                                    <td>60</td>
-                                    <td>62</td>
-                                    <td>103.3%</td>
-                                    <td>62</td>
-                                    <td><span class="badge-status status-achieved">تم تحقيق الهدف</span></td>
-                                </tr>
-                            </tbody>
-                        </table>
+                    <div class="table-card-wrapper" style="margin-top:1rem;">
+                        <div class="table-toolbar"><h3 class="font-bold">الأداء اليومي</h3><button class="btn btn-secondary btn-sm" id="exp2" type="button"><i class="fa-solid fa-file-excel"></i> تصدير Excel</button></div>
+                        <div class="data-table-container"><table class="data-table"><thead><tr><th>التاريخ</th><th>PT12</th><th>Super Kix</th><th>Tazbeet</th><th>Data</th><th>إجمالي الخطوط</th><th>ADSL</th><th>Fixed</th><th>WE Pay</th></tr></thead><tbody id="body2"></tbody></table></div>
                     </div>
                 </div>
             </div>
@@ -124,31 +83,65 @@
     <script src="../js/utils.js"></script>
     <script src="../js/api.js"></script>
     <script src="../js/permissions.js"></script>
+    <script src="../js/charts.js"></script>
+    <script src="../js/ai.js"></script>
+    <script src="../js/dashboard.js"></script>
     <script src="../js/app.js"></script>
-
     <script>
-        function exportDataToExcel() {
-            const sampleData = [
-                ['2026-10-01', 'مهند حسن', 'فرع العباسية', 'القاهرة', 3, 3, 2, 2, 1, 0, 1, 10, '83.3%', 12, 0],
-                ['2026-10-02', 'مهند حسن', 'فرع العباسية', 'القاهرة', 2, 2, 1, 3, 0, 1, 2, 8, '66.6%', 10, 1]
-            ];
-            const headers = ['التاريخ', 'الموظف', 'الفرع', 'المنطقة', 'PT12', 'Super Kix', 'Tazbeet', 'Data', 'ADSL', 'Fixed', 'WE Pay', 'إجمالي الأسطر', 'نسبة التحقيق', 'التوقع', 'العجز'];
-            Utils.exportToExcel('WE_Target_Report', sampleData, headers);
-        }
+    window.PageModules = window.PageModules || {};
+    window.PageModules.history = async function (ctx) {
+        var $ = function (id) { return document.getElementById(id); }, esc = Utils.esc, f = Utils.formatNumber;
+        var cur = Utils.getCurrentMonthYear(), st = { month: cur.month, year: cur.year, req: null, data: null };
+        var role = ctx.role;
+        var req = role === 'agent' ? { view: 'me' }
+            : role === 'branch_manager' ? (ctx.managedBranches[0] ? { view: 'branch', id: ctx.managedBranches[0].id } : null)
+            : (ctx.managedAreas[0] ? { view: 'area', id: ctx.managedAreas[0].id } : null);
+        if (role === 'other') req = { view: 'me' };
 
-        async function exportToGoogleSheets() {
-            try {
-                Utils.showToast('جاري تصدير البيانات إلى Google Sheets...', 'info');
-                const monthYear = Utils.getCurrentMonthYear();
-                const userId = window._sbUser ? window._sbUser.id : null;
-                const period = await TargetAPI.fetchTargetPeriod(monthYear.month, monthYear.year, userId);
-                const periodId = period && period.id ? period.id : null;
-                await TargetAPI.callEdgeFunction('export-google-sheets', { periodId: periodId });
-                Utils.showToast('تم التصدير بنجاح إلى Google Sheets!', 'success');
-            } catch (e) {
-                Utils.showToast('تم تجهيز خطة التصدير لـ Edge Function', 'info');
-            }
+        function controls() {
+            var months = []; for (var i = 0; i < 6; i++) { var m = cur.month - i, y = cur.year; if (m < 1) { m += 12; y -= 1; } months.push({ m: m, y: y }); }
+            var h = '<select class="form-input" id="mSel">' + months.map(function (x) { return '<option value="' + x.y + '-' + Utils.pad2(x.m) + '"' + (x.m === st.month && x.y === st.year ? ' selected' : '') + '>' + esc(Utils.monthLabel(x.m, x.y)) + '</option>'; }).join('') + '</select>';
+            if (req && req.view === 'area' && ctx.managedAreas.length > 1) h += '<select class="form-input" id="aSel">' + ctx.managedAreas.map(function (a) { return '<option value="' + esc(a.id) + '"' + (a.id === req.id ? ' selected' : '') + '>' + esc(a.name) + '</option>'; }).join('') + '</select>';
+            $('heroActions').innerHTML = h;
+            $('mSel').onchange = function () { var p = this.value.split('-'); st.year = +p[0]; st.month = +p[1]; load(); };
+            if ($('aSel')) $('aSel').onchange = function () { req = { view: 'area', id: this.value }; load(); };
         }
+        function empty(msg) {
+            $('kpiGridContainer').innerHTML = '';
+            $('tblTitle1').textContent = '—'; $('head1').innerHTML = ''; $('body1').innerHTML = '<tr><td class="text-center text-muted">' + esc(msg) + '</td></tr>'; $('body2').innerHTML = '';
+        }
+        async function load() {
+            $('heroTitle').textContent = 'السجل والتقارير'; $('heroSubtitle').textContent = Utils.monthLabel(st.month, st.year);
+            controls();
+            if (!req) return empty('لم يتم تعيين فرع أو منطقة لحسابك بعد');
+            var d; try { d = await TargetAPI.dashboard({ view: req.view, id: req.id, month: st.month, year: st.year }); } catch (e) { return empty(e.message); }
+            st.data = d;
+            var has = req.view === 'me' ? d.hasPeriod : !!d.summary;
+            if (!has) return empty('لا توجد Targets مسجلة لهذا الشهر');
+            var L = (req.view === 'me' ? d.summary : d.summary).lines;
+            $('kpiGridContainer').innerHTML = [['Target', f(L.target)], ['Achieve', f(L.achieve)], ['نسبة التحقيق', Utils.formatPercent(L.percentage)], ['Projection', f(L.projection, 1)], ['Remaining', f(L.remaining)]]
+                .map(function (k) { return '<div class="kpi-card"><span class="kpi-title">' + k[0] + '</span><div class="kpi-value">' + k[1] + '</div></div>'; }).join('');
+            var rows = req.view === 'branch' ? d.employees : (req.view === 'area' ? d.branches : []);
+            if (req.view === 'me') { $('tblTitle1').textContent = 'ملخص المنتجات'; }
+            else { $('tblTitle1').textContent = req.view === 'branch' ? 'أداء الموظفين' : 'أداء الفروع'; }
+            var head, tbl;
+            if (req.view === 'me') {
+                head = ['المنتج', 'الهدف', 'المحقق', 'المتبقي', 'النسبة', 'المتوقع'];
+                tbl = Object.keys(d.summary.items).map(function (k) { var i = d.summary.items[k]; return [k, i.target, i.achieve, i.remaining, Math.round(i.percentage * 10) / 10, Math.round(i.projection * 10) / 10]; });
+            } else {
+                head = [req.view === 'branch' ? 'الموظف' : 'الفرع', 'الهدف', 'المحقق', 'النسبة %', 'المتوقع', 'المتبقي', 'الحالة'];
+                tbl = rows.map(function (r) { var l = r.lines; return [r.name, l ? l.target : '', l ? l.achieve : '', l ? Math.round(l.percentage * 10) / 10 : '', l ? Math.round(l.projection * 10) / 10 : '', l ? l.remaining : '', l ? Utils.statusMeta(l.status).label : 'لا يوجد Target']; });
+            }
+            $('head1').innerHTML = '<tr>' + head.map(function (h) { return '<th>' + esc(h) + '</th>'; }).join('') + '</tr>';
+            $('body1').innerHTML = tbl.map(function (r) { return '<tr>' + r.map(function (c) { return '<td>' + esc(c) + '</td>'; }).join('') + '</tr>'; }).join('');
+            var daily = (d.daily || []).map(function (r) { return [r.date, r.pt12, r.super_kix, r.tazbeet, r.data, r.lines, r.adsl, r.fixed, r.we_pay]; });
+            $('body2').innerHTML = daily.length ? daily.map(function (r) { return '<tr>' + r.map(function (c) { return '<td>' + esc(c) + '</td>'; }).join('') + '</tr>'; }).join('') : '<tr><td colspan="9" class="text-center text-muted">لا يوجد أداء مسجل</td></tr>';
+            var scope = (d.scope && d.scope.name) || 'report', tag = st.year + '-' + Utils.pad2(st.month);
+            $('exp1').onclick = function () { Utils.exportToExcel('ملخص_' + scope + '_' + tag, tbl, head); };
+            $('exp2').onclick = function () { Utils.exportToExcel('يومي_' + scope + '_' + tag, daily, ['التاريخ', 'PT12', 'Super Kix', 'Tazbeet', 'Data', 'إجمالي الخطوط', 'ADSL', 'Fixed', 'WE Pay']); };
+        }
+        await load();
+    };
     </script>
 </body>
 </html>

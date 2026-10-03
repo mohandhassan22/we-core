@@ -181,7 +181,7 @@
         /**
          * Chart 4: Multi-bar comparison chart for employees or branches
          */
-        renderComparisonBar: function (canvasId, entityNames, targetArray, achieveArray) {
+        renderComparisonBar: function (canvasId, entityNames, targetArray, achieveArray, labelA, labelB) {
             setGlobalChartDefaults();
             this.destroyChart(canvasId);
 
@@ -194,7 +194,7 @@
                     labels: entityNames,
                     datasets: [
                         {
-                            label: 'الهدف (Target)',
+                            label: labelA || 'الهدف (Target)',
                             data: targetArray,
                             backgroundColor: WE_PALETTE.purpleLight,
                             borderColor: WE_PALETTE.purple,
@@ -202,7 +202,7 @@
                             borderRadius: 6
                         },
                         {
-                            label: 'المحقق (Achieve)',
+                            label: labelB || 'المحقق (Achieve)',
                             data: achieveArray,
                             backgroundColor: WE_PALETTE.success,
                             borderRadius: 6
@@ -218,6 +218,33 @@
                     scales: {
                         y: { beginAtZero: true }
                     }
+                }
+            });
+        },
+        /**
+         * Chart 5: achievement percentage per entity (employees / branches)
+         */
+        renderPercentBar: function (canvasId, entityNames, percentArray) {
+            setGlobalChartDefaults();
+            this.destroyChart(canvasId);
+            const ctx = document.getElementById(canvasId);
+            if (!ctx) return;
+            this.instances[canvasId] = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: entityNames,
+                    datasets: [{
+                        label: 'نسبة التحقيق %',
+                        data: percentArray.map(function (v) { return Math.round(v * 10) / 10; }),
+                        backgroundColor: percentArray.map(function (v) { return v >= 100 ? WE_PALETTE.success : WE_PALETTE.accent; }),
+                        borderRadius: 6
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: { y: { beginAtZero: true, ticks: { callback: function (v) { return v + '%'; } } } }
                 }
             });
         }

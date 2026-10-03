@@ -1,245 +1,295 @@
-/**
- * WE-Core Target Manager - Calculation Engine
- * Section 33 & 74 Target Calculator Specification
- * 
- * Target Line Items:
- * - PT12 (Counts in Total Lines)
- * - Super Kix (Counts in Total Lines)
- * - New Control Tazbeet (Counts in Total Lines)
- * - Data (Counts in Total Lines)
- * - ADSL (Independent KPI - NOT in Total Lines)
- * - Fixed (Independent KPI - NOT in Total Lines)
- * - WE Pay (Independent KPI - NOT in Total Lines)
+/* WE Target Manager - target-calculator.js
+ * ALL business calculations live here. Pages must not re-implement them.
+ * Works as a plain <script> (window.TargetCalculator) and in Node (require) for tests.
+ *
+ * Conventions
+ *  - elapsedDays counts target days from the period start up to and INCLUDING today.
+ *  - remainingDays = targetDays - elapsedDays (days after today).
+ *  - Deficit is computed over the days BEFORE today; surplus never reduces a later day.
+ *  - Total Lines = pt12 + super_kix + tazbeet + data. adsl / fixed / we_pay are independent KPIs.
  */
+(function (root, factory) {
+  if (typeof module === 'object' && module.exports) module.exports = factory();
+  else root.TargetCalculator = factory();
+})(typeof self !== 'undefined' ? self : this, function () {
+  'use strict';
 
-(function (global) {
-    const TOTAL_LINE_ITEMS = ['pt12', 'super_kix', 'tazbeet', 'data'];
+  var LINE_ITEMS = ['pt12', 'super_kix', 'tazbeet', 'data'];
+  var OTHER_ITEMS = ['adsl', 'fixed', 'we_pay'];
+  var ALL_ITEMS = LINE_ITEMS.concat(OTHER_ITEMS);
 
-    const TargetCalculator = {
-        TOTAL_LINE_ITEMS: TOTAL_LINE_ITEMS,
+  var STATUS = {
+    NOT_STARTED: 'not_started',
+    NO_TARGET: 'no_target',
+    ACHIEVED: 'achieved',
+    ON_TRACK: 'on_track',
+    NEEDS_ATTENTION: 'needs_attention',
+    BEHIND: 'behind'
+  };
+  // projection / target ratio thresholds for status (tunable in one place)
+  var THRESHOLDS = { onTrack: 1.0, needsAttention: 0.85 };
 
-        /**
-         * Calculates total target for lines (PT12 + Super Kix + Tazbeet + Data)
-         * @param {Object} itemTargets - { pt12: 15, super_kix: 15, tazbeet: 15, data: 15, adsl: 5, fixed: 5, we_pay: 10 }
-         * @returns {number}
-         */
-        calculateTotalLinesTarget: function (itemTargets) {
-            if (!itemTargets) return 0;
-            return TOTAL_LINE_ITEMS.reduce((sum, key) => {
-                const val = parseFloat(itemTargets[key]) || 0;
-                return sum + val;
-            }, 0);
-        },
+  var MS_DAY = 86400000;
+  var ALIASES = {
+    pt12: 'pt12', pt_12: 'pt12',
+    super_kix: 'super_kix', superkix: 'super_kix',
+    tazbeet: 'tazbeet', new_control_tazbeet: 'tazbeet', new_control: 'tazbeet',
+    data: 'data',
+    adsl: 'adsl',
+    fixed: 'fixed',
+    we_pay: 'we_pay', wepay: 'we_pay'
+  };
 
-        /**
-         * Calculates total achievement for lines
-         * @param {Object} itemAchieves - { pt12: 10, super_kix: 8, tazbeet: 7, data: 10 }
-         * @returns {number}
-         */
-        calculateTotalLinesAchieve: function (itemAchieves) {
-            if (!itemAchieves) return 0;
-            return TOTAL_LINE_ITEMS.reduce((sum, key) => {
-                const val = parseFloat(itemAchieves[key]) || 0;
-                return sum + val;
-            }, 0);
-        },
+  /* ---------- helpers ---------- */
+  function num(v) { var n = Number(v); return isFinite(n) ? n : 0; }
+  function round(v, digits) { var p = Math.pow(10, digits == null ? 1 : digits); return Math.round(num(v) * p) / p; }
 
-        /**
-         * Safe achievement percentage calculation: (Achieve / Target) * 100
-         */
-        calculateAchievementPercentage: function (achieve, target) {
-            const t = parseFloat(target) || 0;
-            const a = parseFloat(achieve) || 0;
-            if (t <= 0) return 0;
-            const pct = (a / t) * 100;
-            return Math.min(Math.max(parseFloat(pct.toFixed(1)), 0), 999.9);
-        },
+  function normalizeItemKey(name) {
+    var k = String(name == null ? '' : name).trim().toLowerCase().replace(/[^a-z0-9]+/g, '_').replace(/^_+|_+$/g, '');
+    return ALIASES[k] || k;
+  }
 
-        /**
-         * Projection formula: Daily Average * Target Days
-         * Daily Average = Achieve / Elapsed Target Days
-         */
-        calculateProjection: function (achieve, elapsedDays, targetDays) {
-            const a = parseFloat(achieve) || 0;
-            const e = parseInt(elapsedDays, 10) || 0;
-            const t = parseInt(targetDays, 10) || 20;
-
-            if (e <= 0) return a;
-            const dailyAvg = a / e;
-            return Math.round(dailyAvg * t);
-        },
-
-        /**
-         * Remaining Target = max(Target - Achieve, 0)
-         */
-        calculateRemaining: function (target, achieve) {
-            const t = parseFloat(target) || 0;
-            const a = parseFloat(achieve) || 0;
-            return Math.max(t - a, 0);
-        },
-
-        /**
-         * Base Daily Target = Target / Target Days
-         */
-        calculateDailyTarget: function (target, targetDays) {
-            const t = parseFloat(target) || 0;
-            const td = parseInt(targetDays, 10) || 20;
-            if (td <= 0) return 0;
-            return parseFloat((t / td).toFixed(2));
-        },
-
-        /**
-         * Deficit calculation: Cumulative shortfall from past days
-         * @param {Array} dailyLogs - Array of objects [{ required: 3, achieve: 2 }, ...] up to yesterday
-         * @param {number} baseDailyTarget
-         */
-        calculateDeficit: function (dailyLogs, baseDailyTarget) {
-            if (!Array.isArray(dailyLogs) || dailyLogs.length === 0) return 0;
-            let deficit = 0;
-            dailyLogs.forEach(log => {
-                const req = parseFloat(log.required != null ? log.required : baseDailyTarget) || 0;
-                const ach = parseFloat(log.achieve) || 0;
-                const diff = req - ach;
-                deficit += diff;
-            });
-            return Math.max(deficit, 0);
-        },
-
-        /**
-         * Today's Required = Base Daily Target + Active Deficit (capped at Remaining)
-         */
-        calculateTodayRequired: function (baseDailyTarget, deficit, remaining) {
-            const base = parseFloat(baseDailyTarget) || 0;
-            const def = parseFloat(deficit) || 0;
-            const rem = parseFloat(remaining) || 0;
-            const req = base + def;
-            return Math.min(req, rem);
-        },
-
-        /**
-         * Required Daily = Remaining / Remaining Days
-         */
-        calculateRequiredDaily: function (remaining, remainingDays) {
-            const rem = parseFloat(remaining) || 0;
-            const remDays = parseInt(remainingDays, 10) || 1;
-            if (remDays <= 0) return rem;
-            return parseFloat((rem / remDays).toFixed(2));
-        },
-
-        /**
-         * Item level achievement percentage
-         */
-        calculateItemPercentage: function (itemAchieve, itemTarget) {
-            return this.calculateAchievementPercentage(itemAchieve, itemTarget);
-        },
-
-        /**
-         * Item level projection
-         */
-        calculateItemProjection: function (itemAchieve, elapsedDays, targetDays) {
-            return this.calculateProjection(itemAchieve, elapsedDays, targetDays);
-        },
-
-        /**
-         * Status Determination
-         * Options: 'Target Achieved', 'On Track', 'Needs Attention', 'Behind Target'
-         */
-        calculateStatus: function (achievementPct, projection, target) {
-            const pct = parseFloat(achievementPct) || 0;
-            const proj = parseFloat(projection) || 0;
-            const tgt = parseFloat(target) || 0;
-
-            if (pct >= 100 || (tgt > 0 && proj >= tgt && pct >= 95)) {
-                return { code: 'ACHIEVED', label: 'تم تحقيق الهدف', class: 'status-achieved' };
-            }
-            if (proj >= tgt) {
-                return { code: 'ON_TRACK', label: 'على الطريق الصحيح', class: 'status-ontrack' };
-            }
-            if (proj >= tgt * 0.8) {
-                return { code: 'NEEDS_ATTENTION', label: 'يحتاج انتباه', class: 'status-warning' };
-            }
-            return { code: 'BEHIND', label: 'متأخر عن الهدف', class: 'status-behind' };
-        },
-
-        /**
-         * Calculates individual employee target breakdown from Branch Total Target
-         * Divides total branch target by number of active employees
-         * @param {Object} totalBranchTargets - { pt12: 150, super_kix: 150, tazbeet: 150, data: 150, adsl: 50, fixed: 50, we_pay: 100 }
-         * @param {number} employeeCount - Number of employees in branch
-         */
-        calculateEmployeeTargetsFromBranchTotal: function (totalBranchTargets, employeeCount) {
-            const count = Math.max(parseInt(employeeCount, 10) || 1, 1);
-            const employeeTarget = {};
-            const keys = ['pt12', 'super_kix', 'tazbeet', 'data', 'adsl', 'fixed', 'we_pay'];
-
-            keys.forEach(key => {
-                const total = parseFloat(totalBranchTargets ? totalBranchTargets[key] : 0) || 0;
-                employeeTarget[key] = Math.round(total / count);
-            });
-
-            return {
-                perEmployeeTarget: employeeTarget,
-                employeeCount: count,
-                perEmployeeTotalLines: this.calculateTotalLinesTarget(employeeTarget)
-            };
-        },
-
-        /**
-         * Master summary calculator for a single user/period dataset
-         */
-        calculateMetrics: function (itemTargets, itemAchieves, targetDays, elapsedDays, dailyLogs) {
-            const targetLines = this.calculateTotalLinesTarget(itemTargets);
-            const achieveLines = this.calculateTotalLinesAchieve(itemAchieves);
-            const achievementPct = this.calculateAchievementPercentage(achieveLines, targetLines);
-            const remaining = this.calculateRemaining(targetLines, achieveLines);
-            const elapsed = Math.max(parseInt(elapsedDays, 10) || 1, 1);
-            const tDays = Math.max(parseInt(targetDays, 10) || 20, 1);
-            const remainingDays = Math.max(tDays - elapsed, 1);
-            const projection = this.calculateProjection(achieveLines, elapsed, tDays);
-            const baseDailyTarget = this.calculateDailyTarget(targetLines, tDays);
-            const deficit = this.calculateDeficit(dailyLogs, baseDailyTarget);
-            const todayRequired = this.calculateTodayRequired(baseDailyTarget, deficit, remaining);
-            const requiredDaily = this.calculateRequiredDaily(remaining, remainingDays);
-            const status = this.calculateStatus(achievementPct, projection, targetLines);
-
-            // Item-by-item breakdown
-            const items = ['pt12', 'super_kix', 'tazbeet', 'data', 'adsl', 'fixed', 'we_pay'];
-            const itemBreakdown = {};
-            items.forEach(item => {
-                const itemTgt = parseFloat(itemTargets ? itemTargets[item] : 0) || 0;
-                const itemAch = parseFloat(itemAchieves ? itemAchieves[item] : 0) || 0;
-                itemBreakdown[item] = {
-                    target: itemTgt,
-                    achieve: itemAch,
-                    remaining: this.calculateRemaining(itemTgt, itemAch),
-                    percentage: this.calculateItemPercentage(itemAch, itemTgt),
-                    projection: this.calculateItemProjection(itemAch, elapsed, tDays),
-                    isTotalLine: TOTAL_LINE_ITEMS.includes(item)
-                };
-            });
-
-            return {
-                targetLines,
-                achieveLines,
-                achievementPct,
-                remaining,
-                elapsedDays: elapsed,
-                targetDays: tDays,
-                remainingDays,
-                projection,
-                baseDailyTarget,
-                deficit,
-                todayRequired,
-                requiredDaily,
-                status,
-                items: itemBreakdown
-            };
-        }
-    };
-
-    if (typeof module !== 'undefined' && module.exports) {
-        module.exports = TargetCalculator;
-    } else {
-        global.TargetCalculator = TargetCalculator;
+  // Accepts {pt12: 30, ...} or [{item:'PT12', target_value: 30}, ...] -> {pt12: 30, ...}
+  function normalizeTargets(targets) {
+    var out = {}, i, key;
+    ALL_ITEMS.forEach(function (k) { out[k] = 0; });
+    if (Array.isArray(targets)) {
+      for (i = 0; i < targets.length; i++) {
+        key = normalizeItemKey(targets[i].item);
+        if (key in out) out[key] += num(targets[i].target_value != null ? targets[i].target_value : targets[i].target);
+      }
+    } else if (targets && typeof targets === 'object') {
+      Object.keys(targets).forEach(function (k) {
+        key = normalizeItemKey(k);
+        if (key in out) out[key] += num(targets[k]);
+      });
     }
-})(typeof window !== 'undefined' ? window : this);
+    return out;
+  }
+
+  // Sum daily_performance rows per item
+  function sumPerformance(rows) {
+    var out = {};
+    ALL_ITEMS.forEach(function (k) { out[k] = 0; });
+    (rows || []).forEach(function (r) { ALL_ITEMS.forEach(function (k) { out[k] += num(r[k]); }); });
+    return out;
+  }
+
+  function parseDay(d) {
+    if (d instanceof Date) return Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate());
+    var m = /^(\d{4})-(\d{2})-(\d{2})/.exec(String(d));
+    if (!m) throw new Error('Invalid date: ' + d);
+    return Date.UTC(+m[1], +m[2] - 1, +m[3]);
+  }
+  function fmtDay(ms) { return new Date(ms).toISOString().slice(0, 10); }
+
+  /* ---------- core formulas ---------- */
+  function sumLines(obj) {
+    var o = normalizeTargets(obj), t = 0;
+    LINE_ITEMS.forEach(function (k) { t += o[k]; });
+    return t;
+  }
+  function calculateTotalLinesTarget(targets) { return sumLines(targets); }
+  function calculateTotalLinesAchieve(achieve) { return sumLines(achieve); }
+
+  function calculateAchievementPercentage(achieve, target) {
+    var t = num(target);
+    return t > 0 ? (num(achieve) / t) * 100 : 0;
+  }
+  function calculateItemPercentage(achieve, target) { return calculateAchievementPercentage(achieve, target); }
+
+  function calculateRemaining(target, achieve) { return Math.max(num(target) - num(achieve), 0); }
+
+  function calculateProjection(achieve, elapsedDays, targetDays) {
+    var e = num(elapsedDays);
+    if (e <= 0) return 0;
+    return (num(achieve) / e) * num(targetDays);
+  }
+  function calculateItemProjection(achieve, elapsedDays, targetDays) { return calculateProjection(achieve, elapsedDays, targetDays); }
+
+  function calculateDailyTarget(target, targetDays) {
+    var d = num(targetDays);
+    return d > 0 ? num(target) / d : 0;
+  }
+
+  // dailyAchieves: achieved Total Lines for each target day BEFORE today, in order.
+  // required(day) = base + deficit ; deficit = max(required - achieved, 0)
+  function calculateDeficit(dailyAchieves, baseDaily) {
+    var deficit = 0, history = [], base = num(baseDaily);
+    (dailyAchieves || []).forEach(function (a) {
+      var required = base + deficit;
+      var achieved = num(a);
+      deficit = Math.max(required - achieved, 0);
+      history.push({ required: required, achieved: achieved, deficit: deficit });
+    });
+    return { deficit: deficit, history: history };
+  }
+
+  // Base daily + active deficit, never above what is left of the target.
+  function calculateTodayRequired(baseDaily, deficit, remaining, opts) {
+    var v = Math.min(num(baseDaily) + num(deficit), Math.max(num(remaining), 0));
+    return opts && opts.roundUp ? Math.ceil(v - 1e-9) : v;
+  }
+
+  function calculateRequiredDaily(remaining, remainingDays) {
+    var r = Math.max(num(remaining), 0), d = num(remainingDays);
+    return d > 0 ? r / d : r;
+  }
+
+  /* ---------- period helpers ---------- */
+  // ISO dates of the target days from start up to `until`, skipping offDays, capped at targetDays.
+  function listTargetDays(startDate, untilDate, targetDays, offDays) {
+    var s = parseDay(startDate), u = parseDay(untilDate), out = [];
+    var off = {};
+    (offDays || []).forEach(function (d) { off[fmtDay(parseDay(d))] = true; });
+    for (var t = s; t <= u && out.length < num(targetDays); t += MS_DAY) {
+      var key = fmtDay(t);
+      if (!off[key]) out.push(key);
+    }
+    return out;
+  }
+  function calculateElapsedDays(startDate, today, targetDays, offDays) {
+    return listTargetDays(startDate, today, targetDays, offDays).length;
+  }
+  function calculateRemainingDays(elapsedDays, targetDays) { return Math.max(num(targetDays) - num(elapsedDays), 0); }
+
+  /* ---------- status (rule based, never AI) ---------- */
+  function calculateStatus(target, achieve, projection, elapsedDays) {
+    if (num(target) <= 0) return STATUS.NO_TARGET;
+    if (num(achieve) >= num(target)) return STATUS.ACHIEVED;
+    if (elapsedDays != null && num(elapsedDays) <= 0) return STATUS.NOT_STARTED;
+    var ratio = num(projection) / num(target);
+    if (ratio >= THRESHOLDS.onTrack) return STATUS.ON_TRACK;
+    if (ratio >= THRESHOLDS.needsAttention) return STATUS.NEEDS_ATTENTION;
+    return STATUS.BEHIND;
+  }
+
+  /* ---------- full summary for one person / one period ---------- */
+  // period: {start_date, end_date, target_days}; dailyRows: daily_performance rows; today: 'YYYY-MM-DD'
+  function calculateSummary(input) {
+    var period = input.period, targetDays = num(period.target_days);
+    var targets = normalizeTargets(input.targets);
+    var todayStr = fmtDay(parseDay(input.today));
+    var endStr = period.end_date ? fmtDay(parseDay(period.end_date)) : todayStr;
+    var startStr = fmtDay(parseDay(period.start_date));
+    var until = todayStr < endStr ? todayStr : endStr;
+
+    var days = listTargetDays(startStr, until, targetDays, input.offDays);
+    var elapsed = days.length;
+    var todayInPeriod = elapsed > 0 && days[elapsed - 1] === todayStr;
+    var previousDays = todayInPeriod ? days.slice(0, -1) : days;
+
+    var rows = (input.dailyRows || []).filter(function (r) {
+      var d = fmtDay(parseDay(r.performance_date));
+      return d >= startStr && d <= endStr;
+    });
+    var achieve = sumPerformance(rows);
+
+    var linesByDate = {};
+    rows.forEach(function (r) {
+      var d = fmtDay(parseDay(r.performance_date));
+      linesByDate[d] = (linesByDate[d] || 0) + sumLines(r);
+    });
+
+    var linesTarget = calculateTotalLinesTarget(targets);
+    var linesAchieve = calculateTotalLinesAchieve(achieve);
+    var baseDaily = calculateDailyTarget(linesTarget, targetDays);
+    var deficit = calculateDeficit(previousDays.map(function (d) { return linesByDate[d] || 0; }), baseDaily).deficit;
+    var remaining = calculateRemaining(linesTarget, linesAchieve);
+    var remainingDays = calculateRemainingDays(elapsed, targetDays);
+    var projection = calculateProjection(linesAchieve, elapsed, targetDays);
+
+    var items = {};
+    ALL_ITEMS.forEach(function (k) {
+      var proj = calculateItemProjection(achieve[k], elapsed, targetDays);
+      items[k] = {
+        target: targets[k],
+        achieve: achieve[k],
+        remaining: calculateRemaining(targets[k], achieve[k]),
+        percentage: calculateItemPercentage(achieve[k], targets[k]),
+        projection: proj,
+        status: calculateStatus(targets[k], achieve[k], proj, elapsed)
+      };
+    });
+
+    return {
+      elapsedDays: elapsed,
+      remainingDays: remainingDays,
+      targetDays: targetDays,
+      lines: {
+        target: linesTarget,
+        achieve: linesAchieve,
+        percentage: calculateAchievementPercentage(linesAchieve, linesTarget),
+        projection: projection,
+        remaining: remaining,
+        baseDaily: baseDaily,
+        deficit: deficit,
+        todayRequired: todayInPeriod ? calculateTodayRequired(baseDaily, deficit, remaining) : 0,
+        requiredDaily: calculateRequiredDaily(remaining, remainingDays),
+        status: calculateStatus(linesTarget, linesAchieve, projection, elapsed)
+      },
+      items: items
+    };
+  }
+
+  /* ---------- manager roll-up (branch / area totals) ---------- */
+  // Sums already-computed summaries; percentages and status are recomputed from the totals.
+  function aggregateSummaries(summaries) {
+    var list = summaries || [];
+    var elapsed = list.length ? list[0].elapsedDays : 0;
+    var targetDays = list.length ? list[0].targetDays : 0;
+    function roll(pick) {
+      var t = 0, a = 0, p = 0, r = 0;
+      list.forEach(function (s) { var x = pick(s); t += x.target; a += x.achieve; p += x.projection; r += x.remaining; });
+      return {
+        target: t, achieve: a, projection: p, remaining: r,
+        percentage: calculateAchievementPercentage(a, t),
+        status: calculateStatus(t, a, p, elapsed)
+      };
+    }
+    var lines = roll(function (s) { return s.lines; });
+    var todayRequired = 0;
+    list.forEach(function (s) { todayRequired += s.lines.todayRequired; });
+    lines.todayRequired = todayRequired;
+    lines.requiredDaily = calculateRequiredDaily(lines.remaining, list.length ? list[0].remainingDays : 0);
+
+    var items = {};
+    ALL_ITEMS.forEach(function (k) { items[k] = roll(function (s) { return s.items[k]; }); });
+    return { employees: list.length, elapsedDays: elapsed, targetDays: targetDays, lines: lines, items: items };
+  }
+
+  /* ---------- distribute a branch total across employees ---------- */
+  // 100 over 3 employees -> [34, 33, 33] (remainder goes to the first ones, nothing is lost)
+  function splitTotalAcross(total, count) {
+    var n = Math.floor(num(count)), t = Math.max(Math.floor(num(total)), 0), out = [], i;
+    if (n <= 0) return out;
+    var base = Math.floor(t / n), rem = t - base * n;
+    for (i = 0; i < n; i++) out.push(base + (i < rem ? 1 : 0));
+    return out;
+  }
+
+  return {
+    LINE_ITEMS: LINE_ITEMS, OTHER_ITEMS: OTHER_ITEMS, ALL_ITEMS: ALL_ITEMS,
+    STATUS: STATUS, THRESHOLDS: THRESHOLDS,
+    normalizeItemKey: normalizeItemKey, normalizeTargets: normalizeTargets, sumPerformance: sumPerformance,
+    calculateTotalLinesTarget: calculateTotalLinesTarget,
+    calculateTotalLinesAchieve: calculateTotalLinesAchieve,
+    calculateAchievementPercentage: calculateAchievementPercentage,
+    calculateProjection: calculateProjection,
+    calculateRemaining: calculateRemaining,
+    calculateDailyTarget: calculateDailyTarget,
+    calculateDeficit: calculateDeficit,
+    calculateTodayRequired: calculateTodayRequired,
+    calculateRequiredDaily: calculateRequiredDaily,
+    calculateItemPercentage: calculateItemPercentage,
+    calculateItemProjection: calculateItemProjection,
+    calculateElapsedDays: calculateElapsedDays,
+    calculateRemainingDays: calculateRemainingDays,
+    listTargetDays: listTargetDays,
+    calculateStatus: calculateStatus,
+    calculateSummary: calculateSummary,
+    aggregateSummaries: aggregateSummaries,
+    splitTotalAcross: splitTotalAcross,
+    round: round
+  };
+});

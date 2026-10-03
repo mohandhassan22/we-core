@@ -1,133 +1,81 @@
 /**
- * WE-Core Target Manager - Main Application Controller
+ * WE Target Manager - bootstrap
+ * Auth is owned by the site (assets/js/auth.js). We only wait for it and read the verified user.
  */
-
 (function (global) {
-    document.addEventListener('DOMContentLoaded', function () {
-        App.init();
-    });
-
-    const App = {
-        userProfile: null,
+    var App = {
+        ctx: null,
 
         init: function () {
-            this.initDarkMode();
-            this.initAuthListener();
+            Utils.applyTheme();
             this.bindEvents();
-        },
-
-        initDarkMode: function () {
-            const savedDark = localStorage.getItem('wc-dark') || localStorage.getItem('darkMode');
-            if (savedDark === 'true') {
-                document.body.classList.add('dark');
-            }
-        },
-
-        toggleDarkMode: function () {
-            const isDark = document.body.classList.toggle('dark');
-            localStorage.setItem('wc-dark', isDark);
-            const icon = document.getElementById('darkToggleIcon');
-            if (icon) {
-                icon.className = isDark ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
-            }
-        },
-
-        initAuthListener: function () {
-            // Check if already authenticated by auth.js
-            if (window._sbUser) {
-                this.onAuthReady(window._sbUser);
-            } else {
-                window.addEventListener('authSuccess', () => {
-                    if (window._sbUser) this.onAuthReady(window._sbUser);
-                });
-            }
+            if (global._sbUser) this.onAuthReady(global._sbUser);
+            else global.addEventListener('authSuccess', function () { if (global._sbUser) App.onAuthReady(global._sbUser); });
         },
 
         onAuthReady: async function (user) {
+            if (this._started) return;
+            this._started = true;
             try {
-                // Fetch profile
-                const profile = await TargetAPI.fetchUserProfile(user.id);
-                this.userProfile = profile || {
-                    id: user.id,
-                    full_name: user.user_metadata?.username || user.email.split('@')[0],
-                    role: 'agent',
-                    branch: 'الفرع الرئيسي',
-                    area: 'القاهرة'
-                };
+                this.ctx = await TargetAPI.getContext(user.id);
+            } catch (err) {
+                this.showFatal(err.message || 'تعذر تحميل بياناتك');
+                return;
+            }
+            var ctx = this.ctx;
+            if (Permissions.enforcePageAccess(ctx.role)) return; // redirecting
 
-                // Check page access permission
-                Permissions.enforcePageAccess(this.userProfile);
+            Permissions.renderSidebar('sidebarNav', ctx.role);
+            this.updateHeader(ctx);
 
-                // Render Sidebar menu
-                const normRole = Permissions.normalizeRole(this.userProfile.role);
-                Permissions.renderSidebar('sidebarNav', normRole);
-
-                // Update Header Display
-                this.updateHeaderUI();
-
-                // Initialize Dashboard Renderer
-                if (typeof Dashboard !== 'undefined') {
-                    await Dashboard.init(this.userProfile);
+            var page = document.body.getAttribute('data-page');
+            try {
+                if (page === 'agent' || page === 'branch' || page === 'area') {
+                    await Dashboard.init(ctx, page);
+                } else if (global.PageModules && global.PageModules[page]) {
+                    await global.PageModules[page](ctx);
                 }
             } catch (err) {
-                console.error('App init failed:', err);
+                console.error('Page init failed', err);
+                this.showFatal(err.message || 'حدث خطأ غير متوقع');
             }
         },
 
-        updateHeaderUI: function () {
-            const prof = this.userProfile;
-            if (!prof) return;
+        showFatal: function (message) {
+            var host = document.getElementById('mainDashboardContent') || document.querySelector('.dashboard-content');
+            if (!host) return;
+            host.innerHTML = '<div class="empty-state"><i class="fa-solid fa-triangle-exclamation" style="font-size:2.5rem;color:var(--status-danger);"></i>'
+                + '<h2>' + Utils.esc(message) + '</h2>'
+                + '<button class="btn btn-primary" onclick="window.location.reload()"><i class="fa-solid fa-rotate"></i> إعادة المحاولة</button></div>';
+        },
 
-            const nameEl = document.getElementById('headerUserName');
-            if (nameEl) nameEl.textContent = prof.full_name || 'زميلنا';
-
-            const config = Permissions.getRoleConfig(prof.role);
-
-            const roleEl = document.getElementById('headerUserRole');
-            if (roleEl) {
-                roleEl.textContent = config.title;
-            }
-
-            // Update document title dynamically
-            document.title = `${config.title} | WE Target Manager`;
-
-            // Update sidebar sub-title
-            const sidebarSub = document.querySelector('.sidebar-sub');
-            if (sidebarSub) {
-                sidebarSub.textContent = `لوحة ${config.title}`;
-            }
-
-            const avatarEl = document.getElementById('headerUserAvatar');
-            if (avatarEl) {
-                const initials = (prof.full_name || 'WE').substring(0, 2).toUpperCase();
-                avatarEl.textContent = initials;
-            }
+        updateHeader: function (ctx) {
+            var cfg = Permissions.getRoleConfig(ctx.role);
+            var name = ctx.profile.full_name || ctx.profile.username || 'زميلنا';
+            var set = function (id, text) { var el = document.getElementById(id); if (el) el.textContent = text; };
+            set('headerUserName', name);
+            set('headerUserRole', cfg.title);
+            set('headerUserAvatar', name.substring(0, 2).toUpperCase());
+            var sub = document.querySelector('.sidebar-sub');
+            if (sub) sub.textContent = cfg.title;
+            document.title = cfg.title + ' | WE Target Manager';
         },
 
         bindEvents: function () {
-            const darkBtn = document.getElementById('darkToggleBtn');
-            if (darkBtn) darkBtn.addEventListener('click', () => this.toggleDarkMode());
-
-            const mobileBtn = document.getElementById('mobileMenuBtn');
-            if (mobileBtn) {
-                mobileBtn.addEventListener('click', () => {
-                    const sb = document.querySelector('.sidebar');
-                    const overlay = document.querySelector('.sidebar-overlay');
-                    if (sb) sb.classList.toggle('open');
-                    if (overlay) overlay.classList.toggle('show');
-                });
-            }
-
-            const overlay = document.querySelector('.sidebar-overlay');
-            if (overlay) {
-                overlay.addEventListener('click', () => {
-                    const sb = document.querySelector('.sidebar');
-                    if (sb) sb.classList.remove('open');
-                    overlay.classList.remove('show');
-                });
-            }
+            var dark = document.getElementById('darkToggleBtn');
+            if (dark) dark.addEventListener('click', function () {
+                Utils.setTheme(document.body.classList.contains('dark') ? 'light' : 'dark');
+            });
+            var sb = document.querySelector('.sidebar'), ov = document.querySelector('.sidebar-overlay');
+            var menu = document.getElementById('mobileMenuBtn');
+            if (menu) menu.addEventListener('click', function () { sb && sb.classList.toggle('open'); ov && ov.classList.toggle('show'); });
+            if (ov) ov.addEventListener('click', function () { sb && sb.classList.remove('open'); ov.classList.remove('show'); });
+            document.addEventListener('keydown', function (e) {
+                if (e.key === 'Escape') document.querySelectorAll('.modal-overlay.active').forEach(function (m) { m.classList.remove('active'); });
+            });
         }
     };
 
     global.App = App;
+    document.addEventListener('DOMContentLoaded', function () { App.init(); });
 })(typeof window !== 'undefined' ? window : this);

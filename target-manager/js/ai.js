@@ -1,94 +1,58 @@
 /**
- * WE-Core Target Manager - WE AI Coach (Gemini Integration & Caching)
+ * WE Target Manager - AI Coach
+ *
+ * Gemini must be called from a Supabase Edge Function (the API key never reaches the browser).
+ * That function is not deployed yet, so AI_FUNCTION is null and this module produces a
+ * RULE-BASED analysis from the real, already-authorised numbers. The UI says so explicitly.
+ * When the function exists, set AI_FUNCTION to its name and send the same payload.
  */
-
 (function (global) {
-    const WEAiCoach = {
-        /**
-         * Fetches or generates AI Coach Analysis
-         * @param {Object} metrics - TargetCalculator metrics object
-         * @param {Object} userProfile - User profile object
-         * @param {string} periodId - Current period ID
-         * @param {boolean} forceRefresh - If true, bypasses cache
-         */
-        getAnalysis: async function (metrics, userProfile, periodId, forceRefresh = false) {
-            if (!metrics || !userProfile) return 'لا تتوفر بيانات كافية للتحليل.';
+    var AI_FUNCTION = null;
+    var LABELS = { pt12: 'PT12', super_kix: 'Super Kix', tazbeet: 'Tazbeet', data: 'Data', adsl: 'ADSL', fixed: 'Fixed', we_pay: 'WE Pay' };
 
-            // 1. Check cache if not force refresh
-            if (!forceRefresh && periodId) {
+    function f(n) { return Utils.formatNumber(n, 1); }
+
+    var WEAiCoach = {
+        isConnected: function () { return !!AI_FUNCTION; },
+
+        /** summary = server/calculator summary { lines, items, elapsedDays, remainingDays, targetDays } */
+        analyze: async function (scopeLabel, summary) {
+            if (!summary || !summary.lines || !summary.lines.target) {
+                return { text: 'لا توجد بيانات كافية للتحليل بعد. سيظهر التحليل بمجرد تحديد الـ Target وتسجيل الأداء.', source: 'none' };
+            }
+            if (AI_FUNCTION) {
                 try {
-                    const cached = await TargetAPI.fetchAiAnalysisCache(userProfile.id, periodId);
-                    if (cached && cached.response) {
-                        return cached.response;
-                    }
-                } catch (cacheErr) {
-                    console.warn('Failed to fetch AI cache:', cacheErr);
-                }
+                    var res = await TargetAPI.callFunction(AI_FUNCTION, { scope: scopeLabel, summary: summary });
+                    if (res && res.analysis) return { text: res.analysis, source: 'gemini' };
+                } catch (e) { console.warn('AI function failed, using rule-based analysis', e); }
             }
-
-            // 2. Prepare payload for Edge Function
-            const payload = {
-                role: userProfile.role,
-                userName: userProfile.full_name || 'زميلنا',
-                branch: userProfile.branch || 'الفرع',
-                area: userProfile.area || 'المنطقة',
-                targetLines: metrics.targetLines,
-                achieveLines: metrics.achieveLines,
-                achievementPct: metrics.achievementPct,
-                projection: metrics.projection,
-                remaining: metrics.remaining,
-                todayRequired: metrics.todayRequired,
-                requiredDaily: metrics.requiredDaily,
-                deficit: metrics.deficit,
-                elapsedDays: metrics.elapsedDays,
-                remainingDays: metrics.remainingDays,
-                status: metrics.status ? metrics.status.label : 'قيد المتابعة',
-                itemBreakdown: metrics.items
-            };
-
-            try {
-                // Try calling target-ai edge function
-                const res = await TargetAPI.callEdgeFunction('target-ai', payload);
-                const analysisText = res.analysis || res.text || res.message;
-
-                if (analysisText && periodId) {
-                    await TargetAPI.saveAiAnalysisCache(userProfile.id, periodId, userProfile.role, payload, analysisText);
-                }
-                return analysisText || this.generateFallbackAnalysis(payload);
-            } catch (err) {
-                console.warn('Edge Function AI call failed, generating local smart insight:', err);
-                const fallbackText = this.generateFallbackAnalysis(payload);
-                return fallbackText;
-            }
+            return { text: this.ruleBased(scopeLabel, summary), source: 'rules' };
         },
 
-        /**
-         * Rule-based fallback insight engine (used if Edge Function is offline or during offline testing)
-         */
-        generateFallbackAnalysis: function (data) {
-            const pct = data.achievementPct;
-            const remaining = data.remaining;
-            const requiredDaily = data.requiredDaily;
-            const name = data.userName;
-            const status = data.status;
+        ruleBased: function (scope, s) {
+            var L = s.lines, out = [];
+            out.push('📊 ' + scope + ': حقق ' + f(L.achieve) + ' من ' + f(L.target) + ' خط (' + Utils.formatPercent(L.percentage) + ') بعد ' + s.elapsedDays + ' من ' + s.targetDays + ' يوم.');
 
-            let text = `🎯 **تحليل أداء WE AI Coach لـ ${name}:**\n\n`;
+            var meta = Utils.statusMeta(L.status).label;
+            out.push('🎯 المتوقع بنهاية الفترة ' + f(L.projection) + ' خط، والحالة: ' + meta + '.');
 
-            if (pct >= 100) {
-                text += `🎉 ممتاز جداً! لقد حققت الهدف بالكامل بنسبة **${pct}%**.\n`;
-                text += `💡 **نصيحة للمبيعات:** أنصحك بالتركيز الآن على المنتجات المكملة (Cross-Selling) مثل WE Pay لتفعيل المحافظ للعملاء الحاليين، وكذلك تحفيز المبيعات لخطوط الفاتورة (Fixed) لتعظيم عمولتك واستحقاقاتك الإضافية.\n`;
-            } else if (pct >= 80) {
-                text += `📈 أداؤك جيد جداً وأنت على وشك تحقيق الهدف. المتبقي لك هو **${remaining} خطوط** فقط. معدلك اليومي المطلوب للإنهاء هو **${requiredDaily} خطوط/يومياً**.\n`;
-                text += `💡 **نصيحة للمبيعات:** حاول توفير خطوط Data مع كل خط موبايل جديد كباقة متكاملة، وهذا سيزيد من أرقامك بشكل مضاعف.\n`;
-            } else if (pct >= 50) {
-                text += `⚠️ أداؤك حالياً **${pct}%**. يوجد عجز متراكم قدره **${data.deficit} خطوط**.\n`;
-                text += `💡 **نصيحة للمبيعات لتعويض العجز:** استهدف عملاء باقات Super Kix و Tazbeet حيث يسهل تسويقها للشباب، واعرض دائماً على عملاء التجديد إمكانية الحصول على خط جديد بعروض مميزة للإنترنت.\n`;
-            } else {
-                text += `🚨 تنبيه أداء: نسبة الإنجاز الحالية **${pct}%** ومتأخرة عن المستهدف. المطلوب منك اليوم **${data.todayRequired} خطوط** للعودة للمسار الصحيح.\n`;
-                text += `💡 **نصيحة للمبيعات:** ركز مجهودك اليوم على منتجات الـ PT12 و Super Kix ذات القيمة العالية، وتواصل مع عملاء الإنترنت المنزلي لترشيح خطوط الموبايل كعرض مكمل.\n`;
+            if (L.status === 'achieved') {
+                out.push('✅ تم تحقيق الهدف بالكامل. استمر في الأداء لرفع الفائض.');
+            } else if (s.remainingDays > 0) {
+                out.push('📈 المتبقي ' + f(L.remaining) + ' خط على ' + s.remainingDays + ' يوم، أي حوالي ' + f(L.requiredDaily) + ' خط يوميًا.');
+            }
+            if (L.todayRequired > 0 && L.deficit > 0) {
+                out.push('⚠️ يوجد عجز متراكم ' + f(L.deficit) + ' خط، فالمطلوب اليوم ' + f(L.todayRequired) + ' خط.');
             }
 
-            return text;
+            var weakest = null;
+            Object.keys(s.items).forEach(function (k) {
+                var it = s.items[k];
+                if (it.target > 0 && it.status !== 'achieved' && (!weakest || it.percentage < s.items[weakest].percentage)) weakest = k;
+            });
+            if (weakest) out.push('🔎 أضعف منتج حاليًا: ' + LABELS[weakest] + ' (' + Utils.formatPercent(s.items[weakest].percentage) + ' من هدفه). ركّز عليه.');
+
+            return out.join('\n');
         }
     };
 
