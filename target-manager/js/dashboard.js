@@ -143,6 +143,7 @@
                         </div>
                         <div class="kpi-value">${Utils.formatNumber(metrics.achieveLines)}</div>
                         <div class="kpi-subtext"><span class="badge-status ${metrics.status.class}">${metrics.status.label}</span></div>
+                        <div class="kpi-progress"><span style="width:${Math.min(Math.max(metrics.achievementPct || 0, 0), 100)}%"></span></div>
                     </div>
                     <div class="kpi-card">
                         <div class="kpi-card-header">
@@ -159,6 +160,7 @@
                         </div>
                         <div class="kpi-value">${Utils.formatNumber(metrics.projection)}</div>
                         <div class="kpi-subtext">معدل يومي: ${Utils.formatNumber(metrics.achieveLines / metrics.elapsedDays, 1)}</div>
+                        <div class="kpi-progress"><span style="width:${metrics.targetLines ? Math.min(Math.max(metrics.projection / metrics.targetLines * 100, 0), 100) : 0}%"></span></div>
                     </div>
                     <div class="kpi-card" style="border-right: 4px solid var(--we-purple);">
                         <div class="kpi-card-header">

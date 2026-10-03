@@ -170,3 +170,108 @@ img, svg, canvas, video { max-width: 100%; }
   .table-card-wrapper { overflow: visible; }
   .data-table { min-width: 0; }
 }
+
+
+/* ====================================================================
+   KPI CARD REDESIGN - colored top border, tinted icon, accent number,
+   progress bar (inspired by the Fakharany360 reference design)
+   ==================================================================== */
+.kpi-grid { --acc: #5e2750; --acc-soft: rgba(94,39,80,.10); }
+.kpi-card {
+  --acc: #5b21b6; --acc-soft: rgba(91,33,182,.10);
+  position: relative;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-color, rgba(15,23,42,.08));
+  border-top: 4px solid var(--acc);
+  border-right-width: 1px !important;
+  border-radius: 18px;
+  padding: clamp(1rem, 2.4vw, 1.35rem);
+  box-shadow: 0 6px 18px rgba(15,23,42,.06);
+  display: flex; flex-direction: column; gap: .35rem;
+  overflow: hidden;
+  transition: transform .2s ease, box-shadow .2s ease;
+}
+.kpi-card::before { display: none; }
+.kpi-card::after {              /* soft glow in the corner */
+  content: ''; position: absolute; top: -40px; inset-inline-start: -40px;
+  width: 120px; height: 120px; border-radius: 50%;
+  background: radial-gradient(circle, var(--acc-soft), transparent 70%);
+  pointer-events: none;
+}
+.kpi-card:hover { transform: translateY(-4px); box-shadow: 0 14px 28px rgba(15,23,42,.12); }
+
+.kpi-card:nth-child(5n+1) { --acc: #5b21b6; --acc-soft: rgba(91,33,182,.12); }  /* purple */
+.kpi-card:nth-child(5n+2) { --acc: #0ea5e9; --acc-soft: rgba(14,165,233,.12); }  /* blue   */
+.kpi-card:nth-child(5n+3) { --acc: #ec4899; --acc-soft: rgba(236,72,153,.12); }  /* pink   */
+.kpi-card:nth-child(5n+4) { --acc: #f59e0b; --acc-soft: rgba(245,158,11,.14); }  /* gold   */
+.kpi-card:nth-child(5n+5) { --acc: #10b981; --acc-soft: rgba(16,185,129,.12); }  /* green  */
+
+.kpi-card-header { display: flex; align-items: center; justify-content: space-between; gap: .6rem; margin-bottom: .2rem; position: relative; z-index: 1; }
+.kpi-title {
+  font-size: .78rem; font-weight: 800; letter-spacing: .02em;
+  text-transform: uppercase; color: var(--text-secondary, #475569);
+  position: relative; z-index: 1;
+}
+.kpi-icon-wrap {
+  width: 38px; height: 38px; border-radius: 12px; flex: none;
+  display: grid; place-items: center; font-size: 1rem;
+  background: var(--acc-soft) !important; color: var(--acc) !important;
+}
+.kpi-value {
+  font-size: clamp(1.6rem, 4.4vw, 2.15rem); font-weight: 900; line-height: 1.1;
+  color: var(--acc) !important; position: relative; z-index: 1;
+  font-variant-numeric: tabular-nums;
+}
+.kpi-subtext { font-size: .8rem; color: var(--text-secondary, #64748b); position: relative; z-index: 1; }
+
+.kpi-progress {
+  height: 7px; border-radius: 99px; background: var(--acc-soft);
+  overflow: hidden; margin-top: .55rem; position: relative; z-index: 1;
+}
+.kpi-progress > span {
+  display: block; height: 100%; border-radius: inherit;
+  background: linear-gradient(90deg, var(--acc), color-mix(in srgb, var(--acc) 55%, #fff));
+  transition: width .6s ease;
+}
+@media (prefers-color-scheme: dark) { .kpi-card { box-shadow: 0 6px 18px rgba(0,0,0,.35); } }
+[data-theme="dark"] .kpi-card { box-shadow: 0 6px 18px rgba(0,0,0,.35); }
+
+/* fix: 5th KPI card has an inline purple border-right */
+.kpi-card { border-right-color: var(--border-color, rgba(15,23,42,.08)) !important; }
+
+/* ====================================================================
+   PRODUCT ITEM CARDS - same language as the KPI cards
+   ==================================================================== */
+.item-card {
+  --acc: #5b21b6; --acc-soft: rgba(91,33,182,.12);
+  position: relative; overflow: hidden;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-color, rgba(15,23,42,.08));
+  border-top: 4px solid var(--acc);
+  border-radius: 18px;
+  padding: clamp(.95rem, 2.2vw, 1.25rem);
+  box-shadow: 0 6px 18px rgba(15,23,42,.06);
+  display: flex; flex-direction: column; gap: .75rem;
+  transition: transform .2s ease, box-shadow .2s ease;
+}
+.item-card:hover { transform: translateY(-4px); box-shadow: 0 14px 28px rgba(15,23,42,.12); }
+.item-card:nth-child(4n+1) { --acc: #5b21b6; --acc-soft: rgba(91,33,182,.12); }
+.item-card:nth-child(4n+2) { --acc: #0ea5e9; --acc-soft: rgba(14,165,233,.12); }
+.item-card:nth-child(4n+3) { --acc: #ec4899; --acc-soft: rgba(236,72,153,.12); }
+.item-card:nth-child(4n+4) { --acc: #f59e0b; --acc-soft: rgba(245,158,11,.14); }
+.item-card-head { display: flex; align-items: center; justify-content: space-between; gap: .5rem; flex-wrap: wrap; }
+.item-name {
+  font-size: .82rem; font-weight: 800; letter-spacing: .03em;
+  text-transform: uppercase; color: var(--text-secondary, #475569);
+}
+.item-badge { border-radius: 99px; font-size: .7rem; padding: .2rem .65rem; font-weight: 700; }
+.item-card .progress-bar-bg {
+  height: 7px; border-radius: 99px; background: var(--acc-soft); overflow: hidden;
+}
+.item-card .progress-bar-fill {
+  height: 100%; border-radius: inherit;
+  background: linear-gradient(90deg, var(--acc), color-mix(in srgb, var(--acc) 55%, #fff));
+}
+.item-card .text-muted > span:nth-child(2) { color: var(--acc); font-weight: 800; }
+.item-card .text-muted > span:nth-child(3) { font-weight: 800; }
+[data-theme="dark"] .item-card { box-shadow: 0 6px 18px rgba(0,0,0,.35); }
