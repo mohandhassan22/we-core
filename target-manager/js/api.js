@@ -53,16 +53,7 @@
             };
 
             try {
-                if (window._sbClient) {
-                    const { data, error } = await window._sbClient
-                        .from('profiles')
-                        .select('id, full_name, role, branch, area, area_id, branch_id, supervisor_id')
-                        .eq('id', userId)
-                        .single();
-                    if (!error && data) {
-                        return { ...defaultProfile, ...data };
-                    }
-                }
+                // Use the user's access-token cookie directly (the shared supabase-js client has no session => 401)
                 const rows = await restFetch(`profiles?id=eq.${userId}&select=*&limit=1`);
                 if (rows && rows[0]) {
                     return { ...defaultProfile, ...rows[0] };
