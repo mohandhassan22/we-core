@@ -13,7 +13,7 @@ const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY, {
 // ─── Global Variables ───
 let currentUser = null;
 let deleteTargetUserId = null;
-const sections = { users: 'إدارة المستخدمين', create: 'إنشاء مستخدم جديد', org: 'الفروع والمناطق', actions: 'إجراءات الحساب', tables: 'إدارة الجداول', settings: 'الإعدادات', train: 'تدريب الذكاء الاصطناعي' };
+const sections = { users: 'إدارة المستخدمين', create: 'إنشاء مستخدم جديد', org: 'الفروع والمناطق', rules: 'القوانين (NTRA)', actions: 'إجراءات الحساب', tables: 'إدارة الجداول', settings: 'الإعدادات', train: 'تدريب الذكاء الاصطناعي' };
 
 // ─── Utility Functions ───
 const $ = (id) => document.getElementById(id);
@@ -1097,3 +1097,128 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 });
+
+
+// ─── Rules (ntra_rules) ───
+(function () {
+  const BLOCK_META = {
+    heading: { icon: 'ti-heading', label: 'عنوان فرعي' },
+    text:    { icon: 'ti-align-right', label: 'نص' },
+    field:   { icon: 'ti-forms', label: 'خانة / رقم' },
+    image:   { icon: 'ti-photo', label: 'صورة' },
+    link:    { icon: 'ti-link', label: 'رابط' },
+    video:   { icon: 'ti-video', label: 'فيديو' }
+  };
+  let rules = [], blocks = [], editingId = null;
+  const esc = (s) => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const msg = (t, ok) => showMessage('ruleMessage', t, ok ? 'success' : 'error');
+
+  async function loadRules() {
+    const { data, error } = await sb.from('ntra_rules').select('*').order('rule_type').order('sort_order').order('created_at');
+    if (error) return msg(error.message, false);
+    rules = data || [];
+    $('ruleTypeList').innerHTML = [...new Set(rules.map(r => r.rule_type).filter(Boolean))].map(t => `<option value="${esc(t)}">`).join('');
+    $('rulesList').innerHTML = rules.length ? `<table style="width:100%"><thead><tr><th style="text-align:right;padding:6px">#</th><th style="text-align:right;padding:6px">القانون</th><th style="text-align:right;padding:6px">التصنيف</th><th></th></tr></thead><tbody>` +
+      rules.map(r => `<tr><td style="padding:6px">${esc(r.rule_number || '—')}</td><td style="padding:6px"><b>${esc(r.title)}</b><div style="color:var(--text-sec);font-size:.85rem">${esc((r.description || '').slice(0, 80))}</div></td><td style="padding:6px">${esc(r.rule_type)}</td>
+        <td style="padding:6px;white-space:nowrap"><button class="btn btn-secondary" data-edit="${r.id}"><i class="ti ti-edit"></i></button> <button class="btn btn-secondary" data-del="${r.id}"><i class="ti ti-trash"></i></button></td></tr>`).join('') + '</tbody></table>'
+      : '<p style="color:var(--text-sec)">لا توجد قوانين بعد. اضغط "إضافة قانون جديد".</p>';
+  }
+
+  function openEditor(rule) {
+    editingId = rule ? rule.id : null;
+    $('ruleEditorTitle').textContent = rule ? 'تعديل القانون' : 'قانون جديد';
+    $('ruleNumber').value = rule ? (rule.rule_number || '') : '';
+    $('ruleType').value = rule ? rule.rule_type : '';
+    $('ruleTitle').value = rule ? rule.title : '';
+    $('ruleDesc').value = rule ? rule.description : '';
+    blocks = rule && Array.isArray(rule.details) ? JSON.parse(JSON.stringify(rule.details)) : [];
+    renderBlocks();
+    $('ruleEditor').style.display = '';
+    $('ruleEditor').scrollIntoView({ behavior: 'smooth' });
+  }
+  const closeEditor = () => { $('ruleEditor').style.display = 'none'; editingId = null; };
+
+  function blockInputs(b, i) {
+    const inp = (k, ph, extra = '') => `<input class="form-input" data-i="${i}" data-k="${k}" placeholder="${ph}" value="${esc(b[k])}" ${extra}>`;
+    switch (b.type) {
+      case 'heading': return inp('value', 'العنوان الفرعي');
+      case 'text': return `<textarea class="form-input" rows="3" data-i="${i}" data-k="value" placeholder="النص">${esc(b.value)}</textarea>`;
+      case 'field': return `<div class="form-row">${inp('label', 'اسم الخانة (مثال: قيمة الغرامة)')}${inp('value', 'القيمة / الرقم (مثال: 500 جنيه)')}</div>`;
+      case 'image': return `${b.url ? `<img src="${esc(b.url)}" style="max-width:160px;max-height:110px;border-radius:8px;display:block;margin-bottom:6px">` : ''}
+        <div class="form-row">${inp('url', 'رابط الصورة (أو ارفع ملف)')}<input type="file" accept="image/*" data-up="${i}" class="form-input"></div>${inp('caption', 'تعليق على الصورة (اختياري)')}`;
+      case 'link': return `<div class="form-row">${inp('label', 'نص الرابط')}${inp('url', 'https://...')}</div>`;
+      case 'video': return `<div class="form-row">${inp('label', 'عنوان الفيديو (اختياري)')}${inp('url', 'رابط الفيديو (YouTube أو ملف mp4)')}</div>`;
+    }
+    return '';
+  }
+
+  function renderBlocks() {
+    $('ruleBlocks').innerHTML = blocks.map((b, i) => `<div style="border:1px solid var(--border);border-radius:10px;padding:10px;margin-bottom:8px;background:var(--surface)">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+        <b><i class="ti ${BLOCK_META[b.type].icon}"></i> ${BLOCK_META[b.type].label}</b>
+        <span><button type="button" class="btn btn-secondary" data-mv="${i}" data-d="-1">↑</button> <button type="button" class="btn btn-secondary" data-mv="${i}" data-d="1">↓</button> <button type="button" class="btn btn-secondary" data-rm="${i}"><i class="ti ti-x"></i></button></span>
+      </div>${blockInputs(b, i)}</div>`).join('') || '<p style="color:var(--text-sec)">أضف نص أو خانات أو صور من الأزرار تحت.</p>';
+  }
+
+  document.addEventListener('click', async (e) => {
+    const t = e.target.closest('button'); if (!t) return;
+    if (t.id === 'ruleNewBtn') return openEditor(null);
+    if (t.id === 'ruleCancelBtn') return closeEditor();
+    if (t.dataset.add) { blocks.push({ type: t.dataset.add }); return renderBlocks(); }
+    if (t.dataset.rm !== undefined) { blocks.splice(+t.dataset.rm, 1); return renderBlocks(); }
+    if (t.dataset.mv !== undefined) {
+      const i = +t.dataset.mv, j = i + +t.dataset.d;
+      if (j >= 0 && j < blocks.length) { [blocks[i], blocks[j]] = [blocks[j], blocks[i]]; renderBlocks(); }
+      return;
+    }
+    if (t.dataset.edit) return openEditor(rules.find(r => r.id === t.dataset.edit));
+    if (t.dataset.del) {
+      if (!confirm('حذف القانون نهائياً؟')) return;
+      const { error } = await sb.from('ntra_rules').delete().eq('id', t.dataset.del);
+      if (error) return msg(error.message, false);
+      msg('تم حذف القانون', true); loadRules();
+    }
+    if (t.id === 'ruleSaveBtn') saveRule(t);
+  });
+
+  document.addEventListener('input', (e) => {
+    const k = e.target.dataset && e.target.dataset.k;
+    if (k !== undefined && e.target.dataset.i !== undefined) blocks[+e.target.dataset.i][k] = e.target.value;
+  });
+
+  document.addEventListener('change', async (e) => {
+    if (e.target.dataset && e.target.dataset.up !== undefined) {
+      const file = e.target.files[0]; if (!file) return;
+      const i = +e.target.dataset.up;
+      const ext = (file.name.split('.').pop() || 'jpg').toLowerCase().replace(/[^a-z0-9]/g, '');
+      const path = `rules/${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
+      msg('جاري رفع الصورة...', true);
+      const { error } = await sb.storage.from('items-images').upload(path, file, { contentType: file.type });
+      if (error) return msg('تعذر رفع الصورة: ' + error.message, false);
+      blocks[i].url = sb.storage.from('items-images').getPublicUrl(path).data.publicUrl;
+      msg('تم رفع الصورة', true); renderBlocks();
+    }
+  });
+
+  async function saveRule(btn) {
+    const title = $('ruleTitle').value.trim(), desc = $('ruleDesc').value.trim(), type = $('ruleType').value.trim();
+    if (!title || !desc || !type) return msg('اسم القانون والتصنيف والوصف مطلوبين', false);
+    const clean = blocks.filter(b => (b.value || b.url || b.label || '').toString().trim());
+    const row = {
+      rule_number: $('ruleNumber').value.trim() || null, rule_type: type, title, description: desc,
+      details: clean,
+      image_url: (clean.find(b => b.type === 'image') || {}).url || null,
+      reference_link: (clean.find(b => b.type === 'link') || {}).url || null,
+      updated_at: new Date().toISOString()
+    };
+    btn.disabled = true;
+    const q = editingId ? sb.from('ntra_rules').update(row).eq('id', editingId)
+                        : sb.from('ntra_rules').insert({ ...row, created_by: (currentUser && currentUser.id) || null });
+    const { error } = await q;
+    btn.disabled = false;
+    if (error) return msg(error.message, false);
+    msg('تم حفظ القانون', true); closeEditor(); loadRules();
+  }
+
+  document.querySelectorAll('.nav-item[data-section="rules"]').forEach(b => b.addEventListener('click', loadRules));
+})();

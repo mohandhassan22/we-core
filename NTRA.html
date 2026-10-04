@@ -176,9 +176,15 @@
   #detail h2{
     color:var(--primary);margin:4px 0 var(--space-md);font-size:24px;
   }
-  #detail .body{
-    white-space:pre-wrap;font-size:15px;color:var(--on-surface);
-  }
+  #detail .body{font-size:15px;color:var(--on-surface);}
+  #detail .d-desc{color:var(--on-surface-variant);margin:0 0 12px;white-space:pre-wrap;}
+  #detail .d-h{margin:16px 0 6px;color:var(--primary);font-size:17px;}
+  #detail .d-t{margin:6px 0;white-space:pre-wrap;line-height:1.8;}
+  #detail .d-f{display:flex;justify-content:space-between;gap:12px;padding:8px 10px;margin:4px 0;border-radius:8px;background:var(--surface-container-low,#f6f1f8);}
+  #detail .d-m{margin:10px 0;}
+  #detail .d-m img{max-width:100%;border-radius:10px;display:block;}
+  #detail figcaption{font-size:13px;color:var(--on-surface-variant);margin-top:4px;}
+  #detail a{color:var(--primary);}
 
   @media(prefers-reduced-motion:reduce){
     #gate .spinner{animation:none;}
@@ -232,7 +238,7 @@
     async function checkAuthAndLoad() {
       const { data, error } = await sb.auth.getSession();
       if (error || !data.session) {
-        window.location.href = login_URL;
+        window.location.href = LOGIN_URL;
         return;
       }
       await loadRules();
@@ -243,17 +249,18 @@
     // لو الـ Session بتتلغي وإنت فاتح الصفحة، ارجع للوجن على طول
     sb.auth.onAuthStateChange((event, session) => {
       if (event === "SIGNED_OUT" || !session) {
-        window.location.href = login_URL;
+        window.location.href = LOGIN_URL;
       }
     });
 
     async function loadRules() {
       const { data, error } = await sb
-        .from("intra_rules")
-        .select("id, title, summary, content, category, order")
+        .from("ntra_rules")
+        .select("id, rule_number, rule_type, title, description, details, image_url, reference_link, sort_order")
         .eq("is_active", true)
-        .order("category", { ascending: true })
-        .order("order", { ascending: true });
+        .order("rule_type", { ascending: true })
+        .order("sort_order", { ascending: true })
+        .order("created_at", { ascending: true });
 
       if (error) {
         document.getElementById("grid").innerHTML =
@@ -261,7 +268,7 @@
         console.error(error);
         return;
       }
-      allRules = data || [];
+      allRules = (data || []).map(r => ({ ...r, category: r.rule_type, summary: r.description }));
       buildFilters();
       renderGrid();
     }
@@ -300,7 +307,7 @@
         card.className = "card";
         card.innerHTML = `
           ${rule.category ? `<div class="eyebrow">${escapeHtml(rule.category)}</div>` : ""}
-          <h3>${escapeHtml(rule.title)}</h3>
+          <h3>${rule.rule_number ? escapeHtml(rule.rule_number) + " - " : ""}${escapeHtml(rule.title)}</h3>
           <p>${escapeHtml(rule.summary || "")}</p>
           <button class="more">اعرض المزيد</button>
         `;
@@ -311,8 +318,8 @@
 
     function openDetail(rule) {
       document.getElementById("detailCategory").textContent = rule.category || "";
-      document.getElementById("detailTitle").textContent = rule.title;
-      document.getElementById("detailContent").textContent = rule.content;
+      document.getElementById("detailTitle").textContent = (rule.rule_number ? rule.rule_number + " - " : "") + rule.title;
+      renderDetails(rule);
       document.getElementById("overlay").classList.add("open");
     }
 
@@ -322,6 +329,32 @@
     document.getElementById("overlay").addEventListener("click", (e) => {
       if (e.target.id === "overlay") e.currentTarget.classList.remove("open");
     });
+
+    const safeUrl = (u) => /^https?:\/\//i.test(String(u || "").trim()) ? String(u).trim() : "";
+
+    function videoHtml(url) {
+      const u = safeUrl(url);
+      if (!u) return "";
+      const yt = u.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|shorts\/))([\w-]{11})/);
+      if (yt) return `<iframe src="https://www.youtube.com/embed/${yt[1]}" allowfullscreen style="width:100%;aspect-ratio:16/9;border:0;border-radius:10px"></iframe>`;
+      if (/\.(mp4|webm|ogg)(\?|$)/i.test(u)) return `<video src="${escapeHtml(u)}" controls style="width:100%;border-radius:10px"></video>`;
+      return `<a href="${escapeHtml(u)}" target="_blank" rel="noopener">▶ مشاهدة الفيديو</a>`;
+    }
+
+    function renderDetails(rule) {
+      const box = document.getElementById("detailContent");
+      let html = `<p class="d-desc">${escapeHtml(rule.description || "")}</p>`;
+      const fields = [];
+      (Array.isArray(rule.details) ? rule.details : []).forEach(b => {
+        if (b.type === "heading") html += `<h3 class="d-h">${escapeHtml(b.value)}</h3>`;
+        else if (b.type === "text") html += `<p class="d-t">${escapeHtml(b.value)}</p>`;
+        else if (b.type === "field") html += `<div class="d-f"><span>${escapeHtml(b.label)}</span><b>${escapeHtml(b.value)}</b></div>`;
+        else if (b.type === "image" && safeUrl(b.url)) html += `<figure class="d-m"><img src="${escapeHtml(safeUrl(b.url))}" alt="" loading="lazy">${b.caption ? `<figcaption>${escapeHtml(b.caption)}</figcaption>` : ""}</figure>`;
+        else if (b.type === "link" && safeUrl(b.url)) html += `<p class="d-t"><a href="${escapeHtml(safeUrl(b.url))}" target="_blank" rel="noopener">🔗 ${escapeHtml(b.label || b.url)}</a></p>`;
+        else if (b.type === "video" && safeUrl(b.url)) html += `<div class="d-m">${b.label ? `<p class="d-t"><b>${escapeHtml(b.label)}</b></p>` : ""}${videoHtml(b.url)}</div>`;
+      });
+      box.innerHTML = html;
+    }
 
     function escapeHtml(str) {
       const div = document.createElement("div");

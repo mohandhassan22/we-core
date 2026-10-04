@@ -37,6 +37,10 @@
         <i class="ti ti-sitemap"></i>
         <span class="nav-label">الفروع والمناطق</span>
       </button>
+      <button class="nav-item" data-section="rules">
+        <i class="ti ti-gavel"></i>
+        <span class="nav-label">القوانين (NTRA)</span>
+      </button>
       <button class="nav-item" data-section="tables">
         <i class="ti ti-database"></i>
         <span class="nav-label">إدارة الجداول</span>
@@ -307,6 +311,46 @@
           <div id="orgManagers" style="overflow-x:auto"></div>
         </div>
         <div id="orgMessage" class="form-message"></div>
+      </section>
+
+      <!-- Rules Section -->
+      <section class="section" id="rules-section">
+        <div class="sec-hd"><h2>القوانين (NTRA)</h2></div>
+
+        <div class="form-card" id="rulesListCard">
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:12px">
+            <h3 style="margin:0">القوانين المضافة</h3>
+            <button type="button" class="btn btn-primary" id="ruleNewBtn"><i class="ti ti-plus"></i> إضافة قانون جديد</button>
+          </div>
+          <div id="rulesList" style="overflow-x:auto"></div>
+        </div>
+
+        <div class="form-card" id="ruleEditor" style="display:none">
+          <h3 id="ruleEditorTitle" style="margin-bottom:12px">قانون جديد</h3>
+          <div class="form-row">
+            <div class="form-group"><label>رقم القانون</label><input type="text" id="ruleNumber" class="form-input" placeholder="مثال: 12"></div>
+            <div class="form-group"><label>التصنيف</label><input type="text" id="ruleType" class="form-input" list="ruleTypeList" placeholder="مثال: غرامات"><datalist id="ruleTypeList"></datalist></div>
+          </div>
+          <div class="form-group"><label>اسم القانون</label><input type="text" id="ruleTitle" class="form-input" placeholder="عنوان القانون"></div>
+          <div class="form-group"><label>وصف مختصر</label><textarea id="ruleDesc" class="form-input" rows="2" placeholder="سطر أو اتنين يظهروا في الكارت"></textarea></div>
+
+          <h4 style="margin:14px 0 8px">تفاصيل القانون</h4>
+          <div id="ruleBlocks"></div>
+          <div id="ruleAddBar" style="display:flex;gap:8px;flex-wrap:wrap;margin:10px 0">
+            <button type="button" class="btn btn-secondary" data-add="heading"><i class="ti ti-heading"></i> عنوان فرعي</button>
+            <button type="button" class="btn btn-secondary" data-add="text"><i class="ti ti-align-right"></i> نص</button>
+            <button type="button" class="btn btn-secondary" data-add="field"><i class="ti ti-forms"></i> خانة / رقم</button>
+            <button type="button" class="btn btn-secondary" data-add="image"><i class="ti ti-photo"></i> صورة</button>
+            <button type="button" class="btn btn-secondary" data-add="link"><i class="ti ti-link"></i> رابط</button>
+            <button type="button" class="btn btn-secondary" data-add="video"><i class="ti ti-video"></i> فيديو</button>
+          </div>
+
+          <div style="display:flex;gap:10px;margin-top:12px">
+            <button type="button" class="btn btn-primary" id="ruleSaveBtn"><i class="ti ti-device-floppy"></i> حفظ القانون</button>
+            <button type="button" class="btn btn-secondary" id="ruleCancelBtn">إلغاء</button>
+          </div>
+        </div>
+        <div id="ruleMessage" class="form-message"></div>
       </section>
 
       <section class="section" id="tables-section">
