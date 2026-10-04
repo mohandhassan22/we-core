@@ -6,15 +6,13 @@
     const ROLE_CONFIGS = {
         agent: {
             title: 'موظف مبيعات',
-            allowedPages: ['agent.html', 'performance.html', 'history.html', 'settings.html'],
+            allowedPages: ['agent.html', 'performance.html', 'history.html'],
             defaultPage: 'agent.html',
             menu: [
                 { id: 'dashboard', label: 'لوحة الأداء الشخصي', icon: 'fa-chart-pie', href: 'agent.html' },
-                { id: 'target', label: 'الهدف والمبيعات', icon: 'fa-bullseye', href: 'performance.html' },
                 { id: 'daily', label: 'الأداء اليومي', icon: 'fa-calendar-check', href: 'performance.html' },
                 { id: 'history', label: 'السجل والتقارير', icon: 'fa-clock-rotate-left', href: 'history.html' },
-                { id: 'ai', label: 'مدرب الذكاء الاصطناعي', icon: 'fa-wand-magic-sparkles', href: 'agent.html#ai-section' },
-                { id: 'settings', label: 'الإعدادات', icon: 'fa-gear', href: 'settings.html' }
+                { id: 'ai', label: 'مدرب الذكاء الاصطناعي', icon: 'fa-wand-magic-sparkles', href: 'agent.html#ai-section' }
             ]
         },
         branch_manager: {
@@ -28,12 +26,12 @@
                 { id: 'daily', label: 'الأداء اليومي', icon: 'fa-calendar-check', href: 'performance.html' },
                 { id: 'history', label: 'السجل والتصدير', icon: 'fa-file-excel', href: 'history.html' },
                 { id: 'ai', label: 'تحليل الفرع بالذكاء', icon: 'fa-wand-magic-sparkles', href: 'branch-manager.html#ai-section' },
-                { id: 'settings', label: 'الإعدادات', icon: 'fa-gear', href: 'settings.html' }
+                { id: 'settings', label: 'تارجت الفرع', icon: 'fa-bullseye', href: 'settings.html' }
             ]
         },
         area_manager: {
             title: 'مدير منطقة',
-            allowedPages: ['area-manager.html', 'branch-manager.html', 'agent.html', 'history.html', 'settings.html'],
+            allowedPages: ['area-manager.html', 'branch-manager.html', 'agent.html', 'history.html'],
             defaultPage: 'area-manager.html',
             menu: [
                 { id: 'dashboard', label: 'لوحة أداء المنطقة', icon: 'fa-city', href: 'area-manager.html' },
@@ -41,13 +39,12 @@
                 { id: 'branches', label: 'قائمة الفروع', icon: 'fa-network-wired', href: 'area-manager.html#branches-grid' },
                 { id: 'employees', label: 'ملخص الموظفين', icon: 'fa-user-group', href: 'area-manager.html#employees-section' },
                 { id: 'history', label: 'تقارير المنطقة', icon: 'fa-file-excel', href: 'history.html' },
-                { id: 'ai', label: 'تحليل المنطقة بالذكاء', icon: 'fa-robot', href: 'area-manager.html#ai-section' },
-                { id: 'settings', label: 'الإعدادات', icon: 'fa-gear', href: 'settings.html' }
+                { id: 'ai', label: 'تحليل المنطقة بالذكاء', icon: 'fa-robot', href: 'area-manager.html#ai-section' }
             ]
         },
         supervisor: {
             title: 'مشرف مبيعات',
-            allowedPages: ['supervisor.html', 'area-manager.html', 'branch-manager.html', 'agent.html', 'history.html', 'settings.html'],
+            allowedPages: ['supervisor.html', 'area-manager.html', 'branch-manager.html', 'agent.html', 'history.html'],
             defaultPage: 'supervisor.html',
             menu: [
                 { id: 'dashboard', label: 'لوحة المشرف', icon: 'fa-user-tie', href: 'supervisor.html' },
@@ -55,8 +52,7 @@
                 { id: 'branches', label: 'الفروع التابعة', icon: 'fa-store', href: 'supervisor.html#branches-section' },
                 { id: 'employees', label: 'الموظفون', icon: 'fa-users', href: 'supervisor.html#employees-section' },
                 { id: 'history', label: 'التقارير والسجل', icon: 'fa-clock-rotate-left', href: 'history.html' },
-                { id: 'ai', label: 'مستشار الذكاء الاصطناعي', icon: 'fa-brain', href: 'supervisor.html#ai-section' },
-                { id: 'settings', label: 'الإعدادات', icon: 'fa-gear', href: 'settings.html' }
+                { id: 'ai', label: 'مستشار الذكاء الاصطناعي', icon: 'fa-brain', href: 'supervisor.html#ai-section' }
             ]
         },
         admin: {
@@ -69,7 +65,7 @@
                 { id: 'branch', label: 'لوحة الفرع', icon: 'fa-store', href: 'branch-manager.html' },
                 { id: 'agent', label: 'لوحة الموظف', icon: 'fa-user', href: 'agent.html' },
                 { id: 'history', label: 'جميع التقارير', icon: 'fa-file-excel', href: 'history.html' },
-                { id: 'settings', label: 'إعدادات النظام', icon: 'fa-sliders', href: 'settings.html' }
+                { id: 'settings', label: 'تارجت الفرع', icon: 'fa-bullseye', href: 'settings.html' }
             ]
         }
     };

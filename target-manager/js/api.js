@@ -92,7 +92,52 @@
         /**
          * Fetches active target period for given user or scope
          */
+        fetchPeriodForDate: async function (userId, dateStr) {
+            try {
+                const rows = await restFetch(`target_periods?user_id=eq.${userId}&start_date=lte.${dateStr}&end_date=gte.${dateStr}&select=*,targets(*)&order=start_date.desc&limit=1`);
+                return (rows && rows[0]) ? rows[0] : null;
+            } catch (err) { return null; }
+        },
+
+        fetchBranchTarget: async function (branchId) {
+            try {
+                const rows = await restFetch(`branch_targets?branch_id=eq.${branchId}&select=*&order=end_date.desc&limit=6`);
+                if (!rows || !rows.length) return null;
+                const d = new Date(); const today = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+                return rows.find(r => r.start_date <= today && r.end_date >= today) || rows[0];
+            } catch (err) { return null; }
+        },
+
+        fetchBranchShares: async function (branchTargetId) {
+            try {
+                return await restFetch(`target_periods?branch_target_id=eq.${branchTargetId}&select=user_id,profiles(full_name,username),targets(item,target_value)`);
+            } catch (err) { return []; }
+        },
+
+        fetchBranchAgents: async function (branchId) {
+            try { return await restFetch(`profiles?branch_id=eq.${branchId}&role=eq.agent&select=id,full_name,username`); }
+            catch (err) { return []; }
+        },
+
+        saveBranchTarget: async function (payload) {
+            const token = getCookieToken();
+            const res = await fetch(`${SB_URL}/rest/v1/rpc/save_branch_target`, {
+                method: 'POST',
+                headers: { 'apikey': SB_KEY, 'Content-Type': 'application/json', ...(token ? { 'Authorization': `Bearer ${token}` } : {}) },
+                body: JSON.stringify(payload)
+            });
+            const data = await res.json().catch(() => ({}));
+            if (!res.ok) throw new Error(data.message || 'تعذر حفظ التارجت');
+            return data;
+        },
+
         fetchTargetPeriod: async function (month, year, userId = null, branch = null, area = null) {
+            if (userId) {
+                const d = new Date();
+                const today = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+                const current = await TargetAPI.fetchPeriodForDate(userId, today);
+                if (current) return current;
+            }
             let query = `target_periods?month=eq.${month}&year=eq.${year}&select=*,targets(*)`;
             if (userId) query += `&user_id=eq.${userId}`;
             else if (branch) query += `&branch=eq.${encodeURIComponent(branch)}`;
@@ -186,13 +231,13 @@
             };
 
             try {
-                return await restFetch('daily_performance', {
+                return await restFetch('daily_performance?on_conflict=period_id,user_id,performance_date', {
                     method: 'POST',
-                    headers: { 'Prefer': 'resolution=merge-duplicates' },
+                    headers: { 'Prefer': 'resolution=merge-duplicates,return=representation' },
                     body: JSON.stringify(body)
                 });
             } catch (err) {
-                return body;
+                throw new Error('تعذر حفظ الأداء، تأكد أن التاريخ داخل فترة التارجت');
             }
         },
 

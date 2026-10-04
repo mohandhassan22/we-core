@@ -37,7 +37,7 @@
                     <nav class="breadcrumbs">
                         <span class="breadcrumb-item"><a href="../index.html"><i class="fa-solid fa-house"></i> الرئيسية</a></span>
                         <span class="breadcrumb-separator"><i class="fa-solid fa-chevron-left"></i></span>
-                        <span class="breadcrumb-item active">إعدادات التارجت</span>
+                        <span class="breadcrumb-item active">تارجت الفرع</span>
                     </nav>
                 </div>
                 <div class="header-right">
@@ -54,14 +54,20 @@
             <div class="dashboard-content">
                 <section class="dashboard-hero">
                     <div>
-                        <h1 class="hero-title">إعداد فترات ومستهدفات المبيعات ⚙️</h1>
-                        <p class="hero-subtitle">إنشاء فترات التارجت وتحديد مستهدف كل منتج للموظفين والفروع والقطاعات.</p>
+                        <h1 class="hero-title">تارجت الفرع 🎯</h1>
+                        <p class="hero-subtitle">مدير الفرع يحدد التارجت الكلي للفرع، ويتم تقسيمه بالتساوي على موظفي الفرع تلقائياً.</p>
                     </div>
                 </section>
 
                 <div class="glass-card" style="max-width: 800px; margin: 0 auto;">
-                    <h3 class="font-bold margin-bottom"><i class="fa-solid fa-calendar-days"></i> إنشاء فترة Target جديدة (Target Period)</h3>
+                    <h3 class="font-bold margin-bottom"><i class="fa-solid fa-store"></i> تارجت الفرع الكلي</h3>
                     <form id="periodSetupForm">
+                        <div class="form-group" id="branchPickWrap" style="display:none">
+                            <label class="form-label">الفرع</label>
+                            <select class="form-select" id="branchPick"></select>
+                        </div>
+                        <div class="font-bold text-muted margin-bottom" id="branchInfo">جاري التحميل...</div>
+
                         <div class="items-grid" style="grid-template-columns: repeat(2, 1fr);">
                             <div class="form-group">
                                 <label class="form-label">نوع الفترة</label>
@@ -88,22 +94,32 @@
 
                         <hr style="margin: 1.5rem 0; border: none; border-top: 1px solid var(--border-color);">
 
-                        <h4 class="font-bold margin-bottom"><i class="fa-solid fa-bullseye"></i> تحديد المستهدفات حسب المنتج (Target Items)</h4>
+                        <h4 class="font-bold margin-bottom"><i class="fa-solid fa-bullseye"></i> التارجت الكلي للفرع لكل منتج</h4>
                         <div class="items-grid" style="grid-template-columns: repeat(2, 1fr);">
-                            <div class="form-group"><label class="form-label">PT12 Target</label><input type="number" min="0" class="form-input" id="tgt_pt12" value="15"></div>
-                            <div class="form-group"><label class="form-label">Super Kix Target</label><input type="number" min="0" class="form-input" id="tgt_super_kix" value="15"></div>
-                            <div class="form-group"><label class="form-label">Control Tazbeet Target</label><input type="number" min="0" class="form-input" id="tgt_tazbeet" value="15"></div>
-                            <div class="form-group"><label class="form-label">Data Lines Target</label><input type="number" min="0" class="form-input" id="tgt_data" value="15"></div>
-                            <div class="form-group"><label class="form-label">WE Space ADSL Target</label><input type="number" min="0" class="form-input" id="tgt_adsl" value="5"></div>
-                            <div class="form-group"><label class="form-label">Fixed Line Target</label><input type="number" min="0" class="form-input" id="tgt_fixed" value="5"></div>
-                            <div class="form-group" style="grid-column: span 2;"><label class="form-label">WE Pay Wallet Target</label><input type="number" min="0" class="form-input" id="tgt_we_pay" value="10"></div>
+                            <div class="form-group"><label class="form-label">PT12</label><input type="number" min="0" class="form-input" id="tgt_pt12" value="0"></div>
+                            <div class="form-group"><label class="form-label">Super Kix</label><input type="number" min="0" class="form-input" id="tgt_super_kix" value="0"></div>
+                            <div class="form-group"><label class="form-label">Control Tazbeet</label><input type="number" min="0" class="form-input" id="tgt_tazbeet" value="0"></div>
+                            <div class="form-group"><label class="form-label">Data Lines</label><input type="number" min="0" class="form-input" id="tgt_data" value="0"></div>
+                            <div class="form-group"><label class="form-label">WE Space ADSL</label><input type="number" min="0" class="form-input" id="tgt_adsl" value="0"></div>
+                            <div class="form-group"><label class="form-label">Fixed Line</label><input type="number" min="0" class="form-input" id="tgt_fixed" value="0"></div>
+                            <div class="form-group" style="grid-column: span 2;"><label class="form-label">WE Pay Wallet</label><input type="number" min="0" class="form-input" id="tgt_we_pay" value="0"></div>
                         </div>
 
                         <div class="flex justify-between items-center margin-top">
-                            <div class="font-bold text-muted" id="calculatedTotalLinesDisplay">إجمالي الأسطر: 60 خط</div>
-                            <button type="submit" class="btn btn-primary"><i class="fa-solid fa-floppy-disk"></i> حفظ فترات ومستهدف التارجت</button>
+                            <div class="font-bold text-muted" id="calculatedTotalLinesDisplay">إجمالي الأسطر: 0 خط</div>
+                            <button type="submit" class="btn btn-primary" id="saveTargetBtn"><i class="fa-solid fa-floppy-disk"></i> حفظ تارجت الفرع</button>
                         </div>
                     </form>
+                </div>
+
+                <div class="glass-card" style="max-width: 800px; margin: 1rem auto;">
+                    <h3 class="font-bold margin-bottom"><i class="fa-solid fa-users"></i> نصيب كل موظف (تقسيم بالتساوي)</h3>
+                    <div class="data-table-container">
+                        <table class="data-table">
+                            <thead><tr><th>الموظف</th><th>PT12</th><th>Super Kix</th><th>Tazbeet</th><th>Data</th><th>ADSL</th><th>Fixed</th><th>WE Pay</th></tr></thead>
+                            <tbody id="sharesBody"><tr><td colspan="8" class="text-center text-muted">لم يتم تحديد تارجت بعد</td></tr></tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </main>
@@ -116,26 +132,95 @@
     <script src="../js/app.js"></script>
 
     <script>
+        const ITEMS = ['pt12', 'super_kix', 'tazbeet', 'data', 'adsl', 'fixed', 'we_pay'];
+        const $ = (id) => document.getElementById(id);
+        let currentBranchId = null, currentTargetId = null, branchAgents = [];
+
+        const pad = (n) => String(n).padStart(2, '0');
         const now = new Date();
-        document.getElementById('startDate').value = new Date(now.getFullYear(), now.getMonth(), 1).toISOString().substring(0, 10);
-        document.getElementById('endDate').value = new Date(now.getFullYear(), now.getMonth() + 1, 0).toISOString().substring(0, 10);
+        $('startDate').value = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-01`;
+        $('endDate').value = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate())}`;
 
         function updateSum() {
-            const sum = (parseFloat(document.getElementById('tgt_pt12').value)||0) +
-                        (parseFloat(document.getElementById('tgt_super_kix').value)||0) +
-                        (parseFloat(document.getElementById('tgt_tazbeet').value)||0) +
-                        (parseFloat(document.getElementById('tgt_data').value)||0);
-            document.getElementById('calculatedTotalLinesDisplay').textContent = `إجمالي الأسطر: ${sum} خط`;
+            const v = (id) => parseFloat($('tgt_' + id).value) || 0;
+            const sum = v('pt12') + v('super_kix') + v('tazbeet') + v('data');
+            const n = branchAgents.length;
+            $('calculatedTotalLinesDisplay').textContent = `إجمالي الأسطر: ${sum} خط` + (n ? ` | لكل موظف ≈ ${(sum / n).toFixed(1)}` : '');
+        }
+        ITEMS.forEach(id => $('tgt_' + id).addEventListener('input', updateSum));
+
+        function waitForProfile() {
+            return new Promise((resolve) => {
+                let tries = 0;
+                const t = setInterval(() => {
+                    if ((window.App && App.userProfile && App.userProfile.id) || ++tries > 100) { clearInterval(t); resolve(window.App ? App.userProfile : null); }
+                }, 100);
+            });
         }
 
-        ['tgt_pt12', 'tgt_super_kix', 'tgt_tazbeet', 'tgt_data'].forEach(id => {
-            document.getElementById(id).addEventListener('input', updateSum);
+        function renderShares(rows) {
+            const body = $('sharesBody');
+            if (!rows || !rows.length) { body.innerHTML = '<tr><td colspan="8" class="text-center text-muted">لم يتم تحديد تارجت بعد</td></tr>'; return; }
+            body.innerHTML = rows.map(r => {
+                const t = {}; (r.targets || []).forEach(x => t[x.item] = x.target_value);
+                const name = (r.profiles && (r.profiles.full_name || r.profiles.username)) || '—';
+                return `<tr><td class="font-bold">${name}</td>${ITEMS.map(k => `<td>${t[k] ?? 0}</td>`).join('')}</tr>`;
+            }).join('');
+        }
+
+        async function loadBranch(branchId) {
+            currentBranchId = branchId; currentTargetId = null;
+            branchAgents = await TargetAPI.fetchBranchAgents(branchId);
+            const bt = await TargetAPI.fetchBranchTarget(branchId);
+            ITEMS.forEach(k => $('tgt_' + k).value = 0);
+            if (bt) {
+                currentTargetId = bt.id;
+                $('startDate').value = bt.start_date; $('endDate').value = bt.end_date;
+                $('targetDays').value = bt.target_days; $('periodType').value = bt.period_type;
+                ITEMS.forEach(k => $('tgt_' + k).value = (bt.items && bt.items[k]) || 0);
+                renderShares(await TargetAPI.fetchBranchShares(bt.id));
+            } else { renderShares([]); }
+            $('branchInfo').textContent = `عدد موظفي الفرع: ${branchAgents.length}`;
+            updateSum();
+        }
+
+        async function initSettings() {
+            const profile = await waitForProfile();
+            if (!profile) { $('branchInfo').textContent = 'تعذر تحميل بيانات المستخدم'; return; }
+            const role = Permissions.normalizeRole(profile.role);
+            const branches = (await TargetAPI.fetchAllowedBranches()) || [];
+            let mine = [];
+            if (role === 'admin') mine = branches;
+            else mine = branches.filter(b => b.manager_id === profile.id || b.id === profile.branch_id);
+            if (!mine.length) { $('branchInfo').textContent = 'لا يوجد فرع مرتبط بحسابك. تواصل مع الأدمن.'; $('saveTargetBtn').disabled = true; return; }
+            if (mine.length > 1) {
+                $('branchPickWrap').style.display = '';
+                $('branchPick').innerHTML = mine.map(b => `<option value="${b.id}">${b.name}</option>`).join('');
+                $('branchPick').addEventListener('change', (e) => loadBranch(e.target.value));
+            }
+            $('branchInfo').dataset.name = mine[0].name;
+            await loadBranch(mine[0].id);
+        }
+
+        $('periodSetupForm').addEventListener('submit', async function (e) {
+            e.preventDefault();
+            if (!currentBranchId) return Utils.showToast('اختر الفرع أولاً', 'error');
+            const items = {}; ITEMS.forEach(k => items[k] = parseFloat($('tgt_' + k).value) || 0);
+            const btn = $('saveTargetBtn'); btn.disabled = true;
+            try {
+                await TargetAPI.saveBranchTarget({
+                    p_id: currentTargetId, p_branch_id: currentBranchId,
+                    p_start: $('startDate').value, p_end: $('endDate').value,
+                    p_days: parseInt($('targetDays').value) || 20, p_type: $('periodType').value, p_items: items
+                });
+                await loadBranch(currentBranchId);   // reload from DB to confirm it persisted
+                Utils.showToast('تم حفظ تارجت الفرع وتوزيعه على الموظفين', 'success');
+            } catch (err) {
+                Utils.showToast(err.message || 'تعذر الحفظ', 'error');
+            } finally { btn.disabled = false; }
         });
 
-        document.getElementById('periodSetupForm').addEventListener('submit', async function(e) {
-            e.preventDefault();
-            Utils.showToast('تم حفظ إعدادات التارجت بنجاح!', 'success');
-        });
+        window.addEventListener('load', initSettings);
     </script>
 </body>
 </html>

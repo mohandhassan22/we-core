@@ -194,6 +194,7 @@
     <script src="../js/charts.js"></script>
     <script src="../js/ai.js"></script>
     <script src="../js/dashboard.js"></script>
+    <script src="../js/daily-entry.js"></script>
     <script src="../js/app.js"></script>
 
     <script>
@@ -212,13 +213,11 @@
             const notes = document.getElementById('entryNotes').value;
 
             try {
-                const periodId = Dashboard.state.targetPeriod?.id || 'default-period';
-                await TargetAPI.saveDailyPerformance(periodId, Dashboard.state.userProfile.id, date, itemsData, notes);
-                Utils.showToast('تم حفظ أداء اليوم بنجاح!', 'success');
+                await DailyEntry.save(Dashboard.state.userProfile, date, itemsData, notes);
                 Utils.closeModal('dailyModal');
                 await Dashboard.loadDashboardData(new Date().getMonth() + 1, new Date().getFullYear());
             } catch (err) {
-                Utils.showToast('حدث خطأ أثناء الحفظ', 'error');
+                Utils.showToast(err.message || 'حدث خطأ أثناء الحفظ', 'error');
             }
         });
     </script>
