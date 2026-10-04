@@ -13,7 +13,7 @@ const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY, {
 // ─── Global Variables ───
 let currentUser = null;
 let deleteTargetUserId = null;
-const sections = { users: 'إدارة المستخدمين', create: 'إنشاء مستخدم جديد', actions: 'إجراءات الحساب', tables: 'إدارة الجداول', settings: 'الإعدادات', train: 'تدريب الذكاء الاصطناعي' };
+const sections = { users: 'إدارة المستخدمين', create: 'إنشاء مستخدم جديد', org: 'الفروع والمناطق', actions: 'إجراءات الحساب', tables: 'إدارة الجداول', settings: 'الإعدادات', train: 'تدريب الذكاء الاصطناعي' };
 
 // ─── Utility Functions ───
 const $ = (id) => document.getElementById(id);
@@ -186,6 +186,9 @@ function getRoleBadge(role) {
     admin:           { label: 'مسؤول',         icon: 'ti-shield',    cls: 'admin' },
     manager:         { label: 'مدير',           icon: 'ti-briefcase', cls: 'manager' },
     'store-manager': { label: 'مدير متجر',      icon: 'ti-briefcase', cls: 'manager' },
+    branch_manager:  { label: 'مدير فرع',      icon: 'ti-briefcase', cls: 'manager' },
+    area_manager:    { label: 'مدير منطقة',    icon: 'ti-briefcase', cls: 'manager' },
+    supervisor:      { label: 'Supervisor',    icon: 'ti-briefcase', cls: 'manager' },
     agent:           { label: 'Agent',          icon: 'ti-user',      cls: 'user' },
     user:            { label: 'مستخدم',         icon: 'ti-user',      cls: 'user' },
   };
@@ -288,6 +291,86 @@ function displayUsers(users) {
   }).join('');
 }
 
+// ─── Org (Areas / Branches / Managers) ───
+const ORG_FUNCTION_URL = 'https://iygwhapcpdmsasqlfelv.supabase.co/functions/v1/org-admin';
+let orgData = { areas: [], branches: [], profiles: [] };
+
+async function callOrg(action, body = {}) {
+  const token = await getAccessToken();
+  const res = await fetch(ORG_FUNCTION_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+    body: JSON.stringify({ action, ...body })
+  });
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.error || 'حدث خطأ في الطلب');
+  return data;
+}
+
+const optHtml = (items, label, empty) =>
+  (items.length ? '' : `<option value="">${empty}</option>`) +
+  items.map(i => `<option value="${i.id}">${label(i)}</option>`).join('');
+
+function refreshOrgSelects() {
+  const { areas, branches } = orgData;
+  const areaName = id => (areas.find(a => a.id === id) || {}).name || '';
+  if ($('newBranch')) $('newBranch').innerHTML = optHtml(branches, b => `${b.name} — ${areaName(b.area_id)}${b.code ? ' (' + b.code + ')' : ''}`, 'لا توجد فروع');
+  if ($('newArea')) $('newArea').innerHTML = optHtml(areas, a => a.name, 'لا توجد مناطق');
+  if ($('orgBranchArea')) $('orgBranchArea').innerHTML = optHtml(areas, a => a.name, 'لا توجد مناطق');
+  renderOrgManagers();
+}
+
+function renderOrgManagers() {
+  const box = $('orgManagers'); if (!box) return;
+  const { areas, branches, profiles } = orgData;
+  const users = profiles.map(p => `<option value="${p.id}">${p.full_name || p.username} (${p.username})</option>`).join('');
+  const row = (type, item, label) => `<tr>
+    <td style="padding:6px">${label}</td>
+    <td style="padding:6px"><select class="form-input" data-type="${type}" data-id="${item.id}">
+      <option value="">— بدون مدير —</option>${users}</select></td></tr>`;
+  box.innerHTML = '<table style="width:100%"><tbody>' +
+    areas.map(a => row('area', a, `منطقة: ${a.name}`)).join('') +
+    branches.map(b => row('branch', b, `فرع: ${b.name}`)).join('') + '</tbody></table>';
+  box.querySelectorAll('select').forEach(sel => {
+    const item = (sel.dataset.type === 'area' ? areas : branches).find(x => x.id === sel.dataset.id);
+    sel.value = item && item.manager_id ? item.manager_id : '';
+    sel.addEventListener('change', async () => {
+      try {
+        await callOrg('set_manager', { type: sel.dataset.type, id: sel.dataset.id, user_id: sel.value || null });
+        showMessage('orgMessage', 'تم تحديث المدير', 'success');
+        await loadOrg();
+      } catch (err) { showMessage('orgMessage', err.message, 'error'); }
+    });
+  });
+}
+
+async function loadOrg() {
+  try {
+    const d = await callOrg('get_org');
+    orgData = { areas: d.areas, branches: d.branches, profiles: d.profiles };
+    refreshOrgSelects();
+  } catch (err) { console.error('loadOrg', err); }
+}
+
+function updateCreateFormByRole() {
+  const role = $('newRole').value;
+  $('newBranchWrap').style.display = (role === 'agent' || role === 'branch_manager') ? '' : 'none';
+  $('newAreaWrap').style.display = role === 'area_manager' ? '' : 'none';
+}
+if ($('newRole')) { $('newRole').addEventListener('change', updateCreateFormByRole); updateCreateFormByRole(); }
+document.querySelectorAll('.nav-item[data-section="create"], .nav-item[data-section="org"]').forEach(b => b.addEventListener('click', loadOrg));
+if ($('orgAddAreaBtn')) $('orgAddAreaBtn').addEventListener('click', async () => {
+  try { await callOrg('create_area', { name: $('orgAreaName').value }); $('orgAreaName').value = ''; showMessage('orgMessage', 'تمت إضافة المنطقة', 'success'); loadOrg(); }
+  catch (err) { showMessage('orgMessage', err.message, 'error'); }
+});
+if ($('orgAddBranchBtn')) $('orgAddBranchBtn').addEventListener('click', async () => {
+  try {
+    await callOrg('create_branch', { name: $('orgBranchName').value, code: $('orgBranchCode').value, area_id: $('orgBranchArea').value });
+    $('orgBranchName').value = ''; $('orgBranchCode').value = ''; showMessage('orgMessage', 'تمت إضافة الفرع', 'success'); loadOrg();
+  } catch (err) { showMessage('orgMessage', err.message, 'error'); }
+});
+loadOrg();
+
 // ─── Create User ───
 if ($('createUserForm')) $('createUserForm').addEventListener('submit', async (e) => {
   e.preventDefault();
@@ -296,6 +379,9 @@ if ($('createUserForm')) $('createUserForm').addEventListener('submit', async (e
   const username = $('newUsername').value.trim();
   const password = $('newPassword').value;
   const role = $('newRole').value;
+  const full_name = $('newFullName').value.trim();
+  const branch_id = $('newBranch').value || null;
+  const area_id = $('newArea').value || null;
 
   const btn = e.target.querySelector('button[type="submit"]');
   const originalText = btn.innerHTML;
@@ -303,10 +389,12 @@ if ($('createUserForm')) $('createUserForm').addEventListener('submit', async (e
   btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري الإنشاء...';
 
   try {
-    await callEdgeFunction('create_user', { email, username, password, role });
+    await callOrg('create_user', { email, username, password, role, full_name, branch_id, area_id });
     showSuccessModal('تم بنجاح!', `تم إنشاء المستخدم ${username} بنجاح`);
     $('createUserForm').reset();
+    updateCreateFormByRole();
     loadUsers();
+    loadOrg();
   } catch (error) {
     showErrorModal(error.message);
   } finally {

@@ -33,6 +33,10 @@
         <i class="ti ti-user-plus"></i>
         <span class="nav-label">مستخدم جديد</span>
       </button>
+      <button class="nav-item" data-section="org">
+        <i class="ti ti-sitemap"></i>
+        <span class="nav-label">الفروع والمناطق</span>
+      </button>
       <button class="nav-item" data-section="tables">
         <i class="ti ti-database"></i>
         <span class="nav-label">إدارة الجداول</span>
@@ -179,15 +183,28 @@
               <input type="password" id="newPassword" class="form-input" placeholder="6 أحرف على الأقل" required minlength="6">
             </div>
             <div class="form-group">
+              <label>الاسم الكامل</label>
+              <input type="text" id="newFullName" class="form-input" placeholder="اسم الموظف">
+            </div>
+            <div class="form-group">
               <label>الدور</label>
               <div class="select-wrap">
                 <select id="newRole" class="form-input">
-                  <option value="agent">Agent</option>
-                  <option value="store-manager">Store Manager</option>
-                  <option value="manager">Manager</option>
+                  <option value="agent">Agent (موظف)</option>
+                  <option value="branch_manager">مدير فرع</option>
+                  <option value="area_manager">مدير منطقة</option>
+                  <option value="supervisor">Supervisor</option>
                   <option value="admin">مسؤول</option>
                 </select>
               </div>
+            </div>
+            <div class="form-group" id="newAreaWrap" style="display:none">
+              <label>المنطقة</label>
+              <div class="select-wrap"><select id="newArea" class="form-input"></select></div>
+            </div>
+            <div class="form-group" id="newBranchWrap">
+              <label>الفرع</label>
+              <div class="select-wrap"><select id="newBranch" class="form-input"></select></div>
             </div>
             <div style="display:flex;gap:10px">
               <button type="submit" class="btn btn-primary"><i class="ti ti-user-plus" style="font-size:16px"></i> إنشاء المستخدم</button>
@@ -266,6 +283,32 @@
       </section>
 
       <!-- Tables Management Section -->
+      <!-- Org Section -->
+      <section class="section" id="org-section">
+        <div class="sec-hd"><h2>الفروع والمناطق</h2></div>
+        <div class="form-card">
+          <h3 style="margin-bottom:10px">إضافة منطقة</h3>
+          <div class="form-row">
+            <input type="text" id="orgAreaName" class="form-input" placeholder="اسم المنطقة">
+            <button type="button" class="btn btn-primary" id="orgAddAreaBtn">إضافة منطقة</button>
+          </div>
+        </div>
+        <div class="form-card" style="margin-top:14px">
+          <h3 style="margin-bottom:10px">إضافة فرع</h3>
+          <div class="form-row">
+            <input type="text" id="orgBranchName" class="form-input" placeholder="اسم الفرع">
+            <input type="text" id="orgBranchCode" class="form-input" placeholder="كود الفرع (اختياري)">
+          </div>
+          <div class="form-group"><div class="select-wrap"><select id="orgBranchArea" class="form-input"></select></div></div>
+          <button type="button" class="btn btn-primary" id="orgAddBranchBtn">إضافة فرع</button>
+        </div>
+        <div class="form-card" style="margin-top:14px">
+          <h3 style="margin-bottom:10px">المديرون</h3>
+          <div id="orgManagers" style="overflow-x:auto"></div>
+        </div>
+        <div id="orgMessage" class="form-message"></div>
+      </section>
+
       <section class="section" id="tables-section">
 
         <!-- Tables List View -->
