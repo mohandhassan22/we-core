@@ -223,6 +223,7 @@
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+  <script src="assets/js/force-password.js?v=1"></script>
   <script>
     const SUPABASE_URL = "https://iygwhapcpdmsasqlfelv.supabase.co";
     const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml5Z3doYXBjcGRtc2FzcWxmZWx2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzEzNDk5MDQsImV4cCI6MjA4NjkyNTkwNH0.jqU1fEc9kBkXcCfazH6aTnS2XWWzPv0bbixHZgjtrnQ";
@@ -241,6 +242,7 @@
         window.location.href = LOGIN_URL;
         return;
       }
+      if (window.ForcePassword) await ForcePassword.ensure(data.session.user, data.session.access_token);
       await loadRules();
       document.getElementById("gate").style.display = "none";
       document.getElementById("main").classList.add("ready");

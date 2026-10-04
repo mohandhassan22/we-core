@@ -3,6 +3,7 @@
  */
 
 (async function() {
+    const SCRIPT_SRC = (document.currentScript && document.currentScript.src) || '';
     const SB_URL = 'https://iygwhapcpdmsasqlfelv.supabase.co';
     const SB_KEY = 'sb_publishable_rD9naqrpu1dI-iwchAS0GQ_JkgGysqP';
 
@@ -80,6 +81,19 @@
         if (user && !error) {
             window._sbClient = sb;
             window._sbUser   = user;
+
+            // First-login default password: block the page until it is changed
+            if (user.app_metadata && user.app_metadata.must_change_password === true) {
+                if (!window.ForcePassword) {
+                    await new Promise((resolve, reject) => {
+                        const s = document.createElement('script');
+                        s.src = SCRIPT_SRC.replace(/auth\.js.*$/, 'force-password.js?v=1');
+                        s.onload = resolve; s.onerror = reject;
+                        document.head.appendChild(s);
+                    });
+                }
+                await window.ForcePassword.ensure(user, savedToken);
+            }
 
             document.documentElement.style.display = '';
             const appDiv = document.getElementById('app');
