@@ -51,8 +51,8 @@
                     id: user.id,
                     full_name: user.user_metadata?.username || user.email.split('@')[0],
                     role: 'agent',
-                    branch: 'الفرع الرئيسي',
-                    area: 'القاهرة'
+                    branch: null,
+                    area: null
                 };
 
                 // Check page access permission

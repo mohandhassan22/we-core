@@ -154,11 +154,7 @@
                 }
                 
                 if (!logs || logs.length === 0) {
-                    const sampleLogs = [
-                        { performance_date: '2026-10-01', pt12: 3, super_kix: 3, tazbeet: 2, data: 2, adsl: 1, fixed: 0, we_pay: 1, notes: 'أداء يوم 1' },
-                        { performance_date: '2026-10-02', pt12: 2, super_kix: 2, tazbeet: 1, data: 3, adsl: 0, fixed: 1, we_pay: 2, notes: 'أداء يوم 2' }
-                    ];
-                    renderRows(sampleLogs);
+                    tbody.innerHTML = '<tr><td colspan="10" class="text-center text-muted">لا توجد بيانات مسجلة بعد</td></tr>';
                     return;
                 }
                 renderRows(logs);

@@ -89,18 +89,13 @@
             if (period && period.targets) {
                 period.targets.forEach(t => itemTargets[t.item] = t.target_value);
             } else {
-                // Mock defaults if period not created yet
-                itemTargets.pt12 = 15; itemTargets.super_kix = 15; itemTargets.tazbeet = 15;
-                itemTargets.data = 15; itemTargets.adsl = 5; itemTargets.fixed = 5; itemTargets.we_pay = 10;
+                // No target period yet: show zeros (no fake numbers)
+                ['pt12','super_kix','tazbeet','data','adsl','fixed','we_pay'].forEach(k => itemTargets[k] = 0);
             }
 
             // Calculate item achieves from daily logs
             const itemAchieves = { pt12: 0, super_kix: 0, tazbeet: 0, data: 0, adsl: 0, fixed: 0, we_pay: 0 };
-            const logs = (this.state.dailyLogs && this.state.dailyLogs.length > 0) ? this.state.dailyLogs : [
-                { pt12: 3, super_kix: 3, tazbeet: 2, data: 2, adsl: 1, fixed: 0, we_pay: 1 },
-                { pt12: 2, super_kix: 2, tazbeet: 1, data: 3, adsl: 0, fixed: 1, we_pay: 2 },
-                { pt12: 4, super_kix: 3, tazbeet: 3, data: 2, adsl: 1, fixed: 1, we_pay: 1 }
-            ];
+            const logs = this.state.dailyLogs || [];
 
             logs.forEach(log => {
                 itemAchieves.pt12 += parseFloat(log.pt12) || 0;
@@ -558,15 +553,27 @@
         /* ------------------------------------------------------------------
          * 4. SUPERVISOR DASHBOARD RENDERER
          * ------------------------------------------------------------------ */
-        renderSupervisorView: function () {
+        renderSupervisorView: async function () {
             const container = document.getElementById('supervisorDashboardContainer');
             if (!container) return;
 
-            const areas = [
-                { name: 'منطقة القاهرة الكبرى', target: 2700, achieve: 2060, pct: 76.2 },
-                { name: 'منطقة الجيزة', target: 2100, achieve: 1750, pct: 83.3 },
-                { name: 'منطقة الإسكندرية والقناة', target: 1800, achieve: 1200, pct: 66.6 }
-            ];
+            const { month, year } = Utils.getCurrentMonthYear();
+            const allAreas = (await TargetAPI.fetchAllowedAreas()) || [];
+            const sum = (o) => ['pt12', 'super_kix', 'tazbeet', 'data'].reduce((t, k) => t + (parseFloat(o[k]) || 0), 0);
+            const areas = [];
+            for (const ar of allAreas) {
+                const team = await TargetAPI.fetchTeamData(month, year, null, ar.name);
+                let target = 0;
+                team.periods.forEach(p => (p.targets || []).forEach(t => {
+                    if (['pt12', 'super_kix', 'tazbeet', 'data'].includes(t.item)) target += parseFloat(t.target_value) || 0;
+                }));
+                const achieve = team.logs.reduce((t, l) => t + sum(l), 0);
+                areas.push({ name: ar.name, target, achieve, pct: target ? (achieve / target) * 100 : 0 });
+            }
+            if (areas.length === 0) {
+                container.innerHTML = '<p class="text-muted">لا توجد مناطق</p>';
+                return;
+            }
 
             container.innerHTML = `
                 <div class="kpi-grid">

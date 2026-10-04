@@ -46,10 +46,10 @@
             const user = window._sbUser;
             const defaultProfile = {
                 id: userId || 'demo-user',
-                full_name: user?.user_metadata?.username || user?.user_metadata?.full_name || user?.email?.split('@')[0] || 'مهند حسن',
-                role: user?.app_metadata?.role || user?.user_metadata?.role || 'admin',
-                branch: 'فرع العباسية',
-                area: 'منطقة القاهرة الكبرى'
+                full_name: user?.user_metadata?.username || user?.user_metadata?.full_name || user?.email?.split('@')[0] || '',
+                role: user?.app_metadata?.role || user?.user_metadata?.role || 'agent',
+                branch: null,
+                area: null
             };
 
             try {
@@ -72,11 +72,7 @@
             try {
                 return await restFetch('areas?select=*,branches(*)&order=name.asc');
             } catch (err) {
-                return [
-                    { id: 'area-1', name: 'منطقة القاهرة الكبرى' },
-                    { id: 'area-2', name: 'منطقة الجيزة' },
-                    { id: 'area-3', name: 'منطقة الإسكندرية والقناة' }
-                ];
+                return [];
             }
         },
 
@@ -89,12 +85,7 @@
                 if (areaId) query += `&area_id=eq.${areaId}`;
                 return await restFetch(query);
             } catch (err) {
-                return [
-                    { id: 'b-1', name: 'فرع العباسية', area: 'منطقة القاهرة الكبرى' },
-                    { id: 'b-2', name: 'فرع مدينة نصر', area: 'منطقة القاهرة الكبرى' },
-                    { id: 'b-3', name: 'فرع مصر الجديدة', area: 'منطقة القاهرة الكبرى' },
-                    { id: 'b-4', name: 'فرع الدقي', area: 'منطقة الجيزة' }
-                ];
+                return [];
             }
         },
 
