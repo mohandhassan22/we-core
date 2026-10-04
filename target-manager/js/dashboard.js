@@ -293,12 +293,13 @@
         },
 
         /* ---------- shared blocks ---------- */
-        kpi: function (title, value, sub, color, icon, accent) {
+        kpi: function (title, value, sub, color, icon, accent, progress) {
+            var bar = progress == null ? '' : '<div class="kpi-progress"><span style="width:' + Math.min(Math.max(Number(progress) || 0, 0), 100) + '%"></span></div>';
             return '<div class="kpi-card"' + (accent ? ' style="border-right:4px solid var(--we-purple);"' : '') + '>'
                 + '<div class="kpi-card-header"><span class="kpi-title">' + esc(title) + '</span>'
                 + '<div class="kpi-icon-wrap kpi-icon-' + color + '"><i class="fa-solid ' + icon + '"></i></div></div>'
                 + '<div class="kpi-value"' + (accent ? ' style="color:var(--we-purple);"' : '') + '>' + value + '</div>'
-                + '<div class="kpi-subtext">' + sub + '</div></div>';
+                + '<div class="kpi-subtext">' + sub + '</div>' + bar + '</div>';
         },
 
         renderKpis: function (summary, who, withToday, extraSub) {
@@ -307,8 +308,8 @@
             var cards = [
                 this.kpi('Target ' + who + ' (الخطوط)', fmt(L.target), extraSub || 'PT12 + Super Kix + Tazbeet + Data', 'purple', 'fa-bullseye'),
                 this.kpi('Achieve ' + who, fmt(L.achieve), Utils.statusBadge(L.status), 'green', 'fa-chart-line'),
-                this.kpi('نسبة التحقيق', Utils.formatPercent(L.percentage), 'مضى ' + summary.elapsedDays + ' من ' + summary.targetDays + ' يوم', 'blue', 'fa-percent'),
-                this.kpi('Projection (المتوقع)', fmt(L.projection), 'معدل يومي: ' + fmt(avg, 1), 'yellow', 'fa-arrow-trend-up'),
+                this.kpi('نسبة التحقيق', Utils.formatPercent(L.percentage), 'مضى ' + summary.elapsedDays + ' من ' + summary.targetDays + ' يوم', 'blue', 'fa-percent', false, L.percentage),
+                this.kpi('Projection (المتوقع)', fmt(L.projection), 'معدل يومي: ' + fmt(avg, 1), 'yellow', 'fa-arrow-trend-up', false, L.target ? L.projection / L.target * 100 : 0),
                 this.kpi('المتبقي (Remaining)', fmt(L.remaining), 'المطلوب يوميًا: ' + fmt(L.requiredDaily, 1), 'red', 'fa-flag-checkered')
             ];
             if (withToday) cards.push(this.kpi("المطلوب اليوم (Today's Required)", fmt(Math.ceil(L.todayRequired - 1e-9)),
