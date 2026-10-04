@@ -21,23 +21,19 @@
         btn.innerHTML = 'جاري التحقق...';
 
         try {
-            // 1. جلب الإيميل من الـ Edge Function باستخدام اسم المستخدم
-            const { data: emailData, error: emailErr } = await sb.functions.invoke('hyper-task', {
-                body: { action: 'get_email', username: username }
+            // 1+2. تسجيل الدخول عبر الخادم (لا يتم كشف الإيميل للمتصفح)
+            const { data: res, error: fnErr } = await sb.functions.invoke('secure-login', {
+                body: { username: username, password: password }
             });
-
-            if (emailErr || !emailData?.email) throw new Error('المستخدم غير موجود');
-
-            // 2. تسجيل الدخول
-            const { data, error } = await sb.auth.signInWithPassword({
-                email: emailData.email,
-                password: password
+            if (fnErr || !res?.session) throw new Error('بيانات الدخول غير صحيحة');
+            const { data, error } = await sb.auth.setSession({
+                access_token: res.session.access_token,
+                refresh_token: res.session.refresh_token
             });
-
-            if (error) throw error;
+            if (error || !data?.session) throw new Error('بيانات الدخول غير صحيحة');
 
             // 3. تخزين الـ Cookie للـ Edge Functions (اختياري)
-            document.cookie = `sb-access-token=${data.session.access_token}; path=/; max-age=86400; SameSite=Lax`;
+            document.cookie = `sb-access-token=${data.session.access_token}; path=/; max-age=86400; SameSite=Lax; Secure`;
             
             // 4. جلب الرتبة (Role) من جدول profiles للتأكد من الصلاحيات
             const user = data.user;
@@ -64,7 +60,7 @@
             btn.disabled = false;
             btn.innerHTML = 'تسجيل الدخول';
             // إظهار رسالة الخطأ المحددة أو رسالة عامة
-            showErr(e.message === 'المستخدم غير موجود' ? e.message : 'بيانات الدخول غير صحيحة');
+            showErr('بيانات الدخول غير صحيحة');
         }
     };
 })();

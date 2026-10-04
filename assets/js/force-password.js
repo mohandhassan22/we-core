@@ -33,7 +33,7 @@
     }
 
     function setCookie(token) {
-        document.cookie = `sb-access-token=${token}; path=/; max-age=86400; SameSite=Lax`;
+        document.cookie = `sb-access-token=${token}; path=/; max-age=86400; SameSite=Lax; Secure`;
     }
 
     async function loadSdk() {

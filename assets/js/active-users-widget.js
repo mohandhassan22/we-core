@@ -187,9 +187,12 @@ const ActiveUsersWidget = (() => {
     if (!userIds.length) return {};
     try {
       const ids = userIds.join(',');
+      const m = document.cookie.match(/(?:^|;\s*)sb-access-token=([^;]+)/);
+      const token = m ? decodeURIComponent(m[1]) : null;
+      if (!token) return {};
       const res = await fetch(
         `${CONFIG.supabaseUrl}/rest/v1/profiles?select=id,full_name&id=in.(${ids})`,
-        { headers: { apikey: CONFIG.supabaseKey, Authorization: `Bearer ${CONFIG.supabaseKey}` } }
+        { headers: { apikey: CONFIG.supabaseKey, Authorization: `Bearer ${token}` } }
       );
       if (!res.ok) return {};
       const rows = await res.json();
