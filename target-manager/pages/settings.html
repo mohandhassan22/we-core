@@ -72,15 +72,19 @@
                             <div class="form-group">
                                 <label class="form-label">نوع الفترة</label>
                                 <select class="form-select" id="periodType">
-                                    <option value="Full Month">شهر كامل (Full Month)</option>
+                                    <option value="Full Month" selected>شهر كامل (من أول يوم لآخر يوم)</option>
                                     <option value="15 Days">15 يوم</option>
-                                    <option value="20 Days" selected>20 يوم عمل</option>
+                                    <option value="20 Days">20 يوم عمل</option>
                                     <option value="Custom">مخصص (Custom)</option>
                                 </select>
                             </div>
                             <div class="form-group">
                                 <label class="form-label">أيام التارجت المستهدفة</label>
                                 <input type="number" class="form-input" id="targetDays" value="20" min="1" max="31">
+                            </div>
+                            <div class="form-group" id="monthPickWrap">
+                                <label class="form-label">الشهر</label>
+                                <input type="month" class="form-input" id="periodMonth">
                             </div>
                             <div class="form-group">
                                 <label class="form-label">تاريخ البداية</label>
@@ -138,8 +142,22 @@
 
         const pad = (n) => String(n).padStart(2, '0');
         const now = new Date();
-        $('startDate').value = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-01`;
-        $('endDate').value = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate())}`;
+        $('periodMonth').value = `${now.getFullYear()}-${pad(now.getMonth() + 1)}`;
+
+        // Full Month = from day 1 to the last day of the chosen month (dates locked)
+        function applyPeriodMode(keepDates) {
+            const full = $('periodType').value === 'Full Month';
+            $('monthPickWrap').style.display = full ? '' : 'none';
+            $('startDate').readOnly = full; $('endDate').readOnly = full;
+            if (full && !keepDates) {
+                const [y, m] = $('periodMonth').value.split('-').map(Number);
+                $('startDate').value = `${y}-${pad(m)}-01`;
+                $('endDate').value = `${y}-${pad(m)}-${pad(new Date(y, m, 0).getDate())}`;
+            }
+        }
+        $('periodType').addEventListener('change', () => applyPeriodMode(false));
+        $('periodMonth').addEventListener('change', () => applyPeriodMode(false));
+        applyPeriodMode(false);
 
         function updateSum() {
             const v = (id) => parseFloat($('tgt_' + id).value) || 0;
@@ -177,9 +195,11 @@
                 currentTargetId = bt.id;
                 $('startDate').value = bt.start_date; $('endDate').value = bt.end_date;
                 $('targetDays').value = bt.target_days; $('periodType').value = bt.period_type;
+                $('periodMonth').value = bt.start_date.substring(0, 7);
+                applyPeriodMode(true);
                 ITEMS.forEach(k => $('tgt_' + k).value = (bt.items && bt.items[k]) || 0);
                 renderShares(await TargetAPI.fetchBranchShares(bt.id));
-            } else { renderShares([]); }
+            } else { $('periodType').value = 'Full Month'; $('periodMonth').value = `${now.getFullYear()}-${pad(now.getMonth() + 1)}`; applyPeriodMode(false); renderShares([]); }
             $('branchInfo').textContent = `عدد موظفي الفرع: ${branchAgents.length}`;
             updateSum();
         }
