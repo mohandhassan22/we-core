@@ -350,6 +350,7 @@
         renderAreaManagerView: function () {
             const container = document.getElementById('areaDashboardContainer');
             if (!container) return;
+            const esc = v => String(v == null ? '' : v).replace(/&/g, '&amp;').replace(/</g, '&lt;');
 
             const subs = this.state.subordinates || [];
             const periods = (this.state.teamData && this.state.teamData.periods) ? this.state.teamData.periods : [];
@@ -412,7 +413,7 @@
                     <div class="kpi-card"><span class="kpi-title">محقق المنطقة</span><div class="kpi-value">${Utils.formatNumber(areaAchieve)}</div></div>
                     <div class="kpi-card"><span class="kpi-title">نسبة إنجاز المنطقة</span><div class="kpi-value">${Utils.formatPercent(areaPct)}</div></div>
                 </div>
-                <div class="table-card-wrapper margin-top">
+                <div class="table-card-wrapper margin-top" id="branches-section">
                     <div class="table-toolbar"><h3 class="font-bold">أداء الفروع التابعة للمنطقة</h3></div>
                     <table class="data-table">
                         <thead>
@@ -434,7 +435,26 @@
                     </table>
                 </div>
                 
-                <div class="table-card-wrapper margin-top">
+                <section class="margin-top" id="branches-grid">
+                    <h3 class="font-bold" style="margin-bottom:.75rem;">قائمة الفروع (${branches.length})</h3>
+                    <div class="items-grid">
+                        ${branches.length ? branches.map(b => `
+                            <div class="item-card">
+                                <div class="item-card-head">
+                                    <span class="item-name">${esc(b.name)}</span>
+                                    <span class="item-badge ${b.employeesCount ? 'status-ontrack' : 'status-warning'}">${b.employeesCount ? b.employeesCount + ' موظف' : 'بدون موظفين'}</span>
+                                </div>
+                                <div class="flex justify-between items-center text-muted" style="font-size:0.85rem;">
+                                    <span>الهدف: ${b.target}</span>
+                                    <span>المحقق: ${b.achieve}</span>
+                                    <span>النسبة: ${Utils.formatPercent(b.pct)}</span>
+                                </div>
+                                <div class="progress-bar-bg"><div class="progress-bar-fill" style="width:${Math.min(b.pct || 0, 100)}%;"></div></div>
+                            </div>`).join('') : '<p class="text-muted">لا توجد فروع مسجلة لهذه المنطقة.</p>'}
+                    </div>
+                </section>
+
+                <div class="table-card-wrapper margin-top" id="employees-section">
                     <div class="table-toolbar"><h3 class="font-bold">أداء جميع موظفي (Agents) المنطقة</h3></div>
                     <div class="data-table-container">
                         <table class="data-table">
@@ -455,7 +475,84 @@
                         </table>
                     </div>
                 </div>
+
+                <section class="ai-coach-card margin-top" id="ai-section">
+                    <div class="ai-coach-header">
+                        <span class="ai-badge"><i class="fa-solid fa-robot"></i> تحليل المنطقة بالذكاء الاصطناعي</span>
+                        <button class="btn btn-sm btn-secondary" id="areaAiRefreshBtn"><i class="fa-solid fa-rotate"></i> تحديث التحليل</button>
+                    </div>
+                    <div class="ai-content-box" id="areaAiText">جاري تحليل بيانات المنطقة...</div>
+                </section>
             `;
+
+            const areaCtx = { areaTarget, areaAchieve, areaPct, branches };
+            const refreshBtn = document.getElementById('areaAiRefreshBtn');
+            if (refreshBtn) refreshBtn.onclick = () => this.loadAreaAi(areaCtx);
+            this.loadAreaAi(areaCtx);
+
+            // Sidebar links use #anchors; content is rendered async, so scroll once it exists
+            if (location.hash) {
+                const target = document.querySelector(location.hash);
+                if (target) setTimeout(() => target.scrollIntoView({ behavior: 'smooth', block: 'start' }), 150);
+            }
+        },
+
+        loadAreaAi: async function (ctx) {
+            const box = document.getElementById('areaAiText');
+            if (!box) return;
+            box.innerHTML = '<div class="skeleton" style="height:100px;"></div>';
+
+            const profile = this.state.userProfile || {};
+            const now = new Date();
+            const daysInMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
+            const elapsedDays = Math.max(now.getDate(), 1);
+            const remainingDays = Math.max(daysInMonth - elapsedDays, 1);
+            const remaining = TargetCalculator.calculateRemaining(ctx.areaTarget, ctx.areaAchieve);
+            const projection = TargetCalculator.calculateProjection(ctx.areaAchieve, elapsedDays, daysInMonth);
+
+            const payload = {
+                role: 'area_manager',
+                userName: profile.full_name || 'مدير المنطقة',
+                area: profile.area || 'المنطقة',
+                targetLines: ctx.areaTarget,
+                achieveLines: ctx.areaAchieve,
+                achievementPct: ctx.areaPct,
+                projection, remaining, elapsedDays, remainingDays,
+                requiredDaily: TargetCalculator.calculateRequiredDaily(remaining, remainingDays),
+                branches: ctx.branches.map(b => ({ name: b.name, employees: b.employeesCount, target: b.target, achieve: b.achieve, pct: b.pct }))
+            };
+
+            let text = null;
+            try {
+                const res = await TargetAPI.callEdgeFunction('target-ai', payload);
+                text = res && (res.analysis || res.text || res.message);
+            } catch (e) {
+                console.warn('Area AI edge function unavailable, using local analysis:', e);
+            }
+            if (!text) text = this.buildAreaFallback(payload);
+
+            box.innerHTML = String(text)
+                .replace(/&/g, '&amp;').replace(/</g, '&lt;')
+                .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+                .replace(/\n/g, '<br>');
+        },
+
+        buildAreaFallback: function (d) {
+            const withTarget = d.branches.filter(b => b.target > 0).sort((x, y) => y.pct - x.pct);
+            const noTarget = d.branches.filter(b => !b.target);
+            let t = `🎯 **تحليل ${String(d.area).startsWith('منطقة') ? d.area : 'منطقة ' + d.area}:**\n\n`;
+            t += `• إجمالي الهدف **${d.targetLines}** والمحقق **${d.achieveLines}** بنسبة **${d.achievementPct}%**.\n`;
+            t += `• المتوقع بنهاية الشهر **${d.projection}** والمتبقي **${d.remaining}** خط، والمطلوب يومياً **${d.requiredDaily}** خط.\n\n`;
+            if (withTarget.length) {
+                const best = withTarget[0], worst = withTarget[withTarget.length - 1];
+                t += `🏆 **أفضل فرع:** ${best.name} (${best.pct}%).\n`;
+                if (worst !== best) t += `⚠️ **أحوج فرع للدعم:** ${worst.name} (${worst.pct}%) — يُنصح بمتابعة يومية مع مدير الفرع.\n`;
+            }
+            if (noTarget.length) {
+                t += `\n📋 **${noTarget.length} فرع بدون تارجت أو موظفين مسجلين بعد:** ${noTarget.map(b => b.name).join('، ')}. سجّل مديري الفروع والموظفين وحدد الأهداف ليظهر تحليل أدق.\n`;
+            }
+            if (!d.targetLines) t += `\nلا توجد أهداف مسجلة للمنطقة هذا الشهر، لذلك التحليل محدود.`;
+            return t;
         },
 
         /* ------------------------------------------------------------------
