@@ -17,6 +17,8 @@ const sections = { users: 'إدارة المستخدمين', create: 'إنشاء
 
 // ─── Utility Functions ───
 const $ = (id) => document.getElementById(id);
+const escapeHtml = (value) => String(value == null ? '' : value).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const jsArg = (value) => JSON.stringify(String(value == null ? '' : value)).replace(/</g, '\\u003c').replace(/>/g, '\\u003e').replace(/&/g, '\\u0026');
 
 const showSection = (sectionName) => {
   document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
@@ -260,10 +262,10 @@ function displayUsers(users) {
       <tr>
         <td>
           <div class="user-cell">
-            <div class="u-avatar" style="background:${avatarColor}">${initials}</div>
+            <div class="u-avatar" style="background:${avatarColor}">${escapeHtml(initials)}</div>
             <div>
-              <div class="u-name">${displayName}</div>
-              <div class="u-email">${user.email}</div>
+              <div class="u-name">${escapeHtml(displayName)}</div>
+              <div class="u-email">${escapeHtml(user.email)}</div>
             </div>
           </div>
         </td>
@@ -272,16 +274,16 @@ function displayUsers(users) {
         <td>${createdDate}</td>
         <td>
           <div class="acts">
-            <button class="act-btn reset" title="إعادة تعيين كلمة المرور" onclick="sendPasswordReset('${user.email}')">
+            <button class="act-btn reset" title="إعادة تعيين كلمة المرور" onclick="sendPasswordReset(${jsArg(user.email)})">
               <i class="ti ti-key" style="font-size:13px"></i> إعادة تعيين
             </button>
-            <button class="act-btn magic" title="إرسال Magic Link" onclick="sendMagicLink('${user.email}')">
+            <button class="act-btn magic" title="إرسال Magic Link" onclick="sendMagicLink(${jsArg(user.email)})">
               <i class="ti ti-wand" style="font-size:13px"></i> سحر
             </button>
-            <button class="act-btn otp" title="إرسال OTP" onclick="sendOTP('${user.email}')">
+            <button class="act-btn otp" title="إرسال OTP" onclick="sendOTP(${jsArg(user.email)})">
               <i class="ti ti-message" style="font-size:13px"></i> OTP
             </button>
-            <button class="act-btn del" title="حذف المستخدم" onclick="confirmDelete('${user.id}', '${user.email}')">
+            <button class="act-btn del" title="حذف المستخدم" onclick="confirmDelete(${jsArg(user.id)}, ${jsArg(user.email)})">
               <i class="ti ti-trash" style="font-size:13px"></i>
             </button>
           </div>

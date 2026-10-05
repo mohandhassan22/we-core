@@ -182,7 +182,8 @@
             body.innerHTML = rows.map(r => {
                 const t = {}; (r.targets || []).forEach(x => t[x.item] = x.target_value);
                 const name = (r.profiles && (r.profiles.full_name || r.profiles.username)) || '—';
-                return `<tr><td class="font-bold">${name}</td>${ITEMS.map(k => `<td>${t[k] ?? 0}</td>`).join('')}</tr>`;
+                const safeName = document.createElement('span'); safeName.textContent = name;
+                return `<tr><td class="font-bold">${safeName.innerHTML}</td>${ITEMS.map(k => `<td>${t[k] ?? 0}</td>`).join('')}</tr>`;
             }).join('');
         }
 
@@ -215,7 +216,7 @@
             if (!mine.length) { $('branchInfo').textContent = 'لا يوجد فرع مرتبط بحسابك. تواصل مع الأدمن.'; $('saveTargetBtn').disabled = true; return; }
             if (mine.length > 1) {
                 $('branchPickWrap').style.display = '';
-                $('branchPick').innerHTML = mine.map(b => `<option value="${b.id}">${b.name}</option>`).join('');
+                $('branchPick').replaceChildren(...mine.map(b => { const option = document.createElement('option'); option.value = b.id; option.textContent = b.name || ''; return option; }));
                 $('branchPick').addEventListener('change', (e) => loadBranch(e.target.value));
             }
             $('branchInfo').dataset.name = mine[0].name;

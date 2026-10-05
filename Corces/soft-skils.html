@@ -129,6 +129,17 @@ footer span{color:#7b3fe4;font-weight:700;}
     function getToken() {
         return sessionStorage.getItem('sb-access-token');
     }
+    function escapeHtml(value) {
+        const div = document.createElement('div');
+        div.textContent = String(value == null ? '' : value);
+        return div.innerHTML;
+    }
+    function isAllowedVideoUrl(value) {
+        try {
+            const u = new URL(value);
+            return u.protocol === 'https:' && u.origin === 'https://iygwhapcpdmsasqlfelv.supabase.co';
+        } catch (_) { return false; }
+    }
 
     // ── جلب الفيديوهات عبر hyper-task مع التوكن ──
     async function loadVideos() {
@@ -171,19 +182,20 @@ footer span{color:#7b3fe4;font-weight:700;}
             let html = `
                 <div class="folder-title">
                     <i class="fa-solid fa-folder-open"></i>
-                    <span>${folder}</span>
+                    <span>${escapeHtml(folder)}</span>
                 </div>
                 <div class="video-grid">
             `;
 
             groups[folder].forEach(v => {
-                const safeTitle = v.title.replace(/'/g, "\\'");
+                const safeFileId = encodeURIComponent(String(v.file_id || ''));
+                const safeTitle = encodeURIComponent(String(v.title || ''));
                 html += `
-                    <div class="video-card" onclick="playVideo('${v.file_id}', '${safeTitle}')">
+                    <div class="video-card" data-file-id="${safeFileId}" data-title="${safeTitle}">
                         <div class="video-thumb"><i class="fa-solid fa-play"></i></div>
                         <div class="video-info">
                             <div class="video-tag">Soft Skills</div>
-                            <h3>${v.title}</h3>
+                            <h3>${escapeHtml(v.title)}</h3>
                         </div>
                     </div>
                 `;
@@ -191,6 +203,12 @@ footer span{color:#7b3fe4;font-weight:700;}
 
             html += `</div>`;
             section.innerHTML = html;
+            section.querySelectorAll('.video-card').forEach(card => {
+                card.addEventListener('click', () => playVideo(
+                    decodeURIComponent(card.dataset.fileId || ''),
+                    decodeURIComponent(card.dataset.title || '')
+                ));
+            });
             area.appendChild(section);
         });
     }
@@ -212,6 +230,7 @@ footer span{color:#7b3fe4;font-weight:700;}
             });
             if (error) throw error;
 
+            if (!isAllowedVideoUrl(data.url)) throw new Error('رابط فيديو غير مسموح');
             const iframe = document.createElement('iframe');
             iframe.src = data.url;
             iframe.allow = 'autoplay';
