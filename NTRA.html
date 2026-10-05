@@ -242,7 +242,12 @@
         window.location.href = LOGIN_URL;
         return;
       }
-      if (window.ForcePassword) await ForcePassword.ensure(data.session.user, data.session.access_token);
+      if (window.ForcePassword) {
+        // the cached session user can be stale (still flagged after a password change) -> ask the server
+        const fresh = await sb.auth.getUser();
+        const u = (fresh && fresh.data && fresh.data.user) || data.session.user;
+        await ForcePassword.ensure(u, data.session.access_token);
+      }
       await loadRules();
       document.getElementById("gate").style.display = "none";
       document.getElementById("main").classList.add("ready");
