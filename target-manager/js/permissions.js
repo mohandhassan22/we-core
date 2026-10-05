@@ -132,6 +132,10 @@
             const path = window.location.pathname;
             const pageName = path.substring(path.lastIndexOf('/') + 1) || 'index.html';
 
+            const accessDenied = () => {
+                window.location.replace('/access_denied.html');
+            };
+
             // If on index.html or root, redirect to default page
             if (pageName === 'index.html' || pageName === '') {
                 if (path.includes('/pages/')) {
@@ -145,14 +149,15 @@
             // Auto-redirect: if user lands on a dashboard page that doesn't match their role
             const dashboardPages = ['agent.html', 'branch-manager.html', 'area-manager.html', 'supervisor.html'];
             if (dashboardPages.includes(pageName) && pageName !== config.defaultPage) {
-                // Only redirect if it's not a shared page (like settings, history, performance)
-                window.location.replace(config.defaultPage);
+                // not allowed for this role -> access denied page; allowed/admin -> own dashboard
+                if (normRole !== 'admin' && !config.allowedPages.includes(pageName)) accessDenied();
+                else window.location.replace(config.defaultPage);
                 return;
             }
 
             if (!config.allowedPages.includes(pageName) && normRole !== 'admin') {
                 console.warn(`Unauthorized access to ${pageName} for role ${normRole}. Redirecting...`);
-                window.location.replace(config.defaultPage);
+                accessDenied();
             }
         },
 

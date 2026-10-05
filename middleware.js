@@ -6,7 +6,7 @@ import { next } from '@vercel/functions';
 const SB_URL = 'https://iygwhapcpdmsasqlfelv.supabase.co';
 const SB_KEY = 'sb_publishable_rD9naqrpu1dI-iwchAS0GQ_JkgGysqP';
 
-const PUBLIC_PAGES = new Set(['/login.html', '/Reset-Password.html', '/404.html']);
+const PUBLIC_PAGES = new Set(['/login.html', '/Reset-Password.html', '/404.html', '/access_denied.html']);
 
 export const config = {
   // Everything except static assets; HTML pages, directories and "/" are gated.

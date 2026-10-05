@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+
+<html lang="ar" dir="rtl"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Access Denied Modal</title>
+<!-- Tailwind CSS CDN with forms and container-queries plugins -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Configuration -->
+<script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brandDark: '#1a1c4b',
+            brandNavy: '#17183e',
+            neonCyan: '#22f3b3',
+            neonCyanDim: 'rgba(34, 243, 179, 0.25)',
+            alertRed: '#ff3366',
+          },
+          fontFamily: {
+            sans: ['Inter', 'system-ui', '-apple-system', 'Segoe UI', 'Roboto', 'sans-serif'],
+          }
+        }
+      }
+    };
+  </script>
+<!-- Custom Styles: Keypad, Hand Animation, Glow Effects -->
+<style data-purpose="modal-styling">
+    /* Subtle background grid pattern to enhance presentation */
+    body {
+      background-color: #f1f3f9;
+      background-image: radial-gradient(#d5dbee 1px, transparent 1px);
+      background-size: 24px 24px;
+    }
+
+    /* Keypad button outline double-line aesthetic */
+    .keypad-btn {
+      position: relative;
+      border: 1.5px solid #28eedb;
+      box-shadow: 0 0 10px rgba(40, 238, 219, 0.15), inset 0 0 6px rgba(40, 238, 219, 0.08);
+      transition: all 0.25s ease-in-out;
+      user-select: none;
+    }
+
+    .keypad-btn::after {
+      content: '';
+      position: absolute;
+      inset: -4px;
+      border: 1px solid rgba(40, 238, 219, 0.3);
+      border-radius: inherit;
+      pointer-events: none;
+    }
+
+    .keypad-btn.active-press {
+      background: rgba(40, 238, 219, 0.35) !important;
+      transform: scale(0.94);
+      box-shadow: 0 0 22px rgba(40, 238, 219, 0.85), inset 0 0 14px #28eedb !important;
+      color: #ffffff !important;
+    }
+
+    /* Status Screen Box */
+    .status-box {
+      border: 1.5px solid #28eedb;
+      box-shadow: 0 0 12px rgba(40, 238, 219, 0.2);
+      position: relative;
+    }
+
+    .status-box::before {
+      content: '';
+      position: absolute;
+      inset: -4px;
+      border: 1px solid rgba(40, 238, 219, 0.35);
+      border-radius: inherit;
+      pointer-events: none;
+    }
+
+    /* Hand & Arm styling - Slow, smooth gliding motion */
+    #interactive-arm {
+      position: absolute;
+      pointer-events: none;
+      z-index: 40;
+      transition: top 1.35s cubic-bezier(0.25, 1, 0.5, 1), left 1.35s cubic-bezier(0.25, 1, 0.5, 1), transform 0.25s ease-out;
+      transform-origin: 30px 48px;
+      filter: drop-shadow(-10px 14px 18px rgba(7, 8, 26, 0.65));
+    }
+
+    /* Hand pressing dip */
+    .hand-pressing {
+      transform: scale(0.95) translate(2px, 3px) !important;
+      filter: drop-shadow(-5px 7px 10px rgba(7, 8, 26, 0.8)) !important;
+    }
+
+    /* Shake Animation for Access Denied alert */
+    @keyframes shakeError {
+      0%, 100% { transform: translateX(0); }
+      20%, 60% { transform: translateX(-8px); }
+      40%, 80% { transform: translateX(8px); }
+    }
+
+    .animate-shake {
+      animation: shakeError 0.5s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+    }
+  </style>
+</head>
+<body class="min-h-screen w-full flex items-center justify-center p-4 sm:p-6 lg:p-10 font-sans text-slate-800 antialiased">
+<!-- BEGIN: AccessDeniedModal -->
+<main class="relative w-full max-w-4xl bg-white rounded-2xl shadow-[0_25px_60px_-15px_rgba(18,22,65,0.22)] overflow-hidden flex flex-col md:flex-row border border-slate-100" data-purpose="modal-container">
+<!-- BEGIN: LeftContentSection -->
+<section class="w-full md:w-1/2 p-8 sm:p-12 lg:p-16 flex flex-col justify-between items-center text-center bg-white order-2 md:order-1" data-purpose="message-column">
+<!-- Top Spacer / Security ID indicator -->
+<div class="w-full flex justify-between items-center text-xs font-semibold text-slate-400 uppercase tracking-wider">
+<span>Security Alert</span>
+<span class="text-xs bg-slate-100 px-2.5 py-1 rounded-full text-slate-600">ID: SEC-403</span>
+</div>
+<!-- Center Informational Text & Icon -->
+<div class="my-auto py-8 flex flex-col items-center">
+<!-- Key Icon Illustration matching image -->
+<div aria-hidden="true" class="w-20 h-20 mb-8 flex items-center justify-center relative">
+<svg class="w-16 h-16 text-slate-300" fill="none" stroke="currentColor" viewbox="0 0 64 64">
+<!-- Key Ring -->
+<circle class="text-slate-300" cx="28" cy="22" r="10" stroke-linecap="round" stroke-width="2.5"></circle>
+<circle class="text-slate-200" cx="28" cy="22" r="6" stroke-linecap="round" stroke-width="2"></circle>
+<!-- Hanging Keys -->
+<path class="text-slate-400" d="M28 32v18l5 2v-4l-3-2v-4l3-2v-8" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"></path>
+<path class="text-slate-300" d="M33 30v14l4 2v-3l-2-2v-3" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+</div>
+<!-- Main Title -->
+<h1 class="text-3xl sm:text-4xl font-extrabold text-[#1a1c4b] tracking-tight mb-4">
+          Access Denied!
+        </h1>
+<!-- Arabic Sub-Header (Arabic translation per user requirement) -->
+<p class="text-lg font-bold text-rose-600 mb-2 font-arabic tracking-wide" dir="rtl">
+          تم رفض الوصول!
+        </p>
+<!-- Descriptive Subtext -->
+<p class="text-slate-500 text-sm sm:text-base leading-relaxed max-w-sm mb-2">
+          You do not have access to this area of the application. Speak to your administrator to unlock this feature.
+        </p>
+<p class="text-slate-400 text-xs sm:text-sm leading-relaxed max-w-xs" dir="rtl">
+          ليس لديك إذن للوصول إلى هذا القسم. يرجى مراجعة مسؤول النظام لمنحك الصلاحية.
+        </p>
+</div>
+<!-- Bottom Action Buttons -->
+<div class="w-full pt-4 flex flex-col sm:flex-row gap-3">
+<button class="w-full py-2.5 px-4 rounded-xl border border-slate-200 text-slate-700 hover:bg-slate-50 text-sm font-semibold transition-all flex items-center justify-center gap-2" onclick="replayAnimation()" type="button">
+<svg class="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+<path d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+</svg>
+          Replay Sim / إعادة المحاكاة
+        </button>
+<button class="w-full py-2.5 px-4 rounded-xl bg-[#1a1c4b] hover:bg-[#252865] text-white text-sm font-semibold transition-all shadow-md shadow-indigo-950/20" onclick="window.location.href='/'" type="button">
+          Return Home
+        </button>
+</div>
+</section>
+<!-- END: LeftContentSection -->
+<!-- BEGIN: RightKeypadSection -->
+<section class="relative w-full md:w-1/2 bg-gradient-to-b from-[#181a4a] via-[#161742] to-[#121336] p-8 sm:p-10 flex flex-col items-center justify-center overflow-hidden order-1 md:order-2 select-none min-h-[460px]" data-purpose="keypad-column">
+<!-- Top Close "X" Button -->
+<button aria-label="Close dialog" class="absolute top-4 right-4 text-slate-400 hover:text-white transition-colors p-2 z-50" onclick="window.location.href='/'" type="button">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+<path d="M6 18L18 6M6 6l12 12" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"></path>
+</svg>
+</button>
+<!-- Keypad Container Interface -->
+<div class="relative w-full max-w-[290px] flex flex-col items-center z-10">
+<!-- Display Header / Status Message Box -->
+<div class="status-box w-full py-2.5 px-4 rounded-lg bg-[#14163f]/90 text-center mb-6 transition-all duration-300" id="status-display">
+<span class="text-white font-bold text-lg sm:text-xl tracking-wide inline-block" id="status-title">
+            Access Denied
+          </span>
+<!-- Dynamic pin indicators shown when typing -->
+<div class="hidden justify-center items-center gap-2 mt-1" id="pin-indicator-dots">
+<span class="dot w-2.5 h-2.5 rounded-full border border-teal-400 bg-transparent inline-block transition-all"></span>
+<span class="dot w-2.5 h-2.5 rounded-full border border-teal-400 bg-transparent inline-block transition-all"></span>
+<span class="dot w-2.5 h-2.5 rounded-full border border-teal-400 bg-transparent inline-block transition-all"></span>
+<span class="dot w-2.5 h-2.5 rounded-full border border-teal-400 bg-transparent inline-block transition-all"></span>
+</div>
+</div>
+<!-- 3x4 Digital Keypad Grid -->
+<div class="grid grid-cols-3 gap-3.5 w-full relative" id="keypad-matrix">
+<!-- Key 1 -->
+<button class="keypad-btn h-12 rounded-lg bg-[#181a4a]/60 text-neonCyan text-2xl font-bold flex items-center justify-center" data-key="1" id="key-1" type="button">
+            1
+          </button>
+<!-- Key 2 -->
+<button class="keypad-btn h-12 rounded-lg bg-[#181a4a]/60 text-neonCyan text-2xl font-bold flex items-center justify-center" data-key="2" id="key-2" type="button">
+            2
+          </button>
+<!-- Key 3 -->
+<button class="keypad-btn h-12 rounded-lg bg-[#181a4a]/60 text-neonCyan text-2xl font-bold flex items-center justify-center" data-key="3" id="key-3" type="button">
+            3
+          </button>
+<!-- Key 4 -->
+<button class="keypad-btn h-12 rounded-lg bg-[#181a4a]/60 text-neonCyan text-2xl font-bold flex items-center justify-center" data-key="4" id="key-4" type="button">
+            4
+          </button>
+<!-- Key 5 -->
+<button class="keypad-btn h-12 rounded-lg bg-[#181a4a]/60 text-neonCyan text-2xl font-bold flex items-center justify-center" data-key="5" id="key-5" type="button">
+            5
+          </button>
+<!-- Key 6 -->
+<button class="keypad-btn h-12 rounded-lg bg-[#181a4a]/60 text-neonCyan text-2xl font-bold flex items-center justify-center" data-key="6" id="key-6" type="button">
+            6
+          </button>
+<!-- Key 7 -->
+<button class="keypad-btn h-12 rounded-lg bg-[#181a4a]/60 text-neonCyan text-2xl font-bold flex items-center justify-center" data-key="7" id="key-7" type="button">
+            7
+          </button>
+<!-- Key 8 -->
+<button class="keypad-btn h-12 rounded-lg bg-[#181a4a]/60 text-neonCyan text-2xl font-bold flex items-center justify-center" data-key="8" id="key-8" type="button">
+            8
+          </button>
+<!-- Key 9 -->
+<button class="keypad-btn h-12 rounded-lg bg-[#181a4a]/60 text-neonCyan text-2xl font-bold flex items-center justify-center" data-key="9" id="key-9" type="button">
+            9
+          </button>
+<!-- Key * -->
+<button class="keypad-btn h-12 rounded-lg bg-[#181a4a]/60 text-neonCyan text-2xl font-bold flex items-center justify-center" data-key="*" id="key-star" type="button">
+            *
+          </button>
+<!-- Key 0 -->
+<button class="keypad-btn h-12 rounded-lg bg-[#181a4a]/60 text-neonCyan text-2xl font-bold flex items-center justify-center" data-key="0" id="key-0" type="button">
+            0
+          </button>
+<!-- Key # -->
+<button class="keypad-btn h-12 rounded-lg bg-[#181a4a]/60 text-neonCyan text-2xl font-bold flex items-center justify-center" data-key="#" id="key-hash" type="button">
+            #
+          </button>
+</div>
+<!-- Overlaid Access Denied Emergency Screen (Triggered at end of password attempt) -->
+<div class="absolute inset-0 bg-[#161742]/95 border-2 border-rose-500 rounded-xl flex flex-col items-center justify-center p-4 transition-all duration-300 opacity-0 pointer-events-none scale-95 shadow-[0_0_25px_rgba(244,63,94,0.4)]" id="denied-overlay">
+<div class="w-14 h-14 rounded-full bg-rose-500/20 text-rose-500 flex items-center justify-center mb-3">
+<svg class="w-8 h-8" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+<path d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"></path>
+</svg>
+</div>
+<span class="text-rose-400 font-extrabold text-2xl tracking-wider uppercase mb-1">
+            Access Denied
+          </span>
+<span class="text-rose-300 font-bold text-lg mb-2" dir="rtl">
+            تم رفض الدخول!
+          </span>
+<span class="text-xs text-slate-300 text-center font-mono">
+            INVALID PASSCODE ATTEMPT
+          </span>
+</div>
+</div>
+<!-- BEGIN: AnimatedHandAndArm -->
+<!-- Vector artwork faithfully matching reference image IMAGE_4 -->
+<div id="interactive-arm" style="top: 230px; left: 180px;">
+<svg fill="none" height="340" style="overflow: visible;" viewbox="0 0 280 340" width="280" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<!-- Soft depth shadow under the finger and hand onto keypad -->
+<filter height="150%" id="hand-glow-shadow" width="150%" x="-20%" y="-20%">
+<fedropshadow dx="-6" dy="8" flood-color="#0b0e2b" flood-opacity="0.55" stddeviation="6"></fedropshadow>
+</filter>
+</defs>
+<g filter="url(#hand-glow-shadow)">
+<!-- 1. Suit Arm & Sleeve (Dark Navy matching suit in IMAGE_4) -->
+<g id="suit-sleeve">
+<!-- Sleeve shadow/underside -->
+<path d="M110 178 L265 340 L310 340 L160 190 Z" fill="#131633"></path>
+<!-- Main sleeve body -->
+<path d="M106 172 L230 340 L285 340 L152 184 Z" fill="#1c2152"></path>
+<!-- Cyan accent piping stripe on sleeve edge -->
+<path d="M104 174 L250 340" stroke="#22eedb" stroke-linecap="round" stroke-width="2"></path>
+<!-- White Shirt Cuff -->
+<polygon fill="#ffffff" points="98,162 90,172 136,198 143,188"></polygon>
+<!-- Cyan accent on shirt cuff border -->
+<line stroke="#28eedb" stroke-linecap="round" stroke-width="2" x1="90" x2="136" y1="172" y2="198"></line>
+</g>
+<!-- 2. Realistic Vector Hand matching reference IMAGE_4 -->
+<g id="hand-body">
+<!-- Wrist Base -->
+<path d="M84 152 C84 152, 98 160, 114 170 C126 177, 134 175, 126 158 C120 144, 110 135, 102 130 Z" fill="#884833"></path>
+<!-- Curled Pinky finger -->
+<path d="M96 112 C103 116, 106 126, 100 133 C95 139, 85 137, 80 131 C77 127, 80 120, 85 115 C88 112, 92 110, 96 112 Z" fill="#753926"></path>
+<!-- Curled Ring finger -->
+<path d="M88 94 C96 98, 100 108, 94 116 C88 123, 77 121, 71 114 C67 109, 70 101, 76 96 C80 93, 84 92, 88 94 Z" fill="#7d3d29"></path>
+<!-- Curled Middle finger -->
+<path d="M78 78 C86 82, 90 92, 84 100 C78 107, 67 105, 61 98 C57 93, 60 85, 66 80 C70 77, 74 76, 78 78 Z" fill="#82412d"></path>
+<!-- Palm Body -->
+<path d="M52 108 C46 95, 52 82, 60 76 C70 68, 86 78, 92 90 C98 102, 100 120, 96 134 C92 146, 80 148, 70 140 C60 132, 54 120, 52 108 Z" fill="#8d4933"></path>
+<!-- Thumb (folded in naturally) -->
+<path d="M30 114 C24 108, 28 98, 36 94 C44 90, 52 96, 56 104 C60 112, 56 120, 48 124 C40 128, 34 122, 30 114 Z" fill="#7b3b27"></path>
+<ellipse cx="30" cy="112" fill="#ffffff" opacity="0.85" rx="3.5" ry="2" transform="rotate(-30 30 112)"></ellipse>
+<!-- Extended Index Finger pointing upwards to keypad button -->
+<!-- Main finger shaft -->
+<path d="M30 48 C28 42, 34 36, 40 40 L64 78 C68 84, 64 92, 56 94 L42 80 L30 48 Z" fill="#8d4933"></path>
+<path d="M30 48 C27 43, 31 37, 36 38 C41 39, 44 44, 42 50 L56 74 C58 78, 54 84, 48 83 L30 48 Z" fill="#99523b"></path>
+<!-- Clean white fingernail highlight at the index fingertip -->
+<ellipse cx="34" cy="42" fill="#ffffff" opacity="0.95" rx="3.5" ry="2.2" transform="rotate(-62 34 42)"></ellipse>
+</g>
+</g>
+</svg>
+</div>
+<!-- END: AnimatedHandAndArm -->
+</section>
+<!-- END: RightKeypadSection -->
+</main>
+<!-- END: AccessDeniedModal -->
+<!-- BEGIN: InteractiveSimulationScript -->
+<script data-purpose="hand-keypad-animation">
+    // Sequence matching deliberate user PIN input
+    const PIN_SEQUENCE = ['1', '4', '5', '8'];
+    let isSimulating = false;
+    let animationTimer = null;
+
+    // Helper to calculate exact button center position for the fingertip
+    function getButtonTargetOffset(btnId) {
+      const btn = document.getElementById(btnId);
+      const rightCol = document.querySelector('[data-purpose="keypad-column"]');
+      if (!btn || !rightCol) return { x: 180, y: 230 };
+
+      const btnRect = btn.getBoundingClientRect();
+      const parentRect = rightCol.getBoundingClientRect();
+
+      // Finger tip is approximately at coordinates (34, 42) in the SVG
+      const targetX = (btnRect.left - parentRect.left) + (btnRect.width / 2) - 34;
+      const targetY = (btnRect.top - parentRect.top) + (btnRect.height / 2) - 42;
+
+      return { x: targetX, y: targetY };
+    }
+
+    // Slow, deliberate hand movement & typing controller
+    async function runPasswordTypingSimulation() {
+      if (isSimulating) return;
+      isSimulating = true;
+
+      const arm = document.getElementById('interactive-arm');
+      const dotsContainer = document.getElementById('pin-indicator-dots');
+      const statusTitle = document.getElementById('status-title');
+      const deniedOverlay = document.getElementById('denied-overlay');
+      const dots = dotsContainer.querySelectorAll('.dot');
+
+      // Reset states
+      deniedOverlay.classList.remove('animate-shake');
+      deniedOverlay.style.opacity = '0';
+      deniedOverlay.style.pointerEvents = 'none';
+      deniedOverlay.style.transform = 'scale(0.95)';
+
+      statusTitle.textContent = "Entering PIN...";
+      statusTitle.classList.remove('text-rose-400');
+      statusTitle.classList.add('text-teal-300', 'text-sm');
+      dotsContainer.classList.remove('hidden');
+      dotsContainer.classList.add('flex');
+
+      dots.forEach(d => {
+        d.classList.remove('bg-teal-300', 'shadow-[0_0_8px_#22f3b3]');
+        d.classList.add('bg-transparent');
+      });
+
+      // Pause before initial movement
+      await wait(600);
+
+      // Sequential Key Presses with slow, calm gliding motion
+      for (let i = 0; i < PIN_SEQUENCE.length; i++) {
+        const keyVal = PIN_SEQUENCE[i];
+        const btnId = `key-${keyVal}`;
+        const keyBtn = document.getElementById(btnId);
+
+        // Smooth glide towards key (takes 1.35s via CSS transition)
+        const coords = getButtonTargetOffset(btnId);
+        arm.style.left = `${coords.x}px`;
+        arm.style.top = `${coords.y}px`;
+
+        // Movement transit time (slowed down so user follows easily)
+        await wait(1350);
+
+        // Press down
+        arm.classList.add('hand-pressing');
+        if (keyBtn) keyBtn.classList.add('active-press');
+
+        // Light up corresponding PIN dot
+        if (dots[i]) {
+          dots[i].classList.remove('bg-transparent');
+          dots[i].classList.add('bg-teal-300', 'shadow-[0_0_8px_#22f3b3]');
+        }
+
+        // Hold press deliberately for 550ms
+        await wait(550);
+
+        // Release press
+        arm.classList.remove('hand-pressing');
+        if (keyBtn) keyBtn.classList.remove('active-press');
+
+        // Brief breathing pause between keys
+        await wait(350);
+      }
+
+      // Hand glides smoothly back down
+      arm.style.left = '210px';
+      arm.style.top = '300px';
+
+      // Brief thoughtful pause before validation error
+      await wait(1100);
+
+      // Trigger "ACCESS DENIED" Overload effect
+      statusTitle.textContent = "Access Denied";
+      statusTitle.classList.remove('text-teal-300', 'text-sm');
+      statusTitle.classList.add('text-white');
+      dotsContainer.classList.add('hidden');
+      dotsContainer.classList.remove('flex');
+
+      // Show error overlay over keypad with red glow and shake
+      deniedOverlay.style.opacity = '1';
+      deniedOverlay.style.pointerEvents = 'auto';
+      deniedOverlay.style.transform = 'scale(1)';
+      deniedOverlay.classList.add('animate-shake');
+
+      // Calm, readable reading pause (5.5s) before smooth loop
+      await wait(5500);
+
+      isSimulating = false;
+      // Loop smoothly
+      runPasswordTypingSimulation();
+    }
+
+    function wait(ms) {
+      return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
+    function replayAnimation() {
+      isSimulating = false;
+      clearTimeout(animationTimer);
+      runPasswordTypingSimulation();
+    }
+
+    // Allow user to also click keypad buttons manually
+    document.querySelectorAll('.keypad-btn').forEach(button => {
+      button.addEventListener('click', () => {
+        button.classList.add('active-press');
+        setTimeout(() => button.classList.remove('active-press'), 200);
+      });
+    });
+
+    // Start simulation after brief initial page load delay
+    window.addEventListener('DOMContentLoaded', () => {
+      setTimeout(() => {
+        runPasswordTypingSimulation();
+      }, 900);
+    });
+
+    // Adjust hand position cleanly if window resizes during simulation
+    window.addEventListener('resize', () => {
+      const arm = document.getElementById('interactive-arm');
+      if (arm && !isSimulating) {
+        arm.style.left = '180px';
+        arm.style.top = '230px';
+      }
+    });
+  </script>
+<!-- END: InteractiveSimulationScript -->
+</body></html>
