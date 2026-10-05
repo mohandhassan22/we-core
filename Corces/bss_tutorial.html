@@ -500,6 +500,17 @@
     const supabaseClient = supabase.createClient(SB_URL, SB_KEY);
     let FOLDERS_DATA = [];
     let currentFolderVideos = [];
+    function escapeHtml(value) {
+        const div = document.createElement('div');
+        div.textContent = String(value == null ? '' : value);
+        return div.innerHTML;
+    }
+    function isAllowedVideoUrl(value) {
+        try {
+            const u = new URL(value);
+            return u.protocol === 'https:' && (u.origin === SB_URL || u.hostname === 'www.youtube.com' || u.hostname === 'youtu.be');
+        } catch (_) { return false; }
+    }
 
     // دالة لاستخراج التوكن من الكوكيز
     function getAuthToken() {
@@ -553,7 +564,7 @@
         grid.innerHTML = FOLDERS_DATA.map((f, i) => `
             <div class="folder-card" onclick="openFolder(${i})" style="animation-delay:${i*0.05}s">
                 <div class="folder-icon-wrap">📂</div>
-                <h3>${f.name}</h3>
+                <h3>${escapeHtml(f.name)}</h3>
                 <span class="folder-count">${f.videos.length} فيديو</span>
             </div>
         `).join('');
@@ -573,7 +584,7 @@
                     <div class="play-circle">▶</div>
                 </div>
                 <div class="video-info">
-                    <h4>${v.title}</h4>
+                    <h4>${escapeHtml(v.title)}</h4>
                 </div>
             </div>
         `).join('');
@@ -597,6 +608,7 @@
 
             if (error) throw error;
             
+            if (!isAllowedVideoUrl(data.url)) throw new Error('رابط فيديو غير مسموح');
             player.src = data.url;
             title.textContent = video.title;
 

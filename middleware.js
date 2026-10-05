@@ -15,7 +15,8 @@ export const config = {
 
 function getCookie(req, name) {
   const m = (req.headers.get('cookie') || '').match(new RegExp('(?:^|;\\s*)' + name + '=([^;]+)'));
-  return m ? decodeURIComponent(m[1]).replace(/"/g, '') : null;
+  if (!m) return null;
+  try { return decodeURIComponent(m[1]).replace(/"/g, ''); } catch (_) { return null; }
 }
 
 // ---- Role-based gate (server side) ----

@@ -65,7 +65,11 @@
             const toast = document.createElement('div');
             toast.className = `toast toast-${type}`;
             const icon = type === 'success' ? 'fa-circle-check' : (type === 'error' ? 'fa-triangle-exclamation' : 'fa-circle-info');
-            toast.innerHTML = `<i class="fa-solid ${icon}"></i> <span>${message}</span>`;
+            const iconEl = document.createElement('i');
+            iconEl.className = `fa-solid ${icon}`;
+            const textEl = document.createElement('span');
+            textEl.textContent = String(message == null ? '' : message);
+            toast.append(iconEl, document.createTextNode(' '), textEl);
 
             container.appendChild(toast);
             setTimeout(() => {

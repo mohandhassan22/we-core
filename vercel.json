@@ -6,9 +6,12 @@
         { "key": "X-Content-Type-Options", "value": "nosniff" },
         { "key": "X-Frame-Options", "value": "DENY" },
         { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" },
-        { "key": "Permissions-Policy", "value": "camera=(), microphone=(), geolocation=()" },
+        { "key": "Permissions-Policy", "value": "camera=(), microphone=(), geolocation=(), payment=(), usb=()" },
+        { "key": "X-Permitted-Cross-Domain-Policies", "value": "none" },
+        { "key": "X-DNS-Prefetch-Control", "value": "off" },
+        { "key": "Strict-Transport-Security", "value": "max-age=63072000; includeSubDomains" },
         {
-          "key": "Content-Security-Policy-Report-Only",
+          "key": "Content-Security-Policy",
           "value": "default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; form-action 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://www.chatbase.co; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com https://cdn.jsdelivr.net; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com data:; img-src 'self' data: blob: https:; media-src 'self' https:; connect-src 'self' https://iygwhapcpdmsasqlfelv.supabase.co wss://iygwhapcpdmsasqlfelv.supabase.co https://www.chatbase.co; frame-src 'self' https://www.youtube.com https://www.chatbase.co https://we-quiz-game.vercel.app; upgrade-insecure-requests"
         }
       ]

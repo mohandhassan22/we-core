@@ -8,12 +8,27 @@
     /* ── init ── */
     const params   = new URLSearchParams(window.location.search);
     let   fileUrl  = params.get("src");
+    const STORAGE_ORIGIN = "https://iygwhapcpdmsasqlfelv.supabase.co";
     const frame    = document.getElementById("pdfFrame");
     const titleEl  = document.getElementById("docTitle");
     const loading  = document.getElementById("loadingScreen");
     let   localBlobUrl = null;
 
     if (fileUrl) {
+      // Never send the user's Supabase access token to a URL supplied by the query string.
+      // Authenticated documents must come only from this project's Supabase storage.
+      let parsedUrl;
+      try { parsedUrl = new URL(fileUrl, window.location.origin); } catch (_) { parsedUrl = null; }
+      const isHttps = parsedUrl && parsedUrl.protocol === "https:";
+      const isSameOrigin = parsedUrl && parsedUrl.origin === window.location.origin;
+      const isProjectStorage = parsedUrl && parsedUrl.origin === STORAGE_ORIGIN && parsedUrl.pathname.startsWith("/storage/v1/object/");
+      if (!parsedUrl || !isHttps || (!isSameOrigin && !isProjectStorage)) {
+        loading.classList.add("hidden");
+        titleEl.textContent = "رابط الملف غير مسموح";
+        document.title = "WE Core | رابط غير مسموح";
+        return;
+      }
+      fileUrl = parsedUrl.href;
       const rawName  = decodeURIComponent(fileUrl.split("/").pop().split("?")[0]);
       const cleanName = rawName.replace(/\.pdf$/i, "");
 
@@ -23,7 +38,7 @@
 
       const token = getCookie('sb-access-token');
 
-      if (token && fileUrl.includes('/authenticated/')) {
+      if (token && parsedUrl.origin === STORAGE_ORIGIN && parsedUrl.pathname.includes('/authenticated/')) {
         fetch(fileUrl, { headers: { "Authorization": `Bearer ${token}` } })
           .then(res => {
             if (!res.ok) throw new Error("Authorization Required");
