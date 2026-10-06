@@ -8,7 +8,7 @@
     const sb = supabase.createClient(
         'https://iygwhapcpdmsasqlfelv.supabase.co',
         'sb_publishable_rD9naqrpu1dI-iwchAS0GQ_JkgGysqP',
-        { auth: { persistSession: true, autoRefreshToken: true } }
+        { auth: { persistSession: false, autoRefreshToken: false, detectSessionInUrl: false } }
     );
 
     window.doLogin = async function() {
@@ -21,23 +21,27 @@
         btn.innerHTML = 'جاري التحقق...';
 
         try {
-            // 1+2. تسجيل الدخول عبر الخادم (لا يتم كشف الإيميل للمتصفح)
-            const { data: res, error: fnErr } = await sb.functions.invoke('secure-login', {
-                body: { username: username, password: password }
+            // 1+2+3. تسجيل الدخول عبر السيرفر: الكوكيز HttpOnly بيحطها /api/login (مفيش توكن بيتخزن في المتصفح)
+            const lr = await fetch('/api/login', {
+                method: 'POST',
+                credentials: 'same-origin',
+                headers: { 'Content-Type': 'application/json', 'X-Requested-With': 'WE' },
+                body: JSON.stringify({ username: username, password: password })
             });
-            if (fnErr || !res?.session) throw new Error('بيانات الدخول غير صحيحة');
-            const { data, error } = await sb.auth.setSession({
-                access_token: res.session.access_token,
-                refresh_token: res.session.refresh_token
-            });
-            if (error || !data?.session) throw new Error('بيانات الدخول غير صحيحة');
+            if (!lr.ok) throw new Error('بيانات الدخول غير صحيحة');
+            const sr = await fetch('/api/session', { credentials: 'same-origin', headers: { 'X-Requested-With': 'WE' }, cache: 'no-store' });
+            if (!sr.ok) throw new Error('بيانات الدخول غير صحيحة');
+            const sess = await sr.json();
+            const user = sess.user;
+            const sbAuthed = supabase.createClient(
+                'https://iygwhapcpdmsasqlfelv.supabase.co',
+                'sb_publishable_rD9naqrpu1dI-iwchAS0GQ_JkgGysqP',
+                { auth: { persistSession: false, autoRefreshToken: false, detectSessionInUrl: false },
+                  global: { headers: { Authorization: 'Bearer ' + sess.access_token } } }
+            );
 
-            // 3. تخزين الـ Cookie للـ Edge Functions (اختياري)
-            document.cookie = `sb-access-token=${data.session.access_token}; path=/; max-age=86400; SameSite=Lax; Secure`;
-            
             // 4. جلب الرتبة (Role) من جدول profiles للتأكد من الصلاحيات
-            const user = data.user;
-            const { data: profileData, error: profileErr } = await sb
+            const { data: profileData, error: profileErr } = await sbAuthed
                 .from('profiles')
                 .select('role')
                 .eq('id', user.id)

@@ -29,18 +29,11 @@
   const SB_URL = 'https://iygwhapcpdmsasqlfelv.supabase.co';
   const SB_KEY = 'sb_publishable_rD9naqrpu1dI-iwchAS0GQ_JkgGysqP';
 
-  function getCookieVal(name) {
-    const v = `; ${document.cookie}`;
-    const p = v.split(`; ${name}=`);
-    if (p.length === 2) return p.pop().split(';').shift();
-    return null;
-  }
-
   async function loadUserProfile() {
     $('welcomeSkeleton').style.display = 'block';
     try {
       const user  = window._sbUser;
-      const token = getCookieVal('sb-access-token');
+      const token = window.WEAuth ? await window.WEAuth.getToken() : null;
       if (!user || !token) { $('welcomeSkeleton').style.display = 'none'; return; }
 
       // استدعاء REST مباشر مع Authorization header عشان يتجاوز RLS

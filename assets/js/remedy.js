@@ -84,14 +84,6 @@ function closePanel() {
   document.getElementById("overlay").classList.remove("open");
 }
 
-/** Reads a cookie value by name (mirrors the helper in auth.js). */
-function getCookie(name) {
-  const value = `; ${document.cookie}`;
-  const parts = value.split(`; ${name}=`);
-  if (parts.length === 2) return parts.pop().split(";").shift();
-  return null;
-}
-
 /**
  * Maps an Edge Function row (title, description, full_path, category,
  * sla, action) onto the shape the rest of this file expects (desc).
@@ -111,7 +103,7 @@ function mapRow(row) {
 async function loadTickets() {
   setStatus("جاري تحميل المسارات من قاعدة البيانات...");
 
-  const token = getCookie("sb-access-token");
+  const token = window.WEAuth ? await window.WEAuth.getToken() : null;
   if (!token) {
     setStatus("تعذر تحميل البيانات — الجلسة غير موثقة", "error");
     return;

@@ -10,16 +10,10 @@
   let filteredIssues = []; // بعد تطبيق البحث/الفلتر
   let visibleCount = PAGE_SIZE;
 
-  function getCookie(name) {
-    const value = `; ${document.cookie}`;
-    const parts = value.split(`; ${name}=`);
-    if (parts.length === 2) return parts.pop().split(';').shift();
-  }
-
   // بيعمل كلاينت خاص بالصفحة دي، ومربوط بتوكن المستخدم (نفس التوكن اللي auth.js خزّنه في الكوكي)
   // عشان الـ RLS تعرف مين المستخدم وتسمحله يقرأ الجدول
-  function createIssuesClient() {
-    const token = getCookie('sb-access-token');
+  async function createIssuesClient() {
+    const token = window.WEAuth ? await window.WEAuth.getToken() : null;
     if (!token) return null;
 
     return supabase.createClient(SB_URL, SB_KEY, {
@@ -31,7 +25,7 @@
   let sb = null;
 
   async function init() {
-    sb = createIssuesClient();
+    sb = await createIssuesClient();
     if (!sb) {
       // مفيش توكن؛ auth.js المفروض يكون بالفعل رجّع المستخدم لـ login.html
       // لكن للاحتياط بنعرض رسالة بدل ما الصفحة تفضل عالقة في التحميل

@@ -58,12 +58,9 @@ const customDictionary = {
   "request to transfer ownership of student data sim card": "طلب نقل ملكية شريحة بيانات الطلاب"
 };
 
-// جلب التوكن من الكوكيز
-function getAuthToken() {
-  const value = `; ${document.cookie}`;
-  const parts = value.split(`; sb-access-token=`);
-  if (parts.length === 2) return parts.pop().split(";").shift().replace(/"/g, "");
-  return null;
+// التوكن بييجي من /api/session (الكوكيز HttpOnly)
+async function getAuthToken() {
+  return window.WEAuth ? await window.WEAuth.getToken() : null;
 }
 
 // نظام التخزين المؤقت للترجمة لتسريع الأداء
@@ -94,7 +91,7 @@ async function translateOne(text) {
 
 // دالة مساعدة لجلب قائمة العناصر بحد أقصى وإزاحة (Pagination)
 async function fetchStorageList(prefix = "", limit = 100, offset = 0) {
-  const token = getAuthToken() || SUPABASE_ANON;
+  const token = (await getAuthToken()) || SUPABASE_ANON;
   const res = await fetch(
     `${SUPABASE_URL}/storage/v1/object/list/${encodeURIComponent(BUCKET_NAME)}`,
     {

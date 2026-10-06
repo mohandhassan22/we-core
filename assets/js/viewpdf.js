@@ -1,10 +1,3 @@
-/* ── helpers ── */
-    function getCookie(name) {
-      const val = `; ${document.cookie}`;
-      const parts = val.split(`; ${name}=`);
-      if (parts.length === 2) return parts.pop().split(';').shift();
-    }
-
     /* ── init ── */
     const params   = new URLSearchParams(window.location.search);
     let   fileUrl  = params.get("src");
@@ -21,28 +14,27 @@
       titleEl.textContent = cleanName;
       document.title = `WE Core | ${cleanName}`;
 
-      const token = getCookie('sb-access-token');
-
-      if (token && fileUrl.includes('/authenticated/')) {
-        fetch(fileUrl, { headers: { "Authorization": `Bearer ${token}` } })
-          .then(res => {
-            if (!res.ok) throw new Error("Authorization Required");
-            return res.blob();
-          })
-          .then(blob => {
-            localBlobUrl = URL.createObjectURL(blob);
-            frame.src    = localBlobUrl;
-          })
-          .catch(err => {
-            console.error(err);
-            loading.classList.add("hidden");
-            titleEl.textContent = "خطأ في صلاحية الوصول";
-            document.title = "WE Core | خطأ";
-          });
-      } else {
+      const needsAuth = fileUrl.includes('/authenticated/');
+      (window.WEAuth && needsAuth ? window.WEAuth.getToken() : Promise.resolve(null)).then(token => {
+        if (token && needsAuth) {
+          return fetch(fileUrl, { headers: { "Authorization": `Bearer ${token}` } })
+            .then(res => {
+              if (!res.ok) throw new Error("Authorization Required");
+              return res.blob();
+            })
+            .then(blob => {
+              localBlobUrl = URL.createObjectURL(blob);
+              frame.src    = localBlobUrl;
+            });
+        }
         frame.src    = fileUrl;
         localBlobUrl = fileUrl;
-      }
+      }).catch(err => {
+        console.error(err);
+        loading.classList.add("hidden");
+        titleEl.textContent = "خطأ في صلاحية الوصول";
+        document.title = "WE Core | خطأ";
+      });
 
       frame.onload = () => setTimeout(() => loading.classList.add("hidden"), 450);
     }

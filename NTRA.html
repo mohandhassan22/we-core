@@ -223,44 +223,43 @@
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+  <script src="assets/js/auth.js?v=16.0.3"></script>
   <script src="assets/js/force-password.js?v=1"></script>
   <script>
     const SUPABASE_URL = "https://iygwhapcpdmsasqlfelv.supabase.co";
     const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml5Z3doYXBjcGRtc2FzcWxmZWx2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzEzNDk5MDQsImV4cCI6MjA4NjkyNTkwNH0.jqU1fEc9kBkXcCfazH6aTnS2XWWzPv0bbixHZgjtrnQ";
 
     // لو الموقع أصلاً عنده client جاهز على window.supabaseClient استخدمه، غير كده اعمل واحد
-    const sb = window.supabaseClient || supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    // الجلسة في كوكيز HttpOnly؛ الصفحة بتاخد توكن قصير من /api/session وتبعته مع كل طلب
+    const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+      auth: { persistSession: false, autoRefreshToken: false, detectSessionInUrl: false },
+      global: { fetch: async (url, opts = {}) => {
+        const t = window.WEAuth ? await window.WEAuth.getToken() : null;
+        const h = new Headers(opts.headers || {});
+        if (t) h.set("Authorization", "Bearer " + t);
+        return fetch(url, { ...opts, headers: h });
+      } }
+    });
 
-    const LOGIN_URL = "/login.html"; // غيّر المسار ده لمسار صفحة تسجيل الدخول عندك لو مختلف
+    const LOGIN_URL = "/login.html";
 
     let allRules = [];
     let activeCategory = "الكل";
 
     async function checkAuthAndLoad() {
-      const { data, error } = await sb.auth.getSession();
-      if (error || !data.session) {
-        window.location.href = LOGIN_URL;
-        return;
-      }
-      if (window.ForcePassword) await ForcePassword.ensure(data.session.user, data.session.access_token);
+      const token = window.WEAuth ? await window.WEAuth.getToken() : null;
+      if (!token) { window.location.href = LOGIN_URL; return; }
+      if (window.ForcePassword && window._sbUserFromSession) await ForcePassword.ensure(window._sbUserFromSession, token);
       await loadRules();
       document.getElementById("gate").style.display = "none";
       document.getElementById("main").classList.add("ready");
     }
-
-    // لو الـ Session بتتلغي وإنت فاتح الصفحة، ارجع للوجن على طول
-    sb.auth.onAuthStateChange((event, session) => {
-      if (event === "SIGNED_OUT" || !session) {
-        window.location.href = LOGIN_URL;
-      }
-    });
 
     async function loadRules() {
       const { data, error } = await sb
         .from("ntra_rules")
         .select("id, rule_number, rule_type, title, description, details, image_url, reference_link, sort_order")
         .eq("is_active", true)
-        .order("rule_type", { ascending: true })
         .order("sort_order", { ascending: true })
         .order("created_at", { ascending: true });
 
@@ -311,9 +310,10 @@
           ${rule.category ? `<div class="eyebrow">${escapeHtml(rule.category)}</div>` : ""}
           <h3>${rule.rule_number ? escapeHtml(rule.rule_number) + " - " : ""}${escapeHtml(rule.title)}</h3>
           <p>${escapeHtml(rule.summary || "")}</p>
-          <button class="more">اعرض المزيد</button>
+          ${Array.isArray(rule.details) && rule.details.length ? '<button class="more">اعرض المزيد</button>' : ""}
         `;
-        card.querySelector(".more").addEventListener("click", () => openDetail(rule));
+        const moreBtn = card.querySelector(".more");
+        if (moreBtn) moreBtn.addEventListener("click", () => openDetail(rule));
         grid.appendChild(card);
       });
     }
@@ -366,5 +366,6 @@
 
     checkAuthAndLoad();
   </script>
+<script src="/assets/js/active-users-widget.js?v=3" defer></script>
 </body>
 </html>

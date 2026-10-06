@@ -32,10 +32,6 @@
         return ov;
     }
 
-    function setCookie(token) {
-        document.cookie = `sb-access-token=${token}; path=/; max-age=86400; SameSite=Lax; Secure`;
-    }
-
     async function loadSdk() {
         if (typeof supabase !== 'undefined') return;
         await new Promise((resolve, reject) => {
@@ -69,13 +65,8 @@
                     const data = await res.json().catch(() => ({}));
                     if (!res.ok) throw new Error(data.error || 'تعذر تغيير الباسورد');
 
-                    // refresh the session with the new password so the cookie stays valid
-                    try {
-                        await loadSdk();
-                        const c = supabase.createClient(SB_URL, SB_KEY, { auth: { persistSession: false, autoRefreshToken: false, detectSessionInUrl: false } });
-                        const { data: s } = await c.auth.signInWithPassword({ email: user.email, password: newPw });
-                        if (s && s.session) setCookie(s.session.access_token);
-                    } catch (_) { /* user can log in again with the new password */ }
+                    // refresh the server-side session so the HttpOnly cookies carry the updated claims
+                    try { if (window.WEAuth) await window.WEAuth.getToken(true); } catch (_) { /* user can log in again */ }
 
                     ov.remove();
                     if (user.app_metadata) user.app_metadata.must_change_password = false;

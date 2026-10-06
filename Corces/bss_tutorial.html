@@ -497,21 +497,18 @@
     const SB_URL = 'https://iygwhapcpdmsasqlfelv.supabase.co';
     const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml5Z3doYXBjcGRtc2FzcWxmZWx2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzEzNDk5MDQsImV4cCI6MjA4NjkyNTkwNH0.jqU1fEc9kBkXcCfazH6aTnS2XWWzPv0bbixHZgjtrnQ';
     
-    const supabaseClient = supabase.createClient(SB_URL, SB_KEY);
+    const supabaseClient = supabase.createClient(SB_URL, SB_KEY, { auth: { persistSession: false, autoRefreshToken: false, detectSessionInUrl: false } });
     let FOLDERS_DATA = [];
     let currentFolderVideos = [];
 
-    // دالة لاستخراج التوكن من الكوكيز
-    function getAuthToken() {
-        const value = `; ${document.cookie}`;
-        const parts = value.split(`; sb-access-token=`);
-        if (parts.length === 2) return parts.pop().split(';').shift().replace(/"/g, '');
-        return null;
+    // التوكن بييجي من /api/session (الكوكيز HttpOnly)
+    async function getAuthToken() {
+        return window.WEAuth ? await window.WEAuth.getToken() : null;
     }
 
     async function loadLibrary() {
         try {
-            const token = getAuthToken(); // جلب التوكن من الكوكي
+            const token = await getAuthToken();
             
             const { data, error } = await supabaseClient.functions.invoke('hyper-task', {
                 body: { action: 'get_videos', source: 'videos' },
@@ -589,7 +586,7 @@
         modal.classList.add('open');
         
         try {
-            const token = getAuthToken();
+            const token = await getAuthToken();
             const { data, error } = await supabaseClient.functions.invoke('hyper-task', {
                 body: { action: 'get_single_url', file_id: video.file_id, source: 'videos' },
                 headers: token ? { Authorization: `Bearer ${token}` } : {}
@@ -625,10 +622,10 @@
 
     document.addEventListener('DOMContentLoaded', loadLibrary);
 </script>
-<script src="../assets/js/active-users-widget.js"></script>
 
 
 
 <footer style="text-align: center; padding: 20px; border-top: 1px solid #ddd;">WE Core Team 2026</footer>
+<script src="/assets/js/active-users-widget.js?v=3" defer></script>
 </body>
 </html>

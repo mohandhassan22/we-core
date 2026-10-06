@@ -4,9 +4,15 @@ const SUPABASE_KEY = 'sb_publishable_rD9naqrpu1dI-iwchAS0GQ_JkgGysqP';
 const EDGE_FUNCTION_URL = 'https://iygwhapcpdmsasqlfelv.supabase.co/functions/v1/hyper-task';
 
 const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY, {
-  auth: {
-    persistSession: true,
-    autoRefreshToken: true
+  auth: { persistSession: false, autoRefreshToken: false, detectSessionInUrl: false },
+  // Every REST/storage call carries the short-lived token from /api/session (HttpOnly cookie behind it)
+  global: {
+    fetch: async (url, opts = {}) => {
+      const t = window.WEAuth ? await window.WEAuth.getToken() : null;
+      const h = new Headers(opts.headers || {});
+      if (t) h.set('Authorization', `Bearer ${t}`);
+      return fetch(url, { ...opts, headers: h });
+    }
   }
 });
 
@@ -85,18 +91,19 @@ async function callEdgeFunction(action, body = {}) {
 }
 
 async function getAccessToken() {
-  const { data: { session }, error } = await sb.auth.getSession();
-  if (error || !session) {
+  const token = window.WEAuth ? await window.WEAuth.getToken() : null;
+  if (!token) {
     window.location.href = 'login.html';
     return null;
   }
-  return session.access_token;
+  return token;
 }
 
 // ─── Authentication ───
 async function checkAuth() {
   try {
-    const { data: { user }, error } = await sb.auth.getUser();
+    const _tk = await getAccessToken();
+    const { data: { user }, error } = await sb.auth.getUser(_tk);
     if (error || !user) {
       window.location.href = 'login.html';
       return;
@@ -526,7 +533,7 @@ if (searchInput) {
 // ─── Logout ───
 if ($('logoutBtn')) {
   $('logoutBtn').addEventListener('click', async () => {
-    await sb.auth.signOut();
+    await window.WEAuth.logout();
     window.location.href = 'login.html';
   });
 }
@@ -907,17 +914,7 @@ if ($('confirmDeleteRowBtn')) $('confirmDeleteRowBtn').addEventListener('click',
   const gateMsg = document.getElementById("kt-gate-msg");
 
   // بيجيب توكن الأدمن من نفس نظام تسجيل الدخول بتاع موقعك
-  function getUserToken() {
-    try {
-      const key = `sb-${SUPABASE_PROJECT_REF}-auth-token`;
-      const raw = localStorage.getItem(key);
-      if (!raw) return null;
-      const parsed = JSON.parse(raw);
-      return parsed?.access_token || parsed?.currentSession?.access_token || null;
-    } catch (e) {
-      return null;
-    }
-  }
+  function getUserToken() { return null; } // session lives in HttpOnly cookies; callTrain falls back to getAccessToken()
 
   function showMsg(el, text, ok) {
     el.textContent = text;

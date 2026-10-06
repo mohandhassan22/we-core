@@ -6,15 +6,12 @@
     const SB_URL = 'https://iygwhapcpdmsasqlfelv.supabase.co';
     const SB_KEY = 'sb_publishable_rD9naqrpu1dI-iwchAS0GQ_JkgGysqP';
 
-    function getCookieToken() {
-        const v = `; ${document.cookie}`;
-        const p = v.split(`; sb-access-token=`);
-        if (p.length === 2) return p.pop().split(';').shift();
-        return null;
+    async function getCookieToken() {
+        return global.WEAuth ? await global.WEAuth.getToken() : null;
     }
 
     async function restFetch(endpoint, options = {}) {
-        const token = getCookieToken();
+        const token = await getCookieToken();
         const headers = {
             'apikey': SB_KEY,
             'Content-Type': 'application/json',
@@ -120,7 +117,7 @@
         },
 
         saveBranchTarget: async function (payload) {
-            const token = getCookieToken();
+            const token = await getCookieToken();
             const res = await fetch(`${SB_URL}/rest/v1/rpc/save_branch_target`, {
                 method: 'POST',
                 headers: { 'apikey': SB_KEY, 'Content-Type': 'application/json', ...(token ? { 'Authorization': `Bearer ${token}` } : {}) },
@@ -307,7 +304,7 @@
          * Edge Function invocation helper
          */
         callEdgeFunction: async function (functionName, payload) {
-            const token = getCookieToken();
+            const token = await getCookieToken();
             const res = await fetch(`${SB_URL}/functions/v1/${functionName}`, {
                 method: 'POST',
                 headers: {

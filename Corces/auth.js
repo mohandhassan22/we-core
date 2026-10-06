@@ -1,4 +1,39 @@
 /**
+ * WE-Core session helper. Tokens live in HttpOnly cookies; JS only ever holds a short-lived
+ * access token in memory, fetched from /api/session.
+ */
+(function () {
+    if (window.WEAuth) return;
+    let cached = null, exp = 0, inflight = null;
+    const HDR = { 'X-Requested-With': 'WE' };
+
+    function jwtExp(t) {
+        try { return JSON.parse(atob(t.split('.')[1].replace(/-/g, '+').replace(/_/g, '/'))).exp * 1000; } catch (_) { return 0; }
+    }
+    async function fetchSession(force) {
+        const r = await fetch('/api/session' + (force ? '?force=1' : ''), { credentials: 'same-origin', headers: HDR, cache: 'no-store' });
+        if (!r.ok) return null;
+        const d = await r.json();
+        cached = d.access_token; exp = jwtExp(cached);
+        window._sbUserFromSession = d.user;
+        return d;
+    }
+    window.WEAuth = {
+        // Resolves to an access token string, or null if not signed in.
+        async getToken(force) {
+            if (!force && cached && Date.now() < exp - 60000) return cached;
+            if (!inflight) inflight = fetchSession(!!force).finally(() => { inflight = null; });
+            const d = await inflight;
+            return d ? d.access_token : null;
+        },
+        async logout() {
+            cached = null; exp = 0;
+            try { await fetch('/api/logout', { method: 'POST', credentials: 'same-origin', headers: HDR }); } catch (_) {}
+        },
+    };
+})();
+
+/**
  * WE-Core Authentication Guard (V16.0.3 - Robust Path Version)
  */
 
@@ -37,17 +72,11 @@
     }
 
     async function redirectToLogin() {
-        document.cookie = "sb-access-token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+        await window.WEAuth.logout();
         window.location.replace(getLoginPath());
     }
 
-    function getCookie(name) {
-        const value = `; ${document.cookie}`;
-        const parts = value.split(`; ${name}=`);
-        if (parts.length === 2) return parts.pop().split(';').shift();
-    }
-
-    const savedToken = getCookie('sb-access-token');
+    const savedToken = await window.WEAuth.getToken();
     if (!savedToken) {
         redirectToLogin();
         return;

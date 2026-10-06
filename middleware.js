@@ -21,6 +21,8 @@ function getCookie(req, name) {
 export default async function middleware(request) {
   const url = new URL(request.url);
   if (PUBLIC_PAGES.has(url.pathname)) return next();
+  // /api/* handlers do their own auth + CSRF checks (login must be reachable without a session).
+  if (url.pathname.startsWith('/api/')) return next();
 
   const token = getCookie(request, 'sb-access-token');
   let ok = false;
@@ -33,6 +35,12 @@ export default async function middleware(request) {
     } catch (_) { ok = false; }
   }
   if (ok) return next();
+
+  // Access token expired but a refresh cookie exists -> refresh server-side and come back.
+  if (getCookie(request, 'sb-refresh-token')) {
+    const back = encodeURIComponent(url.pathname + url.search);
+    return Response.redirect(new URL('/api/refresh?next=' + back, request.url), 302);
+  }
 
   const login = new URL('/login.html', request.url);
   return Response.redirect(login, 302);

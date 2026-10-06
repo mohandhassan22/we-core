@@ -123,17 +123,18 @@ footer span{color:#7b3fe4;font-weight:700;}
     const $ = id => document.getElementById(id);
     const sb = supabase.createClient(
         'https://iygwhapcpdmsasqlfelv.supabase.co',
-        'sb_publishable_rD9naqrpu1dI-iwchAS0GQ_JkgGysqP'
+        'sb_publishable_rD9naqrpu1dI-iwchAS0GQ_JkgGysqP',
+        { auth: { persistSession: false, autoRefreshToken: false, detectSessionInUrl: false } }
     );
 
-    function getToken() {
-        return sessionStorage.getItem('sb-access-token');
+    async function getToken() {
+        return window.WEAuth ? await window.WEAuth.getToken() : null;
     }
 
     // ── جلب الفيديوهات عبر hyper-task مع التوكن ──
     async function loadVideos() {
         try {
-            const token = getToken();
+            const token = await getToken();
             const { data, error } = await sb.functions.invoke('hyper-task', {
                 body: { action: 'get_videos', source: 'soft' },
                 headers: token ? { Authorization: `Bearer ${token}` } : {}
@@ -205,7 +206,7 @@ footer span{color:#7b3fe4;font-weight:700;}
         document.body.style.overflow = 'hidden';
 
         try {
-            const token = getToken();
+            const token = await getToken();
             const { data, error } = await sb.functions.invoke('hyper-task', {
                 body: { action: 'get_single_url', file_id: fileId, source: 'soft' },
                 headers: token ? { Authorization: `Bearer ${token}` } : {}
@@ -245,5 +246,6 @@ footer span{color:#7b3fe4;font-weight:700;}
 
 
 
+<script src="/assets/js/active-users-widget.js?v=3" defer></script>
 </body>
 </html>
