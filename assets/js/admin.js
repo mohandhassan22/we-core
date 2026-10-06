@@ -18,7 +18,7 @@ const sections = { users: 'إدارة المستخدمين', create: 'إنشاء
 // ─── Utility Functions ───
 const $ = (id) => document.getElementById(id);
 const escapeHtml = (value) => String(value == null ? '' : value).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
-const jsArg = (value) => JSON.stringify(String(value == null ? '' : value)).replace(/</g, '\\u003c').replace(/>/g, '\\u003e').replace(/&/g, '\\u0026');
+const jsArg = (value) => JSON.stringify(String(value == null ? '' : value)).replace(/</g, '\\u003c').replace(/>/g, '\\u003e').replace(/&/g, '\\u0026').replace(/"/g, '&quot;');  // &quot; so the value survives inside onclick="..."
 
 const showSection = (sectionName) => {
   document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
