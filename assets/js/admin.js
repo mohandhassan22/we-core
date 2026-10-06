@@ -283,6 +283,9 @@ function displayUsers(users) {
             <button class="act-btn otp" title="إرسال OTP" onclick="sendOTP(${jsArg(user.email)})">
               <i class="ti ti-message" style="font-size:13px"></i> OTP
             </button>
+            <button class="act-btn reset" title="تعديل اسم المستخدم" onclick="openRename(${jsArg(user.id)}, ${jsArg(username)}, ${jsArg(user.email)})">
+              <i class="ti ti-edit" style="font-size:13px"></i> اليوزر
+            </button>
             <button class="act-btn del" title="حذف المستخدم" onclick="confirmDelete(${jsArg(user.id)}, ${jsArg(user.email)})">
               <i class="ti ti-trash" style="font-size:13px"></i>
             </button>
@@ -1224,3 +1227,33 @@ document.addEventListener('DOMContentLoaded', () => {
 
   document.querySelectorAll('.nav-item[data-section="rules"]').forEach(b => b.addEventListener('click', loadRules));
 })();
+
+
+// ─── Rename username ───
+let renameTargetId = null;
+function openRename(userId, username, email) {
+  renameTargetId = userId;
+  $('renameUserInfo').textContent = `البريد الإلكتروني: ${email}`;
+  $('renameInput').value = username || '';
+  $('renameMsg').textContent = ''; $('renameMsg').className = 'form-message';
+  showModal('renameModal');
+  setTimeout(() => $('renameInput').focus(), 50);
+}
+if ($('renameSaveBtn')) {
+  const save = async () => {
+    const btn = $('renameSaveBtn');
+    const username = $('renameInput').value.trim();
+    if (!username) return showMessage('renameMsg', 'اكتب اسم المستخدم', 'error');
+    btn.disabled = true;
+    try {
+      const r = await callOrg('update_username', { user_id: renameTargetId, username });
+      hideModal('renameModal');
+      showSuccessModal('تم بنجاح!', `تم تغيير اسم المستخدم إلى ${r.username}`);
+      loadUsers();
+    } catch (err) {
+      showMessage('renameMsg', err.message, 'error');
+    } finally { btn.disabled = false; }
+  };
+  $('renameSaveBtn').addEventListener('click', save);
+  $('renameInput').addEventListener('keydown', (e) => { if (e.key === 'Enter') save(); });
+}

@@ -534,6 +534,29 @@
   </main>
 </div>
 
+<!-- Rename Username Modal -->
+<div class="modal-backdrop" id="renameModal">
+  <div class="modal">
+    <div class="modal-hd">
+      <h2>تعديل اسم المستخدم</h2>
+      <button class="close-btn" onclick="hideModal('renameModal')"><i class="ti ti-x"></i></button>
+    </div>
+    <div class="modal-body">
+      <div class="user-info-box" id="renameUserInfo"></div>
+      <div class="form-group" style="margin-top:12px">
+        <label>اسم المستخدم الجديد</label>
+        <input type="text" id="renameInput" class="form-input" dir="ltr" autocomplete="off" placeholder="مثال: fr.ahmed.ali">
+        <small style="color:var(--text-muted)">حروف إنجليزية وأرقام و . _ - فقط (3 إلى 40). هيتحول لحروف صغيرة.</small>
+      </div>
+      <div id="renameMsg" class="form-message"></div>
+    </div>
+    <div class="modal-ft">
+      <button class="btn btn-secondary" onclick="hideModal('renameModal')">إلغاء</button>
+      <button class="btn btn-primary" id="renameSaveBtn"><i class="ti ti-device-floppy" style="font-size:16px"></i> حفظ</button>
+    </div>
+  </div>
+</div>
+
 <!-- Delete Modal -->
 <div class="modal-backdrop" id="deleteModal">
   <div class="modal">
