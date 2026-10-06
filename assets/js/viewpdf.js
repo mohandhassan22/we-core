@@ -14,6 +14,10 @@
     const loading  = document.getElementById("loadingScreen");
     let   localBlobUrl = null;
 
+    function hideLoading() {
+      loading.classList.add("hidden");
+    }
+
     function initViewer() {
       if (!fileUrl) return;
       // Never send the user's Supabase access token to a URL supplied by the query string.
@@ -48,19 +52,22 @@
           .then(blob => {
             localBlobUrl = URL.createObjectURL(blob);
             frame.src    = localBlobUrl;
+            // بعض المتصفحات لا تطلق load لعنصر embed، لذلك لا نترك شاشة التحميل معلقة.
+            setTimeout(hideLoading, 350);
           })
           .catch(err => {
             console.error(err);
-            loading.classList.add("hidden");
+            hideLoading();
             titleEl.textContent = "خطأ في صلاحية الوصول";
             document.title = "WE Core | خطأ";
           });
       } else {
         frame.src    = fileUrl;
         localBlobUrl = fileUrl;
+        setTimeout(hideLoading, 350);
       }
 
-      frame.onload = () => setTimeout(() => loading.classList.add("hidden"), 450);
+      frame.onload = () => setTimeout(hideLoading, 150);
     }
     initViewer();
 
