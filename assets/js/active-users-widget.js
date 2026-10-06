@@ -1,401 +1,197 @@
 /**
- * ====================================================
- * WE-Core | Active Users Widget v2.0
- * نظام تتبع المستخدمين النشطين - مع عرض الأسماء
- * ====================================================
- *
- * طريقة التضمين في أي صفحة HTML:
- * <script src="script/active-users-widget.js"></script>
- *
- * ثم في آخر الـ <body>:
- * <div id="active-users-widget"></div>
- *
- * أو:
- * ActiveUsersWidget.init({ position: 'corner' });
- * ====================================================
+ * WE-Core | Active Users + Group Chat widget v3
+ * - Floating circle showing the number of active users (Supabase Presence)
+ * - Click -> group chat with all users (table chat_room_messages, Supabase Realtime)
+ * Self-initialising: just include this script on any page. Shown only for logged-in users.
  */
-
 const ActiveUsersWidget = (() => {
+  const SB_URL = 'https://iygwhapcpdmsasqlfelv.supabase.co';
+  const SB_KEY = 'sb_publishable_rD9naqrpu1dI-iwchAS0GQ_JkgGysqP';
+  const PAGE_SIZE = 100;
 
-  const CONFIG = {
-    supabaseUrl:     'https://iygwhapcpdmsasqlfelv.supabase.co',
-    supabaseKey:     'sb_publishable_rD9naqrpu1dI-iwchAS0GQ_JkgGysqP',
-    channelName:     'we-core-presence',
-    fallbackInterval: 5000,
-    position:        'corner',
-    containerId:     'active-users-widget',
-  };
+  let client = null, presenceCh = null, chatCh = null;
+  let me = { id: null, name: 'مستخدم' };
+  let online = {}, messages = [], open = false, unread = 0, started = false;
+  let el = {};
 
-  const STYLES = `
-    #we-active-users-corner {
-      position: fixed;
-      bottom: 16px;
-      left: 16px;
-      z-index: 9999;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-      border: 1px solid rgba(255, 107, 53, 0.35);
-      border-radius: 50px;
-      padding: 7px 14px;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.3), 0 0 0 1px rgba(255,107,53,0.1);
-      cursor: pointer;
-      font-family: 'Cairo', sans-serif;
-      transition: all 0.3s ease;
-      animation: slideInCorner 0.5s ease forwards;
-      user-select: none;
-    }
-    #we-active-users-corner:hover {
-      box-shadow: 0 6px 25px rgba(255,107,53,0.3), 0 0 0 1px rgba(255,107,53,0.4);
-      transform: translateY(-2px);
-    }
-    @keyframes slideInCorner {
-      from { opacity: 0; transform: translateY(20px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-    .we-active-dot {
-      width: 8px; height: 8px;
-      background: #4ade80;
-      border-radius: 50%;
-      flex-shrink: 0;
-      animation: wePulse 2s infinite;
-    }
-    @keyframes wePulse {
-      0%   { box-shadow: 0 0 0 0 rgba(74,222,128,.6); }
-      70%  { box-shadow: 0 0 0 8px rgba(74,222,128,0); }
-      100% { box-shadow: 0 0 0 0 rgba(74,222,128,0); }
-    }
-    .we-active-text { display: flex; align-items: center; gap: 3px; }
-    .we-active-count {
-      color: #fb923c; font-weight: 700; font-size: 13px;
-      transition: transform 0.2s;
-    }
-    .we-active-label { color: #94a3b8; font-size: 10px; white-space: nowrap; }
+  const esc = (s) => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 
-    /* ── Popup ── */
-    #we-users-popup {
-      position: fixed;
-      bottom: 56px;
-      left: 16px;
-      z-index: 10000;
-      background: linear-gradient(160deg, #1e2a45 0%, #111827 100%);
-      border: 1px solid rgba(255,107,53,0.4);
-      border-radius: 14px;
-      min-width: 220px;
-      max-width: 280px;
-      box-shadow: 0 12px 40px rgba(0,0,0,.5), 0 0 0 1px rgba(255,107,53,.15);
-      font-family: 'Cairo', sans-serif;
-      animation: wePopupIn 0.25s cubic-bezier(0.34,1.56,0.64,1) forwards;
-      overflow: hidden;
-    }
-    @keyframes wePopupIn {
-      from { opacity:0; transform:translateY(10px) scale(.95); }
-      to   { opacity:1; transform:translateY(0) scale(1); }
-    }
-    .we-popup-header {
-      display:flex; align-items:center; gap:8px;
-      padding: 12px 16px 10px;
-      border-bottom: 1px solid rgba(255,255,255,.07);
-    }
-    .we-popup-title { color:#e2e8f0; font-size:12px; font-weight:600; flex:1; }
-    .we-popup-count-badge {
-      background: rgba(251,146,60,.15);
-      border: 1px solid rgba(251,146,60,.3);
-      color: #fb923c; font-size:11px; font-weight:700;
-      padding: 1px 8px; border-radius:20px;
-    }
-    .we-users-list {
-      max-height:240px; overflow-y:auto; padding:8px 0;
-      scrollbar-width:thin; scrollbar-color:rgba(255,107,53,.3) transparent;
-    }
-    .we-users-list::-webkit-scrollbar { width:4px; }
-    .we-users-list::-webkit-scrollbar-thumb { background:rgba(255,107,53,.3); border-radius:4px; }
-    .we-user-item {
-      display:flex; align-items:center; gap:10px;
-      padding:7px 16px; transition:background .15s;
-    }
-    .we-user-item:hover { background:rgba(255,255,255,.04); }
-    .we-user-avatar {
-      width:30px; height:30px; border-radius:50%;
-      background:linear-gradient(135deg,#fb923c,#f97316);
-      display:flex; align-items:center; justify-content:center;
-      font-size:13px; font-weight:700; color:#fff; flex-shrink:0;
-    }
-    .we-user-info { flex:1; min-width:0; }
-    .we-user-name {
-      color:#e2e8f0; font-size:12px; font-weight:600;
-      white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
-    }
-    .we-user-status { display:flex; align-items:center; gap:4px; margin-top:1px; }
-    .we-user-dot { width:5px; height:5px; background:#4ade80; border-radius:50%; }
-    .we-user-online-text { color:#64748b; font-size:10px; }
-    .we-popup-footer {
-      padding:8px 16px; border-top:1px solid rgba(255,255,255,.06);
-      text-align:center; color:#475569; font-size:10px;
-    }
-    .we-loading-text { color:#64748b; font-size:11px; padding:16px; text-align:center; }
+  function getToken() {
+    const m = (document.cookie || '').match(/(?:^|;\s*)sb-access-token=([^;]+)/);
+    return m ? decodeURIComponent(m[1]).replace(/"/g, '') : null;
+  }
+  function jwtPayload(t) {
+    try { return JSON.parse(decodeURIComponent(escape(atob(t.split('.')[1].replace(/-/g, '+').replace(/_/g, '/'))))); } catch (e) { return null; }
+  }
 
-    /* Inline */
-    .we-active-inline-card {
-      display:flex; align-items:center; gap:12px;
-      background:linear-gradient(135deg,#1a1a2e,#16213e);
-      border:1px solid rgba(255,107,53,.3); border-radius:12px;
-      padding:14px 20px; font-family:'Cairo',sans-serif; cursor:pointer;
-    }
-    .we-active-inline-card:hover { border-color:rgba(255,107,53,.5); }
-    .we-active-inline-card .we-active-icon { font-size:22px; }
-    .we-active-inline-card .we-active-info { display:flex; flex-direction:column; }
-    .we-active-inline-card .we-active-num { font-size:24px; font-weight:700; color:#fb923c; line-height:1; }
-    .we-active-inline-card .we-active-desc { font-size:12px; color:#94a3b8; margin-top:2px; }
+  const CSS = `
+  #we-chat-fab{position:fixed;bottom:16px;left:16px;width:58px;height:58px;border-radius:50%;z-index:9998;border:0;cursor:pointer;
+    background:linear-gradient(135deg,#591685,#8e2de2);color:#fff;font-family:'Cairo',Tahoma,sans-serif;box-shadow:0 6px 22px rgba(89,22,133,.45);
+    display:flex;align-items:center;justify-content:center;flex-direction:column;line-height:1;transition:transform .2s}
+  #we-chat-fab:hover{transform:scale(1.08)}
+  #we-chat-fab .n{font-size:22px;font-weight:800}
+  #we-chat-fab .d{position:absolute;top:6px;right:6px;width:11px;height:11px;border-radius:50%;background:#4ade80;border:2px solid #fff}
+  #we-chat-fab .u{position:absolute;top:-2px;left:-2px;min-width:18px;height:18px;padding:0 4px;border-radius:9px;background:#ef4444;color:#fff;font-size:11px;font-weight:800;display:none;align-items:center;justify-content:center}
+  #we-chat-panel{position:fixed;bottom:84px;left:16px;width:350px;max-width:calc(100vw - 24px);height:480px;max-height:calc(100vh - 110px);z-index:9999;
+    background:#fff;color:#222;border-radius:18px;box-shadow:0 14px 50px rgba(0,0,0,.3);display:none;flex-direction:column;overflow:hidden;direction:rtl;font-family:'Cairo',Tahoma,sans-serif}
+  #we-chat-panel.show{display:flex}
+  #we-chat-panel .h{background:linear-gradient(135deg,#591685,#8e2de2);color:#fff;padding:12px 14px;display:flex;align-items:center;gap:8px}
+  #we-chat-panel .h b{flex:1;font-size:15px}
+  #we-chat-panel .h button{background:rgba(255,255,255,.18);border:0;color:#fff;border-radius:8px;padding:4px 9px;cursor:pointer;font-family:inherit;font-size:12px}
+  #we-chat-online{display:none;max-height:130px;overflow:auto;padding:8px 12px;background:#f6f1f8;border-bottom:1px solid #eee;font-size:13px}
+  #we-chat-online.show{display:block}
+  #we-chat-online div{padding:3px 0;display:flex;align-items:center;gap:6px}
+  #we-chat-online i{width:8px;height:8px;border-radius:50%;background:#4ade80;display:inline-block}
+  #we-chat-msgs{flex:1;overflow-y:auto;padding:12px;background:#faf8fb;display:flex;flex-direction:column;gap:8px}
+  .we-m{max-width:82%;padding:7px 11px;border-radius:14px;font-size:14px;line-height:1.6;word-wrap:break-word;white-space:pre-wrap;background:#fff;border:1px solid #eee;align-self:flex-start}
+  .we-m.mine{align-self:flex-end;background:#591685;color:#fff;border-color:#591685}
+  .we-m .s{display:block;font-size:11px;font-weight:700;color:#8e2de2;margin-bottom:1px}
+  .we-m.mine .s{display:none}
+  .we-m .t{display:block;font-size:10px;opacity:.6;margin-top:2px}
+  .we-m .x{cursor:pointer;opacity:.5;font-size:11px;margin-inline-start:6px}
+  #we-chat-form{display:flex;gap:8px;padding:10px;border-top:1px solid #eee;background:#fff}
+  #we-chat-input{flex:1;border:1px solid #ddd;border-radius:20px;padding:9px 14px;font-family:inherit;font-size:14px;outline:none;resize:none;max-height:90px}
+  #we-chat-send{border:0;border-radius:50%;width:40px;height:40px;background:#591685;color:#fff;cursor:pointer;font-size:16px}
+  #we-chat-send:disabled{opacity:.5}
+  .we-empty{margin:auto;color:#999;font-size:13px;text-align:center}
+  @media(max-width:520px){#we-chat-panel{left:8px;right:8px;width:auto;bottom:80px}}
   `;
 
-  let supabaseChannel = null;
-  let supabaseClient  = null;
-  let activeCount     = 1;
-  let widgetEl        = null;
-  let countEl         = null;
-  let popupEl         = null;
-  let popupVisible    = false;
-  let activeUsersMap  = {};
-
-  function getUserId() {
-    let uid = localStorage.getItem('we_user_uid');
-    if (!uid) { uid = 'user_' + Math.random().toString(36).substr(2,9); localStorage.setItem('we_user_uid', uid); }
-    return uid;
+  function build() {
+    const st = document.createElement('style'); st.textContent = CSS; document.head.appendChild(st);
+    const fab = document.createElement('button');
+    fab.id = 'we-chat-fab'; fab.type = 'button'; fab.title = 'المستخدمون النشطون والشات';
+    fab.innerHTML = '<span class="d"></span><span class="u" id="we-chat-unread"></span><span class="n" id="we-chat-count">1</span>';
+    const panel = document.createElement('div'); panel.id = 'we-chat-panel';
+    panel.innerHTML = `
+      <div class="h"><span>💬</span><b>الشات العام</b>
+        <button type="button" id="we-chat-toggle-online">👥 <span id="we-chat-count2">1</span> نشط</button>
+        <button type="button" id="we-chat-close">✕</button></div>
+      <div id="we-chat-online"></div>
+      <div id="we-chat-msgs"><div class="we-empty">جاري تحميل الرسائل...</div></div>
+      <form id="we-chat-form"><textarea id="we-chat-input" rows="1" maxlength="1000" placeholder="اكتب رسالتك..."></textarea>
+        <button id="we-chat-send" type="submit">➤</button></form>`;
+    document.body.appendChild(fab); document.body.appendChild(panel);
+    el = { fab, panel, count: fab.querySelector('#we-chat-count'), count2: panel.querySelector('#we-chat-count2'), unread: fab.querySelector('#we-chat-unread'),
+           msgs: panel.querySelector('#we-chat-msgs'), online: panel.querySelector('#we-chat-online'), input: panel.querySelector('#we-chat-input'), send: panel.querySelector('#we-chat-send') };
+    fab.addEventListener('click', toggle);
+    panel.querySelector('#we-chat-close').addEventListener('click', toggle);
+    panel.querySelector('#we-chat-toggle-online').addEventListener('click', () => el.online.classList.toggle('show'));
+    panel.querySelector('#we-chat-form').addEventListener('submit', (e) => { e.preventDefault(); sendMessage(); });
+    el.input.addEventListener('keydown', (e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); } });
+    el.msgs.addEventListener('click', (e) => { const x = e.target.closest('[data-del]'); if (x) deleteMessage(x.dataset.del); });
   }
 
-  function getDisplayName() {
-    if (window._sbUser) {
-      const u = window._sbUser;
-      return u.user_metadata?.full_name || u.email || null;
-    }
-    return localStorage.getItem('we_display_name') || null;
+  function toggle() {
+    open = !open;
+    el.panel.classList.toggle('show', open);
+    if (open) { unread = 0; renderUnread(); renderMessages(true); setTimeout(() => el.input.focus(), 50); }
+  }
+  function renderUnread() { el.unread.style.display = unread ? 'flex' : 'none'; el.unread.textContent = unread > 99 ? '99+' : unread; }
+
+  function renderOnline() {
+    const list = Object.values(online);
+    const n = Math.max(list.length, 1);
+    el.count.textContent = n; el.count2.textContent = n;
+    el.online.innerHTML = list.map(u => `<div><i></i>${esc(u.name || 'مستخدم')}</div>`).join('') || '<div>لا يوجد</div>';
   }
 
-  function updateCount(count) {
-    activeCount = count;
-    if (countEl) {
-      countEl.textContent = count;
-      countEl.style.transform = 'scale(1.25)';
-      setTimeout(() => { if (countEl) countEl.style.transform = ''; }, 200);
-    }
-    if (popupVisible) renderPopup();
+  const fmtTime = (iso) => { try { return new Date(iso).toLocaleTimeString('ar-EG', { hour: '2-digit', minute: '2-digit' }); } catch (e) { return ''; } };
+  function msgHtml(m) {
+    const mine = m.user_id === me.id;
+    return `<div class="we-m${mine ? ' mine' : ''}" data-id="${m.id}"><span class="s">${esc(m.sender_name)}</span>${esc(m.body)}<span class="t">${fmtTime(m.created_at)}${mine ? ` <span class="x" data-del="${m.id}" title="حذف">🗑</span>` : ''}</span></div>`;
+  }
+  function renderMessages(scroll) {
+    if (!messages.length) { el.msgs.innerHTML = '<div class="we-empty">لا توجد رسائل بعد. ابدأ المحادثة 👋</div>'; return; }
+    const nearBottom = el.msgs.scrollHeight - el.msgs.scrollTop - el.msgs.clientHeight < 80;
+    el.msgs.innerHTML = messages.map(msgHtml).join('');
+    if (scroll || nearBottom) el.msgs.scrollTop = el.msgs.scrollHeight;
   }
 
-  async function fetchUserNames(userIds) {
-    if (!userIds.length) return {};
-    try {
-      const ids = userIds.join(',');
-      const m = document.cookie.match(/(?:^|;\s*)sb-access-token=([^;]+)/);
-      const token = m ? decodeURIComponent(m[1]) : null;
-      if (!token) return {};
-      const res = await fetch(
-        `${CONFIG.supabaseUrl}/rest/v1/profiles?select=id,full_name&id=in.(${ids})`,
-        { headers: { apikey: CONFIG.supabaseKey, Authorization: `Bearer ${token}` } }
-      );
-      if (!res.ok) return {};
-      const rows = await res.json();
-      const map = {};
-      rows.forEach(r => { map[r.id] = r.full_name || null; });
-      return map;
-    } catch { return {}; }
+  async function loadMessages() {
+    const { data, error } = await client.from('chat_room_messages').select('*').order('created_at', { ascending: false }).limit(PAGE_SIZE);
+    if (error) { el.msgs.innerHTML = '<div class="we-empty">تعذر تحميل الرسائل</div>'; return; }
+    messages = (data || []).reverse();
+    renderMessages(true);
   }
 
-  async function renderPopup() {
-    if (!popupEl) return;
-    const users = Object.entries(activeUsersMap);
-    const badge = popupEl.querySelector('.we-popup-count-badge');
-    if (badge) badge.textContent = users.length;
-    const list = popupEl.querySelector('.we-users-list');
-    if (!list) return;
-    if (!users.length) { list.innerHTML = '<div class="we-loading-text">لا يوجد مستخدمون نشطون</div>'; return; }
-    list.innerHTML = '<div class="we-loading-text">جاري التحميل...</div>';
-
-    const supabaseIds = users.map(([id]) => id).filter(id => /^[0-9a-f]{8}-[0-9a-f]{4}/.test(id));
-    const nameMap = await fetchUserNames(supabaseIds);
-
-    list.innerHTML = users.map(([uid, info]) => {
-      const name    = nameMap[uid] || info.name || 'مستخدم';
-      const initial = [...name].find(c => /\S/.test(c)) || '؟';
-      const page    = info.page ? info.page.replace('.html','').replace(/_/g,' ') : '';
-      return `<div class="we-user-item">
-        <div class="we-user-avatar">${initial}</div>
-        <div class="we-user-info">
-          <div class="we-user-name">${name}</div>
-          <div class="we-user-status">
-            <div class="we-user-dot"></div>
-            <span class="we-user-online-text">نشط الآن${page ? ' · ' + page : ''}</span>
-          </div>
-        </div>
-      </div>`;
-    }).join('');
+  async function sendMessage() {
+    const body = el.input.value.trim();
+    if (!body) return;
+    el.send.disabled = true;
+    const { data, error } = await client.from('chat_room_messages').insert({ body }).select().single();
+    el.send.disabled = false;
+    if (error) { alert('تعذر إرسال الرسالة'); return; }
+    el.input.value = '';
+    if (data && !messages.some(m => m.id === data.id)) { messages.push(data); renderMessages(true); }
   }
 
-  function createPopup() {
-    const div = document.createElement('div');
-    div.id = 'we-users-popup';
-    div.innerHTML = `
-      <div class="we-popup-header">
-        <span>👥</span>
-        <span class="we-popup-title">المستخدمون النشطون</span>
-        <span class="we-popup-count-badge">${activeCount}</span>
-      </div>
-      <div class="we-users-list"><div class="we-loading-text">جاري التحميل...</div></div>
-      <div class="we-popup-footer">يتحدث كل 5 ثوانٍ تلقائياً</div>`;
-    document.body.appendChild(div);
-    popupEl = div;
-    renderPopup();
-    setTimeout(() => document.addEventListener('click', outsideClick), 50);
+  async function deleteMessage(id) {
+    const { error } = await client.from('chat_room_messages').delete().eq('id', id);
+    if (!error) { messages = messages.filter(m => String(m.id) !== String(id)); renderMessages(false); }
   }
 
-  function outsideClick(e) {
-    if (popupEl && !popupEl.contains(e.target) && widgetEl && !widgetEl.contains(e.target)) closePopup();
-  }
+  function subscribe() {
+    chatCh = client.channel('we-chat-room')
+      .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'chat_room_messages' }, (p) => {
+        const m = p.new; if (!m || messages.some(x => x.id === m.id)) return;
+        messages.push(m); if (messages.length > 300) messages.shift();
+        renderMessages(false);
+        if (!open && m.user_id !== me.id) { unread++; renderUnread(); }
+      })
+      .on('postgres_changes', { event: 'DELETE', schema: 'public', table: 'chat_room_messages' }, (p) => {
+        const id = p.old && p.old.id; if (id == null) return;
+        messages = messages.filter(x => x.id !== id); renderMessages(false);
+      })
+      .subscribe();
 
-  function closePopup() {
-    if (popupEl) { popupEl.remove(); popupEl = null; }
-    popupVisible = false;
-    document.removeEventListener('click', outsideClick);
-  }
-
-  function togglePopup() {
-    if (popupVisible) closePopup(); else { popupVisible = true; createPopup(); }
-  }
-
-  function createCornerWidget() {
-    const div = document.createElement('div');
-    div.id = 'we-active-users-corner';
-    div.title = 'اضغط لعرض المستخدمين النشطين';
-    div.innerHTML = `
-      <div class="we-active-dot"></div>
-      <div class="we-active-text">
-        <span class="we-active-count" id="we-count">1</span>
-        <span class="we-active-label"> مستخدم نشط</span>
-      </div>`;
-    div.addEventListener('click', e => { e.stopPropagation(); togglePopup(); });
-    document.body.appendChild(div);
-    widgetEl = div;
-    countEl  = document.getElementById('we-count');
-  }
-
-  function createInlineWidget(containerId) {
-    const container = document.getElementById(containerId);
-    if (!container) return;
-    container.innerHTML = `
-      <div class="we-active-inline-card" id="we-inline-card">
-        <span class="we-active-icon">👥</span>
-        <div class="we-active-info">
-          <span class="we-active-num" id="we-count">1</span>
-          <span class="we-active-desc">مستخدم نشط الآن — اضغط لعرض الأسماء</span>
-        </div>
-      </div>`;
-    document.getElementById('we-inline-card')?.addEventListener('click', e => { e.stopPropagation(); togglePopup(); });
-    countEl  = document.getElementById('we-count');
-    widgetEl = document.getElementById('we-inline-card');
-  }
-
-  function connectSupabase(url, key) {
-    const script = document.createElement('script');
-    script.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js';
-    script.onload = () => {
-      const { createClient } = supabase;
-      supabaseClient = createClient(url, key);
-      const userId   = getUserId();
-      const pageName = window.location.pathname.split('/').pop() || 'index';
-
-      function syncState() {
-        const state = supabaseChannel.presenceState();
-        activeUsersMap = {};
-        Object.entries(state).forEach(([uid, presences]) => {
-          const p = presences[0] || {};
-          activeUsersMap[uid] = { name: p.display_name || p.email || null, page: p.page || '', online_at: p.online_at || '' };
-        });
-        updateCount(Object.keys(activeUsersMap).length);
-      }
-
-      function doTrack() {
-        const displayName = getDisplayName();
-        supabaseChannel = supabaseClient.channel(CONFIG.channelName, { config: { presence: { key: userId } } });
-        supabaseChannel
-          .on('presence', { event: 'sync'  }, syncState)
-          .on('presence', { event: 'join'  }, syncState)
-          .on('presence', { event: 'leave' }, syncState)
-          .subscribe(async status => {
-            if (status === 'SUBSCRIBED') {
-              await supabaseChannel.track({ user_id: userId, display_name: displayName, page: pageName, online_at: new Date().toISOString() });
-              console.log('[WE-Core] ✅ Presence connected');
-            }
-          });
-      }
-
-      if (window._sbUser) { doTrack(); }
-      else {
-        window.addEventListener('authSuccess', doTrack, { once: true });
-        setTimeout(() => { if (!supabaseChannel) doTrack(); }, 3000);
-      }
-
-      window.addEventListener('beforeunload', () => { if (supabaseChannel) supabaseChannel.untrack(); });
+    const page = (location.pathname.split('/').pop() || 'index').replace('.html', '');
+    presenceCh = client.channel('we-core-presence', { config: { presence: { key: me.id } } });
+    const sync = () => {
+      online = {};
+      Object.entries(presenceCh.presenceState()).forEach(([uid, arr]) => { const p = (arr && arr[0]) || {}; online[uid] = { name: p.display_name || null }; });
+      renderOnline();
     };
-    document.head.appendChild(script);
+    presenceCh.on('presence', { event: 'sync' }, sync).on('presence', { event: 'join' }, sync).on('presence', { event: 'leave' }, sync)
+      .subscribe(async (status) => { if (status === 'SUBSCRIBED') await presenceCh.track({ user_id: me.id, display_name: me.name, page, online_at: new Date().toISOString() }); });
+    window.addEventListener('beforeunload', () => { try { presenceCh.untrack(); } catch (e) {} });
   }
 
-  function startFallbackTracking() {
-    const userId      = getUserId();
-    const STORAGE_KEY = 'we_active_users';
-    const TIMEOUT     = 15000;
-
-    function heartbeat() {
-      const now  = Date.now();
-      const name = getDisplayName() || userId;
-      let users  = {};
-      try { users = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}'); } catch {}
-      users[userId] = { ts: now, name, page: window.location.pathname.split('/').pop() || 'index' };
-      Object.keys(users).forEach(uid => { if (now - users[uid].ts > TIMEOUT) delete users[uid]; });
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(users));
-      activeUsersMap = {};
-      Object.entries(users).forEach(([uid, info]) => { activeUsersMap[uid] = { name: info.name, page: info.page, online_at: '' }; });
-      updateCount(Object.keys(users).length);
-    }
-
-    heartbeat();
-    setInterval(heartbeat, CONFIG.fallbackInterval);
-
-    window.addEventListener('storage', e => {
-      if (e.key !== STORAGE_KEY) return;
-      const users = JSON.parse(e.newValue || '{}');
-      const now   = Date.now();
-      activeUsersMap = {};
-      Object.entries(users).forEach(([uid, info]) => { if (now - info.ts < TIMEOUT) activeUsersMap[uid] = { name: info.name, page: info.page, online_at: '' }; });
-      updateCount(Object.keys(activeUsersMap).length);
-      if (popupVisible) renderPopup();
+  function loadSdk() {
+    return new Promise((resolve, reject) => {
+      if (window.supabase && window.supabase.createClient) return resolve();
+      const s = document.createElement('script');
+      s.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js';
+      s.onload = resolve; s.onerror = reject; document.head.appendChild(s);
     });
-
-    window.addEventListener('beforeunload', () => {
-      let users = {};
-      try { users = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}'); } catch {}
-      delete users[userId];
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(users));
-    });
-    console.log('[WE-Core] ⚡ Fallback mode');
   }
 
-  function init(options = {}) {
-    const cfg = { ...CONFIG, ...options };
-    const style = document.createElement('style');
-    style.textContent = STYLES;
-    document.head.appendChild(style);
-    if (cfg.position === 'corner')       createCornerWidget();
-    else if (cfg.position === 'inline')  createInlineWidget(cfg.containerId);
-    const hasSupabase = cfg.supabaseUrl && cfg.supabaseUrl !== 'YOUR_SUPABASE_URL';
-    if (hasSupabase) connectSupabase(cfg.supabaseUrl, cfg.supabaseKey);
-    else             startFallbackTracking();
+  async function start() {
+    if (started) return;
+    const token = getToken(); const pl = token && jwtPayload(token);
+    if (!pl || !pl.sub) return;           // not logged in -> no widget
+    started = true;
+    me.id = pl.sub;
+    build();
+    try {
+      await loadSdk();
+      client = window.supabase.createClient(SB_URL, SB_KEY, {
+        accessToken: async () => getToken() || SB_KEY,
+        realtime: { params: { eventsPerSecond: 10 } }
+      });
+      const { data } = await client.from('profiles').select('full_name,username').eq('id', me.id).maybeSingle();
+      me.name = (data && (data.full_name || data.username)) || pl.email || 'مستخدم';
+      renderOnline();
+      await loadMessages();
+      subscribe();
+    } catch (e) { console.warn('[WE-Core] chat widget error', e); }
   }
 
-  document.addEventListener('DOMContentLoaded', () => {
-    const tag = document.querySelector('script[data-we-active-users]');
-    if (tag) init({ supabaseUrl: tag.dataset.supabaseUrl, supabaseKey: tag.dataset.supabaseKey, position: tag.dataset.position || 'corner', containerId: tag.dataset.containerId || 'active-users-widget' });
-  });
-
+  function init() { start(); }
+  const boot = () => {
+    start();
+    if (!started) { window.addEventListener('authSuccess', start, { once: true }); setTimeout(start, 2500); }
+  };
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot); else boot();
   return { init };
 })();
