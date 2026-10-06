@@ -14,7 +14,8 @@
     const loading  = document.getElementById("loadingScreen");
     let   localBlobUrl = null;
 
-    if (fileUrl) {
+    function initViewer() {
+      if (!fileUrl) return;
       // Never send the user's Supabase access token to a URL supplied by the query string.
       // Authenticated documents must come only from this project's Supabase storage.
       let parsedUrl;
@@ -61,6 +62,7 @@
 
       frame.onload = () => setTimeout(() => loading.classList.add("hidden"), 450);
     }
+    initViewer();
 
     /* ── Print via Ctrl+P ── */
     window.addEventListener('keydown', function(e) {
