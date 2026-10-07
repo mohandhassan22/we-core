@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#6d28d9">
+  <title>we core trainer | تدريب الموظفين</title>
+  <link rel="icon" href="img/we-core.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/trainer.css">
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <a class="brand" href="index.html" aria-label="we core trainer">
+        <span class="brand-mark"><img src="img/we-core.png" alt="WE-Core"></span>
+        <span><strong>we core trainer</strong><small>مسار الموظف الجديد</small></span>
+      </a>
+      <div class="top-actions">
+        <span id="roleBadge" class="role-badge">موظف</span>
+        <button id="logoutBtn" class="text-button" type="button">خروج</button>
+      </div>
+    </header>
+
+    <main id="app" class="page" hidden>
+      <section class="welcome-grid">
+        <div class="welcome-copy">
+          <p class="eyebrow">مسار واضح من أول يوم</p>
+          <h1>خلّي المعلومة<br><em>خطوة عملية</em></h1>
+          <p class="lead">شرح قصير، فيديو في مكانه، وسؤال يثبت المعلومة. ابدأ من مستواك وخلي تقدمك محفوظ مع كل محاولة.</p>
+          <div class="welcome-actions">
+            <button id="assessmentBtn" class="primary-button" type="button"><span>ابدأ اختبار تحديد المستوى</span><b>←</b></button>
+            <button id="continueBtn" class="secondary-button" type="button">كمّل من آخر وحدة</button>
+          </div>
+        </div>
+        <div class="progress-card">
+          <div class="card-label"><span>تقدمك الحالي</span><span id="progressPercent">0%</span></div>
+          <div class="progress-track"><i id="progressBar"></i></div>
+          <div class="progress-meta"><span id="completedCount">0 من 5 وحدات مكتملة</span><span id="nextHint">ابدأ بالوحدة الأولى</span></div>
+          <div class="mini-stats"><div><strong id="bestScore">—</strong><span>أفضل نتيجة</span></div><div><strong id="attemptCount">0</strong><span>محاولة</span></div><div><strong id="videoCount">0</strong><span>فيديو</span></div></div>
+        </div>
+      </section>
+
+      <div id="notice" class="notice" role="status" hidden></div>
+
+      <section class="content-layout">
+        <aside class="modules-rail">
+          <div class="section-head"><div><p class="eyebrow">خريطة التدريب</p><h2>الوحدات</h2></div><span id="moduleCount" class="count-pill">5</span></div>
+          <div id="moduleList" class="module-list"></div>
+          <button id="aiExplainBtn" class="ai-link" type="button">✦ اطلب شرحًا مبسطًا بالذكاء الاصطناعي</button>
+        </aside>
+
+        <section class="learning-column">
+          <div id="learningPanel" class="learning-panel"></div>
+          <section id="managerPanel" class="manager-panel" hidden>
+            <div class="section-head"><div><p class="eyebrow">للمتابعة فقط</p><h2>تقدم فريق الفرع</h2></div><button id="refreshTeamBtn" class="icon-button" type="button" aria-label="تحديث تقدم الفريق">↻</button></div>
+            <p class="muted">تظهر هنا بيانات موظفي فرعك فقط. لا يمكن لمدير الفرع قراءة تقدم فرع آخر.</p>
+            <div id="teamTable" class="team-table"></div>
+          </section>
+        </section>
+      </section>
+    </main>
+
+    <div id="authGate" class="auth-gate"><div class="loader"></div><p>بنجهّز مسارك التدريبي…</p></div>
+  </div>
+  <dialog id="aiDialog" class="ai-dialog"><div class="dialog-head"><div><p class="eyebrow">WE Trainer AI</p><h2>شرح على مقاسك</h2></div><button class="icon-button" data-close-dialog type="button">×</button></div><p id="aiDialogIntro" class="muted">اكتب نقطة تريد فهمها، وسأستخدم محتوى WE-Core المسموح به فقط.</p><textarea id="aiPrompt" rows="4" placeholder="مثال: اشرح لي الفرق بين WE Space و WE Air بطريقة أقولها للعميل"></textarea><div class="dialog-actions"><button id="aiSubmitBtn" class="primary-button" type="button">اكتب الشرح</button></div><div id="aiResult" class="ai-result" hidden></div></dialog>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="assets/js/auth.js?v=16.0.3"></script>
+  <script src="assets/js/trainer.js"></script>
+</body>
+</html>
