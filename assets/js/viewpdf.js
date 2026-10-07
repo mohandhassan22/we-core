@@ -73,23 +73,58 @@
 
     /* ── Print via Ctrl+P ── */
     window.addEventListener('keydown', function(e) {
-      if ((e.ctrlKey || e.metaKey) && e.key === 'p') {
+      if ((e.ctrlKey || e.metaKey) && !e.shiftKey && !e.altKey && String(e.key).toLowerCase() === 'p') {
         e.preventDefault();
+        e.stopPropagation();
         printPDF();
       }
-    });
+    }, true);
 
-    function printPDF() {
-      if (frame.contentWindow) {
-        try {
-          frame.contentWindow.focus();
-          frame.contentWindow.print();
-          return;
-        } catch (_) { /* cross-origin fallback below */ }
-      }
-      if (localBlobUrl) {
-        const w = window.open(localBlobUrl, "_blank");
-        if (w) w.addEventListener('load', () => w.print());
+    /* ── Print: always from this page (no new tab/window) ── */
+    let printBlobUrl = null;       // same-origin blob copy of the PDF, used for printing
+    let printing     = false;
+
+    async function getPrintableUrl() {
+      if (localBlobUrl && localBlobUrl.startsWith('blob:')) return localBlobUrl;
+      if (printBlobUrl) return printBlobUrl;
+      // Public (cross-origin) URL: fetch it once so it can be printed from a same-origin frame
+      const res = await fetch(fileUrl);
+      if (!res.ok) throw new Error('fetch failed');
+      printBlobUrl = URL.createObjectURL(await res.blob());
+      return printBlobUrl;
+    }
+
+    async function printPDF() {
+      if (printing) return;
+      printing = true;
+      try {
+        const url = await getPrintableUrl();
+
+        // Dedicated hidden frame: prints only the PDF, never the toolbar / page chrome
+        const h = document.createElement('iframe');
+        h.setAttribute('aria-hidden', 'true');
+        h.style.cssText = 'position:fixed;right:0;bottom:0;width:0;height:0;border:0;visibility:hidden;';
+        h.onload = () => {
+          setTimeout(() => {
+            try {
+              h.contentWindow.focus();
+              h.contentWindow.print();
+              window.focus();            // give focus back so Ctrl+P keeps working
+            } catch (err) {
+              window.focus();
+              console.warn('Print failed:', err);
+              alert('تعذّرت الطباعة من هذه الصفحة. استخدم زر التحميل ثم اطبع الملف.');
+            }
+            printing = false;
+            setTimeout(() => h.remove(), 1500);
+          }, 400);
+        };
+        h.src = url;
+        document.body.appendChild(h);
+      } catch (err) {
+        console.warn('Print failed:', err);
+        printing = false;
+        alert('تعذّر تجهيز الملف للطباعة. حاول مرة أخرى أو استخدم زر التحميل.');
       }
     }
 
