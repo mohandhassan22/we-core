@@ -65,6 +65,12 @@ $$;
 
 grant execute on function public.training_is_manager_for(uuid) to authenticated;
 
+revoke execute on function public.training_is_manager_for(uuid) from public, anon;
+
+create index if not exists training_videos_module_id_idx on public.training_videos(module_id);
+create index if not exists training_questions_module_id_idx on public.training_questions(module_id);
+create index if not exists training_progress_module_id_idx on public.training_progress(module_id);
+
 alter table public.training_modules enable row level security;
 alter table public.training_videos enable row level security;
 alter table public.training_questions enable row level security;
@@ -77,11 +83,11 @@ create policy training_videos_read on public.training_videos for select to authe
 drop policy if exists training_questions_read on public.training_questions;
 create policy training_questions_read on public.training_questions for select to authenticated using (is_active = true);
 drop policy if exists training_progress_read on public.training_progress;
-create policy training_progress_read on public.training_progress for select to authenticated using (user_id = auth.uid() or public.training_is_manager_for(user_id));
+create policy training_progress_read on public.training_progress for select to authenticated using ((user_id = (select auth.uid())) or public.training_is_manager_for(user_id));
 drop policy if exists training_progress_insert on public.training_progress;
-create policy training_progress_insert on public.training_progress for insert to authenticated with check (user_id = auth.uid());
+create policy training_progress_insert on public.training_progress for insert to authenticated with check (user_id = (select auth.uid()));
 drop policy if exists training_progress_update on public.training_progress;
-create policy training_progress_update on public.training_progress for update to authenticated using (user_id = auth.uid()) with check (user_id = auth.uid());
+create policy training_progress_update on public.training_progress for update to authenticated using (user_id = (select auth.uid())) with check (user_id = (select auth.uid()));
 
 grant select on public.training_modules, public.training_videos, public.training_questions to authenticated;
 grant select, insert, update on public.training_progress to authenticated;
@@ -124,6 +130,8 @@ returns table (
 $$;
 
 grant execute on function public.get_training_team_progress() to authenticated;
+
+revoke execute on function public.get_training_team_progress() from public, anon;
 
 insert into public.training_modules (slug, eyebrow, title, summary, body, sort_order)
 values
