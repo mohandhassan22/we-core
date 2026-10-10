@@ -1,19 +1,303 @@
 <!doctype html>
 <html lang="ar" dir="rtl">
-  <head>
-    <meta charset="UTF-8" />
-      <script src="../../assets/js/auth.js?v=12.0.1"></script>
-      
-<link rel="stylesheet" href="css/we-ardy.css">
-<script src="../../assets/js/active-users-widget.js"></script>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>WE الأرضي – باقات مسبق الدفع</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src=".../js/main.tsx"></script>
-    <script src="js/we-ardy.js"></script>
-  </body>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WE الأرضي – الباقات الأساسية</title>
+  <link rel="icon" href="data:," />
+  <link rel="stylesheet" href="css/we-ardy.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
+  <script src="../../assets/js/auth.js?v=12.0.1"></script>
+  <script src="../../assets/js/active-users-widget.js"></script>
+  <style>
+    .tab-pane{display:none}.tab-pane.active{display:block}
+    .tabs-nav-inner{width:max-content;min-width:100%}
+    .tab-btn{white-space:nowrap}
+    .billing-table-wrapper{overflow-x:auto;margin-bottom:20px}
+    .info-section,.extra-section,.services-section{margin-bottom:28px}
+  </style>
+</head>
+<body>
+<div class="we-page">
+
+  <header class="header">
+    <div class="logo"><i class="fa-solid fa-phone-volume"></i></div>
+    <h1 class="main-title">WE الأرضي</h1>
+    <div class="prepaid-badge">الباقات الأساسية</div>
+    <p class="sub-title">WE 40 · WE 50 · WE 80</p>
+  </header>
+
+  <nav class="tabs-nav">
+    <div class="tabs-nav-inner">
+      <button class="tab-btn active" data-tab="plans"><i class="fa-solid fa-box"></i> الباقات</button>
+      <button class="tab-btn" data-tab="extra"><i class="fa-solid fa-plus-circle"></i> الباقات الإضافية</button>
+      <button class="tab-btn" data-tab="contract"><i class="fa-solid fa-file-signature"></i> التعاقد والتركيب</button>
+      <button class="tab-btn" data-tab="billing"><i class="fa-solid fa-receipt"></i> المحاسبة والقطع</button>
+      <button class="tab-btn" data-tab="terms"><i class="fa-solid fa-list-check"></i> الشروط والتفاصيل</button>
+    </div>
+  </nav>
+
+  <main class="container">
+
+    <!-- ===== الباقات ===== -->
+    <section class="tab-pane active" id="plans">
+      <h2 class="section-title">الباقات الأساسية</h2>
+      <div class="plans-grid">
+
+        <div class="plan-card basic">
+          <div class="plan-header">
+            <div class="plan-icon"><i class="fa-solid fa-phone"></i></div>
+            <div class="plan-name">WE 40</div>
+            <div class="plan-price">140 <small>جنيه / 90 يوم</small></div>
+          </div>
+          <div class="plan-accent"></div>
+          <div class="plan-body">
+            <div class="stats-row">
+              <div class="stat-box"><div class="stat-val">600</div><div class="stat-label">دقيقة محلي + محافظات</div></div>
+              <div class="stat-box"><div class="stat-val">90</div><div class="stat-label">يوم صلاحية</div></div>
+            </div>
+            <ul class="feature-list">
+              <li><span class="fi fi-red"><i class="fa-solid fa-xmark"></i></span> موبايل WE: لا</li>
+              <li><span class="fi fi-red"><i class="fa-solid fa-xmark"></i></span> موبايل أي شبكة أخرى: لا</li>
+              <li><span class="fi fi-green"><i class="fa-solid fa-check"></i></span> إظهار الرقم</li>
+              <li><span class="fi fi-green"><i class="fa-solid fa-check"></i></span> خدمة تتبع</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="plan-card standard">
+          <div class="plan-header">
+            <div class="plan-icon"><i class="fa-solid fa-phone-volume"></i></div>
+            <div class="plan-name">WE 50</div>
+            <div class="plan-price">172 <small>جنيه / 90 يوم</small></div>
+          </div>
+          <div class="plan-accent"></div>
+          <div class="plan-body">
+            <div class="stats-row">
+              <div class="stat-box"><div class="stat-val">3750</div><div class="stat-label">دقيقة محلي + محافظات</div></div>
+              <div class="stat-box"><div class="stat-val">90</div><div class="stat-label">يوم صلاحية</div></div>
+            </div>
+            <ul class="feature-list">
+              <li><span class="fi fi-red"><i class="fa-solid fa-xmark"></i></span> موبايل WE: لا</li>
+              <li><span class="fi fi-red"><i class="fa-solid fa-xmark"></i></span> موبايل أي شبكة أخرى: لا</li>
+              <li><span class="fi fi-green"><i class="fa-solid fa-check"></i></span> إظهار الرقم</li>
+              <li><span class="fi fi-green"><i class="fa-solid fa-check"></i></span> خدمة تتبع</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="plan-card premium">
+          <div class="plan-header">
+            <div class="plan-icon"><i class="fa-solid fa-crown"></i></div>
+            <div class="plan-name">WE 80</div>
+            <div class="plan-price">275 <small>جنيه / 90 يوم</small></div>
+          </div>
+          <div class="plan-accent"></div>
+          <div class="plan-body">
+            <div class="stats-row">
+              <div class="stat-box"><div class="stat-val">3750</div><div class="stat-label">دقيقة محلي + محافظات</div></div>
+              <div class="stat-box"><div class="stat-val">250</div><div class="stat-label">دقيقة موبايل شبكات أخرى</div></div>
+            </div>
+            <ul class="feature-list">
+              <li><span class="fi fi-red"><i class="fa-solid fa-xmark"></i></span> موبايل WE: لا</li>
+              <li><span class="fi fi-purple"><i class="fa-solid fa-mobile-screen"></i></span> موبايل أي شبكة أخرى: 250 دقيقة</li>
+              <li><span class="fi fi-green"><i class="fa-solid fa-check"></i></span> إظهار الرقم</li>
+              <li><span class="fi fi-green"><i class="fa-solid fa-check"></i></span> خدمة تتبع</li>
+              <li><span class="fi fi-blue"><i class="fa-solid fa-calendar-days"></i></span> صلاحية 90 يوم</li>
+            </ul>
+          </div>
+        </div>
+
+      </div>
+      <div class="note-box"><i class="fa-solid fa-circle-info"></i> الأسعار شاملة الضريبة كما هو موضح في جدول الباقات. مصاريف الاستعلام 50 جنيه.</div>
+    </section>
+
+    <!-- ===== الباقات الإضافية ===== -->
+    <section class="tab-pane" id="extra">
+      <div class="extra-section">
+        <h3><i class="fa-solid fa-mobile-screen"></i> إكسترا موبايل</h3>
+        <div class="extra-grid">
+          <div class="extra-card mobile">
+            <h4><i class="fa-solid fa-mobile-screen"></i> Extra 5 – موبايل WE</h4>
+            <div class="extra-minutes">100 دقيقة</div>
+            <div class="extra-detail">صلاحية 30 يوم</div>
+            <div class="extra-tax">الضريبة 23.12%</div>
+            <div class="extra-price">6.16 جنيه</div>
+            <div class="extra-desc">شامل الضريبة</div>
+          </div>
+          <div class="extra-card mobile">
+            <h4><i class="fa-solid fa-mobile-screen"></i> Extra 15 – موبايل شبكات أخرى</h4>
+            <div class="extra-minutes">125 دقيقة</div>
+            <div class="extra-detail">صلاحية 30 يوم</div>
+            <div class="extra-tax">الضريبة 23.12%</div>
+            <div class="extra-price">18.47 جنيه</div>
+            <div class="extra-desc">شامل الضريبة</div>
+          </div>
+          <div class="extra-card mobile">
+            <h4><i class="fa-solid fa-mobile-screen"></i> Extra 25 – موبايل شبكات أخرى</h4>
+            <div class="extra-minutes">225 دقيقة</div>
+            <div class="extra-detail">صلاحية 30 يوم</div>
+            <div class="extra-tax">الضريبة 23.12%</div>
+            <div class="extra-price">30.78 جنيه</div>
+            <div class="extra-desc">شامل الضريبة</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="extra-section">
+        <h3><i class="fa-solid fa-phone"></i> إكسترا أرضي</h3>
+        <div class="extra-grid">
+          <div class="extra-card">
+            <h4><i class="fa-solid fa-phone"></i> Extra 10</h4>
+            <div class="extra-minutes">250 دقيقة</div>
+            <div class="extra-detail">صلاحية 30 يوم</div>
+            <div class="extra-tax">الضريبة 1.14%</div>
+            <div class="extra-price">11.4 جنيه</div>
+            <div class="extra-desc">شامل الضريبة</div>
+          </div>
+          <div class="extra-card">
+            <h4><i class="fa-solid fa-phone"></i> Extra 20</h4>
+            <div class="extra-minutes">700 دقيقة</div>
+            <div class="extra-detail">صلاحية 30 يوم</div>
+            <div class="extra-tax">الضريبة 1.14%</div>
+            <div class="extra-price">22.8 جنيه</div>
+            <div class="extra-desc">شامل الضريبة</div>
+          </div>
+        </div>
+      </div>
+      <div class="note-box"><i class="fa-solid fa-triangle-exclamation"></i> يرجى العلم أن مدة الباقة الإضافية 30 يومًا فقط، ويتم إضافتها من خلال سيستم BSS.</div>
+    </section>
+
+    <!-- ===== التعاقد والتركيب ===== -->
+    <section class="tab-pane" id="contract">
+      <div class="info-section">
+        <h3><i class="fa-solid fa-screwdriver-wrench"></i> تفاصيل قيمة التعاقد – مصاريف التركيب</h3>
+        <div class="billing-table-wrapper">
+          <table class="billing-table contract-table">
+            <thead><tr><th>البند</th><th>السعر (جنيه)</th></tr></thead>
+            <tbody>
+              <tr><td>مصاريف الطلب</td><td>50</td></tr>
+              <tr><td>مصاريف التركيب</td><td>150</td></tr>
+              <tr><td>إجمالي مصاريف الطلب والتركيب بدون الضريبة</td><td>167.5</td></tr>
+              <tr><td>ضريبة الدمغة</td><td>10.9</td></tr>
+              <tr><td>ضريبة القيمة المضافة</td><td>24.98</td></tr>
+              <tr class="total-row"><td>إجمالي مصاريف التركيب بالضريبة والدمغة</td><td>203</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="note-box"><i class="fa-solid fa-circle-info"></i> مصاريف الاستعلام 50 جنيه.</div>
+      </div>
+
+      <div class="info-section">
+        <h3><i class="fa-solid fa-file-signature"></i> استكمال التعاقد شامل اشتراك 3 شهور مقدمًا</h3>
+        <div class="contract-totals-grid">
+          <div class="contract-total-card">
+            <div class="contract-total-name">WE أرضي 40</div>
+            <div class="contract-total-price">322 L.E</div>
+            <div class="contract-total-desc">شامل اشتراك 3 شهور مقدمًا</div>
+          </div>
+          <div class="contract-total-card">
+            <div class="contract-total-name">WE أرضي 50</div>
+            <div class="contract-total-price">440 L.E</div>
+            <div class="contract-total-desc">شامل اشتراك 3 شهور مقدمًا</div>
+          </div>
+          <div class="contract-total-card">
+            <div class="contract-total-name">WE أرضي 80</div>
+            <div class="contract-total-price">510 L.E</div>
+            <div class="contract-total-desc">شامل اشتراك 3 شهور مقدمًا</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== المحاسبة والقطع ===== -->
+    <section class="tab-pane" id="billing">
+      <div class="info-section">
+        <h3><i class="fa-solid fa-receipt"></i> المحاسبة بعد انتهاء الباقة</h3>
+        <div class="billing-table-wrapper">
+          <table class="billing-table">
+            <thead><tr><th>التفاصيل</th><th>سعر الدقيقة</th><th>رسوم فتح المكالمة</th></tr></thead>
+            <tbody>
+              <tr><td>الدقيقة للأرضي – موبايل WE</td><td>3 قروش</td><td>10 قروش</td></tr>
+              <tr><td>الدقيقة شبكات أخرى موبايل</td><td>14 قرش</td><td>10 قروش</td></tr>
+              <tr><td>أرقام مختصرة</td><td>10 قروش</td><td>10 قروش</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="info-section">
+        <h3><i class="fa-solid fa-plug-circle-xmark"></i> قواعد القطع والرفع عند عدم تجديد الباقة الأساسية</h3>
+        <div class="billing-table-wrapper">
+          <table class="billing-table">
+            <thead><tr><th>الباقة</th><th>شهري</th><th>ربع سنوي</th><th>سنوي</th></tr></thead>
+            <tbody>
+              <tr>
+                <td>استقبال فقط</td>
+                <td>-</td>
+                <td>7 أيام ابتداءً من اليوم التالي لتاريخ التجديد</td>
+                <td>7 أيام ابتداءً من اليوم التالي لتاريخ التجديد</td>
+              </tr>
+              <tr>
+                <td>إيقاف مؤقت</td>
+                <td>يتم إيقاف الخط الأرضي ابتداءً من اليوم التالي لتاريخ التجديد</td>
+                <td>ابتداءً من اليوم الرابع من تاريخ التجديد</td>
+                <td>ابتداءً من اليوم الثامن من تاريخ التجديد</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="management-box">
+        <div class="management-content">
+          <h3><i class="fa-solid fa-hand-holding-dollar"></i> الاشتراك في خدمة سلفني</h3>
+          <div class="management-grid">
+            <div class="mgmt-item"><i class="fa-solid fa-coins"></i><span>سلفني تمنح 40 وحدة مقابل 2 جنيه، صالحة لمدة 30 يوم</span></div>
+            <div class="mgmt-item"><i class="fa-solid fa-calendar-check"></i><span>يمكن استخدام الخدمة مرة واحدة في الشهر</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== الشروط والتفاصيل ===== -->
+    <section class="tab-pane" id="terms">
+      <div class="info-section">
+        <h3><i class="fa-solid fa-list-check"></i> الشروط والتفاصيل</h3>
+        <div class="details-list">
+          <div class="detail-item"><div class="detail-icon"><i class="fa-solid fa-rotate"></i></div><div class="detail-content"><h4>التجديد</h4><p>تجديد باقات WE أرضي كل 90 يوم. سيتم تجديد الباقة تلقائيًا في ميعادها في حالة وجود رصيد كافٍ في حساب العميل.</p></div></div>
+          <div class="detail-item"><div class="detail-icon"><i class="fa-solid fa-percent"></i></div><div class="detail-content"><h4>الضرائب</h4><p>سعر اشتراك الباقات الأساسية غير شامل ضريبة القيمة المضافة ولا ضريبة الجدول للباقات التي تشمل دقائق موبايل.</p></div></div>
+          <div class="detail-item"><div class="detail-icon"><i class="fa-solid fa-clock-rotate-left"></i></div><div class="detail-content"><h4>الدقائق غير المستخدمة</h4><p>لن يتم ترحيل الدقائق غير المستخدمة داخل الباقة إلى الشهر التالي.</p></div></div>
+          <div class="detail-item"><div class="detail-icon"><i class="fa-solid fa-battery-quarter"></i></div><div class="detail-content"><h4>عدم كفاية الرصيد</h4><p>في حالة عدم وجود رصيد كافٍ لتغطية قيمة اشتراك الباقة الأساسية، يتحول الخط الأرضي إلى استقبال فقط لمدة ثلاثة أيام، وفي حالة الاستمرار في عدم الشحن لتجديد الباقة الأساسية يتم رفع الخط مؤقتًا من الخدمة لمدة 210 يوم.</p></div></div>
+          <div class="detail-item"><div class="detail-icon"><i class="fa-solid fa-hourglass-half"></i></div><div class="detail-content"><h4>مدة التعاقد</h4><p>المدة المتاحة للتعاقد هي 14 يومًا بدءًا من وقت الحصول على الإمكانية الفنية، وفي حالة عدم استكمال إجراءات التعاقد في المدة المحددة يتم إلغاء هذه الإمكانية.</p></div></div>
+          <div class="detail-item"><div class="detail-icon"><i class="fa-solid fa-repeat"></i></div><div class="detail-content"><h4>تجديد طلب الخط</h4><p>يمكن للعميل تجديد طلب الخط للحصول على الإمكانية الفنية مرتين بدون أي مقابل خلال عام من تاريخ تقديم الطلب، وبعد انتهاء هذه المدة يتم إلغاء الطلب.</p></div></div>
+          <div class="detail-item"><div class="detail-icon"><i class="fa-solid fa-calendar-xmark"></i></div><div class="detail-content"><h4>عدم وجود إمكانية فنية</h4><p>يتم الاحتفاظ بطلب العميل لمدة سنتين من تاريخ تقديم الطلب بنفس رقم المسلسل، ويتم تعديله بدون أي مقابل.</p></div></div>
+          <div class="detail-item"><div class="detail-icon"><i class="fa-solid fa-money-bill-transfer"></i></div><div class="detail-content"><h4>استرداد مصاريف التعاقد</h4><p>يحق للعميل استرداد مصاريف التعاقد شاملة الضرائب باستثناء رسوم الطلب بالضرائب، والاحتفاظ بطلب الخط لمدة عامين من تاريخ الطلب.</p></div></div>
+          <div class="detail-item"><div class="detail-icon"><i class="fa-solid fa-ban"></i></div><div class="detail-content"><h4>Blacklist</h4><p>يحق للعميل (Blacklist) طلب الحصول على خط أرضي جديد، ولكن لن يتم استكمال إجراءات التعاقد إلا بعد تسوية وضع العميل وسداد أي مديونيات.</p></div></div>
+          <div class="detail-item"><div class="detail-icon"><i class="fa-solid fa-phone-flip"></i></div><div class="detail-content"><h4>التعاقد على خطين</h4><p>يحق للعميل التعاقد على خط واحد أو الاثنين معًا، على أن يتم إخطاره بأنه في حالة عدم الحصول على الخط الثاني أثناء التعاقد لن يتمكن من التعاقد عليه فيما بعد.</p></div></div>
+          <div class="detail-item"><div class="detail-icon"><i class="fa-solid fa-screwdriver-wrench"></i></div><div class="detail-content"><h4>عدم تركيب الخط</h4><p>في حالة عدم تركيب الخط الأرضي بعد التعاقد يتم إلغاء أمر شغل التعاقد أوتوماتيكيًا خلال 60 يومًا من تاريخ التعاقد، ويمكن تجديد الإمكانية بناءً على طلب العميل مرة أخرى.</p></div></div>
+          <div class="detail-item"><div class="detail-icon"><i class="fa-solid fa-file-circle-xmark"></i></div><div class="detail-content"><h4>إلغاء التعاقد</h4><p>يحق للعميل استرداد مصاريف التعاقد في حالة طلب إلغاء التعاقد وعدم استكمال تركيب الخط الأرضي وما يرتبط بها من ضرائب، ولا يحق له استرداد مصاريف الطلب وما يرتبط بها من ضرائب. وفي حالة رغبة العميل في التعاقد مرة أخرى يتم تقديم طلب جديد برسوم جديدة.</p></div></div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer><p>© <span>WE</span> – جميع الحقوق محفوظة</p></footer>
+</div>
+
+<script>
+  document.querySelectorAll('.tab-btn').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      document.querySelectorAll('.tab-btn').forEach(function (b) { b.classList.remove('active'); });
+      document.querySelectorAll('.tab-pane').forEach(function (p) { p.classList.remove('active'); });
+      btn.classList.add('active');
+      document.getElementById(btn.dataset.tab).classList.add('active');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  });
+</script>
+<script src="js/we-ardy.js"></script>
+</body>
 </html>
