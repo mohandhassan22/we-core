@@ -6,7 +6,9 @@ body{font-family:'Cairo',sans-serif;background:#f0ecf8;min-height:100vh;directio
 .header::before{content:'';position:absolute;top:-60px;right:-60px;width:200px;height:200px;border-radius:50%;background:rgba(255,255,255,0.07);}
 .header::after{content:'';position:absolute;bottom:-80px;left:-40px;width:250px;height:250px;border-radius:50%;background:rgba(255,255,255,0.05);}
 .header-inner{max-width:960px;margin:0 auto;display:flex;align-items:center;gap:16px;position:relative;z-index:1;}
-.header-logo{width:60px;height:60px;border-radius:50%;border:3px solid rgba(255,255,255,0.35);box-shadow:0 6px 20px rgba(0,0,0,0.25);object-fit:cover;}
+.logo-wrap{position:relative;flex:0 0 auto;width:64px;height:64px;border-radius:50%;overflow:hidden;background:#fff;border:3px solid rgba(255,255,255,0.35);box-shadow:0 6px 20px rgba(0,0,0,0.25);}
+.logo-wrap img{position:absolute;width:240%;max-width:none;left:50%;top:44%;transform:translate(-50%,-50%);}
+.logo-wrap.small{width:44px;height:44px;border:2px solid #ede3fc;box-shadow:none;margin:0 auto 6px;display:block;}
 .header-text .page-title{font-size:22px;font-weight:900;color:#fff;letter-spacing:0.5px;}
 .header-text .page-sub{font-size:12px;color:rgba(255,255,255,0.7);margin-top:3px;}
 .back-btn{margin-right:auto;background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.3);color:#fff;border-radius:10px;padding:7px 16px;font-family:'Cairo',sans-serif;font-size:13px;font-weight:700;cursor:pointer;text-decoration:none;display:flex;align-items:center;gap:7px;transition:background 0.2s;}
@@ -103,7 +105,7 @@ body{font-family:'Cairo',sans-serif;background:#f0ecf8;min-height:100vh;directio
 .pdf-link-arrow{color:#7b3fe4;font-size:13px;flex-shrink:0;}
 
 footer{text-align:center;padding:24px 20px;color:#999;font-size:13px;border-top:1px solid #e8e2f5;background:#fff;}
-.footer-logo{width:38px;border-radius:50%;margin-bottom:6px;opacity:0.8;}
+
 footer span{color:#7b3fe4;font-weight:700;}
 
 @media(max-width:600px){
@@ -120,3 +122,26 @@ footer span{color:#7b3fe4;font-weight:700;}
 .faq-item.open .faq-answer{max-height:600px;padding:14px 18px 16px;}
 .faq-answer p{color:#555;font-size:13.5px;line-height:1.85;margin-bottom:6px;}
 .faq-answer p:last-child{margin-bottom:0;}
+
+
+/* ===== FIXES ===== */
+.table-wrap{width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch;border-radius:12px;margin-top:14px;border:1px solid #f0ecf8;}
+.table-wrap .costs-table{margin-top:0;min-width:520px;border-radius:0;}
+.costs-table thead th,.costs-table tbody td{vertical-align:middle;}
+.costs-table tbody td:first-child{min-width:130px;}
+.header-text{min-width:0;}
+.back-btn{white-space:nowrap;text-decoration:none;}
+
+@media(max-width:600px){
+  .container{margin:18px auto;padding:0 12px 40px;}
+  .section-card{padding:20px 16px 18px;border-radius:16px;}
+  .section-title{font-size:17px;}
+  .header{padding:20px 14px 18px;}
+  .header-inner{gap:12px;}
+  .header-text .page-title{font-size:18px;}
+  .header-text .page-sub{font-size:11px;}
+  .logo-wrap{width:52px;height:52px;}
+  .back-btn{padding:6px 12px;font-size:12px;}
+  .costs-table thead th,.costs-table tbody td{padding:10px 12px;font-size:12.5px;}
+  .table-wrap::after{content:'';}
+}

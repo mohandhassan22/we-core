@@ -1,404 +1,303 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ar" dir="rtl">
 <head>
-<script src="../../assets/js/auth.js?v=12.0.1"></script>
-
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>WE الأرضي – باقات مسبق الدفع</title>
-
-<link rel="shortcut icon" href="we-core.png">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
-
-<link rel="stylesheet" href="css/we-ardy.css">
-<script src="../../assets/js/active-users-widget.js"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WE الأرضي – الباقات الأساسية</title>
+  <link rel="icon" href="data:," />
+  <link rel="stylesheet" href="css/we-ardy.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
+  <script src="../../assets/js/auth.js?v=12.0.1"></script>
+  <script src="../../assets/js/active-users-widget.js"></script>
+  <style>
+    .tab-pane{display:none}.tab-pane.active{display:block}
+    .tabs-nav-inner{width:max-content;min-width:100%}
+    .tab-btn{white-space:nowrap}
+    .billing-table-wrapper{overflow-x:auto;margin-bottom:20px}
+    .info-section,.extra-section,.services-section{margin-bottom:28px}
+  </style>
 </head>
-
 <body>
+<div class="we-page">
 
-<!-- HEADER -->
-<div class="header">
-<a href="javascript:history.back()" class="back-btn" style="position: absolute; left: 20px; top: 50%; transform: translateY(-50%); color: white; text-decoration: none; font-size: 20px; z-index: 1000;"><i class="fas fa-arrow-left"></i></a>
+  <header class="header">
+    <div class="logo"><i class="fa-solid fa-phone-volume"></i></div>
+    <h1 class="main-title">WE الأرضي</h1>
+    <div class="prepaid-badge">الباقات الأساسية</div>
+    <p class="sub-title">WE 40 · WE 50 · WE 80</p>
+  </header>
 
-    <a href="../index.html" class="back-btn"><i class="fa-solid fa-arrow-right"></i> رجوع</a>
-    <img src="we-core.png" class="logo" alt="WE-Core Logo">
-    <div class="main-title">WE الأرضي</div>
-    <div class="prepaid-badge">📞 مسبق الدفع</div>
-    <div class="sub-title">Powered By Mohand Hassan – From Abassia Store</div>
-</div>
-
-<div class="container">
-
-    <!-- INTRO -->
-    <div class="intro-box">
-        <div class="intro-icon"><i class="fa-solid fa-phone"></i></div>
-        <p>
-            يقدم هذا الدليل تفاصيل شاملة ومبسطة عن <strong>باقات WE الأرضي مسبق الدفع</strong> مع أنظمة سداد مرنة (شهري، ربع سنوي، أو سنوي)، والباقات الإضافية (إكسترا)، والخدمات المضافة لتسهيل اختيار الأنسب لك.
-        </p>
+  <nav class="tabs-nav">
+    <div class="tabs-nav-inner">
+      <button class="tab-btn active" data-tab="plans"><i class="fa-solid fa-box"></i> الباقات</button>
+      <button class="tab-btn" data-tab="extra"><i class="fa-solid fa-plus-circle"></i> الباقات الإضافية</button>
+      <button class="tab-btn" data-tab="contract"><i class="fa-solid fa-file-signature"></i> التعاقد والتركيب</button>
+      <button class="tab-btn" data-tab="billing"><i class="fa-solid fa-receipt"></i> المحاسبة والقطع</button>
+      <button class="tab-btn" data-tab="terms"><i class="fa-solid fa-list-check"></i> الشروط والتفاصيل</button>
     </div>
+  </nav>
 
-    <!-- MAIN PACKAGES -->
-    <div class="section-title"><i class="fa-solid fa-layer-group" style="color:var(--purple-main)"></i> باقات WE أرضي الأساسية</div>
+  <main class="container">
 
-    <div class="plans-grid">
+    <!-- ===== الباقات ===== -->
+    <section class="tab-pane active" id="plans">
+      <h2 class="section-title">الباقات الأساسية</h2>
+      <div class="plans-grid">
 
-        <!-- PLAN 40 -->
         <div class="plan-card basic">
-            <div class="plan-header">
-                <div class="plan-icon"><i class="fa-solid fa-phone-volume"></i></div>
-                <div class="plan-name">أرضي WE 40</div>
-                <div class="plan-price">40<small>ج.م/شهر</small></div>
+          <div class="plan-header">
+            <div class="plan-icon"><i class="fa-solid fa-phone"></i></div>
+            <div class="plan-name">WE 40</div>
+            <div class="plan-price">140 <small>جنيه / 90 يوم</small></div>
+          </div>
+          <div class="plan-accent"></div>
+          <div class="plan-body">
+            <div class="stats-row">
+              <div class="stat-box"><div class="stat-val">600</div><div class="stat-label">دقيقة محلي + محافظات</div></div>
+              <div class="stat-box"><div class="stat-val">90</div><div class="stat-label">يوم صلاحية</div></div>
             </div>
-            <div class="plan-accent"></div>
-            <div class="plan-body">
-                <div class="stats-row">
-                    <div class="stat-box">
-                        <div class="stat-val">600 دقيقة</div>
-                        <div class="stat-label">محلي ومحافظات شهرياً</div>
-                    </div>
-                </div>
-
-                <ul class="feature-list">
-                    <li>
-                        <div class="fi fi-purple"><i class="fa-solid fa-check"></i></div>
-                        السعر شامل الضريبة: <strong>45.6 ج.م</strong>
-                    </li>
-                    <li>
-                        <div class="fi fi-purple"><i class="fa-solid fa-location-dot"></i></div>
-                        مكالمات محلية ومحافظات
-                    </li>
-                    <li>
-                        <div class="fi fi-purple"><i class="fa-solid fa-plus"></i></div>
-                        خاصية التتبع متاحة
-                    </li>
-                     <li>
-                        <div class="fi fi-purple"><i class="fa-solid fa-plus"></i></div>
-                        خاصية أظهار الرقم
-                    </li>
-                </ul>
-
-                <div class="payment-options">
-                    <div class="payment-label"><i class="fa-solid fa-calendar"></i> أنظمة السداد</div>
-                    <div class="payment-chips">
-                        <span class="payment-chip">شهري</span>
-                        <span class="payment-chip">ربع سنوي</span>
-                        <span class="payment-chip">سنوي</span>
-                    </div>
-                </div>
-            </div>
+            <ul class="feature-list">
+              <li><span class="fi fi-red"><i class="fa-solid fa-xmark"></i></span> موبايل WE: لا</li>
+              <li><span class="fi fi-red"><i class="fa-solid fa-xmark"></i></span> موبايل أي شبكة أخرى: لا</li>
+              <li><span class="fi fi-green"><i class="fa-solid fa-check"></i></span> إظهار الرقم</li>
+              <li><span class="fi fi-green"><i class="fa-solid fa-check"></i></span> خدمة تتبع</li>
+            </ul>
+          </div>
         </div>
 
-        <!-- PLAN 50 -->
         <div class="plan-card standard">
-            <div class="plan-header">
-                <div class="plan-icon"><i class="fa-solid fa-phone"></i></div>
-                <div class="plan-name">أرضي WE 50</div>
-                <div class="plan-price">50 <small>ج.م/شهر</small></div>
+          <div class="plan-header">
+            <div class="plan-icon"><i class="fa-solid fa-phone-volume"></i></div>
+            <div class="plan-name">WE 50</div>
+            <div class="plan-price">172 <small>جنيه / 90 يوم</small></div>
+          </div>
+          <div class="plan-accent"></div>
+          <div class="plan-body">
+            <div class="stats-row">
+              <div class="stat-box"><div class="stat-val">3750</div><div class="stat-label">دقيقة محلي + محافظات</div></div>
+              <div class="stat-box"><div class="stat-val">90</div><div class="stat-label">يوم صلاحية</div></div>
             </div>
-            <div class="plan-accent"></div>
-            <div class="plan-body">
-                <div class="stats-row">
-                    <div class="stat-box">
-                        <div class="stat-val">7503 دقيقة</div>
-                        <div class="stat-label">محلي / محافظات / موبايل WE شهرياً</div>
-                    </div>
-                </div>
-
-                <ul class="feature-list">
-                    <li>
-                        <div class="fi fi-blue"><i class="fa-solid fa-check"></i></div>
-                        السعر شامل الضريبة: <strong>57 ج.م</strong>
-                    </li>
-                    <li>
-                        <div class="fi fi-blue"><i class="fa-solid fa-mobile"></i></div>
-                        يشمل مكالمات موبايل WE
-                    </li>
-                    <li>
-                        <div class="fi fi-blue"><i class="fa-solid fa-plus"></i></div>
-                        خاصية التتبع متاحة
-                    </li>
-                </ul>
-
-                <div class="payment-options">
-                    <div class="payment-label"><i class="fa-solid fa-calendar"></i> أنظمة السداد</div>
-                    <div class="payment-chips">
-                        <span class="payment-chip">شهري</span>
-                        <span class="payment-chip">ربع سنوي</span>
-                        <span class="payment-chip">سنوي</span>
-                    </div>
-                </div>
-            </div>
+            <ul class="feature-list">
+              <li><span class="fi fi-red"><i class="fa-solid fa-xmark"></i></span> موبايل WE: لا</li>
+              <li><span class="fi fi-red"><i class="fa-solid fa-xmark"></i></span> موبايل أي شبكة أخرى: لا</li>
+              <li><span class="fi fi-green"><i class="fa-solid fa-check"></i></span> إظهار الرقم</li>
+              <li><span class="fi fi-green"><i class="fa-solid fa-check"></i></span> خدمة تتبع</li>
+            </ul>
+          </div>
         </div>
 
-        <!-- PLAN 80 -->
         <div class="plan-card premium">
-            <div class="plan-header">
-                <div class="plan-icon"><i class="fa-solid fa-crown"></i></div>
-                <div class="plan-name">أرضي WE 80</div>
-                <div class="plan-price">80<small>ج.م/شهر</small></div>
+          <div class="plan-header">
+            <div class="plan-icon"><i class="fa-solid fa-crown"></i></div>
+            <div class="plan-name">WE 80</div>
+            <div class="plan-price">275 <small>جنيه / 90 يوم</small></div>
+          </div>
+          <div class="plan-accent"></div>
+          <div class="plan-body">
+            <div class="stats-row">
+              <div class="stat-box"><div class="stat-val">3750</div><div class="stat-label">دقيقة محلي + محافظات</div></div>
+              <div class="stat-box"><div class="stat-val">250</div><div class="stat-label">دقيقة موبايل شبكات أخرى</div></div>
             </div>
-            <div class="plan-accent"></div>
-            <div class="plan-body">
-                <div class="stats-row">
-                    <div class="stat-box">
-                        <div class="stat-val">7503 + 250 دقيقة</div>
-                        <div class="stat-label">محلي/محافظات/WE + جميع الشبكات</div>
-                    </div>
-                </div>
-
-                <ul class="feature-list">
-                    <li>
-                        <div class="fi fi-pink"><i class="fa-solid fa-check"></i></div>
-                        السعر شامل الضريبة: <strong>91.2 ج.م</strong>
-                    </li>
-                    <li>
-                        <div class="fi fi-pink"><i class="fa-solid fa-mobile-screen"></i></div>
-                        250 دقيقة لجميع الشبكات الأخرى
-                    </li>
-                    <li>
-                        <div class="fi fi-pink"><i class="fa-solid fa-star"></i></div>
-                        الباقة الأشمل
-                    </li>
-                    <li>
-                        <div class="fi fi-pink"><i class="fa-solid fa-plus"></i></div>
-                        خاصية التتبع متاحة
-                    </li>
-                </ul>
-
-                <div class="payment-options">
-                    <div class="payment-label"><i class="fa-solid fa-calendar"></i> أنظمة السداد</div>
-                    <div class="payment-chips">
-                        <span class="payment-chip">شهري</span>
-                        <span class="payment-chip">ربع سنوي</span>
-                        <span class="payment-chip">سنوي</span>
-                    </div>
-                </div>
-            </div>
+            <ul class="feature-list">
+              <li><span class="fi fi-red"><i class="fa-solid fa-xmark"></i></span> موبايل WE: لا</li>
+              <li><span class="fi fi-purple"><i class="fa-solid fa-mobile-screen"></i></span> موبايل أي شبكة أخرى: 250 دقيقة</li>
+              <li><span class="fi fi-green"><i class="fa-solid fa-check"></i></span> إظهار الرقم</li>
+              <li><span class="fi fi-green"><i class="fa-solid fa-check"></i></span> خدمة تتبع</li>
+              <li><span class="fi fi-blue"><i class="fa-solid fa-calendar-days"></i></span> صلاحية 90 يوم</li>
+            </ul>
+          </div>
         </div>
 
-    </div>
+      </div>
+      <div class="note-box"><i class="fa-solid fa-circle-info"></i> الأسعار شاملة الضريبة كما هو موضح في جدول الباقات. مصاريف الاستعلام 50 جنيه.</div>
+    </section>
 
-    <!-- EXTRA PACKAGES - LANDLINE -->
-    <div class="extra-section">
-        <h3><i class="fa-solid fa-plus-circle"></i> باقات إكسترا WE الإضافية</h3>
-        <p class="extra-note">في حال نفاد دقائق الباقة الأساسية، يمكنك الاشتراك في باقات إضافية صالحة لمدة 30 يوماً.</p>
-        
-        <h4 style="font-size:15px;font-weight:800;color:var(--text-dark);margin-bottom:14px;margin-top:20px;">
-            <i class="fa-solid fa-phone" style="color:var(--purple-main);margin-left:6px;"></i>
-            باقات إكسترا للأرضي والمحافظات
-        </h4>
+    <!-- ===== الباقات الإضافية ===== -->
+    <section class="tab-pane" id="extra">
+      <div class="extra-section">
+        <h3><i class="fa-solid fa-mobile-screen"></i> إكسترا موبايل</h3>
         <div class="extra-grid">
-            <div class="extra-card">
-                <h4><i class="fa-solid fa-box"></i> إكسترا 10</h4>
-                <div class="extra-minutes">250 دقيقة</div>
-                <div class="extra-price">11.4 ج.م شامل الضريبة</div>
-                <div class="extra-desc">محلي ومحافظات</div>
-            </div>
-
-            <div class="extra-card">
-                <h4><i class="fa-solid fa-box"></i> إكسترا 20</h4>
-                <div class="extra-minutes">700 دقيقة</div>
-                <div class="extra-price">22.8 ج.م شامل الضريبة</div>
-                <div class="extra-desc">محلي ومحافظات</div>
-            </div>
+          <div class="extra-card mobile">
+            <h4><i class="fa-solid fa-mobile-screen"></i> Extra 5 – موبايل WE</h4>
+            <div class="extra-minutes">100 دقيقة</div>
+            <div class="extra-detail">صلاحية 30 يوم</div>
+            <div class="extra-tax">الضريبة 23.12%</div>
+            <div class="extra-price">6.16 جنيه</div>
+            <div class="extra-desc">شامل الضريبة</div>
+          </div>
+          <div class="extra-card mobile">
+            <h4><i class="fa-solid fa-mobile-screen"></i> Extra 15 – موبايل شبكات أخرى</h4>
+            <div class="extra-minutes">125 دقيقة</div>
+            <div class="extra-detail">صلاحية 30 يوم</div>
+            <div class="extra-tax">الضريبة 23.12%</div>
+            <div class="extra-price">18.47 جنيه</div>
+            <div class="extra-desc">شامل الضريبة</div>
+          </div>
+          <div class="extra-card mobile">
+            <h4><i class="fa-solid fa-mobile-screen"></i> Extra 25 – موبايل شبكات أخرى</h4>
+            <div class="extra-minutes">225 دقيقة</div>
+            <div class="extra-detail">صلاحية 30 يوم</div>
+            <div class="extra-tax">الضريبة 23.12%</div>
+            <div class="extra-price">30.78 جنيه</div>
+            <div class="extra-desc">شامل الضريبة</div>
+          </div>
         </div>
+      </div>
 
-        <h4 style="font-size:15px;font-weight:800;color:var(--text-dark);margin-bottom:14px;margin-top:24px;">
-            <i class="fa-solid fa-mobile-screen" style="color:var(--blue);margin-left:6px;"></i>
-            باقات إكسترا للموبايل
-        </h4>
+      <div class="extra-section">
+        <h3><i class="fa-solid fa-phone"></i> إكسترا أرضي</h3>
         <div class="extra-grid">
-            <div class="extra-card">
-                <h4><i class="fa-solid fa-mobile"></i> إكسترا موبايل 5</h4>
-                <div class="extra-minutes">100 دقيقة</div>
-                <div class="extra-price">6.16 ج.م شامل الضريبة</div>
-                <div class="extra-desc">لموبايل WE فقط</div>
-            </div>
-
-            <div class="extra-card">
-                <h4><i class="fa-solid fa-mobile"></i> إكسترا موبايل 15</h4>
-                <div class="extra-minutes">125 دقيقة</div>
-                <div class="extra-price">18.47 ج.م شامل الضريبة</div>
-                <div class="extra-desc">لجميع الشبكات</div>
-            </div>
-
-            <div class="extra-card">
-                <h4><i class="fa-solid fa-mobile"></i> إكسترا موبايل 25</h4>
-                <div class="extra-minutes">225 دقيقة</div>
-                <div class="extra-price">30.78 ج.م شامل الضريبة</div>
-                <div class="extra-desc">لجميع الشبكات</div>
-            </div>
+          <div class="extra-card">
+            <h4><i class="fa-solid fa-phone"></i> Extra 10</h4>
+            <div class="extra-minutes">250 دقيقة</div>
+            <div class="extra-detail">صلاحية 30 يوم</div>
+            <div class="extra-tax">الضريبة 1.14%</div>
+            <div class="extra-price">11.4 جنيه</div>
+            <div class="extra-desc">شامل الضريبة</div>
+          </div>
+          <div class="extra-card">
+            <h4><i class="fa-solid fa-phone"></i> Extra 20</h4>
+            <div class="extra-minutes">700 دقيقة</div>
+            <div class="extra-detail">صلاحية 30 يوم</div>
+            <div class="extra-tax">الضريبة 1.14%</div>
+            <div class="extra-price">22.8 جنيه</div>
+            <div class="extra-desc">شامل الضريبة</div>
+          </div>
         </div>
-    </div>
+      </div>
+      <div class="note-box"><i class="fa-solid fa-triangle-exclamation"></i> يرجى العلم أن مدة الباقة الإضافية 30 يومًا فقط، ويتم إضافتها من خلال سيستم BSS.</div>
+    </section>
 
-    <!-- SERVICES -->
-    <div class="services-section">
-        <h3><i class="fa-solid fa-cogs"></i> الخدمات المضافة والمميزة</h3>
-        
-        <h4 style="font-size:14px;font-weight:800;color:var(--text-dark);margin-bottom:12px;">خدمات التحكم والاتصال:</h4>
-        <div class="services-grid" style="margin-bottom:24px;">
-            <div class="service-card">
-                <div class="scard-icon"><i class="fa-solid fa-eye"></i></div>
-                <div class="scard-text">
-                    <h4>إظهار رقم الطالب</h4>
-                    <p>معرفة رقم المتصل</p>
-                </div>
-            </div>
-
-            <div class="service-card">
-                <div class="scard-icon"><i class="fa-solid fa-route"></i></div>
-                <div class="scard-text">
-                    <h4>خاصية التتبع</h4>
-                    <p>تحويل المكالمات الواردة للأرضي إلى موبايل أو رقم آخر</p>
-                </div>
-            </div>
-
-            <div class="service-card">
-                <div class="scard-icon"><i class="fa-solid fa-clock"></i></div>
-                <div class="scard-text">
-                    <h4>انتظار المكالمات</h4>
-                    <p>استقبال مكالمة أخرى أثناء التحدث</p>
-                </div>
-            </div>
-
-            <div class="service-card">
-                <div class="scard-icon"><i class="fa-solid fa-users"></i></div>
-                <div class="scard-text">
-                    <h4>مكالمة من عدة أطراف</h4>
-                    <p>إجراء مكالمة جماعية مع عدة أشخاص</p>
-                </div>
-            </div>
-
-            <div class="service-card">
-                <div class="scard-icon"><i class="fa-solid fa-ban"></i></div>
-                <div class="scard-text">
-                    <h4>عدم الإزعاج</h4>
-                    <p>منع استقبال المكالمات الواردة</p>
-                </div>
-            </div>
-
-            <div class="service-card">
-                <div class="scard-icon"><i class="fa-solid fa-shield"></i></div>
-                <div class="scard-text">
-                    <h4>المانع الكودي</h4>
-                    <p>التحكم في أنواع المكالمات الصادرة (مثل الدولي أو الموبايل)</p>
-                </div>
-            </div>
+    <!-- ===== التعاقد والتركيب ===== -->
+    <section class="tab-pane" id="contract">
+      <div class="info-section">
+        <h3><i class="fa-solid fa-screwdriver-wrench"></i> تفاصيل قيمة التعاقد – مصاريف التركيب</h3>
+        <div class="billing-table-wrapper">
+          <table class="billing-table contract-table">
+            <thead><tr><th>البند</th><th>السعر (جنيه)</th></tr></thead>
+            <tbody>
+              <tr><td>مصاريف الطلب</td><td>50</td></tr>
+              <tr><td>مصاريف التركيب</td><td>150</td></tr>
+              <tr><td>إجمالي مصاريف الطلب والتركيب بدون الضريبة</td><td>167.5</td></tr>
+              <tr><td>ضريبة الدمغة</td><td>10.9</td></tr>
+              <tr><td>ضريبة القيمة المضافة</td><td>24.98</td></tr>
+              <tr class="total-row"><td>إجمالي مصاريف التركيب بالضريبة والدمغة</td><td>203</td></tr>
+            </tbody>
+          </table>
         </div>
+        <div class="note-box"><i class="fa-solid fa-circle-info"></i> مصاريف الاستعلام 50 جنيه.</div>
+      </div>
 
-        <h4 style="font-size:14px;font-weight:800;color:var(--text-dark);margin-bottom:12px;">خدمات الطوارئ والراحة:</h4>
-        <div class="services-grid">
-            <div class="service-card">
-                <div class="scard-icon"><i class="fa-solid fa-fire"></i></div>
-                <div class="scard-text">
-                    <h4>الخط الساخن</h4>
-                    <p>تحديد رقم للاتصال به مباشرة عند رفع السماعة في الطوارئ</p>
-                </div>
-            </div>
-
-            <div class="service-card">
-                <div class="scard-icon"><i class="fa-solid fa-bolt"></i></div>
-                <div class="scard-text">
-                    <h4>اختصار الأرقام</h4>
-                    <p>الوصول السريع للخدمات العامة</p>
-                </div>
-            </div>
-
-            <div class="service-card">
-                <div class="scard-icon"><i class="fa-solid fa-hand-holding-dollar"></i></div>
-                <div class="scard-text">
-                    <h4>خدمة سلفني</h4>
-                    <p>استلاف 40 وحدة مقابل 2 جنيه صالحة لمدة 30 يوماً (مرة واحدة في الشهر)</p>
-                </div>
-            </div>
-
-            <div class="service-card">
-                <div class="scard-icon"><i class="fa-solid fa-exchange"></i></div>
-                <div class="scard-text">
-                    <h4>تحويل الرصيد</h4>
-                    <p>إمكانية تحويل رصيد لرقم آخر</p>
-                </div>
-            </div>
+      <div class="info-section">
+        <h3><i class="fa-solid fa-file-signature"></i> استكمال التعاقد شامل اشتراك 3 شهور مقدمًا</h3>
+        <div class="contract-totals-grid">
+          <div class="contract-total-card">
+            <div class="contract-total-name">WE أرضي 40</div>
+            <div class="contract-total-price">322 L.E</div>
+            <div class="contract-total-desc">شامل اشتراك 3 شهور مقدمًا</div>
+          </div>
+          <div class="contract-total-card">
+            <div class="contract-total-name">WE أرضي 50</div>
+            <div class="contract-total-price">440 L.E</div>
+            <div class="contract-total-desc">شامل اشتراك 3 شهور مقدمًا</div>
+          </div>
+          <div class="contract-total-card">
+            <div class="contract-total-name">WE أرضي 80</div>
+            <div class="contract-total-price">510 L.E</div>
+            <div class="contract-total-desc">شامل اشتراك 3 شهور مقدمًا</div>
+          </div>
         </div>
-    </div>
+      </div>
+    </section>
 
-    <!-- CONSUMPTION INFO -->
-    <div class="info-section">
-        <h3><i class="fa-solid fa-info-circle"></i> معلومات هامة عن الاستهلاك والقطع</h3>
-        <ul class="info-list">
-            <li>
-                <div class="info-icon"><i class="fa-solid fa-exclamation"></i></div>
-                <div>
-                    <strong>خارج الباقة:</strong> في حال نفاد الدقائق، تتم المحاسبة بـ 3 قروش/دقيقة للمحلي و 14 قرش/دقيقة للشبكات الأخرى (يضاف 10 قروش رسوم فتح مكالمة).
-                </div>
-            </li>
-            <li>
-                <div class="info-icon"><i class="fa-solid fa-globe"></i></div>
-                <div>
-                    <strong>المكالمات الدولية:</strong> تبدأ الأسعار من 10 ج.م للدقيقة للمناطق العادية وتصل لـ 45 ج.م للمناطق الصعبة.
-                </div>
-            </li>
-            <li>
-                <div class="info-icon"><i class="fa-solid fa-calendar-day"></i></div>
-                <div>
-                    <strong>النظام الشهري:</strong> يتم إيقاف الخط في اليوم التالي لتاريخ التجديد إذا لم يتم السداد.
-                </div>
-            </li>
-            <li>
-                <div class="info-icon"><i class="fa-solid fa-calendar-week"></i></div>
-                <div>
-                    <strong>النظام الربع سنوي:</strong> استقبال فقط لمدة 3 أيام ثم إيقاف مؤقت.
-                </div>
-            </li>
-            <li>
-                <div class="info-icon"><i class="fa-solid fa-calendar"></i></div>
-                <div>
-                    <strong>النظام السنوي:</strong> استقبال فقط لمدة 7 أيام ثم إيقاف مؤقت.
-                </div>
-            </li>
-        </ul>
-    </div>
+    <!-- ===== المحاسبة والقطع ===== -->
+    <section class="tab-pane" id="billing">
+      <div class="info-section">
+        <h3><i class="fa-solid fa-receipt"></i> المحاسبة بعد انتهاء الباقة</h3>
+        <div class="billing-table-wrapper">
+          <table class="billing-table">
+            <thead><tr><th>التفاصيل</th><th>سعر الدقيقة</th><th>رسوم فتح المكالمة</th></tr></thead>
+            <tbody>
+              <tr><td>الدقيقة للأرضي – موبايل WE</td><td>3 قروش</td><td>10 قروش</td></tr>
+              <tr><td>الدقيقة شبكات أخرى موبايل</td><td>14 قرش</td><td>10 قروش</td></tr>
+              <tr><td>أرقام مختصرة</td><td>10 قروش</td><td>10 قروش</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
 
-    <!-- MANAGEMENT -->
-    <div class="management-box">
+      <div class="info-section">
+        <h3><i class="fa-solid fa-plug-circle-xmark"></i> قواعد القطع والرفع عند عدم تجديد الباقة الأساسية</h3>
+        <div class="billing-table-wrapper">
+          <table class="billing-table">
+            <thead><tr><th>الباقة</th><th>شهري</th><th>ربع سنوي</th><th>سنوي</th></tr></thead>
+            <tbody>
+              <tr>
+                <td>استقبال فقط</td>
+                <td>-</td>
+                <td>7 أيام ابتداءً من اليوم التالي لتاريخ التجديد</td>
+                <td>7 أيام ابتداءً من اليوم التالي لتاريخ التجديد</td>
+              </tr>
+              <tr>
+                <td>إيقاف مؤقت</td>
+                <td>يتم إيقاف الخط الأرضي ابتداءً من اليوم التالي لتاريخ التجديد</td>
+                <td>ابتداءً من اليوم الرابع من تاريخ التجديد</td>
+                <td>ابتداءً من اليوم الثامن من تاريخ التجديد</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="management-box">
         <div class="management-content">
-            <h3><i class="fa-solid fa-mobile-screen"></i> طرق الاشتراك والإدارة</h3>
-            <div class="management-grid">
-                <div class="mgmt-item">
-                    <i class="fa-solid fa-mobile"></i>
-                    <span>تطبيق My WE</span>
-                </div>
-                <div class="mgmt-item">
-                    <i class="fa-solid fa-globe"></i>
-                    <span>my.te.eg</span>
-                </div>
-                <div class="mgmt-item">
-                    <i class="fa-solid fa-headset"></i>
-                    <span>خدمة العملاء 111</span>
-                </div>
-                <div class="mgmt-item">
-                    <i class="fa-solid fa-building"></i>
-                    <span>فروع WE</span>
-                </div>
-            </div>
+          <h3><i class="fa-solid fa-hand-holding-dollar"></i> الاشتراك في خدمة سلفني</h3>
+          <div class="management-grid">
+            <div class="mgmt-item"><i class="fa-solid fa-coins"></i><span>سلفني تمنح 40 وحدة مقابل 2 جنيه، صالحة لمدة 30 يوم</span></div>
+            <div class="mgmt-item"><i class="fa-solid fa-calendar-check"></i><span>يمكن استخدام الخدمة مرة واحدة في الشهر</span></div>
+          </div>
         </div>
-    </div>
+      </div>
+    </section>
 
-    <!-- NOTE -->
-    <div class="note-box">
-        <i class="fa-solid fa-triangle-exclamation"></i>
-        يمكنك متابعة استهلاكك، شحن رصيدك، أو الاشتراك في الباقات الإضافية عبر تطبيق My WE أو الموقع الإلكتروني.
-    </div>
+    <!-- ===== الشروط والتفاصيل ===== -->
+    <section class="tab-pane" id="terms">
+      <div class="info-section">
+        <h3><i class="fa-solid fa-list-check"></i> الشروط والتفاصيل</h3>
+        <div class="details-list">
+          <div class="detail-item"><div class="detail-icon"><i class="fa-solid fa-rotate"></i></div><div class="detail-content"><h4>التجديد</h4><p>تجديد باقات WE أرضي كل 90 يوم. سيتم تجديد الباقة تلقائيًا في ميعادها في حالة وجود رصيد كافٍ في حساب العميل.</p></div></div>
+          <div class="detail-item"><div class="detail-icon"><i class="fa-solid fa-percent"></i></div><div class="detail-content"><h4>الضرائب</h4><p>سعر اشتراك الباقات الأساسية غير شامل ضريبة القيمة المضافة ولا ضريبة الجدول للباقات التي تشمل دقائق موبايل.</p></div></div>
+          <div class="detail-item"><div class="detail-icon"><i class="fa-solid fa-clock-rotate-left"></i></div><div class="detail-content"><h4>الدقائق غير المستخدمة</h4><p>لن يتم ترحيل الدقائق غير المستخدمة داخل الباقة إلى الشهر التالي.</p></div></div>
+          <div class="detail-item"><div class="detail-icon"><i class="fa-solid fa-battery-quarter"></i></div><div class="detail-content"><h4>عدم كفاية الرصيد</h4><p>في حالة عدم وجود رصيد كافٍ لتغطية قيمة اشتراك الباقة الأساسية، يتحول الخط الأرضي إلى استقبال فقط لمدة ثلاثة أيام، وفي حالة الاستمرار في عدم الشحن لتجديد الباقة الأساسية يتم رفع الخط مؤقتًا من الخدمة لمدة 210 يوم.</p></div></div>
+          <div class="detail-item"><div class="detail-icon"><i class="fa-solid fa-hourglass-half"></i></div><div class="detail-content"><h4>مدة التعاقد</h4><p>المدة المتاحة للتعاقد هي 14 يومًا بدءًا من وقت الحصول على الإمكانية الفنية، وفي حالة عدم استكمال إجراءات التعاقد في المدة المحددة يتم إلغاء هذه الإمكانية.</p></div></div>
+          <div class="detail-item"><div class="detail-icon"><i class="fa-solid fa-repeat"></i></div><div class="detail-content"><h4>تجديد طلب الخط</h4><p>يمكن للعميل تجديد طلب الخط للحصول على الإمكانية الفنية مرتين بدون أي مقابل خلال عام من تاريخ تقديم الطلب، وبعد انتهاء هذه المدة يتم إلغاء الطلب.</p></div></div>
+          <div class="detail-item"><div class="detail-icon"><i class="fa-solid fa-calendar-xmark"></i></div><div class="detail-content"><h4>عدم وجود إمكانية فنية</h4><p>يتم الاحتفاظ بطلب العميل لمدة سنتين من تاريخ تقديم الطلب بنفس رقم المسلسل، ويتم تعديله بدون أي مقابل.</p></div></div>
+          <div class="detail-item"><div class="detail-icon"><i class="fa-solid fa-money-bill-transfer"></i></div><div class="detail-content"><h4>استرداد مصاريف التعاقد</h4><p>يحق للعميل استرداد مصاريف التعاقد شاملة الضرائب باستثناء رسوم الطلب بالضرائب، والاحتفاظ بطلب الخط لمدة عامين من تاريخ الطلب.</p></div></div>
+          <div class="detail-item"><div class="detail-icon"><i class="fa-solid fa-ban"></i></div><div class="detail-content"><h4>Blacklist</h4><p>يحق للعميل (Blacklist) طلب الحصول على خط أرضي جديد، ولكن لن يتم استكمال إجراءات التعاقد إلا بعد تسوية وضع العميل وسداد أي مديونيات.</p></div></div>
+          <div class="detail-item"><div class="detail-icon"><i class="fa-solid fa-phone-flip"></i></div><div class="detail-content"><h4>التعاقد على خطين</h4><p>يحق للعميل التعاقد على خط واحد أو الاثنين معًا، على أن يتم إخطاره بأنه في حالة عدم الحصول على الخط الثاني أثناء التعاقد لن يتمكن من التعاقد عليه فيما بعد.</p></div></div>
+          <div class="detail-item"><div class="detail-icon"><i class="fa-solid fa-screwdriver-wrench"></i></div><div class="detail-content"><h4>عدم تركيب الخط</h4><p>في حالة عدم تركيب الخط الأرضي بعد التعاقد يتم إلغاء أمر شغل التعاقد أوتوماتيكيًا خلال 60 يومًا من تاريخ التعاقد، ويمكن تجديد الإمكانية بناءً على طلب العميل مرة أخرى.</p></div></div>
+          <div class="detail-item"><div class="detail-icon"><i class="fa-solid fa-file-circle-xmark"></i></div><div class="detail-content"><h4>إلغاء التعاقد</h4><p>يحق للعميل استرداد مصاريف التعاقد في حالة طلب إلغاء التعاقد وعدم استكمال تركيب الخط الأرضي وما يرتبط بها من ضرائب، ولا يحق له استرداد مصاريف الطلب وما يرتبط بها من ضرائب. وفي حالة رغبة العميل في التعاقد مرة أخرى يتم تقديم طلب جديد برسوم جديدة.</p></div></div>
+        </div>
+      </div>
+    </section>
 
+  </main>
+
+  <footer><p>© <span>WE</span> – جميع الحقوق محفوظة</p></footer>
 </div>
 
-<!-- FOOTER -->
-<footer>WE Core Team 2026</footer>
-
-
+<script>
+  document.querySelectorAll('.tab-btn').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      document.querySelectorAll('.tab-btn').forEach(function (b) { b.classList.remove('active'); });
+      document.querySelectorAll('.tab-pane').forEach(function (p) { p.classList.remove('active'); });
+      btn.classList.add('active');
+      document.getElementById(btn.dataset.tab).classList.add('active');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  });
+</script>
 <script src="js/we-ardy.js"></script>
-
-
 </body>
 </html>
