@@ -242,7 +242,7 @@
                 const empLogs = empPeriod ? logs.filter(l => l.period_id === empPeriod.id) : [];
                 let empAchieve = 0;
                 empLogs.forEach(log => {
-                    empAchieve += (parseFloat(log.pt12)||0) + (parseFloat(log.super_kix)||0) + (parseFloat(log.tazbeet)||0) + (parseFloat(log.data)||0);
+                    empAchieve += (parseFloat(log.pt12)||0) + (parseFloat(log.super_kix)||0) + (parseFloat(log.tazbeet)||0) + (parseFloat(log.data)||0) + (parseFloat(log.we_gold)||0);
                 });
 
                 totalBranchTarget += empTarget;
@@ -380,7 +380,7 @@
                 const empLogs = empPeriod ? logs.filter(l => l.period_id === empPeriod.id) : [];
                 let empAchieve = 0;
                 empLogs.forEach(log => {
-                    empAchieve += (parseFloat(log.pt12)||0) + (parseFloat(log.super_kix)||0) + (parseFloat(log.tazbeet)||0) + (parseFloat(log.data)||0);
+                    empAchieve += (parseFloat(log.pt12)||0) + (parseFloat(log.super_kix)||0) + (parseFloat(log.tazbeet)||0) + (parseFloat(log.data)||0) + (parseFloat(log.we_gold)||0);
                 });
 
                 areaTarget += empTarget;
@@ -566,13 +566,13 @@
 
             const { month, year } = Utils.getCurrentMonthYear();
             const allAreas = (await TargetAPI.fetchAllowedAreas()) || [];
-            const sum = (o) => ['pt12', 'super_kix', 'tazbeet', 'data'].reduce((t, k) => t + (parseFloat(o[k]) || 0), 0);
+            const sum = (o) => ['pt12', 'super_kix', 'tazbeet', 'data', 'we_gold'].reduce((t, k) => t + (parseFloat(o[k]) || 0), 0);
             const areas = [];
             for (const ar of allAreas) {
                 const team = await TargetAPI.fetchTeamData(month, year, null, ar.name);
                 let target = 0;
                 team.periods.forEach(p => (p.targets || []).forEach(t => {
-                    if (['pt12', 'super_kix', 'tazbeet', 'data'].includes(t.item)) target += parseFloat(t.target_value) || 0;
+                    if (['pt12', 'super_kix', 'tazbeet', 'data', 'we_gold'].includes(t.item)) target += parseFloat(t.target_value) || 0;
                 }));
                 const achieve = team.logs.reduce((t, l) => t + sum(l), 0);
                 areas.push({ name: ar.name, target, achieve, pct: target ? (achieve / target) * 100 : 0 });

@@ -138,7 +138,7 @@
                 const p = window.Dashboard && Dashboard.state ? Dashboard.state.userProfile : null;
                 const n = (v) => parseFloat(v) || 0;
                 const rows = logs.map(l => {
-                    const total = n(l.pt12) + n(l.super_kix) + n(l.tazbeet) + n(l.data);
+                    const total = n(l.pt12) + n(l.super_kix) + n(l.tazbeet) + n(l.data) + n(l.we_gold);
                     return [l.performance_date, p ? p.full_name : '', p ? p.branch : '', p ? p.area : '',
                         n(l.pt12), n(l.super_kix), n(l.tazbeet), n(l.data), n(l.adsl), n(l.fixed), n(l.we_pay), n(l.we_gold), total];
                 });

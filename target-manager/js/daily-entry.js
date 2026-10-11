@@ -4,7 +4,7 @@
 (function (global) {
     const LABELS = { pt12: 'PT12', super_kix: 'Super Kix', tazbeet: 'Control Tazbeet', data: 'Data Lines', adsl: 'WE Space ADSL', fixed: 'Fixed Line', we_pay: 'WE Pay', we_gold: 'WE Gold' };
     const ITEMS = Object.keys(LABELS);
-    const LINE_ITEMS = ['pt12', 'super_kix', 'tazbeet', 'data'];
+    const LINE_ITEMS = ['pt12', 'super_kix', 'tazbeet', 'data', 'we_gold'];
     const n = (v) => parseFloat(v) || 0;
 
     function buildReport(profile, date, today, logs, period) {

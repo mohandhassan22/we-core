@@ -170,7 +170,7 @@
 
             function renderRows(data) {
                 tbody.innerHTML = data.map(log => {
-                    const totalLines = (parseFloat(log.pt12)||0) + (parseFloat(log.super_kix)||0) + (parseFloat(log.tazbeet)||0) + (parseFloat(log.data)||0);
+                    const totalLines = (parseFloat(log.pt12)||0) + (parseFloat(log.super_kix)||0) + (parseFloat(log.tazbeet)||0) + (parseFloat(log.data)||0) + (parseFloat(log.we_gold)||0);
                     return `
                         <tr>
                             <td class="font-bold">${log.performance_date}</td>

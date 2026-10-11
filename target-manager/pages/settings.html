@@ -162,7 +162,7 @@
 
         function updateSum() {
             const v = (id) => parseFloat($('tgt_' + id).value) || 0;
-            const sum = v('pt12') + v('super_kix') + v('tazbeet') + v('data');
+            const sum = v('pt12') + v('super_kix') + v('tazbeet') + v('data') + v('we_gold');
             const n = branchAgents.length;
             $('calculatedTotalLinesDisplay').textContent = `إجمالي الأسطر: ${sum} خط` + (n ? ` | لكل موظف ≈ ${(sum / n).toFixed(1)}` : '');
         }

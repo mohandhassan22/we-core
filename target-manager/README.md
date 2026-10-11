@@ -20,8 +20,8 @@
    - **Admin (المسؤول)**: صلاحيات كاملة على كافة المستويات.
 
 3. **محرك الحسابات (Target Calculator)**:
-   - **Total Lines**: مجموع (`PT12` + `Super Kix` + `New Control Tazbeet` + `Data`).
-   - **مستقل (Independent KPIs)**: `ADSL` + `Fixed` + `WE Pay` + `WE Gold`.
+   - **Total Lines**: مجموع (`PT12` + `Super Kix` + `New Control Tazbeet` + `WE Gold` + `Data`).
+   - **مستقل (Independent KPIs)**: `ADSL` (الإنترنت) + `Fixed` (الأرضي) + `WE Pay` — كل واحد لوحده.
    - **الحسابات**: `Achievement %`, `Remaining`, `Projection`, `Daily Target`, `Deficit`, `Today's Required`, `Required Daily`, و `Status`.
 
 4. **WE AI Coach (مدرب الذكاء الاصطناعي)**:

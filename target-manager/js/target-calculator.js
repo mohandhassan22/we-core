@@ -13,13 +13,13 @@
  */
 
 (function (global) {
-    const TOTAL_LINE_ITEMS = ['pt12', 'super_kix', 'tazbeet', 'data'];
+    const TOTAL_LINE_ITEMS = ['pt12', 'super_kix', 'tazbeet', 'data', 'we_gold'];
 
     const TargetCalculator = {
         TOTAL_LINE_ITEMS: TOTAL_LINE_ITEMS,
 
         /**
-         * Calculates total target for lines (PT12 + Super Kix + Tazbeet + Data)
+         * Calculates total target for lines (PT12 + Super Kix + Tazbeet + WE Gold + Data)
          * @param {Object} itemTargets - { pt12: 15, super_kix: 15, tazbeet: 15, data: 15, adsl: 5, fixed: 5, we_pay: 10 }
          * @returns {number}
          */
