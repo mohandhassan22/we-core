@@ -139,6 +139,28 @@
             return data;
         },
 
+        _rpc: async function (fn, payload, failMsg) {
+            const token = getCookieToken();
+            const res = await fetch(`${SB_URL}/rest/v1/rpc/${fn}`, {
+                method: 'POST',
+                headers: { 'apikey': SB_KEY, 'Content-Type': 'application/json', ...(token ? { 'Authorization': `Bearer ${token}` } : {}) },
+                body: JSON.stringify(payload)
+            });
+            const data = await res.json().catch(() => ({}));
+            if (!res.ok) { console.error(fn + ' failed:', res.status, data); throw new Error(data.message || data.hint || failMsg); }
+            return data;
+        },
+
+        // Manager overrides one employee's target for some items ({item: number | null}); the rest is re-split among the others.
+        setEmployeeTarget: function (branchTargetId, userId, items) {
+            return TargetAPI._rpc('set_employee_target', { p_branch_target_id: branchTargetId, p_user_id: userId, p_items: items }, 'تعذر تعديل تارجت الموظف');
+        },
+
+        // Back to equal split (whole branch target, or one employee when userId is given)
+        resetBranchDistribution: function (branchTargetId, userId = null) {
+            return TargetAPI._rpc('reset_branch_distribution', { p_branch_target_id: branchTargetId, p_user_id: userId }, 'تعذر إعادة التوزيع');
+        },
+
         fetchTargetPeriod: async function (month, year, userId = null, branch = null, area = null) {
             if (userId) {
                 const d = new Date();

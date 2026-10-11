@@ -143,6 +143,24 @@
         </div>
     </div>
 
+    <!-- Employee Target Override Modal -->
+    <div class="modal-overlay" id="empTargetModal">
+        <div class="modal-container" style="max-width: 560px;">
+            <div class="modal-header">
+                <h3 class="modal-title"><i class="fa-solid fa-pen"></i> تعديل تارجت: <span id="empTgtName"></span></h3>
+                <button class="btn-icon" onclick="Utils.closeModal('empTargetModal')"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="modal-body">
+                <p class="text-muted" style="margin-bottom:1rem;font-size:.9rem;">غيّر رقم أي بند للموظف ده، والباقي من هدف الفرع بيتوزع تلقائياً على باقي الموظفين. البنود اللي مش بتغيّرها بتفضل بالتوزيع التلقائي.</p>
+                <div id="empTgtFields"></div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="empTgtResetBtn" title="يرجّع الموظف ده للتوزيع التلقائي">رجوع للتوزيع التلقائي</button>
+                <button class="btn btn-primary" id="empTgtSaveBtn"><i class="fa-solid fa-check"></i> حفظ</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Employee Drilldown Modal -->
     <div class="modal-overlay" id="employeeModal">
         <div class="modal-container" style="max-width: 720px;">
@@ -248,6 +266,88 @@
             } catch (err) {
                 Utils.showToast(err.message || 'تعذر حفظ التارجت', 'error');
             } finally { btn.disabled = false; }
+        });
+
+        /* ---- Per-employee target override ---- */
+        const EMP_TGT_LABELS = { pt12: 'PT12', super_kix: 'Super Kix', tazbeet: 'Control Tazbeet', data: 'Data Lines', we_gold: 'WE Gold', adsl: 'WE Space ADSL', fixed: 'Fixed Line', we_pay: 'WE Pay' };
+        let empTgt = null;
+
+        function empTgtPeriods() { return (Dashboard.state.teamData && Dashboard.state.teamData.periods) || []; }
+        function empTgtVal(period, item) { const t = ((period && period.targets) || []).find(x => x.item === item); return t ? (parseFloat(t.target_value) || 0) : 0; }
+        function empTgtIsManual(period, item) { return ((period && period.targets) || []).some(x => x.item === item && x.is_manual); }
+
+        function openEmpTargetModal(empId) {
+            const periods = empTgtPeriods();
+            const period = periods.find(p => p.user_id === empId);
+            if (!period || !period.branch_target_id) return Utils.showToast('لا يوجد تارجت موزّع لهذا الموظف. سجّل توتل تارجت الفرع الأول.', 'error');
+            const emp = (Dashboard.state.subordinates || []).find(e => e.id === empId) || {};
+            const agents = (Dashboard.state.subordinates || []).filter(e => e.role === 'agent' || !e.role);
+            const info = {};
+            Object.keys(EMP_TGT_LABELS).forEach(k => {
+                let total = 0, manualOthers = 0, autoOthers = 0;
+                agents.forEach(a => {
+                    const p = periods.find(x => x.user_id === a.id); if (!p) return;
+                    const v = empTgtVal(p, k); total += v;
+                    if (a.id !== empId) { if (empTgtIsManual(p, k)) manualOthers += v; else autoOthers++; }
+                });
+                info[k] = { total, manualOthers, autoOthers, current: empTgtVal(period, k), manual: empTgtIsManual(period, k) };
+            });
+            empTgt = { empId, btId: period.branch_target_id, info };
+            document.getElementById('empTgtName').textContent = emp.full_name || 'موظف';
+            document.getElementById('empTgtFields').innerHTML = Object.keys(EMP_TGT_LABELS).map(k => `
+                <div class="form-group" style="margin-bottom:.75rem;">
+                    <label class="form-label">${EMP_TGT_LABELS[k]} <span class="text-muted" style="font-size:.8rem;">(هدف الفرع ${info[k].total}${info[k].manual ? ' • معدّل يدوياً' : ''})</span></label>
+                    <input type="number" min="0" class="form-input emp-tgt-input" id="emptgt_${k}" data-item="${k}" value="${info[k].current}">
+                    <small class="text-muted" id="emptgt_hint_${k}"></small>
+                </div>`).join('');
+            document.querySelectorAll('.emp-tgt-input').forEach(i => i.addEventListener('input', updateEmpTgtHints));
+            updateEmpTgtHints();
+            Utils.openModal('empTargetModal');
+        }
+
+        function updateEmpTgtHints() {
+            Object.keys(EMP_TGT_LABELS).forEach(k => {
+                const i = empTgt.info[k]; const v = parseFloat(document.getElementById('emptgt_' + k).value) || 0;
+                const pool = i.total - i.manualOthers - v;
+                const el = document.getElementById('emptgt_hint_' + k);
+                if (pool < 0) { el.textContent = 'أكبر من المتاح'; el.style.color = '#ef4444'; }
+                else if (i.autoOthers > 0) { el.textContent = `الباقي ${pool} يتوزع على ${i.autoOthers} موظف`; el.style.color = ''; }
+                else { el.textContent = ''; }
+            });
+        }
+
+        async function reloadAfterEmpTarget() {
+            Utils.closeModal('empTargetModal');
+            const my = Utils.getCurrentMonthYear();
+            await Dashboard.loadDashboardData(my.month, my.year);
+        }
+
+        document.getElementById('empTgtSaveBtn').addEventListener('click', async function () {
+            if (!empTgt) return;
+            const changed = {};
+            Object.keys(EMP_TGT_LABELS).forEach(k => {
+                const v = Math.max(parseFloat(document.getElementById('emptgt_' + k).value) || 0, 0);
+                if (v !== empTgt.info[k].current) changed[k] = Math.floor(v);
+            });
+            if (!Object.keys(changed).length) return Utils.closeModal('empTargetModal');
+            this.disabled = true;
+            try {
+                await TargetAPI.setEmployeeTarget(empTgt.btId, empTgt.empId, changed);
+                await reloadAfterEmpTarget();
+                Utils.showToast('تم تعديل تارجت الموظف وإعادة توزيع الباقي على باقي الموظفين', 'success');
+            } catch (err) { Utils.showToast(err.message || 'تعذر الحفظ', 'error'); }
+            finally { this.disabled = false; }
+        });
+
+        document.getElementById('empTgtResetBtn').addEventListener('click', async function () {
+            if (!empTgt) return;
+            this.disabled = true;
+            try {
+                await TargetAPI.resetBranchDistribution(empTgt.btId, empTgt.empId);
+                await reloadAfterEmpTarget();
+                Utils.showToast('تم الرجوع للتوزيع التلقائي', 'success');
+            } catch (err) { Utils.showToast(err.message || 'تعذر التنفيذ', 'error'); }
+            finally { this.disabled = false; }
         });
     </script>
 <script src="../../assets/js/active-users-widget.js"></script>

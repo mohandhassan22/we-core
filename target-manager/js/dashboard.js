@@ -290,7 +290,9 @@
                     projection: empProj,
                     remaining: empRem,
                     status: empStatus,
-                    sep: empSep
+                    sep: empSep,
+                    btId: empPeriod ? empPeriod.branch_target_id : null,
+                    manual: !!(empPeriod && (empPeriod.targets || []).some(t => t.is_manual))
                 });
             });
 
@@ -354,7 +356,7 @@
                                 ${employeeRows.map(emp => `
                                     <tr>
                                         <td class="font-bold">${emp.name}</td>
-                                        <td>${emp.target}</td>
+                                        <td>${emp.target}${emp.manual ? ' <span class="badge-status" title="تارجت معدّل يدوياً">يدوي</span>' : ''}</td>
                                         <td>${emp.achieve}</td>
                                         <td>${Utils.formatPercent(emp.percentage)}</td>
                                         <td>${emp.projection}</td>
@@ -367,6 +369,7 @@
                                             <button class="btn btn-sm btn-secondary" onclick="Dashboard.openEmployeeDrilldown('${emp.id}')">
                                                 <i class="fa-solid fa-eye"></i> عرض
                                             </button>
+                                            ${emp.btId && typeof openEmpTargetModal === 'function' ? `<button class="btn btn-sm btn-primary" onclick="openEmpTargetModal('${emp.id}')"><i class="fa-solid fa-pen"></i> تارجت</button>` : ''}
                                         </td>
                                     </tr>
                                 `).join('')}
