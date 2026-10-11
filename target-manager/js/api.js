@@ -99,6 +99,14 @@
             } catch (err) { return null; }
         },
 
+        fetchMyBranchId: async function (profile) {
+            if (!profile) return null;
+            if (profile.branch_id) return profile.branch_id;
+            const branches = await TargetAPI.fetchAllowedBranches();
+            const mine = (branches || []).find(b => b.manager_id === profile.id || (profile.branch && b.name === profile.branch));
+            return mine ? mine.id : null;
+        },
+
         fetchBranchTarget: async function (branchId) {
             try {
                 const rows = await restFetch(`branch_targets?branch_id=eq.${branchId}&select=*&order=end_date.desc&limit=6`);
@@ -127,8 +135,30 @@
                 body: JSON.stringify(payload)
             });
             const data = await res.json().catch(() => ({}));
-            if (!res.ok) throw new Error(data.message || 'تعذر حفظ التارجت');
+            if (!res.ok) { console.error('save_branch_target failed:', res.status, data); throw new Error(data.message || data.hint || 'تعذر حفظ التارجت'); }
             return data;
+        },
+
+        _rpc: async function (fn, payload, failMsg) {
+            const token = getCookieToken();
+            const res = await fetch(`${SB_URL}/rest/v1/rpc/${fn}`, {
+                method: 'POST',
+                headers: { 'apikey': SB_KEY, 'Content-Type': 'application/json', ...(token ? { 'Authorization': `Bearer ${token}` } : {}) },
+                body: JSON.stringify(payload)
+            });
+            const data = await res.json().catch(() => ({}));
+            if (!res.ok) { console.error(fn + ' failed:', res.status, data); throw new Error(data.message || data.hint || failMsg); }
+            return data;
+        },
+
+        // Manager overrides one employee's target for some items ({item: number | null}); the rest is re-split among the others.
+        setEmployeeTarget: function (branchTargetId, userId, items) {
+            return TargetAPI._rpc('set_employee_target', { p_branch_target_id: branchTargetId, p_user_id: userId, p_items: items }, 'تعذر تعديل تارجت الموظف');
+        },
+
+        // Back to equal split (whole branch target, or one employee when userId is given)
+        resetBranchDistribution: function (branchTargetId, userId = null) {
+            return TargetAPI._rpc('reset_branch_distribution', { p_branch_target_id: branchTargetId, p_user_id: userId }, 'تعذر إعادة التوزيع');
         },
 
         fetchTargetPeriod: async function (month, year, userId = null, branch = null, area = null) {
@@ -226,6 +256,7 @@
                 adsl: parseFloat(itemsData.adsl) || 0,
                 fixed: parseFloat(itemsData.fixed) || 0,
                 we_pay: parseFloat(itemsData.we_pay) || 0,
+                we_gold: parseFloat(itemsData.we_gold) || 0,
                 notes: notes,
                 updated_at: new Date().toISOString()
             };
@@ -237,7 +268,8 @@
                     body: JSON.stringify(body)
                 });
             } catch (err) {
-                throw new Error('تعذر حفظ الأداء، تأكد أن التاريخ داخل فترة التارجت');
+                console.error('saveDailyPerformance failed:', err);
+                throw new Error('تعذر حفظ الأداء، تأكد أن التاريخ داخل فترة التارجت (' + (err.message || '') + ')');
             }
         },
 
@@ -269,7 +301,8 @@
 
                 return period;
             } catch (err) {
-                return periodData;
+                console.error('saveTargetPeriod failed:', err);
+                throw new Error('تعذر حفظ التارجت: ' + (err.message || ''));
             }
         },
 

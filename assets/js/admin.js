@@ -86,19 +86,27 @@ async function callEdgeFunction(action, body = {}) {
   }
 }
 
+// نفس كوكي الجلسة اللي auth.js بيستخدمه (الجلسة في localStorage ممكن تكون فاضية أو قديمة)
+function cookieToken() {
+  const m = document.cookie.match(/(?:^|;\s*)sb-access-token=([^;]+)/);
+  if (!m) return null;
+  try { return decodeURIComponent(m[1]).replace(/"/g, ''); } catch (_) { return null; }
+}
+
 async function getAccessToken() {
-  const { data: { session }, error } = await sb.auth.getSession();
-  if (error || !session) {
+  const { data: { session } } = await sb.auth.getSession();
+  const token = session?.access_token || cookieToken();
+  if (!token) {
     window.location.href = 'login.html';
     return null;
   }
-  return session.access_token;
+  return token;
 }
 
 // ─── Authentication ───
 async function checkAuth() {
   try {
-    const { data: { user }, error } = await sb.auth.getUser();
+    const { data: { user }, error } = await sb.auth.getUser(cookieToken() || undefined);
     if (error || !user) {
       window.location.href = 'login.html';
       return;
@@ -286,6 +294,9 @@ function displayUsers(users) {
             <button class="act-btn reset" title="تعديل اسم المستخدم" onclick="openRename(${jsArg(user.id)}, ${jsArg(username)}, ${jsArg(user.email)})">
               <i class="ti ti-edit" style="font-size:13px"></i> اليوزر
             </button>
+            ${(role === 'agent' || role === 'user') ? `<button class="act-btn reset" title="نقل لفرع آخر" onclick="openMoveBranch(${jsArg(user.id)}, ${jsArg(displayName)})">
+              <i class="ti ti-arrows-exchange" style="font-size:13px"></i> نقل فرع
+            </button>` : ''}
             <button class="act-btn del" title="حذف المستخدم" onclick="confirmDelete(${jsArg(user.id)}, ${jsArg(user.email)})">
               <i class="ti ti-trash" style="font-size:13px"></i>
             </button>
@@ -1256,4 +1267,54 @@ if ($('renameSaveBtn')) {
   };
   $('renameSaveBtn').addEventListener('click', save);
   $('renameInput').addEventListener('keydown', (e) => { if (e.key === 'Enter') save(); });
+}
+
+
+// ─── Move user to another branch ───
+let moveBranchUserId = null;
+async function openMoveBranch(userId, name) {
+  moveBranchUserId = userId;
+  $('moveBranchMsg').textContent = ''; $('moveBranchMsg').className = 'form-message';
+  $('moveBranchUserInfo').textContent = `الموظف: ${name}`;
+  showModal('moveBranchModal');
+  try {
+    if (!orgData.branches.length) await loadOrg();
+    const areaName = id => (orgData.areas.find(a => a.id === id) || {}).name || '';
+    const cur = (orgData.profiles || []).find(p => p.id === userId);
+    const curBranch = cur && cur.branch_id;
+    const sel = $('moveBranchSelect');
+    sel.replaceChildren(...orgData.branches.filter(b => b.id !== curBranch).map(b => {
+      const o = document.createElement('option');
+      o.value = b.id; o.textContent = `${b.name}${areaName(b.area_id) ? ' — ' + areaName(b.area_id) : ''}`;
+      return o;
+    }));
+    if (curBranch) {
+      const b = orgData.branches.find(x => x.id === curBranch);
+      if (b) $('moveBranchUserInfo').textContent = `الموظف: ${name} — الفرع الحالي: ${b.name}`;
+    }
+  } catch (err) { showMessage('moveBranchMsg', err.message, 'error'); }
+}
+if ($('moveBranchSaveBtn')) {
+  $('moveBranchSaveBtn').addEventListener('click', async () => {
+    const btn = $('moveBranchSaveBtn');
+    const branchId = $('moveBranchSelect').value;
+    if (!branchId) return showMessage('moveBranchMsg', 'اختار الفرع الجديد', 'error');
+    btn.disabled = true;
+    try {
+      const token = await getAccessToken();
+      const res = await fetch(`${SUPABASE_URL}/rest/v1/rpc/admin_move_user_branch`, {
+        method: 'POST',
+        headers: { 'apikey': SUPABASE_KEY, 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+        body: JSON.stringify({ p_user_id: moveBranchUserId, p_branch_id: branchId })
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(data.message || 'تعذر نقل الموظف');
+      hideModal('moveBranchModal');
+      showSuccessModal('تم بنجاح!', `تم نقل الموظف إلى ${data.branch}`);
+      loadOrg();   // refresh cached org data (current branches)
+      loadUsers();
+    } catch (err) {
+      showMessage('moveBranchMsg', err.message, 'error');
+    } finally { btn.disabled = false; }
+  });
 }

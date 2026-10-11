@@ -24,6 +24,12 @@
 
             const monthYear = Utils.getCurrentMonthYear();
             await this.loadDashboardData(monthYear.month, monthYear.year);
+
+            // Keep the dashboard in sync with changes made by others (manager target / agent entries)
+            const refresh = () => { const my = Utils.getCurrentMonthYear(); this.loadDashboardData(my.month, my.year); };
+            document.addEventListener('visibilitychange', () => { if (!document.hidden) refresh(); });
+            window.addEventListener('focus', refresh);
+            setInterval(() => { if (!document.hidden) refresh(); }, 60000);
         },
 
         loadDashboardData: async function (month, year) {
@@ -53,11 +59,12 @@
                     profile.id
                 );
 
-                this.state.teamData = await TargetAPI.fetchTeamData(
+                const ownsTeamData = ['supervisor', 'admin'].includes(this.state.activeRoleView);   // supervisor view loads its own per-area data
+                this.state.teamData = ownsTeamData ? { periods: [], logs: [] } : await TargetAPI.fetchTeamData(
                     month, 
                     year, 
                     this.state.activeRoleView === 'branch_manager' ? profile.branch : null,
-                    ['area_manager', 'supervisor', 'admin'].includes(this.state.activeRoleView) ? profile.area : null
+                    ['area_manager'].includes(this.state.activeRoleView) ? profile.area : null
                 );
             }
 
@@ -90,11 +97,11 @@
                 period.targets.forEach(t => itemTargets[t.item] = t.target_value);
             } else {
                 // No target period yet: show zeros (no fake numbers)
-                ['pt12','super_kix','tazbeet','data','adsl','fixed','we_pay'].forEach(k => itemTargets[k] = 0);
+                ['pt12','super_kix','tazbeet','data','adsl','fixed','we_pay','we_gold'].forEach(k => itemTargets[k] = 0);
             }
 
             // Calculate item achieves from daily logs
-            const itemAchieves = { pt12: 0, super_kix: 0, tazbeet: 0, data: 0, adsl: 0, fixed: 0, we_pay: 0 };
+            const itemAchieves = { pt12: 0, super_kix: 0, tazbeet: 0, data: 0, adsl: 0, fixed: 0, we_pay: 0, we_gold: 0 };
             const logs = this.state.dailyLogs || [];
 
             logs.forEach(log => {
@@ -105,6 +112,7 @@
                 itemAchieves.adsl += parseFloat(log.adsl) || 0;
                 itemAchieves.fixed += parseFloat(log.fixed) || 0;
                 itemAchieves.we_pay += parseFloat(log.we_pay) || 0;
+                itemAchieves.we_gold += parseFloat(log.we_gold) || 0;
             });
 
             const elapsedDays = Utils.calculateElapsedDays(period?.start_date, period?.end_date, period?.target_days || 20);
@@ -129,7 +137,7 @@
                             <div class="kpi-icon-wrap kpi-icon-purple"><i class="fa-solid fa-bullseye"></i></div>
                         </div>
                         <div class="kpi-value">${Utils.formatNumber(metrics.targetLines)}</div>
-                        <div class="kpi-subtext">إجمالي مستهدف الأسطر الـ 4</div>
+                        <div class="kpi-subtext">PT12 + Super Kix + Tazbeet + WE Gold + Data</div>
                     </div>
                     <div class="kpi-card">
                         <div class="kpi-card-header">
@@ -173,7 +181,7 @@
             if (itemsContainer) {
                 const itemLabels = {
                     pt12: 'PT12', super_kix: 'Super Kix', tazbeet: 'Control Tazbeet',
-                    data: 'Data Lines', adsl: 'WE Space ADSL', fixed: 'Fixed Line', we_pay: 'WE Pay'
+                    data: 'Data Lines', adsl: 'WE Space ADSL', fixed: 'Fixed Line', we_pay: 'WE Pay', we_gold: 'WE Gold'
                 };
                 itemsContainer.innerHTML = Object.keys(metrics.items).map(key => {
                     const item = metrics.items[key];
@@ -182,7 +190,7 @@
                             <div class="item-card-head">
                                 <span class="item-name">${itemLabels[key] || key}</span>
                                 <span class="item-badge ${item.isTotalLine ? 'status-ontrack' : 'status-warning'}">
-                                    ${item.isTotalLine ? 'ضمن الأسطر' : 'KPI مستقل'}
+                                    ${item.isTotalLine ? 'ضمن الخطوط' : 'KPI مستقل'}
                                 </span>
                             </div>
                             <div class="flex justify-between items-center text-muted" style="font-size:0.85rem;">
@@ -211,6 +219,43 @@
         /* ------------------------------------------------------------------
          * 2. BRANCH MANAGER DASHBOARD RENDERER
          * ------------------------------------------------------------------ */
+        // Separate (independent) KPIs: each has its own target / achieved / %
+        SEPARATE_ITEMS: [
+            { key: 'adsl', label: 'الإنترنت (ADSL)' },
+            { key: 'fixed', label: 'الأرضي (Fixed)' },
+            { key: 'we_pay', label: 'WE Pay' }
+        ],
+        sumTargetsOf: function (period, keys) {
+            return ((period && period.targets) || []).reduce((s, t) => keys.includes(t.item) ? s + (parseFloat(t.target_value) || 0) : s, 0);
+        },
+        sumLogsOf: function (logs, keys) {
+            return (logs || []).reduce((s, l) => s + keys.reduce((a, k) => a + (parseFloat(l[k]) || 0), 0), 0);
+        },
+        separateCardsHTML: function (sep) {
+            return this.SEPARATE_ITEMS.map(it => {
+                const t = sep[it.key].target, a = sep[it.key].achieve;
+                const pct = TargetCalculator.calculateAchievementPercentage(a, t);
+                return `<div class="kpi-card">
+                        <span class="kpi-title">${it.label}</span>
+                        <div class="kpi-value">${Utils.formatNumber(a)} / ${Utils.formatNumber(t)}</div>
+                        <div class="kpi-subtext">النسبة: ${Utils.formatPercent(pct)} | المتبقي: ${Utils.formatNumber(Math.max(t - a, 0))}</div>
+                        <div class="kpi-progress"><span style="width:${Math.min(Math.max(pct || 0, 0), 100)}%"></span></div>
+                    </div>`;
+            }).join('');
+        },
+
+        // Projection for one period: daily average so far x target days (elapsed days come from the period dates)
+        projectionFor: function (period, achieve) {
+            const days = parseInt(period && period.target_days, 10) || 20;
+            const elapsed = Utils.calculateElapsedDays(period && period.start_date, period && period.end_date, days);
+            return TargetCalculator.calculateProjection(achieve, elapsed, days);
+        },
+
+        // Highest achievement % first; ties -> higher achieve, then name
+        rankRows: function (rows) {
+            return rows.sort((a, b) => (b.pct - a.pct) || (b.achieve - a.achieve) || String(a.name).localeCompare(String(b.name), 'ar'));
+        },
+
         renderBranchManagerView: function () {
             const container = document.getElementById('branchDashboardContainer');
             if (!container) return;
@@ -221,28 +266,36 @@
 
             let totalBranchTarget = 0;
             let totalBranchAchieve = 0;
+            let totalBranchProj = 0;
             const employeeRows = [];
+            const LINE_KEYS = TargetCalculator.TOTAL_LINE_ITEMS;
+            const branchSep = {}; this.SEPARATE_ITEMS.forEach(it => branchSep[it.key] = { target: 0, achieve: 0 });
+            const branchItemTotals = {}; ['pt12','super_kix','tazbeet','data','we_gold','adsl','fixed','we_pay'].forEach(k => branchItemTotals[k] = 0);
 
             subs.forEach((emp) => {
                 const empPeriod = periods.find(p => p.user_id === emp.id);
-                let empTarget = 0;
-                
-                if (empPeriod && empPeriod.targets) {
-                    empTarget = empPeriod.targets.reduce((sum, t) => sum + (parseFloat(t.target_value) || 0), 0);
-                }
-                
+                Object.keys(branchItemTotals).forEach(k => { branchItemTotals[k] += this.sumTargetsOf(empPeriod, [k]); });
+                // Total target = PT12 + Super Kix + Tazbeet + WE Gold + Data only
+                const empTarget = this.sumTargetsOf(empPeriod, LINE_KEYS);
+
                 // Get emp logs
                 const empLogs = empPeriod ? logs.filter(l => l.period_id === empPeriod.id) : [];
-                let empAchieve = 0;
-                empLogs.forEach(log => {
-                    empAchieve += (parseFloat(log.pt12)||0) + (parseFloat(log.super_kix)||0) + (parseFloat(log.tazbeet)||0) + (parseFloat(log.data)||0);
+                const empAchieve = this.sumLogsOf(empLogs, LINE_KEYS);
+
+                const empSep = {};
+                this.SEPARATE_ITEMS.forEach(it => {
+                    empSep[it.key] = { target: this.sumTargetsOf(empPeriod, [it.key]), achieve: this.sumLogsOf(empLogs, [it.key]) };
+                    branchSep[it.key].target += empSep[it.key].target;
+                    branchSep[it.key].achieve += empSep[it.key].achieve;
                 });
 
                 totalBranchTarget += empTarget;
                 totalBranchAchieve += empAchieve;
 
                 const empPct = TargetCalculator.calculateAchievementPercentage(empAchieve, empTarget);
-                const empProj = TargetCalculator.calculateProjection(empAchieve, empLogs.length, 20); // simplified elapsed
+                const empProj = this.projectionFor(empPeriod, empAchieve);
+                const empProjPct = TargetCalculator.calculateAchievementPercentage(empProj, empTarget);
+                totalBranchProj += empProj;
                 const empRem = TargetCalculator.calculateRemaining(empTarget, empAchieve);
                 const empStatus = TargetCalculator.calculateStatus(empPct, empProj, empTarget);
 
@@ -253,19 +306,29 @@
                     achieve: empAchieve,
                     percentage: empPct,
                     projection: empProj,
+                    projPct: empProjPct,
                     remaining: empRem,
-                    status: empStatus
+                    status: empStatus,
+                    sep: empSep,
+                    btId: empPeriod ? empPeriod.branch_target_id : null,
+                    manual: !!(empPeriod && (empPeriod.targets || []).some(t => t.is_manual))
                 });
             });
 
+            const btnTxt = document.getElementById('branchTargetBtnText');
+            if (btnTxt) btnTxt.textContent = employeeRows.some(e => e.btId) ? 'تعديل توتل تارجت الفرع' : 'تسجيل توتل تارجت الفرع';
+
             const branchPct = TargetCalculator.calculateAchievementPercentage(totalBranchAchieve, totalBranchTarget);
-            const branchProj = TargetCalculator.calculateProjection(totalBranchAchieve, 10, 20);
+            const branchProj = totalBranchProj;
+            const branchProjPct = TargetCalculator.calculateAchievementPercentage(branchProj, totalBranchTarget);
+            employeeRows.forEach(e => { e.pct = e.percentage; });
+            this.rankRows(employeeRows);   // dynamic ranking: best performer first
             const branchRem = TargetCalculator.calculateRemaining(totalBranchTarget, totalBranchAchieve);
 
             container.innerHTML = `
                 <div class="kpi-grid">
                     <div class="kpi-card">
-                        <span class="kpi-title">هدف الفرع الكلي</span>
+                        <span class="kpi-title">هدف الفرع الكلي (PT12 + Super Kix + Tazbeet + WE Gold + Data)</span>
                         <div class="kpi-value">${Utils.formatNumber(totalBranchTarget)}</div>
                     </div>
                     <div class="kpi-card">
@@ -277,14 +340,29 @@
                         <div class="kpi-value">${Utils.formatPercent(branchPct)}</div>
                     </div>
                     <div class="kpi-card">
-                        <span class="kpi-title">متوقع الفرع (Projection)</span>
-                        <div class="kpi-value">${Utils.formatNumber(branchProj)}</div>
+                        <span class="kpi-title">متوقع تحقيق الفرع (Projection)</span>
+                        <div class="kpi-value">${Utils.formatNumber(branchProj)} <small style="font-size:.55em;">(${Utils.formatPercent(branchProjPct)})</small></div>
                     </div>
                     <div class="kpi-card">
                         <span class="kpi-title">المتبقي للفرع</span>
                         <div class="kpi-value">${Utils.formatNumber(branchRem)}</div>
                     </div>
                 </div>
+
+                <div class="glass-card margin-top" style="padding:1rem;">
+                    <div class="flex justify-between items-center" style="gap:.75rem;flex-wrap:wrap;margin-bottom:.75rem;">
+                        <h3 class="font-bold">تارجت الفرع الكامل</h3>
+                        <button class="btn btn-primary btn-sm" onclick="openBranchTargetModal()">
+                            <i class="fa-solid fa-pen"></i> ${employeeRows.some(e => e.btId) ? 'تعديل تارجت الفرع' : 'تسجيل تارجت الفرع'}
+                        </button>
+                    </div>
+                    <div class="flex" style="gap:.5rem;flex-wrap:wrap;">
+                        ${[['pt12','PT12'],['super_kix','Super Kix'],['tazbeet','Tazbeet'],['data','Data'],['we_gold','WE Gold'],['adsl','ADSL'],['fixed','Fixed'],['we_pay','WE Pay']].map(([k, l]) => `<span class="badge-status">${l}: ${Utils.formatNumber(branchItemTotals[k])}</span>`).join('')}
+                    </div>
+                </div>
+
+                <h3 class="font-bold margin-top" style="margin-bottom:.75rem;">الأهداف المنفصلة (مش داخلة في إجمالي الخطوط)</h3>
+                <div class="kpi-grid">${this.separateCardsHTML(branchSep)}</div>
 
                 <div class="table-card-wrapper margin-top">
                     <div class="table-toolbar">
@@ -298,30 +376,39 @@
                         <table class="data-table">
                             <thead>
                                 <tr>
+                                    <th>#</th>
                                     <th>الموظف</th>
                                     <th>الهدف</th>
                                     <th>المحقق</th>
                                     <th>نسبة الإنجاز</th>
-                                    <th>المتوقع</th>
+                                    <th>المتوقع (رقم / %)</th>
                                     <th>المتبقي</th>
+                                    <th>الإنترنت</th>
+                                    <th>الأرضي</th>
+                                    <th>WE Pay</th>
                                     <th>الحالة</th>
                                     <th>التفاصيل</th>
                                 </tr>
                             </thead>
                             <tbody id="branchEmployeesTableBody">
-                                ${employeeRows.map(emp => `
+                                ${employeeRows.map((emp, idx) => `
                                     <tr>
+                                        <td class="font-bold">${idx + 1}</td>
                                         <td class="font-bold">${emp.name}</td>
-                                        <td>${emp.target}</td>
+                                        <td>${emp.target}${emp.manual ? ' <span class="badge-status" title="تارجت معدّل يدوياً">يدوي</span>' : ''}</td>
                                         <td>${emp.achieve}</td>
                                         <td>${Utils.formatPercent(emp.percentage)}</td>
-                                        <td>${emp.projection}</td>
+                                        <td>${emp.projection} <small>(${Utils.formatPercent(emp.projPct)})</small></td>
                                         <td>${emp.remaining}</td>
+                                        <td>${emp.sep.adsl.achieve} / ${emp.sep.adsl.target}</td>
+                                        <td>${emp.sep.fixed.achieve} / ${emp.sep.fixed.target}</td>
+                                        <td>${emp.sep.we_pay.achieve} / ${emp.sep.we_pay.target}</td>
                                         <td><span class="badge-status ${emp.status.class}">${emp.status.label}</span></td>
                                         <td>
                                             <button class="btn btn-sm btn-secondary" onclick="Dashboard.openEmployeeDrilldown('${emp.id}')">
                                                 <i class="fa-solid fa-eye"></i> عرض
                                             </button>
+                                            ${emp.btId && typeof openEmpTargetModal === 'function' ? `<button class="btn btn-sm btn-primary" onclick="openEmpTargetModal('${emp.id}')"><i class="fa-solid fa-pen"></i> تارجت</button>` : ''}
                                         </td>
                                     </tr>
                                 `).join('')}
@@ -351,13 +438,15 @@
             const periods = (this.state.teamData && this.state.teamData.periods) ? this.state.teamData.periods : [];
             const logs = (this.state.teamData && this.state.teamData.logs) ? this.state.teamData.logs : [];
 
-            let areaTarget = 0; let areaAchieve = 0;
+            let areaTarget = 0; let areaAchieve = 0; let areaProj = 0;
+            const LINE_KEYS = TargetCalculator.TOTAL_LINE_ITEMS;
+            const areaSep = {}; this.SEPARATE_ITEMS.forEach(it => areaSep[it.key] = { target: 0, achieve: 0 });
             const branchesMap = {};
             const employeeRows = [];
 
             (this.state.areaBranches || []).forEach(br => {
                 if (br && br.name && !branchesMap[br.name]) {
-                    branchesMap[br.name] = { name: br.name, employeesCount: 0, target: 0, achieve: 0 };
+                    branchesMap[br.name] = { name: br.name, employeesCount: 0, target: 0, achieve: 0, proj: 0 };
                 }
             });
 
@@ -365,64 +454,72 @@
                 if (emp.role !== 'agent') return; // Only count agent targets to avoid double counting
 
                 const empPeriod = periods.find(p => p.user_id === emp.id);
-                let empTarget = 0;
-                if (empPeriod && empPeriod.targets) {
-                    empTarget = empPeriod.targets.reduce((sum, t) => sum + (parseFloat(t.target_value) || 0), 0);
-                }
-                
+                const empTarget = this.sumTargetsOf(empPeriod, LINE_KEYS);   // lines only
                 const empLogs = empPeriod ? logs.filter(l => l.period_id === empPeriod.id) : [];
-                let empAchieve = 0;
-                empLogs.forEach(log => {
-                    empAchieve += (parseFloat(log.pt12)||0) + (parseFloat(log.super_kix)||0) + (parseFloat(log.tazbeet)||0) + (parseFloat(log.data)||0);
+                const empAchieve = this.sumLogsOf(empLogs, LINE_KEYS);
+                this.SEPARATE_ITEMS.forEach(it => {
+                    areaSep[it.key].target += this.sumTargetsOf(empPeriod, [it.key]);
+                    areaSep[it.key].achieve += this.sumLogsOf(empLogs, [it.key]);
                 });
 
+                const empProj = this.projectionFor(empPeriod, empAchieve);
                 areaTarget += empTarget;
                 areaAchieve += empAchieve;
+                areaProj += empProj;
 
                 const branchName = emp.branch || 'غير محدد';
                 if (!branchesMap[branchName]) {
-                    branchesMap[branchName] = { name: branchName, employeesCount: 0, target: 0, achieve: 0 };
+                    branchesMap[branchName] = { name: branchName, employeesCount: 0, target: 0, achieve: 0, proj: 0 };
                 }
                 branchesMap[branchName].employeesCount++;
                 branchesMap[branchName].target += empTarget;
                 branchesMap[branchName].achieve += empAchieve;
+                branchesMap[branchName].proj += empProj;
 
                 employeeRows.push({
-                    name: emp.full_name, branch: branchName, target: empTarget, achieve: empAchieve,
-                    pct: TargetCalculator.calculateAchievementPercentage(empAchieve, empTarget)
+                    name: emp.full_name, branch: branchName, target: empTarget, achieve: empAchieve, proj: empProj,
+                    pct: TargetCalculator.calculateAchievementPercentage(empAchieve, empTarget),
+                    projPct: TargetCalculator.calculateAchievementPercentage(empProj, empTarget)
                 });
             });
 
             const branches = Object.values(branchesMap);
             branches.forEach(b => {
                 b.pct = TargetCalculator.calculateAchievementPercentage(b.achieve, b.target);
-                b.proj = TargetCalculator.calculateProjection(b.achieve, 10, 20);
+                b.projPct = TargetCalculator.calculateAchievementPercentage(b.proj, b.target);
                 b.rem = TargetCalculator.calculateRemaining(b.target, b.achieve);
             });
 
             const areaPct = TargetCalculator.calculateAchievementPercentage(areaAchieve, areaTarget);
+            const areaProjPct = TargetCalculator.calculateAchievementPercentage(areaProj, areaTarget);
+            this.rankRows(branches);       // branches: best first
+            this.rankRows(employeeRows);   // employees: best first
 
             container.innerHTML = `
                 <div class="kpi-grid">
                     <div class="kpi-card"><span class="kpi-title">هدف المنطقة (الأفراد)</span><div class="kpi-value">${Utils.formatNumber(areaTarget)}</div></div>
                     <div class="kpi-card"><span class="kpi-title">محقق المنطقة</span><div class="kpi-value">${Utils.formatNumber(areaAchieve)}</div></div>
                     <div class="kpi-card"><span class="kpi-title">نسبة إنجاز المنطقة</span><div class="kpi-value">${Utils.formatPercent(areaPct)}</div></div>
+                    <div class="kpi-card"><span class="kpi-title">متوقع تحقيق المنطقة</span><div class="kpi-value">${Utils.formatNumber(areaProj)} <small style="font-size:.55em;">(${Utils.formatPercent(areaProjPct)})</small></div></div>
                 </div>
+                <h3 class="font-bold margin-top" style="margin-bottom:.75rem;">الأهداف المنفصلة (مش داخلة في إجمالي الخطوط)</h3>
+                <div class="kpi-grid">${this.separateCardsHTML(areaSep)}</div>
                 <div class="table-card-wrapper margin-top" id="branches-section">
                     <div class="table-toolbar"><h3 class="font-bold">أداء الفروع التابعة للمنطقة</h3></div>
                     <table class="data-table">
                         <thead>
-                            <tr><th>الفرع</th><th>الموظفين</th><th>الهدف</th><th>المحقق</th><th>النسبة</th><th>المتوقع</th><th>المتبقي</th></tr>
+                            <tr><th>#</th><th>الفرع</th><th>الموظفين</th><th>الهدف</th><th>المحقق</th><th>النسبة</th><th>المتوقع (رقم / %)</th><th>المتبقي</th></tr>
                         </thead>
                         <tbody>
-                            ${branches.map(b => `
+                            ${branches.map((b, idx) => `
                                 <tr>
+                                    <td class="font-bold">${idx + 1}</td>
                                     <td class="font-bold">${b.name}</td>
                                     <td>${b.employeesCount}</td>
                                     <td>${b.target}</td>
                                     <td>${b.achieve}</td>
                                     <td>${Utils.formatPercent(b.pct)}</td>
-                                    <td>${b.proj}</td>
+                                    <td>${b.proj} <small>(${Utils.formatPercent(b.projPct)})</small></td>
                                     <td>${b.rem}</td>
                                 </tr>
                             `).join('')}
@@ -454,16 +551,18 @@
                     <div class="data-table-container">
                         <table class="data-table">
                             <thead>
-                                <tr><th>الموظف</th><th>الفرع</th><th>الهدف</th><th>المحقق</th><th>النسبة</th></tr>
+                                <tr><th>#</th><th>الموظف</th><th>الفرع</th><th>الهدف</th><th>المحقق</th><th>النسبة</th><th>المتوقع (رقم / %)</th></tr>
                             </thead>
                             <tbody>
-                                ${employeeRows.map(emp => `
+                                ${employeeRows.map((emp, idx) => `
                                     <tr>
+                                        <td class="font-bold">${idx + 1}</td>
                                         <td class="font-bold">${emp.name}</td>
                                         <td>${emp.branch}</td>
                                         <td>${emp.target}</td>
                                         <td>${emp.achieve}</td>
                                         <td>${Utils.formatPercent(emp.pct)}</td>
+                                        <td>${emp.proj} <small>(${Utils.formatPercent(emp.projPct)})</small></td>
                                     </tr>
                                 `).join('')}
                             </tbody>
@@ -556,39 +655,131 @@
         renderSupervisorView: async function () {
             const container = document.getElementById('supervisorDashboardContainer');
             if (!container) return;
-
+            const esc = v => String(v == null ? '' : v).replace(/&/g, '&amp;').replace(/</g, '&lt;');
+            const LINE_KEYS = TargetCalculator.TOTAL_LINE_ITEMS;
             const { month, year } = Utils.getCurrentMonthYear();
+
             const allAreas = (await TargetAPI.fetchAllowedAreas()) || [];
-            const sum = (o) => ['pt12', 'super_kix', 'tazbeet', 'data'].reduce((t, k) => t + (parseFloat(o[k]) || 0), 0);
-            const areas = [];
-            for (const ar of allAreas) {
-                const team = await TargetAPI.fetchTeamData(month, year, null, ar.name);
-                let target = 0;
-                team.periods.forEach(p => (p.targets || []).forEach(t => {
-                    if (['pt12', 'super_kix', 'tazbeet', 'data'].includes(t.item)) target += parseFloat(t.target_value) || 0;
-                }));
-                const achieve = team.logs.reduce((t, l) => t + sum(l), 0);
-                areas.push({ name: ar.name, target, achieve, pct: target ? (achieve / target) * 100 : 0 });
-            }
-            if (areas.length === 0) {
-                container.innerHTML = '<p class="text-muted">لا توجد مناطق</p>';
+            if (allAreas.length === 0) {
+                container.innerHTML = '<p class="text-muted">لا توجد مناطق مرتبطة بحسابك. تواصل مع الأدمن.</p>';
                 return;
             }
+            const teams = await Promise.all(allAreas.map(ar => TargetAPI.fetchTeamData(month, year, null, ar.name)));
+
+            const mk = () => ({ employees: 0, target: 0, achieve: 0, proj: 0 });
+            const supSep = {}; this.SEPARATE_ITEMS.forEach(it => supSep[it.key] = { target: 0, achieve: 0 });
+            const total = mk();
+            const fin = (o) => {   // derived numbers
+                o.pct = TargetCalculator.calculateAchievementPercentage(o.achieve, o.target);
+                o.projPct = TargetCalculator.calculateAchievementPercentage(o.proj, o.target);
+                o.rem = TargetCalculator.calculateRemaining(o.target, o.achieve);
+            };
+
+            const areas = allAreas.map((ar, i) => {
+                const team = teams[i] || { periods: [], logs: [] };
+                const brMap = {};
+                (ar.branches || []).forEach(br => { if (br && br.name) brMap[br.name] = Object.assign({ name: br.name }, mk()); });
+                (team.periods || []).forEach(per => {
+                    const r = per.profiles && per.profiles.role;
+                    if (r && r !== 'agent') return;   // agents only, so nothing is counted twice
+                    const name = per.branch || 'غير محدد';
+                    const br = brMap[name] || (brMap[name] = Object.assign({ name }, mk()));
+                    const plogs = (team.logs || []).filter(l => l.period_id === per.id);
+                    const ach = this.sumLogsOf(plogs, LINE_KEYS), tgt = this.sumTargetsOf(per, LINE_KEYS);
+                    br.employees++; br.target += tgt; br.achieve += ach; br.proj += this.projectionFor(per, ach);
+                    this.SEPARATE_ITEMS.forEach(it => {
+                        supSep[it.key].target += this.sumTargetsOf(per, [it.key]);
+                        supSep[it.key].achieve += this.sumLogsOf(plogs, [it.key]);
+                    });
+                });
+                const area = Object.assign({ name: ar.name }, mk());
+                area.branches = Object.values(brMap);
+                area.branches.forEach(br => {
+                    fin(br);
+                    area.employees += br.employees; area.target += br.target; area.achieve += br.achieve; area.proj += br.proj;
+                });
+                fin(area);
+                this.rankRows(area.branches);          // branches inside the area: best first
+                total.employees += area.employees; total.target += area.target; total.achieve += area.achieve; total.proj += area.proj;
+                return area;
+            });
+            fin(total);
+            this.rankRows(areas);                      // areas: best first
+
+            const proj = (o) => `${Utils.formatNumber(o.proj)} <small>(${Utils.formatPercent(o.projPct)})</small>`;
+            const bar = (pct) => `<div class="progress-bar-bg"><div class="progress-bar-fill" style="width:${Math.min(Math.max(pct || 0, 0), 100)}%;"></div></div>`;
 
             container.innerHTML = `
                 <div class="kpi-grid">
-                    ${areas.map(a => `
-                        <div class="kpi-card glass-card">
-                            <span class="kpi-title">${a.name}</span>
-                            <div class="kpi-value">${Utils.formatPercent(a.pct)}</div>
-                            <div class="kpi-subtext">الهدف: ${a.target} | المحقق: ${a.achieve}</div>
-                            <button class="btn btn-sm btn-primary w-full margin-top" onclick="Dashboard.selectAreaScope('${a.name}')">
-                                <i class="fa-solid fa-folder-open"></i> استعراض المنطقة
-                            </button>
+                    <div class="kpi-card"><span class="kpi-title">إجمالي هدف المناطق</span><div class="kpi-value">${Utils.formatNumber(total.target)}</div><div class="kpi-subtext">${areas.length} منطقة | ${total.employees} موظف</div></div>
+                    <div class="kpi-card"><span class="kpi-title">إجمالي المحقق</span><div class="kpi-value">${Utils.formatNumber(total.achieve)}</div></div>
+                    <div class="kpi-card"><span class="kpi-title">نسبة الإنجاز الكلية</span><div class="kpi-value">${Utils.formatPercent(total.pct)}</div>${bar(total.pct)}</div>
+                    <div class="kpi-card"><span class="kpi-title">المتوقع تحقيقه (رقم / %)</span><div class="kpi-value">${Utils.formatNumber(total.proj)} <small style="font-size:.55em;">(${Utils.formatPercent(total.projPct)})</small></div></div>
+                    <div class="kpi-card"><span class="kpi-title">المتبقي</span><div class="kpi-value">${Utils.formatNumber(total.rem)}</div></div>
+                </div>
+
+                <h3 class="font-bold margin-top" style="margin-bottom:.75rem;">الأهداف المنفصلة (مش داخلة في إجمالي الخطوط)</h3>
+                <div class="kpi-grid">${this.separateCardsHTML(supSep)}</div>
+
+                <div class="table-card-wrapper margin-top" id="areas-section">
+                    <div class="table-toolbar"><h3 class="font-bold">ترتيب المناطق (${areas.length})</h3></div>
+                    <div class="data-table-container">
+                        <table class="data-table">
+                            <thead><tr><th>#</th><th>المنطقة</th><th>الموظفين</th><th>الهدف</th><th>المحقق</th><th>النسبة</th><th>المتوقع (رقم / %)</th><th>المتبقي</th></tr></thead>
+                            <tbody>
+                                ${areas.map((a, idx) => `
+                                    <tr>
+                                        <td class="font-bold">${idx + 1}</td>
+                                        <td class="font-bold">${esc(a.name)}</td>
+                                        <td>${a.employees}</td>
+                                        <td>${Utils.formatNumber(a.target)}</td>
+                                        <td>${Utils.formatNumber(a.achieve)}</td>
+                                        <td>${Utils.formatPercent(a.pct)}</td>
+                                        <td>${proj(a)}</td>
+                                        <td>${Utils.formatNumber(a.rem)}</td>
+                                    </tr>`).join('')}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div id="branches-section">
+                ${areas.map((a, aidx) => `
+                    <div class="table-card-wrapper margin-top">
+                        <div class="table-toolbar" style="flex-wrap:wrap;gap:.5rem;">
+                            <h3 class="font-bold">#${aidx + 1} ${esc(a.name)}</h3>
+                            <span class="text-muted" style="font-size:.85rem;">
+                                الهدف: ${Utils.formatNumber(a.target)} | المحقق: ${Utils.formatNumber(a.achieve)} |
+                                النسبة: ${Utils.formatPercent(a.pct)} | المتوقع: ${proj(a)}
+                            </span>
                         </div>
-                    `).join('')}
+                        <div style="padding:0 1rem .5rem;">${bar(a.pct)}</div>
+                        <div class="data-table-container">
+                            <table class="data-table">
+                                <thead><tr><th>#</th><th>الفرع</th><th>الموظفين</th><th>الهدف</th><th>المحقق</th><th>النسبة</th><th>المتوقع (رقم / %)</th><th>المتبقي</th></tr></thead>
+                                <tbody>
+                                    ${a.branches.length ? a.branches.map((b, idx) => `
+                                        <tr>
+                                            <td class="font-bold">${idx + 1}</td>
+                                            <td class="font-bold">${esc(b.name)}</td>
+                                            <td>${b.employees}</td>
+                                            <td>${Utils.formatNumber(b.target)}</td>
+                                            <td>${Utils.formatNumber(b.achieve)}</td>
+                                            <td>${Utils.formatPercent(b.pct)}</td>
+                                            <td>${proj(b)}</td>
+                                            <td>${Utils.formatNumber(b.rem)}</td>
+                                        </tr>`).join('') : '<tr><td colspan="8" class="text-muted">لا توجد فروع في هذه المنطقة</td></tr>'}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>`).join('')}
                 </div>
             `;
+
+            if (location.hash) {
+                const t = document.querySelector(location.hash);
+                if (t) setTimeout(() => t.scrollIntoView({ behavior: 'smooth', block: 'start' }), 150);
+            }
         },
 
         filterEmployees: function (query) {

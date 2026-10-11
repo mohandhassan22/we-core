@@ -106,11 +106,12 @@
                             <div class="form-group"><label class="form-label">Data Lines</label><input type="number" min="0" class="form-input" id="tgt_data" value="0"></div>
                             <div class="form-group"><label class="form-label">WE Space ADSL</label><input type="number" min="0" class="form-input" id="tgt_adsl" value="0"></div>
                             <div class="form-group"><label class="form-label">Fixed Line</label><input type="number" min="0" class="form-input" id="tgt_fixed" value="0"></div>
-                            <div class="form-group" style="grid-column: span 2;"><label class="form-label">WE Pay Wallet</label><input type="number" min="0" class="form-input" id="tgt_we_pay" value="0"></div>
+                            <div class="form-group"><label class="form-label">WE Pay Wallet</label><input type="number" min="0" class="form-input" id="tgt_we_pay" value="0"></div>
+                            <div class="form-group"><label class="form-label">WE Gold</label><input type="number" min="0" class="form-input" id="tgt_we_gold" value="0"></div>
                         </div>
 
                         <div class="flex justify-between items-center margin-top">
-                            <div class="font-bold text-muted" id="calculatedTotalLinesDisplay">إجمالي الأسطر: 0 خط</div>
+                            <div class="font-bold text-muted" id="calculatedTotalLinesDisplay">إجمالي الخطوط: 0 خط</div>
                             <button type="submit" class="btn btn-primary" id="saveTargetBtn"><i class="fa-solid fa-floppy-disk"></i> حفظ تارجت الفرع</button>
                         </div>
                     </form>
@@ -120,8 +121,8 @@
                     <h3 class="font-bold margin-bottom"><i class="fa-solid fa-users"></i> نصيب كل موظف (تقسيم بالتساوي)</h3>
                     <div class="data-table-container">
                         <table class="data-table">
-                            <thead><tr><th>الموظف</th><th>PT12</th><th>Super Kix</th><th>Tazbeet</th><th>Data</th><th>ADSL</th><th>Fixed</th><th>WE Pay</th></tr></thead>
-                            <tbody id="sharesBody"><tr><td colspan="8" class="text-center text-muted">لم يتم تحديد تارجت بعد</td></tr></tbody>
+                            <thead><tr><th>الموظف</th><th>PT12</th><th>Super Kix</th><th>Tazbeet</th><th>Data</th><th>ADSL</th><th>Fixed</th><th>WE Pay</th><th>WE Gold</th></tr></thead>
+                            <tbody id="sharesBody"><tr><td colspan="9" class="text-center text-muted">لم يتم تحديد تارجت بعد</td></tr></tbody>
                         </table>
                     </div>
                 </div>
@@ -136,7 +137,7 @@
     <script src="../js/app.js"></script>
 
     <script>
-        const ITEMS = ['pt12', 'super_kix', 'tazbeet', 'data', 'adsl', 'fixed', 'we_pay'];
+        const ITEMS = ['pt12', 'super_kix', 'tazbeet', 'data', 'adsl', 'fixed', 'we_pay', 'we_gold'];
         const $ = (id) => document.getElementById(id);
         let currentBranchId = null, currentTargetId = null, branchAgents = [];
 
@@ -161,9 +162,9 @@
 
         function updateSum() {
             const v = (id) => parseFloat($('tgt_' + id).value) || 0;
-            const sum = v('pt12') + v('super_kix') + v('tazbeet') + v('data');
+            const sum = v('pt12') + v('super_kix') + v('tazbeet') + v('data') + v('we_gold');
             const n = branchAgents.length;
-            $('calculatedTotalLinesDisplay').textContent = `إجمالي الأسطر: ${sum} خط` + (n ? ` | لكل موظف ≈ ${(sum / n).toFixed(1)}` : '');
+            $('calculatedTotalLinesDisplay').textContent = `إجمالي الخطوط: ${sum} خط` + (n ? ` | لكل موظف ≈ ${(sum / n).toFixed(1)}` : '');
         }
         ITEMS.forEach(id => $('tgt_' + id).addEventListener('input', updateSum));
 
@@ -178,7 +179,7 @@
 
         function renderShares(rows) {
             const body = $('sharesBody');
-            if (!rows || !rows.length) { body.innerHTML = '<tr><td colspan="8" class="text-center text-muted">لم يتم تحديد تارجت بعد</td></tr>'; return; }
+            if (!rows || !rows.length) { body.innerHTML = '<tr><td colspan="9" class="text-center text-muted">لم يتم تحديد تارجت بعد</td></tr>'; return; }
             body.innerHTML = rows.map(r => {
                 const t = {}; (r.targets || []).forEach(x => t[x.item] = x.target_value);
                 const name = (r.profiles && (r.profiles.full_name || r.profiles.username)) || '—';

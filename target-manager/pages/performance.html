@@ -85,7 +85,8 @@
                                     <th>ADSL</th>
                                     <th>Fixed</th>
                                     <th>WE Pay</th>
-                                    <th>إجمالي الأسطر</th>
+                                    <th>WE Gold</th>
+                                    <th>إجمالي الخطوط</th>
                                     <th>ملاحظات</th>
                                 </tr>
                             </thead>
@@ -119,7 +120,8 @@
                         <div class="form-group"><label class="form-label">Data Lines</label><input type="number" min="0" class="form-input" id="entry_data" value="0"></div>
                         <div class="form-group"><label class="form-label">WE Space ADSL</label><input type="number" min="0" class="form-input" id="entry_adsl" value="0"></div>
                         <div class="form-group"><label class="form-label">Fixed Line</label><input type="number" min="0" class="form-input" id="entry_fixed" value="0"></div>
-                        <div class="form-group" style="grid-column: span 2;"><label class="form-label">WE Pay Wallet</label><input type="number" min="0" class="form-input" id="entry_we_pay" value="0"></div>
+                        <div class="form-group"><label class="form-label">WE Pay Wallet</label><input type="number" min="0" class="form-input" id="entry_we_pay" value="0"></div>
+                        <div class="form-group"><label class="form-label">WE Gold</label><input type="number" min="0" class="form-input" id="entry_we_gold" value="0"></div>
                     </div>
                 </form>
             </div>
@@ -140,6 +142,9 @@
 
     <script>
         document.getElementById('entryDate').valueAsDate = new Date();
+        const prefillEntry = () => DailyEntry.prefill((window.App && App.userProfile) || null, document.getElementById('entryDate').value);
+        document.getElementById('entryDate').addEventListener('change', prefillEntry);
+        window.addEventListener('load', () => setTimeout(prefillEntry, 1200));
 
         async function loadPerformanceTable() {
             const tbody = document.getElementById('dailyLogsTableBody');
@@ -165,7 +170,7 @@
 
             function renderRows(data) {
                 tbody.innerHTML = data.map(log => {
-                    const totalLines = (parseFloat(log.pt12)||0) + (parseFloat(log.super_kix)||0) + (parseFloat(log.tazbeet)||0) + (parseFloat(log.data)||0);
+                    const totalLines = (parseFloat(log.pt12)||0) + (parseFloat(log.super_kix)||0) + (parseFloat(log.tazbeet)||0) + (parseFloat(log.data)||0) + (parseFloat(log.we_gold)||0);
                     return `
                         <tr>
                             <td class="font-bold">${log.performance_date}</td>
@@ -176,6 +181,7 @@
                             <td>${log.adsl || 0}</td>
                             <td>${log.fixed || 0}</td>
                             <td>${log.we_pay || 0}</td>
+                            <td>${log.we_gold || 0}</td>
                             <td class="font-bold text-purple" style="color:var(--we-purple);">${totalLines}</td>
                             <td>${log.notes || '—'}</td>
                         </tr>
@@ -193,7 +199,8 @@
                 data: document.getElementById('entry_data').value,
                 adsl: document.getElementById('entry_adsl').value,
                 fixed: document.getElementById('entry_fixed').value,
-                we_pay: document.getElementById('entry_we_pay').value
+                we_pay: document.getElementById('entry_we_pay').value,
+                we_gold: document.getElementById('entry_we_gold').value
             };
             try {
                 const profile = (window.App && App.userProfile) || null;

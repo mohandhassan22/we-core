@@ -22,11 +22,12 @@ const itemTargets = {
     super_kix: 15,
     tazbeet: 15,
     data: 15,
+    we_gold: 5,
     adsl: 10,  // Should not count
     fixed: 10, // Should not count
     we_pay: 10 // Should not count
 };
-assertEqual(TargetCalculator.calculateTotalLinesTarget(itemTargets), 60, "Total Lines Target Calculation");
+assertEqual(TargetCalculator.calculateTotalLinesTarget(itemTargets), 65, "Total Lines Target Calculation");
 
 // 2. Total Lines Achieve
 const itemAchieves = {
@@ -34,14 +35,15 @@ const itemAchieves = {
     super_kix: 10,
     tazbeet: 8,
     data: 7,
+    we_gold: 3,
     adsl: 10,  // Should not count
     fixed: 5,  // Should not count
     we_pay: 5  // Should not count
 };
-assertEqual(TargetCalculator.calculateTotalLinesAchieve(itemAchieves), 35, "Total Lines Achieve Calculation");
+assertEqual(TargetCalculator.calculateTotalLinesAchieve(itemAchieves), 38, "Total Lines Achieve Calculation");
 
 // 3. Achievement Percentage
-assertEqual(TargetCalculator.calculateAchievementPercentage(35, 60), 58.3, "Achievement Percentage Calculation (35/60 -> 58.3%)");
+assertEqual(TargetCalculator.calculateAchievementPercentage(38, 65), 58.5, "Achievement Percentage Calculation (38/65 -> 58.5%)");
 
 // 4. Remaining Target
 assertEqual(TargetCalculator.calculateRemaining(60, 35), 25, "Remaining Target Calculation (60 - 35 = 25)");

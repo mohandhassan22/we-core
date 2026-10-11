@@ -13,13 +13,13 @@
  */
 
 (function (global) {
-    const TOTAL_LINE_ITEMS = ['pt12', 'super_kix', 'tazbeet', 'data'];
+    const TOTAL_LINE_ITEMS = ['pt12', 'super_kix', 'tazbeet', 'data', 'we_gold'];
 
     const TargetCalculator = {
         TOTAL_LINE_ITEMS: TOTAL_LINE_ITEMS,
 
         /**
-         * Calculates total target for lines (PT12 + Super Kix + Tazbeet + Data)
+         * Calculates total target for lines (PT12 + Super Kix + Tazbeet + WE Gold + Data)
          * @param {Object} itemTargets - { pt12: 15, super_kix: 15, tazbeet: 15, data: 15, adsl: 5, fixed: 5, we_pay: 10 }
          * @returns {number}
          */
@@ -170,7 +170,7 @@
         calculateEmployeeTargetsFromBranchTotal: function (totalBranchTargets, employeeCount) {
             const count = Math.max(parseInt(employeeCount, 10) || 1, 1);
             const employeeTarget = {};
-            const keys = ['pt12', 'super_kix', 'tazbeet', 'data', 'adsl', 'fixed', 'we_pay'];
+            const keys = ['pt12', 'super_kix', 'tazbeet', 'data', 'adsl', 'fixed', 'we_pay', 'we_gold'];
 
             keys.forEach(key => {
                 const total = parseFloat(totalBranchTargets ? totalBranchTargets[key] : 0) || 0;
@@ -203,7 +203,7 @@
             const status = this.calculateStatus(achievementPct, projection, targetLines);
 
             // Item-by-item breakdown
-            const items = ['pt12', 'super_kix', 'tazbeet', 'data', 'adsl', 'fixed', 'we_pay'];
+            const items = ['pt12', 'super_kix', 'tazbeet', 'data', 'adsl', 'fixed', 'we_pay', 'we_gold'];
             const itemBreakdown = {};
             items.forEach(item => {
                 const itemTgt = parseFloat(itemTargets ? itemTargets[item] : 0) || 0;

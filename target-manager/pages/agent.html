@@ -67,7 +67,7 @@
                         <p class="hero-subtitle">استعرض إنجازك اليومي، المستهدفات الفردية، وتوصيات الذكاء الاصطناعي لتطوير مبيعاتك.</p>
                     </div>
                     <div class="hero-actions">
-                        <button class="btn btn-primary" onclick="Utils.openModal('dailyModal')">
+                        <button class="btn btn-primary" id="openDailyBtn" onclick="Utils.openModal('dailyModal')">
                             <i class="fa-solid fa-plus-circle"></i> إضافة أداء اليوم
                         </button>
                     </div>
@@ -168,9 +168,13 @@
                             <label class="form-label">Fixed Line</label>
                             <input type="number" min="0" class="form-input" id="entry_fixed" value="0">
                         </div>
-                        <div class="form-group" style="grid-column: span 2;">
+                        <div class="form-group">
                             <label class="form-label">WE Pay Wallet</label>
                             <input type="number" min="0" class="form-input" id="entry_we_pay" value="0">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">WE Gold</label>
+                            <input type="number" min="0" class="form-input" id="entry_we_gold" value="0">
                         </div>
                     </div>
                     <div class="form-group" style="margin-top: 1rem;">
@@ -199,6 +203,9 @@
 
     <script>
         document.getElementById('entryDate').valueAsDate = new Date();
+        const prefillEntry = () => DailyEntry.prefill(Dashboard.state.userProfile, document.getElementById('entryDate').value, 'entryNotes');
+        document.getElementById('entryDate').addEventListener('change', prefillEntry);
+        document.getElementById('openDailyBtn')?.addEventListener('click', prefillEntry);
         document.getElementById('saveDailyBtn').addEventListener('click', async function() {
             const date = document.getElementById('entryDate').value;
             const itemsData = {
@@ -208,7 +215,8 @@
                 data: document.getElementById('entry_data').value,
                 adsl: document.getElementById('entry_adsl').value,
                 fixed: document.getElementById('entry_fixed').value,
-                we_pay: document.getElementById('entry_we_pay').value
+                we_pay: document.getElementById('entry_we_pay').value,
+                we_gold: document.getElementById('entry_we_gold').value
             };
             const notes = document.getElementById('entryNotes').value;
 

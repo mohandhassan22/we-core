@@ -2,9 +2,9 @@
  * Shared daily-achievement save + copyable report message
  */
 (function (global) {
-    const LABELS = { pt12: 'PT12', super_kix: 'Super Kix', tazbeet: 'Control Tazbeet', data: 'Data Lines', adsl: 'WE Space ADSL', fixed: 'Fixed Line', we_pay: 'WE Pay' };
+    const LABELS = { pt12: 'PT12', super_kix: 'Super Kix', tazbeet: 'Control Tazbeet', data: 'Data Lines', adsl: 'WE Space ADSL', fixed: 'Fixed Line', we_pay: 'WE Pay', we_gold: 'WE Gold' };
     const ITEMS = Object.keys(LABELS);
-    const LINE_ITEMS = ['pt12', 'super_kix', 'tazbeet', 'data'];
+    const LINE_ITEMS = ['pt12', 'super_kix', 'tazbeet', 'data', 'we_gold'];
     const n = (v) => parseFloat(v) || 0;
 
     function buildReport(profile, date, today, logs, period) {
@@ -20,11 +20,11 @@
         L.push('────────────');
         L.push('✅ إنجاز اليوم:');
         ITEMS.forEach(k => L.push(`• ${LABELS[k]}: ${n(today[k])}`));
-        L.push(`إجمالي أسطر اليوم: ${sumLines(today)}`);
+        L.push(`إجمالي خطوط اليوم: ${sumLines(today)}`);
         L.push('────────────');
         L.push('📈 الإنجاز التراكمي (من بداية الفترة):');
         ITEMS.forEach(k => L.push(`• ${LABELS[k]}: ${totals[k]} / ${targets[k] || 0}`));
-        L.push(`إجمالي الأسطر: ${achLines} من ${tgtLines} (${pct}%)`);
+        L.push(`إجمالي الخطوط: ${achLines} من ${tgtLines} (${pct}%)`);
         L.push(`المتبقي: ${Math.max(tgtLines - achLines, 0)} خط`);
         return L.join('\n');
     }
@@ -53,6 +53,16 @@
     }
 
     const DailyEntry = {
+        // Fill the form with the already-saved values for the chosen date (so editing keeps the other fields)
+        prefill: async function (profile, date, notesId) {
+            if (!profile || !profile.id || !date) return;
+            const period = await TargetAPI.fetchPeriodForDate(profile.id, date);
+            const logs = period ? await TargetAPI.fetchDailyPerformance(period.id, profile.id) : [];
+            const row = logs.find(l => l.performance_date === date) || {};
+            ITEMS.forEach(k => { const el = document.getElementById('entry_' + k); if (el) el.value = n(row[k]); });
+            if (notesId) { const ne = document.getElementById(notesId); if (ne) ne.value = row.notes || ''; }
+        },
+
         save: async function (profile, date, itemsData, notes) {
             if (!profile || !profile.id) throw new Error('تعذر تحديد المستخدم');
             const period = await TargetAPI.fetchPeriodForDate(profile.id, date);
