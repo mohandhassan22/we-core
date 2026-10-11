@@ -8,7 +8,7 @@
     const sb = supabase.createClient(
         'https://iygwhapcpdmsasqlfelv.supabase.co',
         'sb_publishable_rD9naqrpu1dI-iwchAS0GQ_JkgGysqP',
-        { auth: { persistSession: true, autoRefreshToken: true } }
+        { auth: { persistSession: false, autoRefreshToken: false, detectSessionInUrl: false } }
     );
 
     window.doLogin = async function() {
@@ -32,8 +32,8 @@
             });
             if (error || !data?.session) throw new Error('بيانات الدخول غير صحيحة');
 
-            // 3. تخزين الـ Cookie للـ Edge Functions (اختياري)
-            document.cookie = `sb-access-token=${data.session.access_token}; path=/; max-age=86400; SameSite=Lax; Secure`;
+            // 3. الجلسة في Cookie فقط؛ لا يتم استخدام localStorage للمصادقة.
+            document.cookie = `sb-access-token=${encodeURIComponent(data.session.access_token)}; path=/; max-age=86400; SameSite=None; Secure`;
             
             // 4. جلب الرتبة (Role) من جدول profiles للتأكد من الصلاحيات
             const user = data.user;

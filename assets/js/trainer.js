@@ -1,7 +1,7 @@
 const SUPABASE_URL = 'https://iygwhapcpdmsasqlfelv.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_rD9naqrpu1dI-iwchAS0GQ_JkgGysqP';
 const DEMO = new URLSearchParams(location.search).get('demo') === '1';
-const $ = (id) => document.getElementById(id);
+const $ = (id) => document.querySelector(id.startsWith('#') || id.startsWith('[') ? id : `#${id}`);
 const roleNames = { branch_manager: 'مدير فرع', 'branch-manager': 'مدير فرع', manager: 'مدير فرع', 'store-manager': 'مدير فرع', supervisor: 'مشرف', area_manager: 'مدير منطقة', admin: 'إدارة', agent: 'موظف' };
 const fallbackModules = [
   { id:'demo-start',slug:'start-here',eyebrow:'الخطوة الأولى',title:'أساسيات التعامل مع العميل',summary:'ابدأ بفهم المستندات والتفعيل وتحويل المعلومة إلى إجابة واضحة.',body:['اسأل عن احتياج العميل قبل اقتراح الباقة.','راجع المستندات المطلوبة حسب نوع العميل.','استخدم 111 أو my.te.eg في خطوات التفعيل عند الحاجة.','اشرح السعر والصلاحية والمحاسبة بعد انتهاء الباقة.'],videos:[],questions:[{question:'ماذا تفعل إذا لم تكن متأكدًا من شرط؟',options:['تخمن','تتجاهل العميل','تراجع دليل WE-Core أو تسأل المسؤول','تعطي رقمًا عشوائيًا'],correct_index:2,explanation:'الرجوع للمصدر أفضل من نقل معلومة غير مؤكدة.'}]},
