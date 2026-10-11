@@ -64,6 +64,9 @@ async function getRole(token, userId) {
 export default async function middleware(request) {
   const url = new URL(request.url);
   if (PUBLIC_PAGES.has(url.pathname)) return next();
+  // The trainer demo contains static fallback content only; real employee data
+  // still requires the Supabase cookie and follows the normal authenticated path.
+  if (url.pathname === '/trainer.html' && url.searchParams.get('demo') === '1') return next();
 
   const token = getCookie(request, 'sb-access-token');
   let user = null;
