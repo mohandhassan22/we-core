@@ -86,19 +86,27 @@ async function callEdgeFunction(action, body = {}) {
   }
 }
 
+// نفس كوكي الجلسة اللي auth.js بيستخدمه (الجلسة في localStorage ممكن تكون فاضية أو قديمة)
+function cookieToken() {
+  const m = document.cookie.match(/(?:^|;\s*)sb-access-token=([^;]+)/);
+  if (!m) return null;
+  try { return decodeURIComponent(m[1]).replace(/"/g, ''); } catch (_) { return null; }
+}
+
 async function getAccessToken() {
-  const { data: { session }, error } = await sb.auth.getSession();
-  if (error || !session) {
+  const { data: { session } } = await sb.auth.getSession();
+  const token = session?.access_token || cookieToken();
+  if (!token) {
     window.location.href = 'login.html';
     return null;
   }
-  return session.access_token;
+  return token;
 }
 
 // ─── Authentication ───
 async function checkAuth() {
   try {
-    const { data: { user }, error } = await sb.auth.getUser();
+    const { data: { user }, error } = await sb.auth.getUser(cookieToken() || undefined);
     if (error || !user) {
       window.location.href = 'login.html';
       return;
