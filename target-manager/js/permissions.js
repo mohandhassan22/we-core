@@ -43,16 +43,14 @@
             ]
         },
         supervisor: {
-            title: 'مشرف مبيعات',
+            title: 'مشرف مناطق',
             allowedPages: ['supervisor.html', 'area-manager.html', 'branch-manager.html', 'agent.html', 'history.html'],
             defaultPage: 'supervisor.html',
             menu: [
                 { id: 'dashboard', label: 'لوحة المشرف', icon: 'fa-user-tie', href: 'supervisor.html' },
-                { id: 'areas', label: 'المناطق المتاحة', icon: 'fa-layer-group', href: 'supervisor.html#areas-section' },
-                { id: 'branches', label: 'الفروع التابعة', icon: 'fa-store', href: 'supervisor.html#branches-section' },
-                { id: 'employees', label: 'الموظفون', icon: 'fa-users', href: 'supervisor.html#employees-section' },
-                { id: 'history', label: 'التقارير والسجل', icon: 'fa-clock-rotate-left', href: 'history.html' },
-                { id: 'ai', label: 'مستشار الذكاء الاصطناعي', icon: 'fa-brain', href: 'supervisor.html#ai-section' }
+                { id: 'areas', label: 'ترتيب المناطق', icon: 'fa-layer-group', href: 'supervisor.html#areas-section' },
+                { id: 'branches', label: 'الفروع داخل كل منطقة', icon: 'fa-store', href: 'supervisor.html#branches-section' },
+                { id: 'history', label: 'التقارير والسجل', icon: 'fa-clock-rotate-left', href: 'history.html' }
             ]
         },
         admin: {
