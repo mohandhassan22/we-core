@@ -66,8 +66,8 @@
                         <p class="hero-subtitle">متابعة الأهداف الإجمالية للفرع، توزيع التارجت على الموظفين تلقائياً، والتحليل التنبؤي للمبيعات.</p>
                     </div>
                     <div class="hero-actions">
-                        <button class="btn btn-primary" onclick="openBranchTargetModal()">
-                            <i class="fa-solid fa-bullseye"></i> تسجيل توتل تارجت الفرع
+                        <button class="btn btn-primary" id="branchTargetBtn" onclick="openBranchTargetModal()">
+                            <i class="fa-solid fa-bullseye"></i> <span id="branchTargetBtnText">تسجيل توتل تارجت الفرع</span>
                         </button>
                         <button class="btn btn-secondary" onclick="Utils.exportToExcel('Branch_Performance', Dashboard.state.subordinates, ['الاسم', 'الفرع', 'المنطقة'])">
                             <i class="fa-solid fa-file-excel"></i> تصدير إكسيل
@@ -105,7 +105,7 @@
     <div class="modal-overlay" id="branchTargetModal">
         <div class="modal-container" style="max-width: 680px;">
             <div class="modal-header">
-                <h3 class="modal-title"><i class="fa-solid fa-calculator"></i> إدخال توتل تارجت الفرع وتوزيعه تلقائياً</h3>
+                <h3 class="modal-title"><i class="fa-solid fa-calculator"></i> <span id="btgtTitle">إدخال توتل تارجت الفرع وتوزيعه تلقائياً</span></h3>
                 <button class="btn-icon" onclick="Utils.closeModal('branchTargetModal')"><i class="fa-solid fa-xmark"></i></button>
             </div>
             <div class="modal-body">
@@ -242,6 +242,7 @@
                     BT_ITEMS.forEach(k => document.getElementById('btgt_' + k).value = (bt.items && bt.items[k]) || 0);
                 }
             }
+            document.getElementById('btgtTitle').textContent = btTargetId ? 'تعديل توتل تارجت الفرع (القيم الحالية المسجلة)' : 'إدخال توتل تارجت الفرع وتوزيعه تلقائياً';
             updateBranchTargetDistributionUI();
         }
 
@@ -250,6 +251,7 @@
             if (!btBranchId) return Utils.showToast('لا يوجد فرع مرتبط بحسابك. تواصل مع الأدمن.', 'error');
             const start = document.getElementById('btgt_start').value, end = document.getElementById('btgt_end').value;
             if (!start || !end || start > end) return Utils.showToast('تأكد من تواريخ الفترة', 'error');
+            if (btTargetId && !confirm('هتعدّل التارجت المسجل. التوزيع على الموظفين هيتعاد (التعديلات اليدوية على تارجت الموظفين بتفضل). متأكد؟')) return;
             btn.disabled = true;
             try {
                 await TargetAPI.saveBranchTarget({
@@ -262,7 +264,7 @@
                 const my = Utils.getCurrentMonthYear();
                 await Dashboard.loadDashboardData(my.month, my.year);   // reload from DB to confirm it persisted
                 const empCount = Dashboard.state.subordinates.length || 1;
-                Utils.showToast(`تم حفظ التارجت وتوزيعه على ${empCount} موظف`, 'success');
+                Utils.showToast(btTargetId ? `تم تعديل التارجت وإعادة توزيعه على ${empCount} موظف` : `تم حفظ التارجت وتوزيعه على ${empCount} موظف`, 'success');
             } catch (err) {
                 Utils.showToast(err.message || 'تعذر حفظ التارجت', 'error');
             } finally { btn.disabled = false; }

@@ -296,6 +296,9 @@
                 });
             });
 
+            const btnTxt = document.getElementById('branchTargetBtnText');
+            if (btnTxt) btnTxt.textContent = employeeRows.some(e => e.btId) ? 'تعديل توتل تارجت الفرع' : 'تسجيل توتل تارجت الفرع';
+
             const branchPct = TargetCalculator.calculateAchievementPercentage(totalBranchAchieve, totalBranchTarget);
             const branchProj = TargetCalculator.calculateProjection(totalBranchAchieve, 10, 20);
             const branchRem = TargetCalculator.calculateRemaining(totalBranchTarget, totalBranchAchieve);
