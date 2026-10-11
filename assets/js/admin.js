@@ -282,7 +282,7 @@ function displayUsers(users) {
         <td>${createdDate}</td>
         <td>
           <div class="acts">
-            <button class="act-btn reset" title="إعادة تعيين كلمة المرور" onclick="sendPasswordReset(${jsArg(user.email)})">
+            <button class="act-btn reset" title="إعادة تعيين كلمة المرور" onclick="resetToDefaultPassword(${jsArg(user.id)}, ${jsArg(user.email)})">
               <i class="ti ti-key" style="font-size:13px"></i> إعادة تعيين
             </button>
             <button class="act-btn magic" title="إرسال Magic Link" onclick="sendMagicLink(${jsArg(user.email)})">
@@ -340,19 +340,24 @@ function renderOrgManagers() {
   const box = $('orgManagers'); if (!box) return;
   const { areas, branches, profiles } = orgData;
   const users = profiles.map(p => `<option value="${p.id}">${p.full_name || p.username} (${p.username})</option>`).join('');
+  const supUsers = profiles.filter(p => p.role === 'supervisor').map(p => `<option value="${p.id}">${p.full_name || p.username} (${p.username})</option>`).join('');
   const row = (type, item, label) => `<tr>
     <td style="padding:6px">${label}</td>
     <td style="padding:6px"><select class="form-input" data-type="${type}" data-id="${item.id}">
       <option value="">— بدون مدير —</option>${users}</select></td></tr>`;
   box.innerHTML = '<table style="width:100%"><tbody>' +
     areas.map(a => row('area', a, `منطقة: ${a.name}`)).join('') +
+    areas.map(a => `<tr><td style="padding:6px">مشرف منطقة: ${a.name}</td><td style="padding:6px"><select class="form-input" data-type="supervisor" data-id="${a.id}">
+      <option value="">— بدون مشرف —</option>${supUsers}</select></td></tr>`).join('') +
     branches.map(b => row('branch', b, `فرع: ${b.name}`)).join('') + '</tbody></table>';
   box.querySelectorAll('select').forEach(sel => {
-    const item = (sel.dataset.type === 'area' ? areas : branches).find(x => x.id === sel.dataset.id);
-    sel.value = item && item.manager_id ? item.manager_id : '';
+    const isSup = sel.dataset.type === 'supervisor';
+    const item = (sel.dataset.type === 'branch' ? branches : areas).find(x => x.id === sel.dataset.id);
+    sel.value = item ? ((isSup ? item.supervisor_id : item.manager_id) || '') : '';
     sel.addEventListener('change', async () => {
       try {
-        await callOrg('set_manager', { type: sel.dataset.type, id: sel.dataset.id, user_id: sel.value || null });
+        if (isSup) await callOrg('set_supervisor', { area_id: sel.dataset.id, user_id: sel.value || null });
+        else await callOrg('set_manager', { type: sel.dataset.type, id: sel.dataset.id, user_id: sel.value || null });
         showMessage('orgMessage', 'تم تحديث المدير', 'success');
         await loadOrg();
       } catch (err) { showMessage('orgMessage', err.message, 'error'); }
@@ -449,6 +454,14 @@ if ($('confirmDeleteBtn')) $('confirmDeleteBtn').addEventListener('click', async
 });
 
 // ─── Account Actions ───
+async function resetToDefaultPassword(userId, email) {
+  if (!confirm(`إرجاع كلمة مرور ${email} للباسورد الافتراضي؟ هيتطلب منه تغييرها عند أول دخول.`)) return;
+  try {
+    const r = await callOrg('reset_password_default', { user_id: userId });
+    showSuccessModal('تم!', `تم إرجاع كلمة المرور لـ ${r.email || email} إلى الباسورد الافتراضي (${r.default_password}). هيغيّرها عند أول تسجيل دخول.`);
+  } catch (error) { showErrorModal(error.message); }
+}
+
 async function sendPasswordReset(email) {
   try {
     await callEdgeFunction('send_password_reset', { email });
