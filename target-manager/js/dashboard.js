@@ -136,7 +136,7 @@
                             <div class="kpi-icon-wrap kpi-icon-purple"><i class="fa-solid fa-bullseye"></i></div>
                         </div>
                         <div class="kpi-value">${Utils.formatNumber(metrics.targetLines)}</div>
-                        <div class="kpi-subtext">إجمالي مستهدف الأسطر الـ 4</div>
+                        <div class="kpi-subtext">PT12 + Super Kix + Tazbeet + WE Gold + Data</div>
                     </div>
                     <div class="kpi-card">
                         <div class="kpi-card-header">
@@ -218,6 +218,31 @@
         /* ------------------------------------------------------------------
          * 2. BRANCH MANAGER DASHBOARD RENDERER
          * ------------------------------------------------------------------ */
+        // Separate (independent) KPIs: each has its own target / achieved / %
+        SEPARATE_ITEMS: [
+            { key: 'adsl', label: 'الإنترنت (ADSL)' },
+            { key: 'fixed', label: 'الأرضي (Fixed)' },
+            { key: 'we_pay', label: 'WE Pay' }
+        ],
+        sumTargetsOf: function (period, keys) {
+            return ((period && period.targets) || []).reduce((s, t) => keys.includes(t.item) ? s + (parseFloat(t.target_value) || 0) : s, 0);
+        },
+        sumLogsOf: function (logs, keys) {
+            return (logs || []).reduce((s, l) => s + keys.reduce((a, k) => a + (parseFloat(l[k]) || 0), 0), 0);
+        },
+        separateCardsHTML: function (sep) {
+            return this.SEPARATE_ITEMS.map(it => {
+                const t = sep[it.key].target, a = sep[it.key].achieve;
+                const pct = TargetCalculator.calculateAchievementPercentage(a, t);
+                return `<div class="kpi-card">
+                        <span class="kpi-title">${it.label}</span>
+                        <div class="kpi-value">${Utils.formatNumber(a)} / ${Utils.formatNumber(t)}</div>
+                        <div class="kpi-subtext">النسبة: ${Utils.formatPercent(pct)} | المتبقي: ${Utils.formatNumber(Math.max(t - a, 0))}</div>
+                        <div class="kpi-progress"><span style="width:${Math.min(Math.max(pct || 0, 0), 100)}%"></span></div>
+                    </div>`;
+            }).join('');
+        },
+
         renderBranchManagerView: function () {
             const container = document.getElementById('branchDashboardContainer');
             if (!container) return;
@@ -229,20 +254,23 @@
             let totalBranchTarget = 0;
             let totalBranchAchieve = 0;
             const employeeRows = [];
+            const LINE_KEYS = TargetCalculator.TOTAL_LINE_ITEMS;
+            const branchSep = {}; this.SEPARATE_ITEMS.forEach(it => branchSep[it.key] = { target: 0, achieve: 0 });
 
             subs.forEach((emp) => {
                 const empPeriod = periods.find(p => p.user_id === emp.id);
-                let empTarget = 0;
-                
-                if (empPeriod && empPeriod.targets) {
-                    empTarget = empPeriod.targets.reduce((sum, t) => sum + (parseFloat(t.target_value) || 0), 0);
-                }
-                
+                // Total target = PT12 + Super Kix + Tazbeet + WE Gold + Data only
+                const empTarget = this.sumTargetsOf(empPeriod, LINE_KEYS);
+
                 // Get emp logs
                 const empLogs = empPeriod ? logs.filter(l => l.period_id === empPeriod.id) : [];
-                let empAchieve = 0;
-                empLogs.forEach(log => {
-                    empAchieve += (parseFloat(log.pt12)||0) + (parseFloat(log.super_kix)||0) + (parseFloat(log.tazbeet)||0) + (parseFloat(log.data)||0) + (parseFloat(log.we_gold)||0);
+                const empAchieve = this.sumLogsOf(empLogs, LINE_KEYS);
+
+                const empSep = {};
+                this.SEPARATE_ITEMS.forEach(it => {
+                    empSep[it.key] = { target: this.sumTargetsOf(empPeriod, [it.key]), achieve: this.sumLogsOf(empLogs, [it.key]) };
+                    branchSep[it.key].target += empSep[it.key].target;
+                    branchSep[it.key].achieve += empSep[it.key].achieve;
                 });
 
                 totalBranchTarget += empTarget;
@@ -261,7 +289,8 @@
                     percentage: empPct,
                     projection: empProj,
                     remaining: empRem,
-                    status: empStatus
+                    status: empStatus,
+                    sep: empSep
                 });
             });
 
@@ -272,7 +301,7 @@
             container.innerHTML = `
                 <div class="kpi-grid">
                     <div class="kpi-card">
-                        <span class="kpi-title">هدف الفرع الكلي</span>
+                        <span class="kpi-title">هدف الفرع الكلي (PT12 + Super Kix + Tazbeet + WE Gold + Data)</span>
                         <div class="kpi-value">${Utils.formatNumber(totalBranchTarget)}</div>
                     </div>
                     <div class="kpi-card">
@@ -293,6 +322,9 @@
                     </div>
                 </div>
 
+                <h3 class="font-bold margin-top" style="margin-bottom:.75rem;">الأهداف المنفصلة (مش داخلة في إجمالي الأسطر)</h3>
+                <div class="kpi-grid">${this.separateCardsHTML(branchSep)}</div>
+
                 <div class="table-card-wrapper margin-top">
                     <div class="table-toolbar">
                         <h3 class="font-bold">جدول أداء موظفي الفرع (${subs.length} موظف)</h3>
@@ -311,6 +343,9 @@
                                     <th>نسبة الإنجاز</th>
                                     <th>المتوقع</th>
                                     <th>المتبقي</th>
+                                    <th>الإنترنت</th>
+                                    <th>الأرضي</th>
+                                    <th>WE Pay</th>
                                     <th>الحالة</th>
                                     <th>التفاصيل</th>
                                 </tr>
@@ -324,6 +359,9 @@
                                         <td>${Utils.formatPercent(emp.percentage)}</td>
                                         <td>${emp.projection}</td>
                                         <td>${emp.remaining}</td>
+                                        <td>${emp.sep.adsl.achieve} / ${emp.sep.adsl.target}</td>
+                                        <td>${emp.sep.fixed.achieve} / ${emp.sep.fixed.target}</td>
+                                        <td>${emp.sep.we_pay.achieve} / ${emp.sep.we_pay.target}</td>
                                         <td><span class="badge-status ${emp.status.class}">${emp.status.label}</span></td>
                                         <td>
                                             <button class="btn btn-sm btn-secondary" onclick="Dashboard.openEmployeeDrilldown('${emp.id}')">
@@ -359,6 +397,8 @@
             const logs = (this.state.teamData && this.state.teamData.logs) ? this.state.teamData.logs : [];
 
             let areaTarget = 0; let areaAchieve = 0;
+            const LINE_KEYS = TargetCalculator.TOTAL_LINE_ITEMS;
+            const areaSep = {}; this.SEPARATE_ITEMS.forEach(it => areaSep[it.key] = { target: 0, achieve: 0 });
             const branchesMap = {};
             const employeeRows = [];
 
@@ -372,15 +412,12 @@
                 if (emp.role !== 'agent') return; // Only count agent targets to avoid double counting
 
                 const empPeriod = periods.find(p => p.user_id === emp.id);
-                let empTarget = 0;
-                if (empPeriod && empPeriod.targets) {
-                    empTarget = empPeriod.targets.reduce((sum, t) => sum + (parseFloat(t.target_value) || 0), 0);
-                }
-                
+                const empTarget = this.sumTargetsOf(empPeriod, LINE_KEYS);   // lines only
                 const empLogs = empPeriod ? logs.filter(l => l.period_id === empPeriod.id) : [];
-                let empAchieve = 0;
-                empLogs.forEach(log => {
-                    empAchieve += (parseFloat(log.pt12)||0) + (parseFloat(log.super_kix)||0) + (parseFloat(log.tazbeet)||0) + (parseFloat(log.data)||0) + (parseFloat(log.we_gold)||0);
+                const empAchieve = this.sumLogsOf(empLogs, LINE_KEYS);
+                this.SEPARATE_ITEMS.forEach(it => {
+                    areaSep[it.key].target += this.sumTargetsOf(empPeriod, [it.key]);
+                    areaSep[it.key].achieve += this.sumLogsOf(empLogs, [it.key]);
                 });
 
                 areaTarget += empTarget;
@@ -415,6 +452,8 @@
                     <div class="kpi-card"><span class="kpi-title">محقق المنطقة</span><div class="kpi-value">${Utils.formatNumber(areaAchieve)}</div></div>
                     <div class="kpi-card"><span class="kpi-title">نسبة إنجاز المنطقة</span><div class="kpi-value">${Utils.formatPercent(areaPct)}</div></div>
                 </div>
+                <h3 class="font-bold margin-top" style="margin-bottom:.75rem;">الأهداف المنفصلة (مش داخلة في إجمالي الأسطر)</h3>
+                <div class="kpi-grid">${this.separateCardsHTML(areaSep)}</div>
                 <div class="table-card-wrapper margin-top" id="branches-section">
                     <div class="table-toolbar"><h3 class="font-bold">أداء الفروع التابعة للمنطقة</h3></div>
                     <table class="data-table">
