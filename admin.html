@@ -557,6 +557,29 @@
   </div>
 </div>
 
+<!-- Move User To Another Branch Modal -->
+<div class="modal-backdrop" id="moveBranchModal">
+  <div class="modal">
+    <div class="modal-hd">
+      <h2>نقل الموظف لفرع آخر</h2>
+      <button class="close-btn" onclick="hideModal('moveBranchModal')"><i class="ti ti-x"></i></button>
+    </div>
+    <div class="modal-body">
+      <div class="user-info-box" id="moveBranchUserInfo"></div>
+      <div class="form-group" style="margin-top:12px">
+        <label>الفرع الجديد</label>
+        <select id="moveBranchSelect" class="form-input"></select>
+        <small style="color:var(--text-muted)">تارجت الفرع القديم والجديد هيتقسم تلقائي على الموظفين بعد النقل.</small>
+      </div>
+      <div id="moveBranchMsg" class="form-message"></div>
+    </div>
+    <div class="modal-ft">
+      <button class="btn btn-secondary" onclick="hideModal('moveBranchModal')">إلغاء</button>
+      <button class="btn btn-primary" id="moveBranchSaveBtn"><i class="ti ti-arrows-exchange" style="font-size:16px"></i> نقل</button>
+    </div>
+  </div>
+</div>
+
 <!-- Delete Modal -->
 <div class="modal-backdrop" id="deleteModal">
   <div class="modal">
