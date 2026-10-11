@@ -142,14 +142,15 @@
                 data: 'Data',
                 adsl: 'ADSL',
                 fixed: 'Fixed',
-                we_pay: 'WE Pay'
+                we_pay: 'WE Pay',
+                we_gold: 'WE Gold'
             };
 
             const labels = [];
             const dataValues = [];
             const bgColors = [
                 WE_PALETTE.purple, WE_PALETTE.accent, WE_PALETTE.blue, WE_PALETTE.success,
-                WE_PALETTE.warning, '#ec4899', '#14b8a6'
+                WE_PALETTE.warning, '#ec4899', '#14b8a6', '#f59e0b'
             ];
 
             Object.keys(itemAchievesObject || {}).forEach((key, idx) => {

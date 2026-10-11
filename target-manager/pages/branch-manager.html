@@ -120,7 +120,8 @@
                         <div class="form-group"><label class="form-label">توتل Data Lines للفرع</label><input type="number" min="0" class="form-input branch-tgt-input" id="btgt_data" value="150"></div>
                         <div class="form-group"><label class="form-label">توتل WE Space ADSL للفرع</label><input type="number" min="0" class="form-input branch-tgt-input" id="btgt_adsl" value="50"></div>
                         <div class="form-group"><label class="form-label">توتل Fixed Line للفرع</label><input type="number" min="0" class="form-input branch-tgt-input" id="btgt_fixed" value="50"></div>
-                        <div class="form-group" style="grid-column: span 2;"><label class="form-label">توتل WE Pay Wallet للفرع</label><input type="number" min="0" class="form-input branch-tgt-input" id="btgt_we_pay" value="100"></div>
+                        <div class="form-group"><label class="form-label">توتل WE Pay Wallet للفرع</label><input type="number" min="0" class="form-input branch-tgt-input" id="btgt_we_pay" value="100"></div>
+                        <div class="form-group"><label class="form-label">توتل WE Gold للفرع</label><input type="number" min="0" class="form-input branch-tgt-input" id="btgt_we_gold" value="0"></div>
                     </div>
                     <div class="glass-card margin-top" style="background:var(--bg-subtle); padding: 1rem;">
                         <div class="flex justify-between items-center">
@@ -177,6 +178,7 @@
                 adsl: parseFloat(document.getElementById('btgt_adsl').value) || 0,
                 fixed: parseFloat(document.getElementById('btgt_fixed').value) || 0,
                 we_pay: parseFloat(document.getElementById('btgt_we_pay').value) || 0,
+                we_gold: parseFloat(document.getElementById('btgt_we_gold').value) || 0,
             };
 
             const empCount = Dashboard.state.subordinates.length || 10;
@@ -199,6 +201,7 @@
                 adsl: parseFloat(document.getElementById('btgt_adsl').value) || 0,
                 fixed: parseFloat(document.getElementById('btgt_fixed').value) || 0,
                 we_pay: parseFloat(document.getElementById('btgt_we_pay').value) || 0,
+                we_gold: parseFloat(document.getElementById('btgt_we_gold').value) || 0,
             };
 
             const empCount = Dashboard.state.subordinates.length || 10;

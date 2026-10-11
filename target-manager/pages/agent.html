@@ -168,9 +168,13 @@
                             <label class="form-label">Fixed Line</label>
                             <input type="number" min="0" class="form-input" id="entry_fixed" value="0">
                         </div>
-                        <div class="form-group" style="grid-column: span 2;">
+                        <div class="form-group">
                             <label class="form-label">WE Pay Wallet</label>
                             <input type="number" min="0" class="form-input" id="entry_we_pay" value="0">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">WE Gold</label>
+                            <input type="number" min="0" class="form-input" id="entry_we_gold" value="0">
                         </div>
                     </div>
                     <div class="form-group" style="margin-top: 1rem;">
@@ -208,7 +212,8 @@
                 data: document.getElementById('entry_data').value,
                 adsl: document.getElementById('entry_adsl').value,
                 fixed: document.getElementById('entry_fixed').value,
-                we_pay: document.getElementById('entry_we_pay').value
+                we_pay: document.getElementById('entry_we_pay').value,
+                we_gold: document.getElementById('entry_we_gold').value
             };
             const notes = document.getElementById('entryNotes').value;
 

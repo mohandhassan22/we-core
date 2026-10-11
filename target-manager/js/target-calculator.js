@@ -170,7 +170,7 @@
         calculateEmployeeTargetsFromBranchTotal: function (totalBranchTargets, employeeCount) {
             const count = Math.max(parseInt(employeeCount, 10) || 1, 1);
             const employeeTarget = {};
-            const keys = ['pt12', 'super_kix', 'tazbeet', 'data', 'adsl', 'fixed', 'we_pay'];
+            const keys = ['pt12', 'super_kix', 'tazbeet', 'data', 'adsl', 'fixed', 'we_pay', 'we_gold'];
 
             keys.forEach(key => {
                 const total = parseFloat(totalBranchTargets ? totalBranchTargets[key] : 0) || 0;
@@ -203,7 +203,7 @@
             const status = this.calculateStatus(achievementPct, projection, targetLines);
 
             // Item-by-item breakdown
-            const items = ['pt12', 'super_kix', 'tazbeet', 'data', 'adsl', 'fixed', 'we_pay'];
+            const items = ['pt12', 'super_kix', 'tazbeet', 'data', 'adsl', 'fixed', 'we_pay', 'we_gold'];
             const itemBreakdown = {};
             items.forEach(item => {
                 const itemTgt = parseFloat(itemTargets ? itemTargets[item] : 0) || 0;

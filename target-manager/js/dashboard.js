@@ -90,11 +90,11 @@
                 period.targets.forEach(t => itemTargets[t.item] = t.target_value);
             } else {
                 // No target period yet: show zeros (no fake numbers)
-                ['pt12','super_kix','tazbeet','data','adsl','fixed','we_pay'].forEach(k => itemTargets[k] = 0);
+                ['pt12','super_kix','tazbeet','data','adsl','fixed','we_pay','we_gold'].forEach(k => itemTargets[k] = 0);
             }
 
             // Calculate item achieves from daily logs
-            const itemAchieves = { pt12: 0, super_kix: 0, tazbeet: 0, data: 0, adsl: 0, fixed: 0, we_pay: 0 };
+            const itemAchieves = { pt12: 0, super_kix: 0, tazbeet: 0, data: 0, adsl: 0, fixed: 0, we_pay: 0, we_gold: 0 };
             const logs = this.state.dailyLogs || [];
 
             logs.forEach(log => {
@@ -105,6 +105,7 @@
                 itemAchieves.adsl += parseFloat(log.adsl) || 0;
                 itemAchieves.fixed += parseFloat(log.fixed) || 0;
                 itemAchieves.we_pay += parseFloat(log.we_pay) || 0;
+                itemAchieves.we_gold += parseFloat(log.we_gold) || 0;
             });
 
             const elapsedDays = Utils.calculateElapsedDays(period?.start_date, period?.end_date, period?.target_days || 20);
@@ -173,7 +174,7 @@
             if (itemsContainer) {
                 const itemLabels = {
                     pt12: 'PT12', super_kix: 'Super Kix', tazbeet: 'Control Tazbeet',
-                    data: 'Data Lines', adsl: 'WE Space ADSL', fixed: 'Fixed Line', we_pay: 'WE Pay'
+                    data: 'Data Lines', adsl: 'WE Space ADSL', fixed: 'Fixed Line', we_pay: 'WE Pay', we_gold: 'WE Gold'
                 };
                 itemsContainer.innerHTML = Object.keys(metrics.items).map(key => {
                     const item = metrics.items[key];

@@ -21,7 +21,7 @@
 
 3. **محرك الحسابات (Target Calculator)**:
    - **Total Lines**: مجموع (`PT12` + `Super Kix` + `New Control Tazbeet` + `Data`).
-   - **مستقل (Independent KPIs)**: `ADSL` + `Fixed` + `WE Pay`.
+   - **مستقل (Independent KPIs)**: `ADSL` + `Fixed` + `WE Pay` + `WE Gold`.
    - **الحسابات**: `Achievement %`, `Remaining`, `Projection`, `Daily Target`, `Deficit`, `Today's Required`, `Required Daily`, و `Status`.
 
 4. **WE AI Coach (مدرب الذكاء الاصطناعي)**:

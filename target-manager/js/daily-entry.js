@@ -2,7 +2,7 @@
  * Shared daily-achievement save + copyable report message
  */
 (function (global) {
-    const LABELS = { pt12: 'PT12', super_kix: 'Super Kix', tazbeet: 'Control Tazbeet', data: 'Data Lines', adsl: 'WE Space ADSL', fixed: 'Fixed Line', we_pay: 'WE Pay' };
+    const LABELS = { pt12: 'PT12', super_kix: 'Super Kix', tazbeet: 'Control Tazbeet', data: 'Data Lines', adsl: 'WE Space ADSL', fixed: 'Fixed Line', we_pay: 'WE Pay', we_gold: 'WE Gold' };
     const ITEMS = Object.keys(LABELS);
     const LINE_ITEMS = ['pt12', 'super_kix', 'tazbeet', 'data'];
     const n = (v) => parseFloat(v) || 0;

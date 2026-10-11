@@ -226,6 +226,7 @@
                 adsl: parseFloat(itemsData.adsl) || 0,
                 fixed: parseFloat(itemsData.fixed) || 0,
                 we_pay: parseFloat(itemsData.we_pay) || 0,
+                we_gold: parseFloat(itemsData.we_gold) || 0,
                 notes: notes,
                 updated_at: new Date().toISOString()
             };
