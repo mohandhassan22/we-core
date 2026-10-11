@@ -256,9 +256,11 @@
             const employeeRows = [];
             const LINE_KEYS = TargetCalculator.TOTAL_LINE_ITEMS;
             const branchSep = {}; this.SEPARATE_ITEMS.forEach(it => branchSep[it.key] = { target: 0, achieve: 0 });
+            const branchItemTotals = {}; ['pt12','super_kix','tazbeet','data','we_gold','adsl','fixed','we_pay'].forEach(k => branchItemTotals[k] = 0);
 
             subs.forEach((emp) => {
                 const empPeriod = periods.find(p => p.user_id === emp.id);
+                Object.keys(branchItemTotals).forEach(k => { branchItemTotals[k] += this.sumTargetsOf(empPeriod, [k]); });
                 // Total target = PT12 + Super Kix + Tazbeet + WE Gold + Data only
                 const empTarget = this.sumTargetsOf(empPeriod, LINE_KEYS);
 
@@ -324,6 +326,18 @@
                     <div class="kpi-card">
                         <span class="kpi-title">المتبقي للفرع</span>
                         <div class="kpi-value">${Utils.formatNumber(branchRem)}</div>
+                    </div>
+                </div>
+
+                <div class="glass-card margin-top" style="padding:1rem;">
+                    <div class="flex justify-between items-center" style="gap:.75rem;flex-wrap:wrap;margin-bottom:.75rem;">
+                        <h3 class="font-bold">تارجت الفرع الكامل</h3>
+                        <button class="btn btn-primary btn-sm" onclick="openBranchTargetModal()">
+                            <i class="fa-solid fa-pen"></i> ${employeeRows.some(e => e.btId) ? 'تعديل تارجت الفرع' : 'تسجيل تارجت الفرع'}
+                        </button>
+                    </div>
+                    <div class="flex" style="gap:.5rem;flex-wrap:wrap;">
+                        ${[['pt12','PT12'],['super_kix','Super Kix'],['tazbeet','Tazbeet'],['data','Data'],['we_gold','WE Gold'],['adsl','ADSL'],['fixed','Fixed'],['we_pay','WE Pay']].map(([k, l]) => `<span class="badge-status">${l}: ${Utils.formatNumber(branchItemTotals[k])}</span>`).join('')}
                     </div>
                 </div>
 
