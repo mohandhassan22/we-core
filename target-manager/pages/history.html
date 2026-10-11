@@ -85,8 +85,8 @@
                                     <th>الشهر/السنة</th>
                                     <th>نوع الفترة</th>
                                     <th>أيام الفترة</th>
-                                    <th>Target الأسطر</th>
-                                    <th>Achieve الأسطر</th>
+                                    <th>Target الخطوط</th>
+                                    <th>Achieve الخطوط</th>
                                     <th>نسبة التحقيق</th>
                                     <th>التوقع (Projection)</th>
                                     <th>الحالة</th>
@@ -142,7 +142,7 @@
                     return [l.performance_date, p ? p.full_name : '', p ? p.branch : '', p ? p.area : '',
                         n(l.pt12), n(l.super_kix), n(l.tazbeet), n(l.data), n(l.adsl), n(l.fixed), n(l.we_pay), n(l.we_gold), total];
                 });
-                const headers = ['التاريخ', 'الموظف', 'الفرع', 'المنطقة', 'PT12', 'Super Kix', 'Tazbeet', 'Data', 'ADSL', 'Fixed', 'WE Pay', 'WE Gold', 'إجمالي الأسطر'];
+                const headers = ['التاريخ', 'الموظف', 'الفرع', 'المنطقة', 'PT12', 'Super Kix', 'Tazbeet', 'Data', 'ADSL', 'Fixed', 'WE Pay', 'WE Gold', 'إجمالي الخطوط'];
                 Utils.exportToExcel('WE_Target_Report', rows, headers);
             } catch (e) {
                 Utils.showToast('تعذر تصدير البيانات', 'error');

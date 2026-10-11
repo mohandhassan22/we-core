@@ -111,7 +111,7 @@
                         </div>
 
                         <div class="flex justify-between items-center margin-top">
-                            <div class="font-bold text-muted" id="calculatedTotalLinesDisplay">إجمالي الأسطر: 0 خط</div>
+                            <div class="font-bold text-muted" id="calculatedTotalLinesDisplay">إجمالي الخطوط: 0 خط</div>
                             <button type="submit" class="btn btn-primary" id="saveTargetBtn"><i class="fa-solid fa-floppy-disk"></i> حفظ تارجت الفرع</button>
                         </div>
                     </form>
@@ -164,7 +164,7 @@
             const v = (id) => parseFloat($('tgt_' + id).value) || 0;
             const sum = v('pt12') + v('super_kix') + v('tazbeet') + v('data') + v('we_gold');
             const n = branchAgents.length;
-            $('calculatedTotalLinesDisplay').textContent = `إجمالي الأسطر: ${sum} خط` + (n ? ` | لكل موظف ≈ ${(sum / n).toFixed(1)}` : '');
+            $('calculatedTotalLinesDisplay').textContent = `إجمالي الخطوط: ${sum} خط` + (n ? ` | لكل موظف ≈ ${(sum / n).toFixed(1)}` : '');
         }
         ITEMS.forEach(id => $('tgt_' + id).addEventListener('input', updateSum));
 

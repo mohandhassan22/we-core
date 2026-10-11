@@ -131,7 +131,7 @@
                     <div class="glass-card margin-top" style="background:var(--bg-subtle); padding: 1rem;">
                         <div class="flex justify-between items-center">
                             <span class="font-bold">عدد موظفي الفرع: <span id="branchEmpCountDisplay">10</span> موظف</span>
-                            <span class="font-bold text-purple" id="perEmpTargetDisplay">تارجت الموظف الواحد: 60 خط أسطر</span>
+                            <span class="font-bold text-purple" id="perEmpTargetDisplay">تارجت الموظف الواحد: 60 خطوط</span>
                         </div>
                     </div>
                 </form>
@@ -208,7 +208,7 @@
             document.getElementById('branchEmpCountDisplay').textContent = empCount;
 
             const calc = TargetCalculator.calculateEmployeeTargetsFromBranchTotal(totalTargets, empCount);
-            document.getElementById('perEmpTargetDisplay').textContent = `تارجت الموظف الواحد: ${calc.perEmployeeTotalLines} خط أسطر`;
+            document.getElementById('perEmpTargetDisplay').textContent = `تارجت الموظف الواحد: ${calc.perEmployeeTotalLines} خطوط`;
         }
 
         document.querySelectorAll('.branch-tgt-input').forEach(input => {

@@ -20,11 +20,11 @@
         L.push('────────────');
         L.push('✅ إنجاز اليوم:');
         ITEMS.forEach(k => L.push(`• ${LABELS[k]}: ${n(today[k])}`));
-        L.push(`إجمالي أسطر اليوم: ${sumLines(today)}`);
+        L.push(`إجمالي خطوط اليوم: ${sumLines(today)}`);
         L.push('────────────');
         L.push('📈 الإنجاز التراكمي (من بداية الفترة):');
         ITEMS.forEach(k => L.push(`• ${LABELS[k]}: ${totals[k]} / ${targets[k] || 0}`));
-        L.push(`إجمالي الأسطر: ${achLines} من ${tgtLines} (${pct}%)`);
+        L.push(`إجمالي الخطوط: ${achLines} من ${tgtLines} (${pct}%)`);
         L.push(`المتبقي: ${Math.max(tgtLines - achLines, 0)} خط`);
         return L.join('\n');
     }

@@ -189,7 +189,7 @@
                             <div class="item-card-head">
                                 <span class="item-name">${itemLabels[key] || key}</span>
                                 <span class="item-badge ${item.isTotalLine ? 'status-ontrack' : 'status-warning'}">
-                                    ${item.isTotalLine ? 'ضمن الأسطر' : 'KPI مستقل'}
+                                    ${item.isTotalLine ? 'ضمن الخطوط' : 'KPI مستقل'}
                                 </span>
                             </div>
                             <div class="flex justify-between items-center text-muted" style="font-size:0.85rem;">
@@ -360,7 +360,7 @@
                     </div>
                 </div>
 
-                <h3 class="font-bold margin-top" style="margin-bottom:.75rem;">الأهداف المنفصلة (مش داخلة في إجمالي الأسطر)</h3>
+                <h3 class="font-bold margin-top" style="margin-bottom:.75rem;">الأهداف المنفصلة (مش داخلة في إجمالي الخطوط)</h3>
                 <div class="kpi-grid">${this.separateCardsHTML(branchSep)}</div>
 
                 <div class="table-card-wrapper margin-top">
@@ -501,7 +501,7 @@
                     <div class="kpi-card"><span class="kpi-title">نسبة إنجاز المنطقة</span><div class="kpi-value">${Utils.formatPercent(areaPct)}</div></div>
                     <div class="kpi-card"><span class="kpi-title">متوقع تحقيق المنطقة</span><div class="kpi-value">${Utils.formatNumber(areaProj)} <small style="font-size:.55em;">(${Utils.formatPercent(areaProjPct)})</small></div></div>
                 </div>
-                <h3 class="font-bold margin-top" style="margin-bottom:.75rem;">الأهداف المنفصلة (مش داخلة في إجمالي الأسطر)</h3>
+                <h3 class="font-bold margin-top" style="margin-bottom:.75rem;">الأهداف المنفصلة (مش داخلة في إجمالي الخطوط)</h3>
                 <div class="kpi-grid">${this.separateCardsHTML(areaSep)}</div>
                 <div class="table-card-wrapper margin-top" id="branches-section">
                     <div class="table-toolbar"><h3 class="font-bold">أداء الفروع التابعة للمنطقة</h3></div>
