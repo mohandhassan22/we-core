@@ -53,6 +53,16 @@
     }
 
     const DailyEntry = {
+        // Fill the form with the already-saved values for the chosen date (so editing keeps the other fields)
+        prefill: async function (profile, date, notesId) {
+            if (!profile || !profile.id || !date) return;
+            const period = await TargetAPI.fetchPeriodForDate(profile.id, date);
+            const logs = period ? await TargetAPI.fetchDailyPerformance(period.id, profile.id) : [];
+            const row = logs.find(l => l.performance_date === date) || {};
+            ITEMS.forEach(k => { const el = document.getElementById('entry_' + k); if (el) el.value = n(row[k]); });
+            if (notesId) { const ne = document.getElementById(notesId); if (ne) ne.value = row.notes || ''; }
+        },
+
         save: async function (profile, date, itemsData, notes) {
             if (!profile || !profile.id) throw new Error('تعذر تحديد المستخدم');
             const period = await TargetAPI.fetchPeriodForDate(profile.id, date);

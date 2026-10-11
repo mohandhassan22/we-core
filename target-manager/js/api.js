@@ -99,6 +99,14 @@
             } catch (err) { return null; }
         },
 
+        fetchMyBranchId: async function (profile) {
+            if (!profile) return null;
+            if (profile.branch_id) return profile.branch_id;
+            const branches = await TargetAPI.fetchAllowedBranches();
+            const mine = (branches || []).find(b => b.manager_id === profile.id || (profile.branch && b.name === profile.branch));
+            return mine ? mine.id : null;
+        },
+
         fetchBranchTarget: async function (branchId) {
             try {
                 const rows = await restFetch(`branch_targets?branch_id=eq.${branchId}&select=*&order=end_date.desc&limit=6`);
@@ -127,7 +135,7 @@
                 body: JSON.stringify(payload)
             });
             const data = await res.json().catch(() => ({}));
-            if (!res.ok) throw new Error(data.message || 'تعذر حفظ التارجت');
+            if (!res.ok) { console.error('save_branch_target failed:', res.status, data); throw new Error(data.message || data.hint || 'تعذر حفظ التارجت'); }
             return data;
         },
 
@@ -238,7 +246,8 @@
                     body: JSON.stringify(body)
                 });
             } catch (err) {
-                throw new Error('تعذر حفظ الأداء، تأكد أن التاريخ داخل فترة التارجت');
+                console.error('saveDailyPerformance failed:', err);
+                throw new Error('تعذر حفظ الأداء، تأكد أن التاريخ داخل فترة التارجت (' + (err.message || '') + ')');
             }
         },
 
@@ -270,7 +279,8 @@
 
                 return period;
             } catch (err) {
-                return periodData;
+                console.error('saveTargetPeriod failed:', err);
+                throw new Error('تعذر حفظ التارجت: ' + (err.message || ''));
             }
         },
 

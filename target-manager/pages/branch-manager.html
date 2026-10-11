@@ -66,7 +66,7 @@
                         <p class="hero-subtitle">متابعة الأهداف الإجمالية للفرع، توزيع التارجت على الموظفين تلقائياً، والتحليل التنبؤي للمبيعات.</p>
                     </div>
                     <div class="hero-actions">
-                        <button class="btn btn-primary" onclick="Utils.openModal('branchTargetModal')">
+                        <button class="btn btn-primary" onclick="openBranchTargetModal()">
                             <i class="fa-solid fa-bullseye"></i> تسجيل توتل تارجت الفرع
                         </button>
                         <button class="btn btn-secondary" onclick="Utils.exportToExcel('Branch_Performance', Dashboard.state.subordinates, ['الاسم', 'الفرع', 'المنطقة'])">
@@ -113,6 +113,11 @@
                     قم بإدخال المستهدف الكلي للفرع بالكامل، وسيقوم النظام بتوزيع وتطبيق التارجت بالتساوي على جميع موظفي الفرع المعتمدين.
                 </p>
                 <form id="branchTargetForm">
+                    <div class="items-grid" style="grid-template-columns: repeat(3, 1fr); margin-bottom:1rem;">
+                        <div class="form-group"><label class="form-label">تاريخ البداية</label><input type="date" class="form-input" id="btgt_start"></div>
+                        <div class="form-group"><label class="form-label">تاريخ النهاية</label><input type="date" class="form-input" id="btgt_end"></div>
+                        <div class="form-group"><label class="form-label">أيام العمل</label><input type="number" min="1" class="form-input" id="btgt_days" value="20"></div>
+                    </div>
                     <div class="items-grid" style="grid-template-columns: repeat(2, 1fr);">
                         <div class="form-group"><label class="form-label">توتل PT12 للفرع</label><input type="number" min="0" class="form-input branch-tgt-input" id="btgt_pt12" value="150"></div>
                         <div class="form-group"><label class="form-label">توتل Super Kix للفرع</label><input type="number" min="0" class="form-input branch-tgt-input" id="btgt_super_kix" value="150"></div>
@@ -192,23 +197,57 @@
             input.addEventListener('input', updateBranchTargetDistributionUI);
         });
 
-        document.getElementById('saveBranchTargetBtn').addEventListener('click', async function() {
-            const totalTargets = {
-                pt12: parseFloat(document.getElementById('btgt_pt12').value) || 0,
-                super_kix: parseFloat(document.getElementById('btgt_super_kix').value) || 0,
-                tazbeet: parseFloat(document.getElementById('btgt_tazbeet').value) || 0,
-                data: parseFloat(document.getElementById('btgt_data').value) || 0,
-                adsl: parseFloat(document.getElementById('btgt_adsl').value) || 0,
-                fixed: parseFloat(document.getElementById('btgt_fixed').value) || 0,
-                we_pay: parseFloat(document.getElementById('btgt_we_pay').value) || 0,
-                we_gold: parseFloat(document.getElementById('btgt_we_gold').value) || 0,
-            };
+        const BT_ITEMS = ['pt12', 'super_kix', 'tazbeet', 'data', 'adsl', 'fixed', 'we_pay', 'we_gold'];
+        const pad2 = (n) => String(n).padStart(2, '0');
+        let btBranchId = null, btTargetId = null;
 
-            const empCount = Dashboard.state.subordinates.length || 10;
-            const calc = TargetCalculator.calculateEmployeeTargetsFromBranchTotal(totalTargets, empCount);
+        function readBranchTargets() {
+            const t = {}; BT_ITEMS.forEach(k => t[k] = parseFloat(document.getElementById('btgt_' + k).value) || 0);
+            return t;
+        }
 
-            Utils.showToast(`تم توزيع التارجت بنجاح على ${empCount} موظف بمعدل ${calc.perEmployeeTotalLines} خط لكل موظف!`, 'success');
-            Utils.closeModal('branchTargetModal');
+        async function openBranchTargetModal() {
+            Utils.openModal('branchTargetModal');
+            const profile = Dashboard.state.userProfile || App.userProfile;
+            btBranchId = await TargetAPI.fetchMyBranchId(profile);
+            btTargetId = null;
+            const now = new Date(), y = now.getFullYear(), m = now.getMonth() + 1;
+            document.getElementById('btgt_start').value = `${y}-${pad2(m)}-01`;
+            document.getElementById('btgt_end').value = `${y}-${pad2(m)}-${pad2(new Date(y, m, 0).getDate())}`;
+            if (btBranchId) {
+                const bt = await TargetAPI.fetchBranchTarget(btBranchId);   // load the current saved target for editing
+                if (bt) {
+                    btTargetId = bt.id;
+                    document.getElementById('btgt_start').value = bt.start_date;
+                    document.getElementById('btgt_end').value = bt.end_date;
+                    document.getElementById('btgt_days').value = bt.target_days || 20;
+                    BT_ITEMS.forEach(k => document.getElementById('btgt_' + k).value = (bt.items && bt.items[k]) || 0);
+                }
+            }
+            updateBranchTargetDistributionUI();
+        }
+
+        document.getElementById('saveBranchTargetBtn').addEventListener('click', async function () {
+            const btn = this;
+            if (!btBranchId) return Utils.showToast('لا يوجد فرع مرتبط بحسابك. تواصل مع الأدمن.', 'error');
+            const start = document.getElementById('btgt_start').value, end = document.getElementById('btgt_end').value;
+            if (!start || !end || start > end) return Utils.showToast('تأكد من تواريخ الفترة', 'error');
+            btn.disabled = true;
+            try {
+                await TargetAPI.saveBranchTarget({
+                    p_id: btTargetId, p_branch_id: btBranchId,
+                    p_start: start, p_end: end,
+                    p_days: parseInt(document.getElementById('btgt_days').value) || 20,
+                    p_type: 'Full Month', p_items: readBranchTargets()
+                });
+                Utils.closeModal('branchTargetModal');
+                const my = Utils.getCurrentMonthYear();
+                await Dashboard.loadDashboardData(my.month, my.year);   // reload from DB to confirm it persisted
+                const empCount = Dashboard.state.subordinates.length || 1;
+                Utils.showToast(`تم حفظ التارجت وتوزيعه على ${empCount} موظف`, 'success');
+            } catch (err) {
+                Utils.showToast(err.message || 'تعذر حفظ التارجت', 'error');
+            } finally { btn.disabled = false; }
         });
     </script>
 <script src="../../assets/js/active-users-widget.js"></script>

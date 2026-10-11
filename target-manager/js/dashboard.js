@@ -24,6 +24,12 @@
 
             const monthYear = Utils.getCurrentMonthYear();
             await this.loadDashboardData(monthYear.month, monthYear.year);
+
+            // Keep the dashboard in sync with changes made by others (manager target / agent entries)
+            const refresh = () => { const my = Utils.getCurrentMonthYear(); this.loadDashboardData(my.month, my.year); };
+            document.addEventListener('visibilitychange', () => { if (!document.hidden) refresh(); });
+            window.addEventListener('focus', refresh);
+            setInterval(() => { if (!document.hidden) refresh(); }, 60000);
         },
 
         loadDashboardData: async function (month, year) {

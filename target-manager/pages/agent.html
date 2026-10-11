@@ -67,7 +67,7 @@
                         <p class="hero-subtitle">استعرض إنجازك اليومي، المستهدفات الفردية، وتوصيات الذكاء الاصطناعي لتطوير مبيعاتك.</p>
                     </div>
                     <div class="hero-actions">
-                        <button class="btn btn-primary" onclick="Utils.openModal('dailyModal')">
+                        <button class="btn btn-primary" id="openDailyBtn" onclick="Utils.openModal('dailyModal')">
                             <i class="fa-solid fa-plus-circle"></i> إضافة أداء اليوم
                         </button>
                     </div>
@@ -203,6 +203,9 @@
 
     <script>
         document.getElementById('entryDate').valueAsDate = new Date();
+        const prefillEntry = () => DailyEntry.prefill(Dashboard.state.userProfile, document.getElementById('entryDate').value, 'entryNotes');
+        document.getElementById('entryDate').addEventListener('change', prefillEntry);
+        document.getElementById('openDailyBtn')?.addEventListener('click', prefillEntry);
         document.getElementById('saveDailyBtn').addEventListener('click', async function() {
             const date = document.getElementById('entryDate').value;
             const itemsData = {

@@ -142,6 +142,9 @@
 
     <script>
         document.getElementById('entryDate').valueAsDate = new Date();
+        const prefillEntry = () => DailyEntry.prefill((window.App && App.userProfile) || null, document.getElementById('entryDate').value);
+        document.getElementById('entryDate').addEventListener('change', prefillEntry);
+        window.addEventListener('load', () => setTimeout(prefillEntry, 1200));
 
         async function loadPerformanceTable() {
             const tbody = document.getElementById('dailyLogsTableBody');
