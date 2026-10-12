@@ -343,8 +343,8 @@
       const u = safeUrl(url);
       if (!u) return "";
       const yt = u.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|shorts\/))([\w-]{11})/);
-      if (yt) return `<iframe src="https://www.youtube.com/embed/${yt[1]}" allowfullscreen style="width:100%;aspect-ratio:16/9;border:0;border-radius:10px"></iframe>`;
-      if (/\.(mp4|webm|ogg)(\?|$)/i.test(u)) return `<video src="${escapeHtml(u)}" controls style="width:100%;border-radius:10px"></video>`;
+      if (yt) return WEIntro.gateHtml(`<iframe src="https://www.youtube.com/embed/${yt[1]}?autoplay=1" allow="autoplay" allowfullscreen style="width:100%;aspect-ratio:16/9;border:0;border-radius:10px"></iframe>`);
+      if (/\.(mp4|webm|ogg)(\?|$)/i.test(u)) return WEIntro.gateHtml(`<video src="${escapeHtml(u)}" controls autoplay style="width:100%;border-radius:10px"></video>`);
       return `<a href="${escapeHtml(u)}" target="_blank" rel="noopener">▶ مشاهدة الفيديو</a>`;
     }
 
@@ -371,6 +371,7 @@
 
     checkAuthAndLoad();
   </script>
+<script src="assets/js/intro.js"></script>
 <script src="assets/js/active-users-widget.js"></script>
 </body>
 </html>

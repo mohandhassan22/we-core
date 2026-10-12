@@ -598,6 +598,7 @@
 
         title.textContent = "جاري التحميل...";
         modal.classList.add('open');
+        const introDone = window.WEIntro ? WEIntro.play() : Promise.resolve();
         
         try {
             const token = getAuthToken();
@@ -609,6 +610,8 @@
             if (error) throw error;
             
             if (!isAllowedVideoUrl(data.url)) throw new Error('رابط فيديو غير مسموح');
+            await introDone; // الانترو الأول
+            if (!modal.classList.contains('open')) return;
             player.src = data.url;
             title.textContent = video.title;
 
@@ -637,6 +640,7 @@
 
     document.addEventListener('DOMContentLoaded', loadLibrary);
 </script>
+<script src="../assets/js/intro.js"></script>
 <script src="../assets/js/active-users-widget.js"></script>
 
 
