@@ -5,7 +5,7 @@ const MODULE = params.get('module') || '', TOPIC = params.get('topic') || '';
 const root = document.getElementById('quizRoot');
 const backUrl = `trainer.html?module=${encodeURIComponent(MODULE)}&topic=${encodeURIComponent(TOPIC)}`;
 document.getElementById('backLink').href = backUrl;
-let state = { attemptId: null, questions: [], answers: [], index: 0, pass: 90, busy: false };
+let state = { attemptId: null, questions: [], answers: [], index: 0, pass: 80, busy: false };
 
 function cookie(name){const hit=document.cookie.split('; ').find(x=>x.startsWith(name+'='));return hit?decodeURIComponent(hit.split('=').slice(1).join('=')):''}
 function esc(v){return String(v??'').replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]))}
@@ -27,7 +27,7 @@ async function start(){
   if(!MODULE||!TOPIC){message('رابط غير صحيح','ارجع لصفحة التدريب واختار موضوع.');return}
   try{
     const d = await call({action:'start_quiz',module:MODULE,topic:TOPIC});
-    state={attemptId:d.attempt_id,questions:d.questions,answers:new Array(d.questions.length).fill(-1),index:0,pass:d.pass_percent||90,busy:false,title:d.topic,moduleTitle:d.module};
+    state={attemptId:d.attempt_id,questions:d.questions,answers:new Array(d.questions.length).fill(-1),index:0,pass:d.pass_percent||80,busy:false,title:d.topic,moduleTitle:d.module};
     render();
   }catch(e){
     if(e.code==='locked') message('اليوم ده مقفول 🔒',e.message||'لازم تخلص اليوم اللي قبله الأول.');

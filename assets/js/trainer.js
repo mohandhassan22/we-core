@@ -24,7 +24,7 @@ async function askAi(){const prompt=$('aiPrompt').value.trim();if(!prompt)return
 function escapeHtml(v){return String(v??'').replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]))}function escapeAttr(v){return escapeHtml(v)}
 
 let sb, user, profile, token, modules = [], progress = [], topics = [], topicProg = [], currentModule, currentTopic = null;
-const PASS = 90;
+const PASS = 80;
 async function boot(){
   if(!DEMO){
     token = cookie('sb-access-token');
