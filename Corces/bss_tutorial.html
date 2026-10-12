@@ -508,7 +508,7 @@
     function isAllowedVideoUrl(value) {
         try {
             const u = new URL(value);
-            return u.protocol === 'https:' && (u.origin === SB_URL || u.hostname === 'www.youtube.com' || u.hostname === 'youtu.be');
+            return u.protocol === 'https:' && (u.origin === SB_URL || u.hostname === 'www.youtube.com' || u.hostname === 'youtu.be' || (u.hostname === 'drive.google.com' && /^\/file\/d\/[\w-]+\/preview$/.test(u.pathname)));
         } catch (_) { return false; }
     }
 
@@ -602,7 +602,7 @@
         
         try {
             const token = getAuthToken();
-            const { data, error } = await supabaseClient.functions.invoke('hyper-task', {
+            const { data, error } = await supabaseClient.functions.invoke('video-url', {
                 body: { action: 'get_single_url', file_id: video.file_id, source: 'videos' },
                 headers: token ? { Authorization: `Bearer ${token}` } : {}
             });

@@ -137,7 +137,7 @@ footer span{color:#7b3fe4;font-weight:700;}
     function isAllowedVideoUrl(value) {
         try {
             const u = new URL(value);
-            return u.protocol === 'https:' && u.origin === 'https://iygwhapcpdmsasqlfelv.supabase.co';
+            return u.protocol === 'https:' && (u.origin === 'https://iygwhapcpdmsasqlfelv.supabase.co' || (u.hostname === 'drive.google.com' && /^\/file\/d\/[\w-]+\/preview$/.test(u.pathname)));
         } catch (_) { return false; }
     }
 
@@ -225,7 +225,7 @@ footer span{color:#7b3fe4;font-weight:700;}
 
         try {
             const token = getToken();
-            const { data, error } = await sb.functions.invoke('hyper-task', {
+            const { data, error } = await sb.functions.invoke('video-url', {
                 body: { action: 'get_single_url', file_id: fileId, source: 'soft' },
                 headers: token ? { Authorization: `Bearer ${token}` } : {}
             });
