@@ -10,6 +10,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/css/trainer.css">
+  <link rel="stylesheet" href="assets/css/trainer-v2.css">
 </head>
 <body>
   <div class="app-shell">
@@ -29,16 +30,15 @@
         <div class="welcome-copy">
           <p class="eyebrow">مسار واضح من أول يوم</p>
           <h1>خلّي المعلومة<br><em>خطوة عملية</em></h1>
-          <p class="lead">شرح قصير، فيديو في مكانه، وسؤال يثبت المعلومة. ابدأ من مستواك وخلي تقدمك محفوظ مع كل محاولة.</p>
+          <p class="lead">شرح قصير، فيديو في مكانه، واختبار يثبت المعلومة. كل يوم بيفتح لما تخلص اليوم اللي قبله وتجيب 90% أو أكتر.</p>
           <div class="welcome-actions">
-            <button id="assessmentBtn" class="primary-button" type="button"><span>ابدأ اختبار تحديد المستوى</span><b>←</b></button>
-            <button id="continueBtn" class="secondary-button" type="button">كمّل من آخر وحدة</button>
+            <button id="continueBtn" class="primary-button" type="button"><span>كمّل من آخر نقطة وصلت لها</span><b>←</b></button>
           </div>
         </div>
         <div class="progress-card">
           <div class="card-label"><span>تقدمك الحالي</span><span id="progressPercent">0%</span></div>
           <div class="progress-track"><i id="progressBar"></i></div>
-          <div class="progress-meta"><span id="completedCount">0 من 5 وحدات مكتملة</span><span id="nextHint">ابدأ بالوحدة الأولى</span></div>
+          <div class="progress-meta"><span id="completedCount">0 من 5 أيام مكتملة</span><span id="nextHint">ابدأ باليوم الأول</span></div>
           <div class="mini-stats"><div><strong id="bestScore">—</strong><span>أفضل نتيجة</span></div><div><strong id="attemptCount">0</strong><span>محاولة</span></div><div><strong id="videoCount">0</strong><span>فيديو</span></div></div>
         </div>
       </section>
@@ -47,7 +47,7 @@
 
       <section class="content-layout">
         <aside class="modules-rail">
-          <div class="section-head"><div><p class="eyebrow">خريطة التدريب</p><h2>الوحدات</h2></div><span id="moduleCount" class="count-pill">5</span></div>
+          <div class="section-head"><div><p class="eyebrow">خريطة التدريب</p><h2>أيام التدريب</h2></div><span id="moduleCount" class="count-pill">5</span></div>
           <div id="moduleList" class="module-list"></div>
           <button id="aiExplainBtn" class="ai-link" type="button">✦ اطلب شرحًا مبسطًا بالذكاء الاصطناعي</button>
         </aside>
