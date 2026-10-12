@@ -127,7 +127,11 @@ footer span{color:#7b3fe4;font-weight:700;}
     );
 
     function getToken() {
-        return sessionStorage.getItem('sb-access-token');
+        const fromSession = sessionStorage.getItem('sb-access-token');
+        if (fromSession) return fromSession;
+        const m = document.cookie.match(/(?:^|;\s*)sb-access-token=([^;]+)/);
+        if (!m) return null;
+        try { return decodeURIComponent(m[1]).replace(/"/g, ''); } catch (_) { return null; }
     }
     function escapeHtml(value) {
         const div = document.createElement('div');
