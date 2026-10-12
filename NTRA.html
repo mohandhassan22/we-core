@@ -228,37 +228,40 @@
     const SUPABASE_URL = "https://iygwhapcpdmsasqlfelv.supabase.co";
     const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml5Z3doYXBjcGRtc2FzcWxmZWx2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzEzNDk5MDQsImV4cCI6MjA4NjkyNTkwNH0.jqU1fEc9kBkXcCfazH6aTnS2XWWzPv0bbixHZgjtrnQ";
 
-    // لو الموقع أصلاً عنده client جاهز على window.supabaseClient استخدمه، غير كده اعمل واحد
-    const sb = window.supabaseClient || supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    const LOGIN_URL = "/login.html";
 
-    const LOGIN_URL = "/login.html"; // غيّر المسار ده لمسار صفحة تسجيل الدخول عندك لو مختلف
+    // الجلسة محفوظة في كوكي sb-access-token (نفس باقي صفحات المنصة) مش في localStorage
+    function getCookie(name) {
+      const m = document.cookie.match(new RegExp("(?:^|;\\s*)" + name + "=([^;]+)"));
+      if (!m) return null;
+      try { return decodeURIComponent(m[1]).replace(/"/g, ""); } catch (_) { return null; }
+    }
+    const accessToken = getCookie("sb-access-token");
+    if (!accessToken) { window.location.replace(LOGIN_URL); }
+
+    const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+      auth: { persistSession: false, autoRefreshToken: false, detectSessionInUrl: false },
+      global: { headers: { Authorization: `Bearer ${accessToken}` } }
+    });
 
     let allRules = [];
     let activeCategory = "الكل";
 
     async function checkAuthAndLoad() {
-      const { data, error } = await sb.auth.getSession();
-      if (error || !data.session) {
-        window.location.href = LOGIN_URL;
+      if (!accessToken) return;
+      const { data, error } = await sb.auth.getUser(accessToken);
+      const user = data && data.user;
+      if (error || !user) {
+        window.location.replace(LOGIN_URL);
         return;
       }
       if (window.ForcePassword) {
-        // the cached session user can be stale (still flagged after a password change) -> ask the server
-        const fresh = await sb.auth.getUser();
-        const u = (fresh && fresh.data && fresh.data.user) || data.session.user;
-        await ForcePassword.ensure(u, data.session.access_token);
+        await ForcePassword.ensure(user, accessToken);
       }
       await loadRules();
       document.getElementById("gate").style.display = "none";
       document.getElementById("main").classList.add("ready");
     }
-
-    // لو الـ Session بتتلغي وإنت فاتح الصفحة، ارجع للوجن على طول
-    sb.auth.onAuthStateChange((event, session) => {
-      if (event === "SIGNED_OUT" || !session) {
-        window.location.href = LOGIN_URL;
-      }
-    });
 
     async function loadRules() {
       const { data, error } = await sb
