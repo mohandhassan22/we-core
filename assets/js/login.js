@@ -47,7 +47,7 @@
                 console.warn('Error fetching profile role:', profileErr);
             }
 
-            const userRole = profileData?.role || user?.user_metadata?.role || user?.app_metadata?.role;
+            const userRole = profileData?.role || user?.app_metadata?.role;
 
             // 5. التوجيه بناءً على الرتبة
             if (userRole === 'admin') {

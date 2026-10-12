@@ -203,7 +203,7 @@ function getRoleBadge(role) {
     user:            { label: 'مستخدم',         icon: 'ti-user',      cls: 'user' },
   };
   const r = map[role?.toLowerCase()] || { label: role || 'مستخدم', icon: 'ti-user', cls: 'user' };
-  return `<span class="badge ${r.cls}"><i class="ti ${r.icon}" style="font-size:11px"></i> ${r.label}</span>`;
+  return `<span class="badge ${r.cls}"><i class="ti ${r.icon}" style="font-size:11px"></i> ${escapeHtml(r.label)}</span>`;
 }
 
 function getStatusBadge(user) {
@@ -219,7 +219,7 @@ function getStatusBadge(user) {
 
 function updateStats(users) {
   const total = users.length;
-  const admins = users.filter(u => (u.app_metadata?.role || u.user_metadata?.role) === 'admin').length;
+  const admins = users.filter(u => u.app_metadata?.role === 'admin').length;
   const active = users.filter(u => {
     if (!u.last_sign_in_at) return false;
     return (Date.now() - new Date(u.last_sign_in_at)) / 86400000 <= 30;
@@ -259,7 +259,7 @@ function displayUsers(users) {
   }
 
   tbody.innerHTML = users.map(user => {
-    const role = user.app_metadata?.role || user.user_metadata?.role || 'user';
+    const role = user.app_metadata?.role || 'user';
     const username = user.user_metadata?.username || '';
     const displayName = username || user.email.split('@')[0];
     const initials = getInitials(username, user.email);
@@ -325,7 +325,7 @@ async function callOrg(action, body = {}) {
 
 const optHtml = (items, label, empty) =>
   (items.length ? '' : `<option value="">${empty}</option>`) +
-  items.map(i => `<option value="${i.id}">${label(i)}</option>`).join('');
+  items.map(i => `<option value="${escapeHtml(i.id)}">${escapeHtml(label(i))}</option>`).join('');
 
 function refreshOrgSelects() {
   const { areas, branches } = orgData;
@@ -339,17 +339,17 @@ function refreshOrgSelects() {
 function renderOrgManagers() {
   const box = $('orgManagers'); if (!box) return;
   const { areas, branches, profiles } = orgData;
-  const users = profiles.map(p => `<option value="${p.id}">${p.full_name || p.username} (${p.username})</option>`).join('');
-  const supUsers = profiles.filter(p => p.role === 'supervisor').map(p => `<option value="${p.id}">${p.full_name || p.username} (${p.username})</option>`).join('');
+  const users = profiles.map(p => `<option value="${escapeHtml(p.id)}">${escapeHtml(p.full_name || p.username)} (${escapeHtml(p.username)})</option>`).join('');
+  const supUsers = profiles.filter(p => p.role === 'supervisor').map(p => `<option value="${escapeHtml(p.id)}">${escapeHtml(p.full_name || p.username)} (${escapeHtml(p.username)})</option>`).join('');
   const row = (type, item, label) => `<tr>
     <td style="padding:6px">${label}</td>
-    <td style="padding:6px"><select class="form-input" data-type="${type}" data-id="${item.id}">
+    <td style="padding:6px"><select class="form-input" data-type="${type}" data-id="${escapeHtml(item.id)}">
       <option value="">— بدون مدير —</option>${users}</select></td></tr>`;
   box.innerHTML = '<table style="width:100%"><tbody>' +
-    areas.map(a => row('area', a, `منطقة: ${a.name}`)).join('') +
-    areas.map(a => `<tr><td style="padding:6px">مشرف منطقة: ${a.name}</td><td style="padding:6px"><select class="form-input" data-type="supervisor" data-id="${a.id}">
+    areas.map(a => row('area', a, `منطقة: ${escapeHtml(a.name)}`)).join('') +
+    areas.map(a => `<tr><td style="padding:6px">مشرف منطقة: ${escapeHtml(a.name)}</td><td style="padding:6px"><select class="form-input" data-type="supervisor" data-id="${escapeHtml(a.id)}">
       <option value="">— بدون مشرف —</option>${supUsers}</select></td></tr>`).join('') +
-    branches.map(b => row('branch', b, `فرع: ${b.name}`)).join('') + '</tbody></table>';
+    branches.map(b => row('branch', b, `فرع: ${escapeHtml(b.name)}`)).join('') + '</tbody></table>';
   box.querySelectorAll('select').forEach(sel => {
     const isSup = sel.dataset.type === 'supervisor';
     const item = (sel.dataset.type === 'branch' ? branches : areas).find(x => x.id === sel.dataset.id);
@@ -640,7 +640,7 @@ async function loadTables() {
     tablesLoaded = true;
     renderTablesGrid(allTables);
   } catch (error) {
-    $('tablesGrid').innerHTML = `<div style="text-align:center;padding:40px;color:var(--danger);grid-column:1/-1">خطأ: ${error.message}</div>`;
+    $('tablesGrid').innerHTML = `<div style="text-align:center;padding:40px;color:var(--danger);grid-column:1/-1">خطأ: ${escapeHtml(error.message)}</div>`;
   }
 }
 
@@ -652,10 +652,10 @@ function renderTablesGrid(tables) {
     return;
   }
   grid.innerHTML = tables.map(t => `
-    <div class="table-card" onclick="openTable('${t.table_name}')">
-      <div class="table-card-ico"><i class="ti ${tableIconFor(t.table_name)}"></i></div>
+    <div class="table-card" onclick="openTable(${jsArg(t.table_name)})">
+      <div class="table-card-ico"><i class="ti ${escapeHtml(tableIconFor(t.table_name))}"></i></div>
       <div class="table-card-info">
-        <div class="table-card-name">${t.table_name}</div>
+        <div class="table-card-name">${escapeHtml(t.table_name)}</div>
         <div class="table-card-cols">${(t.columns || []).length} عمود</div>
       </div>
       <i class="ti ti-chevron-left table-card-arrow"></i>
@@ -699,13 +699,13 @@ async function loadTableData() {
     renderTableRows(data.rows || [], currentTableColumns);
     updatePager(data.total || 0, data.page || 1, data.pageSize || TABLE_PAGE_SIZE);
   } catch (error) {
-    tbody.innerHTML = `<tr><td style="text-align:center;padding:30px;color:var(--danger)">خطأ: ${error.message}</td></tr>`;
+    tbody.innerHTML = `<tr><td style="text-align:center;padding:30px;color:var(--danger)">خطأ: ${escapeHtml(error.message)}</td></tr>`;
   }
 }
 
 function renderTableHead(columns) {
   const thead = $('dynamicTableHead');
-  thead.innerHTML = `<tr>${columns.map(c => `<th>${c.column_name}${c.is_primary_key ? ' <i class="ti ti-key" style="font-size:11px;opacity:.6"></i>' : ''}</th>`).join('')}<th>الإجراءات</th></tr>`;
+  thead.innerHTML = `<tr>${columns.map(c => `<th>${escapeHtml(c.column_name)}${c.is_primary_key ? ' <i class="ti ti-key" style="font-size:11px;opacity:.6"></i>' : ''}</th>`).join('')}<th>الإجراءات</th></tr>`;
 }
 
 function formatCellValue(value, column) {
@@ -715,8 +715,8 @@ function formatCellValue(value, column) {
   }
   let str = String(value);
   if (typeof value === 'object') str = JSON.stringify(value);
-  if (str.length > 60) return `<span title="${str.replace(/"/g, '&quot;')}">${str.substring(0, 60)}…</span>`;
-  return str;
+  if (str.length > 60) return `<span title="${escapeHtml(str)}">${escapeHtml(str.substring(0, 60))}…</span>`;
+  return escapeHtml(str);
 }
 
 function renderTableRows(rows, columns) {
@@ -731,10 +731,10 @@ function renderTableRows(rows, columns) {
       ${columns.map(c => `<td>${formatCellValue(row[c.column_name], c)}</td>`).join('')}
       <td>
         <div class="acts">
-          <button class="act-btn magic" onclick='openEditRowModal(${JSON.stringify(row).replace(/'/g, "&#39;")})'>
+          <button class="act-btn magic" onclick="openEditRowModal(${escapeHtml(JSON.stringify(row))})">
             <i class="ti ti-edit" style="font-size:13px"></i> تعديل
           </button>
-          <button class="act-btn del" onclick='confirmDeleteRow(${JSON.stringify(pkCol ? row[pkCol] : null)}, ${JSON.stringify((pkCol ? row[pkCol] : '') + '')})'>
+          <button class="act-btn del" onclick="confirmDeleteRow(${escapeHtml(JSON.stringify(pkCol ? row[pkCol] : null))}, ${escapeHtml(JSON.stringify((pkCol ? row[pkCol] : '') + ''))})">
             <i class="ti ti-trash" style="font-size:13px"></i>
           </button>
         </div>
@@ -771,7 +771,8 @@ if ($('tableRowSearch')) $('tableRowSearch').addEventListener('input', (e) => {
 
 // ─── Dynamic Add/Edit Row Form ───
 function inputForColumn(column, value) {
-  const name = column.column_name;
+  const rawName = column.column_name;
+  const name = escapeHtml(rawName);
   const readonly = column.is_primary_key ? 'readonly' : '';
   const disabledStyle = column.is_primary_key ? 'style="background:var(--bg);color:var(--text-muted)"' : '';
 
@@ -792,8 +793,8 @@ function inputForColumn(column, value) {
   if (isNumericType(column.data_type)) {
     return `
       <div class="form-group">
-        <label>${name}${column.is_foreign_key ? ` <span style="color:var(--text-muted);font-size:.75rem">(مرتبط بـ ${column.foreign_table})</span>` : ''}</label>
-        <input type="number" step="any" class="form-input" data-col="${name}" data-type="number" value="${value ?? ''}" ${readonly} ${disabledStyle}>
+        <label>${name}${column.is_foreign_key ? ` <span style="color:var(--text-muted);font-size:.75rem">(مرتبط بـ ${escapeHtml(column.foreign_table)})</span>` : ''}</label>
+        <input type="number" step="any" class="form-input" data-col="${name}" data-type="number" value="${escapeHtml(value ?? '')}" ${readonly} ${disabledStyle}>
       </div>`;
   }
   if (isDateType(column.data_type)) {
@@ -801,7 +802,7 @@ function inputForColumn(column, value) {
     return `
       <div class="form-group">
         <label>${name}</label>
-        <input type="date" class="form-input" data-col="${name}" data-type="date" value="${v}" ${readonly} ${disabledStyle}>
+        <input type="date" class="form-input" data-col="${name}" data-type="date" value="${escapeHtml(v)}" ${readonly} ${disabledStyle}>
       </div>`;
   }
   if (isTimestampType(column.data_type)) {
@@ -809,15 +810,15 @@ function inputForColumn(column, value) {
     return `
       <div class="form-group">
         <label>${name}</label>
-        <input type="datetime-local" class="form-input" data-col="${name}" data-type="timestamp" value="${v}" ${readonly} ${disabledStyle}>
+        <input type="datetime-local" class="form-input" data-col="${name}" data-type="timestamp" value="${escapeHtml(v)}" ${readonly} ${disabledStyle}>
       </div>`;
   }
   // نص افتراضي
   const strVal = value === null || value === undefined ? '' : (typeof value === 'object' ? JSON.stringify(value) : value);
   return `
     <div class="form-group">
-      <label>${name}${column.is_foreign_key ? ` <span style="color:var(--text-muted);font-size:.75rem">(مرتبط بـ ${column.foreign_table})</span>` : ''}</label>
-      <input type="text" class="form-input" data-col="${name}" data-type="text" value="${String(strVal).replace(/"/g, '&quot;')}" ${readonly} ${disabledStyle}>
+      <label>${name}${column.is_foreign_key ? ` <span style="color:var(--text-muted);font-size:.75rem">(مرتبط بـ ${escapeHtml(column.foreign_table)})</span>` : ''}</label>
+      <input type="text" class="form-input" data-col="${name}" data-type="text" value="${escapeHtml(strVal)}" ${readonly} ${disabledStyle}>
     </div>`;
 }
 
@@ -1096,10 +1097,10 @@ if ($('confirmDeleteRowBtn')) $('confirmDeleteRowBtn').addEventListener('click',
     r.data.chunks.forEach((c) => {
       const tr = document.createElement("tr");
       tr.innerHTML = `
-        <td><span class="kt-tag">${c.source_type || 'نص'}</span><br><small>${c.source_label || ""}</small></td>
-        <td>${c.content.slice(0, 90)}...</td>
+        <td><span class="kt-tag">${escapeHtml(c.source_type || 'نص')}</span><br><small>${escapeHtml(c.source_label || "")}</small></td>
+        <td>${escapeHtml(c.content.slice(0, 90))}...</td>
         <td>${new Date(c.created_at).toLocaleDateString("ar-EG")}</td>
-        <td><button class="kt-del" data-id="${c.id}">حذف</button></td>
+        <td><button class="kt-del" data-id="${escapeHtml(c.id)}">حذف</button></td>
       `;
       tbody.appendChild(tr);
     });
