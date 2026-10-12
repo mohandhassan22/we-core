@@ -236,8 +236,6 @@ footer span{color:#7b3fe4;font-weight:700;}
             if (error) throw error;
 
             if (!isAllowedVideoUrl(data.url)) throw new Error('رابط فيديو غير مسموح');
-            await introDone; // الانترو الأول
-            if (!$('playerOverlay').classList.contains('active')) return;
             const iframe = document.createElement('iframe');
             iframe.src = data.url;
             iframe.allow = 'autoplay';

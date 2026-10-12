@@ -147,11 +147,22 @@
     var el = e.target && e.target.closest && e.target.closest('[data-we-gate]');
     if (!el) return;
     var html = decodeURIComponent(el.getAttribute('data-we-gate'));
+    if (!el.parentNode) return;
+    // 1) put the real player in the page NOW, so it loads while the intro plays
+    var tpl = document.createElement('template');
+    tpl.innerHTML = html;
+    var vids = tpl.content.querySelectorAll('video');
+    var frames = tpl.content.querySelectorAll('iframe');
+    vids.forEach(function (v) { v.removeAttribute('autoplay'); v.preload = 'auto'; });
+    el.replaceWith(tpl.content);
+    // 2) when the intro ends, start the video right away
     play().then(function () {
-      if (!el.parentNode) return;
-      var tpl = document.createElement('template');
-      tpl.innerHTML = html;
-      el.replaceWith(tpl.content);
+      vids.forEach(function (v) { try { var p = v.play(); if (p && p.catch) p.catch(function () {}); } catch (_) {} });
+      frames.forEach(function (f) {
+        if (/youtube\.com\/embed/.test(f.src)) {
+          try { f.contentWindow.postMessage(JSON.stringify({ event: 'command', func: 'playVideo', args: [] }), '*'); } catch (_) {}
+        }
+      });
     });
   });
 

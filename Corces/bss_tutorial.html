@@ -610,9 +610,7 @@
             if (error) throw error;
             
             if (!isAllowedVideoUrl(data.url)) throw new Error('رابط فيديو غير مسموح');
-            await introDone; // الانترو الأول
-            if (!modal.classList.contains('open')) return;
-            player.src = data.url;
+            player.src = data.url; // بيتحمّل ورا الانترو
             title.textContent = video.title;
 
         } catch (err) {
