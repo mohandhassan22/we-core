@@ -115,11 +115,11 @@
                 itemAchieves.we_gold += parseFloat(log.we_gold) || 0;
             });
 
-            const elapsedDays = Utils.calculateElapsedDays(period?.start_date, period?.end_date, period?.target_days || 20);
+            const elapsedDays = Utils.calculateElapsedDays(period?.start_date, period?.end_date, period?.target_days || 30);
             const metrics = TargetCalculator.calculateMetrics(
                 itemTargets,
                 itemAchieves,
-                period?.target_days || 20,
+                period?.target_days || 30,
                 elapsedDays,
                 logs
             );
@@ -246,7 +246,7 @@
 
         // Projection for one period: daily average so far x target days (elapsed days come from the period dates)
         projectionFor: function (period, achieve) {
-            const days = parseInt(period && period.target_days, 10) || 20;
+            const days = parseInt(period && period.target_days, 10) || 30;
             const elapsed = Utils.calculateElapsedDays(period && period.start_date, period && period.end_date, days);
             return TargetCalculator.calculateProjection(achieve, elapsed, days);
         },

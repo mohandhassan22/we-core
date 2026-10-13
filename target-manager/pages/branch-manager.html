@@ -116,7 +116,7 @@
                     <div class="items-grid" style="grid-template-columns: repeat(3, 1fr); margin-bottom:1rem;">
                         <div class="form-group"><label class="form-label">تاريخ البداية</label><input type="date" class="form-input" id="btgt_start"></div>
                         <div class="form-group"><label class="form-label">تاريخ النهاية</label><input type="date" class="form-input" id="btgt_end"></div>
-                        <div class="form-group"><label class="form-label">أيام العمل</label><input type="number" min="1" class="form-input" id="btgt_days" value="20"></div>
+                        <div class="form-group"><label class="form-label">أيام العمل</label><input type="number" min="1" class="form-input" id="btgt_days" value="30"></div>
                     </div>
                     <div class="items-grid" style="grid-template-columns: repeat(2, 1fr);">
                         <div class="form-group"><label class="form-label">توتل PT12 للفرع</label><input type="number" min="0" class="form-input branch-tgt-input" id="btgt_pt12" value="150"></div>
@@ -238,7 +238,7 @@
                     btTargetId = bt.id;
                     document.getElementById('btgt_start').value = bt.start_date;
                     document.getElementById('btgt_end').value = bt.end_date;
-                    document.getElementById('btgt_days').value = bt.target_days || 20;
+                    document.getElementById('btgt_days').value = bt.target_days || 30;
                     BT_ITEMS.forEach(k => document.getElementById('btgt_' + k).value = (bt.items && bt.items[k]) || 0);
                 }
             }
@@ -257,7 +257,7 @@
                 await TargetAPI.saveBranchTarget({
                     p_id: btTargetId, p_branch_id: btBranchId,
                     p_start: start, p_end: end,
-                    p_days: parseInt(document.getElementById('btgt_days').value) || 20,
+                    p_days: parseInt(document.getElementById('btgt_days').value) || 30,
                     p_type: 'Full Month', p_items: readBranchTargets()
                 });
                 Utils.closeModal('branchTargetModal');

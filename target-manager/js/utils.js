@@ -34,7 +34,7 @@
         /**
          * Calculates elapsed target days up to today within a start & end date
          */
-        calculateElapsedDays: function (startDateStr, endDateStr, totalTargetDays = 20) {
+        calculateElapsedDays: function (startDateStr, endDateStr, totalTargetDays = 30) {
             const today = new Date();
             today.setHours(0, 0, 0, 0);
 

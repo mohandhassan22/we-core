@@ -62,7 +62,7 @@
         calculateProjection: function (achieve, elapsedDays, targetDays) {
             const a = parseFloat(achieve) || 0;
             const e = parseInt(elapsedDays, 10) || 0;
-            const t = parseInt(targetDays, 10) || 20;
+            const t = parseInt(targetDays, 10) || 30;
 
             if (e <= 0) return a;
             const dailyAvg = a / e;
@@ -83,7 +83,7 @@
          */
         calculateDailyTarget: function (target, targetDays) {
             const t = parseFloat(target) || 0;
-            const td = parseInt(targetDays, 10) || 20;
+            const td = parseInt(targetDays, 10) || 30;
             if (td <= 0) return 0;
             return parseFloat((t / td).toFixed(2));
         },
@@ -193,7 +193,7 @@
             const achievementPct = this.calculateAchievementPercentage(achieveLines, targetLines);
             const remaining = this.calculateRemaining(targetLines, achieveLines);
             const elapsed = Math.max(parseInt(elapsedDays, 10) || 1, 1);
-            const tDays = Math.max(parseInt(targetDays, 10) || 20, 1);
+            const tDays = Math.max(parseInt(targetDays, 10) || 30, 1);
             const remainingDays = Math.max(tDays - elapsed, 1);
             const projection = this.calculateProjection(achieveLines, elapsed, tDays);
             const baseDailyTarget = this.calculateDailyTarget(targetLines, tDays);

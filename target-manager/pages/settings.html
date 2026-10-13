@@ -80,7 +80,7 @@
                             </div>
                             <div class="form-group">
                                 <label class="form-label">أيام التارجت المستهدفة</label>
-                                <input type="number" class="form-input" id="targetDays" value="20" min="1" max="31">
+                                <input type="number" class="form-input" id="targetDays" value="30" min="1" max="31">
                             </div>
                             <div class="form-group" id="monthPickWrap">
                                 <label class="form-label">الشهر</label>
@@ -154,6 +154,7 @@
                 const [y, m] = $('periodMonth').value.split('-').map(Number);
                 $('startDate').value = `${y}-${pad(m)}-01`;
                 $('endDate').value = `${y}-${pad(m)}-${pad(new Date(y, m, 0).getDate())}`;
+                $('targetDays').value = 30;   // full month is calculated on 30 days
             }
         }
         $('periodType').addEventListener('change', () => applyPeriodMode(false));
@@ -233,7 +234,7 @@
                 await TargetAPI.saveBranchTarget({
                     p_id: currentTargetId, p_branch_id: currentBranchId,
                     p_start: $('startDate').value, p_end: $('endDate').value,
-                    p_days: parseInt($('targetDays').value) || 20, p_type: $('periodType').value, p_items: items
+                    p_days: parseInt($('targetDays').value) || 30, p_type: $('periodType').value, p_items: items
                 });
                 await loadBranch(currentBranchId);   // reload from DB to confirm it persisted
                 Utils.showToast('تم حفظ تارجت الفرع وتوزيعه على الموظفين', 'success');
