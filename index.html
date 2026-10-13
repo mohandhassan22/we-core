@@ -21,6 +21,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
 <link rel="stylesheet" href="assets/css/index.css">
+<link rel="stylesheet" href="assets/css/announcements.css">
 </head>
 <body>
 
@@ -60,6 +61,9 @@
 </button>
     </div>
   </div>
+
+  <!-- Announcements (shown after login, auto-expire) -->
+  <div id="announcementsHost" aria-live="polite"></div>
 </div>
 
 <!-- Wave -->
@@ -576,6 +580,7 @@
 <!-- SCRIPTS -->
 <script src="assets/js/active-users-widget.js"></script>
 <script src="assets/js/index.js"></script>
+<script src="assets/js/announcements.js"></script>
  <script
   src="https://iygwhapcpdmsasqlfelv.supabase.co/storage/v1/object/public/widget/widget.js"
   data-function-url="https://iygwhapcpdmsasqlfelv.supabase.co/functions/v1/we-core-ai"
