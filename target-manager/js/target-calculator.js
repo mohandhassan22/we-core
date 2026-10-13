@@ -149,7 +149,10 @@
             const proj = parseFloat(projection) || 0;
             const tgt = parseFloat(target) || 0;
 
-            if (pct >= 100 || (tgt > 0 && proj >= tgt && pct >= 95)) {
+            if (tgt <= 0) {
+                return { code: 'NO_TARGET', label: 'لا يوجد تارجت', class: 'status-warning' };
+            }
+            if (pct >= 100 || (proj >= tgt && pct >= 95)) {
                 return { code: 'ACHIEVED', label: 'تم تحقيق الهدف', class: 'status-achieved' };
             }
             if (proj >= tgt) {
