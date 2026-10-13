@@ -63,7 +63,7 @@
                         <p class="hero-subtitle">إدخال خطوط المبيعات اليومية وتتبع التطور الزمني لتحقيق Target.</p>
                     </div>
                     <div class="hero-actions">
-                        <button class="btn btn-primary" onclick="Utils.openModal('dailyModal')">
+                        <button class="btn btn-primary" onclick="Utils.openModal('dailyModal'); prefillEntry()">
                             <i class="fa-solid fa-plus-circle"></i> إضافة أداء اليوم
                         </button>
                     </div>
@@ -112,6 +112,7 @@
                     <div class="form-group">
                         <label class="form-label">تاريخ الأداء</label>
                         <input type="date" class="form-input" id="entryDate" required>
+                        <small class="text-muted" id="entrySavedHint"></small>
                     </div>
                     <div class="items-grid" style="grid-template-columns: repeat(2, 1fr);">
                         <div class="form-group"><label class="form-label">PT12</label><input type="number" min="0" class="form-input" id="entry_pt12" value="0"></div>
@@ -191,6 +192,8 @@
         }
 
         document.getElementById('saveDailyBtnPage').addEventListener('click', async function() {
+            const btn = this;
+            if (btn.disabled) return;   // a double click would add the numbers twice
             const date = document.getElementById('entryDate').value;
             const itemsData = {
                 pt12: document.getElementById('entry_pt12').value,
@@ -202,13 +205,17 @@
                 we_pay: document.getElementById('entry_we_pay').value,
                 we_gold: document.getElementById('entry_we_gold').value
             };
+            btn.disabled = true;
             try {
                 const profile = (window.App && App.userProfile) || null;
                 await DailyEntry.save(profile, date, itemsData, '');
+                DailyEntry.resetForm();   // back to zero right after saving
                 Utils.closeModal('dailyModal');
                 await loadPerformanceTable();
             } catch (e) {
                 Utils.showToast(e.message || 'تعذر حفظ الإدخال', 'error');
+            } finally {
+                btn.disabled = false;
             }
         });
 

@@ -14,6 +14,8 @@
             selectedArea: null,
             selectedBranch: null,
             selectedEmployee: null,
+            tree: [],
+            nav: { area: null, branch: null, emp: null },   // drill-down position (area manager / supervisor)
             currentFilter: 'all',
             searchQuery: ''
         },
@@ -427,173 +429,322 @@
         },
 
         /* ------------------------------------------------------------------
-         * 3. AREA MANAGER DASHBOARD RENDERER
+         * 3 + 4. AREA MANAGER / SUPERVISOR - drill-down (area > branch > employee)
+         * Supervisor : areas -> branches of the chosen area -> employees of the chosen branch -> employee data
+         * Area manager: his branches -> employees of the chosen branch -> employee data
          * ------------------------------------------------------------------ */
-        renderAreaManagerView: function () {
-            const container = document.getElementById('areaDashboardContainer');
-            if (!container) return;
-            const esc = v => String(v == null ? '' : v).replace(/&/g, '&amp;').replace(/</g, '&lt;');
+        ALL_ITEMS: [
+            ['pt12', 'PT12'], ['super_kix', 'Super Kix'], ['tazbeet', 'Control Tazbeet'], ['data', 'Data Lines'],
+            ['we_gold', 'WE Gold'], ['adsl', 'WE Space ADSL'], ['fixed', 'Fixed Line'], ['we_pay', 'WE Pay']
+        ],
 
-            const subs = this.state.subordinates || [];
-            const periods = (this.state.teamData && this.state.teamData.periods) ? this.state.teamData.periods : [];
-            const logs = (this.state.teamData && this.state.teamData.logs) ? this.state.teamData.logs : [];
+        esc: function (v) {
+            return String(v == null ? '' : v).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+        },
 
-            let areaTarget = 0; let areaAchieve = 0; let areaProj = 0;
+        // One employee: totals (lines only), separate KPIs, every item, and his daily logs
+        buildEmpRow: function (emp, period, logs) {
             const LINE_KEYS = TargetCalculator.TOTAL_LINE_ITEMS;
-            const areaSep = {}; this.SEPARATE_ITEMS.forEach(it => areaSep[it.key] = { target: 0, achieve: 0 });
-            const branchesMap = {};
-            const employeeRows = [];
+            const empLogs = period ? (logs || []).filter(l => l.period_id === period.id) : [];
+            const target = this.sumTargetsOf(period, LINE_KEYS);
+            const achieve = this.sumLogsOf(empLogs, LINE_KEYS);
+            const proj = this.projectionFor(period, achieve);
+            const sep = {}; this.SEPARATE_ITEMS.forEach(it => sep[it.key] = { target: this.sumTargetsOf(period, [it.key]), achieve: this.sumLogsOf(empLogs, [it.key]) });
+            const items = {}; this.ALL_ITEMS.forEach(([k]) => items[k] = { target: this.sumTargetsOf(period, [k]), achieve: this.sumLogsOf(empLogs, [k]) });
+            const pct = TargetCalculator.calculateAchievementPercentage(achieve, target);
+            return {
+                id: emp.id, name: emp.full_name || 'موظف', branch: emp.branch || 'غير محدد',
+                target, achieve, proj, sep, items, logs: empLogs, pct,
+                projPct: TargetCalculator.calculateAchievementPercentage(proj, target),
+                rem: TargetCalculator.calculateRemaining(target, achieve),
+                status: TargetCalculator.calculateStatus(pct, proj, target)
+            };
+        },
 
-            (this.state.areaBranches || []).forEach(br => {
-                if (br && br.name && !branchesMap[br.name]) {
-                    branchesMap[br.name] = { name: br.name, employeesCount: 0, target: 0, achieve: 0, proj: 0 };
-                }
+        finishNode: function (n) {
+            n.pct = TargetCalculator.calculateAchievementPercentage(n.achieve, n.target);
+            n.projPct = TargetCalculator.calculateAchievementPercentage(n.proj, n.target);
+            n.rem = TargetCalculator.calculateRemaining(n.target, n.achieve);
+            return n;
+        },
+
+        // Branch node = sum of its employees
+        makeBranchNode: function (name, employees) {
+            const n = { name, employees, employeesCount: employees.length, target: 0, achieve: 0, proj: 0, sep: {} };
+            this.SEPARATE_ITEMS.forEach(it => n.sep[it.key] = { target: 0, achieve: 0 });
+            employees.forEach(e => {
+                n.target += e.target; n.achieve += e.achieve; n.proj += e.proj;
+                this.SEPARATE_ITEMS.forEach(it => { n.sep[it.key].target += e.sep[it.key].target; n.sep[it.key].achieve += e.sep[it.key].achieve; });
             });
+            return this.finishNode(n);
+        },
 
-            subs.forEach(emp => {
-                if (emp.role !== 'agent') return; // Only count agent targets to avoid double counting
+        // Area node (or the grand total) = sum of its children (branch nodes / area nodes)
+        rollup: function (name, children, key) {
+            const n = { name, employeesCount: 0, target: 0, achieve: 0, proj: 0, sep: {} };
+            n[key || 'branches'] = children;
+            this.SEPARATE_ITEMS.forEach(it => n.sep[it.key] = { target: 0, achieve: 0 });
+            children.forEach(c => {
+                n.employeesCount += c.employeesCount; n.target += c.target; n.achieve += c.achieve; n.proj += c.proj;
+                this.SEPARATE_ITEMS.forEach(it => { n.sep[it.key].target += c.sep[it.key].target; n.sep[it.key].achieve += c.sep[it.key].achieve; });
+            });
+            return this.finishNode(n);
+        },
 
-                const empPeriod = periods.find(p => p.user_id === emp.id);
-                const empTarget = this.sumTargetsOf(empPeriod, LINE_KEYS);   // lines only
-                const empLogs = empPeriod ? logs.filter(l => l.period_id === empPeriod.id) : [];
-                const empAchieve = this.sumLogsOf(empLogs, LINE_KEYS);
-                this.SEPARATE_ITEMS.forEach(it => {
-                    areaSep[it.key].target += this.sumTargetsOf(empPeriod, [it.key]);
-                    areaSep[it.key].achieve += this.sumLogsOf(empLogs, [it.key]);
+        // Group employee rows per branch; branches with no employees still show (from the branches table)
+        buildBranchNodes: function (knownNames, rows) {
+            const map = {};
+            (knownNames || []).forEach(nm => { if (nm && !map[nm]) map[nm] = []; });
+            rows.forEach(r => { (map[r.branch] || (map[r.branch] = [])).push(r); });
+            const nodes = Object.keys(map).map(nm => this.makeBranchNode(nm, this.rankRows(map[nm])));
+            return this.rankRows(nodes);
+        },
+
+        renderAreaManagerView: function () {
+            const subs = this.state.subordinates || [];
+            const periods = (this.state.teamData && this.state.teamData.periods) || [];
+            const logs = (this.state.teamData && this.state.teamData.logs) || [];
+            // agents only, so nothing is counted twice
+            const rows = subs.filter(e => e.role === 'agent').map(emp => this.buildEmpRow(emp, periods.find(p => p.user_id === emp.id), logs));
+            const branches = this.buildBranchNodes((this.state.areaBranches || []).map(b => b && b.name), rows);
+            const areaName = (this.state.userProfile && this.state.userProfile.area) || 'المنطقة';
+            this.state.tree = [this.rollup(areaName, branches)];
+            this.state.nav.area = areaName;   // an area manager always works inside his own area
+            this.renderDrill();
+        },
+
+        renderSupervisorView: async function () {
+            const container = document.getElementById('supervisorDashboardContainer');
+            if (!container) return;
+            const { month, year } = Utils.getCurrentMonthYear();
+
+            const allAreas = (await TargetAPI.fetchAllowedAreas()) || [];
+            if (allAreas.length === 0) {
+                container.innerHTML = '<p class="text-muted">لا توجد مناطق مرتبطة بحسابك. تواصل مع الأدمن.</p>';
+                return;
+            }
+            const teams = await Promise.all(allAreas.map(ar => TargetAPI.fetchTeamData(month, year, null, ar.name)));
+
+            const tree = allAreas.map((ar, i) => {
+                const team = teams[i] || { periods: [], logs: [] };
+                const rows = [];
+                (team.periods || []).forEach(per => {
+                    const r = per.profiles && per.profiles.role;
+                    if (r && r !== 'agent') return;   // agents only
+                    rows.push(this.buildEmpRow({ id: per.user_id, full_name: per.profiles && per.profiles.full_name, branch: per.branch }, per, team.logs));
                 });
-
-                const empProj = this.projectionFor(empPeriod, empAchieve);
-                areaTarget += empTarget;
-                areaAchieve += empAchieve;
-                areaProj += empProj;
-
-                const branchName = emp.branch || 'غير محدد';
-                if (!branchesMap[branchName]) {
-                    branchesMap[branchName] = { name: branchName, employeesCount: 0, target: 0, achieve: 0, proj: 0 };
-                }
-                branchesMap[branchName].employeesCount++;
-                branchesMap[branchName].target += empTarget;
-                branchesMap[branchName].achieve += empAchieve;
-                branchesMap[branchName].proj += empProj;
-
-                employeeRows.push({
-                    name: emp.full_name, branch: branchName, target: empTarget, achieve: empAchieve, proj: empProj,
-                    pct: TargetCalculator.calculateAchievementPercentage(empAchieve, empTarget),
-                    projPct: TargetCalculator.calculateAchievementPercentage(empProj, empTarget)
-                });
+                return this.rollup(ar.name, this.buildBranchNodes((ar.branches || []).map(b => b && b.name), rows));
             });
+            this.rankRows(tree);   // areas: best first
+            this.state.tree = tree;
+            this.renderDrill();
+        },
 
-            const branches = Object.values(branchesMap);
-            branches.forEach(b => {
-                b.pct = TargetCalculator.calculateAchievementPercentage(b.achieve, b.target);
-                b.projPct = TargetCalculator.calculateAchievementPercentage(b.proj, b.target);
-                b.rem = TargetCalculator.calculateRemaining(b.target, b.achieve);
-            });
+        drillTo: function (type, key) {
+            const nav = this.state.nav;
+            if (type === 'area') { nav.area = key; nav.branch = null; nav.emp = null; }
+            else if (type === 'branch') { nav.branch = key; nav.emp = null; }
+            else if (type === 'emp') { nav.emp = key; }
+            this.renderDrill();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        },
 
-            const areaPct = TargetCalculator.calculateAchievementPercentage(areaAchieve, areaTarget);
-            const areaProjPct = TargetCalculator.calculateAchievementPercentage(areaProj, areaTarget);
-            this.rankRows(branches);       // branches: best first
-            this.rankRows(employeeRows);   // employees: best first
+        drillUp: function (level) {
+            const nav = this.state.nav;
+            if (level === 'root') { nav.area = null; nav.branch = null; nav.emp = null; }
+            else if (level === 'area') { nav.branch = null; nav.emp = null; }
+            else if (level === 'branch') { nav.emp = null; }
+            this.renderDrill();
+        },
 
-            container.innerHTML = `
+        // One renderer for both roles; what is shown depends on how deep the user has drilled
+        renderDrill: function () {
+            const isArea = this.state.activeRoleView === 'area_manager';
+            const container = document.getElementById(isArea ? 'areaDashboardContainer' : 'supervisorDashboardContainer');
+            if (!container) return;
+            const tree = this.state.tree || [];
+            const nav = this.state.nav;
+            const esc = (v) => this.esc(v);
+            const fmt = (v) => Utils.formatNumber(v);
+            const bar = (pct) => `<div class="progress-bar-bg"><div class="progress-bar-fill" style="width:${Math.min(Math.max(pct || 0, 0), 100)}%;"></div></div>`;
+            const proj = (o) => `${fmt(o.proj)} <small>(${Utils.formatPercent(o.projPct)})</small>`;
+
+            // Resolve the selection; after a data refresh fall back to the deepest level that still exists
+            const area = isArea ? (tree[0] || null) : (tree.find(a => a.name === nav.area) || null);
+            const branch = area ? (area.branches.find(b => b.name === nav.branch) || null) : null;
+            const emp = branch ? (branch.employees.find(e => String(e.id) === String(nav.emp)) || null) : null;
+
+            // Breadcrumb (every step except the last one is a way back)
+            const crumbs = [];
+            if (!isArea) crumbs.push({ label: 'كل المناطق', level: 'root', icon: 'fa-layer-group', active: !area });
+            if (area) crumbs.push({ label: isArea ? `فروع ${area.name}` : area.name, level: 'area', icon: 'fa-city', active: !branch });
+            if (branch) crumbs.push({ label: branch.name, level: 'branch', icon: 'fa-store', active: !emp });
+            if (emp) crumbs.push({ label: emp.name, level: 'emp', icon: 'fa-user', active: true });
+            const crumbsHTML = `<nav class="drill-crumbs">${crumbs.map((c, i) => `
+                ${i ? '<i class="fa-solid fa-chevron-left drill-sep"></i>' : ''}
+                ${c.active ? `<span class="drill-crumb active"><i class="fa-solid ${c.icon}"></i> ${esc(c.label)}</span>`
+                           : `<button type="button" class="drill-crumb" data-nav="${c.level}"><i class="fa-solid ${c.icon}"></i> ${esc(c.label)}</button>`}`).join('')}</nav>`;
+
+            // What the KPI cards describe
+            const scope = emp || branch || area || this.rollup('الإجمالي', tree, 'areas');
+            const scopeLabel = emp ? 'الموظف' : branch ? 'الفرع' : area ? (isArea ? 'المنطقة' : 'المنطقة') : 'المناطق';
+            const kpiHTML = `
                 <div class="kpi-grid">
-                    <div class="kpi-card"><span class="kpi-title">هدف المنطقة (الأفراد)</span><div class="kpi-value">${Utils.formatNumber(areaTarget)}</div></div>
-                    <div class="kpi-card"><span class="kpi-title">محقق المنطقة</span><div class="kpi-value">${Utils.formatNumber(areaAchieve)}</div></div>
-                    <div class="kpi-card"><span class="kpi-title">نسبة إنجاز المنطقة</span><div class="kpi-value">${Utils.formatPercent(areaPct)}</div></div>
-                    <div class="kpi-card"><span class="kpi-title">متوقع تحقيق المنطقة</span><div class="kpi-value">${Utils.formatNumber(areaProj)} <small style="font-size:.55em;">(${Utils.formatPercent(areaProjPct)})</small></div></div>
+                    <div class="kpi-card"><span class="kpi-title">هدف ${scopeLabel}</span><div class="kpi-value">${fmt(scope.target)}</div>
+                        <div class="kpi-subtext">${emp ? esc(emp.branch) : (scope.employeesCount + ' موظف')}</div></div>
+                    <div class="kpi-card"><span class="kpi-title">المحقق</span><div class="kpi-value">${fmt(scope.achieve)}</div></div>
+                    <div class="kpi-card"><span class="kpi-title">نسبة الإنجاز</span><div class="kpi-value">${Utils.formatPercent(scope.pct)}</div>${bar(scope.pct)}</div>
+                    <div class="kpi-card"><span class="kpi-title">المتوقع تحقيقه (رقم / %)</span><div class="kpi-value">${fmt(scope.proj)} <small style="font-size:.55em;">(${Utils.formatPercent(scope.projPct)})</small></div></div>
+                    <div class="kpi-card"><span class="kpi-title">المتبقي</span><div class="kpi-value">${fmt(scope.rem)}</div></div>
                 </div>
                 <h3 class="font-bold margin-top" style="margin-bottom:.75rem;">الأهداف المنفصلة (مش داخلة في إجمالي الخطوط)</h3>
-                <div class="kpi-grid">${this.separateCardsHTML(areaSep)}</div>
-                <div class="table-card-wrapper margin-top" id="branches-section">
-                    <div class="table-toolbar"><h3 class="font-bold">أداء الفروع التابعة للمنطقة</h3></div>
-                    <table class="data-table">
-                        <thead>
-                            <tr><th>#</th><th>الفرع</th><th>الموظفين</th><th>الهدف</th><th>المحقق</th><th>النسبة</th><th>المتوقع (رقم / %)</th><th>المتبقي</th></tr>
-                        </thead>
-                        <tbody>
-                            ${branches.map((b, idx) => `
-                                <tr>
-                                    <td class="font-bold">${idx + 1}</td>
-                                    <td class="font-bold">${b.name}</td>
-                                    <td>${b.employeesCount}</td>
-                                    <td>${b.target}</td>
-                                    <td>${b.achieve}</td>
-                                    <td>${Utils.formatPercent(b.pct)}</td>
-                                    <td>${b.proj} <small>(${Utils.formatPercent(b.projPct)})</small></td>
-                                    <td>${b.rem}</td>
-                                </tr>
-                            `).join('')}
-                        </tbody>
-                    </table>
-                </div>
-                
-                <section class="margin-top" id="branches-grid">
-                    <h3 class="font-bold" style="margin-bottom:.75rem;">قائمة الفروع (${branches.length})</h3>
-                    <div class="items-grid">
-                        ${branches.length ? branches.map(b => `
-                            <div class="item-card">
-                                <div class="item-card-head">
-                                    <span class="item-name">${esc(b.name)}</span>
-                                    <span class="item-badge ${b.employeesCount ? 'status-ontrack' : 'status-warning'}">${b.employeesCount ? b.employeesCount + ' موظف' : 'بدون موظفين'}</span>
-                                </div>
-                                <div class="flex justify-between items-center text-muted" style="font-size:0.85rem;">
-                                    <span>الهدف: ${b.target}</span>
-                                    <span>المحقق: ${b.achieve}</span>
-                                    <span>النسبة: ${Utils.formatPercent(b.pct)}</span>
-                                </div>
-                                <div class="progress-bar-bg"><div class="progress-bar-fill" style="width:${Math.min(b.pct || 0, 100)}%;"></div></div>
-                            </div>`).join('') : '<p class="text-muted">لا توجد فروع مسجلة لهذه المنطقة.</p>'}
-                    </div>
-                </section>
+                <div class="kpi-grid">${this.separateCardsHTML(scope.sep)}</div>`;
 
-                <div class="table-card-wrapper margin-top" id="employees-section">
-                    <div class="table-toolbar"><h3 class="font-bold">أداء جميع موظفي (Agents) المنطقة</h3></div>
+            // Table of the next level down
+            const groupTable = (title, firstCol, rows, type, withBranches) => `
+                <div class="table-card-wrapper margin-top">
+                    <div class="table-toolbar"><h3 class="font-bold">${title} (${rows.length})</h3></div>
                     <div class="data-table-container">
                         <table class="data-table">
-                            <thead>
-                                <tr><th>#</th><th>الموظف</th><th>الفرع</th><th>الهدف</th><th>المحقق</th><th>النسبة</th><th>المتوقع (رقم / %)</th></tr>
-                            </thead>
+                            <thead><tr><th>#</th><th>${firstCol}</th>${withBranches ? '<th>الفروع</th>' : ''}<th>الموظفين</th><th>الهدف</th><th>المحقق</th><th>النسبة</th><th>المتوقع (رقم / %)</th><th>المتبقي</th><th></th></tr></thead>
                             <tbody>
-                                ${employeeRows.map((emp, idx) => `
-                                    <tr>
+                                ${rows.length ? rows.map((r, idx) => `
+                                    <tr class="drill-row" data-drill="${type}" data-key="${esc(r.name)}">
                                         <td class="font-bold">${idx + 1}</td>
-                                        <td class="font-bold">${emp.name}</td>
-                                        <td>${emp.branch}</td>
-                                        <td>${emp.target}</td>
-                                        <td>${emp.achieve}</td>
-                                        <td>${Utils.formatPercent(emp.pct)}</td>
-                                        <td>${emp.proj} <small>(${Utils.formatPercent(emp.projPct)})</small></td>
-                                    </tr>
-                                `).join('')}
+                                        <td class="font-bold">${esc(r.name)}</td>
+                                        ${withBranches ? `<td>${r.branches.length}</td>` : ''}
+                                        <td>${r.employeesCount}</td>
+                                        <td>${fmt(r.target)}</td>
+                                        <td>${fmt(r.achieve)}</td>
+                                        <td>${Utils.formatPercent(r.pct)}${bar(r.pct)}</td>
+                                        <td>${proj(r)}</td>
+                                        <td>${fmt(r.rem)}</td>
+                                        <td><button type="button" class="btn btn-sm btn-secondary"><i class="fa-solid fa-eye"></i> عرض</button></td>
+                                    </tr>`).join('') : `<tr><td colspan="${withBranches ? 10 : 9}" class="text-muted">لا توجد بيانات</td></tr>`}
                             </tbody>
                         </table>
                     </div>
-                </div>
+                </div>`;
 
+            const empTable = (rows) => `
+                <div class="table-card-wrapper margin-top">
+                    <div class="table-toolbar"><h3 class="font-bold">موظفو الفرع (${rows.length})</h3></div>
+                    <div class="data-table-container">
+                        <table class="data-table">
+                            <thead><tr><th>#</th><th>الموظف</th><th>الهدف</th><th>المحقق</th><th>النسبة</th><th>المتوقع (رقم / %)</th><th>المتبقي</th><th>الإنترنت</th><th>الأرضي</th><th>WE Pay</th><th>الحالة</th><th></th></tr></thead>
+                            <tbody>
+                                ${rows.length ? rows.map((r, idx) => `
+                                    <tr class="drill-row" data-drill="emp" data-key="${esc(r.id)}">
+                                        <td class="font-bold">${idx + 1}</td>
+                                        <td class="font-bold">${esc(r.name)}</td>
+                                        <td>${fmt(r.target)}</td>
+                                        <td>${fmt(r.achieve)}</td>
+                                        <td>${Utils.formatPercent(r.pct)}${bar(r.pct)}</td>
+                                        <td>${proj(r)}</td>
+                                        <td>${fmt(r.rem)}</td>
+                                        <td>${fmt(r.sep.adsl.achieve)} / ${fmt(r.sep.adsl.target)}</td>
+                                        <td>${fmt(r.sep.fixed.achieve)} / ${fmt(r.sep.fixed.target)}</td>
+                                        <td>${fmt(r.sep.we_pay.achieve)} / ${fmt(r.sep.we_pay.target)}</td>
+                                        <td><span class="badge-status ${r.status.class}">${r.status.label}</span></td>
+                                        <td><button type="button" class="btn btn-sm btn-secondary"><i class="fa-solid fa-eye"></i> بياناته</button></td>
+                                    </tr>`).join('') : '<tr><td colspan="12" class="text-muted">لا يوجد موظفون في هذا الفرع</td></tr>'}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>`;
+
+            let body;
+            if (emp) body = this.employeeDetailHTML(emp, bar);
+            else if (branch) body = empTable(branch.employees);
+            else if (area) body = groupTable(isArea ? 'فروع المنطقة' : `فروع ${esc(area.name)}`, 'الفرع', area.branches, 'branch', false);
+            else body = groupTable('ترتيب المناطق', 'المنطقة', tree, 'area', true);
+
+            // AI analysis stays on the area manager's first screen only (his branches)
+            const showAi = isArea && !branch;
+            const aiHTML = showAi ? `
                 <section class="ai-coach-card margin-top" id="ai-section">
                     <div class="ai-coach-header">
                         <span class="ai-badge"><i class="fa-solid fa-robot"></i> تحليل المنطقة بالذكاء الاصطناعي</span>
                         <button class="btn btn-sm btn-secondary" id="areaAiRefreshBtn"><i class="fa-solid fa-rotate"></i> تحديث التحليل</button>
                     </div>
                     <div class="ai-content-box" id="areaAiText">جاري تحليل بيانات المنطقة...</div>
-                </section>
-            `;
+                </section>` : '';
 
-            const areaCtx = { areaTarget, areaAchieve, areaPct, branches };
-            const refreshBtn = document.getElementById('areaAiRefreshBtn');
-            if (refreshBtn) refreshBtn.onclick = () => this.loadAreaAi(areaCtx);
-            this.loadAreaAi(areaCtx);
+            container.innerHTML = crumbsHTML + kpiHTML + body + aiHTML;
 
-            // Sidebar links use #anchors; content is rendered async, so scroll once it exists
-            if (location.hash) {
-                const target = document.querySelector(location.hash);
-                if (target) setTimeout(() => target.scrollIntoView({ behavior: 'smooth', block: 'start' }), 150);
+            container.onclick = (ev) => {
+                const go = ev.target.closest('[data-drill]');
+                if (go) return this.drillTo(go.dataset.drill, go.dataset.key);
+                const back = ev.target.closest('[data-nav]');
+                if (back) this.drillUp(back.dataset.nav);
+            };
+
+            if (showAi && area) {
+                const ctx = { areaTarget: area.target, areaAchieve: area.achieve, areaPct: area.pct, branches: area.branches };
+                const refreshBtn = document.getElementById('areaAiRefreshBtn');
+                if (refreshBtn) refreshBtn.onclick = () => this.loadAreaAi(ctx, true);
+                this.loadAreaAi(ctx);
             }
         },
 
-        loadAreaAi: async function (ctx) {
+        // Everything one employee did: totals per item + every daily entry
+        employeeDetailHTML: function (emp, bar) {
+            const fmt = (v) => Utils.formatNumber(v);
+            const LINE_KEYS = TargetCalculator.TOTAL_LINE_ITEMS;
+            const sepKeys = this.SEPARATE_ITEMS.map(s => s.key);
+            const itemRows = this.ALL_ITEMS.map(([k, label]) => {
+                const t = emp.items[k].target, a = emp.items[k].achieve;
+                const pct = TargetCalculator.calculateAchievementPercentage(a, t);
+                return `<tr>
+                    <td class="font-bold">${label}</td>
+                    <td><span class="badge-status ${sepKeys.includes(k) ? 'status-warning' : 'status-ontrack'}">${sepKeys.includes(k) ? 'KPI مستقل' : 'ضمن الخطوط'}</span></td>
+                    <td>${fmt(t)}</td><td>${fmt(a)}</td><td>${Utils.formatPercent(pct)}</td><td style="min-width:120px;">${bar(pct)}</td>
+                </tr>`;
+            }).join('');
+
+            const logs = emp.logs.slice().sort((a, b) => String(b.performance_date).localeCompare(String(a.performance_date)));
+            const logRows = logs.map(l => `<tr>
+                <td class="font-bold">${this.esc(l.performance_date)}</td>
+                <td>${fmt(l.pt12)}</td><td>${fmt(l.super_kix)}</td><td>${fmt(l.tazbeet)}</td><td>${fmt(l.data)}</td><td>${fmt(l.we_gold)}</td>
+                <td>${fmt(l.adsl)}</td><td>${fmt(l.fixed)}</td><td>${fmt(l.we_pay)}</td>
+                <td class="font-bold" style="color:var(--we-purple);">${fmt(this.sumLogsOf([l], LINE_KEYS))}</td>
+                <td>${this.esc(l.notes || '—')}</td>
+            </tr>`).join('');
+
+            return `
+                <div class="table-card-wrapper margin-top">
+                    <div class="table-toolbar">
+                        <h3 class="font-bold"><i class="fa-solid fa-user"></i> ${this.esc(emp.name)} — ${this.esc(emp.branch)}</h3>
+                        <span class="badge-status ${emp.status.class}">${emp.status.label}</span>
+                    </div>
+                    <div class="data-table-container">
+                        <table class="data-table">
+                            <thead><tr><th>البند</th><th>النوع</th><th>الهدف</th><th>المحقق</th><th>النسبة</th><th></th></tr></thead>
+                            <tbody>${itemRows}</tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="table-card-wrapper margin-top">
+                    <div class="table-toolbar"><h3 class="font-bold">سجل الإدخالات اليومية (${logs.length})</h3></div>
+                    <div class="data-table-container">
+                        <table class="data-table">
+                            <thead><tr><th>التاريخ</th><th>PT12</th><th>Super Kix</th><th>Tazbeet</th><th>Data</th><th>WE Gold</th><th>ADSL</th><th>Fixed</th><th>WE Pay</th><th>إجمالي الخطوط</th><th>ملاحظات</th></tr></thead>
+                            <tbody>${logRows || '<tr><td colspan="11" class="text-muted">لم يسجل هذا الموظف أي أداء بعد</td></tr>'}</tbody>
+                        </table>
+                    </div>
+                </div>`;
+        },
+
+        loadAreaAi: async function (ctx, force) {
             const box = document.getElementById('areaAiText');
             if (!box) return;
+
+            // Reuse the last analysis while the numbers haven't changed (navigating back shouldn't call the AI again)
+            const aiKey = [ctx.areaTarget, ctx.areaAchieve, ctx.branches.length].join('|');
+            if (!force && this.state.areaAiKey === aiKey && this.state.areaAiHtml) {
+                box.innerHTML = this.state.areaAiHtml;
+                return;
+            }
             box.innerHTML = '<div class="skeleton" style="height:100px;"></div>';
 
             const profile = this.state.userProfile || {};
@@ -625,10 +776,14 @@
             }
             if (!text) text = this.buildAreaFallback(payload);
 
-            box.innerHTML = String(text)
+            const html = String(text)
                 .replace(/&/g, '&amp;').replace(/</g, '&lt;')
                 .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
                 .replace(/\n/g, '<br>');
+            this.state.areaAiKey = aiKey;
+            this.state.areaAiHtml = html;
+            const liveBox = document.getElementById('areaAiText');   // the user may have navigated away meanwhile
+            if (liveBox) liveBox.innerHTML = html;
         },
 
         buildAreaFallback: function (d) {
@@ -647,139 +802,6 @@
             }
             if (!d.targetLines) t += `\nلا توجد أهداف مسجلة للمنطقة هذا الشهر، لذلك التحليل محدود.`;
             return t;
-        },
-
-        /* ------------------------------------------------------------------
-         * 4. SUPERVISOR DASHBOARD RENDERER
-         * ------------------------------------------------------------------ */
-        renderSupervisorView: async function () {
-            const container = document.getElementById('supervisorDashboardContainer');
-            if (!container) return;
-            const esc = v => String(v == null ? '' : v).replace(/&/g, '&amp;').replace(/</g, '&lt;');
-            const LINE_KEYS = TargetCalculator.TOTAL_LINE_ITEMS;
-            const { month, year } = Utils.getCurrentMonthYear();
-
-            const allAreas = (await TargetAPI.fetchAllowedAreas()) || [];
-            if (allAreas.length === 0) {
-                container.innerHTML = '<p class="text-muted">لا توجد مناطق مرتبطة بحسابك. تواصل مع الأدمن.</p>';
-                return;
-            }
-            const teams = await Promise.all(allAreas.map(ar => TargetAPI.fetchTeamData(month, year, null, ar.name)));
-
-            const mk = () => ({ employees: 0, target: 0, achieve: 0, proj: 0 });
-            const supSep = {}; this.SEPARATE_ITEMS.forEach(it => supSep[it.key] = { target: 0, achieve: 0 });
-            const total = mk();
-            const fin = (o) => {   // derived numbers
-                o.pct = TargetCalculator.calculateAchievementPercentage(o.achieve, o.target);
-                o.projPct = TargetCalculator.calculateAchievementPercentage(o.proj, o.target);
-                o.rem = TargetCalculator.calculateRemaining(o.target, o.achieve);
-            };
-
-            const areas = allAreas.map((ar, i) => {
-                const team = teams[i] || { periods: [], logs: [] };
-                const brMap = {};
-                (ar.branches || []).forEach(br => { if (br && br.name) brMap[br.name] = Object.assign({ name: br.name }, mk()); });
-                (team.periods || []).forEach(per => {
-                    const r = per.profiles && per.profiles.role;
-                    if (r && r !== 'agent') return;   // agents only, so nothing is counted twice
-                    const name = per.branch || 'غير محدد';
-                    const br = brMap[name] || (brMap[name] = Object.assign({ name }, mk()));
-                    const plogs = (team.logs || []).filter(l => l.period_id === per.id);
-                    const ach = this.sumLogsOf(plogs, LINE_KEYS), tgt = this.sumTargetsOf(per, LINE_KEYS);
-                    br.employees++; br.target += tgt; br.achieve += ach; br.proj += this.projectionFor(per, ach);
-                    this.SEPARATE_ITEMS.forEach(it => {
-                        supSep[it.key].target += this.sumTargetsOf(per, [it.key]);
-                        supSep[it.key].achieve += this.sumLogsOf(plogs, [it.key]);
-                    });
-                });
-                const area = Object.assign({ name: ar.name }, mk());
-                area.branches = Object.values(brMap);
-                area.branches.forEach(br => {
-                    fin(br);
-                    area.employees += br.employees; area.target += br.target; area.achieve += br.achieve; area.proj += br.proj;
-                });
-                fin(area);
-                this.rankRows(area.branches);          // branches inside the area: best first
-                total.employees += area.employees; total.target += area.target; total.achieve += area.achieve; total.proj += area.proj;
-                return area;
-            });
-            fin(total);
-            this.rankRows(areas);                      // areas: best first
-
-            const proj = (o) => `${Utils.formatNumber(o.proj)} <small>(${Utils.formatPercent(o.projPct)})</small>`;
-            const bar = (pct) => `<div class="progress-bar-bg"><div class="progress-bar-fill" style="width:${Math.min(Math.max(pct || 0, 0), 100)}%;"></div></div>`;
-
-            container.innerHTML = `
-                <div class="kpi-grid">
-                    <div class="kpi-card"><span class="kpi-title">إجمالي هدف المناطق</span><div class="kpi-value">${Utils.formatNumber(total.target)}</div><div class="kpi-subtext">${areas.length} منطقة | ${total.employees} موظف</div></div>
-                    <div class="kpi-card"><span class="kpi-title">إجمالي المحقق</span><div class="kpi-value">${Utils.formatNumber(total.achieve)}</div></div>
-                    <div class="kpi-card"><span class="kpi-title">نسبة الإنجاز الكلية</span><div class="kpi-value">${Utils.formatPercent(total.pct)}</div>${bar(total.pct)}</div>
-                    <div class="kpi-card"><span class="kpi-title">المتوقع تحقيقه (رقم / %)</span><div class="kpi-value">${Utils.formatNumber(total.proj)} <small style="font-size:.55em;">(${Utils.formatPercent(total.projPct)})</small></div></div>
-                    <div class="kpi-card"><span class="kpi-title">المتبقي</span><div class="kpi-value">${Utils.formatNumber(total.rem)}</div></div>
-                </div>
-
-                <h3 class="font-bold margin-top" style="margin-bottom:.75rem;">الأهداف المنفصلة (مش داخلة في إجمالي الخطوط)</h3>
-                <div class="kpi-grid">${this.separateCardsHTML(supSep)}</div>
-
-                <div class="table-card-wrapper margin-top" id="areas-section">
-                    <div class="table-toolbar"><h3 class="font-bold">ترتيب المناطق (${areas.length})</h3></div>
-                    <div class="data-table-container">
-                        <table class="data-table">
-                            <thead><tr><th>#</th><th>المنطقة</th><th>الموظفين</th><th>الهدف</th><th>المحقق</th><th>النسبة</th><th>المتوقع (رقم / %)</th><th>المتبقي</th></tr></thead>
-                            <tbody>
-                                ${areas.map((a, idx) => `
-                                    <tr>
-                                        <td class="font-bold">${idx + 1}</td>
-                                        <td class="font-bold">${esc(a.name)}</td>
-                                        <td>${a.employees}</td>
-                                        <td>${Utils.formatNumber(a.target)}</td>
-                                        <td>${Utils.formatNumber(a.achieve)}</td>
-                                        <td>${Utils.formatPercent(a.pct)}</td>
-                                        <td>${proj(a)}</td>
-                                        <td>${Utils.formatNumber(a.rem)}</td>
-                                    </tr>`).join('')}
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
-                <div id="branches-section">
-                ${areas.map((a, aidx) => `
-                    <div class="table-card-wrapper margin-top">
-                        <div class="table-toolbar" style="flex-wrap:wrap;gap:.5rem;">
-                            <h3 class="font-bold">#${aidx + 1} ${esc(a.name)}</h3>
-                            <span class="text-muted" style="font-size:.85rem;">
-                                الهدف: ${Utils.formatNumber(a.target)} | المحقق: ${Utils.formatNumber(a.achieve)} |
-                                النسبة: ${Utils.formatPercent(a.pct)} | المتوقع: ${proj(a)}
-                            </span>
-                        </div>
-                        <div style="padding:0 1rem .5rem;">${bar(a.pct)}</div>
-                        <div class="data-table-container">
-                            <table class="data-table">
-                                <thead><tr><th>#</th><th>الفرع</th><th>الموظفين</th><th>الهدف</th><th>المحقق</th><th>النسبة</th><th>المتوقع (رقم / %)</th><th>المتبقي</th></tr></thead>
-                                <tbody>
-                                    ${a.branches.length ? a.branches.map((b, idx) => `
-                                        <tr>
-                                            <td class="font-bold">${idx + 1}</td>
-                                            <td class="font-bold">${esc(b.name)}</td>
-                                            <td>${b.employees}</td>
-                                            <td>${Utils.formatNumber(b.target)}</td>
-                                            <td>${Utils.formatNumber(b.achieve)}</td>
-                                            <td>${Utils.formatPercent(b.pct)}</td>
-                                            <td>${proj(b)}</td>
-                                            <td>${Utils.formatNumber(b.rem)}</td>
-                                        </tr>`).join('') : '<tr><td colspan="8" class="text-muted">لا توجد فروع في هذه المنطقة</td></tr>'}
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>`).join('')}
-                </div>
-            `;
-
-            if (location.hash) {
-                const t = document.querySelector(location.hash);
-                if (t) setTimeout(() => t.scrollIntoView({ behavior: 'smooth', block: 'start' }), 150);
-            }
         },
 
         filterEmployees: function (query) {
