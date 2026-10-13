@@ -53,6 +53,14 @@
         /**
          * Toast notification runner
          */
+        // Safe markdown subset (**bold**, line breaks); escapes HTML first so AI text can't inject markup
+        formatMarkdown: function (text) {
+            return String(text == null ? '' : text)
+                .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+                .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+                .replace(/\n/g, '<br>');
+        },
+
         showToast: function (message, type = 'info') {
             let container = document.getElementById('toastContainer');
             if (!container) {

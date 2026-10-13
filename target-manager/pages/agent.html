@@ -125,6 +125,7 @@
                     <div class="ai-content-box" id="aiCoachText">
                         جاري تحليل البيانات بواسطة مستشار الذكاء الاصطناعي...
                     </div>
+                    <div id="aiChatBox"></div>
                 </section>
             </div>
         </main>
@@ -202,6 +203,9 @@
     <script src="../js/daily-entry.js"></script>
     <script src="../js/app.js"></script>
 
+    <script>
+        WEAiCoach.mountChat('aiChatBox', () => ({ metrics: Dashboard.state.currentMetrics, profile: Dashboard.state.userProfile }));
+    </script>
     <script>
         document.getElementById('entryDate').valueAsDate = new Date();
         const prefillEntry = () => DailyEntry.prefill(Dashboard.state.userProfile, document.getElementById('entryDate').value, 'entryNotes');
