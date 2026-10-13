@@ -53,24 +53,44 @@
     }
 
     const DailyEntry = {
-        // Fill the form with the already-saved values for the chosen date (so editing keeps the other fields)
+        // The form always starts empty: whatever is typed is ADDED to what is already saved for that day
+        resetForm: function (notesId) {
+            ITEMS.forEach(k => { const el = document.getElementById('entry_' + k); if (el) el.value = 0; });
+            if (notesId) { const ne = document.getElementById(notesId); if (ne) ne.value = ''; }
+        },
+
+        // Zero the form and tell the user what is already saved for the chosen date
         prefill: async function (profile, date, notesId) {
+            this.resetForm(notesId);
+            const hint = document.getElementById('entrySavedHint');
+            if (hint) hint.textContent = '';
             if (!profile || !profile.id || !date) return;
             const period = await TargetAPI.fetchPeriodForDate(profile.id, date);
             const logs = period ? await TargetAPI.fetchDailyPerformance(period.id, profile.id) : [];
-            const row = logs.find(l => l.performance_date === date) || {};
-            ITEMS.forEach(k => { const el = document.getElementById('entry_' + k); if (el) el.value = n(row[k]); });
-            if (notesId) { const ne = document.getElementById(notesId); if (ne) ne.value = row.notes || ''; }
+            const row = logs.find(l => l.performance_date === date);
+            if (hint && row) {
+                const total = LINE_ITEMS.reduce((sum, k) => sum + n(row[k]), 0);
+                hint.textContent = `المسجل لهذا اليوم: ${total} خط — اللي هتكتبه هيتضاف عليه`;
+            }
         },
 
         save: async function (profile, date, itemsData, notes) {
             if (!profile || !profile.id) throw new Error('تعذر تحديد المستخدم');
             const period = await TargetAPI.fetchPeriodForDate(profile.id, date);
             if (!period) throw new Error('لم يحدد مدير الفرع التارجت لهذه الفترة بعد');
-            const saved = await TargetAPI.saveDailyPerformance(period.id, profile.id, date, itemsData, notes || '');
+
+            // Add the new numbers on top of what is already saved for this date (the form itself is always empty)
+            const existingLogs = await TargetAPI.fetchDailyPerformance(period.id, profile.id);
+            const existing = existingLogs.find(l => l.performance_date === date) || {};
+            const merged = {};
+            ITEMS.forEach(k => { merged[k] = n(existing[k]) + n(itemsData[k]); });
+            const newNote = (notes || '').trim();
+            const mergedNotes = newNote ? (existing.notes ? existing.notes + ' | ' + newNote : newNote) : (existing.notes || '');
+
+            const saved = await TargetAPI.saveDailyPerformance(period.id, profile.id, date, merged, mergedNotes);
             if (saved === null || saved === undefined || saved === false) throw new Error('تعذر حفظ الأداء');
             const logs = await TargetAPI.fetchDailyPerformance(period.id, profile.id);
-            const today = logs.find(l => l.performance_date === date) || itemsData;
+            const today = logs.find(l => l.performance_date === date) || merged;
             showReport(buildReport(profile, date, today, logs, period));
             return period;
         }

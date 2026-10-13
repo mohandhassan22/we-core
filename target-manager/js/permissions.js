@@ -34,12 +34,8 @@
             allowedPages: ['area-manager.html', 'branch-manager.html', 'agent.html', 'history.html'],
             defaultPage: 'area-manager.html',
             menu: [
-                { id: 'dashboard', label: 'لوحة أداء المنطقة', icon: 'fa-city', href: 'area-manager.html' },
-                { id: 'area-perf', label: 'تحليل الفروع', icon: 'fa-chart-column', href: 'area-manager.html#branches-section' },
-                { id: 'branches', label: 'قائمة الفروع', icon: 'fa-network-wired', href: 'area-manager.html#branches-grid' },
-                { id: 'employees', label: 'ملخص الموظفين', icon: 'fa-user-group', href: 'area-manager.html#employees-section' },
-                { id: 'history', label: 'تقارير المنطقة', icon: 'fa-file-excel', href: 'history.html' },
-                { id: 'ai', label: 'تحليل المنطقة بالذكاء', icon: 'fa-robot', href: 'area-manager.html#ai-section' }
+                { id: 'dashboard', label: 'فروع المنطقة', icon: 'fa-city', href: 'area-manager.html' },
+                { id: 'history', label: 'تقارير المنطقة', icon: 'fa-file-excel', href: 'history.html' }
             ]
         },
         supervisor: {
@@ -47,9 +43,7 @@
             allowedPages: ['supervisor.html', 'area-manager.html', 'branch-manager.html', 'agent.html', 'history.html'],
             defaultPage: 'supervisor.html',
             menu: [
-                { id: 'dashboard', label: 'لوحة المشرف', icon: 'fa-user-tie', href: 'supervisor.html' },
-                { id: 'areas', label: 'ترتيب المناطق', icon: 'fa-layer-group', href: 'supervisor.html#areas-section' },
-                { id: 'branches', label: 'الفروع داخل كل منطقة', icon: 'fa-store', href: 'supervisor.html#branches-section' },
+                { id: 'dashboard', label: 'المناطق والفروع', icon: 'fa-user-tie', href: 'supervisor.html' },
                 { id: 'history', label: 'التقارير والسجل', icon: 'fa-clock-rotate-left', href: 'history.html' }
             ]
         },

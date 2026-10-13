@@ -275,3 +275,26 @@ img, svg, canvas, video { max-width: 100%; }
 .item-card .text-muted > span:nth-child(2) { color: var(--acc); font-weight: 800; }
 .item-card .text-muted > span:nth-child(3) { font-weight: 800; }
 [data-theme="dark"] .item-card { box-shadow: 0 6px 18px rgba(0,0,0,.35); }
+
+/* ---- Drill-down navigation (area manager / supervisor) ---- */
+.drill-crumbs {
+  display: flex; align-items: center; flex-wrap: wrap; gap: .4rem;
+  margin-bottom: 1.25rem; padding: .6rem .85rem;
+  background: var(--bg-surface); border: 1px solid var(--border-color);
+  border-radius: var(--radius-md); box-shadow: var(--shadow-sm);
+}
+.drill-crumb {
+  display: inline-flex; align-items: center; gap: .4rem;
+  padding: .35rem .8rem; border-radius: var(--radius-full);
+  border: 1px solid transparent; background: transparent;
+  color: var(--text-muted); font: inherit; font-weight: 700; font-size: .9rem;
+  cursor: pointer; transition: background var(--transition-fast), color var(--transition-fast);
+}
+button.drill-crumb:hover { background: var(--we-light-purple); color: var(--we-purple); }
+.drill-crumb.active {
+  background: var(--we-purple); color: var(--text-white); cursor: default;
+}
+.drill-sep { color: var(--text-light); font-size: .7rem; }
+.drill-row { cursor: pointer; transition: background var(--transition-fast); }
+.drill-row:hover { background: var(--bg-subtle); }
+.drill-row .progress-bar-bg { margin-top: .35rem; min-width: 70px; }
