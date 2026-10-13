@@ -64,7 +64,11 @@ function topicsOf(m){const rows=topics.filter(t=>t.module_id===m.id).sort((a,b)=
 function topicProgress(m,topic){return topicProg.find(x=>x.module_id===m.id&&x.topic===topic)||{best_score:0,attempts:0,passed:false}}
 function passedCount(m){const q=topicsOf(m).filter(t=>t.has_quiz);return {done:q.filter(t=>topicProgress(m,t.topic).passed).length,total:q.length}}
 function dayIndex(m){return modules.findIndex(x=>x.id===m.id)}
-function blocker(m){if(roleKey()==='admin'||DEMO)return null;const i=dayIndex(m);for(let k=0;k<i;k++){if(!progressFor(modules[k].id).completed)return modules[k]}return null}
+const FULL_ACCESS_ROLES = ['admin','branch_manager','branch-manager','manager','store-manager','supervisor'];
+const FULL_ACCESS_USERS = ['mahmoud.kader','mohand'];
+// Managers, supervisors and a few named users see every training level unlocked (the DB enforces the same rule)
+function hasFullAccess(){return DEMO||FULL_ACCESS_ROLES.includes(roleKey())||FULL_ACCESS_USERS.includes(String(profile?.username||'').toLowerCase().trim())}
+function blocker(m){if(hasFullAccess())return null;const i=dayIndex(m);for(let k=0;k<i;k++){if(!progressFor(modules[k].id).completed)return modules[k]}return null}
 function overallPercent(){return modules.length?Math.round(modules.filter(m=>progressFor(m.id).completed).length*100/modules.length):0}
 function nextModule(){return modules.find(m=>!progressFor(m.id).completed)||modules[0]}
 function renderAll(){renderOverview();renderModuleList();const q=new URLSearchParams(location.search);const requested=q.get('module');const initial=modules.find(m=>m.slug===requested||m.id===requested)||(currentModule?.id?modules.find(m=>m.id===currentModule.id)||modules[0]:nextModule());selectModule(initial,q.get('topic'))}
