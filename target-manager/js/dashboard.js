@@ -15,6 +15,7 @@
             selectedBranch: null,
             selectedEmployee: null,
             tree: [],
+            empIndex: {},   // employee id -> { name, period, logs } (used by the manager edit form)
             nav: { area: null, branch: null, emp: null },   // drill-down position (area manager / supervisor)
             currentFilter: 'all',
             searchQuery: ''
@@ -246,6 +247,25 @@
             }).join('');
         },
 
+        // Managers (branch / area / admin) can edit what an employee registered
+        canEditPerf: function () {
+            return typeof PerfEdit !== 'undefined' && PerfEdit.canEdit(this.state.userProfile);
+        },
+
+        editEmployeePerf: function (empId, date) {
+            const e = this.state.empIndex[String(empId)];
+            if (!e) { Utils.showToast('تعذر تحديد الموظف', 'error'); return; }
+            PerfEdit.open({
+                empId, empName: e.name, period: e.period, logs: e.logs, date,
+                onSaved: async () => { const my = Utils.getCurrentMonthYear(); await this.loadDashboardData(my.month, my.year); }
+            });
+        },
+
+        editBtn: function (empId, date, label) {
+            if (!this.canEditPerf()) return '';
+            return `<button type="button" class="btn btn-sm btn-primary" data-edit-emp="${this.esc(empId)}"${date ? ` data-edit-date="${this.esc(date)}"` : ''}><i class="fa-solid fa-pen"></i> ${label || 'Edit'}</button>`;
+        },
+
         // Projection for one period: daily average so far x target days (elapsed days come from the period dates)
         projectionFor: function (period, achieve) {
             const days = parseInt(period && period.target_days, 10) || 30;
@@ -300,6 +320,8 @@
                 totalBranchProj += empProj;
                 const empRem = TargetCalculator.calculateRemaining(empTarget, empAchieve);
                 const empStatus = TargetCalculator.calculateStatus(empPct, empProj, empTarget);
+                const empDays = parseInt(empPeriod && empPeriod.target_days, 10) || 30;
+                this.state.empIndex[String(emp.id)] = { name: emp.full_name || 'موظف', period: empPeriod || null, logs: empLogs };
 
                 employeeRows.push({
                     id: emp.id,
@@ -310,6 +332,7 @@
                     projection: empProj,
                     projPct: empProjPct,
                     remaining: empRem,
+                    dailyTarget: TargetCalculator.calculateDailyTarget(empTarget, empDays),
                     status: empStatus,
                     sep: empSep,
                     btId: empPeriod ? empPeriod.branch_target_id : null,
@@ -330,24 +353,28 @@
             container.innerHTML = `
                 <div class="kpi-grid">
                     <div class="kpi-card">
-                        <span class="kpi-title">هدف الفرع الكلي (PT12 + Super Kix + Tazbeet + WE Gold + Data)</span>
+                        <span class="kpi-title">Target (PT12 + Super Kix + Tazbeet + WE Gold + Data)</span>
                         <div class="kpi-value">${Utils.formatNumber(totalBranchTarget)}</div>
                     </div>
                     <div class="kpi-card">
-                        <span class="kpi-title">محقق الفرع الكلي</span>
+                        <span class="kpi-title">Achieved</span>
                         <div class="kpi-value">${Utils.formatNumber(totalBranchAchieve)}</div>
                     </div>
                     <div class="kpi-card">
-                        <span class="kpi-title">نسبة تحقيق الفرع</span>
+                        <span class="kpi-title">Perc%</span>
                         <div class="kpi-value">${Utils.formatPercent(branchPct)}</div>
                     </div>
                     <div class="kpi-card">
-                        <span class="kpi-title">متوقع تحقيق الفرع (Projection)</span>
+                        <span class="kpi-title">Projection</span>
                         <div class="kpi-value">${Utils.formatNumber(branchProj)} <small style="font-size:.55em;">(${Utils.formatPercent(branchProjPct)})</small></div>
                     </div>
                     <div class="kpi-card">
-                        <span class="kpi-title">المتبقي للفرع</span>
+                        <span class="kpi-title">Remain</span>
                         <div class="kpi-value">${Utils.formatNumber(branchRem)}</div>
+                    </div>
+                    <div class="kpi-card">
+                        <span class="kpi-title">Daily target</span>
+                        <div class="kpi-value">${Utils.formatNumber(employeeRows.reduce((s, e) => s + e.dailyTarget, 0), 1)}</div>
                     </div>
                 </div>
 
@@ -380,11 +407,12 @@
                                 <tr>
                                     <th>#</th>
                                     <th>الموظف</th>
-                                    <th>الهدف</th>
-                                    <th>المحقق</th>
-                                    <th>نسبة الإنجاز</th>
-                                    <th>المتوقع (رقم / %)</th>
-                                    <th>المتبقي</th>
+                                    <th>Target</th>
+                                    <th>Achieved</th>
+                                    <th>Perc%</th>
+                                    <th>Daily target</th>
+                                    <th>Projection</th>
+                                    <th>Remain</th>
                                     <th>الإنترنت</th>
                                     <th>الأرضي</th>
                                     <th>WE Pay</th>
@@ -400,6 +428,7 @@
                                         <td>${emp.target}${emp.manual ? ' <span class="badge-status" title="تارجت معدّل يدوياً">يدوي</span>' : ''}</td>
                                         <td>${emp.achieve}</td>
                                         <td>${Utils.formatPercent(emp.percentage)}</td>
+                                        <td>${Utils.formatNumber(emp.dailyTarget, 1)}</td>
                                         <td>${emp.projection} <small>(${Utils.formatPercent(emp.projPct)})</small></td>
                                         <td>${emp.remaining}</td>
                                         <td>${emp.sep.adsl.achieve} / ${emp.sep.adsl.target}</td>
@@ -410,6 +439,7 @@
                                             <button class="btn btn-sm btn-secondary" onclick="Dashboard.openEmployeeDrilldown('${emp.id}')">
                                                 <i class="fa-solid fa-eye"></i> عرض
                                             </button>
+                                            ${this.editBtn(emp.id, null, 'Achieved')}
                                             ${emp.btId && typeof openEmpTargetModal === 'function' ? `<button class="btn btn-sm btn-primary" onclick="openEmpTargetModal('${emp.id}')"><i class="fa-solid fa-pen"></i> تارجت</button>` : ''}
                                         </td>
                                     </tr>
@@ -419,6 +449,11 @@
                     </div>
                 </div>
             `;
+
+            container.onclick = (ev) => {
+                const ed = ev.target.closest('[data-edit-emp]');
+                if (ed) this.editEmployeePerf(ed.dataset.editEmp, ed.dataset.editDate || null);
+            };
 
             if (typeof ChartEngine !== 'undefined') {
                 const names = employeeRows.map(e => e.name);
@@ -452,9 +487,12 @@
             const sep = {}; this.SEPARATE_ITEMS.forEach(it => sep[it.key] = { target: this.sumTargetsOf(period, [it.key]), achieve: this.sumLogsOf(empLogs, [it.key]) });
             const items = {}; this.ALL_ITEMS.forEach(([k]) => items[k] = { target: this.sumTargetsOf(period, [k]), achieve: this.sumLogsOf(empLogs, [k]) });
             const pct = TargetCalculator.calculateAchievementPercentage(achieve, target);
+            const days = parseInt(period && period.target_days, 10) || 30;
+            this.state.empIndex[String(emp.id)] = { name: emp.full_name || 'موظف', period: period || null, logs: empLogs };
             return {
                 id: emp.id, name: emp.full_name || 'موظف', branch: emp.branch || 'غير محدد',
                 target, achieve, proj, sep, items, logs: empLogs, pct,
+                dailyTarget: TargetCalculator.calculateDailyTarget(target, days),
                 projPct: TargetCalculator.calculateAchievementPercentage(proj, target),
                 rem: TargetCalculator.calculateRemaining(target, achieve),
                 status: TargetCalculator.calculateStatus(pct, proj, target)
@@ -470,10 +508,10 @@
 
         // Branch node = sum of its employees
         makeBranchNode: function (name, employees) {
-            const n = { name, employees, employeesCount: employees.length, target: 0, achieve: 0, proj: 0, sep: {} };
+            const n = { name, employees, employeesCount: employees.length, target: 0, achieve: 0, proj: 0, dailyTarget: 0, sep: {} };
             this.SEPARATE_ITEMS.forEach(it => n.sep[it.key] = { target: 0, achieve: 0 });
             employees.forEach(e => {
-                n.target += e.target; n.achieve += e.achieve; n.proj += e.proj;
+                n.target += e.target; n.achieve += e.achieve; n.proj += e.proj; n.dailyTarget += e.dailyTarget || 0;
                 this.SEPARATE_ITEMS.forEach(it => { n.sep[it.key].target += e.sep[it.key].target; n.sep[it.key].achieve += e.sep[it.key].achieve; });
             });
             return this.finishNode(n);
@@ -481,11 +519,11 @@
 
         // Area node (or the grand total) = sum of its children (branch nodes / area nodes)
         rollup: function (name, children, key) {
-            const n = { name, employeesCount: 0, target: 0, achieve: 0, proj: 0, sep: {} };
+            const n = { name, employeesCount: 0, target: 0, achieve: 0, proj: 0, dailyTarget: 0, sep: {} };
             n[key || 'branches'] = children;
             this.SEPARATE_ITEMS.forEach(it => n.sep[it.key] = { target: 0, achieve: 0 });
             children.forEach(c => {
-                n.employeesCount += c.employeesCount; n.target += c.target; n.achieve += c.achieve; n.proj += c.proj;
+                n.employeesCount += c.employeesCount; n.target += c.target; n.achieve += c.achieve; n.proj += c.proj; n.dailyTarget += c.dailyTarget || 0;
                 this.SEPARATE_ITEMS.forEach(it => { n.sep[it.key].target += c.sep[it.key].target; n.sep[it.key].achieve += c.sep[it.key].achieve; });
             });
             return this.finishNode(n);
@@ -590,12 +628,13 @@
             const scopeLabel = emp ? 'الموظف' : branch ? 'الفرع' : area ? (isArea ? 'المنطقة' : 'المنطقة') : 'المناطق';
             const kpiHTML = `
                 <div class="kpi-grid">
-                    <div class="kpi-card"><span class="kpi-title">هدف ${scopeLabel}</span><div class="kpi-value">${fmt(scope.target)}</div>
+                    <div class="kpi-card"><span class="kpi-title">Target</span><div class="kpi-value">${fmt(scope.target)}</div>
                         <div class="kpi-subtext">${emp ? esc(emp.branch) : (scope.employeesCount + ' موظف')}</div></div>
-                    <div class="kpi-card"><span class="kpi-title">المحقق</span><div class="kpi-value">${fmt(scope.achieve)}</div></div>
-                    <div class="kpi-card"><span class="kpi-title">نسبة الإنجاز</span><div class="kpi-value">${Utils.formatPercent(scope.pct)}</div>${bar(scope.pct)}</div>
-                    <div class="kpi-card"><span class="kpi-title">المتوقع تحقيقه (رقم / %)</span><div class="kpi-value">${fmt(scope.proj)} <small style="font-size:.55em;">(${Utils.formatPercent(scope.projPct)})</small></div></div>
-                    <div class="kpi-card"><span class="kpi-title">المتبقي</span><div class="kpi-value">${fmt(scope.rem)}</div></div>
+                    <div class="kpi-card"><span class="kpi-title">Achieved</span><div class="kpi-value">${fmt(scope.achieve)}</div></div>
+                    <div class="kpi-card"><span class="kpi-title">Perc%</span><div class="kpi-value">${Utils.formatPercent(scope.pct)}</div>${bar(scope.pct)}</div>
+                    <div class="kpi-card"><span class="kpi-title">Projection</span><div class="kpi-value">${fmt(scope.proj)} <small style="font-size:.55em;">(${Utils.formatPercent(scope.projPct)})</small></div></div>
+                    <div class="kpi-card"><span class="kpi-title">Remain</span><div class="kpi-value">${fmt(scope.rem)}</div></div>
+                    <div class="kpi-card"><span class="kpi-title">Daily target</span><div class="kpi-value">${Utils.formatNumber(scope.dailyTarget || 0, 1)}</div></div>
                 </div>
                 <h3 class="font-bold margin-top" style="margin-bottom:.75rem;">الأهداف المنفصلة (مش داخلة في إجمالي الخطوط)</h3>
                 <div class="kpi-grid">${this.separateCardsHTML(scope.sep)}</div>`;
@@ -606,7 +645,7 @@
                     <div class="table-toolbar"><h3 class="font-bold">${title} (${rows.length})</h3></div>
                     <div class="data-table-container">
                         <table class="data-table">
-                            <thead><tr><th>#</th><th>${firstCol}</th>${withBranches ? '<th>الفروع</th>' : ''}<th>الموظفين</th><th>الهدف</th><th>المحقق</th><th>النسبة</th><th>المتوقع (رقم / %)</th><th>المتبقي</th><th></th></tr></thead>
+                            <thead><tr><th>#</th><th>${firstCol}</th>${withBranches ? '<th>الفروع</th>' : ''}<th>الموظفين</th><th>Target</th><th>Achieved</th><th>Perc%</th><th>Daily target</th><th>Projection</th><th>Remain</th><th></th></tr></thead>
                             <tbody>
                                 ${rows.length ? rows.map((r, idx) => `
                                     <tr class="drill-row" data-drill="${type}" data-key="${esc(r.name)}">
@@ -617,10 +656,11 @@
                                         <td>${fmt(r.target)}</td>
                                         <td>${fmt(r.achieve)}</td>
                                         <td>${Utils.formatPercent(r.pct)}${bar(r.pct)}</td>
+                                        <td>${Utils.formatNumber(r.dailyTarget || 0, 1)}</td>
                                         <td>${proj(r)}</td>
                                         <td>${fmt(r.rem)}</td>
                                         <td><button type="button" class="btn btn-sm btn-secondary"><i class="fa-solid fa-eye"></i> عرض</button></td>
-                                    </tr>`).join('') : `<tr><td colspan="${withBranches ? 10 : 9}" class="text-muted">لا توجد بيانات</td></tr>`}
+                                    </tr>`).join('') : `<tr><td colspan="${withBranches ? 11 : 10}" class="text-muted">لا توجد بيانات</td></tr>`}
                             </tbody>
                         </table>
                     </div>
@@ -631,7 +671,7 @@
                     <div class="table-toolbar"><h3 class="font-bold">موظفو الفرع (${rows.length})</h3></div>
                     <div class="data-table-container">
                         <table class="data-table">
-                            <thead><tr><th>#</th><th>الموظف</th><th>الهدف</th><th>المحقق</th><th>النسبة</th><th>المتوقع (رقم / %)</th><th>المتبقي</th><th>الإنترنت</th><th>الأرضي</th><th>WE Pay</th><th>الحالة</th><th></th></tr></thead>
+                            <thead><tr><th>#</th><th>الموظف</th><th>Target</th><th>Achieved</th><th>Perc%</th><th>Daily target</th><th>Projection</th><th>Remain</th><th>الإنترنت</th><th>الأرضي</th><th>WE Pay</th><th>الحالة</th><th></th></tr></thead>
                             <tbody>
                                 ${rows.length ? rows.map((r, idx) => `
                                     <tr class="drill-row" data-drill="emp" data-key="${esc(r.id)}">
@@ -640,14 +680,15 @@
                                         <td>${fmt(r.target)}</td>
                                         <td>${fmt(r.achieve)}</td>
                                         <td>${Utils.formatPercent(r.pct)}${bar(r.pct)}</td>
+                                        <td>${Utils.formatNumber(r.dailyTarget || 0, 1)}</td>
                                         <td>${proj(r)}</td>
                                         <td>${fmt(r.rem)}</td>
                                         <td>${fmt(r.sep.adsl.achieve)} / ${fmt(r.sep.adsl.target)}</td>
                                         <td>${fmt(r.sep.fixed.achieve)} / ${fmt(r.sep.fixed.target)}</td>
                                         <td>${fmt(r.sep.we_pay.achieve)} / ${fmt(r.sep.we_pay.target)}</td>
                                         <td><span class="badge-status ${r.status.class}">${r.status.label}</span></td>
-                                        <td><button type="button" class="btn btn-sm btn-secondary"><i class="fa-solid fa-eye"></i> بياناته</button></td>
-                                    </tr>`).join('') : '<tr><td colspan="12" class="text-muted">لا يوجد موظفون في هذا الفرع</td></tr>'}
+                                        <td><button type="button" class="btn btn-sm btn-secondary"><i class="fa-solid fa-eye"></i> بياناته</button> ${this.editBtn(r.id, null, 'Achieved')}</td>
+                                    </tr>`).join('') : '<tr><td colspan="13" class="text-muted">لا يوجد موظفون في هذا الفرع</td></tr>'}
                             </tbody>
                         </table>
                     </div>
@@ -673,6 +714,8 @@
             container.innerHTML = crumbsHTML + kpiHTML + body + aiHTML;
 
             container.onclick = (ev) => {
+                const ed = ev.target.closest('[data-edit-emp]');
+                if (ed) return this.editEmployeePerf(ed.dataset.editEmp, ed.dataset.editDate || null);
                 const go = ev.target.closest('[data-drill]');
                 if (go) return this.drillTo(go.dataset.drill, go.dataset.key);
                 const back = ev.target.closest('[data-nav]');
@@ -709,6 +752,7 @@
                 <td>${fmt(l.adsl)}</td><td>${fmt(l.fixed)}</td><td>${fmt(l.we_pay)}</td>
                 <td class="font-bold" style="color:var(--we-purple);">${fmt(this.sumLogsOf([l], LINE_KEYS))}</td>
                 <td>${this.esc(l.notes || '—')}</td>
+                <td>${this.editBtn(emp.id, l.performance_date, 'Edit')}</td>
             </tr>`).join('');
 
             return `
@@ -719,17 +763,17 @@
                     </div>
                     <div class="data-table-container">
                         <table class="data-table">
-                            <thead><tr><th>البند</th><th>النوع</th><th>الهدف</th><th>المحقق</th><th>النسبة</th><th></th></tr></thead>
+                            <thead><tr><th>البند</th><th>النوع</th><th>Target</th><th>Achieved</th><th>Perc%</th><th></th></tr></thead>
                             <tbody>${itemRows}</tbody>
                         </table>
                     </div>
                 </div>
                 <div class="table-card-wrapper margin-top">
-                    <div class="table-toolbar"><h3 class="font-bold">سجل الإدخالات اليومية (${logs.length})</h3></div>
+                    <div class="table-toolbar"><h3 class="font-bold">سجل الإدخالات اليومية (${logs.length})</h3>${this.editBtn(emp.id, null, 'Edit Achieved')}</div>
                     <div class="data-table-container">
                         <table class="data-table">
-                            <thead><tr><th>التاريخ</th><th>PT12</th><th>Super Kix</th><th>Tazbeet</th><th>Data</th><th>WE Gold</th><th>ADSL</th><th>Fixed</th><th>WE Pay</th><th>إجمالي الخطوط</th><th>ملاحظات</th></tr></thead>
-                            <tbody>${logRows || '<tr><td colspan="11" class="text-muted">لم يسجل هذا الموظف أي أداء بعد</td></tr>'}</tbody>
+                            <thead><tr><th>التاريخ</th><th>PT12</th><th>Super Kix</th><th>Tazbeet</th><th>Data</th><th>WE Gold</th><th>ADSL</th><th>Fixed</th><th>WE Pay</th><th>إجمالي الخطوط</th><th>ملاحظات</th><th></th></tr></thead>
+                            <tbody>${logRows || '<tr><td colspan="12" class="text-muted">لم يسجل هذا الموظف أي أداء بعد</td></tr>'}</tbody>
                         </table>
                     </div>
                 </div>`;
