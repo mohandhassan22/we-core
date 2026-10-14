@@ -208,11 +208,20 @@
          * Fetches all target periods and performance for a team (branch or area)
          */
         fetchTeamData: async function (month, year, branch = null, area = null) {
-            let periodQuery = `target_periods?month=eq.${month}&year=eq.${year}&select=*,targets(*),profiles(full_name,role)`;
-            if (branch) periodQuery += `&branch=eq.${encodeURIComponent(branch)}`;
-            else if (area) periodQuery += `&area=eq.${encodeURIComponent(area)}`;
-            
             try {
+                // target_periods stores a display-name snapshot. It can differ from
+                // profiles.branch after a branch rename (e.g. "فرع ..." vs " ...").
+                // Resolve the scope through profiles first, then filter periods by user_id.
+                let periodQuery = `target_periods?month=eq.${month}&year=eq.${year}&select=*,targets(*),profiles(full_name,role)`;
+                if (branch || area) {
+                    const scope = branch
+                        ? `profiles?branch=eq.${encodeURIComponent(branch)}&role=eq.agent&select=id&limit=500`
+                        : `profiles?area=eq.${encodeURIComponent(area)}&role=eq.agent&select=id&limit=500`;
+                    const users = await restFetch(scope);
+                    const ids = (users || []).map(u => u.id).filter(Boolean);
+                    if (!ids.length) return { periods: [], logs: [] };
+                    periodQuery += `&user_id=in.(${ids.join(',')})`;
+                }
                 const periods = await restFetch(periodQuery);
                 if (!periods || periods.length === 0) return { periods: [], logs: [] };
                 
