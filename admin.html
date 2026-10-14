@@ -14,7 +14,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/css/cognitive-violet.css?v=1">
+<script src="assets/js/theme-init.js?v=1"></script>
+<link rel="stylesheet" href="assets/css/cognitive-violet.css?v=2">
 <script src="assets/js/back-button.js?v=1" defer></script>
 </head>
 <body>
@@ -159,7 +160,7 @@
                 </tr>
               </thead>
               <tbody id="usersTableBody">
-                <tr><td colspan="5" style="text-align:center;padding:40px;color:#9ca3af"><i class="ti ti-loader" style="font-size:20px;animation:spin 1s linear infinite"></i><br>جاري تحميل المستخدمين...</td></tr>
+                <tr><td colspan="5" style="text-align:center;padding:40px;color:var(--cv-t-9ca3af)"><i class="ti ti-loader" style="font-size:20px;animation:spin 1s linear infinite"></i><br>جاري تحميل المستخدمين...</td></tr>
               </tbody>
             </table>
           </div>
@@ -377,7 +378,7 @@
             </div>
           </div>
           <div class="tables-grid" id="tablesGrid">
-            <div style="text-align:center;padding:40px;color:#9ca3af;grid-column:1/-1">
+            <div style="text-align:center;padding:40px;color:var(--cv-t-9ca3af);grid-column:1/-1">
               <i class="ti ti-loader" style="font-size:20px;animation:spin 1s linear infinite"></i><br>جاري تحميل الجداول...
             </div>
           </div>
@@ -409,7 +410,7 @@
               <table id="dynamicTable">
                 <thead id="dynamicTableHead"></thead>
                 <tbody id="dynamicTableBody">
-                  <tr><td style="text-align:center;padding:40px;color:#9ca3af"><i class="ti ti-loader" style="font-size:20px;animation:spin 1s linear infinite"></i><br>جاري تحميل البيانات...</td></tr>
+                  <tr><td style="text-align:center;padding:40px;color:var(--cv-t-9ca3af)"><i class="ti ti-loader" style="font-size:20px;animation:spin 1s linear infinite"></i><br>جاري تحميل البيانات...</td></tr>
                 </tbody>
               </table>
             </div>
@@ -600,7 +601,7 @@
     </div>
     <div class="modal-ft">
       <button class="btn btn-secondary" onclick="hideModal('deleteModal')">إلغاء</button>
-      <button class="btn" id="confirmDeleteBtn" style="background:var(--danger);color:#ffffff">
+      <button class="btn" id="confirmDeleteBtn" style="background:var(--danger);color:var(--cv-white-ink)">
         <i class="ti ti-trash" style="font-size:16px"></i> حذف
       </button>
     </div>
@@ -641,7 +642,7 @@
     </div>
     <div class="modal-ft">
       <button class="btn btn-secondary" onclick="hideModal('deleteRowModal')">إلغاء</button>
-      <button class="btn" id="confirmDeleteRowBtn" style="background:var(--danger);color:#ffffff">
+      <button class="btn" id="confirmDeleteRowBtn" style="background:var(--danger);color:var(--cv-white-ink)">
         <i class="ti ti-trash" style="font-size:16px"></i> حذف
       </button>
     </div>

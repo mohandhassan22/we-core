@@ -11,16 +11,16 @@
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
 <style>
   :root {
-    --purple-deep:   #28205c;
+    --purple-deep:   var(--cv-raised);
     --purple-main:   #5120b8;
     --purple-mid:    #7048d8;
-    --purple-light:  #33297a;
-    --purple-pale:   #28205c;
-    --white:         #1d1643;
-    --off-white:     #1d1643;
-    --text-dark:     #e6dff9;
-    --text-mid:      #cbc3d6;
-    --border:        #28205c;
+    --purple-light:  var(--cv-raised2);
+    --purple-pale:   var(--cv-raised);
+    --white:         var(--cv-card);
+    --off-white:     var(--cv-card);
+    --text-dark:     var(--cv-ink-soft);
+    --text-mid:      var(--cv-ink-soft2);
+    --border:        var(--cv-raised);
     --gold:          #f0c040;
   }
 
@@ -48,7 +48,7 @@
     position: absolute;
     inset: 0;
     background:
-      radial-gradient(ellipse 70% 60% at 20% 50%, rgba(255,255,255,0.07) 0%, transparent 70%),
+      radial-gradient(ellipse 70% 60% at 20% 50%, rgba(var(--cv-wash),0.07) 0%, transparent 70%),
       radial-gradient(ellipse 50% 80% at 80% 20%, rgba(112,72,216,0.27) 0%, transparent 60%);
     pointer-events: none;
   }
@@ -63,7 +63,7 @@
     display: inline-flex;
     align-items: center;
     gap: 10px;
-    background: rgba(255,255,255,0.12);
+    background: rgba(var(--cv-wash),0.12);
     border: 1px solid rgba(157,114,255,0.25);
     border-radius: 50px;
     padding: 6px 18px;
@@ -73,7 +73,7 @@
   .logo-badge span {
     font-size: 12px;
     font-weight: 700;
-    color: #9e97c2;
+    color: var(--cv-muted);
     letter-spacing: 1.5px;
     text-transform: uppercase;
   }
@@ -90,14 +90,14 @@
   header h1 {
     font-size: clamp(2rem, 5vw, 3.2rem);
     font-weight: 900;
-    color: #ffffff;
+    color: var(--cv-white-ink);
     line-height: 1.25;
     margin-bottom: 16px;
   }
-  header h1 span { color: #f4d37b; }
+  header h1 span { color: var(--cv-t-f4d37b); }
   header p.subtitle {
     font-size: 1.1rem;
-    color: rgba(255,255,255,0.75);
+    color: rgba(var(--cv-wash),0.75);
     max-width: 620px;
   }
   .header-chips {
@@ -107,16 +107,16 @@
     margin-top: 32px;
   }
   .chip {
-    background: rgba(255,255,255,0.13);
+    background: rgba(var(--cv-wash),0.13);
     border: 1px solid rgba(157,114,255,0.2);
     border-radius: 50px;
     padding: 6px 16px;
     font-size: .82rem;
     font-weight: 600;
-    color: #ffffff;
+    color: var(--cv-white-ink);
     backdrop-filter: blur(6px);
   }
-  .chip.gold { background: var(--gold); color: #120e28; border-color: #f0c040; }
+  .chip.gold { background: var(--gold); color: var(--cv-deep); border-color: #f0c040; }
 
   /* ── NAV WAVE ── */
   .wave {
@@ -160,7 +160,7 @@
     transition: all .2s;
   }
   .nav-btn:hover, .nav-btn.active {
-    color: #cebdff;
+    color: var(--cv-accent-ink);
     border-bottom-color: #9d72ff;
   }
 
@@ -196,7 +196,7 @@
   .section-header h2 {
     font-size: 1.45rem;
     font-weight: 900;
-    color: #e6dff9;
+    color: var(--cv-ink-soft);
   }
 
   /* ── INTRO CARDS ── */
@@ -252,7 +252,7 @@
   .price-card.featured {
     background: linear-gradient(150deg, var(--purple-deep), var(--purple-main));
     border-color: #9d72ff;
-    color: #ffffff;
+    color: var(--cv-white-ink);
   }
   .price-card.featured::after {
     content: 'الأكثر طلباً';
@@ -261,7 +261,7 @@
     left: 50%;
     transform: translateX(-50%);
     background: var(--gold);
-    color: #120e28;
+    color: var(--cv-deep);
     font-size: .72rem;
     font-weight: 900;
     padding: 3px 14px;
@@ -271,30 +271,30 @@
   .price-card .pkg-name {
     font-size: 1rem;
     font-weight: 900;
-    color: #cebdff;
+    color: var(--cv-accent-ink);
     margin-bottom: 10px;
     letter-spacing: .5px;
   }
-  .price-card.featured .pkg-name { color: #f4d37b; }
+  .price-card.featured .pkg-name { color: var(--cv-t-f4d37b); }
   .price-card .price-main {
     font-size: 2.4rem;
     font-weight: 900;
-    color: #e6dff9;
+    color: var(--cv-ink-soft);
     line-height: 1;
   }
-  .price-card.featured .price-main { color: #ffffff; }
+  .price-card.featured .price-main { color: var(--cv-white-ink); }
   .price-card .price-label {
     font-size: .75rem;
     color: var(--text-mid);
     margin-bottom: 18px;
   }
-  .price-card.featured .price-label { color: rgba(255,255,255,0.7); }
+  .price-card.featured .price-label { color: rgba(var(--cv-wash),0.7); }
   .price-card .divider {
     height: 1px;
     background: var(--border);
     margin: 14px 0;
   }
-  .price-card.featured .divider { background: rgba(255,255,255,0.2); }
+  .price-card.featured .divider { background: rgba(var(--cv-wash),0.2); }
   .price-row {
     display: flex;
     justify-content: space-between;
@@ -303,20 +303,20 @@
     font-size: .82rem;
   }
   .price-row .label { color: var(--text-mid); }
-  .price-card.featured .price-row .label { color: rgba(255,255,255,0.65); }
-  .price-row .val { font-weight: 700; color: #e6dff9; }
-  .price-card.featured .price-row .val { color: #ffffff; }
+  .price-card.featured .price-row .label { color: rgba(var(--cv-wash),0.65); }
+  .price-row .val { font-weight: 700; color: var(--cv-ink-soft); }
+  .price-card.featured .price-row .val { color: var(--cv-white-ink); }
   .tax-badge {
     display: inline-block;
     background: var(--purple-pale);
-    color: #e6dff9;
+    color: var(--cv-ink-soft);
     font-size: .75rem;
     font-weight: 700;
     border-radius: 8px;
     padding: 3px 10px;
     margin-top: 10px;
   }
-  .price-card.featured .tax-badge { background: rgba(255,255,255,0.2); color: #ffffff; }
+  .price-card.featured .tax-badge { background: rgba(var(--cv-wash),0.2); color: var(--cv-white-ink); }
 
   /* ── STEPS ── */
   .steps-list {
@@ -345,11 +345,11 @@
     justify-content: center;
     font-size: .9rem;
     font-weight: 900;
-    color: #ffffff;
+    color: var(--cv-white-ink);
     box-shadow: 0 3px 12px rgba(112,72,216,0.45);
   }
   .step p { font-size: .93rem; }
-  .step strong { color: #e6dff9; }
+  .step strong { color: var(--cv-ink-soft); }
 
   /* ── DOCS ── */
   .docs-split {
@@ -371,7 +371,7 @@
     align-items: center;
     gap: 10px;
   }
-  .doc-box-header span { font-size: 1rem; font-weight: 900; color: #ffffff; }
+  .doc-box-header span { font-size: 1rem; font-weight: 900; color: var(--cv-white-ink); }
   .doc-list { padding: 16px 20px; list-style: none; }
   .doc-list li {
     padding: 8px 0;
@@ -387,7 +387,7 @@
     width: 20px; height: 20px;
     min-width: 20px;
     background: var(--purple-pale);
-    color: #cebdff;
+    color: var(--cv-accent-ink);
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -418,7 +418,7 @@
     font-family: 'Plus Jakarta Sans','Cairo','Tajawal',sans-serif;
     font-size: .95rem;
     font-weight: 700;
-    color: #e6dff9;
+    color: var(--cv-ink-soft);
     text-align: right;
     gap: 12px;
   }
@@ -431,13 +431,13 @@
     align-items: center;
     justify-content: center;
     font-size: .75rem;
-    color: #cebdff;
+    color: var(--cv-accent-ink);
     transition: transform .3s, background .2s;
   }
   .faq-item.open .faq-q .arrow {
     transform: rotate(180deg);
     background: var(--purple-main);
-    color: #ffffff;
+    color: var(--cv-white-ink);
   }
   .faq-body {
     max-height: 0;
@@ -485,10 +485,10 @@
   .contact-card .val {
     font-size: 1rem;
     font-weight: 700;
-    color: #e6dff9;
+    color: var(--cv-ink-soft);
     word-break: break-all;
   }
-  .contact-card a { color: #cebdff; text-decoration: none; }
+  .contact-card a { color: var(--cv-accent-ink); text-decoration: none; }
   .contact-card a:hover { text-decoration: underline; }
 
   /* ── TT ALERT BOX ── */
@@ -496,25 +496,25 @@
     background: linear-gradient(135deg, var(--purple-deep), var(--purple-main));
     border-radius: 20px;
     padding: 28px 32px;
-    color: #ffffff;
+    color: var(--cv-white-ink);
     display: flex;
     gap: 20px;
     align-items: flex-start;
     box-shadow: 0 8px 30px rgba(112,72,216,0.45);
   }
   .alert-box .alert-icon { font-size: 2.5rem; flex-shrink: 0; }
-  .alert-box h3 { font-size: 1.1rem; font-weight: 900; margin-bottom: 10px; color: #f4d37b; }
+  .alert-box h3 { font-size: 1.1rem; font-weight: 900; margin-bottom: 10px; color: var(--cv-t-f4d37b); }
   .alert-box p { font-size: .9rem; opacity: .9; margin-bottom: 16px; }
   .tt-table {
     width: 100%;
     border-collapse: collapse;
     font-size: .82rem;
-    background: rgba(255,255,255,0.1);
+    background: rgba(var(--cv-wash),0.1);
     border-radius: 10px;
     overflow: hidden;
   }
   .tt-table th {
-    background: rgba(255,255,255,0.2);
+    background: rgba(var(--cv-wash),0.2);
     padding: 8px 12px;
     text-align: right;
     font-weight: 700;
@@ -543,18 +543,18 @@
     font-size: 1.8rem;
     flex-shrink: 0;
   }
-  .term-card h4 { font-size: .88rem; font-weight: 900; color: #e6dff9; margin-bottom: 4px; }
+  .term-card h4 { font-size: .88rem; font-weight: 900; color: var(--cv-ink-soft); margin-bottom: 4px; }
   .term-card p { font-size: .82rem; color: var(--text-mid); }
 
   /* ── FOOTER ── */
   footer {
     background: var(--purple-deep);
-    color: rgba(255,255,255,0.6);
+    color: rgba(var(--cv-wash),0.6);
     text-align: center;
     padding: 32px 24px;
     font-size: .82rem;
   }
-  footer strong { color: #ffffff; }
+  footer strong { color: var(--cv-white-ink); }
 
   /* ── RESPONSIVE ── */
   @media (max-width: 600px) {
@@ -578,7 +578,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../assets/css/cognitive-violet.css?v=1">
+<script src="../assets/js/theme-init.js?v=1"></script>
+<link rel="stylesheet" href="../assets/css/cognitive-violet.css?v=2">
 <script src="../assets/js/back-button.js?v=1" defer></script>
 </head>
 <body>
@@ -704,7 +705,7 @@
           <li>صورة البطاقة الشخصية لمالك السيارة</li>
           <li>صورة عقد شركة المحمول (عقد الخط)</li>
           <li>صورة رخصة السيارة</li>
-          <li>صورة عقد التقنين المرفق &nbsp;<a href="https://we-core.icu/viewpdf.html?src=https%3A%2F%2Fiygwhapcpdmsasqlfelv.supabase.co%2Fstorage%2Fv1%2Fobject%2Fauthenticated%2FAll%20Form%2FUntitled%20folder%2FIndividual%20legalization%20contract.pdf" target="_blank" style="display:inline-flex;align-items:center;gap:5px;background:var(--purple-main);color:#ffffff;font-size:.75rem;font-weight:700;padding:3px 10px;border-radius:20px;text-decoration:none;">📄 تحميل العقد</a></li>
+          <li>صورة عقد التقنين المرفق &nbsp;<a href="https://we-core.icu/viewpdf.html?src=https%3A%2F%2Fiygwhapcpdmsasqlfelv.supabase.co%2Fstorage%2Fv1%2Fobject%2Fauthenticated%2FAll%20Form%2FUntitled%20folder%2FIndividual%20legalization%20contract.pdf" target="_blank" style="display:inline-flex;align-items:center;gap:5px;background:var(--purple-main);color:var(--cv-white-ink);font-size:.75rem;font-weight:700;padding:3px 10px;border-radius:20px;text-decoration:none;">📄 تحميل العقد</a></li>
         </ul>
       </div>
       <div class="doc-box">
@@ -715,7 +716,7 @@
           <li>صورة البطاقة الشخصية لمالك السيارة</li>
           <li>صورة عقد شركة المحمول (عقد الخط)</li>
           <li>صورة رخصة السيارة</li>
-          <li>صورة عقد التقنين &nbsp;<a href="https://we-core.icu/viewpdf.html?src=https%3A%2F%2Fiygwhapcpdmsasqlfelv.supabase.co%2Fstorage%2Fv1%2Fobject%2Fauthenticated%2FAll%20Form%2FUntitled%20folder%2FIndividual%20legalization%20contract.pdf" target="_blank" style="display:inline-flex;align-items:center;gap:5px;background:var(--purple-main);color:#ffffff;font-size:.75rem;font-weight:700;padding:3px 10px;border-radius:20px;text-decoration:none;">📄 تحميل العقد</a></li>
+          <li>صورة عقد التقنين &nbsp;<a href="https://we-core.icu/viewpdf.html?src=https%3A%2F%2Fiygwhapcpdmsasqlfelv.supabase.co%2Fstorage%2Fv1%2Fobject%2Fauthenticated%2FAll%20Form%2FUntitled%20folder%2FIndividual%20legalization%20contract.pdf" target="_blank" style="display:inline-flex;align-items:center;gap:5px;background:var(--purple-main);color:var(--cv-white-ink);font-size:.75rem;font-weight:700;padding:3px 10px;border-radius:20px;text-decoration:none;">📄 تحميل العقد</a></li>
           <li>صورة توكيل يشمل التعاقد مع شركات المحمول</li>
           <li>صورة بطاقة الموكِّل والموكَّل إليه</li>
           <li>صورة عقد بيع السيارة</li>
@@ -734,19 +735,19 @@
     <div class="steps-list">
       <div class="step"><div class="step-num">1</div><p>زيارة أي فرع <strong>WE</strong> وتقديم المستندات اللازمة + مستندات التعاقد على خط فاتورة + تقديم <strong>ATP</strong> أو المبلغ التأميني المناسب للباقة.</p></div>
       <div class="step"><div class="step-num">2</div><p>توقيع <strong>عقد الاشتراك في خدمة التتبع</strong> ويُختم بختم الفرع. يحصل العميل على نسخة، ويُرفق العقدان معاً على السيستم (يُدبَّسان معاً للأرشيف).</p></div>
-      <div class="step"><div class="step-num">3</div><p>يرفق ممثل المبيعات <strong>صورة عقد التقنين مع ETIT</strong> ضمن المستندات ليتمكن النظام من تشغيل الخط. &nbsp;<a href="https://we-core.icu/viewpdf.html?src=https%3A%2F%2Fiygwhapcpdmsasqlfelv.supabase.co%2Fstorage%2Fv1%2Fobject%2Fauthenticated%2FAll%20Form%2FUntitled%20folder%2FIndividual%20legalization%20contract.pdf" target="_blank" style="display:inline-flex;align-items:center;gap:5px;background:var(--purple-main);color:#ffffff;font-size:.75rem;font-weight:700;padding:3px 10px;border-radius:20px;text-decoration:none;vertical-align:middle;">📄 تحميل العقد</a></p></div>
+      <div class="step"><div class="step-num">3</div><p>يرفق ممثل المبيعات <strong>صورة عقد التقنين مع ETIT</strong> ضمن المستندات ليتمكن النظام من تشغيل الخط. &nbsp;<a href="https://we-core.icu/viewpdf.html?src=https%3A%2F%2Fiygwhapcpdmsasqlfelv.supabase.co%2Fstorage%2Fv1%2Fobject%2Fauthenticated%2FAll%20Form%2FUntitled%20folder%2FIndividual%20legalization%20contract.pdf" target="_blank" style="display:inline-flex;align-items:center;gap:5px;background:var(--purple-main);color:var(--cv-white-ink);font-size:.75rem;font-weight:700;padding:3px 10px;border-radius:20px;text-decoration:none;vertical-align:middle;">📄 تحميل العقد</a></p></div>
       <div class="step"><div class="step-num">4</div><p><strong>Network Provisioning:</strong> ينتظر العميل تفعيل الخدمة تلقائياً على الخط خلال <strong>48 ساعة</strong>.</p></div>
       <div class="step"><div class="step-num">5</div><p>يُرسل العميل بيانات الجهاز إلى ETIT عبر البريد الإلكتروني (رقم الشريحة، رقم السيارة، نوع الجهاز، الرقم التعريفي، رقم للتواصل).</p></div>
       <div class="step"><div class="step-num">6</div><p>التوجه لـ <strong>مقر ETIT</strong> لاستكمال إجراءات التقنين وتفعيل الخدمة على الجهاز.</p></div>
     </div>
 
     <div style="margin-top:24px;background:var(--purple-pale);border:1.5px solid rgba(157,114,255,0.22);border-radius:14px;padding:20px 24px;">
-      <p style="font-size:.88rem;font-weight:700;color:#cebdff;margin-bottom:12px;">📧 عناوين البريد الإلكتروني لإرسال بيانات الجهاز إلى ETIT:</p>
+      <p style="font-size:.88rem;font-weight:700;color:var(--cv-accent-ink);margin-bottom:12px;">📧 عناوين البريد الإلكتروني لإرسال بيانات الجهاز إلى ETIT:</p>
       <div style="display:flex;flex-wrap:wrap;gap:10px;">
-        <a href="mailto:user.etit@etit-eg.com" style="background:var(--white);border:1px solid rgba(157,114,255,0.22);border-radius:8px;padding:6px 14px;font-size:.82rem;color:#cebdff;text-decoration:none;font-weight:600;">user.etit@etit-eg.com</a>
-        <a href="mailto:corp.etit@etit-eg.com" style="background:var(--white);border:1px solid rgba(157,114,255,0.22);border-radius:8px;padding:6px 14px;font-size:.82rem;color:#cebdff;text-decoration:none;font-weight:600;">corp.etit@etit-eg.com</a>
-        <a href="mailto:info@etit-eg.com" style="background:var(--white);border:1px solid rgba(157,114,255,0.22);border-radius:8px;padding:6px 14px;font-size:.82rem;color:#cebdff;text-decoration:none;font-weight:600;">info@etit-eg.com</a>
-        <a href="mailto:shakwa@etit-eg.com" style="background:var(--white);border:1px solid rgba(157,114,255,0.22);border-radius:8px;padding:6px 14px;font-size:.82rem;color:#cebdff;text-decoration:none;font-weight:600;">shakwa@etit-eg.com</a>
+        <a href="mailto:user.etit@etit-eg.com" style="background:var(--white);border:1px solid rgba(157,114,255,0.22);border-radius:8px;padding:6px 14px;font-size:.82rem;color:var(--cv-accent-ink);text-decoration:none;font-weight:600;">user.etit@etit-eg.com</a>
+        <a href="mailto:corp.etit@etit-eg.com" style="background:var(--white);border:1px solid rgba(157,114,255,0.22);border-radius:8px;padding:6px 14px;font-size:.82rem;color:var(--cv-accent-ink);text-decoration:none;font-weight:600;">corp.etit@etit-eg.com</a>
+        <a href="mailto:info@etit-eg.com" style="background:var(--white);border:1px solid rgba(157,114,255,0.22);border-radius:8px;padding:6px 14px;font-size:.82rem;color:var(--cv-accent-ink);text-decoration:none;font-weight:600;">info@etit-eg.com</a>
+        <a href="mailto:shakwa@etit-eg.com" style="background:var(--white);border:1px solid rgba(157,114,255,0.22);border-radius:8px;padding:6px 14px;font-size:.82rem;color:var(--cv-accent-ink);text-decoration:none;font-weight:600;">shakwa@etit-eg.com</a>
       </div>
     </div>
   </section>

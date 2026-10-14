@@ -7,10 +7,10 @@
 :root {
     --primary-color: #5120b8;
     --secondary-color: #8a62f0;
-    --light-purple: #120e28;
-    --white: #1d1643;
+    --light-purple: var(--cv-deep);
+    --white: var(--cv-card);
     --light-gray: rgba(157,114,255,0.18);
-    --dark-gray: #f8f6ff;
+    --dark-gray: var(--cv-text);
     --box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     --border-radius: 8px;
 }
@@ -38,7 +38,7 @@ body {
 /* Header Styles */
 header {
     background-color: var(--primary-color);
-    color: #ffffff;
+    color: var(--cv-white-ink);
     padding: 20px 0;
     box-shadow: var(--box-shadow);
 }
@@ -71,7 +71,7 @@ nav {
 }
 
 .main-nav a {
-    color: #ffffff;
+    color: var(--cv-white-ink);
     text-decoration: none;
     font-weight: 600;
     padding: 5px 10px;
@@ -98,7 +98,7 @@ main {
 
 .section-header {
     background-color: var(--primary-color);
-    color: #ffffff;
+    color: var(--cv-white-ink);
     padding: 15px 20px;
     text-align: center;
 }
@@ -133,7 +133,7 @@ main {
 
 .pricing-table thead {
     background-color: var(--primary-color);
-    color: #ffffff;
+    color: var(--cv-white-ink);
 }
 
 .pricing-table th {
@@ -150,7 +150,7 @@ main {
 
 .pricing-table .feature {
     background-color: var(--secondary-color);
-    color: #ffffff;
+    color: var(--cv-white-ink);
     font-weight: 600;
     text-align: right;
 }
@@ -170,13 +170,13 @@ main {
 }
 
 .content-box h3 {
-    color: #cebdff;
+    color: var(--cv-accent-ink);
     margin: 20px 0 10px;
     font-weight: 600;
 }
 
 .content-box h4 {
-    color: #9e97c2;
+    color: var(--cv-muted);
     margin: 15px 0 10px;
     font-weight: 600;
 }
@@ -207,7 +207,7 @@ main {
 /* Footer Styles */
 footer {
     background-color: var(--primary-color);
-    color: #ffffff;
+    color: var(--cv-white-ink);
     padding: 30px 0;
     text-align: center;
 }

@@ -8,26 +8,26 @@
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
 <style>
   :root{
-    --surface:#120e28;
-    --surface-dim:#28205c;
-    --surface-container-lowest:#1d1643;
-    --surface-container-low:#120e28;
-    --surface-container:#120e28;
-    --surface-container-high:#120e28;
-    --on-surface:#f8f6ff;
-    --on-surface-variant:#e6dff9;
-    --outline:#9e97c2;
-    --outline-variant:#33297a;
-    --primary:#28205c;
-    --on-primary:#1d1643;
+    --surface:var(--cv-deep);
+    --surface-dim:var(--cv-raised);
+    --surface-container-lowest:var(--cv-card);
+    --surface-container-low:var(--cv-deep);
+    --surface-container:var(--cv-deep);
+    --surface-container-high:var(--cv-deep);
+    --on-surface:var(--cv-text);
+    --on-surface-variant:var(--cv-ink-soft);
+    --outline:var(--cv-muted);
+    --outline-variant:var(--cv-raised2);
+    --primary:var(--cv-raised);
+    --on-primary:var(--cv-card);
     --primary-container:#7048d8;
-    --on-primary-container:#33297a;
+    --on-primary-container:var(--cv-raised2);
     --secondary:#5120b8;
-    --secondary-container:#28205c;
-    --on-secondary-container:#cbc3d6;
-    --tertiary-container:#1d1643;
+    --secondary-container:var(--cv-raised);
+    --on-secondary-container:var(--cv-ink-soft2);
+    --tertiary-container:var(--cv-card);
     --on-tertiary-container:#f4c27b;
-    --background:#120e28;
+    --background:var(--cv-deep);
 
     --radius-sm:8px;
     --radius-lg:16px;
@@ -73,7 +73,7 @@
   }
   header.page-header h1{
     font-size:32px;font-weight:600;line-height:40px;letter-spacing:-0.01em;
-    margin:0 0 6px;color:#e6dff9;
+    margin:0 0 6px;color:var(--cv-ink-soft);
   }
   header.page-header p{
     color:var(--on-surface-variant);font-size:16px;margin:0;
@@ -96,7 +96,7 @@
   .filters button.active,
   .filters button:hover{
     border-color:#9d72ff;
-    color:#e6dff9;
+    color:var(--cv-ink-soft);
   }
 
   .grid{
@@ -131,13 +131,13 @@
     margin-top:6px;
     background:transparent;
     border:1px solid #9d72ff;
-    color:#e6dff9;
+    color:var(--cv-ink-soft);
     font-size:13px;font-weight:600;
     padding:8px 16px;border-radius:var(--radius-sm);
     cursor:pointer;transition:background .15s,color .15s;
   }
   .card button.more:hover{
-    background:var(--primary);color:#ffffff;
+    background:var(--primary);color:var(--cv-white-ink);
   }
 
   .empty{
@@ -174,17 +174,17 @@
     font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--on-secondary-container);
   }
   #detail h2{
-    color:#e6dff9;margin:4px 0 var(--space-md);font-size:24px;
+    color:var(--cv-ink-soft);margin:4px 0 var(--space-md);font-size:24px;
   }
   #detail .body{font-size:15px;color:var(--on-surface);}
   #detail .d-desc{color:var(--on-surface-variant);margin:0 0 12px;white-space:pre-wrap;}
-  #detail .d-h{margin:16px 0 6px;color:#e6dff9;font-size:17px;}
+  #detail .d-h{margin:16px 0 6px;color:var(--cv-ink-soft);font-size:17px;}
   #detail .d-t{margin:6px 0;white-space:pre-wrap;line-height:1.8;}
-  #detail .d-f{display:flex;justify-content:space-between;gap:12px;padding:8px 10px;margin:4px 0;border-radius:8px;background:var(--surface-container-low,#120e28);}
+  #detail .d-f{display:flex;justify-content:space-between;gap:12px;padding:8px 10px;margin:4px 0;border-radius:8px;background:var(--surface-container-low,var(--cv-deep));}
   #detail .d-m{margin:10px 0;}
   #detail .d-m img{max-width:100%;border-radius:10px;display:block;}
   #detail figcaption{font-size:13px;color:var(--on-surface-variant);margin-top:4px;}
-  #detail a{color:#e6dff9;}
+  #detail a{color:var(--cv-ink-soft);}
 
   @media(prefers-reduced-motion:reduce){
     #gate .spinner{animation:none;}
@@ -195,7 +195,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/css/cognitive-violet.css?v=1">
+<script src="assets/js/theme-init.js?v=1"></script>
+<link rel="stylesheet" href="assets/css/cognitive-violet.css?v=2">
 <script src="assets/js/back-button.js?v=1" defer></script>
 </head>
 <body>

@@ -7,24 +7,24 @@
   /* ---- Color tokens (from DESIGN.md) ---- */
   --primary: #5120b8;          /* key actions, active states, brand */
   --primary-strong: #5120b8;   /* header / deeper brand surfaces */
-  --on-primary: #1d1643;
+  --on-primary: var(--cv-card);
   --primary-container: #7048d8;
-  --on-primary-container: #28205c;
-  --secondary: #33297a;        /* accents, indicators */
-  --secondary-container: #28205c;
-  --tertiary: #28205c;         /* light bg for active/category tags */
+  --on-primary-container: var(--cv-raised);
+  --secondary: var(--cv-raised2);        /* accents, indicators */
+  --secondary-container: var(--cv-raised);
+  --tertiary: var(--cv-raised);         /* light bg for active/category tags */
   --on-tertiary-container: #cbc3d6;
 
-  --neutral: #f8f6ff;          /* high-priority type/icons */
-  --background: #1d1643;
-  --surface: #120e28;
-  --surface-container: #120e28;
-  --surface-container-high: #120e28;
-  --on-surface: #f8f6ff;
-  --on-surface-variant: #f8f6ff;
-  --outline: #9e97c2;
-  --outline-variant: #28205c;
-  --border: #120e28;
+  --neutral: var(--cv-text);          /* high-priority type/icons */
+  --background: var(--cv-card);
+  --surface: var(--cv-deep);
+  --surface-container: var(--cv-deep);
+  --surface-container-high: var(--cv-deep);
+  --on-surface: var(--cv-text);
+  --on-surface-variant: var(--cv-text);
+  --outline: var(--cv-muted);
+  --outline-variant: var(--cv-raised);
+  --border: var(--cv-deep);
 
   --error: #ba1a1a;
   --error-container: rgba(224,96,82,0.16);
@@ -72,7 +72,7 @@ header.site-header {
   top: 0;
   z-index: 300;
   box-shadow: var(--shadow-3);
-  color: #ffffff;
+  color: var(--cv-white-ink);
 }
 
 .hdr {
@@ -98,15 +98,15 @@ header.site-header {
   width: 38px;
   height: 38px;
   border-radius: var(--radius-full);
-  background: rgba(255,255,255,0.14);
+  background: rgba(var(--cv-wash),0.14);
   border: 1px solid rgba(157,114,255,0.22);
-  color: #ffffff;
+  color: var(--cv-white-ink);
   text-decoration: none;
   font-size: 16px;
   transition: background 0.2s, border-color 0.2s;
 }
 .back-btn:hover {
-  background: rgba(255,255,255,0.24);
+  background: rgba(var(--cv-wash),0.24);
   border-color: rgba(157,114,255,0.35);
 }
 
@@ -115,7 +115,7 @@ header.site-header {
   align-items: center;
   gap: var(--space-2);
   text-decoration: none;
-  color: #ffffff;
+  color: var(--cv-white-ink);
 }
 .brand-ico {
   width: 42px;
@@ -128,7 +128,7 @@ header.site-header {
   font-family: 'Plus Jakarta Sans','Cairo','Tajawal',sans-serif;
   font-size: 20px;
   font-weight: 800;
-  color: #cbc3d6;
+  color: var(--cv-ink-soft2);
   box-shadow: var(--shadow-2);
 }
 .brand-text {
@@ -145,25 +145,25 @@ header.site-header {
   font-size: 10px;
   letter-spacing: 0.05em;
   text-transform: uppercase;
-  color: rgba(255,255,255,0.65);
+  color: rgba(var(--cv-wash),0.65);
 }
 
 .nav-links a {
   display: flex;
   align-items: center;
   gap: 7px;
-  color: rgba(255,255,255,0.92);
+  color: rgba(var(--cv-wash),0.92);
   text-decoration: none;
   font-size: 14px;
   font-weight: 600;
   padding: 8px 16px;
   border-radius: var(--radius-sm);
-  background: rgba(255,255,255,0.12);
+  background: rgba(var(--cv-wash),0.12);
   border: 1px solid rgba(157,114,255,0.2);
   transition: background 0.2s, border-color 0.2s;
 }
 .nav-links a:hover {
-  background: rgba(255,255,255,0.22);
+  background: rgba(var(--cv-wash),0.22);
   border-color: rgba(157,114,255,0.35);
 }
 
@@ -188,7 +188,7 @@ main {
   margin-bottom: var(--space-1);
 }
 .hero h1 span {
-  color: #cbc3d6;
+  color: var(--cv-ink-soft2);
 }
 .hero p {
   font-size: 14px;
@@ -298,7 +298,7 @@ main {
   font-size: 10px;
   font-weight: 500;
   letter-spacing: 0.05em;
-  color: #cbc3d6;
+  color: var(--cv-ink-soft2);
   text-transform: uppercase;
   margin-bottom: 10px;
   background: var(--tertiary);
@@ -370,7 +370,7 @@ main {
 .panel-hdr {
   padding: var(--space-3);
   background: var(--primary-strong);
-  color: #ffffff;
+  color: var(--cv-white-ink);
   position: relative;
 }
 .panel-title {
@@ -389,9 +389,9 @@ main {
   position: absolute;
   left: var(--space-2);
   top: var(--space-3);
-  background: rgba(255,255,255,0.16);
+  background: rgba(var(--cv-wash),0.16);
   border: none;
-  color: #ffffff;
+  color: var(--cv-white-ink);
   width: 34px;
   height: 34px;
   border-radius: 50%;
@@ -403,7 +403,7 @@ main {
   transition: background 0.2s;
 }
 .close-btn:hover {
-  background: rgba(255,255,255,0.28);
+  background: rgba(var(--cv-wash),0.28);
 }
 
 .panel-body {
@@ -420,7 +420,7 @@ main {
   font-size: 11px;
   font-weight: 500;
   letter-spacing: 0.05em;
-  color: #cbc3d6;
+  color: var(--cv-ink-soft2);
   text-transform: uppercase;
   margin-bottom: 8px;
   display: block;

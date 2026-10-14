@@ -8,21 +8,21 @@
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg:#0d0a1c;
-    --panel:#0d0a1c;
-    --panel-2:#120e28;
+    --bg:var(--cv-canvas);
+    --panel:var(--cv-canvas);
+    --panel-2:var(--cv-deep);
     --violet:#8a62f0;
     --violet-deep:#5120b8;
     --lilac:#c9aeea;
-    --ink:#120e28;
-    --muted:#9e97c2;
+    --ink:var(--cv-deep);
+    --muted:var(--cv-muted);
     --ok:#3fbf8f;
   }
   *{box-sizing:border-box;margin:0;padding:0;}
   html{scroll-behavior:smooth;}
   body{
     background:var(--bg);
-    color:#efeaf6;
+    color:var(--cv-t-efeaf6);
     font-family:'Plus Jakarta Sans','Cairo','Tajawal',sans-serif;
     line-height:1.8;
   }
@@ -56,9 +56,9 @@
     font-size:clamp(26px,5.2vw,36px);
     line-height:1.5;
   }
-  h1 .hi{color:#cebdff;}
+  h1 .hi{color:var(--cv-accent-ink);}
   header p.greet{color:var(--muted);font-size:15px;margin-top:14px;}
-  header p.lede{margin-top:18px;font-size:16px;color:#dcd4ec;max-width:56ch;}
+  header p.lede{margin-top:18px;font-size:16px;color:var(--cv-t-dcd4ec);max-width:56ch;}
 
   /* ---- Gauge card ---- */
   .gauge-card{
@@ -78,13 +78,13 @@
     position:absolute;inset:0;
     display:flex;flex-direction:column;align-items:center;justify-content:center;
   }
-  .gauge .val b{font-family:'Plus Jakarta Sans','Cairo','Tajawal',sans-serif;font-size:19px;color:#efeaf6;}
+  .gauge .val b{font-family:'Plus Jakarta Sans','Cairo','Tajawal',sans-serif;font-size:19px;color:var(--cv-t-efeaf6);}
   .gauge .val span{font-size:10.5px;color:var(--muted);}
   .gauge-copy h3{font-family:'Sora','Cairo','Tajawal',sans-serif;font-size:16px;margin-bottom:6px;}
   .gauge-copy p{font-size:13.5px;color:var(--muted);}
   .gauge-copy .tag{
     display:inline-block;margin-top:10px;
-    font-size:11.5px;color:#7bf4c7;
+    font-size:11.5px;color:var(--cv-t-7bf4c7);
     background:rgba(63,191,143,0.1);
     border:1px solid rgba(63,191,143,0.3);
     padding:3px 10px;border-radius:20px;
@@ -95,7 +95,7 @@
   .section-head{margin-bottom:20px;}
   .eyebrow{
     font-family:'Plus Jakarta Sans','Cairo','Tajawal',sans-serif;font-size:12px;font-weight:700;
-    color:#cebdff;letter-spacing:.08em;text-transform:uppercase;
+    color:var(--cv-accent-ink);letter-spacing:.08em;text-transform:uppercase;
     margin-bottom:8px;
   }
   h2{font-family:'Sora','Cairo','Tajawal',sans-serif;font-size:21px;font-weight:700;}
@@ -113,7 +113,7 @@
     display:block;font-family:'Plus Jakarta Sans','Cairo','Tajawal',sans-serif;font-size:12px;color:var(--lilac);
     margin-bottom:6px;
   }
-  .info-item p{font-size:14px;color:#d8d2e4;}
+  .info-item p{font-size:14px;color:var(--cv-t-d8d2e4);}
 
   /* ---- FAQ accordion ---- */
   .faq{border-top:1px solid rgba(157,114,255,0.16);}
@@ -125,7 +125,7 @@
     align-items:center;
     gap:16px;
     background:none;border:none;
-    color:#efeaf6;
+    color:var(--cv-t-efeaf6);
     font-family:'Plus Jakarta Sans','Cairo','Tajawal',sans-serif;
     font-size:15px;
     font-weight:600;
@@ -137,7 +137,7 @@
     flex-shrink:0;
     width:26px;height:26px;border-radius:50%;
     border:1px solid rgba(157,114,255,0.4);
-    color:#cebdff;
+    color:var(--cv-accent-ink);
     display:flex;align-items:center;justify-content:center;
     font-size:15px;
     transition:transform .25s ease, background .25s ease;
@@ -150,7 +150,7 @@
   }
   .faq-a p, .faq-a ul{
     padding:0 4px 20px;
-    color:#c9c1da;
+    color:var(--cv-t-c9c1da);
     font-size:14px;
   }
   .faq-a ul{padding-right:20px;padding-left:4px;}
@@ -169,7 +169,7 @@
     padding-right:20px;
     margin-bottom:12px;
     font-size:14px;
-    color:#d8d2e4;
+    color:var(--cv-t-d8d2e4);
   }
   .terms li::before{
     content:'';
@@ -195,12 +195,12 @@
     gap:16px;
   }
   .validity h3{font-family:'Sora','Cairo','Tajawal',sans-serif;font-size:16px;margin-bottom:4px;}
-  .validity p{font-size:13px;color:#eee6fa;}
+  .validity p{font-size:13px;color:var(--cv-t-eee6fa);}
   .validity .dates{
     font-family:'Plus Jakarta Sans','Cairo','Tajawal',sans-serif;
     font-weight:800;
     font-size:15px;
-    background:rgba(255,255,255,0.14);
+    background:rgba(var(--cv-wash),0.14);
     padding:9px 18px;
     border-radius:10px;
     white-space:nowrap;
@@ -210,7 +210,7 @@
     margin-top:44px;
     text-align:center;
     font-size:12px;
-    color:#cbc3d6;
+    color:var(--cv-ink-soft2);
   }
 
   @media (prefers-reduced-motion: reduce){
@@ -221,7 +221,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../../assets/css/cognitive-violet.css?v=1">
+<script src="../../assets/js/theme-init.js?v=1"></script>
+<link rel="stylesheet" href="../../assets/css/cognitive-violet.css?v=2">
 <script src="../../assets/js/back-button.js?v=1" defer></script>
 </head>
 <body>

@@ -9,16 +9,16 @@
 <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&family=Cairo:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg: #120e28;
-    --bg-panel: #1d1643;
-    --line: #28205c;
+    --bg: var(--cv-deep);
+    --bg-panel: var(--cv-card);
+    --line: var(--cv-raised);
     --purple-deep: #5120b8;
     --purple: #7048d8;
     --purple-soft: #8a62f0;
-    --purple-tint: #120e28;
+    --purple-tint: var(--cv-deep);
     --amber: #b4791c;
-    --text: #e6dff9;
-    --muted: #9e97c2;
+    --text: var(--cv-ink-soft);
+    --muted: var(--cv-muted);
     --danger: #c23b3b;
   }
   *{box-sizing:border-box; margin:0; padding:0;}
@@ -48,7 +48,7 @@
     font-size:13px;
     font-weight:700;
     letter-spacing:0.5px;
-    color:#cebdff;
+    color:var(--cv-accent-ink);
     background:var(--purple-tint);
     border:1px solid rgba(157,114,255,0.3);
     padding:6px 16px;
@@ -62,7 +62,7 @@
     margin-bottom:16px;
     color:var(--text);
   }
-  h1 span{color:#cebdff;}
+  h1 span{color:var(--cv-accent-ink);}
   .subtitle{
     color:var(--muted);
     font-size:16px;
@@ -84,7 +84,7 @@
     font-family:'Space Grotesk','Cairo','Tajawal',sans-serif;
     font-weight:900;
     font-size:14px;
-    color:#ffffff;
+    color:var(--cv-white-ink);
     padding:9px 20px;
     border-radius:999px;
     white-space:nowrap;
@@ -138,7 +138,7 @@
     height:56px;
     border-radius:50%;
     background:radial-gradient(circle at 30% 30%, var(--purple), var(--purple-deep));
-    color:#ffffff;
+    color:var(--cv-white-ink);
     display:flex;
     align-items:center;
     justify-content:center;
@@ -160,7 +160,7 @@
     color:var(--text);
   }
   .step-body{
-    color:#e6dff9;
+    color:var(--cv-ink-soft);
     font-size:15.5px;
   }
   .step-card{
@@ -172,8 +172,8 @@
     box-shadow:0 4px 18px rgba(112,72,216,0.2);
   }
   .step-card p + p{margin-top:10px;}
-  .step-card strong{color:#cebdff; font-weight:700;}
-  .deny .step-card strong{color:#f4c57b;}
+  .step-card strong{color:var(--cv-accent-ink); font-weight:700;}
+  .deny .step-card strong{color:var(--cv-t-f4c57b);}
 
   .checklist{list-style:none; margin-top:12px;}
   .checklist li{
@@ -183,7 +183,7 @@
     padding:10px 0;
     border-bottom:1px solid rgba(157,114,255,0.22);
     font-size:15px;
-    color:#e6dff9;
+    color:var(--cv-ink-soft);
   }
   .checklist li:last-child{border-bottom:none;}
   .checklist li::before{
@@ -209,25 +209,25 @@
     border-radius:8px;
     background:var(--purple-tint);
     border:1px solid rgba(157,114,255,0.3);
-    color:#cebdff;
+    color:var(--cv-accent-ink);
     font-family:'Space Grotesk','Cairo','Tajawal',sans-serif;
   }
   .deny .tag{
     background:rgba(224,169,82,0.16);
     border:1px solid rgba(180,121,28,0.35);
-    color:#f4c57b;
+    color:var(--cv-t-f4c57b);
   }
 
   /* ===== Add-on highlight card ===== */
   .addon-card{
-    background:linear-gradient(135deg, var(--purple-tint), #1d1643);
+    background:linear-gradient(135deg, var(--purple-tint), var(--cv-card));
     border:1px solid rgba(157,114,255,0.3);
     border-radius:16px;
     padding:20px 22px;
     margin-top:14px;
   }
   .deny .addon-card{
-    background:linear-gradient(135deg, rgba(224,169,82,0.16), #1d1643);
+    background:linear-gradient(135deg, rgba(224,169,82,0.16), var(--cv-card));
     border:1px solid rgba(180,121,28,0.32);
   }
   .addon-card .addon-label{
@@ -236,7 +236,7 @@
     font-weight:900;
     font-size:12.5px;
     letter-spacing:0.3px;
-    color:#ffffff;
+    color:var(--cv-white-ink);
     background:var(--purple);
     padding:5px 14px;
     border-radius:999px;
@@ -251,7 +251,7 @@
     color:var(--text);
     margin-bottom:8px;
   }
-  .addon-card p{color:#cbc3d6; font-size:14.5px;}
+  .addon-card p{color:var(--cv-ink-soft2); font-size:14.5px;}
 
   /* ===== Table ===== */
   .table-scroll{overflow-x:auto; margin-top:16px; border-radius:14px; border:1px solid rgba(157,114,255,0.22);}
@@ -263,7 +263,7 @@
   }
   thead th{
     background:linear-gradient(180deg, var(--purple), var(--purple-deep));
-    color:#ffffff;
+    color:var(--cv-white-ink);
     font-family:'Plus Jakarta Sans','Cairo','Tajawal',sans-serif;
     font-weight:700;
     padding:12px 10px;
@@ -275,7 +275,7 @@
     padding:14px 10px;
     text-align:center;
     vertical-align:top;
-    color:#e6dff9;
+    color:var(--cv-ink-soft);
     border-top:1px solid rgba(157,114,255,0.22);
   }
   tbody td.desc{
@@ -285,7 +285,7 @@
   tbody td.desc .badge{
     display:inline-block;
     background:var(--purple-tint);
-    color:#cebdff;
+    color:var(--cv-accent-ink);
     font-weight:700;
     font-size:12px;
     padding:3px 10px;
@@ -295,14 +295,14 @@
 
   /* ===== CTA / Link block ===== */
   .cta-card{
-    background:linear-gradient(135deg, var(--purple-tint), #1d1643);
+    background:linear-gradient(135deg, var(--purple-tint), var(--cv-card));
     border:1px solid rgba(157,114,255,0.3);
     border-radius:18px;
     padding:26px 24px;
     margin-top:16px;
   }
   .deny .cta-card{
-    background:linear-gradient(135deg, rgba(224,169,82,0.16), #1d1643);
+    background:linear-gradient(135deg, rgba(224,169,82,0.16), var(--cv-card));
     border:1px solid rgba(180,121,28,0.32);
   }
   .cta-card h4{
@@ -317,7 +317,7 @@
     gap:8px;
     margin-top:16px;
     background:var(--purple);
-    color:#ffffff;
+    color:var(--cv-white-ink);
     text-decoration:none;
     font-family:'Space Grotesk','Cairo','Tajawal',sans-serif;
     font-weight:700;
@@ -366,12 +366,17 @@
     .path-wrap::before{right:calc(24px + 22px);}
     .section-head{flex-wrap:wrap;}
   }
+
+/* cv-light-islands */
+:root[data-theme="light"] .section-head .pill.ok{--cv-canvas:#0D0A1C;--cv-deep:#120E28;--cv-card:#1D1643;--cv-raised:#28205C;--cv-raised2:#33297A;--cv-text:#F8F6FF;--cv-white-ink:#FFFFFF;--cv-ink-soft:#E6DFF9;--cv-ink-soft2:#CBC3D6;--cv-muted:#9E97C2;--cv-accent-ink:#CEBDFF;--cv-wash:255,255,255;--cv-t-f4c57b:#f4c57b}
+/* /cv-light-islands */
 </style>
 <meta name="theme-color" content="#0D0A1C">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../assets/css/cognitive-violet.css?v=1">
+<script src="../assets/js/theme-init.js?v=1"></script>
+<link rel="stylesheet" href="../assets/css/cognitive-violet.css?v=2">
 <script src="../assets/js/back-button.js?v=1" defer></script>
 </head>
 <body>
@@ -426,7 +431,7 @@
         <p>عقد حيازة استخدام وحيازة خط تليفون محمول لأنظمة الشركات.</p>
          <div class="cta-card">
         <h4>نموذج «Mobile Phone Line Use and Possession Agreement for Corporate Systems»</h4>
-        <p style="color:#cbc3d6; font-size:14.5px;">استخدم الرابط التالي لعرض نموذج العقد وطباعته عند الحاجة أثناء استيفاء إجراءات العميل.</p>
+        <p style="color:var(--cv-ink-soft2); font-size:14.5px;">استخدم الرابط التالي لعرض نموذج العقد وطباعته عند الحاجة أثناء استيفاء إجراءات العميل.</p>
         <a class="cta-btn" href="https://we-core.icu/viewpdf.html?src=https%3A%2F%2Fiygwhapcpdmsasqlfelv.supabase.co%2Fstorage%2Fv1%2Fobject%2Fauthenticated%2FAll%20Form%2FMobile%2FMobile%20Phone%20Line%20Use%20and%20Possession%20Agreement%20for%20Corporate%20Systems.pdf" target="_blank" rel="noopener noreferrer">
           فتح نموذج العقد ↗
         </a>
@@ -559,7 +564,7 @@
     <div class="step-body">
       <div class="cta-card">
         <h4>نموذج «Mobile Phone Line Contract Opt-Out Form»</h4>
-        <p style="color:#cbc3d6; font-size:14.5px;">استخدم الرابط التالي لعرض نموذج العقد وطباعته عند الحاجة أثناء استيفاء إجراءات العميل.</p>
+        <p style="color:var(--cv-ink-soft2); font-size:14.5px;">استخدم الرابط التالي لعرض نموذج العقد وطباعته عند الحاجة أثناء استيفاء إجراءات العميل.</p>
         <a class="cta-btn" href="https://we-core.icu/viewpdf.html?src=https%3A%2F%2Fiygwhapcpdmsasqlfelv.supabase.co%2Fstorage%2Fv1%2Fobject%2Fauthenticated%2FAll%20Form%2FMobile%2FNon-possession%20form.pdf" target="_blank" rel="noopener noreferrer">
           فتح نموذج العقد ↗
         </a>

@@ -1,7 +1,7 @@
 body {
             margin: 0;
             font-family: 'Plus Jakarta Sans','Cairo','Tajawal',sans-serif;
-            background: #0d0a1c;
+            background: var(--cv-canvas);
         }
 
         /* Header */
@@ -21,12 +21,12 @@ body {
         .main-title {
             font-size: 26px;
             font-weight: bold;
-            color: #ffffff;
+            color: var(--cv-white-ink);
         }
 
         .sub-title {
             font-size: 14px;
-            color: #efeded;
+            color: var(--cv-t-efeded);
             margin-top: 5px;
         }
 
@@ -70,7 +70,7 @@ body {
         }
 
         .card {
-            background: #1d1643;
+            background: var(--cv-card);
             border-radius: 18px;
             padding: 30px;
             box-shadow: 0 10px 25px rgba(0,0,0,0.08);
@@ -84,7 +84,7 @@ body {
 
         /* الكروت المطفية (بدون رابط) */
         .card-disabled {
-            background: #120e28;
+            background: var(--cv-deep);
             border-top: 5px solid rgba(157,114,255,0.18);
             opacity: 0.6;
             cursor: not-allowed;
@@ -96,20 +96,20 @@ body {
         }
 
         .card-disabled .icon {
-            color: #9e97c2;
+            color: var(--cv-muted);
         }
 
         .card-disabled h2 {
-            color: #9e97c2;
+            color: var(--cv-muted);
         }
 
         .card-disabled p {
-            color: #9e97c2;
+            color: var(--cv-muted);
         }
 
         .card-disabled .btn {
-            background: #28205c;
-            color: #9e97c2;
+            background: var(--cv-raised);
+            color: var(--cv-muted);
         }
 
         .card-disabled::after {
@@ -118,7 +118,7 @@ body {
             top: 10px;
             left: 10px;
             background: #ff9800;
-            color: #ffffff;
+            color: var(--cv-white-ink);
             padding: 5px 12px;
             border-radius: 15px;
             font-size: 12px;
@@ -127,7 +127,7 @@ body {
 
         .icon {
             font-size: 42px;
-            color: #cebdff;
+            color: var(--cv-accent-ink);
             margin-bottom: 15px;
             transition: transform 0.3s ease, color 0.3s ease;
             width: fit-content;
@@ -135,16 +135,16 @@ body {
 
         .card:hover .icon {
             transform: scale(1.2);
-            color: #cebdff;
+            color: var(--cv-accent-ink);
         }
 
         .card h2 {
-            color: #cebdff;
+            color: var(--cv-accent-ink);
             margin-bottom: 10px;
         }
 
         .card p {
-            color: #cbc3d6;
+            color: var(--cv-ink-soft2);
             font-size: 14px;
             margin-bottom: 20px;
         }
@@ -173,7 +173,7 @@ body {
         }
 
         .modal-content {
-            background-color: #1d1643;
+            background-color: var(--cv-card);
             margin: 15% auto;
             padding: 30px;
             border-radius: 15px;
@@ -186,18 +186,18 @@ body {
 
         .modal-content i {
             font-size: 60px;
-            color: #f4c37b;
+            color: var(--cv-t-f4c37b);
             margin-bottom: 20px;
         }
 
         .modal-content h3 {
-            color: #cebdff;
+            color: var(--cv-accent-ink);
             margin-bottom: 15px;
             font-size: 22px;
         }
 
         .modal-content p {
-            color: #cbc3d6;
+            color: var(--cv-ink-soft2);
             margin-bottom: 25px;
             line-height: 1.6;
         }
@@ -238,12 +238,12 @@ body {
             text-align: center;
             margin-top: 50px;
             padding: 20px;
-            color: #9e97c2;
+            color: var(--cv-muted);
             font-size: 14px;
         }
 
         footer span {
-            color: #cebdff;
+            color: var(--cv-accent-ink);
             font-weight: 600;
         }
 
@@ -252,3 +252,8 @@ body {
             border-radius: 50%;
             margin-bottom: 10px;
         }
+/* cv-light-islands */
+:root[data-theme="light"] .header,
+:root[data-theme="light"] .btn,
+:root[data-theme="light"] .modal-close{--cv-canvas:#0D0A1C;--cv-deep:#120E28;--cv-card:#1D1643;--cv-raised:#28205C;--cv-raised2:#33297A;--cv-text:#F8F6FF;--cv-white-ink:#FFFFFF;--cv-ink-soft:#E6DFF9;--cv-ink-soft2:#CBC3D6;--cv-muted:#9E97C2;--cv-accent-ink:#CEBDFF;--cv-wash:255,255,255;--cv-t-efeded:#efeded;--cv-t-f4c37b:#f4c37b}
+/* /cv-light-islands */

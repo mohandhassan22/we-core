@@ -9,9 +9,9 @@
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg: #1d1643;
-    --bg-raised: #1d1643;
-    --bg-card: #1d1643;
+    --bg: var(--cv-card);
+    --bg-raised: var(--cv-card);
+    --bg-card: var(--cv-card);
     --line: #263352;
     --text: #e7ecf7;
     --text-dim: #8d9ab8;
@@ -19,7 +19,7 @@
     --amber: #f2994a;
     --amber-dim: #4a3320;
     --teal: #45d0c4;
-    --teal-dim: #1d1643;
+    --teal-dim: var(--cv-card);
     --mono: 'IBM Plex Mono', monospace;
     --sans: 'IBM Plex Sans Arabic', sans-serif;
   }
@@ -54,7 +54,7 @@
     font-family: 'Plus Jakarta Sans','Cairo','Tajawal',sans-serif;
     font-size: 12.5px;
     letter-spacing: 0.12em;
-    color: #7bf4ea;
+    color: var(--cv-t-7bf4ea);
     display: flex;
     align-items: center;
     gap: 10px;
@@ -71,7 +71,7 @@
     letter-spacing: -0.01em;
     margin-bottom: 16px;
   }
-  h1 span{ color: #f4b47b; }
+  h1 span{ color: var(--cv-t-f4b47b); }
   .lede{
     color: var(--text-dim);
     font-size: 16.5px;
@@ -134,7 +134,7 @@
     font-family: 'Plus Jakarta Sans','Cairo','Tajawal',sans-serif;
     font-size: 76px;
     font-weight: 600;
-    color: #7b9ff4;
+    color: var(--cv-t-7b9ff4);
     line-height: 1;
     z-index: 0;
     user-select: none;
@@ -154,8 +154,8 @@
     border-radius: 999px;
     letter-spacing: 0.02em;
   }
-  .badge.indoor{ background: var(--teal-dim); color: #7bf4ea; border: 1px solid rgba(69,208,196,0.3); }
-  .badge.visit{ background: var(--amber-dim); color: #f4b47b; border: 1px solid rgba(242,153,74,0.3); }
+  .badge.indoor{ background: var(--teal-dim); color: var(--cv-t-7bf4ea); border: 1px solid rgba(69,208,196,0.3); }
+  .badge.visit{ background: var(--amber-dim); color: var(--cv-t-f4b47b); border: 1px solid rgba(242,153,74,0.3); }
   .rule-desc{ font-size: 13.5px; color: var(--text-dim); }
   .rule-desc + .rule-desc{ margin-top: 10px; padding-top: 10px; border-top: 1px dashed #263352; }
   .rule-desc b{ color: var(--text); font-weight: 600; }
@@ -167,7 +167,7 @@
     border-radius: 10px;
     padding: 14px 18px;
     font-size: 14px;
-    color: #f3c89a;
+    color: var(--cv-t-f3c89a);
     display:flex; gap: 10px; align-items: flex-start;
   }
   .note-strip svg{ flex-shrink:0; margin-top: 3px; }
@@ -204,13 +204,13 @@
     transition: all 0.15s;
   }
   .city-btn:hover{ border-color: #5c6889; }
-  .city-btn.active{ background: var(--amber-dim); border-color: #f2994a; color: #f4b47b; }
+  .city-btn.active{ background: var(--amber-dim); border-color: #f2994a; color: var(--cv-t-f4b47b); }
 
   .count-line{
     font-family: 'Plus Jakarta Sans','Cairo','Tajawal',sans-serif; font-size: 12.5px; color: var(--text-faint);
     margin-bottom: 14px;
   }
-  .count-line b{ color: #7bf4ea; font-weight: 500; }
+  .count-line b{ color: var(--cv-t-7bf4ea); font-weight: 500; }
 
   .table-scroll{
     border: 1px solid #263352;
@@ -269,7 +269,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../assets/css/cognitive-violet.css?v=1">
+<script src="../assets/js/theme-init.js?v=1"></script>
+<link rel="stylesheet" href="../assets/css/cognitive-violet.css?v=2">
 <script src="../assets/js/back-button.js?v=1" defer></script>
 </head>
 <body>

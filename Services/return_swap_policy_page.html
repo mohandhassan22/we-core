@@ -2,7 +2,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../assets/css/cognitive-violet.css?v=1">
+<script src="../assets/js/theme-init.js?v=1"></script>
+<link rel="stylesheet" href="../assets/css/cognitive-violet.css?v=2">
 <script src="../assets/js/back-button.js?v=1" defer></script>
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
@@ -17,23 +18,23 @@
 .top-bar h1{font-size:20px;font-weight:700;margin-bottom:4px;}
 .top-bar p{font-size:13px;opacity:0.85;}
 .section{margin-bottom:1.25rem;}
-.sec-head{font-size:14px;font-weight:700;color:#cebdff;margin-bottom:8px;display:flex;align-items:center;gap:6px;padding-bottom:6px;border-bottom:1px solid rgba(157,114,255,0.22);}
+.sec-head{font-size:14px;font-weight:700;color:var(--cv-accent-ink);margin-bottom:8px;display:flex;align-items:center;gap:6px;padding-bottom:6px;border-bottom:1px solid rgba(157,114,255,0.22);}
 .rule-card{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:1rem 1.25rem;margin-bottom:8px;}
 .rule-row{display:flex;align-items:flex-start;gap:10px;padding:6px 0;border-bottom:0.5px solid var(--color-border-tertiary);font-size:13px;line-height:1.6;}
 .rule-row:last-child{border-bottom:none;padding-bottom:0;}
 .badge{display:inline-block;border-radius:6px;padding:2px 10px;font-size:11px;font-weight:700;white-space:nowrap;flex-shrink:0;}
-.b-purple{background:#120e28;color:#cebdff;}
-.b-green{background:rgba(82,224,131,0.16);color:#7bf4ab;}
-.b-amber{background:rgba(224,212,82,0.16);color:#f4b47b;}
+.b-purple{background:var(--cv-deep);color:var(--cv-accent-ink);}
+.b-green{background:rgba(82,224,131,0.16);color:var(--cv-t-7bf4ab);}
+.b-amber{background:rgba(224,212,82,0.16);color:var(--cv-t-f4b47b);}
 .b-red{background:rgba(224,82,82,0.16);color:#f47b7b;}
-.b-blue{background:rgba(82,143,224,0.16);color:#7b9af4;}
+.b-blue{background:rgba(82,143,224,0.16);color:var(--cv-t-7b9af4);}
 .num-badge{width:22px;height:22px;border-radius:50%;background:#5120b8;color:#ffffff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;}
 .two-col{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
 .info-box{background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:12px 14px;}
 .info-box .lbl{font-size:11px;color:var(--color-text-secondary);margin-bottom:4px;font-weight:500;}
-.info-box .val{font-size:15px;font-weight:700;color:#cebdff;}
+.info-box .val{font-size:15px;font-weight:700;color:var(--cv-accent-ink);}
 .info-box .sub{font-size:11px;color:var(--color-text-secondary);margin-top:2px;}
-.alert{background:rgba(224,212,82,0.16);border:0.5px solid #fde047;border-radius:var(--border-radius-md);padding:10px 14px;font-size:12px;color:#f4b47b;margin-bottom:8px;line-height:1.6;}
+.alert{background:rgba(224,212,82,0.16);border:0.5px solid #fde047;border-radius:var(--border-radius-md);padding:10px 14px;font-size:12px;color:var(--cv-t-f4b47b);margin-bottom:8px;line-height:1.6;}
 .alert-red{background:rgba(224,82,82,0.16);border-color:rgba(224,82,82,0.35);color:#f47b7b;}
 .tbl-wrap{overflow-x:auto;margin-bottom:1rem;}
 table{width:100%;border-collapse:collapse;font-size:12px;min-width:500px;}
@@ -46,6 +47,12 @@ tbody tr:nth-child(even) td{background:var(--color-background-secondary);}
 .field-lbl{color:var(--color-text-secondary);font-size:12px;width:160px;flex-shrink:0;}
 .field-val{color:var(--color-text-primary);}
 .dots-line{flex:1;border-bottom:1px dashed var(--color-border-tertiary);margin:0 8px;}
+
+/* cv-light-islands */
+:root[data-theme="light"] .top-bar,
+:root[data-theme="light"] .num-badge,
+:root[data-theme="light"] thead th{--cv-canvas:#0D0A1C;--cv-deep:#120E28;--cv-card:#1D1643;--cv-raised:#28205C;--cv-raised2:#33297A;--cv-text:#F8F6FF;--cv-white-ink:#FFFFFF;--cv-ink-soft:#E6DFF9;--cv-ink-soft2:#CBC3D6;--cv-muted:#9E97C2;--cv-accent-ink:#CEBDFF;--cv-wash:255,255,255;--cv-t-7b9af4:#7b9af4;--cv-t-7bf4ab:#7bf4ab;--cv-t-f4b47b:#f4b47b}
+/* /cv-light-islands */
 </style>
 <div class="pg">
   <h2 class="sr-only" style="position:absolute;width:1px;height:1px;overflow:hidden;">سياسة الاسترجاع والاستبدال والتفويض للأجهزة</h2>
@@ -101,7 +108,7 @@ tbody tr:nth-child(even) td{background:var(--color-background-secondary);}
     <div class="sec-head"><i class="ti ti-mail" aria-hidden="true" style="font-size:16px;"></i>إيميل الموافقات</div>
     <div class="rule-card">
       <div class="rule-row">
-        <i class="ti ti-send" aria-hidden="true" style="font-size:16px;color:#cebdff;flex-shrink:0;"></i>
+        <i class="ti ti-send" aria-hidden="true" style="font-size:16px;color:var(--cv-accent-ink);flex-shrink:0;"></i>
         <div>يُرسل إيميل إلى <strong>ra.approvals@te.eg</strong> في حالات الاستبدال أو الاسترجاع الخاصة بعروض الخصم على الأجهزة فقط، بعد إتمام العملية من موظف المبيعات</div>
       </div>
     </div>
@@ -139,25 +146,25 @@ tbody tr:nth-child(even) td{background:var(--color-background-secondary);}
     </div>
     <div class="delegate-card">
       <div class="field-row">
-        <i class="ti ti-file-text" aria-hidden="true" style="font-size:16px;color:#cebdff;flex-shrink:0;"></i>
+        <i class="ti ti-file-text" aria-hidden="true" style="font-size:16px;color:var(--cv-accent-ink);flex-shrink:0;"></i>
         <div class="field-lbl">المستند المطلوب</div>
         <div class="dots-line"></div>
         <div class="field-val">نموذج التفويض موقّع من العميل</div>
       </div>
       <div class="field-row">
-        <i class="ti ti-id" aria-hidden="true" style="font-size:16px;color:#cebdff;flex-shrink:0;"></i>
+        <i class="ti ti-id" aria-hidden="true" style="font-size:16px;color:var(--cv-accent-ink);flex-shrink:0;"></i>
         <div class="field-lbl">بطاقة العميل (صاحب الخط)</div>
         <div class="dots-line"></div>
         <div class="field-val"><span class="badge b-red">أصل البطاقة إلزامي</span></div>
       </div>
       <div class="field-row">
-        <i class="ti ti-id" aria-hidden="true" style="font-size:16px;color:#cebdff;flex-shrink:0;"></i>
+        <i class="ti ti-id" aria-hidden="true" style="font-size:16px;color:var(--cv-accent-ink);flex-shrink:0;"></i>
         <div class="field-lbl">بطاقة المفوَّض إليه</div>
         <div class="dots-line"></div>
         <div class="field-val">بطاقة الرقم القومي الخاصة به</div>
       </div>
       <div class="field-row">
-        <i class="ti ti-device-desktop" aria-hidden="true" style="font-size:16px;color:#cebdff;flex-shrink:0;"></i>
+        <i class="ti ti-device-desktop" aria-hidden="true" style="font-size:16px;color:var(--cv-accent-ink);flex-shrink:0;"></i>
         <div class="field-lbl">إجراء على السيستم</div>
         <div class="dots-line"></div>
         <div class="field-val"><span class="badge b-purple">إرفاق التفويض على السيستم إلزامي</span></div>

@@ -1,16 +1,16 @@
 :root {
-      --bg: #120e28;
-      --surface: #1d1643;
-      --card: #1d1643;
-      --card-hover: #1d1643;
-      --border: #28205c;
+      --bg: var(--cv-deep);
+      --surface: var(--cv-card);
+      --card: var(--cv-card);
+      --card-hover: var(--cv-card);
+      --border: var(--cv-raised);
       --border-bright: #7048d8;
       --purple: #7048d8;
       --purple-light: #8a62f0;
-      --purple-xlight: #33297a;
+      --purple-xlight: var(--cv-raised2);
       --purple-glow: rgba(112,72,216,0.32);
-      --text: #e6dff9;
-      --muted: #9e97c2;
+      --text: var(--cv-ink-soft);
+      --muted: var(--cv-muted);
       --accent: #7048d8;
       --dot-color: rgba(112,72,216,0.22);
     }
@@ -80,7 +80,7 @@
       display: inline-block;
       background: rgba(112,72,216,0.18);
       border: 1px solid rgba(157,114,255,0.3);
-      color: #cebdff;
+      color: var(--cv-accent-ink);
       font-size: 11px;
       font-weight: 800;
       padding: 5px 16px;
@@ -206,7 +206,7 @@
     .plan-name {
       font-size: 13px;
       font-weight: 800;
-      color: #cebdff;
+      color: var(--cv-accent-ink);
       letter-spacing: 1px;
       margin-bottom: 16px;
       text-transform: uppercase;
@@ -224,7 +224,7 @@
     .plan-price sup {
       font-size: 14px;
       font-weight: 700;
-      color: #cebdff;
+      color: var(--cv-accent-ink);
       vertical-align: super;
     }
 
@@ -289,7 +289,7 @@
       font-family: monospace;
       font-size: 15px;
       font-weight: 800;
-      color: #cebdff;
+      color: var(--cv-accent-ink);
       direction: ltr;
     }
 
@@ -369,7 +369,7 @@
     .acc-card .acc-type {
       font-size: 12px;
       font-weight: 800;
-      color: #cebdff;
+      color: var(--cv-accent-ink);
       letter-spacing: 1px;
       margin-bottom: 10px;
       text-transform: uppercase;
@@ -403,7 +403,7 @@
       padding: 14px 16px;
       font-size: 13px;
       font-weight: 800;
-      color: #cebdff;
+      color: var(--cv-accent-ink);
       text-align: center;
     }
 
@@ -425,7 +425,7 @@
       border-radius: 6px;
       font-size: 13px;
       font-weight: 800;
-      color: #cebdff;
+      color: var(--cv-accent-ink);
       direction: ltr;
       display: inline-block;
     }
@@ -449,7 +449,7 @@
       line-height: 1.7;
     }
 
-    .alert-text strong { color: #cebdff; }
+    .alert-text strong { color: var(--cv-accent-ink); }
 
     /* ── CODES GRID ── */
     .codes-grid {
@@ -483,7 +483,7 @@
       font-family: monospace;
       font-size: 22px;
       font-weight: 900;
-      color: #cebdff;
+      color: var(--cv-accent-ink);
       direction: ltr;
     }
 
@@ -519,7 +519,7 @@
       width: 22px; height: 22px;
       border-radius: 6px;
       background: rgba(112,72,216,0.18);
-      color: #cebdff;
+      color: var(--cv-accent-ink);
       font-size: 12px;
       font-weight: 900;
       display: flex;
@@ -542,7 +542,7 @@
     }
 
     .site-footer a {
-      color: #cebdff;
+      color: var(--cv-accent-ink);
       text-decoration: none;
       font-weight: 800;
     }

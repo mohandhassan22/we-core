@@ -13,18 +13,18 @@
     --rose-mid:#c23b83;
     --rose-light:rgba(224,82,153,0.16);
     --amber:#ffb648;
-    --ink:#1d1643;
-    --paper:#120e28;
+    --ink:var(--cv-card);
+    --paper:var(--cv-deep);
     --line:rgba(224,82,155,0.16);
-    --white:#1d1643;
+    --white:var(--cv-card);
   }
 
   *{box-sizing:border-box;margin:0;padding:0;}
 
   body{
-    background:linear-gradient(180deg,#0d0a1c 0%, rgba(224,82,159,0.16) 100%);
+    background:linear-gradient(180deg,var(--cv-canvas) 0%, rgba(224,82,159,0.16) 100%);
     font-family:'Plus Jakarta Sans','Cairo','Tajawal',sans-serif;
-    color:#f47bce;
+    color:var(--cv-t-f47bce);
     padding:36px 16px 60px;
     min-height:100vh;
   }
@@ -43,7 +43,7 @@
     background:
       radial-gradient(circle at 88% -15%, rgba(255,182,72,0.35), transparent 45%),
       linear-gradient(120deg, var(--rose-deep) 0%, var(--rose) 55%, var(--rose-mid) 100%);
-    color:#ffffff;
+    color:var(--cv-white-ink);
     padding:44px 40px 30px;
     position:relative;
     overflow:hidden;
@@ -77,14 +77,14 @@
     width:34px;height:34px;border-radius:9px;
     background:var(--white);
     display:flex;align-items:center;justify-content:center;
-    color:#f47bc3;
+    color:var(--cv-t-f47bc3);
     font-family:'Plus Jakarta Sans','Cairo','Tajawal',sans-serif;
     font-weight:900;
     font-size:13px;
   }
   .badge-season{
     font-size:12px;
-    background:rgba(255,255,255,0.14);
+    background:rgba(var(--cv-wash),0.14);
     border:1px solid rgba(157,114,255,0.35);
     padding:6px 14px;
     border-radius:999px;
@@ -99,7 +99,7 @@
     line-height:1.45;
     max-width:600px;
   }
-  .hero-title span{color:#ffb648;}
+  .hero-title span{color:var(--cv-t-ffb648);}
   .hero-pills{
     position:relative;z-index:1;
     display:flex;
@@ -108,7 +108,7 @@
     flex-wrap:wrap;
   }
   .hero-pill{
-    background:rgba(255,255,255,0.1);
+    background:rgba(var(--cv-wash),0.1);
     border:1px solid rgba(157,114,255,0.3);
     border-radius:12px;
     padding:12px 16px;
@@ -118,7 +118,7 @@
   }
   .hero-pill b{
     display:block;
-    color:#ffb648;
+    color:var(--cv-t-ffb648);
     font-size:13.5px;
     margin-bottom:3px;
   }
@@ -126,7 +126,7 @@
     position:relative;z-index:1;
     margin-top:16px;
     font-size:12.5px;
-    color:rgba(255,255,255,0.85);
+    color:rgba(var(--cv-wash),0.85);
   }
 
   /* ===== SECTION HEADERS ===== */
@@ -146,12 +146,12 @@
   .section-title{
     font-size:19px;
     font-weight:800;
-    color:#f47bc3;
+    color:var(--cv-t-f47bc3);
   }
   .lead-text{
     font-size:13.5px;
     line-height:1.9;
-    color:#f47bc7;
+    color:var(--cv-t-f47bc7);
     margin-bottom:16px;
   }
 
@@ -166,7 +166,7 @@
   }
   .validity-badge{
     background:linear-gradient(160deg, var(--rose-deep), var(--rose));
-    color:#ffffff;
+    color:var(--cv-white-ink);
     display:flex;
     flex-direction:column;
     align-items:center;
@@ -186,7 +186,7 @@
   }
   table.nitro-table thead th{
     background:var(--paper);
-    color:#f47bc3;
+    color:var(--cv-t-f47bc3);
     font-weight:700;
     padding:11px 10px;
     border-bottom:2px solid rgba(224,82,155,0.35);
@@ -198,21 +198,21 @@
     border-bottom:1px solid rgba(224,82,155,0.35);
   }
   table.nitro-table tbody tr:last-child td{border-bottom:none;}
-  table.nitro-table tbody tr:nth-child(even) td{background:#120e28;}
+  table.nitro-table tbody tr:nth-child(even) td{background:var(--cv-deep);}
   .plan-name{
     font-weight:800;
-    color:#f47bbe;
+    color:var(--cv-t-f47bbe);
     font-size:13.5px;
   }
-  .base-cell{color:#cbc3d6;}
+  .base-cell{color:var(--cv-ink-soft2);}
   .new-cell{
     font-weight:700;
-    color:#f47bc3;
+    color:var(--cv-t-f47bc3);
     background:var(--rose-light) !important;
   }
   .cur-cell{
     font-weight:700;
-    color:#f4cd7b;
+    color:var(--cv-t-f4cd7b);
   }
 
   /* ===== SUBSCRIPTION ===== */
@@ -231,7 +231,7 @@
     display:inline-block;
     font-size:11px;
     font-weight:800;
-    color:#ffffff;
+    color:var(--cv-white-ink);
     background:var(--rose);
     padding:3px 10px;
     border-radius:999px;
@@ -240,9 +240,9 @@
   .method-card p{
     font-size:13px;
     line-height:1.9;
-    color:#f47bce;
+    color:var(--cv-t-f47bce);
   }
-  .method-card p a{color:#f47bbe;font-weight:700;}
+  .method-card p a{color:var(--cv-t-f47bbe);font-weight:700;}
 
   /* ===== TERMS ===== */
   .terms{list-style:none;}
@@ -267,7 +267,7 @@
 
   .footer-bar{
     background:var(--rose-deep);
-    color:rgba(255,255,255,0.7);
+    color:rgba(var(--cv-wash),0.7);
     text-align:center;
     padding:16px;
     font-size:11.5px;
@@ -290,7 +290,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../../assets/css/cognitive-violet.css?v=1">
+<script src="../../assets/js/theme-init.js?v=1"></script>
+<link rel="stylesheet" href="../../assets/css/cognitive-violet.css?v=2">
 <script src="../../assets/js/back-button.js?v=1" defer></script>
 </head>
 <body>

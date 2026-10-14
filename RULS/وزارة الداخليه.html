@@ -9,9 +9,9 @@
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg: #1d1643;
-    --bg-raised: #1d1643;
-    --bg-card: #1d1643;
+    --bg: var(--cv-card);
+    --bg-raised: var(--cv-card);
+    --bg-card: var(--cv-card);
     --line: #263352;
     --text: #e7ecf7;
     --text-dim: #8d9ab8;
@@ -19,9 +19,9 @@
     --amber: #f2994a;
     --amber-dim: #4a3320;
     --teal: #45d0c4;
-    --teal-dim: #1d1643;
+    --teal-dim: var(--cv-card);
     --red: #e5566b;
-    --red-dim: #1d1643;
+    --red-dim: var(--cv-card);
     --mono: 'IBM Plex Mono', monospace;
     --sans: 'IBM Plex Sans Arabic', sans-serif;
   }
@@ -50,11 +50,11 @@
   header{ padding: 56px 0 40px; border-bottom: 1px solid #263352; }
   .eyebrow{
     font-family: 'Plus Jakarta Sans','Cairo','Tajawal',sans-serif; font-size: 12.5px; letter-spacing: 0.12em;
-    color: #f47b8d; display:flex; align-items:center; gap:10px; margin-bottom: 22px;
+    color: var(--cv-t-f47b8d); display:flex; align-items:center; gap:10px; margin-bottom: 22px;
   }
   .eyebrow .dot{ width:7px; height:7px; border-radius:50%; background: var(--red); box-shadow: 0 0 0 3px #3e1c24; }
   h1{ font-size: clamp(28px, 4.2vw, 40px); font-weight:700; letter-spacing:-0.01em; margin-bottom:16px; }
-  h1 span{ color: #f4b47b; }
+  h1 span{ color: var(--cv-t-f4b47b); }
   .lede{ color: var(--text-dim); font-size: 16.5px; max-width: 640px; }
   .lede b{ color: var(--text); font-weight:600; }
   .meta-row{
@@ -97,7 +97,7 @@
     border-radius: 8px;
     background: var(--bg-card); border: 1px solid #263352;
     display:flex; align-items:center; justify-content:center;
-    color: #7bf4ea;
+    color: var(--cv-t-7bf4ea);
   }
   .step-num::before{ content: counter(step); }
   .step-body{ padding-top: 4px; }
@@ -113,7 +113,7 @@
   }
   .doc-icon{
     width: 34px; height: 34px; border-radius: 8px;
-    background: var(--teal-dim); color: #7bf4ea;
+    background: var(--teal-dim); color: var(--cv-t-7bf4ea);
     display:flex; align-items:center; justify-content:center;
     margin-bottom: 14px;
   }
@@ -133,13 +133,13 @@
     padding: 10px 16px; border-radius: 8px;
     white-space: nowrap;
   }
-  .path-node.final{ border-color: #f2994a; color: #f4b47b; background: var(--amber-dim); }
+  .path-node.final{ border-color: #f2994a; color: var(--cv-t-f4b47b); background: var(--amber-dim); }
   .path-arrow{ color: var(--text-faint); padding: 0 10px; font-size: 15px; flex-shrink:0; }
   .path-tag{
     margin-top: 16px;
     display:inline-flex; align-items:center; gap: 8px;
     font-family: 'Space Grotesk','Cairo','Tajawal',sans-serif; font-size: 12.5px;
-    color: #f47b8d;
+    color: var(--cv-t-f47b8d);
     background: var(--red-dim);
     border: 1px solid rgba(229,86,107,0.3);
     padding: 8px 14px; border-radius: 999px;
@@ -152,11 +152,11 @@
     border-radius: 10px;
     padding: 14px 18px;
     font-size: 14px;
-    color: #f0a5b0;
+    color: var(--cv-t-f0a5b0);
     display:flex; gap: 10px; align-items: flex-start;
   }
   .note-strip svg{ flex-shrink:0; margin-top: 3px; }
-  .note-strip b{ color: #ffffff; }
+  .note-strip b{ color: var(--cv-white-ink); }
 
   footer{
     padding: 32px 0 56px; text-align:center;
@@ -167,7 +167,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../assets/css/cognitive-violet.css?v=1">
+<script src="../assets/js/theme-init.js?v=1"></script>
+<link rel="stylesheet" href="../assets/css/cognitive-violet.css?v=2">
 <script src="../assets/js/back-button.js?v=1" defer></script>
 </head>
 <body>

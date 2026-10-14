@@ -59,29 +59,35 @@
             display: flex;
             align-items: center;
             gap: 7px;
-            color: rgba(255,255,255,0.9);
+            color: rgba(var(--cv-wash),0.9);
             text-decoration: none;
             font-size: 14px;
             padding: 8px 16px;
             border-radius: 8px;
-            background: rgba(255,255,255,0.12);
+            background: rgba(var(--cv-wash),0.12);
             border: 1px solid rgba(157,114,255,0.2);
             transition: background 0.2s, border-color 0.2s;
             margin-left: 0;
         }
 
         .nav-links a:hover {
-            background: rgba(255,255,255,0.22);
+            background: rgba(var(--cv-wash),0.22);
             border-color: rgba(157,114,255,0.35);
         }
-    </style>
+    
+/* cv-light-islands */
+:root[data-theme="light"] .gradient-bg,
+:root[data-theme="light"] .btn-primary{--cv-canvas:#0D0A1C;--cv-deep:#120E28;--cv-card:#1D1643;--cv-raised:#28205C;--cv-raised2:#33297A;--cv-text:#F8F6FF;--cv-white-ink:#FFFFFF;--cv-ink-soft:#E6DFF9;--cv-ink-soft2:#CBC3D6;--cv-muted:#9E97C2;--cv-accent-ink:#CEBDFF;--cv-wash:255,255,255}
+/* /cv-light-islands */
+</style>
 <script src="../assets/js/active-users-widget.js?v=cv1"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <meta name="theme-color" content="#0D0A1C">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../assets/css/cognitive-violet.css?v=1">
+<script src="../assets/js/theme-init.js?v=1"></script>
+<link rel="stylesheet" href="../assets/css/cognitive-violet.css?v=2">
 <script src="../assets/js/back-button.js?v=1" defer></script>
 </head>
 <body class="bg-gray-50">

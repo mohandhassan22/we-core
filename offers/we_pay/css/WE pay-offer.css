@@ -6,7 +6,7 @@
 
         body {
             font-family: 'Plus Jakarta Sans','Cairo','Tajawal',sans-serif;
-            background: linear-gradient(135deg, #0d0a1c 0%, #0d0a1c 50%, #0d0a1c 100%);
+            background: linear-gradient(135deg, var(--cv-canvas) 0%, var(--cv-canvas) 50%, var(--cv-canvas) 100%);
             min-height: 100vh;
             padding: 20px;
             line-height: 1.6;
@@ -46,7 +46,7 @@
         }
 
         .offer-card {
-            background: #1d1643;
+            background: var(--cv-card);
             border-radius: 15px;
             overflow: hidden;
             box-shadow: 0 5px 20px rgba(112,72,216,0.2);
@@ -69,7 +69,7 @@
         }
 
         .offer-badge {
-            background: rgba(255,255,255,0.2);
+            background: rgba(var(--cv-wash),0.2);
             padding: 5px 15px;
             border-radius: 20px;
             display: inline-block;
@@ -100,7 +100,7 @@
         }
 
         .offer-details {
-            color: #cebdff;
+            color: var(--cv-accent-ink);
             margin-bottom: 20px;
             flex-grow: 1;
         }
@@ -121,7 +121,7 @@
             content: "✓";
             position: absolute;
             right: 0;
-            color: #cebdff;
+            color: var(--cv-accent-ink);
             font-weight: bold;
         }
 
@@ -143,7 +143,7 @@
         }
 
         .no-offers {
-            background: #1d1643;
+            background: var(--cv-card);
             padding: 60px 40px;
             border-radius: 15px;
             text-align: center;
@@ -154,7 +154,7 @@
         footer {
             text-align: center;
             padding: 30px;
-            color: #cebdff;
+            color: var(--cv-accent-ink);
             font-size: 0.95em;
             margin-top: 40px;
         }
@@ -163,3 +163,8 @@
             header h1 { font-size: 1.8em; }
             .offers-grid { grid-template-columns: 1fr; }
         }
+/* cv-light-islands */
+:root[data-theme="light"] header,
+:root[data-theme="light"] .offer-header,
+:root[data-theme="light"] .offer-button{--cv-canvas:#0D0A1C;--cv-deep:#120E28;--cv-card:#1D1643;--cv-raised:#28205C;--cv-raised2:#33297A;--cv-text:#F8F6FF;--cv-white-ink:#FFFFFF;--cv-ink-soft:#E6DFF9;--cv-ink-soft2:#CBC3D6;--cv-muted:#9E97C2;--cv-accent-ink:#CEBDFF;--cv-wash:255,255,255}
+/* /cv-light-islands */

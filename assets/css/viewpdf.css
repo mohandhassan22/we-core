@@ -6,15 +6,15 @@
       --accent-soft:    rgba(112,72,216,0.22);
       --accent-glow:    rgba(112,72,216,0.45);
 
-      --bg:             #120e28;
-      --surface:        #1d1643;
-      --surface-2:      #120e28;
-      --border:         #28205c;
+      --bg:             var(--cv-deep);
+      --surface:        var(--cv-card);
+      --surface-2:      var(--cv-deep);
+      --border:         var(--cv-raised);
       --border-strong:  rgba(157,114,255,0.22);
 
-      --text-primary:   #e6dff9;
-      --text-secondary: #cebdff;
-      --text-muted:     #cebdff;
+      --text-primary:   var(--cv-ink-soft);
+      --text-secondary: var(--cv-accent-ink);
+      --text-muted:     var(--cv-accent-ink);
 
       --toolbar-h: 68px;
       --radius: 12px;
@@ -73,12 +73,12 @@
     .brand:hover { transform: translateY(-1px); box-shadow: 0 4px 16px rgba(112,72,216,0.45); }
     .brand-logo {
       width: 28px; height: 28px;
-      background: rgba(255,255,255,0.2);
+      background: rgba(var(--cv-wash),0.2);
       border-radius: 6px;
       display: flex; align-items: center; justify-content: center;
-      color: #ffffff; font-size: 13px;
+      color: var(--cv-white-ink); font-size: 13px;
     }
-    .brand-text { color: #ffffff; font-size: 13px; font-weight: 700; letter-spacing: .5px; }
+    .brand-text { color: var(--cv-white-ink); font-size: 13px; font-weight: 700; letter-spacing: .5px; }
 
     /* Divider */
     .divider {
@@ -102,7 +102,7 @@
       border-radius: 10px;
       background: linear-gradient(135deg, var(--primary), var(--accent));
       display: flex; align-items: center; justify-content: center;
-      color: #ffffff; font-size: 15px;
+      color: var(--cv-white-ink); font-size: 15px;
       box-shadow: 0 2px 10px var(--accent-glow);
       flex-shrink: 0;
     }
@@ -129,7 +129,7 @@
     .tb-btn {
       display: flex; align-items: center; gap: 7px;
       background: var(--surface-2);
-      color: #cebdff;
+      color: var(--cv-accent-ink);
       border: 1.5px solid rgba(157,114,255,0.22);
       padding: 8px 16px;
       border-radius: var(--radius);
@@ -144,7 +144,7 @@
     .tb-btn:hover {
       background: var(--accent-soft);
       border-color: var(--border-strong);
-      color: #cebdff;
+      color: var(--cv-accent-ink);
       box-shadow: var(--shadow-md);
       transform: translateY(-1px);
     }
@@ -153,19 +153,19 @@
     .tb-btn.primary {
       background: linear-gradient(135deg, var(--primary), var(--accent));
       border-color: transparent;
-      color: #ffffff;
+      color: var(--cv-white-ink);
       box-shadow: 0 3px 12px var(--accent-glow);
     }
     .tb-btn.primary:hover {
       background: linear-gradient(135deg, var(--primary-dark), var(--primary-light));
-      color: #ffffff;
+      color: var(--cv-white-ink);
       box-shadow: 0 5px 18px var(--accent-glow);
     }
 
     /* Keyboard hint badge */
     .kbd {
       display: inline-flex; align-items: center;
-      background: rgba(255,255,255,0.25);
+      background: rgba(var(--cv-wash),0.25);
       border: 1px solid rgba(157,114,255,0.35);
       border-radius: 4px;
       padding: 1px 5px;
@@ -205,7 +205,7 @@
       border-radius: 18px;
       background: linear-gradient(135deg, var(--primary), var(--accent));
       display: flex; align-items: center; justify-content: center;
-      color: #ffffff; font-size: 28px;
+      color: var(--cv-white-ink); font-size: 28px;
       box-shadow: 0 8px 28px var(--accent-glow);
       animation: pulse 1.8s ease-in-out infinite;
     }

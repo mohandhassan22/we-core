@@ -2,7 +2,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../assets/css/cognitive-violet.css?v=1">
+<script src="../assets/js/theme-init.js?v=1"></script>
+<link rel="stylesheet" href="../assets/css/cognitive-violet.css?v=2">
 <script src="../assets/js/back-button.js?v=1" defer></script>
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
@@ -16,21 +17,21 @@
 .hero{background:#5120b8;border-radius:var(--border-radius-lg);padding:1.25rem 1.5rem;margin-bottom:1.25rem;color:#ffffff;}
 .hero h1{font-size:20px;font-weight:700;margin-bottom:4px;}
 .hero p{font-size:12px;opacity:0.85;line-height:1.6;}
-.sec-head{font-size:14px;font-weight:700;color:#cebdff;margin:1.25rem 0 8px;display:flex;align-items:center;gap:6px;padding-bottom:6px;border-bottom:1px solid rgba(157,114,255,0.22);}
+.sec-head{font-size:14px;font-weight:700;color:var(--cv-accent-ink);margin:1.25rem 0 8px;display:flex;align-items:center;gap:6px;padding-bottom:6px;border-bottom:1px solid rgba(157,114,255,0.22);}
 .card{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:12px 14px;margin-bottom:10px;}
 .row{display:flex;align-items:flex-start;gap:8px;padding:5px 0;border-bottom:0.5px solid var(--color-border-tertiary);font-size:13px;line-height:1.65;}
 .row:last-child{border-bottom:none;}
 .num{width:22px;height:22px;border-radius:50%;background:#5120b8;color:#ffffff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;}
-.tag{display:inline-block;background:#120e28;color:#cebdff;border-radius:6px;padding:1px 8px;font-size:11px;font-weight:700;margin:0 2px;}
+.tag{display:inline-block;background:var(--cv-deep);color:var(--cv-accent-ink);border-radius:6px;padding:1px 8px;font-size:11px;font-weight:700;margin:0 2px;}
 .alert{border-radius:var(--border-radius-md);padding:10px 14px;font-size:12px;line-height:1.7;margin-bottom:10px;display:flex;gap:8px;align-items:flex-start;}
-.alert-warn{background:rgba(224,212,82,0.16);border:0.5px solid #fde047;color:#f4b47b;}
+.alert-warn{background:rgba(224,212,82,0.16);border:0.5px solid #fde047;color:var(--cv-t-f4b47b);}
 .alert-red{background:rgba(224,82,82,0.16);border:0.5px solid rgba(224,82,82,0.35);color:#f47b7b;}
-.alert-green{background:rgba(82,224,131,0.16);border:0.5px solid rgba(82,224,133,0.35);color:#7bf4ab;}
-.alert-blue{background:rgba(82,143,224,0.16);border:0.5px solid rgba(82,149,224,0.35);color:#7b9af4;}
+.alert-green{background:rgba(82,224,131,0.16);border:0.5px solid rgba(82,224,133,0.35);color:var(--cv-t-7bf4ab);}
+.alert-blue{background:rgba(82,143,224,0.16);border:0.5px solid rgba(82,149,224,0.35);color:var(--cv-t-7b9af4);}
 .two-col{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;}
 .stat{background:var(--color-background-secondary);border-radius:var(--border-radius-md);padding:10px 12px;}
 .stat .lbl{font-size:11px;color:var(--color-text-secondary);margin-bottom:3px;}
-.stat .val{font-size:16px;font-weight:700;color:#cebdff;}
+.stat .val{font-size:16px;font-weight:700;color:var(--cv-accent-ink);}
 .stat .sub{font-size:11px;color:var(--color-text-secondary);}
 .rej-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px;}
 .rej-item{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-md);padding:10px 12px;font-size:12px;}
@@ -40,13 +41,19 @@
 .step{display:flex;gap:0;align-items:stretch;margin-bottom:10px;}
 .step-l{display:flex;flex-direction:column;align-items:center;width:40px;flex-shrink:0;}
 .step-n{width:30px;height:30px;border-radius:50%;background:#5120b8;color:#ffffff;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;}
-.step-line{width:2px;background:#28205c;flex:1;margin:3px 0;}
+.step-line{width:2px;background:var(--cv-raised);flex:1;margin:3px 0;}
 .step:last-child .step-line{display:none;}
 .step-b{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:var(--border-radius-lg);padding:10px 12px;flex:1;}
-.step-t{font-size:13px;font-weight:700;color:#e6dff9;margin-bottom:3px;}
+.step-t{font-size:13px;font-weight:700;color:var(--cv-ink-soft);margin-bottom:3px;}
 .step-d{font-size:12px;color:var(--color-text-secondary);line-height:1.6;}
-.path{background:#120e28;border-radius:6px;padding:4px 10px;font-size:11px;color:#cebdff;font-family:monospace;direction:ltr;text-align:left;margin-top:6px;display:inline-block;}
+.path{background:var(--cv-deep);border-radius:6px;padding:4px 10px;font-size:11px;color:var(--cv-accent-ink);font-family:monospace;direction:ltr;text-align:left;margin-top:6px;display:inline-block;}
 .img-box{border:0.5px solid var(--color-border-tertiary);border-radius:8px;overflow:hidden;margin-top:8px;width:100%;}
+
+/* cv-light-islands */
+:root[data-theme="light"] .hero,
+:root[data-theme="light"] .num,
+:root[data-theme="light"] .step-n{--cv-canvas:#0D0A1C;--cv-deep:#120E28;--cv-card:#1D1643;--cv-raised:#28205C;--cv-raised2:#33297A;--cv-text:#F8F6FF;--cv-white-ink:#FFFFFF;--cv-ink-soft:#E6DFF9;--cv-ink-soft2:#CBC3D6;--cv-muted:#9E97C2;--cv-accent-ink:#CEBDFF;--cv-wash:255,255,255;--cv-t-7b9af4:#7b9af4;--cv-t-7bf4ab:#7bf4ab;--cv-t-f4b47b:#f4b47b}
+/* /cv-light-islands */
 </style>
 <div class="pg">
   <h2 class="sr-only" style="position:absolute;width:1px;height:1px;overflow:hidden;">دليل خدمة MNP الشامل — تحويل الأرقام</h2>
@@ -68,7 +75,7 @@
 
   <div class="sec-head"><i class="ti ti-info-circle" aria-hidden="true" style="font-size:16px;"></i>ما هي خدمة MNP؟</div>
   <div class="card" style="font-size:13px;line-height:1.8;color:var(--color-text-secondary);">
-    خدمة تمكّن العميل من الانتقال إلى شبكة <strong style="color:var(--color-text-primary);">WE</strong> مع الاحتفاظ بنفس رقمه دون الحاجة لتغييره، والاستفادة من جميع خدمات الشبكة. يتوجه العميل بشريحته القديمة ويوقع على عقد WE الجديد ويأخذ شريحته الجديدة. يتم تحويل الطلب خلال <strong style="color:#cebdff;">8 ساعات عمل</strong>.
+    خدمة تمكّن العميل من الانتقال إلى شبكة <strong style="color:var(--color-text-primary);">WE</strong> مع الاحتفاظ بنفس رقمه دون الحاجة لتغييره، والاستفادة من جميع خدمات الشبكة. يتوجه العميل بشريحته القديمة ويوقع على عقد WE الجديد ويأخذ شريحته الجديدة. يتم تحويل الطلب خلال <strong style="color:var(--cv-accent-ink);">8 ساعات عمل</strong>.
   </div>
 
   <div class="two-col">
@@ -127,7 +134,7 @@
           <strong>SIM Card:</strong> رقم الشريحة الجديدة
         </div>
         <img class="img-box" src="/mnt/user-data/uploads/1778350896522_image.png" alt="حقل Comment في شاشة Select Number" />
-        <div style="font-size:11px;color:#cebdff;margin-top:6px;"><i class="ti ti-alert-circle" aria-hidden="true" style="font-size:13px;vertical-align:-2px;"></i> من أبريل 2026: لا تنسَ كتابة كود الفرع في حقل <strong>Comment</strong></div>
+        <div style="font-size:11px;color:var(--cv-accent-ink);margin-top:6px;"><i class="ti ti-alert-circle" aria-hidden="true" style="font-size:13px;vertical-align:-2px;"></i> من أبريل 2026: لا تنسَ كتابة كود الفرع في حقل <strong>Comment</strong></div>
       </div>
     </div>
     <div class="step">
@@ -166,12 +173,12 @@
 
   <div class="sec-head"><i class="ti ti-alert-circle" aria-hidden="true" style="font-size:16px;"></i>ملاحظات عامة مهمة</div>
   <div class="card">
-    <div class="row"><i class="ti ti-point" aria-hidden="true" style="font-size:14px;color:#cebdff;flex-shrink:0;margin-top:3px;"></i><div>العميل المصري يمكنه تحويل حتى <strong>10 خطوط Voice</strong> في نفس الوقت، والأجنبي حتى <strong>5 خطوط</strong></div></div>
-    <div class="row"><i class="ti ti-point" aria-hidden="true" style="font-size:14px;color:#cebdff;flex-shrink:0;margin-top:3px;"></i><div>يُسلَّم العميل نسخة من نموذج التحويل أو الإلغاء مختومة بختم الفرع مع توضيح وقت وتاريخ الطلب</div></div>
-    <div class="row"><i class="ti ti-point" aria-hidden="true" style="font-size:14px;color:#cebdff;flex-shrink:0;margin-top:3px;"></i><div>لا يُنقل أي رصيد أو مميزات أو خدمات أو نقاط من الشركة السابقة</div></div>
-    <div class="row"><i class="ti ti-point" aria-hidden="true" style="font-size:14px;color:#cebdff;flex-shrink:0;margin-top:3px;"></i><div>تم <strong>حذف البند 7</strong> الخاص بترحيل الجيجابايت المتبقية في ADSL — لم يعد هذا الإجراء معمولاً به ولا يتم ترحيل الجيجابايت</div></div>
+    <div class="row"><i class="ti ti-point" aria-hidden="true" style="font-size:14px;color:var(--cv-accent-ink);flex-shrink:0;margin-top:3px;"></i><div>العميل المصري يمكنه تحويل حتى <strong>10 خطوط Voice</strong> في نفس الوقت، والأجنبي حتى <strong>5 خطوط</strong></div></div>
+    <div class="row"><i class="ti ti-point" aria-hidden="true" style="font-size:14px;color:var(--cv-accent-ink);flex-shrink:0;margin-top:3px;"></i><div>يُسلَّم العميل نسخة من نموذج التحويل أو الإلغاء مختومة بختم الفرع مع توضيح وقت وتاريخ الطلب</div></div>
+    <div class="row"><i class="ti ti-point" aria-hidden="true" style="font-size:14px;color:var(--cv-accent-ink);flex-shrink:0;margin-top:3px;"></i><div>لا يُنقل أي رصيد أو مميزات أو خدمات أو نقاط من الشركة السابقة</div></div>
+    <div class="row"><i class="ti ti-point" aria-hidden="true" style="font-size:14px;color:var(--cv-accent-ink);flex-shrink:0;margin-top:3px;"></i><div>تم <strong>حذف البند 7</strong> الخاص بترحيل الجيجابايت المتبقية في ADSL — لم يعد هذا الإجراء معمولاً به ولا يتم ترحيل الجيجابايت</div></div>
     <div class="row"><i class="ti ti-point" aria-hidden="true" style="font-size:14px;color:#f47b7b;flex-shrink:0;margin-top:3px;"></i><div>عدم اتخاذ إجراء Re-Dispatch على أي طلب برقم قومي خاطئ — يضاعف المخالفة المالية</div></div>
-    <div class="row"><i class="ti ti-point" aria-hidden="true" style="font-size:14px;color:#cebdff;flex-shrink:0;margin-top:3px;"></i><div>يجب إرفاق كافة الأوراق مع ختم الفرع والتاريخ والإمضاء</div></div>
+    <div class="row"><i class="ti ti-point" aria-hidden="true" style="font-size:14px;color:var(--cv-accent-ink);flex-shrink:0;margin-top:3px;"></i><div>يجب إرفاق كافة الأوراق مع ختم الفرع والتاريخ والإمضاء</div></div>
   </div>
 
 </div>

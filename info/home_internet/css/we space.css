@@ -1,23 +1,23 @@
 :root {
-  --purple-deep: #28205c;
+  --purple-deep: var(--cv-raised);
   --purple-main: #7048d8;
   --purple-mid: #8a62f0;
-  --purple-light: #28205c;
-  --purple-pale: #120e28;
-  --purple-ghost: #120e28;
+  --purple-light: var(--cv-raised);
+  --purple-pale: var(--cv-deep);
+  --purple-ghost: var(--cv-deep);
   --green: #059669;
   --gold: #f59e0b;
-  --white: #1d1643;
-  --text-dark: #e6dff9;
-  --text-mid: #cebdff;
-  --text-soft: #cebdff;
+  --white: var(--cv-card);
+  --text-dark: var(--cv-ink-soft);
+  --text-mid: var(--cv-accent-ink);
+  --text-soft: var(--cv-accent-ink);
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
 body {
   font-family: 'Plus Jakarta Sans','Cairo','Tajawal',sans-serif;
-  background: #0d0a1c;
+  background: var(--cv-canvas);
   min-height: 100vh;
   direction: rtl;
 }
@@ -30,7 +30,7 @@ body::before {
   background:
     radial-gradient(ellipse 60% 40% at 20% 10%, rgba(112,72,216,0.22) 0%, transparent 70%),
     radial-gradient(ellipse 50% 50% at 80% 80%, rgba(112,72,216,0.18) 0%, transparent 70%),
-    #0d0a1c;
+    var(--cv-canvas);
   z-index: 0;
   pointer-events: none;
 }
@@ -60,7 +60,7 @@ header p { font-size: 1.1em; opacity: .9; margin-top: 8px; position: relative; }
 
 /* ── Section ── */
 .section {
-  background: #1d1643;
+  background: var(--cv-card);
   border-radius: 20px;
   padding: 36px;
   margin-bottom: 36px;
@@ -73,7 +73,7 @@ header p { font-size: 1.1em; opacity: .9; margin-top: 8px; position: relative; }
   gap: 12px;
   font-size: 1.7em;
   font-weight: 900;
-  color: #e6dff9;
+  color: var(--cv-ink-soft);
   margin-bottom: 28px;
   padding-bottom: 16px;
   border-bottom: 2.5px solid rgba(157,114,255,0.22);
@@ -92,7 +92,7 @@ header p { font-size: 1.1em; opacity: .9; margin-top: 8px; position: relative; }
   border-radius: 30px;
   font-weight: 700;
   font-size: .95em;
-  color: #ffffff;
+  color: var(--cv-white-ink);
 }
 .tier-badge.super  { background: linear-gradient(135deg,#7048d8,#8a62f0); }
 .tier-badge.mega   { background: linear-gradient(135deg,#1d4ed8,#3b82f6); }
@@ -100,7 +100,7 @@ header p { font-size: 1.1em; opacity: .9; margin-top: 8px; position: relative; }
 .tier-badge.max    { background: linear-gradient(135deg,#b45309,#f59e0b); }
 .tier-speed {
   font-size: .88em;
-  color: #cebdff;
+  color: var(--cv-accent-ink);
   background: var(--purple-pale);
   padding: 4px 14px;
   border-radius: 20px;
@@ -144,18 +144,18 @@ header p { font-size: 1.1em; opacity: .9; margin-top: 8px; position: relative; }
 .card-capacity {
   font-size: 1.35em;
   font-weight: 900;
-  color: #e6dff9;
+  color: var(--cv-ink-soft);
   margin-bottom: 8px;
 }
 .card-price {
   font-size: 1.6em;
   font-weight: 900;
-  color: #cebdff;
+  color: var(--cv-accent-ink);
 }
-.card-price span { font-size: .55em; font-weight: 600; color: #cebdff; }
+.card-price span { font-size: .55em; font-weight: 600; color: var(--cv-accent-ink); }
 .card-label {
   font-size: .78em;
-  color: #cebdff;
+  color: var(--cv-accent-ink);
   margin-top: 6px;
   font-weight: 600;
 }
@@ -181,7 +181,7 @@ header p { font-size: 1.1em; opacity: .9; margin-top: 8px; position: relative; }
   border-right: 4px solid #f59e0b;
   padding: 14px 18px;
   border-radius: 10px;
-  color: #f4a77b;
+  color: var(--cv-t-f4a77b);
   font-size: .92em;
   margin-top: 20px;
   line-height: 1.7;
@@ -198,14 +198,14 @@ header p { font-size: 1.1em; opacity: .9; margin-top: 8px; position: relative; }
   font-size: .95em;
   line-height: 1.8;
 }
-.annual-intro strong { color: #e9d5ff; }
+.annual-intro strong { color: var(--cv-t-e9d5ff); }
 
 .annual-tier {
   margin-bottom: 28px;
 }
 .annual-tier-title {
   font-weight: 800;
-  color: #e6dff9;
+  color: var(--cv-ink-soft);
   font-size: 1.05em;
   margin-bottom: 14px;
   display: flex;
@@ -228,7 +228,7 @@ header p { font-size: 1.1em; opacity: .9; margin-top: 8px; position: relative; }
   transform: translateY(-3px);
   box-shadow: 0 10px 28px rgba(0,0,0,0.12);
 }
-.annual-card.super  { background: #120e28; border-color: rgba(157,114,255,0.22); }
+.annual-card.super  { background: var(--cv-deep); border-color: rgba(157,114,255,0.22); }
 .annual-card.mega   { background: rgba(82,144,224,0.16); border-color: rgba(82,149,224,0.35); }
 .annual-card.ultra  { background: rgba(82,224,191,0.16); border-color: #6ee7b7; }
 .annual-card.max    { background: rgba(224,196,82,0.16); border-color: #fcd34d; }
@@ -243,17 +243,17 @@ header p { font-size: 1.1em; opacity: .9; margin-top: 8px; position: relative; }
   font-size: 1.45em;
   font-weight: 900;
 }
-.annual-card.super  .annual-price { color: #cebdff; }
-.annual-card.mega   .annual-price { color: #7ba1f4; }
-.annual-card.ultra  .annual-price { color: #7bf4ea; }
-.annual-card.max    .annual-price { color: #f4bc7b; }
+.annual-card.super  .annual-price { color: var(--cv-accent-ink); }
+.annual-card.mega   .annual-price { color: var(--cv-t-7ba1f4); }
+.annual-card.ultra  .annual-price { color: var(--cv-t-7bf4ea); }
+.annual-card.max    .annual-price { color: var(--cv-t-f4bc7b); }
 .annual-price span { font-size: .5em; font-weight: 600; }
 
 .saving-badge {
   display: inline-block;
   margin-top: 6px;
   background: rgba(82,224,131,0.16);
-  color: #7bf4a8;
+  color: var(--cv-t-7bf4a8);
   font-size: .75em;
   font-weight: 700;
   padding: 2px 10px;
@@ -274,10 +274,10 @@ header p { font-size: 1.1em; opacity: .9; margin-top: 8px; position: relative; }
   text-align: center;
 }
 .addon-card.giga { background: linear-gradient(135deg,rgba(224,161,82,0.16),rgba(224,158,82,0.16)); border-color: #fb923c; }
-.addon-cap { font-size: 1.1em; font-weight: 800; color: #7bf4ab; margin-bottom: 6px; }
-.addon-card.giga .addon-cap { color: #f49a7b; }
-.addon-price { font-size: 1.35em; font-weight: 900; color: #7bf4a8; }
-.addon-card.giga .addon-price { color: #f49e7b; }
+.addon-cap { font-size: 1.1em; font-weight: 800; color: var(--cv-t-7bf4ab); margin-bottom: 6px; }
+.addon-card.giga .addon-cap { color: var(--cv-t-f49a7b); }
+.addon-price { font-size: 1.35em; font-weight: 900; color: var(--cv-t-7bf4a8); }
+.addon-card.giga .addon-price { color: var(--cv-t-f49e7b); }
 .addon-price span { font-size: .5em; font-weight: 600; }
 
 /* ── Gaming ── */
@@ -291,13 +291,13 @@ header p { font-size: 1.1em; opacity: .9; margin-top: 8px; position: relative; }
   border-radius: 14px;
   padding: 20px 16px;
   text-align: center;
-  color: #ffffff;
+  color: var(--cv-white-ink);
   border: 2px solid #4338ca;
 }
 .game-card.ps { background: linear-gradient(135deg,#1e3a5f,#1d4ed8); border-color: #3b82f6; }
 .game-cap { font-size: 1.1em; font-weight: 800; margin-bottom: 6px; }
-.game-price { font-size: 1.4em; font-weight: 900; color: #f4d27b; }
-.game-price span { font-size: .5em; font-weight: 600; color: #fde68a; }
+.game-price { font-size: 1.4em; font-weight: 900; color: var(--cv-t-f4d27b); }
+.game-price span { font-size: .5em; font-weight: 600; color: var(--cv-t-fde68a); }
 .game-label { font-size: .78em; opacity: .8; margin-top: 4px; }
 
 /* ── Features ── */
@@ -312,13 +312,13 @@ header p { font-size: 1.1em; opacity: .9; margin-top: 8px; position: relative; }
   border-radius: 14px;
   padding: 22px;
 }
-.feature-card h4 { color: #cebdff; font-size: 1em; font-weight: 800; margin-bottom: 10px; }
+.feature-card h4 { color: var(--cv-accent-ink); font-size: 1em; font-weight: 800; margin-bottom: 10px; }
 .feature-card p { color: var(--text-mid); font-size: .9em; line-height: 1.7; }
 
 footer {
   text-align: center;
   padding: 30px;
-  color: #cebdff;
+  color: var(--cv-accent-ink);
   font-size: .9em;
   margin-top: 20px;
 }
@@ -328,3 +328,9 @@ footer {
   .section { padding: 20px; }
   .cards-grid { grid-template-columns: repeat(2,1fr); }
 }
+/* cv-light-islands */
+:root[data-theme="light"] header,
+:root[data-theme="light"] .tier-badge.super,
+:root[data-theme="light"] .tier-badge.max,
+:root[data-theme="light"] .annual-intro{--cv-canvas:#0D0A1C;--cv-deep:#120E28;--cv-card:#1D1643;--cv-raised:#28205C;--cv-raised2:#33297A;--cv-text:#F8F6FF;--cv-white-ink:#FFFFFF;--cv-ink-soft:#E6DFF9;--cv-ink-soft2:#CBC3D6;--cv-muted:#9E97C2;--cv-accent-ink:#CEBDFF;--cv-wash:255,255,255;--cv-t-7ba1f4:#7ba1f4;--cv-t-7bf4a8:#7bf4a8;--cv-t-7bf4ab:#7bf4ab;--cv-t-7bf4ea:#7bf4ea;--cv-t-e9d5ff:#e9d5ff;--cv-t-f49a7b:#f49a7b;--cv-t-f49e7b:#f49e7b;--cv-t-f4a77b:#f4a77b;--cv-t-f4bc7b:#f4bc7b;--cv-t-f4d27b:#f4d27b;--cv-t-fde68a:#fde68a}
+/* /cv-light-islands */

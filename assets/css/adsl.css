@@ -1,7 +1,7 @@
 body {
             margin: 0;
             font-family: 'Plus Jakarta Sans','Cairo','Tajawal',sans-serif;
-            background: #0d0a1c;
+            background: var(--cv-canvas);
         }
 
         /* Header */
@@ -21,12 +21,12 @@ body {
         .main-title {
             font-size: 26px;
             font-weight: bold;
-            color: #cebdff;
+            color: var(--cv-accent-ink);
         }
 
         .sub-title {
             font-size: 14px;
-            color: #efeded;
+            color: var(--cv-t-efeded);
             margin-top: 5px;
         }
 
@@ -70,7 +70,7 @@ body {
         }
 
         .card {
-            background: #1d1643;
+            background: var(--cv-card);
             border-radius: 18px;
             padding: 30px;
             box-shadow: 0 10px 25px rgba(0,0,0,0.08);
@@ -84,7 +84,7 @@ body {
 
         .icon {
             font-size: 42px;
-            color: #cebdff;
+            color: var(--cv-accent-ink);
             margin-bottom: 15px;
             transition: transform 0.3s ease, color 0.3s ease;
             width: fit-content;
@@ -92,16 +92,16 @@ body {
 
         .card:hover .icon {
             transform: scale(1.2);
-            color: #cebdff;
+            color: var(--cv-accent-ink);
         }
 
         .card h2 {
-            color: #cebdff;
+            color: var(--cv-accent-ink);
             margin-bottom: 10px;
         }
 
         .card p {
-            color: #cbc3d6;
+            color: var(--cv-ink-soft2);
             font-size: 14px;
             margin-bottom: 20px;
         }
@@ -118,11 +118,15 @@ body {
           footer {
         text-align: center;
         margin-top: 50px;
-        color: #9e97c2;
+        color: var(--cv-muted);
         font-size: 14px;
     }
 
     footer span {
-        color: #cebdff;
+        color: var(--cv-accent-ink);
         font-weight: 600;
     }
+/* cv-light-islands */
+:root[data-theme="light"] .header,
+:root[data-theme="light"] .btn{--cv-canvas:#0D0A1C;--cv-deep:#120E28;--cv-card:#1D1643;--cv-raised:#28205C;--cv-raised2:#33297A;--cv-text:#F8F6FF;--cv-white-ink:#FFFFFF;--cv-ink-soft:#E6DFF9;--cv-ink-soft2:#CBC3D6;--cv-muted:#9E97C2;--cv-accent-ink:#CEBDFF;--cv-wash:255,255,255;--cv-t-efeded:#efeded}
+/* /cv-light-islands */

@@ -95,7 +95,7 @@
 
 .filter-pill:hover, .filter-pill.active {
   background: var(--we-purple);
-  color: #ffffff;
+  color: var(--cv-white-ink);
   border-color: #9d72ff;
 }
 

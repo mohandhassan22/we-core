@@ -8,18 +8,18 @@
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;700;800;900&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
   :root{
-    --purple-deep:#28205c;
+    --purple-deep:var(--cv-raised);
     --purple:#5120b8;
-    --purple-soft:#28205c;
+    --purple-soft:var(--cv-raised);
     --magenta:#e6007e;
     --amber:#f5b700;
-    --bg:#120e28;
-    --card:#1d1643;
-    --ink:#28205c;
-    --ink-soft:#cbc3d6;
-    --line:#28205c;
+    --bg:var(--cv-deep);
+    --card:var(--cv-card);
+    --ink:var(--cv-raised);
+    --ink-soft:var(--cv-ink-soft2);
+    --line:var(--cv-raised);
     --green:#1e8f6f;
-    --old-price:#9e97c2;
+    --old-price:var(--cv-muted);
     --radius:14px;
   }
   *{box-sizing:border-box;}
@@ -27,7 +27,7 @@
   body{
     margin:0;
     background:var(--bg);
-    color:#e6dff9;
+    color:var(--cv-ink-soft);
     font-family:'Plus Jakarta Sans','Cairo','Tajawal',sans-serif;
     font-size:16px;
     line-height:1.8;
@@ -45,7 +45,7 @@
     width:270px;
     flex-shrink:0;
     background:linear-gradient(180deg,var(--purple-deep),var(--purple) 70%);
-    color:#ffffff;
+    color:var(--cv-white-ink);
     position:sticky;
     top:0;
     height:100vh;
@@ -68,7 +68,7 @@
   }
   .brand-sub{
     font-size:.82rem;
-    color:#d9cbee;
+    color:var(--cv-t-d9cbee);
     margin-top:-14px;
   }
   .nav{
@@ -78,7 +78,7 @@
     margin-top:6px;
   }
   .nav a{
-    color:#eae1f7;
+    color:var(--cv-t-eae1f7);
     text-decoration:none;
     font-size:.95rem;
     font-weight:700;
@@ -94,21 +94,21 @@
     font-family:'Space Grotesk','Cairo','Tajawal',sans-serif;
     font-weight:800;
     font-size:.75rem;
-    color:#f47bbd;
-    background:#1d1643;
+    color:var(--cv-t-f47bbd);
+    background:var(--cv-card);
     width:22px;height:22px;
     border-radius:50%;
     display:flex;align-items:center;justify-content:center;
     flex-shrink:0;
   }
   .nav a:hover, .nav a.active{
-    background:rgba(255,255,255,0.1);
+    background:rgba(var(--cv-wash),0.1);
     border-color:rgba(157,114,255,0.18);
   }
   .sidebar-foot{
     margin-top:auto;
     font-size:.78rem;
-    color:#c7b7e5;
+    color:var(--cv-t-c7b7e5);
     border-top:1px solid rgba(157,114,255,0.16);
     padding-top:16px;
   }
@@ -141,7 +141,7 @@
     gap:8px;
     font-size:.78rem;
     font-weight:700;
-    color:#f47bbd;
+    color:var(--cv-t-f47bbd);
     background:rgba(224,82,149,0.16);
     padding:5px 12px;
     border-radius:100px;
@@ -150,7 +150,7 @@
   .hero h1{
     font-size:1.9rem;
     margin:0 0 8px;
-    color:#e6dff9;
+    color:var(--cv-ink-soft);
   }
   .hero p.lead{
     color:var(--ink-soft);
@@ -161,7 +161,7 @@
   .finder-label{
     font-weight:700;
     font-size:.92rem;
-    color:#e6dff9;
+    color:var(--cv-ink-soft);
     margin-bottom:12px;
     display:block;
   }
@@ -179,11 +179,11 @@
     cursor:pointer;
     font-family:'Space Grotesk','Cairo','Tajawal',sans-serif;
     transition:.15s;
-    color:#e6dff9;
+    color:var(--cv-ink-soft);
   }
   .finder-btn:hover{
     border-color:#e6007e;
-    background:#1d1643;
+    background:var(--cv-card);
     transform:translateY(-2px);
   }
   .finder-btn .ft-title{
@@ -191,7 +191,7 @@
     font-size:.92rem;
     display:block;
     margin-bottom:4px;
-    color:#e6dff9;
+    color:var(--cv-ink-soft);
   }
   .finder-btn .ft-sub{
     font-size:.78rem;
@@ -222,7 +222,7 @@
     width:44px;height:44px;
     border-radius:12px;
     background:var(--purple-soft);
-    color:#e6dff9;
+    color:var(--cv-ink-soft);
     display:flex;align-items:center;justify-content:center;
     font-size:1.3rem;
     flex-shrink:0;
@@ -230,7 +230,7 @@
   .block-head h2{
     font-size:1.35rem;
     margin:0;
-    color:#e6dff9;
+    color:var(--cv-ink-soft);
   }
   .date-chip{
     display:inline-block;
@@ -251,7 +251,7 @@
   h3.sub{
     font-family:'Sora','Cairo','Tajawal',sans-serif;
     font-size:1.02rem;
-    color:#cebdff;
+    color:var(--cv-accent-ink);
     margin:24px 0 12px;
     padding-right:14px;
     border-right:4px solid #e6007e;
@@ -283,7 +283,7 @@
   }
   code.tag{
     background:var(--purple-soft);
-    color:#e6dff9;
+    color:var(--cv-ink-soft);
     padding:2px 8px;
     border-radius:6px;
     font-family:'Space Grotesk','Cairo','Tajawal',sans-serif;
@@ -305,7 +305,7 @@
   }
   thead th{
     background:var(--purple-deep);
-    color:#ffffff;
+    color:var(--cv-white-ink);
     font-family:'Plus Jakarta Sans','Cairo','Tajawal',sans-serif;
     font-weight:700;
     text-align:center;
@@ -317,19 +317,19 @@
     padding:12px 10px;
     border-top:1px solid rgba(157,114,255,0.22);
   }
-  tbody tr:nth-child(even){ background:#1d1643; }
+  tbody tr:nth-child(even){ background:var(--cv-card); }
   tbody tr:hover{ background:var(--purple-soft); }
   td.amount{
     font-family:'Plus Jakarta Sans','Cairo','Tajawal',sans-serif;
     font-weight:800;
-    color:#e6dff9;
+    color:var(--cv-ink-soft);
     font-size:1.02rem;
   }
   td.addon-name{
     font-family:'Plus Jakarta Sans','Cairo','Tajawal',sans-serif;
     font-weight:700;
     font-size:.82rem;
-    color:#e6dff9;
+    color:var(--cv-ink-soft);
   }
   td.price-old{
     color:var(--old-price);
@@ -344,7 +344,7 @@
   td.plan-name{
     font-family:'Plus Jakarta Sans','Cairo','Tajawal',sans-serif;
     font-weight:800;
-    color:#ffffff;
+    color:var(--cv-white-ink);
     background:var(--magenta);
     border-radius:8px;
   }
@@ -374,19 +374,19 @@
   }
   .note-card{
     background:var(--purple-deep);
-    color:#ffffff;
+    color:var(--cv-white-ink);
     border-radius:16px;
     padding:22px 24px;
   }
   .note-card h4{
     font-size:1rem;
     margin:0 0 10px;
-    color:#fbd5e9;
+    color:var(--cv-t-fbd5e9);
     display:flex;align-items:center;gap:8px;
   }
   .note-card p{
     font-size:.88rem;
-    color:#e8def5;
+    color:var(--cv-t-e8def5);
     margin:0;
     line-height:1.9;
   }
@@ -414,7 +414,7 @@
       align-items:center;
       gap:8px;
       background:var(--purple-deep);
-      color:#ffffff;
+      color:var(--cv-white-ink);
       border:none;
       padding:12px 16px;
       border-radius:12px;
@@ -431,7 +431,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../../assets/css/cognitive-violet.css?v=1">
+<script src="../../assets/js/theme-init.js?v=1"></script>
+<link rel="stylesheet" href="../../assets/css/cognitive-violet.css?v=2">
 <script src="../../assets/js/back-button.js?v=1" defer></script>
 </head>
 <body>
@@ -538,14 +539,14 @@
       <h3 class="sub">خطوات تفعيل إيجار الراوتر حسب نظام الدفع</h3>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px;">
         <div>
-          <strong style="font-family:'Plus Jakarta Sans','Cairo','Tajawal',sans-serif;color:#cebdff;">WE Air مسبق الدفع</strong>
+          <strong style="font-family:'Plus Jakarta Sans','Cairo','Tajawal',sans-serif;color:var(--cv-accent-ink);">WE Air مسبق الدفع</strong>
           <ol class="steps" style="margin-top:10px;">
             <li>إضافة الجهاز عبر <code class="tag">Change Offering – Waiting List</code>.</li>
             <li>إضافة الـ Add-on الخاصة برسوم استخدام الراوتر <em>(ZTE K10 CAT4 Router – Home 4G – Rental)</em> خلال عملية التعاقد، مع شحن رصيد العميل بمبلغ 50 جنيه بدون الضريبة.</li>
           </ol>
         </div>
         <div>
-          <strong style="font-family:'Plus Jakarta Sans','Cairo','Tajawal',sans-serif;color:#cebdff;">WE Air الفاتورة</strong>
+          <strong style="font-family:'Plus Jakarta Sans','Cairo','Tajawal',sans-serif;color:var(--cv-accent-ink);">WE Air الفاتورة</strong>
           <ol class="steps" style="margin-top:10px;">
             <li>إضافة الجهاز عبر <code class="tag">Change Offering – Waiting List</code>.</li>
             <li>إضافة الـ Add-on الخاصة برسوم استخدام الراوتر <em>(ZTE K10 CAT4 Router – Home 4G – Rental)</em>، مع التأكد من أن الـ Credit Limit الخاص بالعميل يسمح بدفع 50 جنيه قبل ميعاد تجديد الفاتورة.</li>

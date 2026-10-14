@@ -29,7 +29,7 @@
 <style data-purpose="modal-styling">
     /* Subtle background grid pattern to enhance presentation */
     body {
-      background-color: #0d0a1c;
+      background-color: var(--cv-canvas);
       background-image: radial-gradient(rgba(82,116,224,0.16) 1px, transparent 1px);
       background-size: 24px 24px;
     }
@@ -56,7 +56,7 @@
       background: rgba(40,238,219,0.35) !important;
       transform: scale(0.94);
       box-shadow: 0 0 22px rgba(40,238,219,0.85), inset 0 0 14px #28eedb !important;
-      color: #ffffff !important;
+      color: var(--cv-white-ink) !important;
     }
 
     /* Status Screen Box */
@@ -106,7 +106,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/css/cognitive-violet.css?v=1">
+<script src="assets/js/theme-init.js?v=1"></script>
+<link rel="stylesheet" href="assets/css/cognitive-violet.css?v=2">
 <script src="assets/js/back-button.js?v=1" defer></script>
 </head>
 <body class="min-h-screen w-full flex items-center justify-center p-4 sm:p-6 lg:p-10 font-sans text-slate-800 antialiased">

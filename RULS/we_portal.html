@@ -10,16 +10,16 @@
   :root {
     --purple: #5120b8;
     --purple-light: #7048d8;
-    --purple-pale: #28205c;
+    --purple-pale: var(--cv-raised);
     --purple-mid: #7048d8;
-    --white: #1d1643;
-    --off-white: #120e28;
-    --gray-100: #120e28;
-    --gray-200: #28205c;
-    --gray-500: #9e97c2;
-    --gray-700: #cbc3d6;
-    --dark: #120e28;
-    --accent: #33297a;
+    --white: var(--cv-card);
+    --off-white: var(--cv-deep);
+    --gray-100: var(--cv-deep);
+    --gray-200: var(--cv-raised);
+    --gray-500: var(--cv-muted);
+    --gray-700: var(--cv-ink-soft2);
+    --dark: var(--cv-deep);
+    --accent: var(--cv-raised2);
     --gold: #f59e0b;
   }
 
@@ -28,7 +28,7 @@
   body {
     font-family: 'Plus Jakarta Sans','Cairo','Tajawal',sans-serif;
     background: var(--off-white);
-    color: #e6dff9;
+    color: var(--cv-ink-soft);
     min-height: 100vh;
   }
 
@@ -73,7 +73,7 @@
   }
 
   .logo-text {
-    color: #ffffff;
+    color: var(--cv-white-ink);
     font-size: 13px;
     font-weight: 300;
     letter-spacing: 3px;
@@ -84,7 +84,7 @@
   .header-badge {
     background: rgba(112,72,216,0.35);
     border: 1px solid rgba(157,114,255,0.4);
-    color: #cebdff;
+    color: var(--cv-accent-ink);
     padding: 6px 18px;
     border-radius: 50px;
     font-size: 12px;
@@ -128,13 +128,13 @@
   .hero h1 {
     font-size: 32px;
     font-weight: 900;
-    color: #ffffff;
+    color: var(--cv-white-ink);
     margin-bottom: 8px;
     line-height: 1.3;
   }
 
   .hero p {
-    color: rgba(255,255,255,0.65);
+    color: rgba(var(--cv-wash),0.65);
     font-size: 14px;
     font-weight: 300;
   }
@@ -151,7 +151,7 @@
 
   /* Section Cards */
   .card {
-    background: #1d1643;
+    background: var(--cv-card);
     border-radius: 20px;
     overflow: hidden;
     box-shadow: 0 4px 24px rgba(112,72,216,0.2);
@@ -177,7 +177,7 @@
   }
 
   .card-header.teal {
-    background: linear-gradient(135deg, #1d1643, #0f766e);
+    background: linear-gradient(135deg, var(--cv-card), #0f766e);
   }
 
   .card-header.indigo {
@@ -187,7 +187,7 @@
   .card-icon {
     width: 42px;
     height: 42px;
-    background: rgba(255,255,255,0.2);
+    background: rgba(var(--cv-wash),0.2);
     border-radius: 12px;
     display: flex;
     align-items: center;
@@ -197,14 +197,14 @@
   }
 
   .card-title {
-    color: #ffffff;
+    color: var(--cv-white-ink);
     font-size: 17px;
     font-weight: 700;
     line-height: 1.3;
   }
 
   .card-subtitle {
-    color: rgba(255,255,255,0.7);
+    color: rgba(var(--cv-wash),0.7);
     font-size: 12px;
     margin-top: 2px;
   }
@@ -243,11 +243,11 @@
   .info-value {
     font-size: 15px;
     font-weight: 700;
-    color: #e6dff9;
+    color: var(--cv-ink-soft);
   }
 
   .info-value.highlight {
-    color: #cebdff;
+    color: var(--cv-accent-ink);
     font-size: 18px;
   }
 
@@ -282,7 +282,7 @@
   }
 
   .step-num.gold-bg { background: linear-gradient(135deg, #78350f, #d97706); }
-  .step-num.teal-bg { background: linear-gradient(135deg, #1d1643, #0f766e); }
+  .step-num.teal-bg { background: linear-gradient(135deg, var(--cv-card), #0f766e); }
   .step-num.indigo-bg { background: linear-gradient(135deg, #312e81, #4338ca); }
 
   .step-text {
@@ -303,7 +303,7 @@
 
   .tag {
     background: var(--purple-pale);
-    color: #cebdff;
+    color: var(--cv-accent-ink);
     padding: 6px 16px;
     border-radius: 50px;
     font-size: 12px;
@@ -319,7 +319,7 @@
 
   /* Alert Box */
   .alert-box {
-    background: linear-gradient(135deg, #120e28, #120e28);
+    background: linear-gradient(135deg, var(--cv-deep), var(--cv-deep));
     border: 1px solid rgba(157,114,255,0.2);
     border-radius: 14px;
     padding: 18px 22px;
@@ -339,7 +339,7 @@
   }
 
   .alert-text strong {
-    color: #cebdff;
+    color: var(--cv-accent-ink);
     font-weight: 700;
   }
 
@@ -409,7 +409,7 @@
   .price-card-value {
     font-size: 26px;
     font-weight: 900;
-    color: #cebdff;
+    color: var(--cv-accent-ink);
   }
 
   .price-card-unit {
@@ -424,20 +424,20 @@
   }
 
   .price-card.featured .price-card-label,
-  .price-card.featured .price-card-unit { color: rgba(255,255,255,0.7); }
-  .price-card.featured .price-card-value { color: #ffffff; }
+  .price-card.featured .price-card-unit { color: rgba(var(--cv-wash),0.7); }
+  .price-card.featured .price-card-value { color: var(--cv-white-ink); }
 
   /* Footer */
   footer {
-    background: linear-gradient(135deg, #120e28, #28205c);
-    color: rgba(255,255,255,0.5);
+    background: linear-gradient(135deg, var(--cv-deep), var(--cv-raised));
+    color: rgba(var(--cv-wash),0.5);
     text-align: center;
     padding: 24px;
     font-size: 12px;
     margin-top: 20px;
   }
 
-  footer span { color: #cebdff; font-weight: 700; }
+  footer span { color: var(--cv-accent-ink); font-weight: 700; }
 
   /* Responsive */
   @media (max-width: 768px) {
@@ -453,7 +453,7 @@
     align-items: center;
     gap: 8px;
     background: linear-gradient(135deg, var(--purple), var(--purple-light));
-    color: #ffffff;
+    color: var(--cv-white-ink);
     padding: 10px 22px;
     border-radius: 10px;
     font-size: 13px;
@@ -464,8 +464,8 @@
     box-shadow: 0 4px 14px rgba(112,72,216,0.45);
   }
   .ext-link-btn:hover { opacity: 0.9; transform: translateY(-1px); }
-  .ext-link-btn.green { background: linear-gradient(135deg, #1d1643, #059669); box-shadow: 0 4px 14px rgba(5,150,105,0.3); }
-  .ext-link-btn.teal { background: linear-gradient(135deg, #1d1643, #0f766e); box-shadow: 0 4px 14px rgba(15,118,110,0.3); }
+  .ext-link-btn.green { background: linear-gradient(135deg, var(--cv-card), #059669); box-shadow: 0 4px 14px rgba(5,150,105,0.3); }
+  .ext-link-btn.teal { background: linear-gradient(135deg, var(--cv-card), #0f766e); box-shadow: 0 4px 14px rgba(15,118,110,0.3); }
 
 
   .card-header.rose { background: linear-gradient(135deg, #881337, #e11d48); }
@@ -474,7 +474,7 @@
   .info-item.life-border { border-right-color: #1d4ed8; }
   .faq-list { display: flex; flex-direction: column; gap: 14px; }
   .faq-item { background: var(--gray-100); border-radius: 14px; overflow: hidden; }
-  .faq-q { padding: 14px 18px; font-size: 14px; font-weight: 700; color: #e6dff9; cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+  .faq-q { padding: 14px 18px; font-size: 14px; font-weight: 700; color: var(--cv-ink-soft); cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 12px; }
   .faq-q:hover { background: var(--gray-200); }
   .faq-q .faq-toggle { font-size: 18px; flex-shrink: 0; transition: transform 0.3s; }
   .faq-a { padding: 0 18px; max-height: 0; overflow: hidden; transition: max-height 0.35s ease, padding 0.3s; font-size: 13px; color: var(--gray-700); line-height: 1.8; font-weight: 500; }
@@ -483,15 +483,15 @@
   .service-compare { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin: 16px 0; }
   .svc-card { border-radius: 16px; padding: 20px; border: 2px solid rgba(157,114,255,0.22); text-align: center; }
   .svc-card.fiber { border-color: #1d4ed8; background: linear-gradient(135deg, rgba(82,144,224,0.16), rgba(82,143,224,0.16)); }
-  .svc-card.mesh { border-color: #9d72ff; background: linear-gradient(135deg, #120e28, #120e28); }
+  .svc-card.mesh { border-color: #9d72ff; background: linear-gradient(135deg, var(--cv-deep), var(--cv-deep)); }
   .svc-card.smart { border-color: #059669; background: linear-gradient(135deg, rgba(82,224,157,0.16), rgba(82,224,151,0.16)); }
   .svc-name { font-size: 16px; font-weight: 900; margin-bottom: 8px; }
-  .svc-name.blue { color: #7b9bf4; }
-  .svc-name.purple { color: #cebdff; }
-  .svc-name.green { color: #7bf4cf; }
+  .svc-name.blue { color: var(--cv-t-7b9bf4); }
+  .svc-name.purple { color: var(--cv-accent-ink); }
+  .svc-name.green { color: var(--cv-t-7bf4cf); }
   .svc-badge { font-size: 10px; font-weight: 700; padding: 3px 10px; border-radius: 50px; margin-bottom: 10px; display: inline-block; }
   .svc-badge.soon { background: rgba(224,196,82,0.16); color: #f4a97b; }
-  .svc-badge.now { background: rgba(82,224,131,0.16); color: #7bf4a9; }
+  .svc-badge.now { background: rgba(82,224,131,0.16); color: var(--cv-t-7bf4a9); }
   .svc-badge.trial { background: rgba(224,82,82,0.16); color: #f47b7b; }
   .svc-desc { font-size: 12px; color: var(--gray-700); line-height: 1.7; }
 
@@ -519,7 +519,7 @@
   .nav-btn {
     background: transparent;
     border: 1px solid transparent;
-    color: rgba(255,255,255,0.55);
+    color: rgba(var(--cv-wash),0.55);
     padding: 7px 16px;
     border-radius: 8px;
     font-family: 'Space Grotesk','Cairo','Tajawal',sans-serif;
@@ -531,13 +531,13 @@
     text-decoration: none;
     display: inline-block;
   }
-  .nav-btn:hover { background: rgba(112,72,216,0.27); border-color: rgba(157,114,255,0.3); color: #cebdff; }
-  .nav-btn.sonic { background: linear-gradient(135deg,rgba(16,185,129,0.2),rgba(5,150,105,0.1)); border-color:rgba(16,185,129,0.3); color:#7bf4c8; }
+  .nav-btn:hover { background: rgba(112,72,216,0.27); border-color: rgba(157,114,255,0.3); color: var(--cv-accent-ink); }
+  .nav-btn.sonic { background: linear-gradient(135deg,rgba(16,185,129,0.2),rgba(5,150,105,0.1)); border-color:rgba(16,185,129,0.3); color:var(--cv-t-7bf4c8); }
   .nav-btn.sonic:hover { background: linear-gradient(135deg,rgba(16,185,129,0.3),rgba(5,150,105,0.2)); color:#6ee7b7; }
 
   .section-anchor { scroll-margin-top: 140px; }
 
-  .card-header.sonic { background: linear-gradient(135deg, #1d1643, #059669); }
+  .card-header.sonic { background: linear-gradient(135deg, var(--cv-card), #059669); }
   .card-header.gaming { background: linear-gradient(135deg, #1e1b4b, #4f46e5); }
   .card-header.streaming { background: linear-gradient(135deg, #7f1d1d, #dc2626); }
   .card-header.plus-hdr { background: linear-gradient(135deg, #0c4a6e, #0284c7); }
@@ -545,19 +545,19 @@
   .info-item.gaming-border { border-right-color: #4f46e5; }
   .info-item.streaming-border { border-right-color: #dc2626; }
   .info-item.blue-border { border-right-color: #0284c7; }
-  .step-num.green-bg { background: linear-gradient(135deg, #1d1643, #059669); }
+  .step-num.green-bg { background: linear-gradient(135deg, var(--cv-card), #059669); }
   .quota-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px; margin: 16px 0; }
   .quota-card { border-radius: 14px; padding: 16px 18px; text-align: center; }
-  .quota-card.general { background: #120e28; border: 1px solid rgba(157,114,255,0.22); }
-  .quota-card.special-game { background: linear-gradient(135deg, #1e1b4b, #312e81); color: #ffffff; }
-  .quota-card.special-stream { background: linear-gradient(135deg, #7f1d1d, #991b1b); color: #ffffff; }
-  .quota-card.special-plus { background: linear-gradient(135deg, #0c4a6e, #075985); color: #ffffff; }
+  .quota-card.general { background: var(--cv-deep); border: 1px solid rgba(157,114,255,0.22); }
+  .quota-card.special-game { background: linear-gradient(135deg, #1e1b4b, #312e81); color: var(--cv-white-ink); }
+  .quota-card.special-stream { background: linear-gradient(135deg, #7f1d1d, #991b1b); color: var(--cv-white-ink); }
+  .quota-card.special-plus { background: linear-gradient(135deg, #0c4a6e, #075985); color: var(--cv-white-ink); }
   .quota-num { font-size: 32px; font-weight: 900; line-height: 1; }
   .quota-equiv { font-size: 13px; font-weight: 700; margin-top: 4px; opacity: 0.85; }
   .quota-label { font-size: 11px; margin-top: 6px; opacity: 0.65; }
   .app-chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0; }
   .app-chip { padding: 6px 14px; border-radius: 50px; font-size: 12px; font-weight: 700; }
-  .app-chip.s { background:#120e28; color:#f47b7b; border:1px solid rgba(220,38,38,0.2); }
+  .app-chip.s { background:var(--cv-deep); color:#f47b7b; border:1px solid rgba(220,38,38,0.2); }
   .app-chip.g { background:rgba(82,115,224,0.16); color:#827bf4; border:1px solid rgba(79,70,229,0.2); }
   .app-chip.f { background:rgba(82,224,157,0.16); color:#7bf4d2; border:1px solid rgba(5,150,105,0.2); }
   .sonic-note { background:linear-gradient(135deg,rgba(82,224,157,0.16),rgba(82,224,151,0.16)); border:1px solid rgba(5,150,105,0.25); border-radius:14px; padding:16px 20px; margin-top:16px; display:flex; gap:10px; align-items:flex-start; }
@@ -578,13 +578,25 @@
   .card:nth-child(3) { animation-delay: 0.15s; }
   .card:nth-child(4) { animation-delay: 0.2s; }
   .card:nth-child(5) { animation-delay: 0.25s; }
+
+/* cv-light-islands */
+:root[data-theme="light"] header,
+:root[data-theme="light"] .logo-circle,
+:root[data-theme="light"] .hero,
+:root[data-theme="light"] .card-header,
+:root[data-theme="light"] .step-num,
+:root[data-theme="light"] .offer-table th,
+:root[data-theme="light"] .price-card.featured,
+:root[data-theme="light"] .nav-bar{--cv-canvas:#0D0A1C;--cv-deep:#120E28;--cv-card:#1D1643;--cv-raised:#28205C;--cv-raised2:#33297A;--cv-text:#F8F6FF;--cv-white-ink:#FFFFFF;--cv-ink-soft:#E6DFF9;--cv-ink-soft2:#CBC3D6;--cv-muted:#9E97C2;--cv-accent-ink:#CEBDFF;--cv-wash:255,255,255;--cv-t-7b9bf4:#7b9bf4;--cv-t-7bf4a9:#7bf4a9;--cv-t-7bf4c8:#7bf4c8;--cv-t-7bf4cf:#7bf4cf}
+/* /cv-light-islands */
 </style>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <meta name="theme-color" content="#0D0A1C">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../assets/css/cognitive-violet.css?v=1">
+<script src="../assets/js/theme-init.js?v=1"></script>
+<link rel="stylesheet" href="../assets/css/cognitive-violet.css?v=2">
 <script src="../assets/js/back-button.js?v=1" defer></script>
 </head>
 <body>
@@ -612,7 +624,7 @@
     <a class="nav-btn" href="#sec-annual">📆 باقات سنوية</a>
     <a class="nav-btn" href="#sec-freesites">🌐 مواقع مجانية</a>
     <a class="nav-btn sonic" href="#sec-sonic">🎮 WE SONIC</a>
-    <a class="nav-btn" style="background:linear-gradient(135deg,rgba(225,29,72,0.2),rgba(136,19,55,0.1));border-color:rgba(225,29,72,0.3);color:#fda4af;" href="#sec-welife">🏠 WE Life / FBB</a>
+    <a class="nav-btn" style="background:linear-gradient(135deg,rgba(225,29,72,0.2),rgba(136,19,55,0.1));border-color:rgba(225,29,72,0.3);color:var(--cv-t-fda4af);" href="#sec-welife">🏠 WE Life / FBB</a>
   </div>
 </nav>
 
@@ -722,7 +734,7 @@
       </div>
 
       <div style="font-size:13px; color:var(--gray-700); font-weight:600; margin-bottom:12px;">📍 مسار الوصول على السيستم:</div>
-      <div style="background:var(--dark); color:#cebdff; padding:14px 20px; border-radius:10px; font-size:13px; font-family:monospace; direction:ltr; text-align:left;">
+      <div style="background:var(--dark); color:var(--cv-accent-ink); padding:14px 20px; border-radius:10px; font-size:13px; font-family:monospace; direction:ltr; text-align:left;">
         Sitemap → Integrated Operations (New) → Broadband → Check Availability (Fixed)
       </div>
 
@@ -803,9 +815,9 @@
           <tr>
             <td>880002</td>
             <td>Corporate Super Speed 1 (100GB)</td>
-            <td rowspan="3" style="text-align:center; font-weight:700; color:#cebdff;">195 جنيه</td>
-            <td rowspan="3" style="text-align:center; font-weight:700; color:#cebdff;">222.3 جنيه</td>
-            <td rowspan="3" style="text-align:center; font-weight:700; color:#cebdff;">227.86 جنيه</td>
+            <td rowspan="3" style="text-align:center; font-weight:700; color:var(--cv-accent-ink);">195 جنيه</td>
+            <td rowspan="3" style="text-align:center; font-weight:700; color:var(--cv-accent-ink);">222.3 جنيه</td>
+            <td rowspan="3" style="text-align:center; font-weight:700; color:var(--cv-accent-ink);">227.86 جنيه</td>
           </tr>
           <tr>
             <td>880024</td>
@@ -911,7 +923,7 @@
         <tbody>
           <tr>
             <td rowspan="2" style="font-weight:700; color:#f4a97b;">150<br><small style="color:var(--gray-500)">(كانت 140)</small></td>
-            <td style="color:#cebdff; font-weight:700;">مع VAT</td>
+            <td style="color:var(--cv-accent-ink); font-weight:700;">مع VAT</td>
             <td>296.40</td><td colspan="3">—</td><td>—</td><td rowspan="12" style="text-align:center; color:var(--gray-500); font-size:12px;">N/A</td>
           </tr>
           <tr>
@@ -920,7 +932,7 @@
           </tr>
           <tr>
             <td rowspan="2">200</td>
-            <td style="color:#cebdff; font-weight:700;">مع VAT</td>
+            <td style="color:var(--cv-accent-ink); font-weight:700;">مع VAT</td>
             <td>376.20</td><td colspan="3">—</td><td>—</td>
           </tr>
           <tr>
@@ -929,7 +941,7 @@
           </tr>
           <tr>
             <td rowspan="2">250</td>
-            <td style="color:#cebdff; font-weight:700;">مع VAT</td>
+            <td style="color:var(--cv-accent-ink); font-weight:700;">مع VAT</td>
             <td>450.30</td><td>672.60</td><td>894.90</td><td>—</td><td>—</td>
           </tr>
           <tr>
@@ -937,8 +949,8 @@
             <td>395</td><td>590</td><td>785</td><td colspan="2">—</td>
           </tr>
           <tr style="background:var(--purple-pale);">
-            <td rowspan="2" style="font-weight:700; color:#cebdff;">300<br><small style="color:var(--gray-500)">(جديدة)</small></td>
-            <td style="color:#cebdff; font-weight:700;">مع VAT</td>
+            <td rowspan="2" style="font-weight:700; color:var(--cv-accent-ink);">300<br><small style="color:var(--gray-500)">(جديدة)</small></td>
+            <td style="color:var(--cv-accent-ink); font-weight:700;">مع VAT</td>
             <td>524.40</td><td colspan="3">—</td><td>—</td>
           </tr>
           <tr style="background:var(--purple-pale);">
@@ -947,7 +959,7 @@
           </tr>
           <tr>
             <td rowspan="2">400</td>
-            <td style="color:#cebdff; font-weight:700;">مع VAT</td>
+            <td style="color:var(--cv-accent-ink); font-weight:700;">مع VAT</td>
             <td>661.20</td><td colspan="3">—</td><td>—</td>
           </tr>
           <tr>
@@ -955,8 +967,8 @@
             <td>580</td><td colspan="4">—</td>
           </tr>
           <tr style="background:var(--purple-pale);">
-            <td rowspan="2" style="font-weight:700; color:#cebdff;">500<br><small style="color:var(--gray-500)">(جديدة)</small></td>
-            <td style="color:#cebdff; font-weight:700;">مع VAT</td>
+            <td rowspan="2" style="font-weight:700; color:var(--cv-accent-ink);">500<br><small style="color:var(--gray-500)">(جديدة)</small></td>
+            <td style="color:var(--cv-accent-ink); font-weight:700;">مع VAT</td>
             <td>752.40</td><td>1,026</td><td>1,311</td><td>—</td><td>—</td>
           </tr>
           <tr style="background:var(--purple-pale);">
@@ -965,7 +977,7 @@
           </tr>
           <tr>
             <td rowspan="2" style="font-weight:700; color:#f4a97b;">750<br><small style="color:var(--gray-500)">(كانت 600)</small></td>
-            <td style="color:#cebdff; font-weight:700;">مع VAT</td>
+            <td style="color:var(--cv-accent-ink); font-weight:700;">مع VAT</td>
             <td>1,054.50</td><td>1,339.50</td><td>1,624.50</td><td>—</td><td>—</td>
             <td rowspan="4" style="text-align:center; font-size:12px; color:var(--gray-700); font-weight:600;">Family<br>4 أفراد حد أقصى</td>
           </tr>
@@ -975,7 +987,7 @@
           </tr>
           <tr>
             <td rowspan="2" style="font-weight:700; color:#f4a97b;">1500<br><small style="color:var(--gray-500)">(كانت 1TB)</small></td>
-            <td style="color:#cebdff; font-weight:700;">مع VAT</td>
+            <td style="color:var(--cv-accent-ink); font-weight:700;">مع VAT</td>
             <td>1,881</td><td>2,280</td><td>—</td><td>2,679</td><td>3,078</td>
           </tr>
           <tr>
@@ -1043,7 +1055,7 @@
           <tr>
             <td rowspan="2">3000</td>
             <td rowspan="2">زيادة سعر</td>
-            <td style="color:#cebdff; font-weight:700;">مع VAT</td>
+            <td style="color:var(--cv-accent-ink); font-weight:700;">مع VAT</td>
             <td>4,953.30</td><td>7,398.60</td><td>9,843.90</td><td>—</td>
             <td rowspan="8" style="text-align:center; font-size:12px; color:var(--gray-700); font-weight:600;">Family<br>4 أفراد حد أقصى</td>
           </tr>
@@ -1054,7 +1066,7 @@
           <tr>
             <td rowspan="2">4800</td>
             <td rowspan="2">زيادة سعر</td>
-            <td style="color:#cebdff; font-weight:700;">مع VAT</td>
+            <td style="color:var(--cv-accent-ink); font-weight:700;">مع VAT</td>
             <td>7,273.20</td><td>—</td><td>—</td><td>—</td>
           </tr>
           <tr>
@@ -1064,7 +1076,7 @@
           <tr style="background:var(--purple-pale);">
             <td rowspan="2" style="font-weight:700; color:#f4a97b;">9000<br><small style="color:var(--gray-500)">(كانت 7200)</small></td>
             <td rowspan="2" style="color:#f4a97b; font-weight:600;">زيادة سعة وسعر</td>
-            <td style="color:#cebdff; font-weight:700;">مع VAT</td>
+            <td style="color:var(--cv-accent-ink); font-weight:700;">مع VAT</td>
             <td>11,075.10</td><td>14,067.60</td><td>17,060.10</td><td>—</td>
           </tr>
           <tr style="background:var(--purple-pale);">
@@ -1074,7 +1086,7 @@
           <tr style="background:var(--purple-pale);">
             <td rowspan="2" style="font-weight:700; color:#f4a97b;">18TB<br><small style="color:var(--gray-500)">(كانت 12TB)</small></td>
             <td rowspan="2" style="color:#f4a97b; font-weight:600;">زيادة سعة وسعر</td>
-            <td style="color:#cebdff; font-weight:700;">مع VAT</td>
+            <td style="color:var(--cv-accent-ink); font-weight:700;">مع VAT</td>
             <td>18,810</td><td>22,800</td><td>—</td><td>26,790</td>
           </tr>
           <tr style="background:var(--purple-pale);">
@@ -1201,7 +1213,7 @@
 
       <div class="quota-grid">
         <div class="quota-card general">
-          <div class="quota-num" style="color:#cebdff;">100</div>
+          <div class="quota-num" style="color:var(--cv-accent-ink);">100</div>
           <div class="quota-equiv" style="color:var(--gray-700);">GB عادية</div>
           <div class="quota-label" style="color:var(--gray-500);">لأي استخدام آخر غير Gaming<br>تُحتسب بجيجا عادية</div>
         </div>
@@ -1254,7 +1266,7 @@
 
       <div class="quota-grid">
         <div class="quota-card general">
-          <div class="quota-num" style="color:#cebdff;">100</div>
+          <div class="quota-num" style="color:var(--cv-accent-ink);">100</div>
           <div class="quota-equiv" style="color:var(--gray-700);">GB عادية</div>
           <div class="quota-label" style="color:var(--gray-500);">لأي استخدام آخر غير Streaming<br>تُحتسب بجيجا عادية</div>
         </div>
@@ -1265,7 +1277,7 @@
         </div>
       </div>
 
-      <div class="sonic-note" style="background:linear-gradient(135deg,#120e28,rgba(224,82,82,0.16)); border-color:rgba(220,38,38,0.25);">
+      <div class="sonic-note" style="background:linear-gradient(135deg,var(--cv-deep),rgba(224,82,82,0.16)); border-color:rgba(220,38,38,0.25);">
         <div>💡</div>
         <div class="sonic-note-text" style="color:#f47b7b;">لو خلصت الـ 200 GB الخاصة بالـ Streaming، هيكمل الاستهلاك من الـ <strong>100 GB الأساسية</strong> لكن الجيجا هتتحسب بجيجا عادية.</div>
       </div>
@@ -1293,11 +1305,11 @@
         </div>
         <div class="info-item blue-border">
           <div class="info-label">احتساب Gaming</div>
-          <div class="info-value" style="color:#7bcbf4;">بالنص</div>
+          <div class="info-value" style="color:var(--cv-t-7bcbf4);">بالنص</div>
         </div>
         <div class="info-item blue-border">
           <div class="info-label">احتساب Streaming</div>
-          <div class="info-value" style="color:#7bcbf4;">بالنص</div>
+          <div class="info-value" style="color:var(--cv-t-7bcbf4);">بالنص</div>
         </div>
       </div>
 
@@ -1305,7 +1317,7 @@
 
       <div class="quota-grid">
         <div class="quota-card general">
-          <div class="quota-num" style="color:#cebdff;">500</div>
+          <div class="quota-num" style="color:var(--cv-accent-ink);">500</div>
           <div class="quota-equiv" style="color:var(--gray-700);">GB عادية</div>
           <div class="quota-label" style="color:var(--gray-500);">لأي استخدام آخر غير Gaming/Streaming<br>تُحتسب بجيجا عادية</div>
         </div>
@@ -1323,7 +1335,7 @@
 
       <div class="sonic-note" style="background:linear-gradient(135deg,rgba(82,167,224,0.16),rgba(82,167,224,0.16)); border-color:rgba(2,132,199,0.25);">
         <div>💡</div>
-        <div class="sonic-note-text" style="color:#7bcaf4;">لو خلصت الـ 250 GB الخاصة بالـ Gaming أو الـ Streaming، هيكمل الاستهلاك من الـ <strong>500 GB الأساسية</strong> لكن الجيجا هتتحسب بجيجا عادية.</div>
+        <div class="sonic-note-text" style="color:var(--cv-t-7bcaf4);">لو خلصت الـ 250 GB الخاصة بالـ Gaming أو الـ Streaming، هيكمل الاستهلاك من الـ <strong>500 GB الأساسية</strong> لكن الجيجا هتتحسب بجيجا عادية.</div>
       </div>
     </div>
   </div>
@@ -1343,7 +1355,7 @@
         <thead>
           <tr>
             <th>المعيار</th>
-            <th style="color:#a5f3fc;">GAMERZ</th>
+            <th style="color:var(--cv-t-a5f3fc);">GAMERZ</th>
             <th>باقة PS (Level UP)</th>
             <th>باقة Gaming (Level UP)</th>
           </tr>
@@ -1351,31 +1363,31 @@
         <tbody>
           <tr>
             <td>الأجهزة المدعومة</td>
-            <td style="color:#7bf4cf; font-weight:700;">أي جهاز (PS · PC · Mobile · Xbox)</td>
+            <td style="color:var(--cv-t-7bf4cf); font-weight:700;">أي جهاز (PS · PC · Mobile · Xbox)</td>
             <td>PlayStation فقط</td>
             <td>أجهزة محددة</td>
           </tr>
           <tr>
             <td>الألعاب المدعومة</td>
-            <td style="color:#7bf4cf; font-weight:700;">أي لعبة أون لاين</td>
+            <td style="color:var(--cv-t-7bf4cf); font-weight:700;">أي لعبة أون لاين</td>
             <td>أي لعبة عبر PS</td>
             <td>ألعاب محددة فقط</td>
           </tr>
           <tr>
             <td>احتساب الجيجا</td>
-            <td style="color:#7bf4cf; font-weight:700;">بالنص (ضعف الاستخدام)</td>
+            <td style="color:var(--cv-t-7bf4cf); font-weight:700;">بالنص (ضعف الاستخدام)</td>
             <td>جيجات محددة</td>
             <td>جيجات محددة</td>
           </tr>
           <tr>
             <td>السرعة</td>
-            <td style="color:#7bf4cf; font-weight:700;">أقصى سرعة للخط</td>
+            <td style="color:var(--cv-t-7bf4cf); font-weight:700;">أقصى سرعة للخط</td>
             <td>حسب الباقة</td>
             <td>حسب الباقة</td>
           </tr>
           <tr>
             <td>Upload Speed</td>
-            <td style="color:#7bf4cf; font-weight:700;">25 Mbps كحد أدنى</td>
+            <td style="color:var(--cv-t-7bf4cf); font-weight:700;">25 Mbps كحد أدنى</td>
             <td>—</td>
             <td>—</td>
           </tr>
@@ -1404,7 +1416,7 @@
     <div class="card-body">
       <div class="alert-box" style="margin-bottom:20px; margin-top:0; background:linear-gradient(135deg,rgba(224,82,92,0.16),rgba(224,82,92,0.16)); border-color:rgba(225,29,72,0.2);">
         <div class="alert-icon">📢</div>
-        <div class="alert-text" style="color:#f47ba0;">توفر WE باقات متنوعة بسرعات تبدأ من <strong>30 Mbps</strong> وحتى <strong>500 Mbps</strong>، مع خدمات مستقبلية متكاملة لتغطية كل احتياجات المنزل الذكي.</div>
+        <div class="alert-text" style="color:var(--cv-t-f47ba0);">توفر WE باقات متنوعة بسرعات تبدأ من <strong>30 Mbps</strong> وحتى <strong>500 Mbps</strong>، مع خدمات مستقبلية متكاملة لتغطية كل احتياجات المنزل الذكي.</div>
       </div>
 
       <div class="service-compare">
@@ -1468,7 +1480,7 @@
             <span>هل لازم أستنى الـ Fiber 2 Room ولا ممكن أركب حاجة دلوقتي؟</span>
             <span class="faq-toggle">+</span>
           </div>
-          <div class="faq-a">تقدر تركب <strong>WiFi Mesh</strong> فورًا وتستمتع بتغطية ممتازة. ولما الخدمة الجديدة تبقى متاحة، تقدر ترقي ليها. <br><span style="color:#7bf4cf; font-weight:700;">⚠️ تنبيه للزملاء: حتى في حالة عدم استفسار العميل عن البدائل، يلزم توضيح أن WiFi Mesh متاح حالياً كحل عملي.</span></div>
+          <div class="faq-a">تقدر تركب <strong>WiFi Mesh</strong> فورًا وتستمتع بتغطية ممتازة. ولما الخدمة الجديدة تبقى متاحة، تقدر ترقي ليها. <br><span style="color:var(--cv-t-7bf4cf); font-weight:700;">⚠️ تنبيه للزملاء: حتى في حالة عدم استفسار العميل عن البدائل، يلزم توضيح أن WiFi Mesh متاح حالياً كحل عملي.</span></div>
         </div>
 
         <div class="faq-item">

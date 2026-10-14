@@ -1,9 +1,9 @@
 body {
             font-family: 'Plus Jakarta Sans','Cairo','Tajawal',sans-serif;
-            background-color: #0d0a1c;
+            background-color: var(--cv-canvas);
             margin: 0;
             padding: 0;
-            color: #f8f6ff;
+            color: var(--cv-text);
         }
        
         .container {
@@ -30,7 +30,7 @@ body {
         }
        
         h2 {
-            color: #cebdff;
+            color: var(--cv-accent-ink);
             text-align: center;
             margin: 30px 0 20px;
         }
@@ -46,7 +46,7 @@ body {
             width: 100%;
             border-collapse: collapse;
             margin-bottom: 30px;
-            background-color: #1d1643;
+            background-color: var(--cv-card);
             border-radius: 8px;
             overflow: hidden;
             box-shadow: 0 4px 12px rgba(112,72,216,0.2);
@@ -65,20 +65,20 @@ body {
         }
        
         .pricing-table tr:nth-child(even) {
-            background-color: #120e28;
+            background-color: var(--cv-deep);
         }
        
         .pricing-table tr:hover {
-            background-color: #28205c;
+            background-color: var(--cv-raised);
         }
        
         .highlight {
             font-weight: bold;
-            color: #cebdff;
+            color: var(--cv-accent-ink);
         }
        
         .note {
-            background-color: #1d1643;
+            background-color: var(--cv-card);
             padding: 15px;
             border-radius: 8px;
             margin: 20px 0;
@@ -95,7 +95,7 @@ body {
         }
        
         .service-card {
-            background-color: #1d1643;
+            background-color: var(--cv-card);
             border-radius: 10px;
             padding: 20px;
             width: 200px;
@@ -112,13 +112,13 @@ body {
        
         .service-icon {
             font-size: 40px;
-            color: #cebdff;
+            color: var(--cv-accent-ink);
             margin-bottom: 15px;
         }
        
         .service-title {
             font-weight: bold;
-            color: #cebdff;
+            color: var(--cv-accent-ink);
             font-size: 18px;
         }
        
@@ -132,7 +132,7 @@ body {
         }
         
         .info-box {
-            background-color: #1d1643;
+            background-color: var(--cv-card);
             padding: 20px;
             border-radius: 8px;
             margin: 20px 0;
@@ -146,5 +146,10 @@ body {
         
         .faq-question {
             font-weight: bold;
-            color: #cebdff;
+            color: var(--cv-accent-ink);
         }
+/* cv-light-islands */
+:root[data-theme="light"] header,
+:root[data-theme="light"] .pricing-table th,
+:root[data-theme="light"] footer{--cv-canvas:#0D0A1C;--cv-deep:#120E28;--cv-card:#1D1643;--cv-raised:#28205C;--cv-raised2:#33297A;--cv-text:#F8F6FF;--cv-white-ink:#FFFFFF;--cv-ink-soft:#E6DFF9;--cv-ink-soft2:#CBC3D6;--cv-muted:#9E97C2;--cv-accent-ink:#CEBDFF;--cv-wash:255,255,255}
+/* /cv-light-islands */

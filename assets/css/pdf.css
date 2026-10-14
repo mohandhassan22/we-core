@@ -1,21 +1,21 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
         :root {
-            --bg:        #120e28;
-            --surface:   #1d1643;
-            --s1:        #1d1643;
-            --s2:        #120e28;
-            --s3:        #28205c;
+            --bg:        var(--cv-deep);
+            --surface:   var(--cv-card);
+            --s1:        var(--cv-card);
+            --s2:        var(--cv-deep);
+            --s3:        var(--cv-raised);
             --border:    rgba(112,72,216,0.22);
             --bh:        rgba(157,114,255,0.22);
             --purple:    #7048d8;
-            --purple2:   #cebdff;
+            --purple2:   var(--cv-accent-ink);
             --purple-d:  rgba(112,72,216,0.18);
             --purple-d2: rgba(112,72,216,0.09);
             --gold:      #e8b84b;
-            --text:      #e6dff9;
-            --text2:     #9e97c2;
-            --text3:     #9e97c2;
+            --text:      var(--cv-ink-soft);
+            --text2:     var(--cv-muted);
+            --text3:     var(--cv-muted);
             --r:         14px;
             --r-sm:      9px;
         }
@@ -70,7 +70,7 @@
         }
         .logo-wrapper:hover .logo { transform: scale(1.07); opacity: 0.85; }
         .logo-text { display: flex; flex-direction: column; line-height: 1.25; }
-        .logo-title { font-size: 16px; font-weight: 800; color: #ffffff; }
+        .logo-title { font-size: 16px; font-weight: 800; color: var(--cv-white-ink); }
         .logo-sub   { font-size: 11px; color: var(--text2); }
 
         .nav-links a {
@@ -139,7 +139,7 @@
             transform: translateY(-50%);
             background: var(--purple);
             border: none; border-radius: 100px;
-            color: #ffffff;
+            color: var(--cv-white-ink);
             font-family: 'Plus Jakarta Sans','Cairo','Tajawal',sans-serif;
             font-size: 12px; font-weight: 700;
             padding: 6px 16px; cursor: pointer;
@@ -247,7 +247,7 @@
             padding: 2px 9px; border-radius: 100px;
             font-size: 0.7rem; font-weight: 600;
         }
-        .cat-mobile  { background: rgba(59,130,246,0.12); border: 1px solid rgba(59,130,246,0.25); color: #7db4f7; }
+        .cat-mobile  { background: rgba(59,130,246,0.12); border: 1px solid rgba(59,130,246,0.25); color: var(--cv-t-7db4f7); }
         .cat-fixed   { background: rgba(16,185,129,0.12); border: 1px solid rgba(16,185,129,0.25); color: #6ee7b7; }
         .cat-adsl    { background: rgba(245,158,11,0.12); border: 1px solid rgba(245,158,11,0.25); color: #fcd34d; }
         .cat-pay  { background: rgba(239,68,68,0.12); border: 1px solid rgba(239,68,68,0.25); color: #fca5a5; }
@@ -272,7 +272,7 @@
         .download-btn:hover {
             background: rgba(112,72,216,0.32);
             border-color: rgba(157,114,255,0.45);
-            color: #cebdff;
+            color: var(--cv-accent-ink);
         }
 
         /* ── LOADER ── */
@@ -300,7 +300,7 @@
         }
         .skel-line {
             height: 10px; border-radius: 5px;
-            background: linear-gradient(90deg, #28205c 25%, #28205c 50%, #28205c 75%);
+            background: linear-gradient(90deg, var(--cv-raised) 25%, var(--cv-raised) 50%, var(--cv-raised) 75%);
             background-size: 200% 100%;
             animation: shimmer 1.4s infinite;
         }
@@ -321,9 +321,9 @@
             padding: 1.5rem;
             border-top: 1px solid rgba(157,114,255,0.16);
             font-size: 0.78rem; color: var(--text3);
-            background: #1d1643;
+            background: var(--cv-card);
         }
-        footer span { color: #cebdff; font-weight: 700; }
+        footer span { color: var(--cv-accent-ink); font-weight: 700; }
 
         @media (max-width: 600px) {
             .forms-grid { grid-template-columns: 1fr; }

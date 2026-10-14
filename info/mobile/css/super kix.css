@@ -1,21 +1,21 @@
 :root {
-      --bg: #120e28;
-      --surface: #28205c;
-      --card: #1d1643;
-      --card2: #120e28;
-      --border: #28205c;
+      --bg: var(--cv-deep);
+      --surface: var(--cv-raised);
+      --card: var(--cv-card);
+      --card2: var(--cv-deep);
+      --border: var(--cv-raised);
       --accent: #7048d8;
-      --accent2: #9e97c2;
-      --accent-light: #33297a;
-      --text: #e6dff9;
-      --muted: #9e97c2;
+      --accent2: var(--cv-muted);
+      --accent-light: var(--cv-raised2);
+      --text: var(--cv-ink-soft);
+      --muted: var(--cv-muted);
       --we-purple: #5120b8;
 
       --mauve: #7048d8;
       --mauve-dark: #5120b8;
-      --mauve-light: #33297a;
-      --mauve-xlight: #28205c;
-      --white: #1d1643;
+      --mauve-light: var(--cv-raised2);
+      --mauve-xlight: var(--cv-raised);
+      --white: var(--cv-card);
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -44,7 +44,7 @@
       position: relative;
       padding: 0 18px 0;
       overflow: hidden;
-      background: linear-gradient(160deg, #1d1643 0%, #28205c 60%, #33297a 100%);
+      background: linear-gradient(160deg, var(--cv-card) 0%, var(--cv-raised) 60%, var(--cv-raised2) 100%);
       border-bottom: 1px solid rgba(157,114,255,0.22);
     }
 
@@ -79,7 +79,7 @@
 
     .logo-badge {
       background: linear-gradient(135deg, var(--mauve-dark), var(--mauve));
-      color: #ffffff;
+      color: var(--cv-white-ink);
       font-weight: 900;
       font-size: 18px;
       padding: 5px 14px;
@@ -104,7 +104,7 @@
       display: inline-block;
       background: rgba(112,72,216,0.18);
       border: 1px solid rgba(157,114,255,0.3);
-      color: #cbc3d6;
+      color: var(--cv-ink-soft2);
       font-size: 11px;
       font-weight: 700;
       padding: 4px 14px;
@@ -181,7 +181,7 @@
       display: flex;
       align-items: center;
       gap: 10px;
-      color: #cbc3d6;
+      color: var(--cv-ink-soft2);
     }
 
     .section-title::after {
@@ -236,24 +236,24 @@
 
     .tier-badge.gold {
       background: rgba(112,72,216,0.22);
-      color: #cbc3d6;
+      color: var(--cv-ink-soft2);
       border: 1px solid rgba(157,114,255,0.3);
     }
     .tier-badge.silver {
       background: rgba(112,72,216,0.27);
-      color: #9e97c2;
+      color: var(--cv-muted);
       border: 1px solid rgba(157,114,255,0.4);
     }
     .tier-badge.bronze {
       background: rgba(112,72,216,0.18);
-      color: #cebdff;
+      color: var(--cv-accent-ink);
       border: 1px solid rgba(157,114,255,0.3);
     }
 
     .plan-price {
       font-size: 26px;
       font-weight: 900;
-      color: #cbc3d6;
+      color: var(--cv-ink-soft2);
     }
 
     .plan-price-label { font-size: 11px; color: var(--muted); margin-bottom: 6px; }
@@ -278,7 +278,7 @@
       border-radius: 8px;
       padding: 6px 10px;
       font-size: 11px;
-      color: #cbc3d6;
+      color: var(--cv-ink-soft2);
       font-weight: 700;
       margin-top: 8px;
     }
@@ -297,7 +297,7 @@
       font-size: 14px;
       font-weight: 800;
       margin-bottom: 12px;
-      color: #cbc3d6;
+      color: var(--cv-ink-soft2);
     }
 
     .info-row {
@@ -333,7 +333,7 @@
     .extra-price {
       font-size: 20px;
       font-weight: 900;
-      color: #cbc3d6;
+      color: var(--cv-ink-soft2);
     }
 
     .extra-units {
@@ -362,4 +362,4 @@
       background: var(--mauve-xlight);
       border-top: 1px solid rgba(157,114,255,0.22);
     }
-    .footer a { color: #cbc3d6; text-decoration: none; font-weight: 700; }
+    .footer a { color: var(--cv-ink-soft2); text-decoration: none; font-weight: 700; }
