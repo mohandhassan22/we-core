@@ -71,7 +71,7 @@ mark{color:inherit}
 .cv-back svg{width:18px;height:18px;flex:none}
 [dir=rtl] .cv-back svg,html[dir=rtl] .cv-back svg{transform:scaleX(-1)}
 
-.cv-theme{position:fixed;bottom:max(16px,env(safe-area-inset-bottom));right:14px;z-index:2147483000;
+.cv-theme{position:absolute;top:12px;left:14px;z-index:2147483000;
   display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;padding:0;border-radius:9999px;
   background:var(--cv-pill-bg);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);
   border:1px solid var(--cv-pill-border);color:var(--cv-text);cursor:pointer;
@@ -80,7 +80,6 @@ mark{color:inherit}
 .cv-theme:hover{transform:scale(1.06);background:var(--cv-pill-bg-hover);box-shadow:var(--cv-pill-shadow-hover)}
 .cv-theme:active{transform:scale(.96)}
 .cv-theme svg{width:20px;height:20px;flex:none}
-body:has(.cv-back) .cv-theme{bottom:calc(max(16px,env(safe-area-inset-bottom)) + 50px)}
 .cv-theme .cv-ico-sun{display:none}
 :root[data-theme="light"] .cv-theme .cv-ico-sun{display:block}
 :root[data-theme="light"] .cv-theme .cv-ico-moon{display:none}
