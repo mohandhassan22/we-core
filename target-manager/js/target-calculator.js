@@ -17,6 +17,11 @@
 
     const TargetCalculator = {
         TOTAL_LINE_ITEMS: TOTAL_LINE_ITEMS,
+        getDaysInMonth: function (year, month) {
+            const y = parseInt(year, 10) || new Date().getFullYear();
+            const m = parseInt(month, 10) || (new Date().getMonth() + 1);
+            return new Date(y, m, 0).getDate();
+        },
 
         /**
          * Calculates total target for lines (PT12 + Super Kix + Tazbeet + WE Gold + Data)
@@ -62,7 +67,7 @@
         calculateProjection: function (achieve, elapsedDays, targetDays) {
             const a = parseFloat(achieve) || 0;
             const e = parseInt(elapsedDays, 10) || 0;
-            const t = parseInt(targetDays, 10) || 30;
+            const t = parseInt(targetDays, 10) || this.getDaysInMonth();
 
             if (e <= 0) return a;
             const dailyAvg = a / e;
@@ -83,7 +88,7 @@
          */
         calculateDailyTarget: function (target, targetDays) {
             const t = parseFloat(target) || 0;
-            const td = parseInt(targetDays, 10) || 30;
+            const td = parseInt(targetDays, 10) || this.getDaysInMonth();
             if (td <= 0) return 0;
             return parseFloat((t / td).toFixed(2));
         },
@@ -196,7 +201,7 @@
             const achievementPct = this.calculateAchievementPercentage(achieveLines, targetLines);
             const remaining = this.calculateRemaining(targetLines, achieveLines);
             const elapsed = Math.max(parseInt(elapsedDays, 10) || 1, 1);
-            const tDays = Math.max(parseInt(targetDays, 10) || 30, 1);
+            const tDays = Math.max(parseInt(targetDays, 10) || this.getDaysInMonth(), 1);
             const remainingDays = Math.max(tDays - elapsed, 1);
             const projection = this.calculateProjection(achieveLines, elapsed, tDays);
             const baseDailyTarget = this.calculateDailyTarget(targetLines, tDays);

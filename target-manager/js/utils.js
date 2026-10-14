@@ -31,23 +31,31 @@
             };
         },
 
+        /** Returns the calendar-day count for a month (28–31). */
+        getDaysInMonth: function (year, month) {
+            const y = parseInt(year, 10) || new Date().getFullYear();
+            const m = parseInt(month, 10) || (new Date().getMonth() + 1);
+            return new Date(y, m, 0).getDate();
+        },
+
         /**
          * Calculates elapsed target days up to today within a start & end date
          */
-        calculateElapsedDays: function (startDateStr, endDateStr, totalTargetDays = 30) {
+        calculateElapsedDays: function (startDateStr, endDateStr, totalTargetDays = null) {
             const today = new Date();
             today.setHours(0, 0, 0, 0);
 
             const start = startDateStr ? new Date(startDateStr) : new Date(today.getFullYear(), today.getMonth(), 1);
             const end = endDateStr ? new Date(endDateStr) : new Date(today.getFullYear(), today.getMonth() + 1, 0);
+            const targetDays = Math.max(parseInt(totalTargetDays, 10) || ((end.getFullYear() === start.getFullYear() && end.getMonth() === start.getMonth()) ? end.getDate() - start.getDate() + 1 : this.getDaysInMonth()), 1);
 
             if (today < start) return 1;
-            if (today > end) return totalTargetDays;
+            if (today > end) return targetDays;
 
             // Simple business/calendar day calculation
             const diffTime = Math.abs(today - start);
             const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1;
-            return Math.min(Math.max(diffDays, 1), totalTargetDays);
+            return Math.min(Math.max(diffDays, 1), targetDays);
         },
 
         /**

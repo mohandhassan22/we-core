@@ -16,6 +16,10 @@ function assertEqual(actual, expected, message) {
 
 console.log('--- RUNNING TARGET CALCULATOR TESTS ---');
 
+// 0. Calendar month length must drive full-month targets
+assertEqual(TargetCalculator.getDaysInMonth(2026, 10), 31, "October 2026 has 31 target days");
+assertEqual(TargetCalculator.getDaysInMonth(2026, 2), 28, "February 2026 has 28 target days");
+
 // 1. Total Lines Target
 const itemTargets = {
     pt12: 15,

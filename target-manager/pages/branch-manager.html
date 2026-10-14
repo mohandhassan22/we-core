@@ -124,7 +124,7 @@
                     <div class="items-grid" style="grid-template-columns: repeat(3, 1fr); margin-bottom:1rem;">
                         <div class="form-group"><label class="form-label">تاريخ البداية</label><input type="date" class="form-input" id="btgt_start"></div>
                         <div class="form-group"><label class="form-label">تاريخ النهاية</label><input type="date" class="form-input" id="btgt_end"></div>
-                        <div class="form-group"><label class="form-label">أيام العمل</label><input type="number" min="1" class="form-input" id="btgt_days" value="30"></div>
+                        <div class="form-group"><label class="form-label">أيام الشهر</label><input type="number" min="1" max="31" class="form-input" id="btgt_days" value="31" readonly></div>
                     </div>
                     <div class="items-grid" style="grid-template-columns: repeat(2, 1fr);">
                         <div class="form-group"><label class="form-label">توتل PT12 للفرع</label><input type="number" min="0" class="form-input branch-tgt-input" id="btgt_pt12" value="150"></div>
@@ -228,6 +228,10 @@
         const BT_ITEMS = ['pt12', 'super_kix', 'tazbeet', 'data', 'adsl', 'fixed', 'we_pay', 'we_gold'];
         const pad2 = (n) => String(n).padStart(2, '0');
         let btBranchId = null, btTargetId = null;
+        function calendarDaysFor(start) {
+            const d = start ? new Date(`${start}T00:00:00`) : new Date();
+            return new Date(d.getFullYear(), d.getMonth() + 1, 0).getDate();
+        }
 
         function readBranchTargets() {
             const t = {}; BT_ITEMS.forEach(k => t[k] = parseFloat(document.getElementById('btgt_' + k).value) || 0);
@@ -248,7 +252,7 @@
                     btTargetId = bt.id;
                     document.getElementById('btgt_start').value = bt.start_date;
                     document.getElementById('btgt_end').value = bt.end_date;
-                    document.getElementById('btgt_days').value = bt.target_days || 30;
+                    document.getElementById('btgt_days').value = calendarDaysFor(bt.start_date);
                     BT_ITEMS.forEach(k => document.getElementById('btgt_' + k).value = (bt.items && bt.items[k]) || 0);
                 }
             }
@@ -267,7 +271,7 @@
                 await TargetAPI.saveBranchTarget({
                     p_id: btTargetId, p_branch_id: btBranchId,
                     p_start: start, p_end: end,
-                    p_days: parseInt(document.getElementById('btgt_days').value) || 30,
+                    p_days: calendarDaysFor(start),
                     p_type: 'Full Month', p_items: readBranchTargets()
                 });
                 Utils.closeModal('branchTargetModal');

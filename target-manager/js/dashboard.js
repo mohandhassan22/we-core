@@ -118,11 +118,11 @@
                 itemAchieves.we_gold += parseFloat(log.we_gold) || 0;
             });
 
-            const elapsedDays = Utils.calculateElapsedDays(period?.start_date, period?.end_date, period?.target_days || 30);
+            const elapsedDays = Utils.calculateElapsedDays(period?.start_date, period?.end_date, period?.target_days || Utils.getDaysInMonth());
             const metrics = TargetCalculator.calculateMetrics(
                 itemTargets,
                 itemAchieves,
-                period?.target_days || 30,
+                period?.target_days || Utils.getDaysInMonth(),
                 elapsedDays,
                 logs
             );
@@ -268,7 +268,7 @@
 
         // Projection for one period: daily average so far x target days (elapsed days come from the period dates)
         projectionFor: function (period, achieve) {
-            const days = parseInt(period && period.target_days, 10) || 30;
+            const days = parseInt(period && period.target_days, 10) || Utils.getDaysInMonth();
             const elapsed = Utils.calculateElapsedDays(period && period.start_date, period && period.end_date, days);
             return TargetCalculator.calculateProjection(achieve, elapsed, days);
         },
@@ -320,7 +320,7 @@
                 totalBranchProj += empProj;
                 const empRem = TargetCalculator.calculateRemaining(empTarget, empAchieve);
                 const empStatus = TargetCalculator.calculateStatus(empPct, empProj, empTarget);
-                const empDays = parseInt(empPeriod && empPeriod.target_days, 10) || 30;
+                const empDays = parseInt(empPeriod && empPeriod.target_days, 10) || Utils.getDaysInMonth();
                 this.state.empIndex[String(emp.id)] = { name: emp.full_name || 'موظف', period: empPeriod || null, logs: empLogs };
 
                 employeeRows.push({
@@ -487,7 +487,7 @@
             const sep = {}; this.SEPARATE_ITEMS.forEach(it => sep[it.key] = { target: this.sumTargetsOf(period, [it.key]), achieve: this.sumLogsOf(empLogs, [it.key]) });
             const items = {}; this.ALL_ITEMS.forEach(([k]) => items[k] = { target: this.sumTargetsOf(period, [k]), achieve: this.sumLogsOf(empLogs, [k]) });
             const pct = TargetCalculator.calculateAchievementPercentage(achieve, target);
-            const days = parseInt(period && period.target_days, 10) || 30;
+            const days = parseInt(period && period.target_days, 10) || Utils.getDaysInMonth();
             this.state.empIndex[String(emp.id)] = { name: emp.full_name || 'موظف', period: period || null, logs: empLogs };
             return {
                 id: emp.id, name: emp.full_name || 'موظف', branch: emp.branch || 'غير محدد',
