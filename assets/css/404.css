@@ -3,8 +3,8 @@
         =======================*/
         .page_404 {
             padding: 40px 0;
-            background: #fff;
-            font-family: 'Arvo', serif;
+            background: #1d1643;
+            font-family: 'Plus Jakarta Sans','Cairo','Tajawal',sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -28,7 +28,7 @@
         .four_zero_four_bg h1 {
             font-size: 80px;
             margin: 0;
-            color: #333;
+            color: #f8f6ff;
         }
 
         .contant_box_404 {
@@ -39,17 +39,17 @@
         .contant_box_404 h3 {
             font-size: 30px;
             margin: 20px 0;
-            color: #333;
+            color: #f8f6ff;
         }
 
         .contant_box_404 p {
             font-size: 18px;
-            color: #666;
+            color: #cbc3d6;
             margin-bottom: 20px;
         }
 
         .link_404 {
-            color: #fff !important;
+            color: #ffffff !important;
             padding: 10px 20px;
             background: #39ac31;
             margin: 20px 0;

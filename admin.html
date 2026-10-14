@@ -7,9 +7,15 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.30.0/dist/tabler-icons.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-<link rel="stylesheet" href="assets/css/admin.css">
+<link rel="stylesheet" href="assets/css/admin.css?v=cv1">
 <link rel="icon" href="img/we-core.png" type="image/png">
 <script src="assets/js/auth.js?v=16.0.4"></script>
+<meta name="theme-color" content="#0D0A1C">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/cognitive-violet.css?v=1">
+<script src="assets/js/back-button.js?v=1" defer></script>
 </head>
 <body>
 <div class="shell">
@@ -122,7 +128,7 @@
             <div class="stat-info">
               <div class="stat-val">0</div>
               <div class="stat-lbl">طلبات جديدة</div>
-              <div class="stat-trend" style="color:var(--warning)">⚠ بانتظار المراجعة</div>
+              <div class="stat-trend" style="color:#f4c77b">⚠ بانتظار المراجعة</div>
             </div>
           </div>
         </div>
@@ -385,7 +391,7 @@
                 <i class="ti ti-arrow-right" style="font-size:16px"></i>
               </button>
               <h2 id="tableDataTitle">اسم الجدول</h2>
-              <span class="badge" id="tableRowCount" style="background:#eef2ff;color:#4338ca">0 صف</span>
+              <span class="badge" id="tableRowCount" style="background:rgba(82,115,224,0.16);color:#847bf4">0 صف</span>
             </div>
             <div class="sec-actions">
               <div class="search-wrap">
@@ -468,7 +474,7 @@
           <!-- رسالة لو الحساب مش أدمن أو مش مسجل دخول -->
           <div id="kt-gate" class="kt-card" style="display:none;">
             <h3>🔒 محتاج تسجل دخول كأدمن</h3>
-            <p id="kt-gate-msg" style="color:#a32020;font-size:13px;"></p>
+            <p id="kt-gate-msg" style="color:#f47b7b;font-size:13px;"></p>
           </div>
 
           <div id="kt-content" style="display:none;">
@@ -594,7 +600,7 @@
     </div>
     <div class="modal-ft">
       <button class="btn btn-secondary" onclick="hideModal('deleteModal')">إلغاء</button>
-      <button class="btn" id="confirmDeleteBtn" style="background:var(--danger);color:#fff">
+      <button class="btn" id="confirmDeleteBtn" style="background:var(--danger);color:#ffffff">
         <i class="ti ti-trash" style="font-size:16px"></i> حذف
       </button>
     </div>
@@ -635,7 +641,7 @@
     </div>
     <div class="modal-ft">
       <button class="btn btn-secondary" onclick="hideModal('deleteRowModal')">إلغاء</button>
-      <button class="btn" id="confirmDeleteRowBtn" style="background:var(--danger);color:#fff">
+      <button class="btn" id="confirmDeleteRowBtn" style="background:var(--danger);color:#ffffff">
         <i class="ti ti-trash" style="font-size:16px"></i> حذف
       </button>
     </div>
@@ -651,7 +657,7 @@
     </div>
     <div class="modal-body">
       <div style="text-align:center;padding:20px 0">
-        <div style="width:60px;height:60px;background:#d1fae5;color:#10b981;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 15px;font-size:30px">
+        <div style="width:60px;height:60px;background:rgba(82,224,151,0.16);color:#7bf4cc;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 15px;font-size:30px">
           <i class="ti ti-circle-check"></i>
         </div>
         <p id="successMessage"></p>
@@ -672,7 +678,7 @@
     </div>
     <div class="modal-body">
       <div style="text-align:center;padding:20px 0">
-        <div style="width:60px;height:60px;background:#fee2e2;color:#ef4444;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 15px;font-size:30px">
+        <div style="width:60px;height:60px;background:rgba(224,82,82,0.16);color:#f47b7b;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 15px;font-size:30px">
           <i class="ti ti-circle-x"></i>
         </div>
         <p id="errorMessage"></p>
@@ -685,7 +691,7 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="assets/js/admin.js"></script>
-<script src="assets/js/active-users-widget.js"></script>
+<script src="assets/js/admin.js?v=cv1"></script>
+<script src="assets/js/active-users-widget.js?v=cv1"></script>
 </body>
 </html>

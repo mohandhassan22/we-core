@@ -11,20 +11,20 @@
     --amber-deep:#9a4b12;
     --amber:#d9791f;
     --amber-mid:#f0a445;
-    --amber-light:#fdf0e2;
+    --amber-light:rgba(224,156,82,0.16);
     --teal:#1f6f6b;
-    --line:#f0dcc0;
-    --ink:#2c2113;
-    --paper:#fefaf4;
-    --white:#ffffff;
+    --line:rgba(224,165,82,0.16);
+    --ink:#1d1643;
+    --paper:#120e28;
+    --white:#1d1643;
   }
 
   *{box-sizing:border-box;margin:0;padding:0;}
 
   body{
-    background:linear-gradient(180deg,#fdf5ea 0%, #f8e9d3 100%);
-    font-family:'IBM Plex Sans Arabic','Tajawal',sans-serif;
-    color:var(--ink);
+    background:linear-gradient(180deg,rgba(224,164,82,0.16) 0%, rgba(224,167,82,0.16) 100%);
+    font-family:'Plus Jakarta Sans','Cairo','Tajawal',sans-serif;
+    color:#f4bf7b;
     padding:36px 16px 60px;
     min-height:100vh;
   }
@@ -43,7 +43,7 @@
     background:
       radial-gradient(circle at 88% -15%, rgba(31,111,107,0.35), transparent 45%),
       linear-gradient(120deg, var(--amber-deep) 0%, var(--amber) 55%, var(--amber-mid) 100%);
-    color:var(--white);
+    color:#ffffff;
     padding:44px 40px 30px;
     position:relative;
     overflow:hidden;
@@ -75,15 +75,15 @@
     width:34px;height:34px;border-radius:9px;
     background:var(--white);
     display:flex;align-items:center;justify-content:center;
-    color:var(--amber-deep);
-    font-family:'Tajawal',sans-serif;
+    color:#f4ae7b;
+    font-family:'Plus Jakarta Sans','Cairo','Tajawal',sans-serif;
     font-weight:900;
     font-size:16px;
   }
   .badge-season{
     font-size:12px;
     background:rgba(255,255,255,0.16);
-    border:1px solid rgba(255,255,255,0.38);
+    border:1px solid rgba(157,114,255,0.38);
     padding:6px 14px;
     border-radius:999px;
     font-weight:600;
@@ -97,7 +97,7 @@
     line-height:1.5;
     max-width:620px;
   }
-  .hero-title span{color:var(--teal);background:rgba(255,255,255,0.92);padding:1px 8px;border-radius:6px;}
+  .hero-title span{color:#7bf4ee;background:rgba(29,22,67,0.92);padding:1px 8px;border-radius:6px;}
   .hero-sub{
     position:relative;z-index:1;
     margin-top:16px;
@@ -106,7 +106,7 @@
     max-width:640px;
     color:rgba(255,255,255,0.94);
     background:rgba(255,255,255,0.1);
-    border-right:3px solid var(--teal);
+    border-right:3px solid #1f6f6b;
     padding:12px 16px;
     border-radius:8px;
   }
@@ -115,7 +115,7 @@
 
   /* ===== SECTION HEADERS ===== */
   .section{padding:32px 40px;}
-  .section + .section{border-top:1px solid var(--line);}
+  .section + .section{border-top:1px solid rgba(224,165,82,0.35);}
   .section-head{
     display:flex;
     align-items:center;
@@ -130,12 +130,12 @@
   .section-title{
     font-size:19px;
     font-weight:800;
-    color:var(--amber-deep);
+    color:#f4ae7b;
   }
   .lead-text{
     font-size:13.5px;
     line-height:1.9;
-    color:#5c4a35;
+    color:#f4bc7b;
     margin-bottom:16px;
   }
 
@@ -144,13 +144,13 @@
     width:100%;
     border-collapse:collapse;
     font-size:13px;
-    border:1px solid var(--line);
+    border:1px solid rgba(224,165,82,0.35);
     border-radius:14px;
     overflow:hidden;
   }
   table.spec-table thead th{
     background:var(--amber-deep);
-    color:#fff;
+    color:#ffffff;
     font-weight:700;
     padding:11px 10px;
     text-align:center;
@@ -158,15 +158,15 @@
   table.spec-table tbody td{
     padding:13px 10px;
     text-align:center;
-    border-left:1px solid var(--line);
+    border-left:1px solid rgba(224,165,82,0.35);
   }
   table.spec-table tbody td:last-child{border-left:none;}
-  .addon-name{font-weight:800;color:var(--amber-deep);background:var(--amber-light);}
-  .quota-cell{font-weight:800;color:var(--teal);}
+  .addon-name{font-weight:800;color:#f4ae7b;background:var(--amber-light);}
+  .quota-cell{font-weight:800;color:#7bf4ee;}
   .fee-free{
     display:inline-block;
     font-weight:800;
-    color:#fff;
+    color:#ffffff;
     background:var(--teal);
     padding:2px 12px;
     border-radius:999px;
@@ -176,7 +176,7 @@
   /* ===== ELIGIBLE CUSTOMERS ===== */
   .eligible-box{
     background:var(--paper);
-    border:1px solid var(--line);
+    border:1px solid rgba(224,165,82,0.35);
     border-radius:14px;
     padding:18px 20px;
   }
@@ -187,7 +187,7 @@
   }
   .exclude-label{
     font-weight:800;
-    color:var(--amber-deep);
+    color:#f4ae7b;
     font-size:13px;
     margin-bottom:8px;
   }
@@ -197,9 +197,9 @@
     gap:8px;
   }
   .exclude-tag{
-    background:#fff;
-    border:1px solid var(--amber-mid);
-    color:var(--amber-deep);
+    background:#1d1643;
+    border:1px solid #f0a445;
+    color:#f4ae7b;
     font-weight:700;
     font-size:12px;
     padding:6px 12px;
@@ -211,7 +211,7 @@
     display:flex;
     align-items:stretch;
     gap:0;
-    border:1px solid var(--line);
+    border:1px solid rgba(224,165,82,0.35);
     border-radius:14px;
     overflow:hidden;
   }
@@ -227,24 +227,24 @@
     left:-12px;
     top:50%;
     transform:translateY(-50%);
-    color:var(--amber-mid);
+    color:#f4be7b;
     font-size:18px;
     font-weight:900;
     z-index:2;
   }
   .method-step:nth-child(odd){background:var(--paper);}
-  .method-step:nth-child(even){background:#fff;}
+  .method-step:nth-child(even){background:#1d1643;}
   .method-num{
     width:26px;height:26px;
     border-radius:50%;
     background:var(--teal);
-    color:#fff;
+    color:#ffffff;
     font-weight:800;
     font-size:12px;
     display:flex;align-items:center;justify-content:center;
     margin:0 auto 10px;
   }
-  .method-step p{font-size:12.5px;line-height:1.8;color:var(--ink);}
+  .method-step p{font-size:12.5px;line-height:1.8;color:#f4bf7b;}
 
   /* ===== SMS PREVIEW ===== */
   .sms-wrap{
@@ -255,7 +255,7 @@
   }
   .sms-bubble{
     background:var(--paper);
-    border:1px solid var(--line);
+    border:1px solid rgba(224,165,82,0.35);
     border-radius:16px;
     padding:16px 18px;
     position:relative;
@@ -263,16 +263,16 @@
   .sms-lang{
     font-size:11px;
     font-weight:800;
-    color:var(--teal);
+    color:#7bf4ee;
     margin-bottom:8px;
     letter-spacing:0.5px;
   }
   .sms-text{
     font-size:12.5px;
     line-height:1.9;
-    color:var(--ink);
+    color:#f4bf7b;
   }
-  .sms-text.en{direction:ltr;text-align:left;font-family:'IBM Plex Sans Arabic',sans-serif;}
+  .sms-text.en{direction:ltr;text-align:left;font-family:'Plus Jakarta Sans','Cairo','Tajawal',sans-serif;}
 
   /* ===== TERMS ===== */
   .terms{list-style:none;}
@@ -283,7 +283,7 @@
     font-size:13.5px;
     line-height:1.9;
     padding:9px 0;
-    border-bottom:1px dashed var(--line);
+    border-bottom:1px dashed rgba(224,165,82,0.35);
   }
   .terms li:last-child{border-bottom:none;}
   .terms li::before{
@@ -298,7 +298,7 @@
   /* ===== DURATION BAR ===== */
   .duration-bar{
     background:linear-gradient(90deg, var(--amber-deep), var(--amber));
-    color:#fff;
+    color:#ffffff;
     padding:16px 40px;
     display:flex;
     align-items:center;
@@ -332,6 +332,12 @@
     .duration-bar{flex-direction:column;gap:8px;padding:16px 20px;text-align:center;}
   }
 </style>
+<meta name="theme-color" content="#0D0A1C">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../assets/css/cognitive-violet.css?v=1">
+<script src="../../assets/js/back-button.js?v=1" defer></script>
 </head>
 <body>
 
@@ -341,8 +347,8 @@
   <div class="hero">
     <svg class="reconnect-line" viewBox="0 0 800 70" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
       <path d="M0,50 Q200,10 400,50 T800,50" fill="none" stroke="rgba(255,255,255,0.25)" stroke-width="3" stroke-dasharray="2 10"/>
-      <path d="M400,50 Q600,20 800,50" fill="none" stroke="#1f6f6b" stroke-width="3"/>
-      <circle cx="400" cy="50" r="6" fill="#1f6f6b"/>
+      <path d="M400,50 Q600,20 800,50" fill="none" stroke="#7bf4ee" stroke-width="3"/>
+      <circle cx="400" cy="50" r="6" fill="#7bf4ee"/>
     </svg>
     <div class="hero-top">
       <div class="brand">
@@ -470,6 +476,6 @@
 
 </div>
 
-<script src="../../assets/js/active-users-widget.js"></script>
+<script src="../../assets/js/active-users-widget.js?v=cv1"></script>
 </body>
 </html>

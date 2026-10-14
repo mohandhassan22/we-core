@@ -1,27 +1,27 @@
 :root {
-      --bg: #f5f0f8;
-      --surface: #ede6f4;
-      --card: #ffffff;
-      --card2: #f9f5fc;
-      --border: #d9cee8;
-      --accent: #8b5ca8;
-      --accent2: #b07cc6;
-      --accent-light: #c49dd8;
-      --text: #2a1a3e;
-      --muted: #8a7a9e;
-      --we-purple: #6b3d9a;
+      --bg: #120e28;
+      --surface: #28205c;
+      --card: #1d1643;
+      --card2: #120e28;
+      --border: #28205c;
+      --accent: #7048d8;
+      --accent2: #9e97c2;
+      --accent-light: #33297a;
+      --text: #e6dff9;
+      --muted: #9e97c2;
+      --we-purple: #5120b8;
 
-      --mauve: #8b5ca8;
-      --mauve-dark: #5e3478;
-      --mauve-light: #c9a8df;
-      --mauve-xlight: #ede6f4;
-      --white: #ffffff;
+      --mauve: #7048d8;
+      --mauve-dark: #5120b8;
+      --mauve-light: #33297a;
+      --mauve-xlight: #28205c;
+      --white: #1d1643;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
-      font-family: 'Cairo', sans-serif;
+      font-family: 'Plus Jakarta Sans','Cairo','Tajawal',sans-serif;
       background: var(--bg);
       color: var(--text);
       min-height: 100vh;
@@ -32,7 +32,7 @@
       content: '';
       position: fixed;
       inset: 0;
-      background-image: radial-gradient(circle, rgba(139,92,168,.08) 1px, transparent 1px);
+      background-image: radial-gradient(circle, rgba(112,72,216,0.14) 1px, transparent 1px);
       background-size: 24px 24px;
       pointer-events: none;
       z-index: 0;
@@ -44,8 +44,8 @@
       position: relative;
       padding: 0 18px 0;
       overflow: hidden;
-      background: linear-gradient(160deg, #ffffff 0%, #ede6f4 60%, #d5bee8 100%);
-      border-bottom: 1px solid var(--border);
+      background: linear-gradient(160deg, #1d1643 0%, #28205c 60%, #33297a 100%);
+      border-bottom: 1px solid rgba(157,114,255,0.22);
     }
 
     .hero::before {
@@ -53,8 +53,8 @@
       position: absolute;
       inset: 0;
       background:
-        radial-gradient(ellipse 80% 55% at 50% -10%, rgba(139,92,168,.18) 0%, transparent 60%),
-        radial-gradient(ellipse 50% 35% at 90% 80%, rgba(176,124,198,.12) 0%, transparent 55%);
+        radial-gradient(ellipse 80% 55% at 50% -10%, rgba(112,72,216,0.32) 0%, transparent 60%),
+        radial-gradient(ellipse 50% 35% at 90% 80%, rgba(112,72,216,0.22) 0%, transparent 55%);
       pointer-events: none;
     }
 
@@ -79,13 +79,13 @@
 
     .logo-badge {
       background: linear-gradient(135deg, var(--mauve-dark), var(--mauve));
-      color: #fff;
+      color: #ffffff;
       font-weight: 900;
       font-size: 18px;
       padding: 5px 14px;
       border-radius: 9px;
       letter-spacing: 2px;
-      box-shadow: 0 4px 14px rgba(139,92,168,.3);
+      box-shadow: 0 4px 14px rgba(112,72,216,0.45);
     }
 
     .hero-body {
@@ -97,14 +97,14 @@
       font-size: 52px;
       margin-bottom: 16px;
       display: block;
-      filter: drop-shadow(0 0 18px rgba(139,92,168,.35));
+      filter: drop-shadow(0 0 18px rgba(112,72,216,0.45));
     }
 
     .hero-tag {
       display: inline-block;
-      background: rgba(139,92,168,.1);
-      border: 1px solid rgba(139,92,168,.3);
-      color: var(--mauve-dark);
+      background: rgba(112,72,216,0.18);
+      border: 1px solid rgba(157,114,255,0.3);
+      color: #cbc3d6;
       font-size: 11px;
       font-weight: 700;
       padding: 4px 14px;
@@ -122,7 +122,7 @@
     }
 
     .hero h1 span {
-      background: linear-gradient(90deg, var(--mauve-dark), var(--accent2));
+      background: linear-gradient(90deg, #cbc3d6, var(--accent2));
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
@@ -150,7 +150,7 @@
       align-items: center;
       gap: 7px;
       background: var(--white);
-      border: 1px solid var(--border);
+      border: 1px solid rgba(157,114,255,0.22);
       border-radius: 40px;
       padding: 9px 16px;
       font-size: 13px;
@@ -158,7 +158,7 @@
       white-space: nowrap;
       flex-shrink: 0;
       color: var(--text);
-      box-shadow: 0 2px 8px rgba(139,92,168,.08);
+      box-shadow: 0 2px 8px rgba(112,72,216,0.2);
     }
 
     .feat-chip .dot {
@@ -181,7 +181,7 @@
       display: flex;
       align-items: center;
       gap: 10px;
-      color: var(--mauve-dark);
+      color: #cbc3d6;
     }
 
     .section-title::after {
@@ -200,29 +200,29 @@
 
     .plan-card {
       background: var(--white);
-      border: 1px solid var(--border);
+      border: 1px solid rgba(157,114,255,0.22);
       border-radius: 18px;
       padding: 18px 14px 16px;
       text-align: center;
       position: relative;
       transition: transform .2s, border-color .2s, box-shadow .2s;
-      box-shadow: 0 2px 12px rgba(139,92,168,.07);
+      box-shadow: 0 2px 12px rgba(112,72,216,0.2);
     }
 
     .plan-card:hover {
       transform: translateY(-3px);
-      border-color: var(--accent);
-      box-shadow: 0 8px 24px rgba(139,92,168,.15);
+      border-color: rgba(157,114,255,0.22);
+      box-shadow: 0 8px 24px rgba(112,72,216,0.27);
     }
 
     .plan-card.gold-card {
-      border-color: rgba(139,92,168,.35);
-      background: linear-gradient(135deg, rgba(139,92,168,.06), rgba(176,124,198,.04));
+      border-color: rgba(157,114,255,0.35);
+      background: linear-gradient(135deg, rgba(112,72,216,0.11), rgba(112,72,216,0.07));
     }
 
     .plan-card.silver-card {
-      border-color: rgba(139,92,168,.2);
-      background: linear-gradient(135deg, rgba(201,168,223,.08), transparent);
+      border-color: rgba(157,114,255,0.2);
+      background: linear-gradient(135deg, rgba(112,72,216,0.14), transparent);
     }
 
     .tier-badge {
@@ -235,25 +235,25 @@
     }
 
     .tier-badge.gold {
-      background: rgba(139,92,168,.12);
-      color: var(--mauve-dark);
-      border: 1px solid rgba(139,92,168,.3);
+      background: rgba(112,72,216,0.22);
+      color: #cbc3d6;
+      border: 1px solid rgba(157,114,255,0.3);
     }
     .tier-badge.silver {
-      background: rgba(201,168,223,.15);
-      color: #7a5298;
-      border: 1px solid rgba(201,168,223,.4);
+      background: rgba(112,72,216,0.27);
+      color: #9e97c2;
+      border: 1px solid rgba(157,114,255,0.4);
     }
     .tier-badge.bronze {
-      background: rgba(176,124,198,.1);
-      color: #9b6ab8;
-      border: 1px solid rgba(176,124,198,.3);
+      background: rgba(112,72,216,0.18);
+      color: #cebdff;
+      border: 1px solid rgba(157,114,255,0.3);
     }
 
     .plan-price {
       font-size: 26px;
       font-weight: 900;
-      color: var(--mauve-dark);
+      color: #cbc3d6;
     }
 
     .plan-price-label { font-size: 11px; color: var(--muted); margin-bottom: 6px; }
@@ -273,12 +273,12 @@
     }
 
     .plan-coupon {
-      background: rgba(139,92,168,.07);
-      border: 1px dashed rgba(139,92,168,.35);
+      background: rgba(112,72,216,0.13);
+      border: 1px dashed rgba(157,114,255,0.35);
       border-radius: 8px;
       padding: 6px 10px;
       font-size: 11px;
-      color: var(--mauve-dark);
+      color: #cbc3d6;
       font-weight: 700;
       margin-top: 8px;
     }
@@ -286,18 +286,18 @@
     /* INFO BOXES */
     .info-box {
       background: var(--white);
-      border: 1px solid var(--border);
+      border: 1px solid rgba(157,114,255,0.22);
       border-radius: 16px;
       padding: 18px;
       margin-bottom: 12px;
-      box-shadow: 0 2px 10px rgba(139,92,168,.06);
+      box-shadow: 0 2px 10px rgba(112,72,216,0.2);
     }
 
     .info-box h3 {
       font-size: 14px;
       font-weight: 800;
       margin-bottom: 12px;
-      color: var(--mauve-dark);
+      color: #cbc3d6;
     }
 
     .info-row {
@@ -305,7 +305,7 @@
       justify-content: space-between;
       align-items: center;
       padding: 8px 0;
-      border-bottom: 1px solid var(--border);
+      border-bottom: 1px solid rgba(157,114,255,0.22);
       font-size: 13px;
       gap: 12px;
     }
@@ -323,17 +323,17 @@
 
     .extra-card {
       background: var(--white);
-      border: 1px solid var(--border);
+      border: 1px solid rgba(157,114,255,0.22);
       border-radius: 14px;
       padding: 14px 10px;
       text-align: center;
-      box-shadow: 0 2px 8px rgba(139,92,168,.06);
+      box-shadow: 0 2px 8px rgba(112,72,216,0.2);
     }
 
     .extra-price {
       font-size: 20px;
       font-weight: 900;
-      color: var(--mauve-dark);
+      color: #cbc3d6;
     }
 
     .extra-units {
@@ -360,6 +360,6 @@
       color: var(--muted);
       font-size: 12px;
       background: var(--mauve-xlight);
-      border-top: 1px solid var(--border);
+      border-top: 1px solid rgba(157,114,255,0.22);
     }
-    .footer a { color: var(--mauve-dark); text-decoration: none; font-weight: 700; }
+    .footer a { color: #cbc3d6; text-decoration: none; font-weight: 700; }

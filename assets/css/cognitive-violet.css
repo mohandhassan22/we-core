@@ -1,0 +1,36 @@
+/* Cognitive Violet System — shared layer for every WE-Core page */
+:root{
+  --cv-canvas:#0D0A1C; --cv-deep:#120E28; --cv-card:#1D1643; --cv-raised:#28205C;
+  --cv-primary:#7048D8; --cv-secondary:#9D72FF; --cv-tertiary:#D199FF; --cv-electric:#B366FF;
+  --cv-text:#F8F6FF; --cv-muted:#9E97C2;
+  --cv-border:rgba(157,114,255,.18); --cv-glow:rgba(112,72,216,.35);
+  --cv-font-head:'Sora','Cairo','Tajawal',sans-serif;
+  --cv-font-body:'Plus Jakarta Sans','Cairo','Tajawal',sans-serif;
+  --cv-font-label:'Space Grotesk','Cairo','Tajawal',sans-serif;
+}
+html{background:var(--cv-canvas);color-scheme:dark}
+button,input,select,textarea{font-family:var(--cv-font-label)}
+input,select,textarea{color-scheme:dark}
+mark{color:inherit}
+::selection{background:rgba(157,114,255,.45);color:#fff}
+:focus-visible{outline:2px solid var(--cv-secondary);outline-offset:2px;box-shadow:0 0 0 3px rgba(112,72,216,.25)}
+*{scrollbar-color:#4a3a9a var(--cv-deep)}
+::-webkit-scrollbar{width:10px;height:10px}
+::-webkit-scrollbar-track{background:var(--cv-deep)}
+::-webkit-scrollbar-thumb{background:#3a2d85;border-radius:9999px;border:2px solid var(--cv-deep)}
+::-webkit-scrollbar-thumb:hover{background:var(--cv-primary)}
+
+/* unified back button (injected by back-button.js) */
+/* floating action pill, bottom-left on every page */
+.cv-back{position:fixed;bottom:max(16px,env(safe-area-inset-bottom));right:14px;z-index:2147483000;
+  display:inline-flex;align-items:center;gap:6px;height:40px;padding:0 14px 0 10px;border-radius:9999px;
+  background:rgba(29,22,67,.78);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);
+  border:1px solid rgba(157,114,255,.3);color:var(--cv-text);text-decoration:none;cursor:pointer;
+  font:600 13px/1 var(--cv-font-label);letter-spacing:.2px;
+  box-shadow:0 12px 32px -8px rgba(13,10,28,.8),0 0 20px rgba(112,72,216,.25);
+  transition:transform .2s ease,box-shadow .2s ease,background .2s ease}
+.cv-back:hover{transform:scale(1.03);background:rgba(40,32,92,.92);box-shadow:0 12px 32px -8px rgba(13,10,28,.8),0 0 16px rgba(157,114,255,.45)}
+.cv-back:active{transform:scale(.98)}
+.cv-back svg{width:18px;height:18px;flex:none}
+[dir=rtl] .cv-back svg,html[dir=rtl] .cv-back svg{transform:scaleX(-1)}
+@media print{.cv-back{display:none!important}}

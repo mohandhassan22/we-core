@@ -11,27 +11,27 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         :root {
-            --purple-light: #e9d5ff;
-            --purple-mid: #d8b4fe;
-            --purple-main: #a855f7;
-            --purple-dark: #6b21a8;
-            --purple-darker: #4c0519;
-            --white: #ffffff;
-            --light-bg: #faf7ff;
-            --dark-text: #1e1030;
-            --light-text: #6b5c8a;
+            --purple-light: #28205c;
+            --purple-mid: #28205c;
+            --purple-main: #8a62f0;
+            --purple-dark: #5120b8;
+            --purple-darker: #1d1643;
+            --white: #1d1643;
+            --light-bg: #120e28;
+            --dark-text: #e6dff9;
+            --light-text: #9e97c2;
             --success: #06d6a0;
-            --warning: #ffd166;
+            --warning: rgba(224,181,82,0.24);
             --danger: #ef476f;
-            --shadow: 0 10px 30px rgba(168, 85, 247, 0.15);
-            --shadow-hover: 0 15px 40px rgba(107, 33, 168, 0.25);
+            --shadow: 0 10px 30px rgba(112,72,216,0.27);
+            --shadow-hover: 0 15px 40px rgba(112,72,216,0.45);
             --border-radius: 16px;
             --transition: all 0.3s ease;
         }
 
         body {
-            font-family: 'Cairo', sans-serif;
-            background: linear-gradient(135deg, #faf7ff 0%, #f3f0ff 50%, #ffffff 100%);
+            font-family: 'Plus Jakarta Sans','Cairo','Tajawal',sans-serif;
+            background: linear-gradient(135deg, #0d0a1c 0%, #0d0a1c 50%, #0d0a1c 100%);
             color: var(--dark-text);
             line-height: 1.7;
             overflow-x: hidden;
@@ -48,7 +48,7 @@
 
         .logo {
             display: flex; align-items: center; gap: 12px;
-            color: var(--white); font-weight: 700; font-size: 1.5rem;
+            color: #ffffff; font-weight: 700; font-size: 1.5rem;
         }
 
         .back-to-home {
@@ -57,51 +57,51 @@
             justify-content: center;
             width: 36px;
             height: 36px;
-            background: rgba(255, 255, 255, 0.2);
+            background: rgba(255,255,255,0.2);
             border-radius: 50%;
-            color: var(--white);
+            color: #ffffff;
             text-decoration: none;
             font-size: 1.5rem;
             transition: var(--transition);
             cursor: pointer;
-            border: 1px solid rgba(255, 255, 255, 0.3);
+            border: 1px solid rgba(157,114,255,0.3);
         }
 
         .back-to-home:hover {
-            background: rgba(255, 255, 255, 0.3);
+            background: rgba(255,255,255,0.3);
             transform: translateX(3px);
         }
 
         .logo-icon {
             width: 40px; height: 40px; background: var(--white);
             border-radius: 50%; display: flex; align-items: center; justify-content: center;
-            font-weight: 800; color: var(--purple-dark); font-size: 1.2rem;
+            font-weight: 800; color: #cebdff; font-size: 1.2rem;
         }
 
         nav ul { display: flex; list-style: none; gap: 1.5rem; }
         nav a {
-            color: var(--white); text-decoration: none; font-weight: 500;
+            color: #ffffff; text-decoration: none; font-weight: 500;
             padding: 8px 12px; border-radius: 8px; transition: var(--transition);
         }
-        nav a:hover, nav a.active { background: rgba(255, 255, 255, 0.2); }
+        nav a:hover, nav a.active { background: rgba(255,255,255,0.2); }
 
         .cta-button {
-            background: var(--white); color: var(--purple-dark); border: none;
+            background: var(--white); color: #cebdff; border: none;
             padding: 10px 24px; border-radius: 50px; font-weight: 600;
             cursor: pointer; transition: var(--transition);
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         }
-        .cta-button:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15); }
+        .cta-button:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.15); }
 
         /* Hero */
         .hero {
             background: linear-gradient(135deg, var(--purple-main) 0%, var(--purple-dark) 100%);
-            color: var(--white); padding: 4rem 2rem; text-align: center;
+            color: #ffffff; padding: 4rem 2rem; text-align: center;
             position: relative; overflow: hidden;
         }
         .hero::before, .hero::after {
             content: ""; position: absolute; border-radius: 50%;
-            background: rgba(255, 255, 255, 0.1); z-index: 0;
+            background: rgba(255,255,255,0.1); z-index: 0;
         }
         .hero::before { width: 600px; height: 600px; top: -200px; left: -100px; }
         .hero::after { width: 400px; height: 400px; bottom: -100px; right: -50px; background: rgba(255,255,255,0.07); }
@@ -117,7 +117,7 @@
             padding: 2rem;
             max-width: 600px;
             margin: 0 auto 2rem;
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.2);
             position: relative; z-index: 2;
         }
 
@@ -125,7 +125,7 @@
             display: block;
             font-weight: 600;
             margin-bottom: 12px;
-            color: var(--purple-dark);
+            color: #cebdff;
             font-size: 1.1rem;
         }
 
@@ -138,10 +138,10 @@
         #countrySelect {
             flex: 1;
             padding: 14px 20px;
-            border: 2px solid rgba(168, 85, 247, 0.3);
+            border: 2px solid rgba(157,114,255,0.3);
             border-radius: 12px;
             font-size: 1.05rem;
-            font-family: 'Cairo', sans-serif;
+            font-family: 'Plus Jakarta Sans','Cairo','Tajawal',sans-serif;
             background: var(--light-bg);
             color: var(--dark-text);
             cursor: pointer;
@@ -155,39 +155,39 @@
 
         #countrySelect:focus {
             outline: none;
-            border-color: var(--purple-main);
-            box-shadow: 0 0 0 4px rgba(168, 85, 247, 0.15);
+            border-color: rgba(157,114,255,0.22);
+            box-shadow: 0 0 0 4px rgba(112,72,216,0.27);
         }
 
         #showPackagesBtn {
             background: linear-gradient(90deg, var(--purple-main), var(--purple-dark));
-            color: white; border: none; padding: 14px 28px;
+            color: #ffffff; border: none; padding: 14px 28px;
             border-radius: 12px; font-weight: 600; font-size: 1rem;
             cursor: pointer; transition: var(--transition);
             white-space: nowrap;
         }
         #showPackagesBtn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(168, 85, 247, 0.4);
+            box-shadow: 0 8px 25px rgba(112,72,216,0.45);
         }
         #showPackagesBtn:disabled {
-            background: #e0d1ff; cursor: not-allowed; transform: none;
+            background: #28205c; cursor: not-allowed; transform: none;
         }
 
         .hero-buttons { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
         .btn-primary {
-            background: var(--white); color: var(--purple-dark); border: none;
+            background: var(--white); color: #cebdff; border: none;
             padding: 14px 32px; border-radius: 50px; font-weight: 700;
             font-size: 1.1rem; cursor: pointer; transition: var(--transition);
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
         }
-        .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2); }
+        .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 8px 25px rgba(0,0,0,0.2); }
         .btn-secondary {
-            background: transparent; color: var(--white); border: 2px solid var(--white);
+            background: transparent; color: #ffffff; border: 2px solid rgba(157,114,255,0.18);
             padding: 13px 30px; border-radius: 50px; font-weight: 600;
             font-size: 1.1rem; cursor: pointer; transition: var(--transition);
         }
-        .btn-secondary:hover { background: rgba(255, 255, 255, 0.15); }
+        .btn-secondary:hover { background: rgba(255,255,255,0.15); }
 
         /* Packages Section - Hidden by default */
         .section { padding: 4rem 2rem; max-width: 1200px; margin: 0 auto; }
@@ -201,7 +201,7 @@
 
         .section-title { text-align: center; margin-bottom: 3rem; }
         .section-title h2 {
-            font-size: 2.2rem; color: var(--purple-dark); margin-bottom: 1rem;
+            font-size: 2.2rem; color: #cebdff; margin-bottom: 1rem;
             position: relative; display: inline-block;
         }
         .section-title h2::after {
@@ -214,17 +214,17 @@
 
         .selected-country-badge {
             text-align: center;
-            background: linear-gradient(135deg, rgba(67,97,238,0.1), rgba(114,9,183,0.1));
+            background: linear-gradient(135deg, rgba(67,97,238,0.1), rgba(112,72,216,0.18));
             padding: 12px 25px;
             border-radius: 50px;
             display: inline-block;
             margin-bottom: 2rem;
             font-weight: 600;
-            color: var(--purple-dark);
-            border: 1px solid rgba(114, 9, 183, 0.2);
+            color: #cebdff;
+            border: 1px solid rgba(157,114,255,0.2);
         }
         .selected-country-badge span {
-            color: var(--purple-main);
+            color: #cebdff;
             font-weight: 700;
             margin-right: 5px;
         }
@@ -237,11 +237,11 @@
         .package-card {
             background: var(--white); border-radius: var(--border-radius);
             padding: 2rem; box-shadow: var(--shadow); transition: var(--transition);
-            position: relative; overflow: hidden; border: 1px solid rgba(67, 97, 238, 0.1);
+            position: relative; overflow: hidden; border: 1px solid rgba(67,97,238,0.1);
         }
         .package-card:hover {
             transform: translateY(-8px); box-shadow: var(--shadow-hover);
-            border-color: rgba(114, 9, 183, 0.3);
+            border-color: rgba(157,114,255,0.3);
         }
         .package-card::before {
             content: ""; position: absolute; top: 0; right: 0; width: 5px; height: 100%;
@@ -253,10 +253,10 @@
 
         .package-header {
             margin-bottom: 1.5rem; padding-bottom: 1.2rem;
-            border-bottom: 1px dashed rgba(67, 97, 238, 0.2);
+            border-bottom: 1px dashed rgba(67,97,238,0.2);
         }
-        .package-name { font-size: 1.5rem; font-weight: 700; color: var(--purple-dark); margin-bottom: 0.5rem; }
-        .package-price { font-size: 2.2rem; font-weight: 800; color: var(--purple-main); }
+        .package-name { font-size: 1.5rem; font-weight: 700; color: #cebdff; margin-bottom: 0.5rem; }
+        .package-price { font-size: 2.2rem; font-weight: 800; color: #cebdff; }
         .package-price span { font-size: 1rem; font-weight: 400; color: var(--light-text); }
 
         .package-features { list-style: none; margin: 1.5rem 0; }
@@ -264,7 +264,7 @@
             padding: 0.6rem 0; display: flex; align-items: flex-start; gap: 10px;
         }
         .package-features li::before {
-            content: "✓"; color: var(--success); font-weight: bold;
+            content: "✓"; color: #7bf4d5; font-weight: bold;
             font-size: 1.1rem; min-width: 20px;
         }
 
@@ -272,17 +272,17 @@
         .subscribe-btn {
             width: 100%; padding: 12px;
             background: linear-gradient(90deg, var(--purple-main), var(--purple-mid));
-            color: white; border: none; border-radius: 12px;
+            color: #ffffff; border: none; border-radius: 12px;
             font-weight: 600; font-size: 1.05rem; cursor: pointer; transition: var(--transition);
         }
-        .subscribe-btn:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(67, 97, 238, 0.4); }
+        .subscribe-btn:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(67,97,238,0.4); }
 
         .popular-badge {
             position: absolute; top: 15px; left: -30px;
             background: linear-gradient(45deg, var(--purple-mid), var(--purple-dark));
-            color: white; padding: 5px 40px; font-size: 0.85rem;
+            color: #ffffff; padding: 5px 40px; font-size: 0.85rem;
             font-weight: 600; transform: rotate(-45deg);
-            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 3px 10px rgba(0,0,0,0.15);
         }
 
         /* Tips Section */
@@ -301,9 +301,9 @@
             min-width: 45px; height: 45px;
             background: linear-gradient(135deg, var(--purple-main), var(--purple-mid));
             border-radius: 12px; display: flex; align-items: center; justify-content: center;
-            color: white; font-weight: bold; font-size: 1.3rem;
+            color: #ffffff; font-weight: bold; font-size: 1.3rem;
         }
-        .tip-content h3 { font-size: 1.3rem; margin-bottom: 0.5rem; color: var(--purple-dark); }
+        .tip-content h3 { font-size: 1.3rem; margin-bottom: 0.5rem; color: #cebdff; }
 
         /* Countries Preview */
         .countries-preview {
@@ -318,21 +318,21 @@
             background: var(--light-bg); padding: 10px 12px; border-radius: 10px;
             text-align: center; font-size: 0.9rem; font-weight: 500;
             transition: var(--transition); cursor: pointer;
-            border: 1px solid rgba(67, 97, 238, 0.1);
+            border: 1px solid rgba(67,97,238,0.1);
         }
         .country-chip:hover {
-            background: linear-gradient(135deg, rgba(67,97,238,0.08), rgba(114,9,183,0.08));
-            border-color: rgba(114, 9, 183, 0.3); transform: translateY(-2px);
+            background: linear-gradient(135deg, rgba(67,97,238,0.08), rgba(112,72,216,0.14));
+            border-color: rgba(157,114,255,0.3); transform: translateY(-2px);
         }
 
         /* Special Prices */
         .special-prices {
-            background: linear-gradient(135deg, rgba(67,97,238,0.1), rgba(114,9,183,0.1));
+            background: linear-gradient(135deg, rgba(67,97,238,0.1), rgba(112,72,216,0.18));
             border-radius: 16px; padding: 1.8rem; margin: 2rem 0;
-            border-right: 4px solid var(--purple-mid);
+            border-right: 4px solid rgba(157,114,255,0.22);
         }
         .special-prices h3 {
-            color: var(--purple-dark); margin-bottom: 1rem;
+            color: #cebdff; margin-bottom: 1rem;
             display: flex; align-items: center; gap: 10px;
         }
         .special-prices ul { padding-right: 1.5rem; }
@@ -348,12 +348,12 @@
         .faq-item:hover { box-shadow: var(--shadow-hover); }
         .faq-question {
             padding: 1.4rem 1.8rem; font-weight: 600; font-size: 1.15rem;
-            color: var(--purple-dark); cursor: pointer;
+            color: #cebdff; cursor: pointer;
             display: flex; justify-content: space-between; align-items: center;
-            background: rgba(248, 249, 255, 0.7);
+            background: rgba(29,22,67,0.7);
         }
         .faq-question::after {
-            content: "+"; font-size: 1.5rem; color: var(--purple-main); transition: var(--transition);
+            content: "+"; font-size: 1.5rem; color: #cebdff; transition: var(--transition);
         }
         .faq-item.active .faq-question::after { content: "−"; }
         .faq-answer {
@@ -365,12 +365,12 @@
         /* Contact */
         .contact-section {
             background: linear-gradient(135deg, var(--purple-dark), var(--purple-main));
-            color: var(--white); text-align: center; padding: 3.5rem 2rem;
+            color: #ffffff; text-align: center; padding: 3.5rem 2rem;
             border-radius: 24px; margin: 3rem 0; position: relative; overflow: hidden;
         }
         .contact-section::before, .contact-section::after {
             content: ""; position: absolute; border-radius: 50%;
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(255,255,255,0.1);
         }
         .contact-section::before { width: 300px; height: 300px; top: -100px; left: -50px; }
         .contact-section::after { width: 200px; height: 200px; bottom: -50px; right: -30px; background: rgba(255,255,255,0.08); }
@@ -378,13 +378,13 @@
         .contact-section h2 { font-size: 2.3rem; margin-bottom: 1.2rem; }
         .contact-section p { font-size: 1.25rem; margin-bottom: 2rem; opacity: 0.95; }
         .contact-number {
-            display: inline-block; background: var(--white); color: var(--purple-mid);
+            display: inline-block; background: var(--white); color: #d8b4fe;
             font-size: 1.8rem; font-weight: 800; padding: 12px 35px;
             border-radius: 50px; margin: 10px 0; letter-spacing: 1px;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
         }
         .contact-note {
-            background: rgba(255, 255, 255, 0.15); display: inline-block;
+            background: rgba(255,255,255,0.15); display: inline-block;
             padding: 8px 20px; border-radius: 50px; margin-top: 15px; font-weight: 500;
         }
 
@@ -412,6 +412,12 @@
             .package-price { font-size: 1.7rem; }
         }
     </style>
+<meta name="theme-color" content="#0D0A1C">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/cognitive-violet.css?v=1">
+<script src="../assets/js/back-button.js?v=1" defer></script>
 </head>
 <body>
     <!-- Header -->
@@ -616,7 +622,7 @@
             <p>تتوفر خدمات التجوال في أكثر من 150 دولة حول العالم</p>
         </div>
         <div class="countries-preview">
-            <p style="text-align: center; font-weight: 500; color: var(--purple-dark); margin-bottom: 1rem;">
+            <p style="text-align: center; font-weight: 500; color: #e6dff9; margin-bottom: 1rem;">
                 اضغط على أي دولة لعرض باقاتها بسرعة:
             </p>
             <div class="countries-grid">
@@ -897,6 +903,6 @@
             packagesSection.classList.remove('visible');
         });
     </script>
-<script src="../assets/js/active-users-widget.js"></script>
+<script src="../assets/js/active-users-widget.js?v=cv1"></script>
 </body>
 </html>

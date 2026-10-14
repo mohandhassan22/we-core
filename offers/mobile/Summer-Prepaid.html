@@ -9,27 +9,27 @@
 <link href="https://fonts.googleapis.com/css2?family=Lalezar&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root{
-    --purple-deep:#3D1A54;
-    --purple-mid:#5B2A86;
-    --gold:#F4A628;
-    --coral:#EE5D6C;
-    --cream:#FBF7FF;
-    --ink:#241933;
-    --ink-soft:#5B4F6E;
-    --line:#E4D9F2;
-    --card:#FFFFFF;
+    --purple-deep:#28205c;
+    --purple-mid:#5120b8;
+    --gold:#f4a628;
+    --coral:#ee5d6c;
+    --cream:#120e28;
+    --ink:#120e28;
+    --ink-soft:#cbc3d6;
+    --line:#28205c;
+    --card:#1d1643;
   }
   *{box-sizing:border-box;}
   html{scroll-behavior:smooth;}
   body{
     margin:0;
     background:var(--cream);
-    color:var(--ink);
-    font-family:'IBM Plex Sans Arabic', sans-serif;
+    color:#e6dff9;
+    font-family:'Plus Jakarta Sans','Cairo','Tajawal',sans-serif;
     line-height:1.7;
   }
   h1,h2,h3,.display{
-    font-family:'Lalezar', 'IBM Plex Sans Arabic', sans-serif;
+    font-family:'Sora','Cairo','Tajawal',sans-serif;
     font-weight:400;
     letter-spacing:.5px;
   }
@@ -39,10 +39,10 @@
   .hero{
     position:relative;
     background:
-      radial-gradient(circle at 15% 20%, rgba(244,166,40,.35), transparent 45%),
-      radial-gradient(circle at 85% 80%, rgba(238,93,108,.30), transparent 45%),
+      radial-gradient(circle at 15% 20%, rgba(244,166,40,0.35), transparent 45%),
+      radial-gradient(circle at 85% 80%, rgba(238,93,108,0.3), transparent 45%),
       linear-gradient(160deg, var(--purple-deep), var(--purple-mid) 70%);
-    color:#fff;
+    color:#ffffff;
     overflow:hidden;
     padding:72px 0 96px;
   }
@@ -57,8 +57,8 @@
   @keyframes spin{to{transform:rotate(360deg);}}
   .eyebrow{
     display:inline-flex;align-items:center;gap:8px;
-    background:rgba(255,255,255,.14);
-    border:1px solid rgba(255,255,255,.35);
+    background:rgba(255,255,255,0.14);
+    border:1px solid rgba(157,114,255,0.35);
     padding:7px 18px;border-radius:999px;
     font-size:14px;font-weight:600;
     backdrop-filter:blur(4px);
@@ -67,24 +67,24 @@
   .hero h1{
     font-size:clamp(48px, 9vw, 96px);
     margin:22px 0 6px;
-    background:linear-gradient(180deg,#fff, #F4DFAE);
+    background:linear-gradient(180deg,#ffffff, #f4dfae);
     -webkit-background-clip:text;
     background-clip:text;
     color:transparent;
   }
   .hero p.sub{
     font-size:clamp(17px,2.4vw,22px);
-    color:#EFE6FA;
+    color:#efe6fa;
     max-width:640px;margin:0 auto;
   }
   .hero .dates{
     margin-top:28px;
     display:inline-flex;gap:10px;align-items:center;
     font-size:15px;font-weight:600;
-    background:rgba(0,0,0,.18);
+    background:rgba(0,0,0,0.18);
     padding:10px 22px;border-radius:14px;
   }
-  .hero .dates b{color:var(--gold);}
+  .hero .dates b{color:#f4c67b;}
 
   /* ---------- OFFER CARDS ---------- */
   .offers{
@@ -96,26 +96,26 @@
     background:var(--card);
     border-radius:24px;
     padding:34px 30px;
-    box-shadow:0 24px 48px -20px rgba(61,26,84,.35);
-    border-top:6px solid var(--gold);
+    box-shadow:0 24px 48px -20px rgba(112,72,216,0.45);
+    border-top:6px solid #f4a628;
   }
-  .offer-card.tagdid{border-top-color:var(--coral);}
+  .offer-card.tagdid{border-top-color:#ee5d6c;}
   .offer-tag{
     display:inline-block;font-size:13px;font-weight:700;
-    color:var(--purple-mid);background:#F1E8FB;
+    color:#cebdff;background:#28205c;
     padding:5px 14px;border-radius:999px;margin-bottom:14px;
   }
-  .offer-card h2{font-size:30px;margin:0 0 10px;color:var(--purple-deep);}
+  .offer-card h2{font-size:30px;margin:0 0 10px;color:#e6dff9;}
   .offer-card .headline-num{
-    font-size:44px;color:var(--gold);
+    font-size:44px;color:#f4c67b;
     display:block;margin:10px 0;
   }
-  .offer-card.tagdid .headline-num{color:var(--coral);}
+  .offer-card.tagdid .headline-num{color:#ee5d6c;}
   .offer-card p{color:var(--ink-soft);font-size:15.5px;margin:6px 0;}
   .code-pill{
     display:inline-flex;align-items:center;gap:8px;
     margin-top:16px;font-weight:700;font-size:15px;
-    background:var(--purple-deep);color:#fff;
+    background:var(--purple-deep);color:#ffffff;
     padding:10px 20px;border-radius:12px;
   }
   .offer-card ul{margin:14px 0 0;padding-inline-start:20px;font-size:14.5px;color:var(--ink-soft);}
@@ -123,13 +123,13 @@
 
   section{padding:70px 0;}
   .section-title{text-align:center;margin-bottom:14px;}
-  .section-title h2{font-size:38px;color:var(--purple-deep);margin:0 0 8px;}
+  .section-title h2{font-size:38px;color:#e6dff9;margin:0 0 8px;}
   .section-title p{color:var(--ink-soft);max-width:560px;margin:0 auto;font-size:15.5px;}
 
   /* ---------- CALCULATOR (signature) ---------- */
   .calc-wrap{
-    background:linear-gradient(135deg,#2E1440,var(--purple-mid));
-    border-radius:28px;color:#fff;
+    background:linear-gradient(135deg,#28205c,var(--purple-mid));
+    border-radius:28px;color:#ffffff;
     padding:44px clamp(20px,5vw,56px);
     display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center;
     position:relative;overflow:hidden;
@@ -137,57 +137,57 @@
   @media(max-width:760px){.calc-wrap{grid-template-columns:1fr;}}
   .calc-wrap::before{
     content:"";position:absolute;inset:0;
-    background:radial-gradient(circle at 90% 10%, rgba(244,166,40,.25), transparent 50%);
+    background:radial-gradient(circle at 90% 10%, rgba(244,166,40,0.25), transparent 50%);
   }
   .calc-left,.calc-right{position:relative;z-index:2;}
   .calc-left h3{font-size:26px;margin:0 0 10px;}
-  .calc-left p{color:#DCCBEE;font-size:15px;margin:0 0 26px;}
+  .calc-left p{color:#dccbee;font-size:15px;margin:0 0 26px;}
   .amount-display{
-    font-size:15px;color:#DCCBEE;margin-bottom:4px;
+    font-size:15px;color:#dccbee;margin-bottom:4px;
   }
-  .amount-display b{font-size:34px;color:var(--gold);display:block;}
+  .amount-display b{font-size:34px;color:#f4c67b;display:block;}
   input[type=range]{
-    width:100%;margin-top:20px;accent-color:var(--gold);
+    width:100%;margin-top:20px;accent-color:#f4c67b;
   }
   .calc-right{
-    background:rgba(255,255,255,.08);
-    border:1px solid rgba(255,255,255,.18);
+    background:rgba(255,255,255,0.08);
+    border:1px solid rgba(157,114,255,0.18);
     border-radius:20px;padding:28px;text-align:center;
   }
-  .mb-result{font-size:56px;color:#fff;font-family:'Lalezar';}
-  .mb-result span{color:var(--gold);}
+  .mb-result{font-size:56px;color:#ffffff;font-family:'Plus Jakarta Sans','Cairo','Tajawal',sans-serif;}
+  .mb-result span{color:#f4c67b;}
   .mb-breakdown{
-    display:flex;justify-content:center;gap:22px;margin-top:18px;font-size:13.5px;color:#DCCBEE;
+    display:flex;justify-content:center;gap:22px;margin-top:18px;font-size:13.5px;color:#dccbee;
   }
-  .mb-breakdown b{display:block;color:#fff;font-size:16px;}
+  .mb-breakdown b{display:block;color:#ffffff;font-size:16px;}
 
   /* ---------- BENEFITS TABLE ---------- */
   .table-card{
     background:var(--card);border-radius:20px;overflow:hidden;
-    box-shadow:0 18px 40px -24px rgba(61,26,84,.28);
-    border:1px solid var(--line);
+    box-shadow:0 18px 40px -24px rgba(112,72,216,0.45);
+    border:1px solid rgba(157,114,255,0.22);
   }
   table{width:100%;border-collapse:collapse;font-size:15px;}
   thead th{
-    background:var(--purple-deep);color:#fff;
+    background:var(--purple-deep);color:#ffffff;
     padding:16px 18px;text-align:right;font-weight:600;font-size:15px;
   }
-  tbody td{padding:15px 18px;border-top:1px solid var(--line);color:var(--ink-soft);}
-  tbody tr:nth-child(even){background:#FAF6FF;}
-  tbody td.strong{color:var(--purple-deep);font-weight:700;}
+  tbody td{padding:15px 18px;border-top:1px solid rgba(157,114,255,0.22);color:var(--ink-soft);}
+  tbody tr:nth-child(even){background:#120e28;}
+  tbody td.strong{color:#e6dff9;font-weight:700;}
   .note-line{font-size:13.5px;color:var(--ink-soft);margin-top:12px;text-align:center;}
 
   /* ---------- ELIGIBLE PACKAGES ---------- */
   .pack-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px;}
   @media(max-width:760px){.pack-grid{grid-template-columns:1fr;}}
   .pack-card{
-    background:var(--card);border:1px solid var(--line);border-radius:18px;padding:24px;
+    background:var(--card);border:1px solid rgba(157,114,255,0.22);border-radius:18px;padding:24px;
   }
-  .pack-card h4{margin:0 0 12px;color:var(--purple-mid);font-size:18px;font-family:'IBM Plex Sans Arabic';font-weight:700;}
+  .pack-card h4{margin:0 0 12px;color:#cebdff;font-size:18px;font-family:'Sora','Cairo','Tajawal',sans-serif;font-weight:700;}
   .pack-card ul{margin:0;padding-inline-start:20px;color:var(--ink-soft);font-size:14.5px;}
   .pack-card li{margin-bottom:6px;}
   .excluded{
-    margin-top:18px;font-size:13.5px;background:#FDECEC;color:#B23A3A;
+    margin-top:18px;font-size:13.5px;background:rgba(224,82,82,0.16);color:#f47b7b;
     padding:12px 16px;border-radius:12px;
   }
 
@@ -195,25 +195,25 @@
   .prize-grid{display:grid;grid-template-columns:1fr 1fr;gap:26px;}
   @media(max-width:760px){.prize-grid{grid-template-columns:1fr;}}
   .prize-card{
-    border-radius:22px;padding:32px;color:#fff;position:relative;overflow:hidden;
+    border-radius:22px;padding:32px;color:#ffffff;position:relative;overflow:hidden;
   }
-  .prize-card.weekly{background:linear-gradient(140deg,#5B2A86,#7A3FA8);}
-  .prize-card.grand{background:linear-gradient(140deg,#EE5D6C,#F4A628);}
+  .prize-card.weekly{background:linear-gradient(140deg,#5120b8,#7048d8);}
+  .prize-card.grand{background:linear-gradient(140deg,#ee5d6c,#f4a628);}
   .prize-card h3{margin:0 0 6px;font-size:22px;}
-  .prize-card .amount{font-size:40px;font-family:'Lalezar';margin:8px 0;}
+  .prize-card .amount{font-size:40px;font-family:'Plus Jakarta Sans','Cairo','Tajawal',sans-serif;margin:8px 0;}
   .prize-card p{font-size:14.5px;opacity:.95;margin:6px 0 0;}
 
   /* ---------- FAQ ---------- */
   .faq-item{
-    border-bottom:1px solid var(--line);
+    border-bottom:1px solid rgba(157,114,255,0.22);
   }
   .faq-q{
     width:100%;text-align:right;background:none;border:none;cursor:pointer;
-    padding:20px 4px;font-size:16.5px;font-weight:600;color:var(--purple-deep);
+    padding:20px 4px;font-size:16.5px;font-weight:600;color:#e6dff9;
     display:flex;justify-content:space-between;align-items:center;
-    font-family:'IBM Plex Sans Arabic';
+    font-family:'Plus Jakarta Sans','Cairo','Tajawal',sans-serif;
   }
-  .faq-q .plus{font-size:22px;color:var(--gold);transition:transform .25s ease;flex-shrink:0;margin-inline-start:16px;}
+  .faq-q .plus{font-size:22px;color:#f4c67b;transition:transform .25s ease;flex-shrink:0;margin-inline-start:16px;}
   .faq-item.open .plus{transform:rotate(45deg);}
   .faq-a{
     max-height:0;overflow:hidden;transition:max-height .3s ease, padding .3s ease;
@@ -222,23 +222,29 @@
   .faq-item.open .faq-a{padding-bottom:20px;}
 
   footer{
-    background:var(--purple-deep);color:#DCCBEE;padding:38px 0;font-size:13.5px;
+    background:var(--purple-deep);color:#dccbee;padding:38px 0;font-size:13.5px;
   }
   footer .wrap{text-align:center;}
-  footer b{color:#fff;}
+  footer b{color:#ffffff;}
 
   @media(prefers-reduced-motion:reduce){
     .hero-sun svg{animation:none;}
     html{scroll-behavior:auto;}
   }
 </style>
+<meta name="theme-color" content="#0D0A1C">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../assets/css/cognitive-violet.css?v=1">
+<script src="../../assets/js/back-button.js?v=1" defer></script>
 </head>
 <body>
 
 <div class="hero">
   <div class="hero-sun">
-    <svg viewBox="0 0 200 200"><circle cx="100" cy="100" r="42" fill="#F4A628"/>
-      <g stroke="#F4A628" stroke-width="8" stroke-linecap="round">
+    <svg viewBox="0 0 200 200"><circle cx="100" cy="100" r="42" fill="#f4c67b"/>
+      <g stroke="#f4c67b" stroke-width="8" stroke-linecap="round">
         <line x1="100" y1="8" x2="100" y2="34"/>
         <line x1="100" y1="166" x2="100" y2="192"/>
         <line x1="8" y1="100" x2="34" y2="100"/>
@@ -273,7 +279,7 @@
     </div>
 
     <div class="offer-card tagdid">
-      <span class="offer-tag" style="color:var(--coral);background:#FDECEE;">عرض التجديد</span>
+      <span class="offer-tag" style="color:#ff7a59;background:rgba(224,82,98,0.16);">عرض التجديد</span>
       <h2>جدد باقتك واكسب أكتر</h2>
       <span class="headline-num">حتى 50% ميجابايتس</span>
       <p>زيادة تصل لـ50% على ميجابيتس باقتك عند التجديد، أو خصم يصل لـ25% على رسوم التجديد — حسب تاريخ آخر تجديد.</p>
@@ -312,7 +318,7 @@
   </div>
 </section>
 
-<section style="background:#F3ECFB;">
+<section style="background:#120e28;">
   <div class="wrap">
     <div class="section-title">
       <h2>هتاخد إيه لو جددت باقتك؟</h2>
@@ -362,7 +368,7 @@
   </div>
 </section>
 
-<section style="background:#F3ECFB;">
+<section style="background:#120e28;">
   <div class="wrap">
     <div class="section-title">
       <h2>جوائز الصيف</h2>
@@ -470,6 +476,6 @@
   });
 </script>
 
-<script src="../../assets/js/active-users-widget.js"></script>
+<script src="../../assets/js/active-users-widget.js?v=cv1"></script>
 </body>
 </html>

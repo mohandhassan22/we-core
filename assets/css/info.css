@@ -1,11 +1,11 @@
  :root {
-            --primary-color: #7b4397;
-            --secondary-color: #a77bc7;
-            --light-purple: #f0ebf7;
-            --white: #ffffff;
-            --light-gray: #e0e0e0;
-            --dark-gray: #333333;
-            --box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            --primary-color: #5120b8;
+            --secondary-color: #8a62f0;
+            --light-purple: #120e28;
+            --white: #1d1643;
+            --light-gray: rgba(157,114,255,0.18);
+            --dark-gray: #f8f6ff;
+            --box-shadow: 0 2px 10px rgba(0,0,0,0.1);
             --border-radius: 12px;
         }
 
@@ -16,7 +16,7 @@
         }
 
         body {
-            font-family: 'Cairo', sans-serif;
+            font-family: 'Plus Jakarta Sans','Cairo','Tajawal',sans-serif;
             background-color: var(--white);
             color: var(--dark-gray);
             line-height: 1.6;
@@ -31,7 +31,7 @@
 
         header {
             background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-            color: var(--white);
+            color: #ffffff;
             padding: 30px 0;
             text-align: center;
             border-radius: 0 0 var(--border-radius) var(--border-radius);
@@ -54,7 +54,7 @@
             position: absolute;
             left: 20px;
             top: 20px;
-            color: var(--white);
+            color: #ffffff;
             text-decoration: none;
             font-size: 1.2rem;
             display: flex;
@@ -75,7 +75,7 @@
         #search-input {
             width: 70%;
             padding: 12px 20px;
-            border: 2px solid var(--light-purple);
+            border: 2px solid rgba(157,114,255,0.18);
             border-radius: 50px;
             font-size: 1rem;
             outline: none;
@@ -83,8 +83,8 @@
         }
 
         #search-input:focus {
-            border-color: var(--primary-color);
-            box-shadow: 0 0 0 3px rgba(123, 67, 151, 0.2);
+            border-color: #9d72ff;
+            box-shadow: 0 0 0 3px rgba(112,72,216,0.36);
         }
 
         .packages-grid {
@@ -100,19 +100,19 @@
             overflow: hidden;
             box-shadow: var(--box-shadow);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
-            border: 1px solid var(--light-purple);
+            border: 1px solid rgba(157,114,255,0.18);
             display: flex;
             flex-direction: column;
         }
 
         .package-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
         }
 
         .package-icon {
             background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-            color: var(--white);
+            color: #ffffff;
             font-size: 2.5rem;
             padding: 25px 0;
             text-align: center;
@@ -126,7 +126,7 @@
         }
 
         .package-title {
-            color: var(--primary-color);
+            color: #cebdff;
             font-size: 1.4rem;
             margin-bottom: 10px;
             font-weight: 700;
@@ -141,7 +141,7 @@
         .package-link {
             display: inline-block;
             background-color: var(--primary-color);
-            color: var(--white);
+            color: #ffffff;
             text-decoration: none;
             padding: 10px 20px;
             border-radius: 50px;
@@ -157,7 +157,7 @@
 
         footer {
             background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-            color: var(--white);
+            color: #ffffff;
             text-align: center;
             padding: 20px;
             margin-top: 50px;

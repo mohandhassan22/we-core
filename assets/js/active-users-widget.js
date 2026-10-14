@@ -26,47 +26,47 @@ const ActiveUsersWidget = (() => {
 
   const CSS = `
   #we-chat-fab{position:fixed;bottom:16px;left:16px;width:58px;height:58px;border-radius:50%;z-index:9998;border:0;cursor:pointer;
-    background:linear-gradient(135deg,#591685,#8e2de2);color:#fff;font-family:'Cairo',Tahoma,sans-serif;box-shadow:0 6px 22px rgba(89,22,133,.45);
+    background:linear-gradient(135deg,#5120b8,#7048d8);color:#ffffff;font-family:'Cairo',Tahoma,sans-serif;box-shadow:0 6px 22px rgba(112,72,216,0.45);
     display:flex;align-items:center;justify-content:center;flex-direction:column;line-height:1;transition:transform .2s}
   #we-chat-fab:hover{transform:scale(1.08)}
   #we-chat-fab .n{font-size:22px;font-weight:800}
-  #we-chat-fab .d{position:absolute;top:6px;right:6px;width:11px;height:11px;border-radius:50%;background:#4ade80;border:2px solid #fff}
-  #we-chat-fab .u{position:absolute;top:-2px;left:-2px;min-width:18px;height:18px;padding:0 4px;border-radius:9px;background:#ef4444;color:#fff;font-size:11px;font-weight:800;display:none;align-items:center;justify-content:center}
+  #we-chat-fab .d{position:absolute;top:6px;right:6px;width:11px;height:11px;border-radius:50%;background:#4ade80;border:2px solid rgba(157,114,255,0.18)}
+  #we-chat-fab .u{position:absolute;top:-2px;left:-2px;min-width:18px;height:18px;padding:0 4px;border-radius:9px;background:#ef4444;color:#ffffff;font-size:11px;font-weight:800;display:none;align-items:center;justify-content:center}
   #we-chat-panel{position:fixed;bottom:84px;left:16px;width:350px;max-width:calc(100vw - 24px);height:480px;max-height:calc(100vh - 110px);z-index:9999;
-    background:#fff;color:#222;border-radius:18px;box-shadow:0 14px 50px rgba(0,0,0,.3);display:none;flex-direction:column;overflow:hidden;direction:rtl;font-family:'Cairo',Tahoma,sans-serif}
+    background:#1d1643;color:#f8f6ff;border-radius:18px;box-shadow:0 14px 50px rgba(0,0,0,0.3);display:none;flex-direction:column;overflow:hidden;direction:rtl;font-family:'Cairo',Tahoma,sans-serif}
   #we-chat-panel.show{display:flex}
-  #we-chat-panel .h{background:linear-gradient(135deg,#591685,#8e2de2);color:#fff;padding:12px 14px;display:flex;align-items:center;gap:8px}
+  #we-chat-panel .h{background:linear-gradient(135deg,#5120b8,#7048d8);color:#ffffff;padding:12px 14px;display:flex;align-items:center;gap:8px}
   #we-chat-panel .h b{flex:1;font-size:15px}
-  #we-chat-panel .h button{background:rgba(255,255,255,.18);border:0;color:#fff;border-radius:8px;padding:4px 9px;cursor:pointer;font-family:inherit;font-size:12px}
-  #we-chat-online{display:none;max-height:130px;overflow:auto;padding:8px 12px;background:#f6f1f8;border-bottom:1px solid #eee;font-size:13px}
+  #we-chat-panel .h button{background:rgba(255,255,255,0.18);border:0;color:#ffffff;border-radius:8px;padding:4px 9px;cursor:pointer;font-family:inherit;font-size:12px}
+  #we-chat-online{display:none;max-height:130px;overflow:auto;padding:8px 12px;background:#120e28;border-bottom:1px solid rgba(157,114,255,0.18);font-size:13px}
   #we-chat-online.show{display:block}
   #we-chat-online div{padding:3px 0;display:flex;align-items:center;gap:6px}
   #we-chat-online i{width:8px;height:8px;border-radius:50%;background:#4ade80;display:inline-block}
-  #we-chat-msgs{flex:1;overflow-y:auto;padding:12px;background:#faf8fb;display:flex;flex-direction:column;gap:8px}
-  .we-m{max-width:82%;padding:7px 11px;border-radius:14px;font-size:14px;line-height:1.6;word-wrap:break-word;white-space:pre-wrap;background:#fff;border:1px solid #eee;align-self:flex-start}
-  .we-m.mine{align-self:flex-end;background:#591685;color:#fff;border-color:#591685}
-  .we-m .s{display:block;font-size:11px;font-weight:700;color:#8e2de2;margin-bottom:1px}
+  #we-chat-msgs{flex:1;overflow-y:auto;padding:12px;background:#120e28;display:flex;flex-direction:column;gap:8px}
+  .we-m{max-width:82%;padding:7px 11px;border-radius:14px;font-size:14px;line-height:1.6;word-wrap:break-word;white-space:pre-wrap;background:#1d1643;border:1px solid rgba(157,114,255,0.18);align-self:flex-start}
+  .we-m.mine{align-self:flex-end;background:#5120b8;color:#ffffff;border-color:#7048d8}
+  .we-m .s{display:block;font-size:11px;font-weight:700;color:#cebdff;margin-bottom:1px}
   .we-m.mine .s{color:#e9d5ff}
   .we-m .t{display:block;font-size:10px;opacity:.6;margin-top:2px}
   .we-m .x{cursor:pointer;opacity:.5;font-size:11px;margin-inline-start:6px}
-  #we-chat-form{display:flex;gap:8px;padding:10px;border-top:1px solid #eee;background:#fff}
-  #we-chat-input{flex:1;border:1px solid #ddd;border-radius:20px;padding:9px 14px;font-family:inherit;font-size:14px;outline:none;resize:none;max-height:90px}
-  #we-chat-send{border:0;border-radius:50%;width:40px;height:40px;background:#591685;color:#fff;cursor:pointer;font-size:16px}
+  #we-chat-form{display:flex;gap:8px;padding:10px;border-top:1px solid rgba(157,114,255,0.18);background:#1d1643}
+  #we-chat-input{flex:1;border:1px solid rgba(157,114,255,0.18);border-radius:20px;padding:9px 14px;font-family:inherit;font-size:14px;outline:none;resize:none;max-height:90px}
+  #we-chat-send{border:0;border-radius:50%;width:40px;height:40px;background:#5120b8;color:#ffffff;cursor:pointer;font-size:16px}
   #we-chat-send:disabled{opacity:.5}
-  .we-empty{margin:auto;color:#999;font-size:13px;text-align:center}
+  .we-empty{margin:auto;color:#9e97c2;font-size:13px;text-align:center}
 
-  #we-chat-note{font-size:10.5px;color:#92400e;background:#fffbeb;padding:3px 10px;text-align:center;border-bottom:1px solid #fde68a}
-  .we-m img.we-img{display:block;max-width:100%;max-height:240px;border-radius:10px;cursor:zoom-in;min-width:120px;min-height:60px;background:#eee;margin:3px 0}
+  #we-chat-note{font-size:10.5px;color:#f4a97b;background:rgba(224,196,82,0.16);padding:3px 10px;text-align:center;border-bottom:1px solid rgba(224,196,82,0.35)}
+  .we-m img.we-img{display:block;max-width:100%;max-height:240px;border-radius:10px;cursor:zoom-in;min-width:120px;min-height:60px;background:#120e28;margin:3px 0}
   .we-m audio{display:block;width:220px;max-width:100%;height:36px;margin:3px 0}
   .we-m a.we-pdf{display:flex;align-items:center;gap:6px;color:inherit;text-decoration:underline;cursor:pointer;margin:3px 0}
   #we-chat-form{align-items:flex-end}
-  .we-ib{border:0;border-radius:50%;width:40px;height:40px;flex:0 0 40px;background:#f1e9f6;color:#591685;cursor:pointer;font-size:17px;padding:0}
-  #we-chat-rec{display:none;flex:1;align-items:center;gap:10px;color:#dc2626;font-size:14px}
+  .we-ib{border:0;border-radius:50%;width:40px;height:40px;flex:0 0 40px;background:#28205c;color:#cebdff;cursor:pointer;font-size:17px;padding:0}
+  #we-chat-rec{display:none;flex:1;align-items:center;gap:10px;color:#f47b7b;font-size:14px}
   #we-chat-rec i{width:10px;height:10px;border-radius:50%;background:#ef4444;animation:weRecP 1s infinite}
   @keyframes weRecP{50%{opacity:.25}}
   #we-chat-form.rec #we-chat-rec{display:flex}#we-chat-form.rec .we-norm{display:none!important}
-  #we-chat-toast{position:absolute;left:50%;transform:translateX(-50%);bottom:64px;background:#333;color:#fff;font-size:12px;padding:6px 12px;border-radius:14px;display:none;max-width:90%;text-align:center}
-  #we-chat-view{position:fixed;inset:0;z-index:10001;background:rgba(0,0,0,.88);display:none;align-items:center;justify-content:center;cursor:zoom-out}
+  #we-chat-toast{position:absolute;left:50%;transform:translateX(-50%);bottom:64px;background:#1d1643;color:#ffffff;font-size:12px;padding:6px 12px;border-radius:14px;display:none;max-width:90%;text-align:center}
+  #we-chat-view{position:fixed;inset:0;z-index:10001;background:rgba(0,0,0,0.88);display:none;align-items:center;justify-content:center;cursor:zoom-out}
   #we-chat-view img{max-width:96vw;max-height:92vh;border-radius:8px}
   @media(max-width:520px){#we-chat-panel{left:8px;right:8px;width:auto;bottom:80px}}
   `;
@@ -92,7 +92,7 @@ const ActiveUsersWidget = (() => {
         <button id="we-chat-send" class="we-norm" type="submit" style="display:none">➤</button>
         <div id="we-chat-rec"><i></i><span id="we-chat-rect">0:00</span><span style="flex:1"></span>
           <button type="button" class="we-ib" id="we-chat-rec-cancel" aria-label="إلغاء">🗑</button>
-          <button type="button" class="we-ib" id="we-chat-rec-send" aria-label="إرسال" style="background:#591685;color:#fff">➤</button></div>
+          <button type="button" class="we-ib" id="we-chat-rec-send" aria-label="إرسال" style="background:#5120b8;color:#ffffff">➤</button></div>
       </form>
       <div id="we-chat-toast"></div>`;
     const view = document.createElement('div'); view.id = 'we-chat-view'; view.innerHTML = '<img alt="">'; document.body.appendChild(view);

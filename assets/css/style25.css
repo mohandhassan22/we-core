@@ -5,13 +5,13 @@
 
 /* Global Styles and Variables */
 :root {
-    --primary-color: #7b4397;
-    --secondary-color: #a77bc7;
-    --light-purple: #f0ebf7;
-    --white: #ffffff;
-    --light-gray: #e0e0e0;
-    --dark-gray: #333333;
-    --box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    --primary-color: #5120b8;
+    --secondary-color: #8a62f0;
+    --light-purple: #120e28;
+    --white: #1d1643;
+    --light-gray: rgba(157,114,255,0.18);
+    --dark-gray: #f8f6ff;
+    --box-shadow: 0 2px 5px rgba(0,0,0,0.1);
     --border-radius: 8px;
 }
 
@@ -22,7 +22,7 @@
 }
 
 body {
-    font-family: 'Cairo', sans-serif;
+    font-family: 'Plus Jakarta Sans','Cairo','Tajawal',sans-serif;
     background-color: var(--light-purple);
     color: var(--dark-gray);
     line-height: 1.6;
@@ -38,7 +38,7 @@ body {
 /* Header Styles */
 header {
     background-color: var(--primary-color);
-    color: var(--white);
+    color: #ffffff;
     padding: 20px 0;
     box-shadow: var(--box-shadow);
 }
@@ -71,7 +71,7 @@ nav {
 }
 
 .main-nav a {
-    color: var(--white);
+    color: #ffffff;
     text-decoration: none;
     font-weight: 600;
     padding: 5px 10px;
@@ -98,7 +98,7 @@ main {
 
 .section-header {
     background-color: var(--primary-color);
-    color: var(--white);
+    color: #ffffff;
     padding: 15px 20px;
     text-align: center;
 }
@@ -133,7 +133,7 @@ main {
 
 .pricing-table thead {
     background-color: var(--primary-color);
-    color: var(--white);
+    color: #ffffff;
 }
 
 .pricing-table th {
@@ -150,7 +150,7 @@ main {
 
 .pricing-table .feature {
     background-color: var(--secondary-color);
-    color: var(--white);
+    color: #ffffff;
     font-weight: 600;
     text-align: right;
 }
@@ -170,13 +170,13 @@ main {
 }
 
 .content-box h3 {
-    color: var(--primary-color);
+    color: #cebdff;
     margin: 20px 0 10px;
     font-weight: 600;
 }
 
 .content-box h4 {
-    color: var(--secondary-color);
+    color: #9e97c2;
     margin: 15px 0 10px;
     font-weight: 600;
 }
@@ -184,7 +184,7 @@ main {
 .highlight {
     background-color: var(--light-purple);
     padding: 10px;
-    border-right: 4px solid var(--primary-color);
+    border-right: 4px solid #9d72ff;
     margin-bottom: 15px;
 }
 
@@ -207,7 +207,7 @@ main {
 /* Footer Styles */
 footer {
     background-color: var(--primary-color);
-    color: var(--white);
+    color: #ffffff;
     padding: 30px 0;
     text-align: center;
 }

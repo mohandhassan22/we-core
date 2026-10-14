@@ -8,18 +8,18 @@
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@600;700;800;900&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
   :root{
-    --purple-deep:#3E1A5B;
-    --purple:#54277A;
-    --purple-soft:#EFE7F7;
-    --magenta:#E6007E;
-    --amber:#F5B700;
-    --bg:#F7F5FB;
-    --card:#FFFFFF;
-    --ink:#241B33;
-    --ink-soft:#6B6178;
-    --line:#E4DCF1;
-    --green:#1E8F6F;
-    --old-price:#A79BB8;
+    --purple-deep:#28205c;
+    --purple:#5120b8;
+    --purple-soft:#28205c;
+    --magenta:#e6007e;
+    --amber:#f5b700;
+    --bg:#120e28;
+    --card:#1d1643;
+    --ink:#28205c;
+    --ink-soft:#cbc3d6;
+    --line:#28205c;
+    --green:#1e8f6f;
+    --old-price:#9e97c2;
     --radius:14px;
   }
   *{box-sizing:border-box;}
@@ -27,13 +27,13 @@
   body{
     margin:0;
     background:var(--bg);
-    color:var(--ink);
-    font-family:'Tajawal', sans-serif;
+    color:#e6dff9;
+    font-family:'Plus Jakarta Sans','Cairo','Tajawal',sans-serif;
     font-size:16px;
     line-height:1.8;
   }
   h1,h2,h3,h4,.brand,.nav a,.tag,.stat-num{
-    font-family:'Cairo', sans-serif;
+    font-family:'Sora','Cairo','Tajawal',sans-serif;
   }
 
   /* ---------- Layout shell ---------- */
@@ -45,7 +45,7 @@
     width:270px;
     flex-shrink:0;
     background:linear-gradient(180deg,var(--purple-deep),var(--purple) 70%);
-    color:#fff;
+    color:#ffffff;
     position:sticky;
     top:0;
     height:100vh;
@@ -64,11 +64,11 @@
   .brand .dot{
     width:12px;height:12px;border-radius:50%;
     background:var(--magenta);
-    box-shadow:0 0 0 4px rgba(230,0,126,.25);
+    box-shadow:0 0 0 4px rgba(230,0,126,0.25);
   }
   .brand-sub{
     font-size:.82rem;
-    color:#D9CBEE;
+    color:#d9cbee;
     margin-top:-14px;
   }
   .nav{
@@ -78,7 +78,7 @@
     margin-top:6px;
   }
   .nav a{
-    color:#EAE1F7;
+    color:#eae1f7;
     text-decoration:none;
     font-size:.95rem;
     font-weight:700;
@@ -91,25 +91,25 @@
     border:1px solid transparent;
   }
   .nav a .num{
-    font-family:'Cairo',sans-serif;
+    font-family:'Space Grotesk','Cairo','Tajawal',sans-serif;
     font-weight:800;
     font-size:.75rem;
-    color:var(--magenta);
-    background:#fff;
+    color:#f47bbd;
+    background:#1d1643;
     width:22px;height:22px;
     border-radius:50%;
     display:flex;align-items:center;justify-content:center;
     flex-shrink:0;
   }
   .nav a:hover, .nav a.active{
-    background:rgba(255,255,255,.1);
-    border-color:rgba(255,255,255,.18);
+    background:rgba(255,255,255,0.1);
+    border-color:rgba(157,114,255,0.18);
   }
   .sidebar-foot{
     margin-top:auto;
     font-size:.78rem;
-    color:#C7B7E5;
-    border-top:1px solid rgba(255,255,255,.15);
+    color:#c7b7e5;
+    border-top:1px solid rgba(157,114,255,0.16);
     padding-top:16px;
   }
   .main{
@@ -122,7 +122,7 @@
   /* ---------- Hero / finder ---------- */
   .hero{
     background:var(--card);
-    border:1px solid var(--line);
+    border:1px solid rgba(157,114,255,0.22);
     border-radius:20px;
     padding:30px 34px;
     margin-bottom:30px;
@@ -132,7 +132,7 @@
   .hero::before{
     content:"";
     position:absolute; inset:0;
-    background:radial-gradient(600px 200px at 100% 0%, rgba(230,0,126,.08), transparent 60%);
+    background:radial-gradient(600px 200px at 100% 0%, rgba(230,0,126,0.08), transparent 60%);
     pointer-events:none;
   }
   .eyebrow{
@@ -141,8 +141,8 @@
     gap:8px;
     font-size:.78rem;
     font-weight:700;
-    color:var(--magenta);
-    background:#FDEAF3;
+    color:#f47bbd;
+    background:rgba(224,82,149,0.16);
     padding:5px 12px;
     border-radius:100px;
     margin-bottom:14px;
@@ -150,7 +150,7 @@
   .hero h1{
     font-size:1.9rem;
     margin:0 0 8px;
-    color:var(--purple-deep);
+    color:#e6dff9;
   }
   .hero p.lead{
     color:var(--ink-soft);
@@ -161,7 +161,7 @@
   .finder-label{
     font-weight:700;
     font-size:.92rem;
-    color:var(--ink);
+    color:#e6dff9;
     margin-bottom:12px;
     display:block;
   }
@@ -177,13 +177,13 @@
     padding:16px 14px;
     text-align:right;
     cursor:pointer;
-    font-family:'Tajawal',sans-serif;
+    font-family:'Space Grotesk','Cairo','Tajawal',sans-serif;
     transition:.15s;
-    color:var(--ink);
+    color:#e6dff9;
   }
   .finder-btn:hover{
-    border-color:var(--magenta);
-    background:#fff;
+    border-color:#e6007e;
+    background:#1d1643;
     transform:translateY(-2px);
   }
   .finder-btn .ft-title{
@@ -191,7 +191,7 @@
     font-size:.92rem;
     display:block;
     margin-bottom:4px;
-    color:var(--purple-deep);
+    color:#e6dff9;
   }
   .finder-btn .ft-sub{
     font-size:.78rem;
@@ -201,7 +201,7 @@
   /* ---------- Sections ---------- */
   section.block{
     background:var(--card);
-    border:1px solid var(--line);
+    border:1px solid rgba(157,114,255,0.22);
     border-radius:20px;
     padding:32px 34px;
     margin-bottom:26px;
@@ -209,8 +209,8 @@
     transition:box-shadow .4s, border-color .4s;
   }
   section.block.flash{
-    box-shadow:0 0 0 3px var(--magenta);
-    border-color:var(--magenta);
+    box-shadow:0 0 0 3px #e6007e;
+    border-color:#e6007e;
   }
   .block-head{
     display:flex;
@@ -222,7 +222,7 @@
     width:44px;height:44px;
     border-radius:12px;
     background:var(--purple-soft);
-    color:var(--purple-deep);
+    color:#e6dff9;
     display:flex;align-items:center;justify-content:center;
     font-size:1.3rem;
     flex-shrink:0;
@@ -230,13 +230,13 @@
   .block-head h2{
     font-size:1.35rem;
     margin:0;
-    color:var(--purple-deep);
+    color:#e6dff9;
   }
   .date-chip{
     display:inline-block;
     font-size:.78rem;
-    color:var(--green);
-    background:#E5F5F0;
+    color:#7bf4d2;
+    background:rgba(82,224,180,0.16);
     padding:3px 10px;
     border-radius:100px;
     font-weight:700;
@@ -249,12 +249,12 @@
     line-height:1.9;
   }
   h3.sub{
-    font-family:'Cairo',sans-serif;
+    font-family:'Sora','Cairo','Tajawal',sans-serif;
     font-size:1.02rem;
-    color:var(--purple);
+    color:#cebdff;
     margin:24px 0 12px;
     padding-right:14px;
-    border-right:4px solid var(--magenta);
+    border-right:4px solid #e6007e;
   }
   ol.steps{
     margin:0 0 8px;
@@ -277,16 +277,16 @@
     font-size:.94rem;
   }
   mark.hl{
-    background:#FFF1B8;
+    background:rgba(224,196,82,0.16);
     padding:1px 5px;
     border-radius:4px;
   }
   code.tag{
     background:var(--purple-soft);
-    color:var(--purple-deep);
+    color:#e6dff9;
     padding:2px 8px;
     border-radius:6px;
-    font-family:'Cairo',sans-serif;
+    font-family:'Space Grotesk','Cairo','Tajawal',sans-serif;
     font-size:.85em;
     font-weight:700;
   }
@@ -295,7 +295,7 @@
   .table-wrap{
     overflow-x:auto;
     border-radius:14px;
-    border:1px solid var(--line);
+    border:1px solid rgba(157,114,255,0.22);
   }
   table{
     border-collapse:collapse;
@@ -305,8 +305,8 @@
   }
   thead th{
     background:var(--purple-deep);
-    color:#fff;
-    font-family:'Cairo',sans-serif;
+    color:#ffffff;
+    font-family:'Plus Jakarta Sans','Cairo','Tajawal',sans-serif;
     font-weight:700;
     text-align:center;
     padding:12px 10px;
@@ -315,21 +315,21 @@
   tbody td{
     text-align:center;
     padding:12px 10px;
-    border-top:1px solid var(--line);
+    border-top:1px solid rgba(157,114,255,0.22);
   }
-  tbody tr:nth-child(even){ background:#FBF9FE; }
+  tbody tr:nth-child(even){ background:#1d1643; }
   tbody tr:hover{ background:var(--purple-soft); }
   td.amount{
-    font-family:'Cairo',sans-serif;
+    font-family:'Plus Jakarta Sans','Cairo','Tajawal',sans-serif;
     font-weight:800;
-    color:var(--purple-deep);
+    color:#e6dff9;
     font-size:1.02rem;
   }
   td.addon-name{
-    font-family:'Cairo',sans-serif;
+    font-family:'Plus Jakarta Sans','Cairo','Tajawal',sans-serif;
     font-weight:700;
     font-size:.82rem;
-    color:var(--ink);
+    color:#e6dff9;
   }
   td.price-old{
     color:var(--old-price);
@@ -337,14 +337,14 @@
     font-size:.85rem;
   }
   td.price-new{
-    font-family:'Cairo',sans-serif;
+    font-family:'Space Grotesk','Cairo','Tajawal',sans-serif;
     font-weight:800;
-    color:var(--green);
+    color:#7bf4d2;
   }
   td.plan-name{
-    font-family:'Cairo',sans-serif;
+    font-family:'Plus Jakarta Sans','Cairo','Tajawal',sans-serif;
     font-weight:800;
-    color:#fff;
+    color:#ffffff;
     background:var(--magenta);
     border-radius:8px;
   }
@@ -353,16 +353,16 @@
   .callout{
     display:flex;
     gap:12px;
-    background:#FFF8E8;
-    border:1px solid #F3DE9E;
+    background:rgba(224,181,82,0.16);
+    border:1px solid rgba(224,189,82,0.35);
     border-radius:12px;
     padding:16px 18px;
     margin-top:18px;
     font-size:.92rem;
   }
   .callout.warn{
-    background:#FDECEE;
-    border-color:#F3B9C3;
+    background:rgba(224,82,98,0.16);
+    border-color:rgba(224,82,106,0.35);
   }
   .callout .ic{ font-size:1.1rem; flex-shrink:0; }
 
@@ -374,19 +374,19 @@
   }
   .note-card{
     background:var(--purple-deep);
-    color:#fff;
+    color:#ffffff;
     border-radius:16px;
     padding:22px 24px;
   }
   .note-card h4{
     font-size:1rem;
     margin:0 0 10px;
-    color:#FBD5E9;
+    color:#fbd5e9;
     display:flex;align-items:center;gap:8px;
   }
   .note-card p{
     font-size:.88rem;
-    color:#E8DEF5;
+    color:#e8def5;
     margin:0;
     line-height:1.9;
   }
@@ -405,7 +405,7 @@
       transform:translateX(100%);
       z-index:50;
       transition:transform .25s;
-      box-shadow:-10px 0 30px rgba(0,0,0,.2);
+      box-shadow:-10px 0 30px rgba(0,0,0,0.2);
     }
     .sidebar.open{ transform:translateX(0); }
     .main{ padding:20px 16px 60px; }
@@ -414,11 +414,11 @@
       align-items:center;
       gap:8px;
       background:var(--purple-deep);
-      color:#fff;
+      color:#ffffff;
       border:none;
       padding:12px 16px;
       border-radius:12px;
-      font-family:'Cairo',sans-serif;
+      font-family:'Plus Jakarta Sans','Cairo','Tajawal',sans-serif;
       font-weight:700;
       margin-bottom:16px;
       cursor:pointer;
@@ -427,6 +427,12 @@
     .notes-grid{ grid-template-columns:1fr; }
   }
 </style>
+<meta name="theme-color" content="#0D0A1C">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../assets/css/cognitive-violet.css?v=1">
+<script src="../../assets/js/back-button.js?v=1" defer></script>
 </head>
 <body>
 
@@ -532,14 +538,14 @@
       <h3 class="sub">خطوات تفعيل إيجار الراوتر حسب نظام الدفع</h3>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px;">
         <div>
-          <strong style="font-family:'Cairo',sans-serif;color:var(--purple);">WE Air مسبق الدفع</strong>
+          <strong style="font-family:'Plus Jakarta Sans','Cairo','Tajawal',sans-serif;color:#cebdff;">WE Air مسبق الدفع</strong>
           <ol class="steps" style="margin-top:10px;">
             <li>إضافة الجهاز عبر <code class="tag">Change Offering – Waiting List</code>.</li>
             <li>إضافة الـ Add-on الخاصة برسوم استخدام الراوتر <em>(ZTE K10 CAT4 Router – Home 4G – Rental)</em> خلال عملية التعاقد، مع شحن رصيد العميل بمبلغ 50 جنيه بدون الضريبة.</li>
           </ol>
         </div>
         <div>
-          <strong style="font-family:'Cairo',sans-serif;color:var(--purple);">WE Air الفاتورة</strong>
+          <strong style="font-family:'Plus Jakarta Sans','Cairo','Tajawal',sans-serif;color:#cebdff;">WE Air الفاتورة</strong>
           <ol class="steps" style="margin-top:10px;">
             <li>إضافة الجهاز عبر <code class="tag">Change Offering – Waiting List</code>.</li>
             <li>إضافة الـ Add-on الخاصة برسوم استخدام الراوتر <em>(ZTE K10 CAT4 Router – Home 4G – Rental)</em>، مع التأكد من أن الـ Credit Limit الخاص بالعميل يسمح بدفع 50 جنيه قبل ميعاد تجديد الفاتورة.</li>
@@ -778,6 +784,6 @@
   sections.forEach(s=>obs.observe(s));
 </script>
 
-<script src="../../assets/js/active-users-widget.js"></script>
+<script src="../../assets/js/active-users-widget.js?v=cv1"></script>
 </body>
 </html>

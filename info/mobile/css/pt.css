@@ -1,9 +1,9 @@
 body {
-            font-family: Arial, sans-serif;
-            background-color: #f9f3ff;
+            font-family: 'Plus Jakarta Sans','Cairo','Tajawal',sans-serif;
+            background-color: #0d0a1c;
             margin: 0;
             padding: 0;
-            color: #333;
+            color: #f8f6ff;
         }
        
         .container {
@@ -13,8 +13,8 @@ body {
         }
        
         header {
-            background-color: #6a0dad;
-            color: white;
+            background-color: #5120b8;
+            color: #ffffff;
             padding: 20px;
             text-align: center;
             border-radius: 10px 10px 0 0;
@@ -30,7 +30,7 @@ body {
         }
        
         h2 {
-            color: #6a0dad;
+            color: #cebdff;
             text-align: center;
             margin: 30px 0 20px;
         }
@@ -46,43 +46,43 @@ body {
             width: 100%;
             border-collapse: collapse;
             margin-bottom: 30px;
-            background-color: white;
+            background-color: #1d1643;
             border-radius: 8px;
             overflow: hidden;
-            box-shadow: 0 4px 12px rgba(106, 13, 173, 0.1);
+            box-shadow: 0 4px 12px rgba(112,72,216,0.2);
         }
        
         .pricing-table th, .pricing-table td {
             padding: 15px;
             text-align: center;
-            border: 1px solid #e0d0f0;
+            border: 1px solid rgba(157,114,255,0.22);
         }
        
         .pricing-table th {
-            background-color: #6a0dad;
-            color: white;
+            background-color: #5120b8;
+            color: #ffffff;
             font-weight: bold;
         }
        
         .pricing-table tr:nth-child(even) {
-            background-color: #f5e9ff;
+            background-color: #120e28;
         }
        
         .pricing-table tr:hover {
-            background-color: #ebd6ff;
+            background-color: #28205c;
         }
        
         .highlight {
             font-weight: bold;
-            color: #6a0dad;
+            color: #cebdff;
         }
        
         .note {
-            background-color: #fff;
+            background-color: #1d1643;
             padding: 15px;
             border-radius: 8px;
             margin: 20px 0;
-            border-right: 4px solid #6a0dad;
+            border-right: 4px solid #7048d8;
             box-shadow: 0 2px 4px rgba(0,0,0,0.05);
             text-align: center;
         }
@@ -95,48 +95,48 @@ body {
         }
        
         .service-card {
-            background-color: white;
+            background-color: #1d1643;
             border-radius: 10px;
             padding: 20px;
             width: 200px;
             text-align: center;
             margin: 10px;
-            box-shadow: 0 4px 8px rgba(106, 13, 173, 0.1);
+            box-shadow: 0 4px 8px rgba(112,72,216,0.2);
             transition: transform 0.3s;
         }
        
         .service-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 6px 12px rgba(106, 13, 173, 0.15);
+            box-shadow: 0 6px 12px rgba(112,72,216,0.27);
         }
        
         .service-icon {
             font-size: 40px;
-            color: #6a0dad;
+            color: #cebdff;
             margin-bottom: 15px;
         }
        
         .service-title {
             font-weight: bold;
-            color: #6a0dad;
+            color: #cebdff;
             font-size: 18px;
         }
        
         footer {
             text-align: center;
             padding: 20px;
-            background-color: #6a0dad;
-            color: white;
+            background-color: #5120b8;
+            color: #ffffff;
             border-radius: 0 0 10px 10px;
             margin-top: 30px;
         }
         
         .info-box {
-            background-color: white;
+            background-color: #1d1643;
             padding: 20px;
             border-radius: 8px;
             margin: 20px 0;
-            border-left: 4px solid #6a0dad;
+            border-left: 4px solid #7048d8;
             box-shadow: 0 2px 4px rgba(0,0,0,0.05);
         }
         
@@ -146,5 +146,5 @@ body {
         
         .faq-question {
             font-weight: bold;
-            color: #6a0dad;
+            color: #cebdff;
         }

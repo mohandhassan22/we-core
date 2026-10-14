@@ -9,24 +9,24 @@
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
 <style>
   :root {
-    --purple: #6B21C8;
-    --purple-light: #8B3CF7;
-    --purple-pale: #EDE9FE;
-    --purple-mid: #A78BFA;
-    --purple-dark: #4C1D95;
-    --white: #FFFFFF;
-    --off-white: #F9F8FF;
-    --gray-light: #F3F0FF;
-    --gray-text: #6B7280;
-    --text-dark: #1E1235;
-    --shadow: 0 8px 40px rgba(107,33,200,0.12);
-    --shadow-hover: 0 20px 60px rgba(107,33,200,0.22);
+    --purple: #7048d8;
+    --purple-light: #8a62f0;
+    --purple-pale: #120e28;
+    --purple-mid: #33297a;
+    --purple-dark: #5120b8;
+    --white: #1d1643;
+    --off-white: #1d1643;
+    --gray-light: #120e28;
+    --gray-text: #7ba3f4;
+    --text-dark: #e6dff9;
+    --shadow: 0 8px 40px rgba(112,72,216,0.22);
+    --shadow-hover: 0 20px 60px rgba(112,72,216,0.4);
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
   body {
-    font-family: 'Cairo', sans-serif;
+    font-family: 'Plus Jakarta Sans','Cairo','Tajawal',sans-serif;
     background: var(--off-white);
     color: var(--text-dark);
     overflow-x: hidden;
@@ -34,7 +34,7 @@
 
   /* ─── HERO ─── */
   .hero {
-    background: linear-gradient(135deg, #6B21C8 0%, #4C1D95 40%, #2E1065 100%);
+    background: linear-gradient(135deg, #7048d8 0%, #5120b8 40%, #28205c 100%);
     padding: 0;
     position: relative;
     overflow: hidden;
@@ -47,7 +47,7 @@
     position:absolute;
     top:-80px; left:-80px;
     width:400px; height:400px;
-    background: radial-gradient(circle, rgba(167,139,250,0.25) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(112,72,216,0.35) 0%, transparent 70%);
     border-radius:50%;
   }
   .hero::after {
@@ -55,7 +55,7 @@
     position:absolute;
     bottom:-100px; right:-60px;
     width:350px; height:350px;
-    background: radial-gradient(circle, rgba(139,60,247,0.3) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(112,72,216,0.35) 0%, transparent 70%);
     border-radius:50%;
   }
   .hero-grid {
@@ -78,32 +78,32 @@
   }
   .logo-box {
     width: 56px; height: 56px;
-    background: white;
+    background: #1d1643;
     border-radius: 14px;
     display: flex; align-items: center; justify-content: center;
-    font-family: 'Tajawal', sans-serif;
+    font-family: 'Plus Jakarta Sans','Cairo','Tajawal',sans-serif;
     font-weight: 900;
     font-size: 22px;
-    color: var(--purple);
+    color: #cebdff;
     letter-spacing: -1px;
     box-shadow: 0 4px 20px rgba(0,0,0,0.2);
   }
   .logo-text {
-    color: white;
+    color: #ffffff;
     font-weight: 300;
     font-size: 14px;
     opacity: 0.85;
     line-height: 1.4;
   }
   .hero h1 {
-    font-family: 'Tajawal', sans-serif;
+    font-family: 'Sora','Cairo','Tajawal',sans-serif;
     font-weight: 800;
     font-size: clamp(28px, 5vw, 52px);
-    color: white;
+    color: #ffffff;
     line-height: 1.15;
     margin-bottom: 12px;
   }
-  .hero h1 span { color: #C4B5FD; }
+  .hero h1 span { color: #c4b5fd; }
   .hero p {
     color: rgba(255,255,255,0.75);
     font-size: 16px;
@@ -111,24 +111,24 @@
   }
   .hero-badge {
     background: rgba(255,255,255,0.12);
-    border: 1px solid rgba(255,255,255,0.25);
+    border: 1px solid rgba(157,114,255,0.25);
     backdrop-filter: blur(10px);
     border-radius: 20px;
     padding: 28px 36px;
     text-align: center;
     min-width: 200px;
   }
-  .hero-badge .num { font-size: 48px; font-weight: 900; color: white; font-family:'Tajawal',sans-serif; line-height:1; }
+  .hero-badge .num { font-size: 48px; font-weight: 900; color: #ffffff; font-family:'Sora','Cairo','Tajawal',sans-serif; line-height:1; }
   .hero-badge .lbl { color: rgba(255,255,255,0.75); font-size: 14px; margin-top: 6px; }
 
   /* ─── NAV TABS ─── */
   .tabs-wrap {
-    background: white;
-    border-bottom: 1px solid #EDE9FE;
+    background: #1d1643;
+    border-bottom: 1px solid rgba(157,114,255,0.22);
     position: sticky;
     top: 0;
     z-index: 100;
-    box-shadow: 0 2px 20px rgba(107,33,200,0.08);
+    box-shadow: 0 2px 20px rgba(112,72,216,0.2);
   }
   .tabs {
     max-width: 1200px;
@@ -144,7 +144,7 @@
     padding: 20px 28px;
     border: none;
     background: transparent;
-    font-family: 'Cairo', sans-serif;
+    font-family: 'Space Grotesk','Cairo','Tajawal',sans-serif;
     font-size: 15px;
     font-weight: 600;
     color: var(--gray-text);
@@ -154,8 +154,8 @@
     transition: color 0.3s;
     border-bottom: 3px solid transparent;
   }
-  .tab-btn.active { color: var(--purple); border-bottom-color: var(--purple); }
-  .tab-btn:hover:not(.active) { color: var(--purple-light); }
+  .tab-btn.active { color: #cebdff; border-bottom-color: #9d72ff; }
+  .tab-btn:hover:not(.active) { color: #cebdff; }
 
   /* ─── MAIN ─── */
   .main { max-width: 1200px; margin: 0 auto; padding: 48px 40px; }
@@ -177,7 +177,7 @@
     flex-shrink: 0;
   }
   .sec-header h2 {
-    font-family: 'Tajawal', sans-serif;
+    font-family: 'Sora','Cairo','Tajawal',sans-serif;
     font-size: 26px;
     font-weight: 800;
     color: var(--text-dark);
@@ -192,7 +192,7 @@
   }
 
   .device-card {
-    background: white;
+    background: #1d1643;
     border-radius: 20px;
     overflow: hidden;
     box-shadow: var(--shadow);
@@ -204,7 +204,7 @@
   .device-card:hover {
     transform: translateY(-6px);
     box-shadow: var(--shadow-hover);
-    border-color: var(--purple-pale);
+    border-color: rgba(157,114,255,0.22);
   }
 
   @keyframes fadeUp {
@@ -234,7 +234,7 @@
     content:'';
     position:absolute;
     bottom:0; left:0; right:0; height:40px;
-    background: linear-gradient(to top, rgba(243,240,255,0.8), transparent);
+    background: linear-gradient(to top, rgba(29,22,67,0.8), transparent);
     pointer-events: none;
   }
 
@@ -245,7 +245,7 @@
     object-fit: contain;
     padding: 20px;
     transition: transform 0.4s ease;
-    filter: drop-shadow(0 8px 20px rgba(107,33,200,0.15));
+    filter: drop-shadow(0 8px 20px rgba(112,72,216,0.27));
     display: block;
   }
   .device-card:hover .card-img-wrap img.real-img {
@@ -268,7 +268,7 @@
   }
   .card-img-wrap .img-fallback .fallback-name {
     font-size: 12px;
-    color: var(--purple);
+    color: #cebdff;
     font-weight: 600;
     text-align: center;
     padding: 0 16px;
@@ -279,28 +279,28 @@
     top: 12px;
     right: 12px;
     background: var(--purple);
-    color: white;
+    color: #ffffff;
     font-size: 11px;
     font-weight: 700;
     padding: 4px 10px;
     border-radius: 20px;
-    font-family: 'Tajawal', sans-serif;
+    font-family: 'Space Grotesk','Cairo','Tajawal',sans-serif;
     z-index: 2;
   }
   .card-badge.green { background: #059669; }
-  .card-badge.orange { background: #D97706; }
+  .card-badge.orange { background: #d97706; }
 
   .card-body { padding: 20px; }
   .card-brand {
     font-size: 11px;
     font-weight: 600;
-    color: var(--purple-mid);
+    color: #cebdff;
     text-transform: uppercase;
     letter-spacing: 1px;
     margin-bottom: 6px;
   }
   .card-name {
-    font-family: 'Tajawal', sans-serif;
+    font-family: 'Plus Jakarta Sans','Cairo','Tajawal',sans-serif;
     font-size: 16px;
     font-weight: 700;
     color: var(--text-dark);
@@ -315,7 +315,7 @@
   }
   .spec-tag {
     background: var(--purple-pale);
-    color: var(--purple-dark);
+    color: #cebdff;
     font-size: 11px;
     font-weight: 600;
     padding: 4px 10px;
@@ -326,19 +326,19 @@
     align-items: center;
     justify-content: space-between;
     padding-top: 16px;
-    border-top: 1px solid #F0EBFF;
+    border-top: 1px solid rgba(157,114,255,0.22);
   }
   .price {
-    font-family: 'Tajawal', sans-serif;
+    font-family: 'Space Grotesk','Cairo','Tajawal',sans-serif;
     font-weight: 900;
     font-size: 22px;
-    color: var(--purple);
+    color: #cebdff;
     line-height: 1;
   }
   .price span { font-size: 13px; font-weight: 500; color: var(--gray-text); }
   .price-old {
     font-size: 13px;
-    color: #9CA3AF;
+    color: #9ca3af;
     text-decoration: line-through;
     font-weight: 400;
   }
@@ -346,22 +346,22 @@
 
   .btn-more {
     background: var(--purple-pale);
-    color: var(--purple);
+    color: #cebdff;
     border: none;
     border-radius: 10px;
     padding: 8px 16px;
-    font-family: 'Cairo', sans-serif;
+    font-family: 'Space Grotesk','Cairo','Tajawal',sans-serif;
     font-size: 13px;
     font-weight: 700;
     cursor: pointer;
     transition: all 0.2s;
   }
-  .btn-more:hover { background: var(--purple); color: white; }
+  .btn-more:hover { background: var(--purple); color: #ffffff; }
 
   /* ─── MODAL ─── */
   .modal-overlay {
     position:fixed; inset:0;
-    background:rgba(30,18,53,0.6);
+    background:rgba(112,72,216,0.6);
     backdrop-filter:blur(6px);
     z-index:1000;
     display:flex; align-items:center; justify-content:center;
@@ -371,14 +371,14 @@
   }
   .modal-overlay.open { opacity:1; pointer-events:all; }
   .modal {
-    background:white;
+    background:#1d1643;
     border-radius:24px;
     max-width:520px;
     width:100%;
     overflow:hidden;
     transform: scale(0.9) translateY(20px);
     transition: transform 0.3s;
-    box-shadow: 0 40px 80px rgba(107,33,200,0.25);
+    box-shadow: 0 40px 80px rgba(112,72,216,0.45);
   }
   .modal-overlay.open .modal { transform: scale(1) translateY(0); }
 
@@ -394,7 +394,7 @@
     max-width: 80%;
     max-height: 200px;
     object-fit: contain;
-    filter: drop-shadow(0 10px 30px rgba(107,33,200,0.2));
+    filter: drop-shadow(0 10px 30px rgba(112,72,216,0.36));
     display: block;
   }
   .modal-img .modal-fallback {
@@ -404,20 +404,20 @@
     gap: 12px;
   }
   .modal-img .modal-fallback-icon { font-size: 70px; opacity: 0.4; }
-  .modal-img .modal-fallback-text { color: var(--purple); font-weight: 700; font-size: 14px; }
+  .modal-img .modal-fallback-text { color: #cebdff; font-weight: 700; font-size: 14px; }
 
   .modal-body { padding:28px 32px; }
-  .modal-brand { color:var(--purple-mid); font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:1px; margin-bottom:8px; }
-  .modal-name { font-family:'Tajawal',sans-serif; font-size:22px; font-weight:800; color:var(--text-dark); margin-bottom:20px; }
+  .modal-brand { color:#cebdff; font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:1px; margin-bottom:8px; }
+  .modal-name { font-family:'Plus Jakarta Sans','Cairo','Tajawal',sans-serif; font-size:22px; font-weight:800; color:var(--text-dark); margin-bottom:20px; }
   .modal-specs { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:24px; }
   .spec-item { background:var(--gray-light); border-radius:12px; padding:12px; }
   .spec-label { font-size:11px; color:var(--gray-text); margin-bottom:4px; }
   .spec-val { font-weight:700; color:var(--text-dark); font-size:14px; }
   .modal-footer { display:flex; align-items:center; justify-content:space-between; }
-  .modal-price { font-family:'Tajawal',sans-serif; font-size:30px; font-weight:900; color:var(--purple); }
+  .modal-price { font-family:'Space Grotesk','Cairo','Tajawal',sans-serif; font-size:30px; font-weight:900; color:#cebdff; }
   .modal-price small { font-size:14px; color:var(--gray-text); font-weight:400; }
-  .btn-close { background:var(--gray-light); border:none; border-radius:12px; padding:10px 20px; font-family:'Cairo',sans-serif; font-size:14px; cursor:pointer; color:var(--gray-text); font-weight:600; transition:all 0.2s; }
-  .btn-close:hover { background:#EDE9FE; color:var(--purple); }
+  .btn-close { background:var(--gray-light); border:none; border-radius:12px; padding:10px 20px; font-family:'Space Grotesk','Cairo','Tajawal',sans-serif; font-size:14px; cursor:pointer; color:var(--gray-text); font-weight:600; transition:all 0.2s; }
+  .btn-close:hover { background:#120e28; color:#cebdff; }
 
   /* ─── FOOTER ─── */
   .footer {
@@ -428,7 +428,7 @@
     font-size:13px;
     margin-top:60px;
   }
-  .footer strong { color:white; }
+  .footer strong { color:#ffffff; }
 
   /* ─── RESPONSIVE ─── */
   @media(max-width:700px){
@@ -444,6 +444,12 @@
   }
 </style>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<meta name="theme-color" content="#0D0A1C">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/cognitive-violet.css?v=1">
+<script src="../assets/js/back-button.js?v=1" defer></script>
 </head>
 <body>
 
@@ -1260,6 +1266,6 @@ function closeModalOutside(e) {
 
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
 </script>
-<script src="../assets/js/active-users-widget.js"></script>
+<script src="../assets/js/active-users-widget.js?v=cv1"></script>
 </body>
 </html>

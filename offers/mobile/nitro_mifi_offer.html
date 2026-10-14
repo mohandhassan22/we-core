@@ -11,20 +11,20 @@
     --rose-deep:#5c0f3d;
     --rose:#9c1660;
     --rose-mid:#c23b83;
-    --rose-light:#fbe9f2;
+    --rose-light:rgba(224,82,153,0.16);
     --amber:#ffb648;
-    --ink:#2b1524;
-    --paper:#fdf7fa;
-    --line:#f0d3e2;
-    --white:#ffffff;
+    --ink:#1d1643;
+    --paper:#120e28;
+    --line:rgba(224,82,155,0.16);
+    --white:#1d1643;
   }
 
   *{box-sizing:border-box;margin:0;padding:0;}
 
   body{
-    background:linear-gradient(180deg,#fbf0f6 0%, #f6e0ec 100%);
-    font-family:'IBM Plex Sans Arabic','Tajawal',sans-serif;
-    color:var(--ink);
+    background:linear-gradient(180deg,#0d0a1c 0%, rgba(224,82,159,0.16) 100%);
+    font-family:'Plus Jakarta Sans','Cairo','Tajawal',sans-serif;
+    color:#f47bce;
     padding:36px 16px 60px;
     min-height:100vh;
   }
@@ -43,7 +43,7 @@
     background:
       radial-gradient(circle at 88% -15%, rgba(255,182,72,0.35), transparent 45%),
       linear-gradient(120deg, var(--rose-deep) 0%, var(--rose) 55%, var(--rose-mid) 100%);
-    color:var(--white);
+    color:#ffffff;
     padding:44px 40px 30px;
     position:relative;
     overflow:hidden;
@@ -77,15 +77,15 @@
     width:34px;height:34px;border-radius:9px;
     background:var(--white);
     display:flex;align-items:center;justify-content:center;
-    color:var(--rose-deep);
-    font-family:'Tajawal',sans-serif;
+    color:#f47bc3;
+    font-family:'Plus Jakarta Sans','Cairo','Tajawal',sans-serif;
     font-weight:900;
     font-size:13px;
   }
   .badge-season{
     font-size:12px;
     background:rgba(255,255,255,0.14);
-    border:1px solid rgba(255,255,255,0.35);
+    border:1px solid rgba(157,114,255,0.35);
     padding:6px 14px;
     border-radius:999px;
     font-weight:600;
@@ -99,7 +99,7 @@
     line-height:1.45;
     max-width:600px;
   }
-  .hero-title span{color:var(--amber);}
+  .hero-title span{color:#ffb648;}
   .hero-pills{
     position:relative;z-index:1;
     display:flex;
@@ -109,7 +109,7 @@
   }
   .hero-pill{
     background:rgba(255,255,255,0.1);
-    border:1px solid rgba(255,255,255,0.3);
+    border:1px solid rgba(157,114,255,0.3);
     border-radius:12px;
     padding:12px 16px;
     font-size:12.5px;
@@ -118,7 +118,7 @@
   }
   .hero-pill b{
     display:block;
-    color:var(--amber);
+    color:#ffb648;
     font-size:13.5px;
     margin-bottom:3px;
   }
@@ -131,7 +131,7 @@
 
   /* ===== SECTION HEADERS ===== */
   .section{padding:32px 40px;}
-  .section + .section{border-top:1px solid var(--line);}
+  .section + .section{border-top:1px solid rgba(224,82,155,0.35);}
   .section-head{
     display:flex;
     align-items:center;
@@ -146,12 +146,12 @@
   .section-title{
     font-size:19px;
     font-weight:800;
-    color:var(--rose-deep);
+    color:#f47bc3;
   }
   .lead-text{
     font-size:13.5px;
     line-height:1.9;
-    color:#5c4152;
+    color:#f47bc7;
     margin-bottom:16px;
   }
 
@@ -160,13 +160,13 @@
     display:flex;
     gap:14px;
     align-items:stretch;
-    border:1px solid var(--line);
+    border:1px solid rgba(224,82,155,0.35);
     border-radius:16px;
     overflow:hidden;
   }
   .validity-badge{
     background:linear-gradient(160deg, var(--rose-deep), var(--rose));
-    color:#fff;
+    color:#ffffff;
     display:flex;
     flex-direction:column;
     align-items:center;
@@ -186,33 +186,33 @@
   }
   table.nitro-table thead th{
     background:var(--paper);
-    color:var(--rose-deep);
+    color:#f47bc3;
     font-weight:700;
     padding:11px 10px;
-    border-bottom:2px solid var(--line);
+    border-bottom:2px solid rgba(224,82,155,0.35);
     text-align:center;
   }
   table.nitro-table tbody td{
     padding:11px 10px;
     text-align:center;
-    border-bottom:1px solid var(--line);
+    border-bottom:1px solid rgba(224,82,155,0.35);
   }
   table.nitro-table tbody tr:last-child td{border-bottom:none;}
-  table.nitro-table tbody tr:nth-child(even) td{background:#fffaf3;}
+  table.nitro-table tbody tr:nth-child(even) td{background:#120e28;}
   .plan-name{
     font-weight:800;
-    color:var(--rose);
+    color:#f47bbe;
     font-size:13.5px;
   }
-  .base-cell{color:#6b5a73;}
+  .base-cell{color:#cbc3d6;}
   .new-cell{
     font-weight:700;
-    color:var(--rose-deep);
+    color:#f47bc3;
     background:var(--rose-light) !important;
   }
   .cur-cell{
     font-weight:700;
-    color:#a3720a;
+    color:#f4cd7b;
   }
 
   /* ===== SUBSCRIPTION ===== */
@@ -223,7 +223,7 @@
   }
   .method-card{
     background:var(--paper);
-    border:1px solid var(--line);
+    border:1px solid rgba(224,82,155,0.35);
     border-radius:14px;
     padding:18px;
   }
@@ -231,7 +231,7 @@
     display:inline-block;
     font-size:11px;
     font-weight:800;
-    color:#fff;
+    color:#ffffff;
     background:var(--rose);
     padding:3px 10px;
     border-radius:999px;
@@ -240,9 +240,9 @@
   .method-card p{
     font-size:13px;
     line-height:1.9;
-    color:var(--ink);
+    color:#f47bce;
   }
-  .method-card p a{color:var(--rose);font-weight:700;}
+  .method-card p a{color:#f47bbe;font-weight:700;}
 
   /* ===== TERMS ===== */
   .terms{list-style:none;}
@@ -253,7 +253,7 @@
     font-size:13.5px;
     line-height:1.9;
     padding:9px 0;
-    border-bottom:1px dashed var(--line);
+    border-bottom:1px dashed rgba(224,82,155,0.35);
   }
   .terms li:last-child{border-bottom:none;}
   .terms li::before{
@@ -286,6 +286,12 @@
     .method-cards{grid-template-columns:1fr;}
   }
 </style>
+<meta name="theme-color" content="#0D0A1C">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../assets/css/cognitive-violet.css?v=1">
+<script src="../../assets/js/back-button.js?v=1" defer></script>
 </head>
 <body>
 
@@ -478,6 +484,6 @@
 
 </div>
 
-<script src="../../assets/js/active-users-widget.js"></script>
+<script src="../../assets/js/active-users-widget.js?v=cv1"></script>
 </body>
 </html>

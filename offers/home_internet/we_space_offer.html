@@ -8,23 +8,23 @@
 <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root{
-    --purple-deep:#3d1152;
-    --purple:#6b1f8c;
-    --purple-mid:#8c3aa8;
-    --purple-light:#f4e9f8;
+    --purple-deep:#28205c;
+    --purple:#5120b8;
+    --purple-mid:#5120b8;
+    --purple-light:#28205c;
     --gold:#f2b134;
-    --ink:#241830;
-    --paper:#fbf8fc;
-    --line:#e2d0e8;
-    --white:#ffffff;
+    --ink:#120e28;
+    --paper:#120e28;
+    --line:#28205c;
+    --white:#1d1643;
   }
 
   *{box-sizing:border-box;margin:0;padding:0;}
 
   body{
-    background:linear-gradient(180deg,#f7f1fa 0%, #efe3f5 100%);
-    font-family:'IBM Plex Sans Arabic','Tajawal',sans-serif;
-    color:var(--ink);
+    background:linear-gradient(180deg,#0d0a1c 0%, #28205c 100%);
+    font-family:'Plus Jakarta Sans','Cairo','Tajawal',sans-serif;
+    color:#e6dff9;
     padding:36px 16px 60px;
     min-height:100vh;
   }
@@ -35,7 +35,7 @@
     background:var(--white);
     border-radius:22px;
     overflow:hidden;
-    box-shadow:0 30px 70px -25px rgba(61,17,82,0.45), 0 2px 8px rgba(61,17,82,0.08);
+    box-shadow:0 30px 70px -25px rgba(112,72,216,0.45), 0 2px 8px rgba(112,72,216,0.2);
     position:relative;
   }
 
@@ -44,7 +44,7 @@
     background:
       radial-gradient(circle at 85% -10%, rgba(242,177,52,0.35), transparent 45%),
       linear-gradient(120deg, var(--purple-deep) 0%, var(--purple) 55%, var(--purple-mid) 100%);
-    color:var(--white);
+    color:#ffffff;
     padding:44px 40px 36px;
     position:relative;
     overflow:hidden;
@@ -54,7 +54,7 @@
     position:absolute;
     inset:0;
     background-image:
-      repeating-linear-gradient(115deg, rgba(255,255,255,0.045) 0px, rgba(255,255,255,0.045) 2px, transparent 2px, transparent 34px);
+      repeating-linear-gradient(115deg, rgba(255,255,255,0.04) 0px, rgba(255,255,255,0.04) 2px, transparent 2px, transparent 34px);
     pointer-events:none;
   }
   .hero-top{
@@ -77,15 +77,15 @@
     width:34px;height:34px;border-radius:9px;
     background:var(--white);
     display:flex;align-items:center;justify-content:center;
-    color:var(--purple-deep);
-    font-family:'Tajawal',sans-serif;
+    color:#e6dff9;
+    font-family:'Plus Jakarta Sans','Cairo','Tajawal',sans-serif;
     font-weight:900;
     font-size:16px;
   }
   .badge-season{
     font-size:12px;
     background:rgba(255,255,255,0.14);
-    border:1px solid rgba(255,255,255,0.35);
+    border:1px solid rgba(157,114,255,0.35);
     padding:6px 14px;
     border-radius:999px;
     font-weight:600;
@@ -99,7 +99,7 @@
     line-height:1.4;
     max-width:560px;
   }
-  .hero-title span{color:var(--gold);}
+  .hero-title span{color:#f4cb7b;}
   .hero-sub{
     position:relative;z-index:1;
     margin-top:14px;
@@ -108,14 +108,14 @@
     max-width:600px;
     color:rgba(255,255,255,0.92);
     background:rgba(255,255,255,0.08);
-    border-right:3px solid var(--gold);
+    border-right:3px solid #f2b134;
     padding:12px 16px;
     border-radius:8px;
   }
 
   /* ===== SECTION HEADERS ===== */
   .section{padding:34px 40px;}
-  .section + .section{border-top:1px solid var(--line);}
+  .section + .section{border-top:1px solid rgba(157,114,255,0.22);}
   .section-head{
     display:flex;
     align-items:center;
@@ -130,12 +130,12 @@
   .section-title{
     font-size:19px;
     font-weight:800;
-    color:var(--purple-deep);
+    color:#e6dff9;
   }
 
   /* ===== PRICING TABLE ===== */
   .plan-group{
-    border:1px solid var(--line);
+    border:1px solid rgba(157,114,255,0.22);
     border-radius:16px;
     overflow:hidden;
     margin-bottom:14px;
@@ -145,7 +145,7 @@
     padding:12px 18px;
     font-weight:800;
     font-size:15px;
-    color:var(--purple-deep);
+    color:#e6dff9;
     display:flex;
     align-items:center;
     gap:8px;
@@ -153,7 +153,7 @@
   .plan-group-head small{
     font-weight:500;
     font-size:12px;
-    color:var(--purple-mid);
+    color:#cebdff;
   }
 
   table{
@@ -163,10 +163,10 @@
   }
   thead th{
     background:var(--paper);
-    color:var(--purple-deep);
+    color:#e6dff9;
     font-weight:700;
     padding:11px 10px;
-    border-bottom:2px solid var(--line);
+    border-bottom:2px solid rgba(157,114,255,0.22);
     text-align:center;
     white-space:nowrap;
   }
@@ -174,26 +174,26 @@
   tbody td{
     padding:11px 10px;
     text-align:center;
-    border-bottom:1px solid var(--line);
-    color:var(--ink);
+    border-bottom:1px solid rgba(157,114,255,0.22);
+    color:#e6dff9;
   }
   tbody tr:last-child td{border-bottom:none;}
   tbody tr:nth-child(4n+1) td,
-  tbody tr:nth-child(4n+2) td{background:#fffdf7;}
+  tbody tr:nth-child(4n+2) td{background:#120e28;}
   .cap-cell{
     font-weight:800;
-    color:var(--purple);
+    color:#cebdff;
     font-size:14px;
   }
   .price-cell{font-weight:700;}
-  .vat-yes{color:var(--purple-deep);}
-  .vat-no{color:#8a7690;font-size:12.5px;}
-  .dash{color:#c8bcd0;}
+  .vat-yes{color:#e6dff9;}
+  .vat-no{color:#9e97c2;font-size:12.5px;}
+  .dash{color:#9e97c2;}
   .price-note{
     display:block;
     font-size:10.5px;
     font-weight:500;
-    color:#9a8aa3;
+    color:#9e97c2;
     margin-top:1px;
   }
 
@@ -205,7 +205,7 @@
   }
   .step-card{
     background:var(--paper);
-    border:1px solid var(--line);
+    border:1px solid rgba(157,114,255,0.22);
     border-radius:14px;
     padding:16px 14px;
     text-align:center;
@@ -214,17 +214,17 @@
     width:28px;height:28px;
     border-radius:50%;
     background:var(--purple);
-    color:#fff;
+    color:#ffffff;
     font-weight:800;
     font-size:13px;
     display:flex;align-items:center;justify-content:center;
     margin:0 auto 10px;
   }
-  .step-card p{font-size:12.5px;line-height:1.6;color:var(--ink);}
-  .step-card a{color:var(--purple);font-weight:700;text-decoration:none;word-break:break-all;}
+  .step-card p{font-size:12.5px;line-height:1.6;color:#e6dff9;}
+  .step-card a{color:#cebdff;font-weight:700;text-decoration:none;word-break:break-all;}
   .new-cust-note{
     background:linear-gradient(90deg, var(--purple-light), transparent);
-    border-right:3px solid var(--purple);
+    border-right:3px solid #9d72ff;
     padding:12px 16px;
     border-radius:8px;
     font-size:13.5px;
@@ -241,7 +241,7 @@
     font-size:13.5px;
     line-height:1.9;
     padding:9px 0;
-    border-bottom:1px dashed var(--line);
+    border-bottom:1px dashed rgba(157,114,255,0.22);
   }
   .terms li:last-child{border-bottom:none;}
   .terms li::before{
@@ -256,7 +256,7 @@
   .lead-text{
     font-size:13.5px;
     line-height:1.9;
-    color:#4a3a52;
+    color:#e6dff9;
     margin-bottom:16px;
   }
 
@@ -265,13 +265,13 @@
     width:100%;
     border-collapse:collapse;
     font-size:13px;
-    border:1px solid var(--line);
+    border:1px solid rgba(157,114,255,0.22);
     border-radius:14px;
     overflow:hidden;
   }
   .bonus-table thead th{
     background:var(--purple-deep);
-    color:#fff;
+    color:#ffffff;
     font-weight:700;
     padding:11px 10px;
     text-align:center;
@@ -279,25 +279,25 @@
   .bonus-table tbody td{
     padding:10px 10px;
     text-align:center;
-    border-bottom:1px solid var(--line);
-    border-left:1px solid var(--line);
+    border-bottom:1px solid rgba(157,114,255,0.22);
+    border-left:1px solid rgba(157,114,255,0.22);
   }
   .bonus-table tbody tr:last-child td{border-bottom:none;}
   .plan-cell{
     font-weight:800;
-    color:var(--purple);
+    color:#cebdff;
     background:var(--purple-light);
     font-size:14px;
   }
   .speed-cell{
     font-size:12px;
-    color:#6b5a73;
+    color:#cbc3d6;
     background:var(--paper);
   }
   .gift-cell{
     font-weight:700;
-    color:#a3720a;
-    background:#fff9ec;
+    color:#f4cd7b;
+    background:rgba(224,179,82,0.16);
   }
 
   /* ===== MINI FAQ ===== */
@@ -309,20 +309,20 @@
   }
   .mini-faq-item{
     background:var(--paper);
-    border:1px solid var(--line);
+    border:1px solid rgba(157,114,255,0.22);
     border-radius:12px;
     padding:14px 16px;
   }
   .mini-faq-q{
     font-weight:800;
     font-size:13.5px;
-    color:var(--purple-deep);
+    color:#e6dff9;
     margin-bottom:6px;
   }
   .mini-faq-a{
     font-size:12.5px;
     line-height:1.8;
-    color:#544860;
+    color:#cbc3d6;
   }
 
   /* ===== TOP-UP ===== */
@@ -333,8 +333,8 @@
     margin-top:6px;
   }
   .topup-card{
-    background:linear-gradient(160deg, var(--purple-light), #fff);
-    border:1px solid var(--line);
+    background:linear-gradient(160deg, var(--purple-light), #1d1643);
+    border:1px solid rgba(157,114,255,0.22);
     border-radius:12px;
     padding:14px 8px;
     text-align:center;
@@ -345,12 +345,12 @@
   .topup-size{
     font-weight:800;
     font-size:15px;
-    color:var(--purple-deep);
+    color:#e6dff9;
   }
   .topup-price{
     font-weight:700;
     font-size:12.5px;
-    color:var(--gold);
+    color:#f4cb7b;
     background:var(--purple-deep);
     border-radius:999px;
     padding:2px 8px;
@@ -359,11 +359,11 @@
   .resource-note{
     margin-top:14px;
     font-size:12px;
-    color:#6b5a73;
+    color:#cbc3d6;
     background:var(--paper);
     border-radius:8px;
     padding:10px 14px;
-    border-right:3px solid var(--purple-mid);
+    border-right:3px solid #9d72ff;
   }
 
   .footer-bar{
@@ -388,6 +388,12 @@
     .bonus-table{font-size:11.5px;}
   }
 </style>
+<meta name="theme-color" content="#0D0A1C">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../assets/css/cognitive-violet.css?v=1">
+<script src="../../assets/js/back-button.js?v=1" defer></script>
 </head>
 <body>
 
@@ -630,6 +636,6 @@
 
 </div>
 
-<script src="../../assets/js/active-users-widget.js"></script>
+<script src="../../assets/js/active-users-widget.js?v=cv1"></script>
 </body>
 </html>

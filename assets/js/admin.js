@@ -210,11 +210,11 @@ function getStatusBadge(user) {
   // Supabase: last_sign_in_at null = never logged in, banned_until, etc.
   const lastSeen = user.last_sign_in_at;
   const banned = user.banned_until && new Date(user.banned_until) > new Date();
-  if (banned) return `<span class="badge" style="background:#fee2e2;color:#991b1b">⊗ محظور</span>`;
-  if (!lastSeen) return `<span class="badge" style="background:#f3f4f6;color:#6b7280">○ لم يسجل</span>`;
+  if (banned) return `<span class="badge" style="background:rgba(224,82,82,0.16);color:#f47b7b">⊗ محظور</span>`;
+  if (!lastSeen) return `<span class="badge" style="background:#120e28;color:#7ba3f4">○ لم يسجل</span>`;
   const daysSince = (Date.now() - new Date(lastSeen)) / 86400000;
-  if (daysSince <= 30) return `<span class="badge" style="background:#d1fae5;color:#065f46">● نشط</span>`;
-  return `<span class="badge" style="background:#fef3c7;color:#92400e">◌ غير نشط</span>`;
+  if (daysSince <= 30) return `<span class="badge" style="background:rgba(82,224,151,0.16);color:#7bf4d2">● نشط</span>`;
+  return `<span class="badge" style="background:rgba(224,196,82,0.16);color:#f4a97b">◌ غير نشط</span>`;
 }
 
 function updateStats(users) {
@@ -711,7 +711,7 @@ function renderTableHead(columns) {
 function formatCellValue(value, column) {
   if (value === null || value === undefined) return '<span style="color:#c4c9d4">NULL</span>';
   if (isBooleanType(column.data_type)) {
-    return value ? '<span class="badge" style="background:#d1fae5;color:#065f46">✓ صح</span>' : '<span class="badge" style="background:#fee2e2;color:#991b1b">✗ خطأ</span>';
+    return value ? '<span class="badge" style="background:rgba(82,224,151,0.16);color:#7bf4d2">✓ صح</span>' : '<span class="badge" style="background:rgba(224,82,82,0.16);color:#f47b7b">✗ خطأ</span>';
   }
   let str = String(value);
   if (typeof value === 'object') str = JSON.stringify(value);

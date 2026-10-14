@@ -5,8 +5,8 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #f5f3ff 0%, #ffffff 50%, #f0e6ff 100%);
+            font-family: 'Plus Jakarta Sans','Cairo','Tajawal',sans-serif;
+            background: linear-gradient(135deg, #0d0a1c 0%, #0d0a1c 50%, #0d0a1c 100%);
             min-height: 100vh;
             padding: 20px;
             line-height: 1.6;
@@ -18,13 +18,13 @@
         }
 
         header {
-            background: linear-gradient(135deg, #7c3aed 0%, #a855f7 100%);
-            color: white;
+            background: linear-gradient(135deg, #7048d8 0%, #8a62f0 100%);
+            color: #ffffff;
             padding: 40px 30px;
             border-radius: 20px;
             text-align: center;
             margin-bottom: 30px;
-            box-shadow: 0 10px 30px rgba(124, 58, 237, 0.3);
+            box-shadow: 0 10px 30px rgba(112,72,216,0.45);
         }
 
         header h1 {
@@ -35,34 +35,34 @@
 
         .offer-badge {
             background: linear-gradient(135deg, #f59e0b 0%, #fb923c 100%);
-            color: white;
+            color: #ffffff;
             padding: 15px 30px;
             border-radius: 25px;
             display: inline-block;
             font-size: 1.3em;
             font-weight: bold;
             margin-top: 10px;
-            box-shadow: 0 5px 15px rgba(251, 146, 60, 0.4);
+            box-shadow: 0 5px 15px rgba(251,146,60,0.4);
         }
 
         .main-offer {
-            background: white;
+            background: #1d1643;
             padding: 40px;
             border-radius: 15px;
             text-align: center;
             margin-bottom: 30px;
-            box-shadow: 0 5px 20px rgba(124, 58, 237, 0.1);
-            border: 3px solid #e9d5ff;
+            box-shadow: 0 5px 20px rgba(112,72,216,0.2);
+            border: 3px solid rgba(157,114,255,0.22);
         }
 
         .main-offer h2 {
-            color: #7c3aed;
+            color: #cebdff;
             font-size: 2.2em;
             margin-bottom: 20px;
         }
 
         .main-offer .highlight {
-            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            background: linear-gradient(135deg, rgba(224,196,82,0.16) 0%, rgba(224,196,82,0.24) 100%);
             padding: 20px;
             border-radius: 12px;
             margin: 20px 0;
@@ -71,25 +71,25 @@
 
         .main-offer .highlight p {
             font-size: 1.5em;
-            color: #92400e;
+            color: #f4a97b;
             font-weight: bold;
         }
 
         .terms-section {
-            background: white;
+            background: #1d1643;
             padding: 35px;
             border-radius: 15px;
             margin-bottom: 30px;
-            box-shadow: 0 5px 20px rgba(124, 58, 237, 0.1);
-            border: 2px solid #e9d5ff;
+            box-shadow: 0 5px 20px rgba(112,72,216,0.2);
+            border: 2px solid rgba(157,114,255,0.22);
         }
 
         .terms-section h3 {
-            color: #7c3aed;
+            color: #cebdff;
             font-size: 1.8em;
             margin-bottom: 20px;
             padding-bottom: 10px;
-            border-bottom: 3px solid #e9d5ff;
+            border-bottom: 3px solid rgba(157,114,255,0.22);
         }
 
         .terms-list {
@@ -98,12 +98,12 @@
         }
 
         .terms-list li {
-            background: linear-gradient(135deg, #faf5ff 0%, #f3e8ff 100%);
+            background: linear-gradient(135deg, #120e28 0%, #120e28 100%);
             padding: 15px 20px;
             margin: 12px 0;
             border-radius: 10px;
-            border-right: 4px solid #a855f7;
-            color: #4c1d95;
+            border-right: 4px solid #9d72ff;
+            color: #cebdff;
             position: relative;
             padding-right: 50px;
         }
@@ -114,8 +114,8 @@
             right: 15px;
             top: 50%;
             transform: translateY(-50%);
-            background: #7c3aed;
-            color: white;
+            background: #7048d8;
+            color: #ffffff;
             width: 25px;
             height: 25px;
             border-radius: 50%;
@@ -126,7 +126,7 @@
         }
 
         .important-notice {
-            background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+            background: linear-gradient(135deg, rgba(224,82,82,0.16) 0%, rgba(224,82,82,0.16) 100%);
             border: 3px solid #ef4444;
             border-radius: 15px;
             padding: 25px;
@@ -135,7 +135,7 @@
         }
 
         .important-notice h4 {
-            color: #991b1b;
+            color: #f47b7b;
             font-size: 1.4em;
             margin-bottom: 15px;
             display: flex;
@@ -145,7 +145,7 @@
         }
 
         .important-notice p {
-            color: #7f1d1d;
+            color: #f47b7b;
             font-size: 1.1em;
             font-weight: bold;
             margin-bottom: 20px;
@@ -154,19 +154,19 @@
         .declaration-button {
             display: inline-block;
             background: linear-gradient(135deg, #dc2626 0%, #ef4444 100%);
-            color: white;
+            color: #ffffff;
             padding: 15px 40px;
             border-radius: 30px;
             text-decoration: none;
             font-size: 1.2em;
             font-weight: bold;
-            box-shadow: 0 5px 20px rgba(220, 38, 38, 0.4);
+            box-shadow: 0 5px 20px rgba(220,38,38,0.4);
             transition: all 0.3s;
         }
 
         .declaration-button:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(220, 38, 38, 0.5);
+            box-shadow: 0 8px 25px rgba(220,38,38,0.5);
         }
 
         .declaration-button i {
@@ -174,7 +174,7 @@
         }
 
         .payment-methods {
-            background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%);
+            background: linear-gradient(135deg, rgba(82,167,224,0.16) 0%, rgba(82,175,224,0.16) 100%);
             padding: 20px;
             border-radius: 12px;
             margin-top: 20px;
@@ -182,19 +182,19 @@
         }
 
         .payment-methods h4 {
-            color: #075985;
+            color: #7bcaf4;
             margin-bottom: 12px;
             font-size: 1.1em;
         }
 
         .payment-methods p {
-            color: #0c4a6e;
+            color: #7bc8f4;
             line-height: 1.8;
         }
 
         .badge {
-            background: #7c3aed;
-            color: white;
+            background: #7048d8;
+            color: #ffffff;
             padding: 4px 10px;
             border-radius: 12px;
             font-size: 0.85em;
@@ -205,7 +205,7 @@
         footer {
             text-align: center;
             padding: 30px;
-            color: #7c3aed;
+            color: #cebdff;
             font-size: 0.95em;
             margin-top: 30px;
         }

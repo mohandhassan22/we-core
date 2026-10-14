@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>عروض WE - المصرية للاتصالات</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <script src="../../assets/js/active-users-widget.js"></script>
+    <script src="../../assets/js/active-users-widget.js?v=cv1"></script>
     <style>
         * {
             margin: 0;
@@ -15,8 +15,8 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #f5f3ff 0%, #ffffff 50%, #f0e6ff 100%);
+            font-family: 'Plus Jakarta Sans','Cairo','Tajawal',sans-serif;
+            background: linear-gradient(135deg, #0d0a1c 0%, #0d0a1c 50%, #0d0a1c 100%);
             min-height: 100vh;
             padding: 20px;
             line-height: 1.6;
@@ -29,13 +29,13 @@
 
         header {
             position: relative;
-            background: linear-gradient(135deg, #7c3aed 0%, #a855f7 100%);
-            color: white;
+            background: linear-gradient(135deg, #7048d8 0%, #8a62f0 100%);
+            color: #ffffff;
             padding: 40px 30px;
             border-radius: 20px;
             text-align: center;
             margin-bottom: 40px;
-            box-shadow: 0 10px 30px rgba(124, 58, 237, 0.3);
+            box-shadow: 0 10px 30px rgba(112,72,216,0.45);
         }
 
         header h1 {
@@ -54,7 +54,7 @@
             left: 20px;
             top: 50%;
             transform: translateY(-50%);
-            color: white;
+            color: #ffffff;
             text-decoration: none;
             font-size: 20px;
             z-index: 10;
@@ -74,11 +74,11 @@
         }
 
         .offer-card {
-            background: white;
+            background: #1d1643;
             border-radius: 15px;
             overflow: hidden;
-            box-shadow: 0 5px 20px rgba(124, 58, 237, 0.1);
-            border: 2px solid #e9d5ff;
+            box-shadow: 0 5px 20px rgba(112,72,216,0.2);
+            border: 2px solid rgba(157,114,255,0.22);
             transition: transform 0.3s, box-shadow 0.3s;
             display: flex;
             flex-direction: column;
@@ -86,18 +86,18 @@
 
         .offer-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(124, 58, 237, 0.2);
+            box-shadow: 0 10px 30px rgba(112,72,216,0.36);
         }
 
         .offer-header {
-            background: linear-gradient(135deg, #7c3aed 0%, #a855f7 100%);
-            color: white;
+            background: linear-gradient(135deg, #7048d8 0%, #8a62f0 100%);
+            color: #ffffff;
             padding: 20px;
             text-align: center;
         }
 
         .offer-badge {
-            background: rgba(255, 255, 255, 0.2);
+            background: rgba(255,255,255,0.2);
             padding: 5px 15px;
             border-radius: 20px;
             display: inline-block;
@@ -113,7 +113,7 @@
         }
 
         .offer-highlight {
-            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            background: linear-gradient(135deg, rgba(224,196,82,0.16) 0%, rgba(224,196,82,0.24) 100%);
             padding: 15px;
             border-radius: 10px;
             text-align: center;
@@ -122,13 +122,13 @@
         }
 
         .offer-highlight p {
-            color: #92400e;
+            color: #f4a97b;
             font-size: 1.2em;
             font-weight: bold;
         }
 
         .offer-details {
-            color: #4c1d95;
+            color: #cebdff;
             margin-bottom: 20px;
             flex-grow: 1;
         }
@@ -149,14 +149,14 @@
             content: "✓";
             position: absolute;
             right: 0;
-            color: #7c3aed;
+            color: #cebdff;
             font-weight: bold;
         }
 
         .offer-button {
             display: block;
-            background: linear-gradient(135deg, #7c3aed 0%, #a855f7 100%);
-            color: white;
+            background: linear-gradient(135deg, #7048d8 0%, #8a62f0 100%);
+            color: #ffffff;
             text-align: center;
             padding: 12px 20px;
             border-radius: 10px;
@@ -167,22 +167,22 @@
 
         .offer-button:hover {
             transform: scale(1.05);
-            box-shadow: 0 5px 15px rgba(124, 58, 237, 0.3);
+            box-shadow: 0 5px 15px rgba(112,72,216,0.45);
         }
 
         .no-offers {
-            background: white;
+            background: #1d1643;
             padding: 60px 40px;
             border-radius: 15px;
             text-align: center;
-            box-shadow: 0 5px 20px rgba(124, 58, 237, 0.1);
-            border: 2px solid #e9d5ff;
+            box-shadow: 0 5px 20px rgba(112,72,216,0.2);
+            border: 2px solid rgba(157,114,255,0.22);
         }
 
         footer {
             text-align: center;
             padding: 30px;
-            color: #7c3aed;
+            color: #cebdff;
             font-size: 0.95em;
             margin-top: 40px;
         }
@@ -192,12 +192,16 @@
             .offers-grid { grid-template-columns: 1fr; }
         }
     </style>
+<meta name="theme-color" content="#0D0A1C">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../assets/css/cognitive-violet.css?v=1">
+<script src="../../assets/js/back-button.js?v=1" defer></script>
 </head>
 <body>
     <div class="container">
         <header>
-            <a href="javascript:history.back()" class="back-btn"><i class="fas fa-arrow-left"></i></a>
-
             <h1>🎁 عروض WE</h1>
             <p>احصل على أفضل العروض والخصومات من المصرية للاتصالات</p>
         </header>
@@ -205,7 +209,7 @@
         <div id="offersContainer"></div>
 
         <div id="noOffersMessage" class="no-offers" style="display: none;">
-            <i class="fas fa-gift" style="font-size: 4em; color: #c084fc; margin-bottom: 20px; opacity: 0.5;"></i>
+            <i class="fas fa-gift" style="font-size: 4em; color: #cebdff; margin-bottom: 20px; opacity: 0.5;"></i>
             <h2>لا توجد عروض حالياً</h2>
             <p>نعمل على تقديم عروض جديدة ومميزة لك قريباً</p>
         </div>

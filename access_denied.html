@@ -29,8 +29,8 @@
 <style data-purpose="modal-styling">
     /* Subtle background grid pattern to enhance presentation */
     body {
-      background-color: #f1f3f9;
-      background-image: radial-gradient(#d5dbee 1px, transparent 1px);
+      background-color: #0d0a1c;
+      background-image: radial-gradient(rgba(82,116,224,0.16) 1px, transparent 1px);
       background-size: 24px 24px;
     }
 
@@ -38,7 +38,7 @@
     .keypad-btn {
       position: relative;
       border: 1.5px solid #28eedb;
-      box-shadow: 0 0 10px rgba(40, 238, 219, 0.15), inset 0 0 6px rgba(40, 238, 219, 0.08);
+      box-shadow: 0 0 10px rgba(40,238,219,0.15), inset 0 0 6px rgba(40,238,219,0.08);
       transition: all 0.25s ease-in-out;
       user-select: none;
     }
@@ -47,22 +47,22 @@
       content: '';
       position: absolute;
       inset: -4px;
-      border: 1px solid rgba(40, 238, 219, 0.3);
+      border: 1px solid rgba(40,238,219,0.3);
       border-radius: inherit;
       pointer-events: none;
     }
 
     .keypad-btn.active-press {
-      background: rgba(40, 238, 219, 0.35) !important;
+      background: rgba(40,238,219,0.35) !important;
       transform: scale(0.94);
-      box-shadow: 0 0 22px rgba(40, 238, 219, 0.85), inset 0 0 14px #28eedb !important;
+      box-shadow: 0 0 22px rgba(40,238,219,0.85), inset 0 0 14px #28eedb !important;
       color: #ffffff !important;
     }
 
     /* Status Screen Box */
     .status-box {
       border: 1.5px solid #28eedb;
-      box-shadow: 0 0 12px rgba(40, 238, 219, 0.2);
+      box-shadow: 0 0 12px rgba(40,238,219,0.2);
       position: relative;
     }
 
@@ -70,7 +70,7 @@
       content: '';
       position: absolute;
       inset: -4px;
-      border: 1px solid rgba(40, 238, 219, 0.35);
+      border: 1px solid rgba(40,238,219,0.35);
       border-radius: inherit;
       pointer-events: none;
     }
@@ -82,13 +82,13 @@
       z-index: 40;
       transition: top 1.35s cubic-bezier(0.25, 1, 0.5, 1), left 1.35s cubic-bezier(0.25, 1, 0.5, 1), transform 0.25s ease-out;
       transform-origin: 30px 48px;
-      filter: drop-shadow(-10px 14px 18px rgba(7, 8, 26, 0.65));
+      filter: drop-shadow(-10px 14px 18px rgba(7,8,26,0.65));
     }
 
     /* Hand pressing dip */
     .hand-pressing {
       transform: scale(0.95) translate(2px, 3px) !important;
-      filter: drop-shadow(-5px 7px 10px rgba(7, 8, 26, 0.8)) !important;
+      filter: drop-shadow(-5px 7px 10px rgba(7,8,26,0.8)) !important;
     }
 
     /* Shake Animation for Access Denied alert */
@@ -102,6 +102,12 @@
       animation: shakeError 0.5s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
     }
   </style>
+<meta name="theme-color" content="#0D0A1C">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/cognitive-violet.css?v=1">
+<script src="assets/js/back-button.js?v=1" defer></script>
 </head>
 <body class="min-h-screen w-full flex items-center justify-center p-4 sm:p-6 lg:p-10 font-sans text-slate-800 antialiased">
 <!-- BEGIN: AccessDeniedModal -->
@@ -262,35 +268,35 @@
 <!-- 1. Suit Arm & Sleeve (Dark Navy matching suit in IMAGE_4) -->
 <g id="suit-sleeve">
 <!-- Sleeve shadow/underside -->
-<path d="M110 178 L265 340 L310 340 L160 190 Z" fill="#131633"></path>
+<path d="M110 178 L265 340 L310 340 L160 190 Z" fill="#7b86f4"></path>
 <!-- Main sleeve body -->
-<path d="M106 172 L230 340 L285 340 L152 184 Z" fill="#1c2152"></path>
+<path d="M106 172 L230 340 L285 340 L152 184 Z" fill="#7b86f4"></path>
 <!-- Cyan accent piping stripe on sleeve edge -->
-<path d="M104 174 L250 340" stroke="#22eedb" stroke-linecap="round" stroke-width="2"></path>
+<path d="M104 174 L250 340" stroke="#7bf4e9" stroke-linecap="round" stroke-width="2"></path>
 <!-- White Shirt Cuff -->
 <polygon fill="#ffffff" points="98,162 90,172 136,198 143,188"></polygon>
 <!-- Cyan accent on shirt cuff border -->
-<line stroke="#28eedb" stroke-linecap="round" stroke-width="2" x1="90" x2="136" y1="172" y2="198"></line>
+<line stroke="#7bf4e9" stroke-linecap="round" stroke-width="2" x1="90" x2="136" y1="172" y2="198"></line>
 </g>
 <!-- 2. Realistic Vector Hand matching reference IMAGE_4 -->
 <g id="hand-body">
 <!-- Wrist Base -->
-<path d="M84 152 C84 152, 98 160, 114 170 C126 177, 134 175, 126 158 C120 144, 110 135, 102 130 Z" fill="#884833"></path>
+<path d="M84 152 C84 152, 98 160, 114 170 C126 177, 134 175, 126 158 C120 144, 110 135, 102 130 Z" fill="#f4997b"></path>
 <!-- Curled Pinky finger -->
-<path d="M96 112 C103 116, 106 126, 100 133 C95 139, 85 137, 80 131 C77 127, 80 120, 85 115 C88 112, 92 110, 96 112 Z" fill="#753926"></path>
+<path d="M96 112 C103 116, 106 126, 100 133 C95 139, 85 137, 80 131 C77 127, 80 120, 85 115 C88 112, 92 110, 96 112 Z" fill="#f4987b"></path>
 <!-- Curled Ring finger -->
-<path d="M88 94 C96 98, 100 108, 94 116 C88 123, 77 121, 71 114 C67 109, 70 101, 76 96 C80 93, 84 92, 88 94 Z" fill="#7d3d29"></path>
+<path d="M88 94 C96 98, 100 108, 94 116 C88 123, 77 121, 71 114 C67 109, 70 101, 76 96 C80 93, 84 92, 88 94 Z" fill="#f4987b"></path>
 <!-- Curled Middle finger -->
-<path d="M78 78 C86 82, 90 92, 84 100 C78 107, 67 105, 61 98 C57 93, 60 85, 66 80 C70 77, 74 76, 78 78 Z" fill="#82412d"></path>
+<path d="M78 78 C86 82, 90 92, 84 100 C78 107, 67 105, 61 98 C57 93, 60 85, 66 80 C70 77, 74 76, 78 78 Z" fill="#f4977b"></path>
 <!-- Palm Body -->
-<path d="M52 108 C46 95, 52 82, 60 76 C70 68, 86 78, 92 90 C98 102, 100 120, 96 134 C92 146, 80 148, 70 140 C60 132, 54 120, 52 108 Z" fill="#8d4933"></path>
+<path d="M52 108 C46 95, 52 82, 60 76 C70 68, 86 78, 92 90 C98 102, 100 120, 96 134 C92 146, 80 148, 70 140 C60 132, 54 120, 52 108 Z" fill="#f4997b"></path>
 <!-- Thumb (folded in naturally) -->
-<path d="M30 114 C24 108, 28 98, 36 94 C44 90, 52 96, 56 104 C60 112, 56 120, 48 124 C40 128, 34 122, 30 114 Z" fill="#7b3b27"></path>
+<path d="M30 114 C24 108, 28 98, 36 94 C44 90, 52 96, 56 104 C60 112, 56 120, 48 124 C40 128, 34 122, 30 114 Z" fill="#f4987b"></path>
 <ellipse cx="30" cy="112" fill="#ffffff" opacity="0.85" rx="3.5" ry="2" transform="rotate(-30 30 112)"></ellipse>
 <!-- Extended Index Finger pointing upwards to keypad button -->
 <!-- Main finger shaft -->
-<path d="M30 48 C28 42, 34 36, 40 40 L64 78 C68 84, 64 92, 56 94 L42 80 L30 48 Z" fill="#8d4933"></path>
-<path d="M30 48 C27 43, 31 37, 36 38 C41 39, 44 44, 42 50 L56 74 C58 78, 54 84, 48 83 L30 48 Z" fill="#99523b"></path>
+<path d="M30 48 C28 42, 34 36, 40 40 L64 78 C68 84, 64 92, 56 94 L42 80 L30 48 Z" fill="#f4997b"></path>
+<path d="M30 48 C27 43, 31 37, 36 38 C41 39, 44 44, 42 50 L56 74 C58 78, 54 84, 48 83 L30 48 Z" fill="#f4997b"></path>
 <!-- Clean white fingernail highlight at the index fingertip -->
 <ellipse cx="34" cy="42" fill="#ffffff" opacity="0.95" rx="3.5" ry="2.2" transform="rotate(-62 34 42)"></ellipse>
 </g>

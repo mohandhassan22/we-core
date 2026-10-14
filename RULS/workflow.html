@@ -9,31 +9,31 @@
 <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&family=Cairo:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg: #FAF8FC;
-    --bg-panel: #FFFFFF;
-    --line: #E5DEF2;
-    --purple-deep: #5B21B6;
-    --purple: #7C3AED;
-    --purple-soft: #8B5CF6;
-    --purple-tint: #F3ECFC;
-    --amber: #B4791C;
-    --text: #2B2140;
-    --muted: #7A6E92;
-    --danger: #C23B3B;
+    --bg: #120e28;
+    --bg-panel: #1d1643;
+    --line: #28205c;
+    --purple-deep: #5120b8;
+    --purple: #7048d8;
+    --purple-soft: #8a62f0;
+    --purple-tint: #120e28;
+    --amber: #b4791c;
+    --text: #e6dff9;
+    --muted: #9e97c2;
+    --danger: #c23b3b;
   }
   *{box-sizing:border-box; margin:0; padding:0;}
   html{scroll-behavior:smooth;}
   body{
     background:
-      radial-gradient(1100px 600px at 85% -10%, rgba(124,58,237,0.08), transparent 60%),
-      radial-gradient(900px 500px at -10% 20%, rgba(91,33,182,0.06), transparent 55%),
+      radial-gradient(1100px 600px at 85% -10%, rgba(112,72,216,0.14), transparent 60%),
+      radial-gradient(900px 500px at -10% 20%, rgba(112,72,216,0.11), transparent 55%),
       var(--bg);
     color:var(--text);
-    font-family:'Cairo', sans-serif;
+    font-family:'Plus Jakarta Sans','Cairo','Tajawal',sans-serif;
     line-height:1.9;
     padding-bottom:80px;
   }
-  h1,h2,h3,.eyebrow{font-family:'Tajawal', sans-serif;}
+  h1,h2,h3,.eyebrow{font-family:'Sora','Cairo','Tajawal',sans-serif;}
 
   /* ===== Header ===== */
   header{
@@ -48,9 +48,9 @@
     font-size:13px;
     font-weight:700;
     letter-spacing:0.5px;
-    color:var(--purple-deep);
+    color:#cebdff;
     background:var(--purple-tint);
-    border:1px solid rgba(124,58,237,0.3);
+    border:1px solid rgba(157,114,255,0.3);
     padding:6px 16px;
     border-radius:999px;
     margin-bottom:22px;
@@ -62,7 +62,7 @@
     margin-bottom:16px;
     color:var(--text);
   }
-  h1 span{color:var(--purple);}
+  h1 span{color:#cebdff;}
   .subtitle{
     color:var(--muted);
     font-size:16px;
@@ -81,16 +81,16 @@
   }
   .section-head .pill{
     flex-shrink:0;
-    font-family:'Tajawal', sans-serif;
+    font-family:'Space Grotesk','Cairo','Tajawal',sans-serif;
     font-weight:900;
     font-size:14px;
-    color:#fff;
+    color:#ffffff;
     padding:9px 20px;
     border-radius:999px;
     white-space:nowrap;
   }
-  .section-head .pill.ok{background:linear-gradient(135deg, #7C3AED, #5B21B6);}
-  .section-head .pill.deny{background:linear-gradient(135deg, #B4791C, #8C5A12);}
+  .section-head .pill.ok{background:linear-gradient(135deg, #7048d8, #5120b8);}
+  .section-head .pill.deny{background:linear-gradient(135deg, #b4791c, #8c5a12);}
   .section-head .rule{
     flex:1;
     height:2px;
@@ -122,7 +122,7 @@
     opacity:0.35;
   }
   .path-wrap.deny::before{
-    background:linear-gradient(180deg, transparent, var(--amber) 6%, #8C5A12 94%, transparent);
+    background:linear-gradient(180deg, transparent, var(--amber) 6%, #8c5a12 94%, transparent);
   }
 
   .step{
@@ -138,19 +138,19 @@
     height:56px;
     border-radius:50%;
     background:radial-gradient(circle at 30% 30%, var(--purple), var(--purple-deep));
-    color:#fff;
+    color:#ffffff;
     display:flex;
     align-items:center;
     justify-content:center;
-    font-family:'Tajawal',sans-serif;
+    font-family:'Space Grotesk','Cairo','Tajawal',sans-serif;
     font-weight:900;
     font-size:22px;
-    box-shadow: 0 0 0 6px var(--bg), 0 8px 22px rgba(124,58,237,0.18);
+    box-shadow: 0 0 0 6px rgba(112,72,216,0.45), 0 8px 22px rgba(112,72,216,0.32);
     flex-shrink:0;
   }
   .deny .step-num{
-    background:radial-gradient(circle at 30% 30%, #C9922F, #8C5A12);
-    box-shadow: 0 0 0 6px var(--bg), 0 8px 22px rgba(180,121,28,0.18);
+    background:radial-gradient(circle at 30% 30%, #c9922f, #8c5a12);
+    box-shadow: 0 0 0 6px rgba(112,72,216,0.45), 0 8px 22px rgba(180,121,28,0.18);
   }
   .step-title{
     font-size:21px;
@@ -160,20 +160,20 @@
     color:var(--text);
   }
   .step-body{
-    color:#463A5E;
+    color:#e6dff9;
     font-size:15.5px;
   }
   .step-card{
     background:var(--bg-panel);
-    border:1px solid var(--line);
+    border:1px solid rgba(157,114,255,0.22);
     border-radius:16px;
     padding:20px 22px;
     margin-top:14px;
-    box-shadow:0 4px 18px rgba(91,33,182,0.05);
+    box-shadow:0 4px 18px rgba(112,72,216,0.2);
   }
   .step-card p + p{margin-top:10px;}
-  .step-card strong{color:var(--purple-deep); font-weight:700;}
-  .deny .step-card strong{color:var(--amber);}
+  .step-card strong{color:#cebdff; font-weight:700;}
+  .deny .step-card strong{color:#f4c57b;}
 
   .checklist{list-style:none; margin-top:12px;}
   .checklist li{
@@ -181,9 +181,9 @@
     align-items:flex-start;
     gap:10px;
     padding:10px 0;
-    border-bottom:1px solid var(--line);
+    border-bottom:1px solid rgba(157,114,255,0.22);
     font-size:15px;
-    color:#3A2F52;
+    color:#e6dff9;
   }
   .checklist li:last-child{border-bottom:none;}
   .checklist li::before{
@@ -193,12 +193,12 @@
     height:18px;
     margin-top:3px;
     border-radius:5px;
-    border:2px solid var(--purple-soft);
+    border:2px solid rgba(157,114,255,0.22);
     background:var(--purple-tint);
   }
   .deny .checklist li::before{
-    border-color:#C9922F;
-    background:#FBF1E1;
+    border-color:#c9922f;
+    background:rgba(224,169,82,0.16);
   }
 
   .tag-row{display:flex; flex-wrap:wrap; gap:8px; margin-top:14px;}
@@ -208,35 +208,35 @@
     padding:6px 12px;
     border-radius:8px;
     background:var(--purple-tint);
-    border:1px solid rgba(124,58,237,0.3);
-    color:var(--purple-deep);
-    font-family:'Tajawal',sans-serif;
+    border:1px solid rgba(157,114,255,0.3);
+    color:#cebdff;
+    font-family:'Space Grotesk','Cairo','Tajawal',sans-serif;
   }
   .deny .tag{
-    background:#FBF1E1;
+    background:rgba(224,169,82,0.16);
     border:1px solid rgba(180,121,28,0.35);
-    color:var(--amber);
+    color:#f4c57b;
   }
 
   /* ===== Add-on highlight card ===== */
   .addon-card{
-    background:linear-gradient(135deg, var(--purple-tint), #FFFFFF);
-    border:1px solid rgba(124,58,237,0.3);
+    background:linear-gradient(135deg, var(--purple-tint), #1d1643);
+    border:1px solid rgba(157,114,255,0.3);
     border-radius:16px;
     padding:20px 22px;
     margin-top:14px;
   }
   .deny .addon-card{
-    background:linear-gradient(135deg, #FBF1E1, #FFFFFF);
+    background:linear-gradient(135deg, rgba(224,169,82,0.16), #1d1643);
     border:1px solid rgba(180,121,28,0.32);
   }
   .addon-card .addon-label{
     display:inline-block;
-    font-family:'Tajawal',sans-serif;
+    font-family:'Space Grotesk','Cairo','Tajawal',sans-serif;
     font-weight:900;
     font-size:12.5px;
     letter-spacing:0.3px;
-    color:#fff;
+    color:#ffffff;
     background:var(--purple);
     padding:5px 14px;
     border-radius:999px;
@@ -245,16 +245,16 @@
   .deny .addon-card .addon-label{background:var(--amber);}
   .addon-card code{
     display:block;
-    font-family:'Tajawal',sans-serif;
+    font-family:'Space Grotesk','Cairo','Tajawal',sans-serif;
     font-weight:700;
     font-size:16px;
     color:var(--text);
     margin-bottom:8px;
   }
-  .addon-card p{color:#4A3E64; font-size:14.5px;}
+  .addon-card p{color:#cbc3d6; font-size:14.5px;}
 
   /* ===== Table ===== */
-  .table-scroll{overflow-x:auto; margin-top:16px; border-radius:14px; border:1px solid var(--line);}
+  .table-scroll{overflow-x:auto; margin-top:16px; border-radius:14px; border:1px solid rgba(157,114,255,0.22);}
   table{
     width:100%;
     border-collapse:collapse;
@@ -263,8 +263,8 @@
   }
   thead th{
     background:linear-gradient(180deg, var(--purple), var(--purple-deep));
-    color:#fff;
-    font-family:'Tajawal',sans-serif;
+    color:#ffffff;
+    font-family:'Plus Jakarta Sans','Cairo','Tajawal',sans-serif;
     font-weight:700;
     padding:12px 10px;
     text-align:center;
@@ -275,8 +275,8 @@
     padding:14px 10px;
     text-align:center;
     vertical-align:top;
-    color:#463A5E;
-    border-top:1px solid var(--line);
+    color:#e6dff9;
+    border-top:1px solid rgba(157,114,255,0.22);
   }
   tbody td.desc{
     text-align:right;
@@ -285,7 +285,7 @@
   tbody td.desc .badge{
     display:inline-block;
     background:var(--purple-tint);
-    color:var(--purple-deep);
+    color:#cebdff;
     font-weight:700;
     font-size:12px;
     padding:3px 10px;
@@ -295,18 +295,18 @@
 
   /* ===== CTA / Link block ===== */
   .cta-card{
-    background:linear-gradient(135deg, var(--purple-tint), #FFFFFF);
-    border:1px solid rgba(124,58,237,0.3);
+    background:linear-gradient(135deg, var(--purple-tint), #1d1643);
+    border:1px solid rgba(157,114,255,0.3);
     border-radius:18px;
     padding:26px 24px;
     margin-top:16px;
   }
   .deny .cta-card{
-    background:linear-gradient(135deg, #FBF1E1, #FFFFFF);
+    background:linear-gradient(135deg, rgba(224,169,82,0.16), #1d1643);
     border:1px solid rgba(180,121,28,0.32);
   }
   .cta-card h4{
-    font-family:'Tajawal',sans-serif;
+    font-family:'Sora','Cairo','Tajawal',sans-serif;
     font-size:17px;
     margin-bottom:8px;
     color:var(--text);
@@ -317,34 +317,34 @@
     gap:8px;
     margin-top:16px;
     background:var(--purple);
-    color:#fff;
+    color:#ffffff;
     text-decoration:none;
-    font-family:'Tajawal',sans-serif;
+    font-family:'Space Grotesk','Cairo','Tajawal',sans-serif;
     font-weight:700;
     font-size:15px;
     padding:13px 26px;
     border-radius:12px;
     transition:transform .15s ease, box-shadow .15s ease, background .15s ease;
-    box-shadow:0 8px 20px rgba(124,58,237,0.2);
+    box-shadow:0 8px 20px rgba(112,72,216,0.36);
   }
   .deny .cta-btn{background:var(--amber); box-shadow:0 8px 20px rgba(180,121,28,0.2);}
-  .cta-btn:hover{background:var(--purple-deep); transform:translateY(-2px); box-shadow:0 12px 26px rgba(124,58,237,0.3);}
-  .deny .cta-btn:hover{background:#8C5A12;}
-  .cta-btn:focus-visible{outline:3px solid var(--purple-soft); outline-offset:3px;}
+  .cta-btn:hover{background:var(--purple-deep); transform:translateY(-2px); box-shadow:0 12px 26px rgba(112,72,216,0.45);}
+  .deny .cta-btn:hover{background:#8c5a12;}
+  .cta-btn:focus-visible{outline:3px solid rgba(157,114,255,0.22); outline-offset:3px;}
 
   .caution{
     display:flex;
     gap:10px;
     align-items:flex-start;
-    background:#FBEAEA;
+    background:rgba(224,82,82,0.16);
     border:1px solid rgba(194,59,59,0.3);
     border-radius:12px;
     padding:12px 14px;
     margin-top:16px;
     font-size:13.5px;
-    color:#7A2B2B;
+    color:#f47b7b;
   }
-  .caution b{color:var(--danger);}
+  .caution b{color:#f47b7b;}
 
   /* ===== Footer note ===== */
   .end-note{
@@ -367,6 +367,12 @@
     .section-head{flex-wrap:wrap;}
   }
 </style>
+<meta name="theme-color" content="#0D0A1C">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/cognitive-violet.css?v=1">
+<script src="../assets/js/back-button.js?v=1" defer></script>
 </head>
 <body>
 
@@ -420,7 +426,7 @@
         <p>عقد حيازة استخدام وحيازة خط تليفون محمول لأنظمة الشركات.</p>
          <div class="cta-card">
         <h4>نموذج «Mobile Phone Line Use and Possession Agreement for Corporate Systems»</h4>
-        <p style="color:#4A3E64; font-size:14.5px;">استخدم الرابط التالي لعرض نموذج العقد وطباعته عند الحاجة أثناء استيفاء إجراءات العميل.</p>
+        <p style="color:#cbc3d6; font-size:14.5px;">استخدم الرابط التالي لعرض نموذج العقد وطباعته عند الحاجة أثناء استيفاء إجراءات العميل.</p>
         <a class="cta-btn" href="https://we-core.icu/viewpdf.html?src=https%3A%2F%2Fiygwhapcpdmsasqlfelv.supabase.co%2Fstorage%2Fv1%2Fobject%2Fauthenticated%2FAll%20Form%2FMobile%2FMobile%20Phone%20Line%20Use%20and%20Possession%20Agreement%20for%20Corporate%20Systems.pdf" target="_blank" rel="noopener noreferrer">
           فتح نموذج العقد ↗
         </a>
@@ -553,7 +559,7 @@
     <div class="step-body">
       <div class="cta-card">
         <h4>نموذج «Mobile Phone Line Contract Opt-Out Form»</h4>
-        <p style="color:#4A3E64; font-size:14.5px;">استخدم الرابط التالي لعرض نموذج العقد وطباعته عند الحاجة أثناء استيفاء إجراءات العميل.</p>
+        <p style="color:#cbc3d6; font-size:14.5px;">استخدم الرابط التالي لعرض نموذج العقد وطباعته عند الحاجة أثناء استيفاء إجراءات العميل.</p>
         <a class="cta-btn" href="https://we-core.icu/viewpdf.html?src=https%3A%2F%2Fiygwhapcpdmsasqlfelv.supabase.co%2Fstorage%2Fv1%2Fobject%2Fauthenticated%2FAll%20Form%2FMobile%2FNon-possession%20form.pdf" target="_blank" rel="noopener noreferrer">
           فتح نموذج العقد ↗
         </a>
@@ -565,6 +571,6 @@
 
 <p class="end-note">هذه الصفحة للاستخدام الداخلي كدليل إجراءات تشغيلية، ولا تُغني عن الرجوع لتعميمات الجهاز القومي لتنظيم الاتصالات الرسمية.</p>
 
-<script src="../assets/js/active-users-widget.js"></script>
+<script src="../assets/js/active-users-widget.js?v=cv1"></script>
 </body>
 </html>

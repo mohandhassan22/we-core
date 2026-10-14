@@ -5,29 +5,29 @@
 
 :root {
   /* ---- Color tokens (from DESIGN.md) ---- */
-  --primary: #6d597a;          /* key actions, active states, brand */
-  --primary-strong: #544261;   /* header / deeper brand surfaces */
-  --on-primary: #ffffff;
-  --primary-container: #6d597a;
-  --on-primary-container: #edd3fa;
-  --secondary: #b5a2c4;        /* accents, indicators */
-  --secondary-container: #edd8fc;
-  --tertiary: #e5d9f2;         /* light bg for active/category tags */
-  --on-tertiary-container: #4d4559;
+  --primary: #5120b8;          /* key actions, active states, brand */
+  --primary-strong: #5120b8;   /* header / deeper brand surfaces */
+  --on-primary: #1d1643;
+  --primary-container: #7048d8;
+  --on-primary-container: #28205c;
+  --secondary: #33297a;        /* accents, indicators */
+  --secondary-container: #28205c;
+  --tertiary: #28205c;         /* light bg for active/category tags */
+  --on-tertiary-container: #cbc3d6;
 
-  --neutral: #1a1a1b;          /* high-priority type/icons */
-  --background: #ffffff;
-  --surface: #f9f8fa;
-  --surface-container: #f0edee;
-  --surface-container-high: #eae7e8;
-  --on-surface: #1b1b1c;
-  --on-surface-variant: #4a454c;
-  --outline: #7c757d;
-  --outline-variant: #cdc4cd;
-  --border: #edebf0;
+  --neutral: #f8f6ff;          /* high-priority type/icons */
+  --background: #1d1643;
+  --surface: #120e28;
+  --surface-container: #120e28;
+  --surface-container-high: #120e28;
+  --on-surface: #f8f6ff;
+  --on-surface-variant: #f8f6ff;
+  --outline: #9e97c2;
+  --outline-variant: #28205c;
+  --border: #120e28;
 
   --error: #ba1a1a;
-  --error-container: #ffdad6;
+  --error-container: rgba(224,96,82,0.16);
 
   /* ---- Type ---- */
   --font-display: "Manrope", "Cairo", sans-serif;
@@ -41,8 +41,8 @@
 
   /* ---- Elevation ---- */
   --shadow-1: none;
-  --shadow-2: 0px 4px 20px rgba(109, 89, 122, 0.06);
-  --shadow-3: 0px 12px 32px rgba(109, 89, 122, 0.12);
+  --shadow-2: 0px 4px 20px rgba(112,72,216,0.2);
+  --shadow-3: 0px 12px 32px rgba(112,72,216,0.22);
 
   /* ---- Spacing (8px base unit) ---- */
   --space-1: 8px;
@@ -58,7 +58,7 @@
 }
 
 body {
-  font-family: var(--font-body);
+  font-family: 'Plus Jakarta Sans','Cairo','Tajawal',sans-serif;
   background: var(--background);
   color: var(--on-surface);
   min-height: 100vh;
@@ -72,7 +72,7 @@ header.site-header {
   top: 0;
   z-index: 300;
   box-shadow: var(--shadow-3);
-  color: var(--on-primary);
+  color: #ffffff;
 }
 
 .hdr {
@@ -98,16 +98,16 @@ header.site-header {
   width: 38px;
   height: 38px;
   border-radius: var(--radius-full);
-  background: rgba(255, 255, 255, 0.14);
-  border: 1px solid rgba(255, 255, 255, 0.22);
-  color: var(--on-primary);
+  background: rgba(255,255,255,0.14);
+  border: 1px solid rgba(157,114,255,0.22);
+  color: #ffffff;
   text-decoration: none;
   font-size: 16px;
   transition: background 0.2s, border-color 0.2s;
 }
 .back-btn:hover {
-  background: rgba(255, 255, 255, 0.24);
-  border-color: rgba(255, 255, 255, 0.35);
+  background: rgba(255,255,255,0.24);
+  border-color: rgba(157,114,255,0.35);
 }
 
 .brand {
@@ -115,7 +115,7 @@ header.site-header {
   align-items: center;
   gap: var(--space-2);
   text-decoration: none;
-  color: var(--on-primary);
+  color: #ffffff;
 }
 .brand-ico {
   width: 42px;
@@ -125,46 +125,46 @@ header.site-header {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: var(--font-display);
+  font-family: 'Plus Jakarta Sans','Cairo','Tajawal',sans-serif;
   font-size: 20px;
   font-weight: 800;
-  color: var(--primary-strong);
+  color: #cbc3d6;
   box-shadow: var(--shadow-2);
 }
 .brand-text {
   line-height: 1.25;
 }
 .brand-name {
-  font-family: var(--font-display);
+  font-family: 'Sora','Cairo','Tajawal',sans-serif;
   font-size: 16px;
   font-weight: 700;
   letter-spacing: 0.01em;
 }
 .brand-sub {
-  font-family: var(--font-mono);
+  font-family: 'Plus Jakarta Sans','Cairo','Tajawal',sans-serif;
   font-size: 10px;
   letter-spacing: 0.05em;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.65);
+  color: rgba(255,255,255,0.65);
 }
 
 .nav-links a {
   display: flex;
   align-items: center;
   gap: 7px;
-  color: rgba(255, 255, 255, 0.92);
+  color: rgba(255,255,255,0.92);
   text-decoration: none;
   font-size: 14px;
   font-weight: 600;
   padding: 8px 16px;
   border-radius: var(--radius-sm);
-  background: rgba(255, 255, 255, 0.12);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255,255,255,0.12);
+  border: 1px solid rgba(157,114,255,0.2);
   transition: background 0.2s, border-color 0.2s;
 }
 .nav-links a:hover {
-  background: rgba(255, 255, 255, 0.22);
-  border-color: rgba(255, 255, 255, 0.35);
+  background: rgba(255,255,255,0.22);
+  border-color: rgba(157,114,255,0.35);
 }
 
 /* ── MAIN ── */
@@ -180,7 +180,7 @@ main {
   margin-bottom: var(--space-4);
 }
 .hero h1 {
-  font-family: var(--font-display);
+  font-family: 'Sora','Cairo','Tajawal',sans-serif;
   font-size: 32px;
   font-weight: 700;
   letter-spacing: -0.01em;
@@ -188,7 +188,7 @@ main {
   margin-bottom: var(--space-1);
 }
 .hero h1 span {
-  color: var(--primary);
+  color: #cbc3d6;
 }
 .hero p {
   font-size: 14px;
@@ -203,7 +203,7 @@ main {
   align-items: center;
   justify-content: center;
   gap: 10px;
-  font-family: var(--font-mono);
+  font-family: 'Space Grotesk','Cairo','Tajawal',sans-serif;
   font-size: 11px;
   letter-spacing: 0.03em;
   color: var(--on-surface-variant);
@@ -216,7 +216,7 @@ main {
 }
 .status-bar.ok .status-dot { background: #2e7d32; }
 .status-bar.error .status-dot { background: var(--error); }
-.status-bar.error { color: var(--error); }
+.status-bar.error { color: #f47b7b; }
 
 /* ── SEARCH ── */
 .search-area {
@@ -227,10 +227,10 @@ main {
 .search-area input {
   width: 100%;
   padding: 14px 45px 14px var(--space-2);
-  border: 1px solid var(--border);
+  border: 1px solid rgba(157,114,255,0.18);
   background: var(--surface);
   border-radius: var(--radius-full);
-  font-family: var(--font-body);
+  font-family: 'Plus Jakarta Sans','Cairo','Tajawal',sans-serif;
   font-size: 15px;
   color: var(--on-surface);
   outline: none;
@@ -241,8 +241,8 @@ main {
 }
 .search-area input:focus {
   background: var(--background);
-  border-color: var(--primary);
-  box-shadow: 0 0 0 3px var(--tertiary);
+  border-color: #9d72ff;
+  box-shadow: 0 0 0 3px rgba(112,72,216,0.45);
 }
 .search-ico {
   position: absolute;
@@ -264,7 +264,7 @@ main {
 /* ── CARD ── */
 .card {
   background: var(--background);
-  border: 1px solid var(--border);
+  border: 1px solid rgba(157,114,255,0.18);
   border-radius: var(--radius-lg);
   overflow: hidden;
   cursor: pointer;
@@ -286,7 +286,7 @@ main {
 }
 .card:hover {
   transform: translateY(-4px);
-  border-color: var(--primary);
+  border-color: #9d72ff;
   box-shadow: var(--shadow-3);
 }
 .card-top {
@@ -294,11 +294,11 @@ main {
   flex-grow: 1;
 }
 .card-path {
-  font-family: var(--font-mono);
+  font-family: 'Plus Jakarta Sans','Cairo','Tajawal',sans-serif;
   font-size: 10px;
   font-weight: 500;
   letter-spacing: 0.05em;
-  color: var(--primary);
+  color: #cbc3d6;
   text-transform: uppercase;
   margin-bottom: 10px;
   background: var(--tertiary);
@@ -307,7 +307,7 @@ main {
   border-radius: var(--radius-full);
 }
 .card-title {
-  font-family: var(--font-display);
+  font-family: 'Sora','Cairo','Tajawal',sans-serif;
   font-size: 16px;
   font-weight: 700;
   margin-bottom: 8px;
@@ -324,8 +324,8 @@ main {
 .card-footer {
   padding: 10px var(--space-2);
   background: var(--surface);
-  border-top: 1px solid var(--border);
-  font-family: var(--font-mono);
+  border-top: 1px solid rgba(157,114,255,0.18);
+  font-family: 'Plus Jakarta Sans','Cairo','Tajawal',sans-serif;
   font-size: 10px;
   font-weight: 500;
   letter-spacing: 0.03em;
@@ -337,7 +337,7 @@ main {
   display: none;
   position: fixed;
   inset: 0;
-  background: rgba(27, 27, 28, 0.55);
+  background: rgba(27,27,28,0.55);
   backdrop-filter: blur(5px);
   z-index: 1000;
   align-items: center;
@@ -370,17 +370,17 @@ main {
 .panel-hdr {
   padding: var(--space-3);
   background: var(--primary-strong);
-  color: var(--on-primary);
+  color: #ffffff;
   position: relative;
 }
 .panel-title {
-  font-family: var(--font-display);
+  font-family: 'Sora','Cairo','Tajawal',sans-serif;
   font-size: 20px;
   font-weight: 700;
   margin-bottom: 6px;
 }
 .panel-path {
-  font-family: var(--font-mono);
+  font-family: 'Plus Jakarta Sans','Cairo','Tajawal',sans-serif;
   font-size: 11px;
   letter-spacing: 0.03em;
   opacity: 0.85;
@@ -389,9 +389,9 @@ main {
   position: absolute;
   left: var(--space-2);
   top: var(--space-3);
-  background: rgba(255, 255, 255, 0.16);
+  background: rgba(255,255,255,0.16);
   border: none;
-  color: var(--on-primary);
+  color: #ffffff;
   width: 34px;
   height: 34px;
   border-radius: 50%;
@@ -403,7 +403,7 @@ main {
   transition: background 0.2s;
 }
 .close-btn:hover {
-  background: rgba(255, 255, 255, 0.28);
+  background: rgba(255,255,255,0.28);
 }
 
 .panel-body {
@@ -416,11 +416,11 @@ main {
   margin-bottom: 0;
 }
 .info-label {
-  font-family: var(--font-mono);
+  font-family: 'Space Grotesk','Cairo','Tajawal',sans-serif;
   font-size: 11px;
   font-weight: 500;
   letter-spacing: 0.05em;
-  color: var(--primary);
+  color: #cbc3d6;
   text-transform: uppercase;
   margin-bottom: 8px;
   display: block;
@@ -431,11 +431,11 @@ main {
   background: var(--surface);
   padding: var(--space-2);
   border-radius: var(--radius-sm);
-  border-right: 3px solid var(--primary);
+  border-right: 3px solid #9d72ff;
 }
 .action-box {
   background: var(--tertiary);
-  border: 1px solid var(--secondary);
+  border: 1px solid rgba(157,114,255,0.22);
   color: var(--on-tertiary-container);
   font-weight: 700;
 }
@@ -449,7 +449,7 @@ main {
   font-size: 16px;
 }
 #empty .empty-title {
-  font-family: var(--font-display);
+  font-family: 'Sora','Cairo','Tajawal',sans-serif;
   font-size: 20px;
   font-weight: 700;
   color: var(--neutral);
@@ -459,9 +459,9 @@ main {
 footer.site-footer {
   text-align: center;
   padding: var(--space-3);
-  border-top: 1px solid var(--border);
+  border-top: 1px solid rgba(157,114,255,0.18);
   color: var(--on-surface-variant);
-  font-family: var(--font-mono);
+  font-family: 'Plus Jakarta Sans','Cairo','Tajawal',sans-serif;
   font-size: 11px;
   letter-spacing: 0.03em;
 }

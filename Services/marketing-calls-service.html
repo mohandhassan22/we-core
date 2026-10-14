@@ -8,21 +8,21 @@
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&family=Tajawal:wght@300;400;500;700;900&display=swap" rel="stylesheet">
 <style>
   :root {
-    --purple-dark: #4a1080;
-    --purple-main: #6b21a8;
-    --purple-mid: #7c3aed;
-    --purple-light: #a855f7;
-    --purple-pale: #e9d5ff;
-    --purple-ghost: #f5f0ff;
-    --white: #ffffff;
-    --gray-100: #f8f9fa;
-    --gray-200: #e9ecef;
-    --gray-600: #6c757d;
-    --gray-800: #343a40;
+    --purple-dark: #28205c;
+    --purple-main: #5120b8;
+    --purple-mid: #7048d8;
+    --purple-light: #8a62f0;
+    --purple-pale: #28205c;
+    --purple-ghost: #120e28;
+    --white: #1d1643;
+    --gray-100: #120e28;
+    --gray-200: #120e28;
+    --gray-600: #7bbbf4;
+    --gray-800: #f8f6ff;
     --gold: #f59e0b;
-    --shadow-sm: 0 2px 8px rgba(107,33,168,0.08);
-    --shadow-md: 0 8px 32px rgba(107,33,168,0.15);
-    --shadow-lg: 0 20px 60px rgba(107,33,168,0.2);
+    --shadow-sm: 0 2px 8px rgba(112,72,216,0.2);
+    --shadow-md: 0 8px 32px rgba(112,72,216,0.27);
+    --shadow-lg: 0 20px 60px rgba(112,72,216,0.36);
     --radius: 16px;
     --radius-sm: 8px;
   }
@@ -31,7 +31,7 @@
   html { scroll-behavior: smooth; }
 
   body {
-    font-family: 'Cairo', sans-serif;
+    font-family: 'Plus Jakarta Sans','Cairo','Tajawal',sans-serif;
     background: var(--white);
     color: var(--gray-800);
     overflow-x: hidden;
@@ -52,7 +52,7 @@
     position: absolute;
     top: -80px; right: -80px;
     width: 400px; height: 400px;
-    background: radial-gradient(circle, rgba(168,85,247,0.3) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(112,72,216,0.35) 0%, transparent 70%);
     border-radius: 50%;
     pointer-events: none;
   }
@@ -73,7 +73,7 @@
     justify-content: space-between;
     align-items: center;
     padding: 18px clamp(16px, 5vw, 60px);
-    border-bottom: 1px solid rgba(255,255,255,0.1);
+    border-bottom: 1px solid rgba(157,114,255,0.16);
     position: relative;
     z-index: 10;
     flex-wrap: wrap;
@@ -81,15 +81,15 @@
   }
 
   .nav-logo {
-    font-family: 'Tajawal', sans-serif;
+    font-family: 'Space Grotesk','Cairo','Tajawal',sans-serif;
     font-size: clamp(1.2rem, 4vw, 1.6rem);
     font-weight: 900;
-    color: var(--white);
+    color: #ffffff;
     letter-spacing: -0.5px;
     white-space: nowrap;
   }
 
-  .nav-logo span { color: var(--purple-pale); font-weight: 300; }
+  .nav-logo span { color: #e9d5ff; font-weight: 300; }
 
   .nav-links {
     display: flex;
@@ -107,7 +107,7 @@
     white-space: nowrap;
   }
 
-  .nav-links a:hover { color: var(--white); }
+  .nav-links a:hover { color: #ffffff; }
 
   /* ─── HERO ─── */
   .hero {
@@ -125,18 +125,18 @@
     align-items: center;
     gap: 8px;
     background: rgba(255,255,255,0.12);
-    border: 1px solid rgba(255,255,255,0.2);
+    border: 1px solid rgba(157,114,255,0.2);
     border-radius: 50px;
     padding: 6px 16px;
     font-size: clamp(0.72rem, 1.5vw, 0.82rem);
-    color: var(--purple-pale);
+    color: #e9d5ff;
     margin-bottom: 16px;
     backdrop-filter: blur(10px);
   }
 
   .hero-badge::before {
     content: '●';
-    color: #4ade80;
+    color: #7bf4a7;
     font-size: 0.6rem;
     animation: pulse 2s infinite;
   }
@@ -147,15 +147,15 @@
   }
 
   .hero h1 {
-    font-family: 'Tajawal', sans-serif;
+    font-family: 'Sora','Cairo','Tajawal',sans-serif;
     font-size: clamp(1.8rem, 4vw, 3.2rem);
     font-weight: 900;
-    color: var(--white);
+    color: #ffffff;
     line-height: 1.2;
     margin-bottom: 16px;
   }
 
-  .hero h1 em { font-style: normal; color: var(--purple-pale); }
+  .hero h1 em { font-style: normal; color: #e9d5ff; }
 
   .hero p {
     font-size: clamp(0.9rem, 1.8vw, 1.05rem);
@@ -172,12 +172,12 @@
 
   .btn-primary {
     background: var(--white);
-    color: var(--purple-dark);
+    color: #e6dff9;
     padding: clamp(10px, 2vw, 14px) clamp(20px, 3vw, 32px);
     border-radius: 50px;
     font-size: clamp(0.85rem, 1.5vw, 0.95rem);
     font-weight: 700;
-    font-family: 'Cairo', sans-serif;
+    font-family: 'Space Grotesk','Cairo','Tajawal',sans-serif;
     border: none;
     cursor: pointer;
     transition: all 0.3s;
@@ -193,20 +193,20 @@
 
   .btn-outline {
     background: transparent;
-    color: var(--white);
+    color: #ffffff;
     padding: clamp(10px, 2vw, 14px) clamp(20px, 3vw, 32px);
     border-radius: 50px;
     font-size: clamp(0.85rem, 1.5vw, 0.95rem);
     font-weight: 600;
-    font-family: 'Cairo', sans-serif;
-    border: 2px solid rgba(255,255,255,0.4);
+    font-family: 'Space Grotesk','Cairo','Tajawal',sans-serif;
+    border: 2px solid rgba(157,114,255,0.4);
     cursor: pointer;
     transition: all 0.3s;
     text-decoration: none;
     white-space: nowrap;
   }
 
-  .btn-outline:hover { background: rgba(255,255,255,0.1); border-color: var(--white); }
+  .btn-outline:hover { background: rgba(255,255,255,0.1); border-color: rgba(157,114,255,0.18); }
 
   .hero-visual { display: flex; flex-direction: column; gap: 16px; }
 
@@ -218,7 +218,7 @@
 
   .stat-card {
     background: rgba(255,255,255,0.1);
-    border: 1px solid rgba(255,255,255,0.15);
+    border: 1px solid rgba(157,114,255,0.16);
     border-radius: var(--radius);
     padding: clamp(16px, 2.5vw, 24px);
     backdrop-filter: blur(10px);
@@ -229,10 +229,10 @@
   .stat-card .icon { font-size: clamp(1.4rem, 3vw, 2rem); margin-bottom: 8px; }
 
   .stat-card .value {
-    font-family: 'Tajawal', sans-serif;
+    font-family: 'Space Grotesk','Cairo','Tajawal',sans-serif;
     font-size: clamp(1.1rem, 2.5vw, 1.8rem);
     font-weight: 900;
-    color: var(--white);
+    color: #ffffff;
     margin-bottom: 4px;
   }
 
@@ -246,9 +246,9 @@
   .sticky-nav {
     position: sticky;
     top: 0;
-    background: rgba(255,255,255,0.97);
+    background: rgba(29,22,67,0.97);
     backdrop-filter: blur(20px);
-    border-bottom: 1px solid var(--gray-200);
+    border-bottom: 1px solid rgba(157,114,255,0.18);
     z-index: 100;
     padding: 10px clamp(12px, 4vw, 60px);
     display: flex;
@@ -272,7 +272,7 @@
     flex-shrink: 0;
   }
 
-  .sticky-nav a:hover { background: var(--purple-ghost); color: var(--purple-main); }
+  .sticky-nav a:hover { background: var(--purple-ghost); color: #cebdff; }
 
   /* ─── SECTIONS ─── */
   main { background: var(--white); }
@@ -281,7 +281,7 @@
   .section-label {
     display: inline-block;
     background: var(--purple-ghost);
-    color: var(--purple-main);
+    color: #cebdff;
     font-size: clamp(0.7rem, 1.2vw, 0.78rem);
     font-weight: 700;
     text-transform: uppercase;
@@ -292,10 +292,10 @@
   }
 
   .section-title {
-    font-family: 'Tajawal', sans-serif;
+    font-family: 'Sora','Cairo','Tajawal',sans-serif;
     font-size: clamp(1.5rem, 3.5vw, 2.2rem);
     font-weight: 900;
-    color: var(--purple-dark);
+    color: #e6dff9;
     margin-bottom: 12px;
     line-height: 1.3;
   }
@@ -317,10 +317,10 @@
   }
 
   .definition-content h3 {
-    font-family: 'Tajawal', sans-serif;
+    font-family: 'Sora','Cairo','Tajawal',sans-serif;
     font-size: clamp(1rem, 2vw, 1.3rem);
     font-weight: 700;
-    color: var(--purple-dark);
+    color: #e6dff9;
     margin-bottom: 10px;
   }
 
@@ -340,7 +340,7 @@
     padding: 12px 16px;
     background: var(--purple-ghost);
     border-radius: var(--radius-sm);
-    border-right: 4px solid var(--purple-main);
+    border-right: 4px solid #9d72ff;
   }
 
   .service-name-tag .tag-icon {
@@ -350,14 +350,14 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    color: white;
+    color: #ffffff;
     font-size: 0.85rem;
     flex-shrink: 0;
   }
 
   .service-name-tag span {
     font-weight: 600;
-    color: var(--purple-dark);
+    color: #e6dff9;
     font-size: clamp(0.82rem, 1.4vw, 0.95rem);
   }
 
@@ -366,31 +366,31 @@
     background: linear-gradient(135deg, var(--purple-main), var(--purple-dark));
     border-radius: var(--radius);
     padding: clamp(24px, 3vw, 40px);
-    color: white;
+    color: #ffffff;
     display: flex;
     flex-direction: column;
     gap: 20px;
   }
 
   .pricing-highlight h3 {
-    font-family: 'Tajawal', sans-serif;
+    font-family: 'Sora','Cairo','Tajawal',sans-serif;
     font-size: clamp(1.1rem, 2vw, 1.4rem);
     font-weight: 900;
   }
 
   .price-badge {
     background: rgba(255,255,255,0.15);
-    border: 1px solid rgba(255,255,255,0.25);
+    border: 1px solid rgba(157,114,255,0.25);
     border-radius: var(--radius);
     padding: 20px;
     text-align: center;
   }
 
   .price-badge .price {
-    font-family: 'Tajawal', sans-serif;
+    font-family: 'Space Grotesk','Cairo','Tajawal',sans-serif;
     font-size: clamp(2rem, 4vw, 3rem);
     font-weight: 900;
-    color: #4ade80;
+    color: #7bf4a7;
     display: block;
   }
 
@@ -410,7 +410,7 @@
   .pricing-features li::before {
     content: '✓';
     background: rgba(74,222,128,0.2);
-    color: #4ade80;
+    color: #7bf4a7;
     min-width: 22px; height: 22px;
     border-radius: 50%;
     display: flex;
@@ -438,10 +438,10 @@
     padding: clamp(8px, 1.5vw, 12px) clamp(16px, 3vw, 32px);
     border: none;
     background: transparent;
-    font-family: 'Cairo', sans-serif;
+    font-family: 'Space Grotesk','Cairo','Tajawal',sans-serif;
     font-size: clamp(0.85rem, 1.5vw, 0.95rem);
     font-weight: 600;
-    color: var(--purple-main);
+    color: #cebdff;
     cursor: pointer;
     border-radius: 10px;
     transition: all 0.3s;
@@ -450,8 +450,8 @@
 
   .tab-btn.active {
     background: var(--purple-main);
-    color: white;
-    box-shadow: 0 4px 14px rgba(107,33,168,0.3);
+    color: #ffffff;
+    box-shadow: 0 4px 14px rgba(112,72,216,0.45);
   }
 
   .tab-content { display: none; }
@@ -471,12 +471,12 @@
   }
 
   .step-card {
-    background: white;
+    background: #1d1643;
     border-radius: var(--radius);
     padding: clamp(20px, 3vw, 32px) clamp(16px, 2.5vw, 24px);
     text-align: center;
     box-shadow: var(--shadow-sm);
-    border: 1px solid var(--purple-ghost);
+    border: 1px solid rgba(157,114,255,0.22);
     position: relative;
     transition: all 0.3s;
   }
@@ -488,7 +488,7 @@
     top: -14px; right: 20px;
     width: 28px; height: 28px;
     background: var(--purple-main);
-    color: white;
+    color: #ffffff;
     border-radius: 50%;
     font-size: 0.8rem;
     font-weight: 700;
@@ -509,10 +509,10 @@
   }
 
   .step-card h4 {
-    font-family: 'Tajawal', sans-serif;
+    font-family: 'Sora','Cairo','Tajawal',sans-serif;
     font-size: clamp(0.9rem, 1.6vw, 1.05rem);
     font-weight: 700;
-    color: var(--purple-dark);
+    color: #e6dff9;
     margin-bottom: 8px;
   }
 
@@ -539,7 +539,7 @@
 
   .docs-table th {
     background: var(--purple-main);
-    color: white;
+    color: #ffffff;
     padding: clamp(10px, 1.5vw, 16px) clamp(12px, 2vw, 20px);
     font-size: clamp(0.78rem, 1.3vw, 0.9rem);
     font-weight: 600;
@@ -549,8 +549,8 @@
 
   .docs-table td {
     padding: clamp(10px, 1.5vw, 14px) clamp(12px, 2vw, 20px);
-    background: white;
-    border-bottom: 1px solid var(--purple-ghost);
+    background: #1d1643;
+    border-bottom: 1px solid rgba(157,114,255,0.22);
     font-size: clamp(0.78rem, 1.3vw, 0.9rem);
     color: var(--gray-800);
     vertical-align: middle;
@@ -560,7 +560,7 @@
   .docs-table tr:hover td { background: var(--purple-ghost); }
 
   /* ─── RULES ─── */
-  .rules-section { background: white; }
+  .rules-section { background: #1d1643; }
 
   .rules-grid {
     display: grid;
@@ -569,7 +569,7 @@
     margin-top: 40px;
   }
 
-  .rule-card { border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow-sm); border: 1px solid var(--gray-200); }
+  .rule-card { border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow-sm); border: 1px solid rgba(157,114,255,0.18); }
 
   .rule-card-header {
     background: var(--purple-main);
@@ -582,20 +582,20 @@
   .rule-card-header .icon { font-size: clamp(1.2rem, 2vw, 1.6rem); }
 
   .rule-card-header h3 {
-    font-family: 'Tajawal', sans-serif;
+    font-family: 'Sora','Cairo','Tajawal',sans-serif;
     font-size: clamp(0.9rem, 1.6vw, 1.05rem);
     font-weight: 700;
-    color: white;
+    color: #ffffff;
   }
 
-  .rule-card-body { padding: clamp(16px, 2.5vw, 24px); background: white; }
+  .rule-card-body { padding: clamp(16px, 2.5vw, 24px); background: #1d1643; }
 
   .rule-item {
     display: flex;
     align-items: flex-start;
     gap: 10px;
     padding: 10px 0;
-    border-bottom: 1px solid var(--gray-200);
+    border-bottom: 1px solid rgba(157,114,255,0.18);
   }
 
   .rule-item:last-child { border-bottom: none; }
@@ -609,12 +609,12 @@
   }
 
   .rule-item p { font-size: clamp(0.82rem, 1.3vw, 0.9rem); color: var(--gray-800); line-height: 1.7; }
-  .rule-item strong { color: var(--purple-dark); }
+  .rule-item strong { color: #e6dff9; }
 
   /* ─── BARRING ─── */
   .barring-card {
-    background: linear-gradient(135deg, #fef2f2, #fee2e2);
-    border: 2px solid #fca5a5;
+    background: linear-gradient(135deg, #120e28, rgba(224,82,82,0.16));
+    border: 2px solid rgba(224,82,82,0.35);
     border-radius: var(--radius);
     padding: clamp(20px, 3vw, 32px);
     margin-top: 32px;
@@ -627,36 +627,36 @@
   .barring-icon { font-size: clamp(2rem, 4vw, 3rem); flex-shrink: 0; }
 
   .barring-card h3 {
-    font-family: 'Tajawal', sans-serif;
+    font-family: 'Sora','Cairo','Tajawal',sans-serif;
     font-size: clamp(0.95rem, 1.8vw, 1.1rem);
     font-weight: 700;
-    color: #991b1b;
+    color: #f47b7b;
     margin-bottom: 8px;
   }
 
-  .barring-card p { color: #7f1d1d; font-size: clamp(0.82rem, 1.4vw, 0.9rem); line-height: 1.8; }
+  .barring-card p { color: #f47b7b; font-size: clamp(0.82rem, 1.4vw, 0.9rem); line-height: 1.8; }
 
   .barring-table { border-collapse: separate; border-spacing: 0; border-radius: var(--radius-sm); overflow: hidden; margin-top: 12px; width: 100%; }
-  .barring-table th { background: #991b1b; color: white; padding: 10px 14px; font-size: clamp(0.75rem, 1.2vw, 0.82rem); text-align: right; }
-  .barring-table td { background: white; padding: 10px 14px; font-size: clamp(0.78rem, 1.3vw, 0.85rem); border-bottom: 1px solid #fee2e2; }
+  .barring-table th { background: #991b1b; color: #ffffff; padding: 10px 14px; font-size: clamp(0.75rem, 1.2vw, 0.82rem); text-align: right; }
+  .barring-table td { background: #1d1643; padding: 10px 14px; font-size: clamp(0.78rem, 1.3vw, 0.85rem); border-bottom: 1px solid rgba(224,82,82,0.35); }
 
   /* ─── NAMES SECTION ─── */
   .names-section { background: var(--gray-100); }
 
   .constraint-box {
-    background: white;
+    background: #1d1643;
     border-radius: var(--radius);
     padding: clamp(20px, 3vw, 32px);
-    border: 1px solid var(--gray-200);
+    border: 1px solid rgba(157,114,255,0.18);
     box-shadow: var(--shadow-sm);
     margin-top: 16px;
   }
 
   .constraint-box h3 {
-    font-family: 'Tajawal', sans-serif;
+    font-family: 'Sora','Cairo','Tajawal',sans-serif;
     font-size: clamp(0.95rem, 1.6vw, 1.05rem);
     font-weight: 700;
-    color: var(--purple-dark);
+    color: #e6dff9;
     margin-bottom: 12px;
   }
 
@@ -664,17 +664,17 @@
 
   .char-tag {
     background: var(--purple-ghost);
-    color: var(--purple-dark);
+    color: #e6dff9;
     padding: 5px 12px;
     border-radius: 6px;
     font-family: monospace;
     font-size: clamp(0.85rem, 1.4vw, 0.95rem);
     font-weight: 600;
-    border: 1px solid var(--purple-pale);
+    border: 1px solid rgba(157,114,255,0.22);
   }
 
   /* ─── FAQ ─── */
-  .faq-section { background: white; }
+  .faq-section { background: #1d1643; }
 
   .faq-grid {
     display: grid;
@@ -686,7 +686,7 @@
   .faq-item {
     background: var(--gray-100);
     border-radius: var(--radius);
-    border: 1px solid var(--gray-200);
+    border: 1px solid rgba(157,114,255,0.18);
     overflow: hidden;
     transition: box-shadow 0.3s;
   }
@@ -704,10 +704,10 @@
     justify-content: space-between;
     gap: 12px;
     cursor: pointer;
-    font-family: 'Cairo', sans-serif;
+    font-family: 'Plus Jakarta Sans','Cairo','Tajawal',sans-serif;
     font-size: clamp(0.85rem, 1.5vw, 0.95rem);
     font-weight: 700;
-    color: var(--purple-dark);
+    color: #e6dff9;
     transition: background 0.2s;
   }
 
@@ -716,7 +716,7 @@
   .faq-question .q-icon {
     width: 26px; height: 26px;
     background: var(--purple-ghost);
-    color: var(--purple-main);
+    color: #cebdff;
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -726,7 +726,7 @@
     transition: transform 0.3s, background 0.3s;
   }
 
-  .faq-item.open .faq-question .q-icon { transform: rotate(45deg); background: var(--purple-main); color: white; }
+  .faq-item.open .faq-question .q-icon { transform: rotate(45deg); background: var(--purple-main); color: #ffffff; }
 
   .faq-answer {
     display: none;
@@ -734,7 +734,7 @@
     font-size: clamp(0.82rem, 1.4vw, 0.9rem);
     color: var(--gray-600);
     line-height: 1.8;
-    border-top: 1px solid var(--gray-200);
+    border-top: 1px solid rgba(157,114,255,0.18);
     padding-top: 14px;
   }
 
@@ -744,7 +744,7 @@
   .complaint-section { background: var(--gray-100); }
 
   .complaint-card {
-    background: linear-gradient(135deg, #fff8f0, #fef3c7);
+    background: linear-gradient(135deg, rgba(224,158,82,0.16), rgba(224,196,82,0.16));
     border: 2px solid #fbbf24;
     border-radius: var(--radius);
     padding: clamp(20px, 3vw, 40px);
@@ -758,38 +758,38 @@
   .complaint-icon { font-size: clamp(2rem, 4vw, 3rem); flex-shrink: 0; }
 
   .complaint-card h3 {
-    font-family: 'Tajawal', sans-serif;
+    font-family: 'Sora','Cairo','Tajawal',sans-serif;
     font-size: clamp(1rem, 2vw, 1.3rem);
     font-weight: 700;
-    color: #92400e;
+    color: #f4a97b;
     margin-bottom: 10px;
   }
 
-  .complaint-card p { color: #78350f; font-size: clamp(0.82rem, 1.4vw, 0.92rem); line-height: 1.8; margin-bottom: 12px; }
+  .complaint-card p { color: #f4a77b; font-size: clamp(0.82rem, 1.4vw, 0.92rem); line-height: 1.8; margin-bottom: 12px; }
 
   .remedy-table { width: 100%; border-collapse: separate; border-spacing: 0; border-radius: var(--radius-sm); overflow: hidden; margin-top: 12px; }
-  .remedy-table th { background: #92400e; color: white; padding: clamp(8px, 1.5vw, 12px) clamp(10px, 1.8vw, 16px); font-size: clamp(0.72rem, 1.2vw, 0.85rem); text-align: right; white-space: nowrap; }
-  .remedy-table td { padding: clamp(8px, 1.5vw, 10px) clamp(10px, 1.8vw, 16px); background: white; border-bottom: 1px solid #fef3c7; font-size: clamp(0.75rem, 1.3vw, 0.85rem); }
+  .remedy-table th { background: #92400e; color: #ffffff; padding: clamp(8px, 1.5vw, 12px) clamp(10px, 1.8vw, 16px); font-size: clamp(0.72rem, 1.2vw, 0.85rem); text-align: right; white-space: nowrap; }
+  .remedy-table td { padding: clamp(8px, 1.5vw, 10px) clamp(10px, 1.8vw, 16px); background: #1d1643; border-bottom: 1px solid rgba(224,196,82,0.35); font-size: clamp(0.75rem, 1.3vw, 0.85rem); }
 
   /* ─── NOTICE ─── */
   .notice-box {
     display: flex;
     align-items: flex-start;
     gap: 12px;
-    background: #eff6ff;
-    border: 1px solid #93c5fd;
+    background: rgba(82,144,224,0.16);
+    border: 1px solid rgba(82,149,224,0.35);
     border-radius: var(--radius-sm);
     padding: clamp(12px, 2vw, 16px) clamp(14px, 2.5vw, 20px);
     margin-top: 20px;
     font-size: clamp(0.82rem, 1.4vw, 0.88rem);
-    color: #1e40af;
+    color: #7b97f4;
     line-height: 1.7;
   }
 
   .notice-box .notice-icon { font-size: 1.1rem; flex-shrink: 0; margin-top: 2px; }
 
   /* ─── CANCELLATION ─── */
-  .cancel-section { background: white; }
+  .cancel-section { background: #1d1643; }
 
   .cancel-steps { display: flex; flex-direction: column; gap: 14px; margin-top: 28px; max-width: 720px; }
 
@@ -801,13 +801,13 @@
     align-items: flex-start;
     gap: 16px;
     box-shadow: var(--shadow-sm);
-    border-right: 4px solid var(--purple-main);
+    border-right: 4px solid #9d72ff;
   }
 
   .cancel-step-num {
     width: 38px; height: 38px;
     background: var(--purple-main);
-    color: white;
+    color: #ffffff;
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -817,15 +817,15 @@
     flex-shrink: 0;
   }
 
-  .cancel-step h4 { font-family: 'Tajawal', sans-serif; font-size: clamp(0.9rem, 1.6vw, 1rem); font-weight: 700; color: var(--purple-dark); margin-bottom: 5px; }
+  .cancel-step h4 { font-family: 'Sora','Cairo','Tajawal',sans-serif; font-size: clamp(0.9rem, 1.6vw, 1rem); font-weight: 700; color: #e6dff9; margin-bottom: 5px; }
   .cancel-step p { font-size: clamp(0.8rem, 1.3vw, 0.88rem); color: var(--gray-600); line-height: 1.7; }
 
   .system-status-box {
     margin-top: 28px;
-    background: white;
+    background: #1d1643;
     border-radius: var(--radius);
     padding: clamp(16px, 2.5vw, 24px);
-    border: 1px solid var(--gray-200);
+    border: 1px solid rgba(157,114,255,0.18);
     box-shadow: var(--shadow-sm);
     max-width: 100%;
     overflow-x: auto;
@@ -847,11 +847,11 @@
   }
 
   .status-row span { color: var(--gray-600); white-space: nowrap; }
-  .status-row .active-label { color: #059669; font-weight: 700; }
+  .status-row .active-label { color: #7bf4cf; font-weight: 700; }
 
   .unsubscribe-btn {
     background: #991b1b;
-    color: white;
+    color: #ffffff;
     border: none;
     border-radius: 6px;
     padding: 4px 10px;
@@ -871,18 +871,18 @@
   }
 
   .info-card {
-    background: white;
+    background: #1d1643;
     border-radius: var(--radius);
     padding: clamp(20px, 3vw, 32px);
     box-shadow: var(--shadow-sm);
-    border: 1px solid var(--gray-200);
+    border: 1px solid rgba(157,114,255,0.18);
   }
 
   .info-card h3 {
-    font-family: 'Tajawal', sans-serif;
+    font-family: 'Sora','Cairo','Tajawal',sans-serif;
     font-size: clamp(0.95rem, 1.8vw, 1.1rem);
     font-weight: 700;
-    color: var(--purple-dark);
+    color: #e6dff9;
     margin-bottom: 14px;
     display: flex;
     align-items: center;
@@ -900,10 +900,10 @@
     line-height: 1.7;
   }
 
-  .info-card ul li::before { content: '◈'; color: var(--purple-main); flex-shrink: 0; margin-top: 2px; }
+  .info-card ul li::before { content: '◈'; color: #cebdff; flex-shrink: 0; margin-top: 2px; }
 
   /* ─── CONTRACT ─── */
-  .contract-section { background: white; }
+  .contract-section { background: #1d1643; }
 
   .contract-info-grid {
     display: grid;
@@ -917,19 +917,19 @@
     border-radius: var(--radius);
     padding: clamp(20px, 3vw, 28px);
     text-align: center;
-    border: 1px solid var(--purple-pale);
+    border: 1px solid rgba(157,114,255,0.22);
     transition: all 0.3s;
   }
 
   .contract-info-card:hover { background: var(--purple-main); transform: translateY(-4px); box-shadow: var(--shadow-md); }
-  .contract-info-card:hover h4, .contract-info-card:hover p { color: white; }
+  .contract-info-card:hover h4, .contract-info-card:hover p { color: #ffffff; }
   .contract-info-card .c-icon { font-size: clamp(1.8rem, 3vw, 2.5rem); margin-bottom: 10px; }
 
   .contract-info-card h4 {
-    font-family: 'Tajawal', sans-serif;
+    font-family: 'Sora','Cairo','Tajawal',sans-serif;
     font-size: clamp(0.88rem, 1.5vw, 1rem);
     font-weight: 700;
-    color: var(--purple-dark);
+    color: #e6dff9;
     margin-bottom: 6px;
     transition: color 0.3s;
   }
@@ -939,13 +939,13 @@
   /* ─── FOOTER ─── */
   footer {
     background: linear-gradient(135deg, var(--purple-dark), var(--purple-main));
-    color: white;
+    color: #ffffff;
     padding: clamp(40px, 6vw, 60px) clamp(16px, 5vw, 60px);
     text-align: center;
   }
 
   footer h2 {
-    font-family: 'Tajawal', sans-serif;
+    font-family: 'Sora','Cairo','Tajawal',sans-serif;
     font-size: clamp(1.3rem, 3vw, 1.8rem);
     font-weight: 900;
     margin-bottom: 10px;
@@ -955,7 +955,7 @@
 
   .footer-address {
     background: rgba(255,255,255,0.1);
-    border: 1px solid rgba(255,255,255,0.2);
+    border: 1px solid rgba(157,114,255,0.2);
     border-radius: var(--radius);
     padding: clamp(16px, 2.5vw, 24px);
     max-width: 500px;
@@ -965,7 +965,7 @@
   }
 
   .footer-bottom {
-    border-top: 1px solid rgba(255,255,255,0.15);
+    border-top: 1px solid rgba(157,114,255,0.16);
     padding-top: 20px;
     margin-top: 20px;
     font-size: clamp(0.72rem, 1.2vw, 0.82rem);
@@ -983,20 +983,20 @@
     gap: 8px;
     padding: 12px 20px;
     border-radius: 50px;
-    background: linear-gradient(135deg, #5b21b6, #7c3aed);
-    color: #fff;
-    font-family: 'Cairo', sans-serif;
+    background: linear-gradient(135deg, #5120b8, #7048d8);
+    color: #ffffff;
+    font-family: 'Space Grotesk','Cairo','Tajawal',sans-serif;
     font-size: 14px;
     font-weight: 700;
     border: none;
     cursor: pointer;
-    box-shadow: 0 6px 22px rgba(91,33,182,.38);
+    box-shadow: 0 6px 22px rgba(112,72,216,0.45);
     text-decoration: none;
     transition: transform .2s, box-shadow .2s, opacity .2s;
     animation: floatIn .4s ease both;
   }
 
-  .back-btn-float:hover { transform: translateY(-3px); box-shadow: 0 10px 28px rgba(91,33,182,.48); opacity: .93; }
+  .back-btn-float:hover { transform: translateY(-3px); box-shadow: 0 10px 28px rgba(112,72,216,0.45); opacity: .93; }
 
   @keyframes floatIn {
     from { opacity: 0; transform: translateY(20px); }
@@ -1045,14 +1045,18 @@
   .mt-sm { margin-top: 16px; }
 </style>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<meta name="theme-color" content="#0D0A1C">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/cognitive-violet.css?v=1">
+<script src="../assets/js/back-button.js?v=1" defer></script>
 </head>
 <body>
 
 <!-- ─── HEADER ─── -->
 <header>
-<a href="javascript:history.back()" class="back-btn" style="position: absolute; left: 20px; top: 50%; transform: translateY(-50%); color: white; text-decoration: none; font-size: 20px; z-index: 1000;"><i class="fas fa-arrow-left"></i></a>
-
-  <nav class="main-nav">
+<nav class="main-nav">
     <div class="nav-logo">WE <span>Mobile</span></div>
     <ul class="nav-links">
       <li><a href="#definition">تعريف الخدمة</a></li>
@@ -1201,7 +1205,7 @@
       </div>
 
       <div class="mt-section">
-        <h3 style="font-family:'Tajawal',sans-serif;font-size:clamp(1rem,2vw,1.2rem);font-weight:700;color:var(--purple-dark);margin-bottom:16px;">📂 الأوراق المطلوبة</h3>
+        <h3 style="font-family:'Plus Jakarta Sans','Cairo','Tajawal',sans-serif;font-size:clamp(1rem,2vw,1.2rem);font-weight:700;color:#e6dff9;margin-bottom:16px;">📂 الأوراق المطلوبة</h3>
         <div class="table-wrapper">
           <table class="docs-table">
             <thead>
@@ -1224,7 +1228,7 @@
       </div>
 
       <div class="mt-med">
-        <h3 style="font-family:'Tajawal',sans-serif;font-size:clamp(0.95rem,1.8vw,1.1rem);font-weight:700;color:var(--purple-dark);margin-bottom:10px;">📋 بيانات تذكرة السيستم (CSA)</h3>
+        <h3 style="font-family:'Plus Jakarta Sans','Cairo','Tajawal',sans-serif;font-size:clamp(0.95rem,1.8vw,1.1rem);font-weight:700;color:#e6dff9;margin-bottom:10px;">📋 بيانات تذكرة السيستم (CSA)</h3>
         <div class="table-wrapper">
           <table class="docs-table">
             <thead>
@@ -1362,15 +1366,15 @@
       <div>
         <div class="constraint-box">
           <h3>📌 القواعد الأساسية</h3>
-          <div class="rule-item" style="padding:10px 0;border-bottom:1px solid var(--gray-200);">
+          <div class="rule-item" style="padding:10px 0;border-bottom:1px solid rgba(157,114,255,0.18);">
             <div class="rule-dot"></div>
             <p>يجب أن يتوافق اختيار اسم المتصل <strong>بالاسم الموثق في السجل التجاري</strong></p>
           </div>
-          <div class="rule-item" style="padding:10px 0;border-bottom:1px solid var(--gray-200);">
+          <div class="rule-item" style="padding:10px 0;border-bottom:1px solid rgba(157,114,255,0.18);">
             <div class="rule-dot"></div>
             <p>الحد الأقصى لطول الاسم: <strong>70 حرفاً</strong></p>
           </div>
-          <div class="rule-item" style="padding:10px 0;border-bottom:1px solid var(--gray-200);">
+          <div class="rule-item" style="padding:10px 0;border-bottom:1px solid rgba(157,114,255,0.18);">
             <div class="rule-dot"></div>
             <p>يمكن اختيار أكثر من اسم لنفس الشركة للأقسام المختلفة — مثال: <em>WE Sales, WE Customer Service</em></p>
           </div>
@@ -1378,7 +1382,7 @@
             <div class="rule-dot"></div>
             <p>لكل رقم في الشركة <strong>اسم واحد فقط</strong> يمكنه الظهور في المكالمات</p>
           </div>
-          <h4 style="font-family:'Tajawal',sans-serif;font-size:0.92rem;font-weight:700;color:var(--purple-dark);margin:18px 0 10px;">الحروف والأرقام والرموز المسموح بها:</h4>
+          <h4 style="font-family:'Plus Jakarta Sans','Cairo','Tajawal',sans-serif;font-size:0.92rem;font-weight:700;color:#e6dff9;margin:18px 0 10px;">الحروف والأرقام والرموز المسموح بها:</h4>
           <div class="allowed-chars">
             <span class="char-tag">a – z</span>
             <span class="char-tag">A – Z</span>
@@ -1576,6 +1580,6 @@
     btn.parentElement.classList.toggle('open');
   }
 </script>
-<script src="../assets/js/active-users-widget.js"></script>
+<script src="../assets/js/active-users-widget.js?v=cv1"></script>
 </body>
 </html>

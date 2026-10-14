@@ -8,22 +8,22 @@
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg:#0F0D13;
-    --panel:#17141D;
-    --panel-2:#1D1926;
-    --violet:#9B5DE0;
-    --violet-deep:#6C2FB5;
-    --lilac:#C9AEEA;
-    --ink:#EFEAF6;
-    --muted:#9C93AE;
-    --ok:#3FBF8F;
+    --bg:#0d0a1c;
+    --panel:#0d0a1c;
+    --panel-2:#120e28;
+    --violet:#8a62f0;
+    --violet-deep:#5120b8;
+    --lilac:#c9aeea;
+    --ink:#120e28;
+    --muted:#9e97c2;
+    --ok:#3fbf8f;
   }
   *{box-sizing:border-box;margin:0;padding:0;}
   html{scroll-behavior:smooth;}
   body{
     background:var(--bg);
-    color:var(--ink);
-    font-family:'Tajawal', sans-serif;
+    color:#efeaf6;
+    font-family:'Plus Jakarta Sans','Cairo','Tajawal',sans-serif;
     line-height:1.8;
   }
   .wrap{max-width:760px;margin:0 auto;padding:0 20px 90px;}
@@ -34,43 +34,43 @@
     padding:64px 20px 56px;
     overflow:hidden;
     background:
-      radial-gradient(520px 320px at 88% -8%, rgba(155,93,224,.35), transparent 65%),
-      radial-gradient(400px 260px at 5% 100%, rgba(108,47,181,.22), transparent 60%),
+      radial-gradient(520px 320px at 88% -8%, rgba(112,72,216,0.35), transparent 65%),
+      radial-gradient(400px 260px at 5% 100%, rgba(112,72,216,0.35), transparent 60%),
       var(--bg);
   }
   header .wrap{position:relative;z-index:2;}
   .badge{
     display:inline-flex;align-items:center;gap:8px;
-    font-family:'Cairo',sans-serif;font-weight:700;font-size:12.5px;
+    font-family:'Space Grotesk','Cairo','Tajawal',sans-serif;font-weight:700;font-size:12.5px;
     color:var(--lilac);
-    background:rgba(155,93,224,.12);
-    border:1px solid rgba(155,93,224,.35);
+    background:rgba(112,72,216,0.22);
+    border:1px solid rgba(157,114,255,0.35);
     padding:6px 14px;border-radius:20px;
     letter-spacing:.02em;
     margin-bottom:22px;
   }
   .badge .dot{width:6px;height:6px;border-radius:50%;background:var(--violet);}
   h1{
-    font-family:'Cairo',sans-serif;
+    font-family:'Sora','Cairo','Tajawal',sans-serif;
     font-weight:800;
     font-size:clamp(26px,5.2vw,36px);
     line-height:1.5;
   }
-  h1 .hi{color:var(--violet);}
+  h1 .hi{color:#cebdff;}
   header p.greet{color:var(--muted);font-size:15px;margin-top:14px;}
-  header p.lede{margin-top:18px;font-size:16px;color:#DCD4EC;max-width:56ch;}
+  header p.lede{margin-top:18px;font-size:16px;color:#dcd4ec;max-width:56ch;}
 
   /* ---- Gauge card ---- */
   .gauge-card{
     margin-top:38px;
     background:var(--panel);
-    border:1px solid rgba(155,93,224,.18);
+    border:1px solid rgba(157,114,255,0.18);
     border-radius:16px;
     padding:24px;
     display:flex;
     align-items:center;
     gap:22px;
-    box-shadow:0 20px 44px rgba(0,0,0,.35);
+    box-shadow:0 20px 44px rgba(0,0,0,0.35);
   }
   .gauge{flex-shrink:0;width:96px;height:96px;position:relative;}
   .gauge svg{transform:rotate(-90deg);}
@@ -78,15 +78,15 @@
     position:absolute;inset:0;
     display:flex;flex-direction:column;align-items:center;justify-content:center;
   }
-  .gauge .val b{font-family:'Cairo',sans-serif;font-size:19px;color:var(--ink);}
+  .gauge .val b{font-family:'Plus Jakarta Sans','Cairo','Tajawal',sans-serif;font-size:19px;color:#efeaf6;}
   .gauge .val span{font-size:10.5px;color:var(--muted);}
-  .gauge-copy h3{font-family:'Cairo',sans-serif;font-size:16px;margin-bottom:6px;}
+  .gauge-copy h3{font-family:'Sora','Cairo','Tajawal',sans-serif;font-size:16px;margin-bottom:6px;}
   .gauge-copy p{font-size:13.5px;color:var(--muted);}
   .gauge-copy .tag{
     display:inline-block;margin-top:10px;
-    font-size:11.5px;color:var(--ok);
-    background:rgba(63,191,143,.1);
-    border:1px solid rgba(63,191,143,.3);
+    font-size:11.5px;color:#7bf4c7;
+    background:rgba(63,191,143,0.1);
+    border:1px solid rgba(63,191,143,0.3);
     padding:3px 10px;border-radius:20px;
   }
 
@@ -94,30 +94,30 @@
   section{margin-top:56px;}
   .section-head{margin-bottom:20px;}
   .eyebrow{
-    font-family:'Cairo',sans-serif;font-size:12px;font-weight:700;
-    color:var(--violet);letter-spacing:.08em;text-transform:uppercase;
+    font-family:'Plus Jakarta Sans','Cairo','Tajawal',sans-serif;font-size:12px;font-weight:700;
+    color:#cebdff;letter-spacing:.08em;text-transform:uppercase;
     margin-bottom:8px;
   }
-  h2{font-family:'Cairo',sans-serif;font-size:21px;font-weight:700;}
+  h2{font-family:'Sora','Cairo','Tajawal',sans-serif;font-size:21px;font-weight:700;}
 
   /* ---- Info grid ---- */
   .info-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
   @media (max-width:540px){.info-grid{grid-template-columns:1fr;}}
   .info-item{
     background:var(--panel);
-    border:1px solid rgba(255,255,255,.06);
+    border:1px solid rgba(157,114,255,0.16);
     border-radius:12px;
     padding:16px 18px;
   }
   .info-item b{
-    display:block;font-family:'Cairo',sans-serif;font-size:12px;color:var(--lilac);
+    display:block;font-family:'Plus Jakarta Sans','Cairo','Tajawal',sans-serif;font-size:12px;color:var(--lilac);
     margin-bottom:6px;
   }
-  .info-item p{font-size:14px;color:#D8D2E4;}
+  .info-item p{font-size:14px;color:#d8d2e4;}
 
   /* ---- FAQ accordion ---- */
-  .faq{border-top:1px solid rgba(255,255,255,.08);}
-  .faq-item{border-bottom:1px solid rgba(255,255,255,.08);}
+  .faq{border-top:1px solid rgba(157,114,255,0.16);}
+  .faq-item{border-bottom:1px solid rgba(157,114,255,0.16);}
   .faq-q{
     width:100%;
     display:flex;
@@ -125,8 +125,8 @@
     align-items:center;
     gap:16px;
     background:none;border:none;
-    color:var(--ink);
-    font-family:'Cairo',sans-serif;
+    color:#efeaf6;
+    font-family:'Plus Jakarta Sans','Cairo','Tajawal',sans-serif;
     font-size:15px;
     font-weight:600;
     text-align:right;
@@ -136,13 +136,13 @@
   .faq-q .plus{
     flex-shrink:0;
     width:26px;height:26px;border-radius:50%;
-    border:1px solid rgba(155,93,224,.4);
-    color:var(--violet);
+    border:1px solid rgba(157,114,255,0.4);
+    color:#cebdff;
     display:flex;align-items:center;justify-content:center;
     font-size:15px;
     transition:transform .25s ease, background .25s ease;
   }
-  .faq-item.open .faq-q .plus{transform:rotate(45deg);background:rgba(155,93,224,.15);}
+  .faq-item.open .faq-q .plus{transform:rotate(45deg);background:rgba(112,72,216,0.27);}
   .faq-a{
     max-height:0;
     overflow:hidden;
@@ -150,7 +150,7 @@
   }
   .faq-a p, .faq-a ul{
     padding:0 4px 20px;
-    color:#C9C1DA;
+    color:#c9c1da;
     font-size:14px;
   }
   .faq-a ul{padding-right:20px;padding-left:4px;}
@@ -159,7 +159,7 @@
   /* ---- Terms ---- */
   .terms{
     background:var(--panel);
-    border:1px solid rgba(255,255,255,.06);
+    border:1px solid rgba(157,114,255,0.16);
     border-radius:14px;
     padding:22px 24px;
   }
@@ -169,7 +169,7 @@
     padding-right:20px;
     margin-bottom:12px;
     font-size:14px;
-    color:#D8D2E4;
+    color:#d8d2e4;
   }
   .terms li::before{
     content:'';
@@ -194,13 +194,13 @@
     flex-wrap:wrap;
     gap:16px;
   }
-  .validity h3{font-family:'Cairo',sans-serif;font-size:16px;margin-bottom:4px;}
-  .validity p{font-size:13px;color:#EEE6FA;}
+  .validity h3{font-family:'Sora','Cairo','Tajawal',sans-serif;font-size:16px;margin-bottom:4px;}
+  .validity p{font-size:13px;color:#eee6fa;}
   .validity .dates{
-    font-family:'Cairo',sans-serif;
+    font-family:'Plus Jakarta Sans','Cairo','Tajawal',sans-serif;
     font-weight:800;
     font-size:15px;
-    background:rgba(255,255,255,.14);
+    background:rgba(255,255,255,0.14);
     padding:9px 18px;
     border-radius:10px;
     white-space:nowrap;
@@ -210,13 +210,19 @@
     margin-top:44px;
     text-align:center;
     font-size:12px;
-    color:#5C5470;
+    color:#cbc3d6;
   }
 
   @media (prefers-reduced-motion: reduce){
     *{transition:none !important; scroll-behavior:auto !important;}
   }
 </style>
+<meta name="theme-color" content="#0D0A1C">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../assets/css/cognitive-violet.css?v=1">
+<script src="../../assets/js/back-button.js?v=1" defer></script>
 </head>
 <body>
 
@@ -230,13 +236,13 @@
     <div class="gauge-card">
       <div class="gauge">
         <svg width="96" height="96" viewBox="0 0 96 96">
-          <circle cx="48" cy="48" r="42" fill="none" stroke="#2A2534" stroke-width="9"/>
+          <circle cx="48" cy="48" r="42" fill="none" stroke="#e6dff9" stroke-width="9"/>
           <circle cx="48" cy="48" r="42" fill="none" stroke="url(#g)" stroke-width="9" stroke-linecap="round"
             stroke-dasharray="264" stroke-dashoffset="64"/>
           <defs>
             <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0%" stop-color="#C9AEEA"/>
-              <stop offset="100%" stop-color="#9B5DE0"/>
+              <stop offset="0%" stop-color="#c9aeea"/>
+              <stop offset="100%" stop-color="#cebdff"/>
             </linearGradient>
           </defs>
         </svg>
@@ -379,6 +385,6 @@ document.querySelectorAll('.faq-item').forEach(item=>{
 });
 </script>
 
-<script src="../../assets/js/active-users-widget.js"></script>
+<script src="../../assets/js/active-users-widget.js?v=cv1"></script>
 </body>
 </html>

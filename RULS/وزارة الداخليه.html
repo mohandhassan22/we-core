@@ -9,19 +9,19 @@
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg: #0B1220;
-    --bg-raised: #121B2E;
-    --bg-card: #16213A;
+    --bg: #1d1643;
+    --bg-raised: #1d1643;
+    --bg-card: #1d1643;
     --line: #263352;
-    --text: #E7ECF7;
-    --text-dim: #8D9AB8;
-    --text-faint: #5C6889;
-    --amber: #F2994A;
-    --amber-dim: #4A3320;
-    --teal: #45D0C4;
-    --teal-dim: #163A38;
-    --red: #E5566B;
-    --red-dim: #3E1C24;
+    --text: #e7ecf7;
+    --text-dim: #8d9ab8;
+    --text-faint: #7b9bf4;
+    --amber: #f2994a;
+    --amber-dim: #4a3320;
+    --teal: #45d0c4;
+    --teal-dim: #1d1643;
+    --red: #e5566b;
+    --red-dim: #1d1643;
     --mono: 'IBM Plex Mono', monospace;
     --sans: 'IBM Plex Sans Arabic', sans-serif;
   }
@@ -30,7 +30,7 @@
   body{
     background: var(--bg);
     color: var(--text);
-    font-family: var(--sans);
+    font-family: 'Plus Jakarta Sans','Cairo','Tajawal',sans-serif;
     line-height: 1.7;
     -webkit-font-smoothing: antialiased;
   }
@@ -47,39 +47,39 @@
   }
   .wrap{ position: relative; z-index: 1; max-width: 920px; margin: 0 auto; padding: 0 24px; }
 
-  header{ padding: 56px 0 40px; border-bottom: 1px solid var(--line); }
+  header{ padding: 56px 0 40px; border-bottom: 1px solid #263352; }
   .eyebrow{
-    font-family: var(--mono); font-size: 12.5px; letter-spacing: 0.12em;
-    color: var(--red); display:flex; align-items:center; gap:10px; margin-bottom: 22px;
+    font-family: 'Plus Jakarta Sans','Cairo','Tajawal',sans-serif; font-size: 12.5px; letter-spacing: 0.12em;
+    color: #f47b8d; display:flex; align-items:center; gap:10px; margin-bottom: 22px;
   }
-  .eyebrow .dot{ width:7px; height:7px; border-radius:50%; background: var(--red); box-shadow: 0 0 0 3px var(--red-dim); }
+  .eyebrow .dot{ width:7px; height:7px; border-radius:50%; background: var(--red); box-shadow: 0 0 0 3px #3e1c24; }
   h1{ font-size: clamp(28px, 4.2vw, 40px); font-weight:700; letter-spacing:-0.01em; margin-bottom:16px; }
-  h1 span{ color: var(--amber); }
+  h1 span{ color: #f4b47b; }
   .lede{ color: var(--text-dim); font-size: 16.5px; max-width: 640px; }
   .lede b{ color: var(--text); font-weight:600; }
   .meta-row{
     display:flex; gap: 22px; flex-wrap: wrap; margin-top: 26px;
-    font-family: var(--mono); font-size: 12.5px; color: var(--text-faint);
+    font-family: 'Space Grotesk','Cairo','Tajawal',sans-serif; font-size: 12.5px; color: var(--text-faint);
   }
   .meta-row span b{ color: var(--text-dim); font-weight: 500; }
 
-  section{ padding: 52px 0; border-bottom: 1px solid var(--line); }
+  section{ padding: 52px 0; border-bottom: 1px solid #263352; }
   section:last-of-type{ border-bottom:none; }
   .section-head{ margin-bottom: 30px; }
-  .section-num{ font-family: var(--mono); font-size: 12px; color: var(--text-faint); letter-spacing:0.1em; margin-bottom:8px; }
+  .section-num{ font-family: 'Space Grotesk','Cairo','Tajawal',sans-serif; font-size: 12px; color: var(--text-faint); letter-spacing:0.1em; margin-bottom:8px; }
   h2{ font-size: 22px; font-weight:600; }
 
   /* screenshots */
   .shots{ display:grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 4px; }
   @media (max-width: 720px){ .shots{ grid-template-columns: 1fr; } }
   .shot{
-    background: var(--bg-card); border: 1px solid var(--line); border-radius: 12px;
+    background: var(--bg-card); border: 1px solid #263352; border-radius: 12px;
     overflow: hidden;
   }
   .shot img{ width: 100%; display:block; }
   .shot-cap{
-    font-family: var(--mono); font-size: 11.5px; color: var(--text-faint);
-    padding: 10px 14px; border-top: 1px solid var(--line);
+    font-family: 'Plus Jakarta Sans','Cairo','Tajawal',sans-serif; font-size: 11.5px; color: var(--text-faint);
+    padding: 10px 14px; border-top: 1px solid #263352;
   }
   .shot-cap b{ color: var(--text-dim); }
 
@@ -87,17 +87,17 @@
   .steps{ counter-reset: step; display:flex; flex-direction:column; gap: 0; }
   .step{
     display:flex; gap: 18px; padding: 20px 0;
-    border-bottom: 1px dashed var(--line);
+    border-bottom: 1px dashed #263352;
   }
   .step:last-child{ border-bottom: none; }
   .step-num{
     counter-increment: step;
-    font-family: var(--mono); font-size: 13px; font-weight: 600;
+    font-family: 'Space Grotesk','Cairo','Tajawal',sans-serif; font-size: 13px; font-weight: 600;
     width: 34px; height: 34px; flex-shrink:0;
     border-radius: 8px;
-    background: var(--bg-card); border: 1px solid var(--line);
+    background: var(--bg-card); border: 1px solid #263352;
     display:flex; align-items:center; justify-content:center;
-    color: var(--teal);
+    color: #7bf4ea;
   }
   .step-num::before{ content: counter(step); }
   .step-body{ padding-top: 4px; }
@@ -108,12 +108,12 @@
   .docs{ display:grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
   @media (max-width: 720px){ .docs{ grid-template-columns: 1fr; } }
   .doc-card{
-    background: var(--bg-card); border: 1px solid var(--line); border-radius: 12px;
+    background: var(--bg-card); border: 1px solid #263352; border-radius: 12px;
     padding: 20px 18px;
   }
   .doc-icon{
     width: 34px; height: 34px; border-radius: 8px;
-    background: var(--teal-dim); color: var(--teal);
+    background: var(--teal-dim); color: #7bf4ea;
     display:flex; align-items:center; justify-content:center;
     margin-bottom: 14px;
   }
@@ -123,23 +123,23 @@
   /* ticket path */
   .path-strip{
     display:flex; align-items:center; flex-wrap: wrap; gap: 0;
-    background: var(--bg-raised); border: 1px solid var(--line);
+    background: var(--bg-raised); border: 1px solid #263352;
     border-radius: 12px; padding: 22px;
   }
   .path-node{
-    font-family: var(--mono); font-size: 13px;
-    background: var(--bg-card); border: 1px solid var(--line);
+    font-family: 'Plus Jakarta Sans','Cairo','Tajawal',sans-serif; font-size: 13px;
+    background: var(--bg-card); border: 1px solid #263352;
     color: var(--text);
     padding: 10px 16px; border-radius: 8px;
     white-space: nowrap;
   }
-  .path-node.final{ border-color: var(--amber); color: var(--amber); background: var(--amber-dim); }
+  .path-node.final{ border-color: #f2994a; color: #f4b47b; background: var(--amber-dim); }
   .path-arrow{ color: var(--text-faint); padding: 0 10px; font-size: 15px; flex-shrink:0; }
   .path-tag{
     margin-top: 16px;
     display:inline-flex; align-items:center; gap: 8px;
-    font-family: var(--mono); font-size: 12.5px;
-    color: var(--red);
+    font-family: 'Space Grotesk','Cairo','Tajawal',sans-serif; font-size: 12.5px;
+    color: #f47b8d;
     background: var(--red-dim);
     border: 1px solid rgba(229,86,107,0.3);
     padding: 8px 14px; border-radius: 999px;
@@ -152,17 +152,23 @@
     border-radius: 10px;
     padding: 14px 18px;
     font-size: 14px;
-    color: #F0A5B0;
+    color: #f0a5b0;
     display:flex; gap: 10px; align-items: flex-start;
   }
   .note-strip svg{ flex-shrink:0; margin-top: 3px; }
-  .note-strip b{ color: #fff; }
+  .note-strip b{ color: #ffffff; }
 
   footer{
     padding: 32px 0 56px; text-align:center;
-    color: var(--text-faint); font-family: var(--mono); font-size: 12px;
+    color: var(--text-faint); font-family: 'Plus Jakarta Sans','Cairo','Tajawal',sans-serif; font-size: 12px;
   }
 </style>
+<meta name="theme-color" content="#0D0A1C">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/cognitive-violet.css?v=1">
+<script src="../assets/js/back-button.js?v=1" defer></script>
 </head>
 <body>
 
@@ -276,12 +282,12 @@
       <div class="path-node final">Corp New Account</div>
     </div>
     <div class="path-tag">
-      <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 1L11 10H1L6 1Z" stroke="#E5566B" stroke-width="1" stroke-linejoin="round"/></svg>
+      <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 1L11 10H1L6 1Z" stroke="#f47b8d" stroke-width="1" stroke-linejoin="round"/></svg>
       يجب كتابة "MOI" في نص التيكت
     </div>
 
     <div class="note-strip">
-      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 1L15 14H1L8 1Z" stroke="#F0A5B0" stroke-width="1.3" stroke-linejoin="round"/><path d="M8 6V9.5" stroke="#F0A5B0" stroke-width="1.3" stroke-linecap="round"/><circle cx="8" cy="11.8" r="0.9" fill="#F0A5B0"/></svg>
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 1L15 14H1L8 1Z" stroke="#f0a5b0" stroke-width="1.3" stroke-linejoin="round"/><path d="M8 6V9.5" stroke="#f0a5b0" stroke-width="1.3" stroke-linecap="round"/><circle cx="8" cy="11.8" r="0.9" fill="#f0a5b0"/></svg>
       <span><b>ملحوظة هامة:</b> لا يتم تعديل أي باقات للعميل إلا بعد تعديل البيانات من الإدارة المختصة أولًا.</span>
     </div>
   </section>
@@ -292,6 +298,6 @@
 
 </div>
 
-<script src="../assets/js/active-users-widget.js"></script>
+<script src="../assets/js/active-users-widget.js?v=cv1"></script>
 </body>
 </html>

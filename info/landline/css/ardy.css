@@ -1,12 +1,12 @@
 body {
             margin: 0;
-            font-family: 'Segoe UI', Tahoma, sans-serif;
-            background: #f6f5f8;
+            font-family: 'Plus Jakarta Sans','Cairo','Tajawal',sans-serif;
+            background: #0d0a1c;
         }
 
         /* Header */
         .header {
-            background: #5a2d82;
+            background: #5120b8;
             text-align: center;
             padding: 30px 20px;
             box-shadow: 0 5px 15px rgba(0,0,0,0.08);
@@ -21,7 +21,7 @@ body {
         .main-title {
             font-size: 26px;
             font-weight: bold;
-            color: #5a2d82;
+            color: #cebdff;
         }
 
         .sub-title {
@@ -41,7 +41,7 @@ body {
             width: 100%;
             min-height: 120px;
             border-radius: 14px;
-            border: 1px solid #ddd;
+            border: 1px solid rgba(157,114,255,0.18);
             padding: 15px;
             font-size: 14px;
             resize: vertical;
@@ -49,7 +49,7 @@ body {
         }
 
         .note-box textarea:focus {
-            border-color: #7b3fe4;
+            border-color: #9d72ff;
         }
 
         /* Cards */
@@ -70,11 +70,11 @@ body {
         }
 
         .card {
-            background: #fff;
+            background: #1d1643;
             border-radius: 18px;
             padding: 30px;
             box-shadow: 0 10px 25px rgba(0,0,0,0.08);
-            border-top: 5px solid #7b3fe4;
+            border-top: 5px solid #9d72ff;
             transition: transform 0.3s ease;
         }
 
@@ -84,7 +84,7 @@ body {
 
         .icon {
             font-size: 42px;
-            color: #7b3fe4;
+            color: #cebdff;
             margin-bottom: 15px;
             transition: transform 0.3s ease, color 0.3s ease;
             width: fit-content;
@@ -92,16 +92,16 @@ body {
 
         .card:hover .icon {
             transform: scale(1.2);
-            color: #5a2d82;
+            color: #cebdff;
         }
 
         .card h2 {
-            color: #5a2d82;
+            color: #cebdff;
             margin-bottom: 10px;
         }
 
         .card p {
-            color: #555;
+            color: #cbc3d6;
             font-size: 14px;
             margin-bottom: 20px;
         }
@@ -111,18 +111,18 @@ body {
             text-align: center;
             padding: 12px;
             border-radius: 10px;
-            background: #7b3fe4;
-            color: #fff;
+            background: #7048d8;
+            color: #ffffff;
             font-weight: 500;
         }
          footer {
         text-align: center;
         margin-top: 50px;
-        color: #777;
+        color: #9e97c2;
         font-size: 14px;
     }
 
     footer span {
-        color: #5a2d82;
+        color: #cebdff;
         font-weight: 600;
     }
