@@ -1,5 +1,5 @@
 /* WE-Core theme: light / dark with a floating toggle.
-   Default follows the device (prefers-color-scheme); an explicit choice is remembered. */
+   Light is the default; dark is optional and the choice is remembered. */
 (function () {
   var KEY = 'we-theme';
   var root = document.documentElement;
@@ -10,7 +10,7 @@
     try { var v = localStorage.getItem(KEY); return v === 'light' || v === 'dark' ? v : null; } catch (e) { return null; }
   }
   function system() { return mq && mq.matches ? 'light' : 'dark'; }
-  function current() { return stored() || system(); }
+  function current() { return stored() || 'light'; }
 
   function paintMeta(theme) {
     var metas = document.querySelectorAll('meta[name="theme-color"]');
@@ -41,11 +41,6 @@
   // set before first paint
   apply(current(), false);
 
-  function onSystemChange() { if (!stored()) apply(system(), true); }
-  if (mq) {
-    if (mq.addEventListener) mq.addEventListener('change', onSystemChange);
-    else if (mq.addListener) mq.addListener(onSystemChange);
-  }
   window.addEventListener('storage', function (e) {
     if (e.key === KEY || e.key === null) apply(current(), true);
   });

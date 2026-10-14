@@ -1,6 +1,6 @@
 /* Cognitive Violet System — shared layer for every WE-Core page
    Themes: dark (default values below) and light. data-theme is set by theme-init.js;
-   without JS the light block follows the device via prefers-color-scheme. */
+   light is the default; dark only when chosen. */
 :root{
   --cv-canvas:#0D0A1C; --cv-deep:#120E28; --cv-card:#1D1643; --cv-raised:#28205C; --cv-raised2:#33297A;
   --cv-primary:#7048D8; --cv-secondary:#9D72FF; --cv-tertiary:#D199FF; --cv-electric:#B366FF;
@@ -31,9 +31,9 @@
   color-scheme:light;
   --cv-t-7b9af4:#3060ee;--cv-t-7b9bf4:#2b5eed;--cv-t-7b9ff4:#2661ed;--cv-t-7ba1f4:#2261ed;--cv-t-7ba9f4:#1364e6;--cv-t-7badf4:#1266dd;--cv-t-7bb4f4:#116bcf;--cv-t-7bc8f4:#0e71a9;--cv-t-7bcaf4:#0e73a9;--cv-t-7bcbf4:#0e71a5;--cv-t-7beff4:#0a767a;--cv-t-7bf0f4:#0a777a;--cv-t-7bf481:#0b7f10;--cv-t-7bf4a7:#0a7a33;--cv-t-7bf4a8:#0a7a34;--cv-t-7bf4a9:#0a7a35;--cv-t-7bf4ab:#0a7a37;--cv-t-7bf4ad:#0a7a38;--cv-t-7bf4ae:#0a7a39;--cv-t-7bf4c0:#0a7a4a;--cv-t-7bf4c4:#0a7a4e;--cv-t-7bf4c7:#0a7a51;--cv-t-7bf4c8:#0a7a51;--cv-t-7bf4cf:#0a7a58;--cv-t-7bf4d5:#0a7a5e;--cv-t-7bf4db:#0a7a63;--cv-t-7bf4e6:#0a7a6d;--cv-t-7bf4e7:#0a7a6e;--cv-t-7bf4e8:#0a7a6f;--cv-t-7bf4e9:#0a7a70;--cv-t-7bf4ea:#0a7a71;--cv-t-7bf4eb:#0a7a72;--cv-t-7bf4ee:#0a7a75;--cv-t-7bf4ef:#0a7a76;--cv-t-7ce0a6:#1e7d45;--cv-t-7db4f7:#0d69d8;--cv-t-9ca3af:#4a4268;--cv-t-9fc9c6:#4a4268;--cv-t-a5f3fc:#047784;--cv-t-bee3df:#32756e;--cv-t-bfe0dd:#397671;--cv-t-c7b7e5:#7b56c2;--cv-t-c9c1da:#4a4268;--cv-t-cccccc:#2b2250;--cv-t-cdb8ec:#834fd0;--cv-t-d6eae7:#3c766d;--cv-t-d8b4fe:#912cfc;--cv-t-d8c6f5:#8248df;--cv-t-d8d2e4:#2b2250;--cv-t-d9cbee:#8254c7;--cv-t-dccbee:#8950c6;--cv-t-dcd4ec:#7a5cb7;--cv-t-e6dcf5:#8351cd;--cv-t-e7f2f1:#2b2250;--cv-t-e8ddfb:#8246e9;--cv-t-e8def5:#8651ca;--cv-t-e9d5ff:#912dff;--cv-t-e9ddff:#7f3aff;--cv-t-eae1f7:#8550d0;--cv-t-ede9fe:#6d4df7;--cv-t-eee6fa:#8349db;--cv-t-efe6fa:#8a49db;--cv-t-efeaf6:#7f58b7;--cv-t-efeded:#2b2250;--cv-t-f0a5b0:#cf233c;--cv-t-f0c0ff:#b100e9;--cv-t-f0ce68:#84660d;--cv-t-f2eaff:#8337ff;--cv-t-f3c89a:#9f5b13;--cv-t-f3e6c8:#85661d;--cv-t-f3f0e7:#7a6b3d;--cv-t-f47b8d:#d81230;--cv-t-f47b90:#d81234;--cv-t-f47b99:#d41242;--cv-t-f47b9c:#d41247;--cv-t-f47ba0:#d4124d;--cv-t-f47bab:#d4125f;--cv-t-f47bbd:#cf1179;--cv-t-f47bbe:#cf117a;--cv-t-f47bc3:#cf1182;--cv-t-f47bc7:#ca1185;--cv-t-f47bce:#ca1190;--cv-t-f47bd5:#ca119b;--cv-t-f4827b:#d41d12;--cv-t-f4847b:#d42012;--cv-t-f4857b:#d42212;--cv-t-f4987b:#c63c10;--cv-t-f4997b:#c63d10;--cv-t-f49a7b:#c13d10;--cv-t-f49b7b:#c13f10;--cv-t-f49e7b:#c14310;--cv-t-f4a67b:#b74b0f;--cv-t-f4a77b:#b74c0f;--cv-t-f4ad7b:#ae500e;--cv-t-f4ae7b:#ae520e;--cv-t-f4af7b:#ae530e;--cv-t-f4b17b:#a9530e;--cv-t-f4b47b:#a9570e;--cv-t-f4b57b:#a5560e;--cv-t-f4bb7b:#a05b0d;--cv-t-f4bc7b:#a05c0d;--cv-t-f4be7b:#9b5c0d;--cv-t-f4bf7b:#9b5d0d;--cv-t-f4c17b:#9b5f0d;--cv-t-f4c37b:#965f0d;--cv-t-f4c57b:#96610d;--cv-t-f4c67b:#96620d;--cv-t-f4c87b:#92610c;--cv-t-f4c97b:#92620c;--cv-t-f4ca7b:#92630c;--cv-t-f4cb7b:#92640c;--cv-t-f4cd7b:#8d630c;--cv-t-f4ce7b:#8d640c;--cv-t-f4cf7b:#8d660c;--cv-t-f4d17b:#88640b;--cv-t-f4d27b:#88650b;--cv-t-f4d37b:#88660b;--cv-t-f4d77b:#84670b;--cv-t-f4da7b:#846a0b;--cv-t-f4db7b:#846b0b;--cv-t-f4ecff:#8a34ff;--cv-t-fbd5e9:#cd1475;--cv-t-fda4af:#da051f;--cv-t-fdba74:#a85702;--cv-t-fde68a:#816702;--cv-t-ff7a59:#ce2900;--cv-t-ffb648:#9a5c00;--cv-t-ffd54f:#876700;--cv-t-fff8ea:#936200;
 }
-/* no-JS fallback: follow the device when data-theme was never set */
-@media (prefers-color-scheme: light){
-  :root:not([data-theme]){
+/* light is the default (also without JS) unless dark was chosen */
+@media all{
+  :root:not([data-theme="dark"]){
     --cv-canvas:#F6F3FF; --cv-deep:#EEE9FB; --cv-card:#FFFFFF; --cv-raised:#E8E0FA; --cv-raised2:#DCD1F4;
     --cv-primary:#6A3FD0; --cv-secondary:#7048D8; --cv-tertiary:#8E4FD8; --cv-electric:#8A3FE0;
     --cv-text:#1A1235; --cv-white-ink:#1A1235; --cv-ink-soft:#2B2250; --cv-ink-soft2:#4A4268; --cv-muted:#625A8A; --cv-accent-ink:#5120B8;
