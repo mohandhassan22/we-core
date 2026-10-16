@@ -546,7 +546,7 @@
 
             // تنظيم البيانات (بناءً على الكود الذي كتبته في الـ Edge Function)
             const grouped = data.reduce((acc, file) => {
-                const folderName = file.folder || 'عام';
+                const folderName = String(file['folder-name'] || file.folder || 'عام').trim();
                 let folder = acc.find(f => f.name === folderName);
                 if (!folder) {
                     folder = { name: folderName, videos: [] };
