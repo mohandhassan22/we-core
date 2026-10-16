@@ -317,14 +317,15 @@ Deno.serve(async (req) => {
     // ACTION: start_quiz (ALWAYS POWERED BY GEMINI AI + GOOGLE SHEET)
     // -------------------------------------------------------------
     if (action === "start_quiz" || action === "start-quiz") {
-      const requestedLevel = Math.max(1, parseInt(body.level || 1, 10));
-
       // Get user's progress
       let { data: progress } = await adminClient
         .from("game_users_progress")
         .select("*")
         .eq("user_id", user.id)
         .maybeSingle();
+
+      // Level = the PLAYER's level (derived from total score), never chosen by the client.
+      const requestedLevel = calculateLevel(progress?.total_score || 0).currentLevel;
 
       const chosenQuestions: any[] = [];
       const keys = getApiKeys();
@@ -451,6 +452,24 @@ ${avoidBlock}
             if (!chosenQuestions.some((q) => q.id === fb.id) && !recentIds.includes(fb.id)) {
               chosenQuestions.push(fb);
             }
+          }
+        }
+      }
+
+      // Second fallback: any level (closest first) if this level has too few stored questions
+      if (chosenQuestions.length < 5) {
+        const { data: anyLevel } = await adminClient
+          .from("game_questions")
+          .select("id, question_text, options, level")
+          .eq("status", "active")
+          .limit(80);
+        const sorted = shuffle(anyLevel || []).sort(
+          (a: any, b: any) => Math.abs(a.level - requestedLevel) - Math.abs(b.level - requestedLevel),
+        );
+        for (const fb of sorted) {
+          if (chosenQuestions.length >= 5) break;
+          if (!chosenQuestions.some((q) => q.id === fb.id) && !recentIds.includes(fb.id)) {
+            chosenQuestions.push(fb);
           }
         }
       }

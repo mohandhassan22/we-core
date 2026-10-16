@@ -136,7 +136,7 @@
     // Bind Modal Actions
     document.getElementById('btnPlayAgain')?.addEventListener('click', () => {
       closeModal();
-      if (activeSession) startQuiz(activeSession.level);
+      startQuiz();
     });
 
     document.getElementById('btnGoLeaderboard')?.addEventListener('click', () => {
@@ -243,81 +243,34 @@
     if (tTarget) tTarget.textContent = `الهدف: ${userProgress.next_threshold} نقطة`;
   }
 
-  // Dynamic Level count state
-  let visibleLevelsLimit = 12;
-
-  // Render Level Selection Cards (Infinite Levels)
+  // Render the single "Play" card: the level is the PLAYER's level, not a choice
   function renderLevels() {
     const grid = document.getElementById('levelsGrid');
     if (!grid) return;
 
-    const currentLvl = userProgress.current_level || 1;
-    const maxDisplayLevel = Math.max(visibleLevelsLimit, currentLvl + 5);
-    let html = '';
+    const lvl = userProgress.current_level || 1;
+    const meta = LEVEL_TITLES.find((t) => t.level === lvl) || { title: `المستوى ${lvl}`, desc: 'تحدي الخبراء الشامل' };
+    const remaining = Math.max(0, (userProgress.next_threshold || 0) - (userProgress.total_score || 0));
 
-    for (let lvl = 1; lvl <= maxDisplayLevel; lvl++) {
-      const isUnlocked = lvl <= userProgress.current_level || lvl <= 3; // First 3 levels open for training + any unlocked level
-      const isCompleted = lvl <= userProgress.completed_levels;
-      const threshold = getLevelThreshold(lvl);
-      const meta = LEVEL_TITLES.find((t) => t.level === lvl) || { 
-        title: `المستوى المتقدم ${lvl}`, 
-        desc: `تحدي استثنائي من تعليمات وشروط تعاقدات WE بالذكاء الاصطناعي` 
-      };
-
-      let statusBadge = '';
-      if (isCompleted) {
-        statusBadge = '<span class="level-status-pill completed"><i class="fa-solid fa-circle-check"></i> مكتمل</span>';
-      } else if (isUnlocked) {
-        statusBadge = '<span class="level-status-pill unlocked"><i class="fa-solid fa-play"></i> متاح الآن</span>';
-      } else {
-        statusBadge = `<span class="level-status-pill locked"><i class="fa-solid fa-lock"></i> (${threshold} نقطة)</span>`;
-      }
-
-      html += `
-        <div class="level-card ${isUnlocked ? 'active' : 'locked'}">
-          <div>
-            <div class="level-card-top">
-              <div class="level-num-badge">${lvl}</div>
-              ${statusBadge}
-            </div>
+    grid.innerHTML = `
+      <div class="level-card active" style="grid-column: 1 / -1; max-width: 560px; margin: 0 auto; width: 100%;">
+        <div class="level-card-top">
+          <div class="level-num-badge">${lvl}</div>
+          <div class="level-meta">
             <h4>${escapeHtml(meta.title)}</h4>
             <p>${escapeHtml(meta.desc)}</p>
-            <div class="level-meta">
-              <i class="fa-solid fa-flag-checkered"></i>
-              <span>النقاط المطلوبة: <strong>${threshold} نقطة</strong></span>
-            </div>
           </div>
-          <button class="level-btn ${isUnlocked ? 'primary' : ''}" ${isUnlocked ? '' : 'disabled'} data-level="${lvl}">
-            <i class="fa-solid fa-${isUnlocked ? 'wand-magic-sparkles' : 'lock'}"></i>
-            <span>${isUnlocked ? 'توليد 5 أسئلة بالـ AI' : 'مقفول'}</span>
-          </button>
         </div>
-      `;
-    }
-
-    // Add Infinite Levels Expand Button at bottom
-    html += `
-      <div style="grid-column: 1 / -1; text-align: center; margin-top: 10px;">
-        <button id="btnLoadMoreLevels" class="btn-secondary" style="margin: 0 auto; padding: 12px 24px; font-weight: 800;">
-          <i class="fa-solid fa-angles-down"></i> فتح وعرض المزيد من المستويات (+10 مستويات لا نهائية)
+        <p style="margin: 12px 0; font-weight: 700;">
+          متبقي ${remaining} نقطة للترقي إلى المستوى ${lvl + 1}
+        </p>
+        <button id="btnStartPlay" class="level-btn primary">
+          <i class="fa-solid fa-play"></i> ابدأ اللعب
         </button>
       </div>
     `;
 
-    grid.innerHTML = html;
-
-    // Attach Click Events to unlocked cards
-    grid.querySelectorAll('.level-btn:not(:disabled)').forEach((btn) => {
-      btn.addEventListener('click', () => {
-        const lvl = parseInt(btn.dataset.level, 10);
-        startQuiz(lvl);
-      });
-    });
-
-    document.getElementById('btnLoadMoreLevels')?.addEventListener('click', () => {
-      visibleLevelsLimit += 10;
-      renderLevels();
-    });
+    document.getElementById('btnStartPlay')?.addEventListener('click', () => startQuiz());
   }
 
   // Switch App Tabs
@@ -339,11 +292,11 @@
   }
 
   // Start Quiz Session
-  async function startQuiz(level) {
+  async function startQuiz() {
     showToast('بنجهّز 5 أسئلة ليك بالذكاء الاصطناعي… لحظات من فضلك ⏳', 'success');
 
     try {
-      const data = await callGameAi({ action: 'start_quiz', level });
+      const data = await callGameAi({ action: 'start_quiz' });
       if (!data.questions || data.questions.length < 5) {
         throw new Error('لم يتم استلام 5 أسئلة من الخادم');
       }
