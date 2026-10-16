@@ -500,7 +500,7 @@
         </div>
         <div class="modal-body">
             <iframe id="mainPlayer" allowfullscreen allow="autoplay"></iframe>
-            <video id="mainVideo" controls controlsList="nodownload" disablePictureInPicture playsinline preload="metadata" style="display:none"></video>
+            <video id="mainVideo" playsinline preload="metadata"></video>
         </div>
     </div>
 </div>
@@ -626,10 +626,12 @@
             const nativeVideo = document.getElementById('mainVideo');
             if (new URL(data.url).origin === VIDEO_ORIGIN) {
                 player.src = ''; player.style.display = 'none';
-                nativeVideo.style.display = 'block';
+                nativeVideo.__wep.box.style.display = 'block';
+                nativeVideo.dataset.wePath = video.file_id || '';
                 nativeVideo.src = data.url; // بيتحمّل ورا الانترو
+                introDone.then(() => { const p = nativeVideo.play(); if (p && p.catch) p.catch(() => {}); });
             } else {
-                nativeVideo.pause(); nativeVideo.removeAttribute('src'); nativeVideo.style.display = 'none';
+                nativeVideo.pause(); nativeVideo.removeAttribute('src'); nativeVideo.__wep.box.style.display = 'none';
                 player.style.display = 'block';
                 player.src = data.url; // بيتحمّل ورا الانترو
             }
@@ -660,8 +662,14 @@
         if (e.target === this) closeModal();
     });
 
-    document.addEventListener('DOMContentLoaded', loadLibrary);
+    document.addEventListener('DOMContentLoaded', () => {
+        const mv = document.getElementById('mainVideo');
+        const wp = WEPlayer.enhance(mv);
+        wp.box.style.display = 'none';
+        loadLibrary();
+    });
 </script>
+<script src="../assets/js/we-player.js"></script>
 <script src="../assets/js/intro.js"></script>
 <script src="../assets/js/scrolly.js?v=1"></script>
 <script>

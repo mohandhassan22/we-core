@@ -660,7 +660,7 @@
 
       const isPrivate = new URL(data.url).origin === 'https://fupoqueeqwqjtylqwryf.supabase.co'; // bucket خاص → مشغّل المتصفح
       const player = isPrivate
-        ? `<video src="${data.url}" controls controlsList="nodownload" disablePictureInPicture playsinline preload="metadata"></video>`
+        ? `<video src="${data.url}" data-we data-we-path="offer/we-gold-offer.mp4" playsinline preload="metadata"></video>`
         : `<iframe src="${data.url}" allow="autoplay; fullscreen" allowfullscreen></iframe>`;
       wrap.innerHTML = `
         <div class="video-frame">${WEIntro.gateHtml(player)}</div>`;
@@ -713,6 +713,7 @@
 })();
 </script>
 
+<script src="../../assets/js/we-player.js"></script>
 <script src="../../assets/js/intro.js"></script>
 <script src="../../assets/js/scrolly.js?v=1"></script>
 <script>

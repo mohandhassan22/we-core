@@ -232,7 +232,7 @@ footer span{color:var(--cv-accent-ink);font-weight:700;}
     window.playVideo = async function(fileId, title) {
         $('modalTitle').textContent = 'جاري التحقق...';
         $('modalLoading').style.display = 'flex';
-        const old = $('videoWrapper').querySelector('iframe, video');
+        const old = $('videoWrapper').querySelector('.wep, iframe, video');
         if (old) old.remove();
         $('playerOverlay').classList.add('active');
         document.body.style.overflow = 'hidden';
@@ -250,12 +250,12 @@ footer span{color:var(--cv-accent-ink);font-weight:700;}
             let iframe;
             if (new URL(data.url).origin === 'https://fupoqueeqwqjtylqwryf.supabase.co') {
                 iframe = document.createElement('video'); // فيديو من bucket خاص: مشغّل المتصفح
-                iframe.controls = true;
-                iframe.setAttribute('controlsList', 'nodownload');
-                iframe.disablePictureInPicture = true;
+                iframe.setAttribute('data-we', '');   // WE player (auto-enhanced)
+                iframe.dataset.wePath = fileId;
                 iframe.playsInline = true;
                 iframe.preload = 'metadata';
                 iframe.src = data.url;
+                introDone.then(() => { const p = iframe.play(); if (p && p.catch) p.catch(() => {}); });
                 iframe.onloadeddata = () => { $('modalLoading').style.display = 'none'; };
             } else {
                 iframe = document.createElement('iframe');
@@ -278,7 +278,7 @@ footer span{color:var(--cv-accent-ink);font-weight:700;}
     window.closePlayer = function() {
         $('playerOverlay').classList.remove('active');
         const iframe = $('videoWrapper').querySelector('iframe, video');
-        if (iframe) { if (iframe.pause) iframe.pause(); iframe.remove(); }
+        if (iframe) { if (iframe.pause) iframe.pause(); (iframe.closest('.wep') || iframe).remove(); }
         $('modalLoading').style.display = 'flex';
         document.body.style.overflow = '';
     };
@@ -292,6 +292,7 @@ footer span{color:var(--cv-accent-ink);font-weight:700;}
 
 
 
+<script src="../assets/js/we-player.js"></script>
 <script src="../assets/js/intro.js"></script>
 <script src="../assets/js/scrolly.js?v=1"></script>
 <script>
