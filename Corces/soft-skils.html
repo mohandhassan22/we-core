@@ -72,6 +72,7 @@ body{font-family:'Plus Jakarta Sans','Cairo','Tajawal',sans-serif;background:var
 .close-player:hover{background:#ef4444;border-color:#ef4444;transform:rotate(90deg);}
 .video-wrapper{position:relative;padding-bottom:56.25%;height:0;background:var(--cv-canvas);}
 .video-wrapper iframe{position:absolute;top:0;left:0;width:100%;height:100%;border:none;}
+.video-wrapper video{position:absolute;top:0;left:0;width:100%;height:100%;background:#000;}
 
 /* loading spinner inside modal */
 .modal-loading{
@@ -150,7 +151,7 @@ footer span{color:var(--cv-accent-ink);font-weight:700;}
     function isAllowedVideoUrl(value) {
         try {
             const u = new URL(value);
-            return u.protocol === 'https:' && (u.origin === 'https://iygwhapcpdmsasqlfelv.supabase.co' || (u.hostname === 'drive.google.com' && /^\/file\/d\/[\w-]+\/preview$/.test(u.pathname)));
+            return u.protocol === 'https:' && (u.origin === 'https://iygwhapcpdmsasqlfelv.supabase.co' || u.origin === 'https://fupoqueeqwqjtylqwryf.supabase.co' || (u.hostname === 'drive.google.com' && /^\/file\/d\/[\w-]+\/preview$/.test(u.pathname)));
         } catch (_) { return false; }
     }
 
@@ -230,7 +231,7 @@ footer span{color:var(--cv-accent-ink);font-weight:700;}
     window.playVideo = async function(fileId, title) {
         $('modalTitle').textContent = 'جاري التحقق...';
         $('modalLoading').style.display = 'flex';
-        const old = $('videoWrapper').querySelector('iframe');
+        const old = $('videoWrapper').querySelector('iframe, video');
         if (old) old.remove();
         $('playerOverlay').classList.add('active');
         document.body.style.overflow = 'hidden';
@@ -245,12 +246,24 @@ footer span{color:var(--cv-accent-ink);font-weight:700;}
             if (error) throw error;
 
             if (!isAllowedVideoUrl(data.url)) throw new Error('رابط فيديو غير مسموح');
-            const iframe = document.createElement('iframe');
-            iframe.src = data.url;
-            iframe.allow = 'autoplay';
-            iframe.allowFullscreen = true;
-            iframe.style.cssText = 'position:absolute;top:0;left:0;width:100%;height:100%;border:none;';
-            iframe.onload = () => { $('modalLoading').style.display = 'none'; };
+            let iframe;
+            if (new URL(data.url).origin === 'https://fupoqueeqwqjtylqwryf.supabase.co') {
+                iframe = document.createElement('video'); // فيديو من bucket خاص: مشغّل المتصفح
+                iframe.controls = true;
+                iframe.setAttribute('controlsList', 'nodownload');
+                iframe.disablePictureInPicture = true;
+                iframe.playsInline = true;
+                iframe.preload = 'metadata';
+                iframe.src = data.url;
+                iframe.onloadeddata = () => { $('modalLoading').style.display = 'none'; };
+            } else {
+                iframe = document.createElement('iframe');
+                iframe.src = data.url;
+                iframe.allow = 'autoplay';
+                iframe.allowFullscreen = true;
+                iframe.style.cssText = 'position:absolute;top:0;left:0;width:100%;height:100%;border:none;';
+                iframe.onload = () => { $('modalLoading').style.display = 'none'; };
+            }
 
             $('modalTitle').textContent = title;
             $('videoWrapper').appendChild(iframe);
@@ -263,8 +276,8 @@ footer span{color:var(--cv-accent-ink);font-weight:700;}
 
     window.closePlayer = function() {
         $('playerOverlay').classList.remove('active');
-        const iframe = $('videoWrapper').querySelector('iframe');
-        if (iframe) iframe.remove();
+        const iframe = $('videoWrapper').querySelector('iframe, video');
+        if (iframe) { if (iframe.pause) iframe.pause(); iframe.remove(); }
         $('modalLoading').style.display = 'flex';
         document.body.style.overflow = '';
     };

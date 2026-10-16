@@ -401,6 +401,7 @@
         .modal-body { background:var(--cv-canvas); line-height:0; }
         video { width:100%; display:block; max-height:80vh; }
         .modal-body iframe { width:100%; height:560px; border:none; display:block; background:var(--cv-canvas); }
+        .modal-body video { width:100%; max-height:70vh; display:block; background:#000; }
 
         /* ── LOADING ── */
         .loading-msg { grid-column:1/-1; padding:60px 20px; text-align:center; color:var(--text-dim); }
@@ -494,12 +495,14 @@
         </div>
         <div class="modal-body">
             <iframe id="mainPlayer" allowfullscreen allow="autoplay"></iframe>
+            <video id="mainVideo" controls controlsList="nodownload" disablePictureInPicture playsinline preload="metadata" style="display:none"></video>
         </div>
     </div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
     const SB_URL = 'https://iygwhapcpdmsasqlfelv.supabase.co';
+    const VIDEO_ORIGIN = 'https://fupoqueeqwqjtylqwryf.supabase.co'; // مشروع wecore video (bucket خاص، روابط مؤقتة)
     const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Iml5Z3doYXBjcGRtc2FzcWxmZWx2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzEzNDk5MDQsImV4cCI6MjA4NjkyNTkwNH0.jqU1fEc9kBkXcCfazH6aTnS2XWWzPv0bbixHZgjtrnQ';
     
     const supabaseClient = supabase.createClient(SB_URL, SB_KEY);
@@ -513,7 +516,7 @@
     function isAllowedVideoUrl(value) {
         try {
             const u = new URL(value);
-            return u.protocol === 'https:' && (u.origin === SB_URL || u.hostname === 'www.youtube.com' || u.hostname === 'youtu.be' || (u.hostname === 'drive.google.com' && /^\/file\/d\/[\w-]+\/preview$/.test(u.pathname)));
+            return u.protocol === 'https:' && (u.origin === SB_URL || u.origin === VIDEO_ORIGIN || u.hostname === 'www.youtube.com' || u.hostname === 'youtu.be' || (u.hostname === 'drive.google.com' && /^\/file\/d\/[\w-]+\/preview$/.test(u.pathname)));
         } catch (_) { return false; }
     }
 
@@ -615,7 +618,16 @@
             if (error) throw error;
             
             if (!isAllowedVideoUrl(data.url)) throw new Error('رابط فيديو غير مسموح');
-            player.src = data.url; // بيتحمّل ورا الانترو
+            const nativeVideo = document.getElementById('mainVideo');
+            if (new URL(data.url).origin === VIDEO_ORIGIN) {
+                player.src = ''; player.style.display = 'none';
+                nativeVideo.style.display = 'block';
+                nativeVideo.src = data.url; // بيتحمّل ورا الانترو
+            } else {
+                nativeVideo.pause(); nativeVideo.removeAttribute('src'); nativeVideo.style.display = 'none';
+                player.style.display = 'block';
+                player.src = data.url; // بيتحمّل ورا الانترو
+            }
             title.textContent = video.title;
 
         } catch (err) {
@@ -628,6 +640,8 @@
     function closeModal() {
         const player = document.getElementById('mainPlayer');
         player.src = "";
+        const nativeVideo = document.getElementById('mainVideo');
+        nativeVideo.pause(); nativeVideo.removeAttribute('src'); nativeVideo.load();
         document.getElementById('modalOverlay').classList.remove('open');
     }
 
