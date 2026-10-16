@@ -73,7 +73,9 @@ body{font-family:'Plus Jakarta Sans','Cairo','Tajawal',sans-serif;background:var
 .close-player:hover{background:#ef4444;border-color:#ef4444;transform:rotate(90deg);}
 .video-wrapper{position:relative;padding-bottom:56.25%;height:0;background:var(--cv-canvas);}
 .video-wrapper iframe{position:absolute;top:0;left:0;width:100%;height:100%;border:none;}
-.video-wrapper video{position:absolute;top:0;left:0;width:100%;height:100%;background:#000;}
+.video-wrapper>video{position:absolute;top:0;left:0;width:100%;height:100%;background:#000;}
+.video-wrapper>.wep{position:absolute;top:0;left:0;width:100%;height:100%;border-radius:0;}
+.video-wrapper .wep video{position:static;width:100%;height:100%;aspect-ratio:auto;object-fit:contain;}
 
 /* loading spinner inside modal */
 .modal-loading{
