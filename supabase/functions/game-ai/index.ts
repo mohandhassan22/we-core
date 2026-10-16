@@ -131,40 +131,88 @@ async function generateWithRotatingKeys(prompt: string, keys: string[]): Promise
   throw new Error(`All ${numKeys} AI keys failed or exhausted: ${lastError?.message || "unavailable"}`);
 }
 
-// Google Sheet Source URL (gid=1212703104)
-const SHEET_CSV_URL =
+// Google Sheet source. Default: one tab (gid=1212703104).
+// To use several tabs set GAME_SHEET_CSV_URLS = comma-separated export URLs (one per tab).
+const SHEET_CSV_URLS: string[] = (
+  Deno.env.get("GAME_SHEET_CSV_URLS") ||
   Deno.env.get("GAME_SHEET_CSV_URL") ||
-  "https://docs.google.com/spreadsheets/d/1Ne0kI6Ddfb7bTiEdkK6fnW1IdyIEjCqM0A1TG9KTY6Y/export?format=csv&gid=1212703104";
+  "https://docs.google.com/spreadsheets/d/1Ne0kI6Ddfb7bTiEdkK6fnW1IdyIEjCqM0A1TG9KTY6Y/export?format=csv&gid=1212703104"
+).split(",").map((u) => u.trim()).filter(Boolean);
 
-let cachedSheetContent = "";
-let sheetCacheTime = 0;
+const sheetCache = new Map<string, { text: string; time: number }>();
 
 /**
- * Fetches content from Google Sheet CSV endpoint with 5-minute cache
+ * Fetches a random tab from the Google Sheet (CSV) with a 5-minute cache per tab.
  */
 async function fetchGoogleSheetContent(): Promise<string> {
+  const url = SHEET_CSV_URLS[Math.floor(Math.random() * SHEET_CSV_URLS.length)];
   const now = Date.now();
-  if (cachedSheetContent && now - sheetCacheTime < 300000) {
-    return cachedSheetContent;
-  }
+  const cached = sheetCache.get(url);
+  if (cached && now - cached.time < 300000) return cached.text;
 
   try {
-    const res = await fetch(SHEET_CSV_URL, { signal: AbortSignal.timeout(10000) });
+    const res = await fetch(url, { signal: AbortSignal.timeout(10000) });
     if (res.ok) {
       const text = await res.text();
       // Verify response is actual CSV and not a Google login page
-      if (!text.trim().startsWith("<!DOCTYPE html>")) {
-        cachedSheetContent = text.slice(0, 18000); // Up to 18KB of relevant sheet data
-        sheetCacheTime = now;
-        console.log(`[Game-AI] Google Sheet content loaded successfully (${cachedSheetContent.length} chars)`);
-        return cachedSheetContent;
+      if (!/^\s*<(!doctype|html)/i.test(text)) {
+        const trimmed = text.slice(0, 30000);
+        sheetCache.set(url, { text: trimmed, time: now });
+        console.log(`[Game-AI] Sheet tab loaded (${trimmed.length} chars)`);
+        return trimmed;
       }
     }
     console.warn("[Game-AI] Google Sheet returned HTML or 401. Ensure sheet has 'Anyone with the link can view' permission.");
   } catch (err: any) {
     console.warn("[Game-AI] Could not fetch Google Sheet:", err.message);
   }
-  return cachedSheetContent || "";
+  return cached?.text || "";
+}
+
+/**
+ * Difficulty profile per game level (1-2 easy, 3-4 medium, 5+ hard).
+ */
+function getDifficultyProfile(level: number): { name: string; rules: string } {
+  if (level <= 2) {
+    return {
+      name: "سهل",
+      rules: `- كل سؤال مبني على معلومة واحدة مباشرة من صف واحد في الشيت (رقم، سن، مدة، مستند).
+- صياغة بسيطة وواضحة، والاختيارات الخاطئة بعيدة نسبياً عن الصحيحة.
+- بدون مواقف مركبة وبدون حسابات.`,
+    };
+  }
+  if (level <= 4) {
+    return {
+      name: "متوسط",
+      rules: `- اجعل السؤال في صورة موقف قصير من العمل (عميل أجنبي جاء بمستند معين) واسأل عن الإجراء الصحيح.
+- يجب أن تكون 2 على الأقل من الاختيارات الخاطئة قريبة جداً ومقنعة (أرقام أو شروط متشابهة من الشيت).
+- اربط بين معلومتين من الشيت كحد أقصى.`,
+    };
+  }
+  return {
+    name: "صعب",
+    rules: `- اجعل السؤال موقفاً مركباً يجمع 2-3 قواعد من الشيت معاً (مثل نوع التأشيرة + مدة الإقامة + فترة السماح 30 يوم + عدد الخطوط المسموح).
+- أدخل فخاً في التفاصيل (استثناء، رقم قريب، أو الفرق بين نوعين من المستندات).
+- كل الاختيارات تبدو منطقية ولا يُعرف الصحيح إلا بمعرفة دقيقة بالتعليمات.`,
+  };
+}
+
+const QUESTION_ANGLES = [
+  "الأعمار والحدود الدنيا",
+  "المستندات المطلوبة وبياناتها",
+  "تواريخ الانتهاء وفترات السماح",
+  "عدد الخطوط والضوابط",
+  "الحالات الخاصة والاستثناءات والممنوعات",
+  "خطوات التسجيل على السيستم",
+];
+
+function shuffle<T>(arr: T[]): T[] {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
 }
 
 /**
@@ -280,40 +328,67 @@ Deno.serve(async (req) => {
 
       const chosenQuestions: any[] = [];
       const keys = getApiKeys();
+      const diff = getDifficultyProfile(requestedLevel);
+      const angles = shuffle(QUESTION_ANGLES).slice(0, 3).join("، ");
 
-      // Fetch live Google Sheet content
-      const sheetData = await fetchGoogleSheetContent();
-      
-      // Shuffle lines of the Google Sheet to ensure completely random question focus each time
-      let sheetSnippets = sheetData;
-      if (sheetData) {
-        const rows = sheetData.split("\n").filter(r => r.trim().length > 5);
-        const shuffledRows = rows.sort(() => Math.random() - 0.5);
-        sheetSnippets = shuffledRows.slice(0, 30).join("\n");
+      // Recently answered questions of this user (avoid repeats)
+      const recentIds: string[] = [];
+      const recentTexts: string[] = [];
+      {
+        const { data: recentAns } = await adminClient
+          .from("game_quiz_answers")
+          .select("question_id")
+          .eq("user_id", user.id)
+          .order("answered_at", { ascending: false })
+          .limit(40);
+        for (const r of recentAns || []) recentIds.push(r.question_id);
+        if (recentIds.length > 0) {
+          const { data: recentQ } = await adminClient
+            .from("game_questions")
+            .select("question_text")
+            .in("id", recentIds.slice(0, 25));
+          for (const q of recentQ || []) recentTexts.push(q.question_text);
+        }
       }
 
-      const prompt = `أنت الذكاء الاصطناعي Game AI المتخصص في صناعة وتوليد أسئلة كويز احترافية للمصرية للاتصالات WE.
-المطلوب: قم بتوليد 5 أسئلة اختيار من متعدد جديدة ومتنوعة باللغة العربية تناسب المستوى ${requestedLevel}.
+      // Fetch live Google Sheet content and shuffle rows so each round focuses on different data
+      const sheetData = await fetchGoogleSheetContent();
+      let sheetSnippets = sheetData;
+      if (sheetData) {
+        const rows = sheetData.split("\n").filter((r) => r.replace(/[,\s"]/g, "").length > 5);
+        sheetSnippets = shuffle(rows).slice(0, 35).join("\n");
+      }
 
-مصدر الأسئلة الإلزامي (بيانات شيت تعليمات تعاقدات WE):
+      const avoidBlock = recentTexts.length
+        ? `\nأسئلة سبق أن أجاب عنها هذا الموظف (لا تكررها ولا تكرر فكرتها):\n${recentTexts.map((t) => "- " + t).join("\n")}\n`
+        : "";
+
+      const prompt = `أنت الذكاء الاصطناعي Game AI المتخصص في صناعة أسئلة كويز احترافية لموظفي المصرية للاتصالات WE.
+المطلوب: 5 أسئلة اختيار من متعدد جديدة ومتنوعة بالعربية، مستوى الصعوبة: ${diff.name} (المستوى ${requestedLevel}).
+
+قواعد مستوى الصعوبة:
+${diff.rules}
+
+مصدر الأسئلة الإلزامي (بيانات شيت تعليمات WE) - لا تستخدم أي معلومة من خارجه:
 --- بداية بيانات الشيت ---
-${sheetSnippets || "تعليمات تعاقد عملاء الأجانب، E-Visa، جواز السفر، الإقامة وفترة الـ 30 يوم، الدول الموقوفة، كارت المفوضية والسن، خدمات Pre Paid و Post Paid."}
+${sheetSnippets || "تعليمات تعاقد عملاء الأجانب، E-Visa، جواز السفر، الإقامة وفترة الـ 30 يوم، كارت المفوضية والسن، 5 خطوط صوت + 5 داتا."}
 --- نهاية بيانات الشيت ---
-
+${avoidBlock}
 قواعد التوليد:
-1. استخرج 5 أسئلة عشوائية وغير متكررة من تفاصيل وأرقام وشروط الجدول أعلاه (السن، المستندات، الشروط، الرسوم، فترات السماح، الاستثناءات).
-2. كل سؤال له 4 خيارات نصية واضحة ومقنعة.
-3. إجابة صحيحة واحدة فقط مطابقة تماماً لأحد الخيارات الأربعة.
-4. شرح تعليمي مختصر يشرح سبب صحة الإجابة استناداً لتعليمات الشركة.
-5. الإخراج بصيغة JSON فقط مصفوفة (Array) تحتوي على 5 كائنات:
+1. ركّز في هذه الجولة على المحاور: ${angles}، ونوّع بين الأسئلة بحيث لا يتشابه سؤالان.
+2. كل سؤال له 4 اختيارات واضحة، وإجابة صحيحة واحدة فقط مطابقة حرفياً لأحد الاختيارات.
+3. الإجابة الصحيحة يجب أن تكون مستخرجة من الشيت فعلاً، ولا تخترع أرقاماً غير موجودة فيه.
+4. شرح مختصر لسبب صحة الإجابة بالاستناد لتعليمات الشيت.
+5. الإخراج JSON فقط، مصفوفة من 5 كائنات بهذا الشكل:
 [
   {
-    "question_text": "نص السؤال الواضح هنا؟",
+    "question_text": "نص السؤال؟",
     "options": ["اختيار 1", "اختيار 2", "اختيار 3", "اختيار 4"],
     "correct_option": "اختيار 1",
     "explanation": "شرح سبب صحة الإجابة"
   }
-]`;
+]
+رقم عشوائي لتنويع الجولة: ${Math.floor(Math.random() * 100000)}`;
 
       if (keys.length > 0) {
         try {
@@ -327,10 +402,12 @@ ${sheetSnippets || "تعليمات تعاقد عملاء الأجانب، E-Visa
                 item.question_text &&
                 Array.isArray(item.options) &&
                 item.options.length === 4 &&
-                item.correct_option &&
+                item.options.includes(item.correct_option) &&
+                new Set(item.options).size === 4 &&
                 chosenQuestions.length < 5
               ) {
-                const hash = await sha256(item.question_text + "_" + Math.random());
+                item.options = shuffle(item.options);
+                const hash = await sha256(item.question_text);
                 const { data: insertedQ } = await adminClient
                   .from("game_questions")
                   .insert({
@@ -363,14 +440,15 @@ ${sheetSnippets || "تعليمات تعاقد عملاء الأجانب، E-Visa
           .from("game_questions")
           .select("id, question_text, options")
           .eq("status", "active")
+          .eq("level", requestedLevel)
           .order("created_at", { ascending: false })
-          .limit(15);
+          .limit(40);
 
         if (dbFallbacks) {
           const shuffled = [...dbFallbacks].sort(() => Math.random() - 0.5);
           for (const fb of shuffled) {
             if (chosenQuestions.length >= 5) break;
-            if (!chosenQuestions.some((q) => q.id === fb.id)) {
+            if (!chosenQuestions.some((q) => q.id === fb.id) && !recentIds.includes(fb.id)) {
               chosenQuestions.push(fb);
             }
           }
