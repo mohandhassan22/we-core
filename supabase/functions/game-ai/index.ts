@@ -95,7 +95,7 @@ async function generateWithRotatingKeys(prompt: string, keys: string[]): Promise
             contents: [{ role: "user", parts: [{ text: prompt }] }],
             generationConfig: {
               temperature: 0.6,
-              maxOutputTokens: 1200,
+              maxOutputTokens: 3000,
               responseMimeType: "application/json",
             },
           }),
