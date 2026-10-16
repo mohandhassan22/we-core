@@ -4,7 +4,11 @@
 
 (async function() {
     const SCRIPT_SRC = (document.currentScript && document.currentScript.src) || '';
-    const SB_URL = 'https://iygwhapcpdmsasqlfelv.supabase.co';
+    const isDev = window.location.hostname === 'localhost' || 
+                  window.location.hostname === '127.0.0.1' || 
+                  window.location.hostname.includes('devtunnels.ms') ||
+                  window.location.hostname.endsWith('.local');
+    const SB_URL = isDev ? (window.location.origin + '/supabase-proxy') : 'https://iygwhapcpdmsasqlfelv.supabase.co';
     const SB_KEY = 'sb_publishable_rD9naqrpu1dI-iwchAS0GQ_JkgGysqP';
 
     const path = window.location.pathname;

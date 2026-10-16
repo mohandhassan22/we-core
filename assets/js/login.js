@@ -5,8 +5,14 @@
         $('errMsg').classList.add('show'); 
     };
     
+    const isDev = window.location.hostname === 'localhost' || 
+                  window.location.hostname === '127.0.0.1' || 
+                  window.location.hostname.includes('devtunnels.ms') ||
+                  window.location.hostname.endsWith('.local');
+    const SB_BASE_URL = isDev ? (window.location.origin + '/supabase-proxy') : 'https://iygwhapcpdmsasqlfelv.supabase.co';
+
     const sb = supabase.createClient(
-        'https://iygwhapcpdmsasqlfelv.supabase.co',
+        SB_BASE_URL,
         'sb_publishable_rD9naqrpu1dI-iwchAS0GQ_JkgGysqP',
         { auth: { persistSession: false, autoRefreshToken: false, detectSessionInUrl: false } }
     );
@@ -32,8 +38,9 @@
             });
             if (error || !data?.session) throw new Error('بيانات الدخول غير صحيحة');
 
-            // 3. الجلسة في Cookie فقط؛ لا يتم استخدام localStorage للمصادقة.
-            document.cookie = `sb-access-token=${encodeURIComponent(data.session.access_token)}; path=/; max-age=86400; SameSite=None; Secure`;
+            // 3. الجلسة في Cookie
+            const isSecure = window.location.protocol === 'https:';
+            document.cookie = `sb-access-token=${encodeURIComponent(data.session.access_token)}; path=/; max-age=86400; SameSite=Lax${isSecure ? '; Secure' : ''}`;
             
             // 4. جلب الرتبة (Role) من جدول profiles للتأكد من الصلاحيات
             const user = data.user;

@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>WE Quiz Game | WE-Core</title>
+  <link rel="shortcut icon" href="../img/we-core.png" type="image/x-icon">
+  <meta name="theme-color" content="#0D0A1C">
+  
+  <!-- Auth Guard: Client-side check -->
+  <script src="../assets/js/auth.js?v=12.0.1"></script>
+  
+  <!-- Fonts & Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  
+  <!-- Cognitive Violet Theme & Custom Game Styles -->
+  <link rel="stylesheet" href="../assets/css/cognitive-violet.css?v=4">
+  <link rel="stylesheet" href="quiz-game.css?v=1.0.0">
+</head>
+<body>
+  <!-- Header Bar -->
+  <header class="game-header">
+    <div class="header-inner">
+      <div class="brand-group">
+        <a href="../Game.html" class="back-pill" title="رجوع لبوابة الألعاب">
+          <i class="fa-solid fa-arrow-right"></i>
+          <span>رجوع</span>
+        </a>
+        <div class="brand-info">
+          <img src="../img/we-core.png" alt="WE Logo" class="brand-logo">
+          <div>
+            <h1 class="brand-title">WE Quiz Game</h1>
+            <span class="brand-tagline">التحدي التفاعلي لموظفي WE</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- User Quick Stats Pill -->
+      <div class="user-pill" id="userPill">
+        <div class="user-avatar"><i class="fa-solid fa-user-astronaut"></i></div>
+        <div class="user-meta">
+          <span class="user-name" id="userDisplayName">جارِ التحميل...</span>
+          <div class="user-badges">
+            <span class="level-chip" id="userLevelChip"><i class="fa-solid fa-medal"></i> مستوي 1</span>
+            <span class="score-chip" id="userScoreChip"><i class="fa-solid fa-star"></i> 0 نقطة</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Navigation Tabs -->
+    <nav class="game-nav">
+      <button class="nav-tab active" data-tab="play">
+        <i class="fa-solid fa-gamepad"></i> المستويات والتحدي
+      </button>
+      <button class="nav-tab" data-tab="leaderboard">
+        <i class="fa-solid fa-trophy"></i> لوحة المتصدرين
+      </button>
+      <button class="nav-tab" data-tab="rules">
+        <i class="fa-solid fa-circle-question"></i> قواعد اللعبة والنقاط
+      </button>
+    </nav>
+  </header>
+
+  <!-- Main Container -->
+  <main class="game-container">
+    
+    <!-- Toast & Alerts Notification Center -->
+    <div id="gameNotification" class="game-notification hidden"></div>
+
+    <!-- ========================================================
+         VIEW 1: PLAY & LEVELS VIEW
+    ======================================================== -->
+    <section id="viewPlay" class="game-view active">
+      
+      <!-- User Hero Progress Banner -->
+      <div class="hero-progress-card">
+        <div class="hero-left">
+          <div class="trophy-badge">
+            <i class="fa-solid fa-crown"></i>
+          </div>
+          <div class="hero-details">
+            <h2 id="heroLevelTitle">المستوى 1: مبتدئ WE</h2>
+            <p id="heroProgressText">أنت الآن في المستوى 1. اجمع 20 نقطة لفتح المستوى 2!</p>
+          </div>
+        </div>
+        <div class="hero-right">
+          <div class="stat-box">
+            <span class="stat-num" id="statTotalScore">0</span>
+            <span class="stat-lbl">إجمالي النقاط</span>
+          </div>
+          <div class="stat-box">
+            <span class="stat-num correct" id="statCorrect">0</span>
+            <span class="stat-lbl">إجابات صحيحة (+2)</span>
+          </div>
+          <div class="stat-box">
+            <span class="stat-num wrong" id="statWrong">0</span>
+            <span class="stat-lbl">إجابات خاطئة (-1)</span>
+          </div>
+        </div>
+        
+        <!-- Level Progress Bar -->
+        <div class="progress-bar-wrap">
+          <div class="progress-bar-info">
+            <span id="progressText">التقدم نحو المستوى التالي: 0%</span>
+            <span id="thresholdTarget">الهدف: 20 نقطة</span>
+          </div>
+          <div class="progress-track">
+            <div class="progress-fill" id="progressFill" style="width: 0%;"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Levels Section -->
+      <div class="section-title">
+        <i class="fa-solid fa-layer-group"></i>
+        <h3>اختر المستوى وابدأ جولة 5 أسئلة</h3>
+      </div>
+
+      <div class="levels-grid" id="levelsGrid">
+        <!-- Dynamic Level Cards Rendered by JS -->
+      </div>
+    </section>
+
+    <!-- ========================================================
+         VIEW 2: ACTIVE QUIZ ARENA (5 QUESTIONS)
+    ======================================================== -->
+    <section id="viewArena" class="game-view hidden">
+      <div class="quiz-arena-card">
+        
+        <!-- Quiz Arena Header -->
+        <div class="arena-header">
+          <div class="arena-level-badge" id="arenaLevelBadge">
+            <i class="fa-solid fa-gamepad"></i> المستوى 1
+          </div>
+          <div class="arena-counter">
+            سؤال <span id="arenaCurrentQ">1</span> من <span id="arenaTotalQ">5</span>
+          </div>
+          <!-- Countdown Timer -->
+          <div class="timer-ring-wrap" id="timerWrap">
+            <svg class="timer-ring" viewBox="0 0 60 60">
+              <circle class="timer-ring-bg" cx="30" cy="30" r="26"></circle>
+              <circle class="timer-ring-progress" id="timerRingProgress" cx="30" cy="30" r="26"></circle>
+            </svg>
+            <span class="timer-text" id="timerText">15</span>
+          </div>
+          <div class="arena-session-score">
+            نقاط الجولة: <span id="arenaSessionPoints" class="plus">+0</span>
+          </div>
+        </div>
+
+        <!-- Question Steps Tracker -->
+        <div class="q-stepper" id="qStepper">
+          <span class="step-dot active">1</span>
+          <span class="step-dot">2</span>
+          <span class="step-dot">3</span>
+          <span class="step-dot">4</span>
+          <span class="step-dot">5</span>
+        </div>
+
+        <!-- Question Container -->
+        <div class="question-container" id="questionContainer">
+          <div class="question-text-wrap">
+            <span class="question-badge"><i class="fa-solid fa-lightbulb"></i> السؤال</span>
+            <h2 id="qText" class="question-text">جارِ تجهيز السؤال...</h2>
+          </div>
+
+          <!-- Options Grid -->
+          <div class="options-grid" id="optionsGrid">
+            <!-- Rendered by JS -->
+          </div>
+
+          <!-- Answer Explanation Feedback (Hidden initially) -->
+          <div class="explanation-box hidden" id="explanationBox">
+            <div class="explanation-header" id="explanationHeader">
+              <i class="fa-solid fa-circle-check"></i>
+              <span id="explanationTitle">إجابة صحيحة! (+2 نقطة)</span>
+            </div>
+            <p id="explanationText" class="explanation-desc">شرح الإجابة...</p>
+          </div>
+
+          <!-- Arena Action Footer -->
+          <div class="arena-footer">
+            <button id="arenaExitBtn" class="btn-secondary">
+              <i class="fa-solid fa-arrow-right"></i> إنهاء والعودة
+            </button>
+            <button id="arenaNextBtn" class="btn-primary" disabled>
+              <span>التالي</span> <i class="fa-solid fa-arrow-left"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================
+         VIEW 3: SESSION RESULTS MODAL / SUMMARY
+    ======================================================== -->
+    <div id="resultsModal" class="modal-overlay hidden">
+      <div class="modal-card">
+        <div class="modal-icon" id="resultModalIcon">
+          <i class="fa-solid fa-trophy"></i>
+        </div>
+        <h2 id="resultModalTitle">أحسنت! اكتملت الجولة</h2>
+        <p id="resultModalSubtitle">تم تصحيح الـ 5 أسئلة واحتساب النقاط بنجاح في قاعدة البيانات.</p>
+
+        <!-- Unlocked Badge Banner (Shown if a new level opened) -->
+        <div id="unlockedBanner" class="unlocked-banner hidden">
+          <i class="fa-solid fa-unlock-keyhole"></i>
+          <span>مبروك! لقد فتحت المستوى الجديد 🎉</span>
+        </div>
+
+        <div class="results-stats-row">
+          <div class="r-stat">
+            <span class="r-val" id="rNetPoints">+0</span>
+            <span class="r-lbl">صافي نقاط الجولة</span>
+          </div>
+          <div class="r-stat">
+            <span class="r-val correct" id="rCorrect">0</span>
+            <span class="r-lbl">صحيحة (+2)</span>
+          </div>
+          <div class="r-stat">
+            <span class="r-val wrong" id="rWrong">0</span>
+            <span class="r-lbl">خاطئة (-1)</span>
+          </div>
+          <div class="r-stat">
+            <span class="r-val" id="rTotalScore">0</span>
+            <span class="r-lbl">رصيدك الكلي الآن</span>
+          </div>
+        </div>
+
+        <div class="modal-actions">
+          <button id="btnPlayAgain" class="btn-primary">
+            <i class="fa-solid fa-rotate-right"></i> العب جولة جديدة
+          </button>
+          <button id="btnGoLeaderboard" class="btn-secondary">
+            <i class="fa-solid fa-trophy"></i> لوحة المتصدرين
+          </button>
+          <button id="btnBackToLevels" class="btn-text">
+            العودة لقائمة المستويات
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========================================================
+         VIEW 4: LEADERBOARD VIEW
+    ======================================================== -->
+    <section id="viewLeaderboard" class="game-view hidden">
+      <div class="leaderboard-card">
+        <div class="lb-header">
+          <div>
+            <h2><i class="fa-solid fa-ranking-star"></i> لوحة شرف الموظفين</h2>
+            <p>ترتيب موظفي WE الأفضل أداءً في مسابقة الكويز التفاعلية</p>
+          </div>
+          <button id="lbRefreshBtn" class="refresh-pill">
+            <i class="fa-solid fa-arrows-rotate"></i> تحديث
+          </button>
+        </div>
+
+        <!-- Current User Position Sticky Banner -->
+        <div class="my-rank-banner" id="myRankBanner">
+          <div class="my-rank-left">
+            <span class="my-rank-num" id="myRankNum">#-</span>
+            <div>
+              <strong>ترتيبك الحالي في لوحة الشرف</strong>
+              <small id="myRankDetail">مستواك: 1 · النقاط: 0</small>
+            </div>
+          </div>
+          <div class="my-rank-score" id="myRankScore">0 نقطة</div>
+        </div>
+
+        <!-- Leaderboard Table -->
+        <div class="table-responsive">
+          <table class="lb-table">
+            <thead>
+              <tr>
+                <th>الترتيب</th>
+                <th>الموظف</th>
+                <th>المستوى</th>
+                <th>المستويات المنجزة</th>
+                <th>الإجابات الصحيحة</th>
+                <th>إجمالي النقاط</th>
+              </tr>
+            </thead>
+            <tbody id="lbTableBody">
+              <tr>
+                <td colspan="6" class="text-center py-4">
+                  <div class="game-loader"></div>
+                  <p>جارِ تحميل المتصدرين...</p>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================
+         VIEW 5: RULES & SCORING VIEW
+    ======================================================== -->
+    <section id="viewRules" class="game-view hidden">
+      <div class="rules-card">
+        <h2><i class="fa-solid fa-book-open"></i> نظام المستويات وقواعد احتساب النقاط</h2>
+        
+        <div class="rules-grid">
+          <div class="rule-box">
+            <div class="rule-icon success"><i class="fa-solid fa-plus"></i></div>
+            <h3>الإجابة الصحيحة</h3>
+            <p>تمنحك <strong>+2 نقطة</strong> فوراً، وتُسجل في إجمالي نقاطك التراكمية.</p>
+          </div>
+          
+          <div class="rule-box">
+            <div class="rule-icon danger"><i class="fa-solid fa-minus"></i></div>
+            <h3>الإجابة الخاطئة</h3>
+            <p>تخصم <strong>-1 نقطة</strong> من رصيدك (النقاط التراكمية لا تهبط عن الصفر).</p>
+          </div>
+          
+          <div class="rule-box">
+            <div class="rule-icon info"><i class="fa-solid fa-bolt"></i></div>
+            <h3>جولة الـ 5 أسئلة</h3>
+            <p>كل جلسة تحتوي على 5 أسئلة فريدة تُسحب من بنك الأسئلة المخزن ويولّد الذكاء الاصطناعي Game AI الأسئلة الناقصة فورياً.</p>
+          </div>
+          
+          <div class="rule-box">
+            <div class="rule-icon warn"><i class="fa-solid fa-chart-line"></i></div>
+            <h3>معادلة ترقية المستويات</h3>
+            <p>عتبة المستوى: <code>T(n) = 20 × (1.10)^(n-1)</code>. تبدأ بـ 20 نقطة للمستوى الأول، وترتفع 10% لكل مستوى لاحق.</p>
+          </div>
+          
+          <div class="rule-box">
+            <div class="rule-icon danger"><i class="fa-solid fa-clock"></i></div>
+            <h3>مؤقت 15 ثانية ⏰</h3>
+            <p>لديك <strong>15 ثانية</strong> للإجابة على كل سؤال. لو انتهى الوقت بدون إجابة، تُخصم <strong>-1 نقطة</strong> تلقائياً وتظهر الإجابة الصحيحة.</p>
+          </div>
+        </div>
+
+        <div class="thresholds-table-wrap">
+          <h3>جدول عتبات المستويات:</h3>
+          <table class="thresholds-table">
+            <thead>
+              <tr>
+                <th>رقم المستوى</th>
+                <th>النقاط المطلوبة لفتحه</th>
+                <th>المسمى الوظيفي الشرفي</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>المستوى 1</td><td>0 (متاح تلقائياً للجميع)</td><td>مبتدئ WE</td></tr>
+              <tr><td>المستوى 2</td><td>20 نقطة</td><td>خبير خدمات WE</td></tr>
+              <tr><td>المستوى 3</td><td>22 نقطة</td><td>أخصائي مبيعات محترف</td></tr>
+              <tr><td>المستوى 4</td><td>25 نقطة</td><td>مستشار عملاء أول</td></tr>
+              <tr><td>المستوى 5</td><td>27 نقطة</td><td>سفير التميز الرقمي</td></tr>
+              <tr><td>المستوى 6+</td><td>+10% تصاعدياً</td><td>نخبة WE الذهبية</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Global Footer -->
+  <footer class="game-footer">
+    WE-Core &copy; 2026 &middot; منصة التدريب والألعاب التفاعلية &middot; المصرية للاتصالات WE
+  </footer>
+
+  <!-- Scripts -->
+  <script src="quiz-game.js?v=1.0.0"></script>
+</body>
+</html>

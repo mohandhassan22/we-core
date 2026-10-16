@@ -1,6 +1,9 @@
 {
   "name": "we-core",
   "private": true,
+  "scripts": {
+    "dev": "node scratch/server.js"
+  },
   "dependencies": {
     "@vercel/functions": "^2.0.0"
   }
