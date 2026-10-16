@@ -419,6 +419,10 @@
             to   { opacity:1; transform:translateY(0); }
         }
         .folder-card, .video-card { animation: fadeUp 0.35s ease both; }
+        /* scrolly: the scroll reveal replaces the old fadeUp */
+        .sc-ready .folder-card, .sc-ready .video-card { animation: none; }
+        .sc-ready .nav-bar { --sc-sticky-top: 78px; padding: 10px 14px; border-radius: 18px; background: var(--cv-pill-bg); border: 1px solid var(--cv-border); }
+        .sc-ready .section-header { position: relative; }
     </style>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <meta name="theme-color" content="#0D0A1C">
@@ -427,6 +431,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <script src="../assets/js/theme-init.js?v=2"></script>
 <link rel="stylesheet" href="../assets/css/cognitive-violet.css?v=4">
+<link rel="stylesheet" href="../assets/css/scrolly.css?v=1">
 <script src="../assets/js/back-button.js?v=1" defer></script>
 </head>
 <body>
@@ -658,6 +663,37 @@
     document.addEventListener('DOMContentLoaded', loadLibrary);
 </script>
 <script src="../assets/js/intro.js"></script>
+<script src="../assets/js/scrolly.js?v=1"></script>
+<script>
+WEScrolly.init({
+    reveal: [
+        { sel: '.hero-chip',     type: 'down',  stagger: 0 },
+        { sel: '.hero h2',       type: 'blur',  stagger: 0 },
+        { sel: '.stat-pill',     type: 'scale', stagger: 140 },
+        { sel: '.section-header',type: 'right', stagger: 0 },
+        { sel: '.folder-card',   type: 'up',    stagger: 70 },
+        { sel: '.video-card',    type: 'up',    stagger: 70 },
+        { sel: '.nav-bar',       type: 'down',  stagger: 0 }
+    ],
+    parallax: [
+        { sel: '.hero h2',   speed: 0.12, max: 40 },
+        { sel: '.hero-chip', speed: 0.20, max: 50 }
+    ],
+    sticky:   ['.nav-bar'],
+    counters: ['#totalFolders', '#totalVideos']
+});
+// تنقّل ناعم بين القسم وفيديوهاته (من غير تغيير منطق الصفحة)
+['openFolder', 'showFolders'].forEach(function (name) {
+    var orig = window[name];
+    if (typeof orig !== 'function') return;
+    window[name] = function () {
+        var r = orig.apply(this, arguments);
+        var page = document.querySelector('.page');
+        if (page) window.scrollTo({ top: Math.max(0, page.offsetTop - 80), behavior: 'smooth' });
+        return r;
+    };
+});
+</script>
 <script src="../assets/js/active-users-widget.js?v=cv1"></script>
 
 

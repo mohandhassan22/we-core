@@ -1,0 +1,74 @@
+/* WE-Core Scrolly — shared scrollytelling layer
+   Safe by design: hidden states only apply after scrolly.js adds .sc-ready to <html>,
+   so if the JS fails the page stays fully visible. Uses only --cv-* theme variables. */
+
+/* ---------- progress bar ---------- */
+.sc-progress{position:fixed;top:0;inset-inline:0;height:4px;z-index:9990;pointer-events:none;background:transparent}
+.sc-progress i{display:block;height:100%;width:100%;transform:scaleX(0);transform-origin:right center;
+  background:linear-gradient(90deg,var(--cv-primary),var(--cv-electric),var(--cv-tertiary));
+  box-shadow:0 0 12px var(--cv-glow);will-change:transform}
+html[dir="ltr"] .sc-progress i{transform-origin:left center}
+
+/* ---------- reveal ---------- */
+.sc-ready [data-sc]{--sc-d:0ms;transition:opacity .7s cubic-bezier(.22,1,.36,1) var(--sc-d),
+  transform .8s cubic-bezier(.22,1,.36,1) var(--sc-d),filter .7s ease var(--sc-d)}
+.sc-ready [data-sc]:not(.sc-in){opacity:0;will-change:opacity,transform}
+.sc-ready [data-sc="up"]:not(.sc-in),.sc-ready [data-sc=""]:not(.sc-in){transform:translate3d(0,38px,0)}
+.sc-ready [data-sc="down"]:not(.sc-in){transform:translate3d(0,-30px,0)}
+.sc-ready [data-sc="right"]:not(.sc-in){transform:translate3d(60px,0,0)}
+.sc-ready [data-sc="left"]:not(.sc-in){transform:translate3d(-60px,0,0)}
+.sc-ready [data-sc="scale"]:not(.sc-in){transform:scale(.88)}
+.sc-ready [data-sc="blur"]:not(.sc-in){transform:translate3d(0,24px,0);filter:blur(8px)}
+.sc-ready [data-sc].sc-in{opacity:1;transform:none;filter:none}
+/* page-level fade animations would fight the reveal; the reveal replaces them */
+.sc-ready [data-sc]{animation:none!important}
+
+/* ---------- parallax ---------- */
+[data-sc-parallax]{will-change:transform}
+
+/* ---------- sticky chapter headers ---------- */
+.sc-sticky{position:sticky;top:var(--sc-sticky-top,12px);z-index:30}
+.sc-sticky.sc-stuck{box-shadow:0 14px 30px -14px var(--cv-glow);
+  backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+
+/* ---------- chapter rail (dots) ---------- */
+.sc-rail{position:fixed;inset-inline-start:14px;top:50%;transform:translateY(-50%);z-index:9980;
+  display:flex;flex-direction:column;gap:12px;padding:10px 7px;border-radius:999px;
+  background:var(--cv-pill-bg);border:1px solid var(--cv-pill-border);box-shadow:var(--cv-pill-shadow);
+  backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);opacity:0;pointer-events:none;
+  transition:opacity .4s ease}
+.sc-rail.on{opacity:1;pointer-events:auto}
+.sc-rail button{all:unset;cursor:pointer;width:10px;height:10px;border-radius:50%;position:relative;
+  background:var(--cv-border);transition:transform .3s ease,background .3s ease}
+.sc-rail button:hover{transform:scale(1.4)}
+.sc-rail button.act{background:var(--cv-primary);transform:scale(1.5);box-shadow:0 0 10px var(--cv-glow)}
+.sc-rail button span{position:absolute;inset-inline-start:22px;top:50%;transform:translateY(-50%);
+  white-space:nowrap;font:700 12px var(--cv-font-body);color:var(--cv-ink-soft);background:var(--cv-card);
+  border:1px solid var(--cv-border);padding:4px 10px;border-radius:999px;opacity:0;pointer-events:none;
+  transition:opacity .2s ease}
+.sc-rail button:hover span,.sc-rail button:focus-visible span{opacity:1}
+@media (max-width:760px){.sc-rail{display:none}}
+
+/* ---------- back to top ---------- */
+.sc-top{position:fixed;inset-inline-end:16px;bottom:16px;z-index:9985;width:44px;height:44px;border-radius:50%;
+  border:1px solid var(--cv-pill-border);background:var(--cv-pill-bg);color:var(--cv-accent-ink);
+  box-shadow:var(--cv-pill-shadow);cursor:pointer;font-size:18px;display:grid;place-items:center;
+  opacity:0;transform:translateY(14px);pointer-events:none;transition:opacity .3s,transform .3s}
+.sc-top.on{opacity:1;transform:none;pointer-events:auto}
+
+/* ---------- active step (we-gold "how", trainer steps) ---------- */
+.sc-ready [data-sc-step]{transition:opacity .45s ease,transform .45s ease,filter .45s ease}
+.sc-ready [data-sc-step]:not(.sc-active){opacity:.55}
+.sc-ready [data-sc-step].sc-active{opacity:1}
+
+/* ---------- video frame: grows in as it enters view ---------- */
+.sc-ready [data-sc-video]{transition:transform .9s cubic-bezier(.22,1,.36,1),box-shadow .9s ease,opacity .7s ease}
+.sc-ready [data-sc-video]:not(.sc-in){transform:scale(.92);opacity:.0}
+.sc-ready [data-sc-video].sc-in{transform:none;opacity:1;box-shadow:0 30px 70px -28px var(--cv-glow)}
+
+/* ---------- reduced motion: show everything, move nothing ---------- */
+@media (prefers-reduced-motion:reduce){
+  .sc-ready [data-sc],.sc-ready [data-sc-video],.sc-ready [data-sc-step]{opacity:1!important;transform:none!important;filter:none!important;transition:none!important}
+  [data-sc-parallax]{transform:none!important;translate:none!important}
+  .sc-progress i{transition:none}
+}

@@ -8,6 +8,7 @@
 <link rel="shortcut icon" href="../img/we-core.png">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/scrolly.css?v=1">
 <style>
 *{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:'Plus Jakarta Sans','Cairo','Tajawal',sans-serif;background:var(--cv-canvas);min-height:100vh;}
@@ -292,6 +293,19 @@ footer span{color:var(--cv-accent-ink);font-weight:700;}
 
 
 <script src="../assets/js/intro.js"></script>
+<script src="../assets/js/scrolly.js?v=1"></script>
+<script>
+WEScrolly.init({
+    reveal: [
+        { sel: '.main-title',   type: 'blur',  stagger: 0 },
+        { sel: '.folder-title', type: 'right', stagger: 0 },
+        { sel: '.video-card',   type: 'up',    stagger: 80 }
+    ],
+    parallax: [{ sel: '.main-title', speed: 0.15, max: 30 }],
+    sticky:   ['.folder-title'],
+    chapters: { items: '.folder-section', title: '.folder-title span' }
+});
+</script>
 <script src="../assets/js/active-users-widget.js?v=cv1"></script>
 </body>
 </html>

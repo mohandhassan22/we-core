@@ -7,6 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Almarai:wght@400;700;800&family=IBM+Plex+Sans+Arabic:wght@300;400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../assets/css/scrolly.css?v=1">
 <style>
   :root{
     --ink:var(--cv-deep);
@@ -713,6 +714,28 @@
 </script>
 
 <script src="../../assets/js/intro.js"></script>
+<script src="../../assets/js/scrolly.js?v=1"></script>
+<script>
+WEScrolly.init({
+  reveal: [
+    { sel: '.hero .eyebrow',    type: 'down',  stagger: 0 },
+    { sel: '.hero h1',          type: 'blur',  stagger: 0 },
+    { sel: '.hero p.lead',      type: 'up',    stagger: 0 },
+    { sel: '.datebar .chip',    type: 'scale', stagger: 120 },
+    { sel: '.section-head',     type: 'right', stagger: 0 },
+    { sel: '.compare .panel',   type: 'up',    stagger: 160 },
+    { sel: '.prize-card',       type: 'scale', stagger: 140 },
+    { sel: '.step-track',       type: 'up',    stagger: 160 },
+    { sel: '.tabs',             type: 'up',    stagger: 0 },
+    { sel: '.faq-item',         type: 'up',    stagger: 50 }
+  ],
+  parallax:    [{ sel: '.card-wrap', speed: -0.08, max: 50 }],
+  steps:       ['.step'],
+  video:       ['.video-wrap'],
+  countOnView: ['.pnum'],
+  chapters:    { items: 'section[id]', title: '.section-head .tag' }
+});
+</script>
 <script src="../../assets/js/active-users-widget.js?v=cv1"></script>
 </body>
 </html>

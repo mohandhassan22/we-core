@@ -11,6 +11,12 @@
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/css/trainer.css?v=cv1">
   <link rel="stylesheet" href="assets/css/trainer-v2.css?v=cv1">
+  <link rel="stylesheet" href="assets/css/scrolly.css?v=1">
+  <style>
+    /* scrolly: أزرار الأجزاء (المواضيع) تفضل ظاهرة تحت الـtopbar أثناء السكرول */
+    .package-topic-buttons.sc-sticky{--sc-sticky-top:88px;padding:10px;border-radius:16px;background:var(--cv-pill-bg);border:1px solid var(--cv-border)}
+    @media (max-width:899px){.package-topic-buttons.sc-sticky{position:static;padding:0;background:none;border:0}}
+  </style>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -75,5 +81,25 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="assets/js/intro.js"></script>
   <script src="assets/js/trainer.js"></script>
+  <script src="assets/js/scrolly.js?v=1"></script>
+  <script>
+  WEScrolly.init({
+    reveal: [
+      { sel: '.welcome-copy',     type: 'up',    stagger: 0 },
+      { sel: '.progress-card',    type: 'scale', stagger: 0 },
+      { sel: '.mini-stats > div', type: 'up',    stagger: 90 },
+      { sel: '.module-hero',      type: 'blur',  stagger: 0 },
+      { sel: '.module-section',   type: 'up',    stagger: 90 },
+      { sel: '.package-card',     type: 'up',    stagger: 70 },
+      { sel: '.video-placeholder',type: 'scale', stagger: 0 },
+      { sel: '.quiz-cta',         type: 'up',    stagger: 0 },
+      { sel: '.lesson-card, .detail-card, .scenario-card', type: 'up', stagger: 60 }
+    ],
+    parallax: [{ sel: '.welcome-copy h1', speed: 0.1, max: 40 }],
+    sticky:   ['.package-topic-buttons'],
+    steps:    ['.step-item'],
+    video:    ['.topic-video']
+  });
+  </script>
 </body>
 </html>
