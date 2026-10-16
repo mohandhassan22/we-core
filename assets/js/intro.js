@@ -10,7 +10,7 @@
   'use strict';
   if (window.WEIntro) return;
 
-  var INTRO_PATH = 'intro/we-core-intro.mp4';   // path inside the 'videos' bucket
+  var INTRO_PATH = 'Intro/We core intro.mp4';   // path inside the 'videos' bucket
   var SKIP_AFTER_MS = 3000;   // "تخطي" button appears after this delay
   var running = null;
   var introUrl = null;        // signed url, resolved once and reused
