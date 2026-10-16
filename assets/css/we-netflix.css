@@ -1,0 +1,25 @@
+/* WE-Core — Netflix-style video library (cards + cinema modal). Shared by bss_tutorial & soft-skils. */
+.videos-grid,.video-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:18px;counter-reset:wev}
+.videos-grid .video-card,.video-grid .video-card{counter-increment:wev;position:relative;padding:0;gap:0;background:#120e28;border:0;border-radius:10px;overflow:hidden;box-shadow:0 6px 18px rgba(0,0,0,.35);transition:transform .28s ease,box-shadow .28s ease;z-index:1}
+.videos-grid .video-card:hover,.video-grid .video-card:hover{transform:scale(1.07);z-index:5;box-shadow:0 18px 40px rgba(0,0,0,.6),0 0 0 2px rgba(157,114,255,.8)}
+.videos-grid .video-thumb,.video-grid .video-thumb{border-radius:0;aspect-ratio:16/9;background:linear-gradient(135deg,#2a1c66 0%,#120e28 70%);position:relative}
+.videos-grid .video-thumb::after,.video-grid .video-thumb::after{content:counter(wev);position:absolute;left:12px;bottom:-6px;font:900 64px/1 Sora,Cairo,sans-serif;color:rgba(255,255,255,.14);pointer-events:none}
+.videos-grid .video-thumb::before,.video-grid .video-thumb::before{background:linear-gradient(to top,rgba(0,0,0,.65),transparent 55%);inset:0}
+.videos-grid .play-circle,.video-grid .video-thumb i{opacity:0;transform:scale(.7);transition:opacity .25s,transform .25s;background:rgba(0,0,0,.55);border:2px solid #fff;width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:20px;box-shadow:none}
+.videos-grid .video-card:hover .play-circle,.video-grid .video-card:hover .video-thumb i{opacity:1;transform:scale(1)}
+.videos-grid .video-info,.video-grid .video-info{padding:11px 13px 13px;border:0;background:linear-gradient(to bottom,#120e28,#0d0a1c)}
+.videos-grid .video-info h4,.video-grid .video-info h3{font-size:.92rem;font-weight:700;color:#f8f6ff;line-height:1.45;height:auto;margin:0;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.video-grid .video-tag{background:rgba(157,114,255,.18);color:#cebdff;margin-bottom:6px}
+@media (max-width:640px){.videos-grid,.video-grid{grid-template-columns:repeat(2,1fr);gap:10px}.videos-grid .video-thumb::after,.video-grid .video-thumb::after{font-size:40px}.videos-grid .video-card:hover,.video-grid .video-card:hover{transform:none}.videos-grid .play-circle,.video-grid .video-thumb i{opacity:1;transform:scale(.8)}}
+@media (hover:none){.videos-grid .play-circle,.video-grid .video-thumb i{opacity:1;transform:scale(.85)}}
+
+/* cinema modal */
+.modal-overlay,.player-overlay{background:rgba(0,0,0,.94)!important;backdrop-filter:none!important;padding:0!important}
+.modal-box,.player-container{max-width:min(1280px,100vw)!important;width:100%;background:#000!important;border:0!important;border-radius:0!important;box-shadow:none!important;position:relative}
+@media (min-width:900px){.modal-box,.player-container{border-radius:12px!important}}
+.modal-box .modal-header,.player-container .modal-header{position:absolute;top:0;left:0;right:0;z-index:20;background:linear-gradient(to bottom,rgba(0,0,0,.8),transparent)!important;border:0!important;pointer-events:none}
+.modal-box .modal-header>*,.player-container .modal-header>*{pointer-events:auto}
+.modal-box .modal-header strong,.player-container .modal-title{color:#fff!important;font-size:1rem;text-shadow:0 1px 6px #000}
+.modal-body{background:#000!important}
+.modal-body video{max-height:none!important}
+.modal-box .wep-top,.player-container .wep-top{display:none}
