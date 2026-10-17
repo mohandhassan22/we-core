@@ -60,6 +60,7 @@
         const role = String(rawRole || '').toLowerCase().trim();
         if (role === 'admin') return 'admin';
         if (role === 'supervisor') return 'supervisor';
+        if (role === 'regional_manager' || role === 'regional-manager' || role.replace(/\s+/g, ' ').startsWith('regional manager')) return 'regional_manager';
         if (role === 'area_manager' || role === 'area-manager') return 'area_manager';
         if (role === 'branch_manager' || role === 'branch-manager' || role === 'manager' || role === 'store-manager') return 'branch_manager';
         return 'agent';
@@ -75,8 +76,9 @@
             agent: ['agent.html', 'performance.html', 'history.html'],
             branch_manager: ['branch-manager.html', 'agent.html', 'performance.html', 'history.html', 'settings.html'],
             area_manager: ['area-manager.html', 'branch-manager.html', 'agent.html', 'history.html'],
+            regional_manager: ['regional-manager.html', 'area-manager.html', 'branch-manager.html', 'agent.html', 'history.html'],
             supervisor: ['supervisor.html', 'area-manager.html', 'branch-manager.html', 'agent.html', 'history.html'],
-            admin: ['supervisor.html', 'area-manager.html', 'branch-manager.html', 'agent.html', 'performance.html', 'history.html', 'settings.html']
+            admin: ['regional-manager.html', 'supervisor.html', 'area-manager.html', 'branch-manager.html', 'agent.html', 'performance.html', 'history.html', 'settings.html']
         };
         return (allowed[normalized] || allowed.agent).includes(pageName);
     }

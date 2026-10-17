@@ -26,14 +26,16 @@ const TM_PAGES = {
   agent:          ['agent', 'performance', 'history'],
   branch_manager: ['branch-manager', 'agent', 'performance', 'history', 'settings'],
   area_manager:   ['area-manager', 'branch-manager', 'agent', 'history'],
+  regional_manager: ['regional-manager', 'area-manager', 'branch-manager', 'agent', 'history'],
   supervisor:     ['supervisor', 'area-manager', 'branch-manager', 'agent', 'history'],
-  admin:          ['supervisor', 'area-manager', 'branch-manager', 'agent', 'performance', 'history', 'settings'],
+  admin:          ['regional-manager', 'supervisor', 'area-manager', 'branch-manager', 'agent', 'performance', 'history', 'settings'],
 };
 
 function normalizeRole(raw) {
   const r = String(raw || '').toLowerCase().trim();
   if (r === 'admin') return 'admin';
   if (r === 'supervisor') return 'supervisor';
+  if (r === 'regional_manager' || r === 'regional-manager' || r.replace(/\s+/g, ' ').startsWith('regional manager')) return 'regional_manager';
   if (r === 'area_manager' || r === 'area-manager') return 'area_manager';
   if (r === 'branch_manager' || r === 'branch-manager' || r === 'manager' || r === 'store-manager') return 'branch_manager';
   return 'agent';

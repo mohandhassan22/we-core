@@ -195,6 +195,8 @@
                 } else if (role === 'supervisor') {
                     if (supervisorId) query += `&supervisor_id=eq.${supervisorId}`;
                     else if (area) query += `&area=eq.${encodeURIComponent(area)}`;
+                } else if (role === 'regional_manager') {
+                    query += `&limit=1`;   // the regional view builds its own per-area tree
                 } else if (role === 'admin') {
                     query += `&limit=100`;
                 }

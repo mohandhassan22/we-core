@@ -20,7 +20,7 @@
   }
 
   const ROLE_LABEL = {
-    admin: 'مسؤول', supervisor: 'Supervisor', area_manager: 'مدير منطقة',
+    admin: 'مسؤول', regional_manager: 'Regional Manager', supervisor: 'Supervisor', area_manager: 'مدير منطقة',
     branch_manager: 'مدير فرع', agent: 'موظف',
   };
   const PAGE_LABEL = {

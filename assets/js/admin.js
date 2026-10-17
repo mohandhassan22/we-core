@@ -198,6 +198,7 @@ function getRoleBadge(role) {
     'store-manager': { label: 'مدير متجر',      icon: 'ti-briefcase', cls: 'manager' },
     branch_manager:  { label: 'مدير فرع',      icon: 'ti-briefcase', cls: 'manager' },
     area_manager:    { label: 'مدير منطقة',    icon: 'ti-briefcase', cls: 'manager' },
+    regional_manager: { label: 'Regional Manager', icon: 'ti-briefcase', cls: 'manager' },
     supervisor:      { label: 'Supervisor',    icon: 'ti-briefcase', cls: 'manager' },
     agent:           { label: 'Agent',          icon: 'ti-user',      cls: 'user' },
     user:            { label: 'مستخدم',         icon: 'ti-user',      cls: 'user' },
