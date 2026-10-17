@@ -77,6 +77,19 @@
         },
 
         /**
+         * Names for a set of profile ids (e.g. the supervisors of the areas a regional manager sees)
+         */
+        fetchProfilesByIds: async function (ids) {
+            const list = Array.from(new Set((ids || []).filter(Boolean)));
+            if (!list.length) return [];
+            try {
+                return await restFetch(`profiles?id=in.(${list.join(',')})&select=id,full_name,username`);
+            } catch (err) {
+                return [];
+            }
+        },
+
+        /**
          * Fetches relational Branches for a specific area or for current user scope
          */
         fetchAllowedBranches: async function (areaId = null) {

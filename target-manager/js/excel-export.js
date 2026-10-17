@@ -216,7 +216,8 @@
         }
 
         /* ---------- SUPERVISOR / ADMIN ---------- */
-        const tree = st.tree || [];
+        // regional manager: the tree is supervisors -> areas; the export works on the flat list of areas
+        const tree = role === 'regional_manager' ? (st.tree || []).flatMap(s => s.areas || []) : (st.tree || []);
         if (!tree.length) return null;
         const ctx = timeCtx(null);
         const areaRows = [], branchRows = [], empRows = [];
