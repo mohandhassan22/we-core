@@ -310,6 +310,37 @@ const ActiveUsersWidget = (() => {
     window.addEventListener('beforeunload', () => { try { presenceCh.untrack(); } catch (e) {} });
   }
 
+  // ---- session tracking (feeds the admin "online users" page; table user_sessions)
+  let sessId = null, hbTimer = null;
+  const HEARTBEAT_MS = 20000;
+  async function beat() {
+    if (!sessId) return;
+    try { await client.from('user_sessions').update({ page: (location.pathname.split('/').pop() || 'index').replace('.html', '') }).eq('id', sessId); } catch (e) {}
+  }
+  function closeSession() {
+    if (!sessId) return;
+    const token = getToken(); if (!token) return;
+    try {
+      fetch(SB_URL + '/rest/v1/user_sessions?id=eq.' + encodeURIComponent(sessId), {
+        method: 'PATCH', keepalive: true,
+        headers: { apikey: SB_KEY, Authorization: 'Bearer ' + token, 'Content-Type': 'application/json', Prefer: 'return=minimal' },
+        body: JSON.stringify({ ended_at: new Date().toISOString() })
+      });
+    } catch (e) {}
+    sessId = null; clearInterval(hbTimer);
+  }
+  async function openSession() {
+    try {
+      const page = (location.pathname.split('/').pop() || 'index').replace('.html', '');
+      const { data, error } = await client.from('user_sessions').insert({ user_id: me.id, page }).select('id').single();
+      if (error || !data) return;       // table not created yet -> tracking silently disabled
+      sessId = data.id;
+      hbTimer = setInterval(beat, HEARTBEAT_MS);
+      document.addEventListener('visibilitychange', () => { if (!document.hidden) beat(); });
+      window.addEventListener('pagehide', closeSession);
+    } catch (e) { /* ignore */ }
+  }
+
   function loadSdk() {
     return new Promise((resolve, reject) => {
       if (window.supabase && window.supabase.createClient) return resolve();
@@ -337,6 +368,7 @@ const ActiveUsersWidget = (() => {
       renderOnline();
       await loadMessages();
       subscribe();
+      openSession();
     } catch (e) { console.warn('[WE-Core] chat widget error', e); }
   }
 

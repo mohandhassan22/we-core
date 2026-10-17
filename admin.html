@@ -7,7 +7,7 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.30.0/dist/tabler-icons.min.css">
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-<link rel="stylesheet" href="assets/css/admin.css?v=cv1">
+<link rel="stylesheet" href="assets/css/admin.css?v=cv2">
 <link rel="icon" href="img/we-core.png" type="image/png">
 <script src="assets/js/auth.js?v=16.0.4"></script>
 <meta name="theme-color" content="#0D0A1C">
@@ -37,6 +37,11 @@
         <span class="nav-label">المستخدمون</span>
         <span class="nav-badge">0</span>
       </button>
+      <button class="nav-item" data-section="online">
+        <i class="ti ti-activity"></i>
+        <span class="nav-label">المتصلون الآن</span>
+        <span class="nav-badge" id="onlineNavBadge">0</span>
+      </button>
       <button class="nav-item" data-section="create">
         <i class="ti ti-user-plus"></i>
         <span class="nav-label">مستخدم جديد</span>
@@ -49,9 +54,9 @@
         <i class="ti ti-gavel"></i>
         <span class="nav-label">القوانين (NTRA)</span>
       </button>
-      <button class="nav-item" data-section="tables">
-        <i class="ti ti-database"></i>
-        <span class="nav-label">إدارة الجداول</span>
+      <button class="nav-item" data-section="files">
+        <i class="ti ti-cloud-upload"></i>
+        <span class="nav-label">رفع الملفات</span>
       </button>
       <button class="nav-item" data-section="actions">
         <i class="ti ti-send"></i>
@@ -60,10 +65,6 @@
       <button class="nav-item" data-section="settings">
         <i class="ti ti-settings"></i>
         <span class="nav-label">الإعدادات</span>
-      </button>
-      <button class="nav-item" data-section="train">
-        <i class="ti ti-brain"></i>
-        <span class="nav-label">تدريب الذكاء الاصطناعي</span>
       </button>
     </nav>
     <div class="sidebar-footer">
@@ -294,7 +295,6 @@
         </div>
       </section>
 
-      <!-- Tables Management Section -->
       <!-- Org Section -->
       <section class="section" id="org-section">
         <div class="sec-hd"><h2>الفروع والمناطق</h2></div>
@@ -361,71 +361,6 @@
         <div id="ruleMessage" class="form-message"></div>
       </section>
 
-      <section class="section" id="tables-section">
-
-        <!-- Tables List View -->
-        <div id="tablesListView">
-          <div class="sec-hd">
-            <h2>كل الجداول</h2>
-            <div class="sec-actions">
-              <div class="search-wrap">
-                <i class="ti ti-search"></i>
-                <input type="text" id="tablesSearch" placeholder="بحث عن جدول...">
-              </div>
-              <button class="btn btn-secondary" id="refreshTablesBtn" style="padding:8px 14px;font-size:.85rem">
-                <i class="ti ti-refresh" style="font-size:16px"></i> تحديث
-              </button>
-            </div>
-          </div>
-          <div class="tables-grid" id="tablesGrid">
-            <div style="text-align:center;padding:40px;color:var(--cv-t-9ca3af);grid-column:1/-1">
-              <i class="ti ti-loader" style="font-size:20px;animation:spin 1s linear infinite"></i><br>جاري تحميل الجداول...
-            </div>
-          </div>
-        </div>
-
-        <!-- Single Table Data View -->
-        <div id="tableDataView" style="display:none">
-          <div class="sec-hd">
-            <div style="display:flex;align-items:center;gap:10px">
-              <button class="btn btn-secondary" id="backToTablesBtn" style="padding:8px 12px">
-                <i class="ti ti-arrow-right" style="font-size:16px"></i>
-              </button>
-              <h2 id="tableDataTitle">اسم الجدول</h2>
-              <span class="badge" id="tableRowCount" style="background:rgba(82,115,224,0.16);color:#847bf4">0 صف</span>
-            </div>
-            <div class="sec-actions">
-              <div class="search-wrap">
-                <i class="ti ti-search"></i>
-                <input type="text" id="tableRowSearch" placeholder="بحث في الجدول...">
-              </div>
-              <button class="btn btn-primary" id="addRowBtn" style="padding:8px 14px;font-size:.85rem">
-                <i class="ti ti-plus" style="font-size:16px"></i> إضافة صف
-              </button>
-            </div>
-          </div>
-
-          <div class="table-wrap">
-            <div class="table-scroll">
-              <table id="dynamicTable">
-                <thead id="dynamicTableHead"></thead>
-                <tbody id="dynamicTableBody">
-                  <tr><td style="text-align:center;padding:40px;color:var(--cv-t-9ca3af)"><i class="ti ti-loader" style="font-size:20px;animation:spin 1s linear infinite"></i><br>جاري تحميل البيانات...</td></tr>
-                </tbody>
-              </table>
-            </div>
-            <div class="table-footer">
-              <span id="tablePageInfo">عرض البيانات</span>
-              <div class="pager" id="tablePager">
-                <button class="pager-btn" id="prevPageBtn"><i class="ti ti-chevron-right" style="font-size:14px"></i></button>
-                <button class="pager-btn active" id="currentPageBtn">1</button>
-                <button class="pager-btn" id="nextPageBtn"><i class="ti ti-chevron-left" style="font-size:14px"></i></button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
       <!-- Settings Section -->
       <section class="section" id="settings-section">
         <div class="sec-hd"><h2>الإعدادات</h2></div>
@@ -469,70 +404,120 @@
         </div>
       </section>
 
-      <!-- Training Section -->
-      <section class="section" id="train-section">
-        <div id="kai-train-panel">
-          <!-- رسالة لو الحساب مش أدمن أو مش مسجل دخول -->
-          <div id="kt-gate" class="kt-card" style="display:none;">
-            <h3>🔒 محتاج تسجل دخول كأدمن</h3>
-            <p id="kt-gate-msg" style="color:#f47b7b;font-size:13px;"></p>
+      <!-- Online Section -->
+      <section class="section" id="online-section">
+        <div class="stats-grid stats-3">
+          <div class="stat-card">
+            <div class="stat-icon green"><i class="ti ti-wifi"></i></div>
+            <div class="stat-info">
+              <div class="stat-val" id="onStatNow">0</div>
+              <div class="stat-lbl">متصلون الآن</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon orange"><i class="ti ti-door-exit"></i></div>
+            <div class="stat-info">
+              <div class="stat-val" id="onStatHour">0</div>
+              <div class="stat-lbl">غادروا آخر ساعة</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon blue"><i class="ti ti-users"></i></div>
+            <div class="stat-info">
+              <div class="stat-val" id="onStatDay">0</div>
+              <div class="stat-lbl">دخلوا آخر 24 ساعة</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="sec-hd">
+          <h2><span class="live-dot"></span> متصل الآن</h2>
+          <div class="sec-actions">
+            <div class="search-wrap">
+              <i class="ti ti-search"></i>
+              <input type="text" id="onlineSearch" placeholder="بحث بالاسم...">
+            </div>
+            <button class="btn btn-secondary btn-sm" id="onlineRefreshBtn"><i class="ti ti-refresh" style="font-size:16px"></i> تحديث</button>
+          </div>
+        </div>
+        <div class="table-wrap">
+          <div class="table-scroll">
+            <table class="plain-table">
+              <thead><tr><th>المستخدم</th><th>الدور / الفرع</th><th>الصفحة الحالية</th><th>متصل من</th><th>مدة الاتصال</th></tr></thead>
+              <tbody id="onlineNowBody"><tr><td colspan="5" class="empty-cell">جاري التحميل...</td></tr></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="sec-hd" style="margin-top:28px">
+          <h2>غادروا مؤخراً</h2>
+          <span class="muted-note">آخر 24 ساعة</span>
+        </div>
+        <div class="table-wrap">
+          <div class="table-scroll">
+            <table class="plain-table">
+              <thead><tr><th>المستخدم</th><th>الدور / الفرع</th><th>خرج من</th><th>وقت الخروج</th><th>كان متصل لمدة</th></tr></thead>
+              <tbody id="onlineLeftBody"><tr><td colspan="5" class="empty-cell">جاري التحميل...</td></tr></tbody>
+            </table>
+          </div>
+        </div>
+        <div id="onlineMessage" class="form-message"></div>
+      </section>
+
+      <!-- Files (Storage) Section -->
+      <section class="section" id="files-section">
+        <div class="form-card wide">
+          <h3 class="card-title"><i class="ti ti-cloud-upload"></i> رفع ملفات على الـ Bucket</h3>
+          <div class="form-row">
+            <div class="form-group">
+              <label>الـ Bucket</label>
+              <div class="select-wrap">
+                <select id="fileBucket" class="form-input">
+                  <option value="All Form">All Form</option>
+                  <option value="items-images">items-images (عام)</option>
+                  <option value="widget">widget (عام)</option>
+                  <option value="chat-files">chat-files</option>
+                  <option value="__custom">اسم آخر...</option>
+                </select>
+              </div>
+              <input type="text" id="fileBucketCustom" class="form-input" dir="ltr" placeholder="اسم الـ bucket" style="display:none;margin-top:8px">
+            </div>
+            <div class="form-group">
+              <label>المجلد (اختياري)</label>
+              <input type="text" id="fileFolder" class="form-input" dir="ltr" placeholder="مثال: offers/2026">
+            </div>
           </div>
 
-          <div id="kt-content" style="display:none;">
+          <div class="dropzone" id="fileDrop">
+            <i class="ti ti-upload"></i>
+            <div class="dz-title">اسحب الملفات هنا أو اضغط للاختيار</div>
+            <div class="dz-sub">أي نوع ملف — الحد الأقصى 50 ميجا للملف الواحد</div>
+            <input type="file" id="fileInput" multiple hidden>
+          </div>
 
-            <div class="kt-card">
-              <h3>📝 تدريب من نص</h3>
-              <label>عنوان/تصنيف (اختياري)</label>
-              <input type="text" id="kt-text-label" placeholder="مثلاً: سياسة الاسترجاع" />
-              <label>النص</label>
-              <textarea id="kt-text-content" placeholder="الصق أو اكتب أي نص عايز الذكاء الاصطناعي يتعلم منه..."></textarea>
-              <button class="kt-btn" id="kt-train-text-btn">درّب من النص ده</button>
-              <div class="kt-msg" id="kt-text-msg"></div>
-            </div>
+          <label class="check-row"><input type="checkbox" id="fileUpsert"> استبدال الملف لو موجود بنفس الاسم</label>
 
-            <div class="kt-card">
-              <h3>🌐 تدريب من رابط صفحة في موقعك</h3>
-              <label>رابط الصفحة</label>
-              <input type="url" id="kt-url-input" placeholder="https://your-site.com/page" />
-              <button class="kt-btn" id="kt-train-url-btn">درّب من الرابط ده</button>
-              <div class="kt-msg" id="kt-url-msg"></div>
-            </div>
+          <div id="fileQueue" class="file-queue"></div>
+          <div class="btn-row">
+            <button type="button" class="btn btn-primary" id="fileUploadBtn" disabled><i class="ti ti-cloud-upload" style="font-size:16px"></i> رفع الملفات</button>
+            <button type="button" class="btn btn-secondary" id="fileClearBtn">مسح القائمة</button>
+          </div>
+          <div id="fileMessage" class="form-message"></div>
+        </div>
 
-            <div class="kt-card">
-              <h3>📄 تدريب من ملف</h3>
-              <label>اختار ملف (txt, md, csv, pdf, docx)</label>
-              <input type="file" id="kt-file-input" accept=".txt,.md,.csv,.pdf,.docx" />
-              <button class="kt-btn" id="kt-train-file-btn">درّب من الملف ده</button>
-              <div class="kt-msg" id="kt-file-msg"></div>
-            </div>
-
-            <div class="kt-card">
-              <h3>🖼️ تدريب من صورة</h3>
-              <label>اختار صورة</label>
-              <input type="file" id="kt-image-input" accept="image/*" />
-              <button class="kt-btn" id="kt-train-image-btn">درّب من الصورة دي</button>
-              <div class="kt-msg" id="kt-image-msg"></div>
-            </div>
-
-            <div class="kt-card">
-              <h3>🗃️ تدريب من جدول سوبابيز</h3>
-              <label>اسم الجدول</label>
-              <input type="text" id="kt-table-name" placeholder="مثلاً: products" />
-              <label>الأعمدة (مفصولة بفاصلة)</label>
-              <input type="text" id="kt-table-columns" placeholder="مثلاً: name,description,price" />
-              <button class="kt-btn" id="kt-train-table-btn">درّب من الجدول ده</button>
-              <div class="kt-msg" id="kt-table-msg"></div>
-            </div>
-
-            <div class="kt-card">
-              <h3>📚 كل مواد التدريب</h3>
-              <button class="kt-btn secondary" id="kt-refresh-btn">تحديث القائمة</button>
-              <table id="kt-chunks-table">
-                <thead><tr><th>المصدر</th><th>المحتوى</th><th>تاريخ</th><th></th></tr></thead>
-                <tbody></tbody>
-              </table>
-            </div>
-
+        <div class="sec-hd" style="margin-top:24px">
+          <h2>الملفات في الـ Bucket</h2>
+          <div class="sec-actions">
+            <button class="btn btn-secondary btn-sm" id="fileListRefreshBtn"><i class="ti ti-refresh" style="font-size:16px"></i> تحديث</button>
+          </div>
+        </div>
+        <div class="crumbs" id="fileCrumbs"></div>
+        <div class="table-wrap">
+          <div class="table-scroll">
+            <table class="plain-table">
+              <thead><tr><th>الاسم</th><th>الحجم</th><th>آخر تعديل</th><th>إجراءات</th></tr></thead>
+              <tbody id="fileListBody"><tr><td colspan="4" class="empty-cell">اختار bucket لعرض الملفات</td></tr></tbody>
+            </table>
           </div>
         </div>
       </section>
@@ -608,47 +593,6 @@
   </div>
 </div>
 
-<!-- Row Add/Edit Modal -->
-<div class="modal-backdrop" id="rowModal">
-  <div class="modal" style="max-width:560px">
-    <div class="modal-hd">
-      <h2 id="rowModalTitle">إضافة صف</h2>
-      <button class="close-btn" onclick="hideModal('rowModal')"><i class="ti ti-x"></i></button>
-    </div>
-    <div class="modal-body">
-      <form id="rowForm">
-        <div id="rowFormFields"></div>
-      </form>
-      <div id="rowFormMessage" class="form-message"></div>
-    </div>
-    <div class="modal-ft">
-      <button class="btn btn-secondary" onclick="hideModal('rowModal')">إلغاء</button>
-      <button class="btn btn-primary" id="rowSaveBtn"><i class="ti ti-device-floppy" style="font-size:16px"></i> حفظ</button>
-    </div>
-  </div>
-</div>
-
-<!-- Row Delete Modal -->
-<div class="modal-backdrop" id="deleteRowModal">
-  <div class="modal">
-    <div class="modal-hd">
-      <h2>تأكيد الحذف</h2>
-      <button class="close-btn" onclick="hideModal('deleteRowModal')"><i class="ti ti-x"></i></button>
-    </div>
-    <div class="modal-body">
-      <p>هل أنت متأكد من رغبتك في حذف هذا الصف؟</p>
-      <p class="warn-text"><i class="ti ti-alert-triangle"></i> لا يمكن التراجع عن هذا الإجراء</p>
-      <div class="user-info-box" id="deleteRowInfo"></div>
-    </div>
-    <div class="modal-ft">
-      <button class="btn btn-secondary" onclick="hideModal('deleteRowModal')">إلغاء</button>
-      <button class="btn" id="confirmDeleteRowBtn" style="background:var(--danger);color:var(--cv-white-ink)">
-        <i class="ti ti-trash" style="font-size:16px"></i> حذف
-      </button>
-    </div>
-  </div>
-</div>
-
 <!-- Success Modal -->
 <div class="modal-backdrop" id="successModal">
   <div class="modal">
@@ -692,7 +636,8 @@
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="assets/js/admin.js?v=cv1"></script>
+<script src="assets/js/admin.js?v=cv2"></script>
+<script src="assets/js/admin-extras.js?v=cv1"></script>
 <script src="assets/js/active-users-widget.js?v=cv1"></script>
 </body>
 </html>
