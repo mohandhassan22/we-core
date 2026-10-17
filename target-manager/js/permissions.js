@@ -38,6 +38,15 @@
                 { id: 'history', label: 'تقارير المنطقة', icon: 'fa-file-excel', href: 'history.html' }
             ]
         },
+        regional_manager: {
+            title: 'Regional Manager',
+            allowedPages: ['regional-manager.html', 'area-manager.html', 'branch-manager.html', 'agent.html', 'history.html'],
+            defaultPage: 'regional-manager.html',
+            menu: [
+                { id: 'dashboard', label: 'مناطق الإقليم', icon: 'fa-earth-africa', href: 'regional-manager.html' },
+                { id: 'history', label: 'التقارير والسجل', icon: 'fa-clock-rotate-left', href: 'history.html' }
+            ]
+        },
         supervisor: {
             title: 'مشرف مناطق',
             allowedPages: ['supervisor.html', 'area-manager.html', 'branch-manager.html', 'agent.html', 'history.html'],
@@ -49,9 +58,10 @@
         },
         admin: {
             title: 'مسؤول النظام (Admin)',
-            allowedPages: ['supervisor.html', 'area-manager.html', 'branch-manager.html', 'agent.html', 'performance.html', 'history.html', 'settings.html'],
+            allowedPages: ['regional-manager.html', 'supervisor.html', 'area-manager.html', 'branch-manager.html', 'agent.html', 'performance.html', 'history.html', 'settings.html'],
             defaultPage: 'supervisor.html',
             menu: [
+                { id: 'regional', label: 'لوحة Regional Manager', icon: 'fa-earth-africa', href: 'regional-manager.html' },
                 { id: 'supervisor', label: 'لوحة المشرف العام', icon: 'fa-shield-halved', href: 'supervisor.html' },
                 { id: 'area', label: 'لوحة المنطقة', icon: 'fa-city', href: 'area-manager.html' },
                 { id: 'branch', label: 'لوحة الفرع', icon: 'fa-store', href: 'branch-manager.html' },
@@ -68,6 +78,7 @@
             const r = String(rawRole).toLowerCase().trim();
             if (r === 'admin') return 'admin';
             if (r === 'supervisor') return 'supervisor';
+            if (r === 'regional_manager' || r === 'regional-manager' || r.replace(/\s+/g, ' ').startsWith('regional manager')) return 'regional_manager';
             if (r === 'area_manager' || r === 'area-manager') return 'area_manager';
             if (r === 'branch_manager' || r === 'branch-manager' || r === 'manager' || r === 'store-manager') return 'branch_manager';
             return 'agent';
@@ -139,7 +150,7 @@
             }
 
             // Auto-redirect: if user lands on a dashboard page that doesn't match their role
-            const dashboardPages = ['agent.html', 'branch-manager.html', 'area-manager.html', 'supervisor.html'];
+            const dashboardPages = ['agent.html', 'branch-manager.html', 'area-manager.html', 'supervisor.html', 'regional-manager.html'];
             if (dashboardPages.includes(pageName) && pageName !== config.defaultPage) {
                 // not allowed for this role -> access denied page; allowed/admin -> own dashboard
                 if (normRole !== 'admin' && !config.allowedPages.includes(pageName)) accessDenied();
@@ -174,6 +185,11 @@
             if (normRole === 'area_manager') {
                 return (targetArea && userProfile.area && targetArea.toLowerCase() === userProfile.area.toLowerCase()) ||
                        (targetUser && targetUser.area_id === userProfile.area_id);
+            }
+
+            if (normRole === 'regional_manager') {
+                // The server (RLS) decides which areas belong to the region; the UI just doesn't hide anything it received.
+                return true;
             }
 
             if (normRole === 'supervisor') {

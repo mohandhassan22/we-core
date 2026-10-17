@@ -16,6 +16,7 @@
    - **Agent (الموظف)**: لوحة الأداء الفردي فقط.
    - **Branch Manager (مدير الفرع)**: لوحة أداء الفرع وجدول أداء الموظفين التابعين له.
    - **Area Manager (مدير المنطقة)**: لوحة أداء المنطقة ومتابعة الفروع داخل منطقته.
+   - **Regional Manager (مدير الإقليم)**: أعلى من Supervisor — يرى كل المناطق المربوطة به (`areas.regional_manager_id`) ويتنقل بين المناطق والفروع والموظفين (عرض فقط). صفحته `pages/regional-manager.html`.
    - **Supervisor (المشرف)**: لوحة التحكم الإشرافية والتنقل بين المناطق والفروع والموظفين.
    - **Admin (المسؤول)**: صلاحيات كاملة على كافة المستويات.
 
@@ -43,6 +44,7 @@ target-manager/
 │   ├── agent.html              # لوحة أداء الموظف الفردي
 │   ├── branch-manager.html     # لوحة مدير الفرع
 │   ├── area-manager.html       # لوحة مدير المنطقة
+│   ├── regional-manager.html   # لوحة مدير الإقليم (Regional Manager)
 │   ├── supervisor.html         # لوحة المشرف العام
 │   ├── performance.html        # تسجيل وإدخال الأداء اليومي
 │   ├── history.html            # السجل التاريخي والتصدير
@@ -83,3 +85,11 @@ target-manager/
 - `audit_logs`
 
 مع تطبيق وسياسات **Row Level Security (RLS)** لضمان حماية البيانات على مستوى السيرفر.
+
+### Regional Manager
+
+الميجريشن `supabase/migrations/20261017150000_regional_manager_role.sql` يضيف `profiles.region` و`areas.regional_manager_id`، ويحدّث دوال الرؤية (`my_visible_area_ids`, `my_visible_branch_ids`, `can_view_user`). لربط منطقة بمدير إقليم:
+
+```sql
+update public.areas set regional_manager_id = (select id from public.profiles where lower(username)='<username>') where name = '<area name>';
+```

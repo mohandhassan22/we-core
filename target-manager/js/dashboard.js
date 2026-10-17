@@ -54,7 +54,7 @@
             }
 
             // Fetch subordinates if manager/supervisor
-            if (['branch_manager', 'area_manager', 'supervisor', 'admin'].includes(this.state.activeRoleView)) {
+            if (['branch_manager', 'area_manager', 'supervisor', 'regional_manager', 'admin'].includes(this.state.activeRoleView)) {
                 this.state.subordinates = await TargetAPI.fetchSubordinates(
                     this.state.activeRoleView,
                     profile.branch,
@@ -62,7 +62,7 @@
                     profile.id
                 );
 
-                const ownsTeamData = ['supervisor', 'admin'].includes(this.state.activeRoleView);   // supervisor view loads its own per-area data
+                const ownsTeamData = ['supervisor', 'regional_manager', 'admin'].includes(this.state.activeRoleView);   // supervisor / regional view loads its own per-area data
                 this.state.teamData = ownsTeamData ? { periods: [], logs: [] } : await TargetAPI.fetchTeamData(
                     month, 
                     year, 
@@ -82,7 +82,7 @@
                 this.renderBranchManagerView();
             } else if (role === 'area_manager') {
                 this.renderAreaManagerView();
-            } else if (role === 'supervisor' || role === 'admin') {
+            } else if (role === 'supervisor' || role === 'regional_manager' || role === 'admin') {
                 this.renderSupervisorView();
             }
         },
@@ -558,7 +558,9 @@
 
             const allAreas = (await TargetAPI.fetchAllowedAreas()) || [];
             if (allAreas.length === 0) {
-                container.innerHTML = '<p class="text-muted">لا توجد مناطق مرتبطة بحسابك. تواصل مع الأدمن.</p>';
+                container.innerHTML = this.state.activeRoleView === 'regional_manager'
+                    ? '<p class="text-muted">لا توجد مناطق مربوطة بإقليمك حتى الآن. تواصل مع الأدمن لربط المناطق بحسابك.</p>'
+                    : '<p class="text-muted">لا توجد مناطق مرتبطة بحسابك. تواصل مع الأدمن.</p>';
                 return;
             }
             const teams = await Promise.all(allAreas.map(ar => TargetAPI.fetchTeamData(month, year, null, ar.name)));

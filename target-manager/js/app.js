@@ -85,7 +85,9 @@
 
             const roleEl = document.getElementById('headerUserRole');
             if (roleEl) {
-                roleEl.textContent = config.title;
+                roleEl.textContent = prof.region && Permissions.normalizeRole(prof.role) === 'regional_manager'
+                    ? `${config.title} — ${prof.region}`
+                    : config.title;
             }
 
             // Update document title dynamically
