@@ -576,13 +576,33 @@
                 return this.rollup(ar.name, this.buildBranchNodes((ar.branches || []).map(b => b && b.name), rows));
             });
             this.rankRows(tree);   // areas: best first
-            this.state.tree = tree;
+
+            if (this.state.activeRoleView === 'regional_manager') {
+                // Regional manager = manager of supervisors: supervisor -> his areas -> branches -> employees
+                const names = {};
+                (await TargetAPI.fetchProfilesByIds(allAreas.map(a => a.supervisor_id))).forEach(p => { names[p.id] = p.full_name || p.username; });
+                const groups = {};
+                tree.forEach((areaNode, i) => {
+                    const sid = allAreas[i].supervisor_id || 'none';
+                    (groups[sid] || (groups[sid] = [])).push(areaNode);
+                });
+                const sups = Object.keys(groups).map(sid => {
+                    const n = this.rollup(sid === 'none' ? 'بدون مشرف' : (names[sid] || 'مشرف'), this.rankRows(groups[sid]), 'areas');
+                    n.id = sid;
+                    return n;
+                });
+                this.rankRows(sups);   // supervisors: best first
+                this.state.tree = sups;
+            } else {
+                this.state.tree = tree;
+            }
             this.renderDrill();
         },
 
         drillTo: function (type, key) {
             const nav = this.state.nav;
-            if (type === 'area') { nav.area = key; nav.branch = null; nav.emp = null; }
+            if (type === 'sup') { nav.sup = key; nav.area = null; nav.branch = null; nav.emp = null; }
+            else if (type === 'area') { nav.area = key; nav.branch = null; nav.emp = null; }
             else if (type === 'branch') { nav.branch = key; nav.emp = null; }
             else if (type === 'emp') { nav.emp = key; }
             this.renderDrill();
@@ -591,7 +611,8 @@
 
         drillUp: function (level) {
             const nav = this.state.nav;
-            if (level === 'root') { nav.area = null; nav.branch = null; nav.emp = null; }
+            if (level === 'root') { nav.sup = null; nav.area = null; nav.branch = null; nav.emp = null; }
+            else if (level === 'sup') { nav.area = null; nav.branch = null; nav.emp = null; }
             else if (level === 'area') { nav.branch = null; nav.emp = null; }
             else if (level === 'branch') { nav.emp = null; }
             this.renderDrill();
@@ -610,13 +631,18 @@
             const proj = (o) => `${fmt(o.proj)} <small>(${Utils.formatPercent(o.projPct)})</small>`;
 
             // Resolve the selection; after a data refresh fall back to the deepest level that still exists
-            const area = isArea ? (tree[0] || null) : (tree.find(a => a.name === nav.area) || null);
+            const isRegional = this.state.activeRoleView === 'regional_manager';
+            const sup = isRegional ? (tree.find(s => String(s.id) === String(nav.sup)) || null) : null;
+            const area = isArea ? (tree[0] || null)
+                : isRegional ? (sup ? (sup.areas.find(a => a.name === nav.area) || null) : null)
+                : (tree.find(a => a.name === nav.area) || null);
             const branch = area ? (area.branches.find(b => b.name === nav.branch) || null) : null;
             const emp = branch ? (branch.employees.find(e => String(e.id) === String(nav.emp)) || null) : null;
 
             // Breadcrumb (every step except the last one is a way back)
             const crumbs = [];
-            if (!isArea) crumbs.push({ label: 'كل المناطق', level: 'root', icon: 'fa-layer-group', active: !area });
+            if (!isArea) crumbs.push({ label: isRegional ? 'كل المشرفين' : 'كل المناطق', level: 'root', icon: 'fa-layer-group', active: isRegional ? !sup : !area });
+            if (sup) crumbs.push({ label: sup.name, level: 'sup', icon: 'fa-user-tie', active: !area });
             if (area) crumbs.push({ label: isArea ? `فروع ${area.name}` : area.name, level: 'area', icon: 'fa-city', active: !branch });
             if (branch) crumbs.push({ label: branch.name, level: 'branch', icon: 'fa-store', active: !emp });
             if (emp) crumbs.push({ label: emp.name, level: 'emp', icon: 'fa-user', active: true });
@@ -626,8 +652,8 @@
                            : `<button type="button" class="drill-crumb" data-nav="${c.level}"><i class="fa-solid ${c.icon}"></i> ${esc(c.label)}</button>`}`).join('')}</nav>`;
 
             // What the KPI cards describe
-            const scope = emp || branch || area || this.rollup('الإجمالي', tree, 'areas');
-            const scopeLabel = emp ? 'الموظف' : branch ? 'الفرع' : area ? (isArea ? 'المنطقة' : 'المنطقة') : 'المناطق';
+            const scope = emp || branch || area || sup || this.rollup('الإجمالي', tree, isRegional ? 'sups' : 'areas');
+            const scopeLabel = emp ? 'الموظف' : branch ? 'الفرع' : area ? 'المنطقة' : sup ? 'المشرف' : (isRegional ? 'المشرفين' : 'المناطق');
             const kpiHTML = `
                 <div class="kpi-grid">
                     <div class="kpi-card"><span class="kpi-title">Target</span><div class="kpi-value">${fmt(scope.target)}</div>
@@ -642,18 +668,19 @@
                 <div class="kpi-grid">${this.separateCardsHTML(scope.sep)}</div>`;
 
             // Table of the next level down
+            // withBranches: true -> a "branches" count column; a string -> a count column with that label (areas of a supervisor...)
             const groupTable = (title, firstCol, rows, type, withBranches) => `
                 <div class="table-card-wrapper margin-top">
                     <div class="table-toolbar"><h3 class="font-bold">${title} (${rows.length})</h3></div>
                     <div class="data-table-container">
                         <table class="data-table">
-                            <thead><tr><th>#</th><th>${firstCol}</th>${withBranches ? '<th>الفروع</th>' : ''}<th>الموظفين</th><th>Target</th><th>Achieved</th><th>Perc%</th><th>Daily target</th><th>Projection</th><th>Remain</th><th></th></tr></thead>
+                            <thead><tr><th>#</th><th>${firstCol}</th>${withBranches ? `<th>${withBranches === true ? 'الفروع' : withBranches}</th>` : ''}<th>الموظفين</th><th>Target</th><th>Achieved</th><th>Perc%</th><th>Daily target</th><th>Projection</th><th>Remain</th><th></th></tr></thead>
                             <tbody>
                                 ${rows.length ? rows.map((r, idx) => `
-                                    <tr class="drill-row" data-drill="${type}" data-key="${esc(r.name)}">
+                                    <tr class="drill-row" data-drill="${type}" data-key="${esc(type === 'sup' ? r.id : r.name)}">
                                         <td class="font-bold">${idx + 1}</td>
                                         <td class="font-bold">${esc(r.name)}</td>
-                                        ${withBranches ? `<td>${r.branches.length}</td>` : ''}
+                                        ${withBranches ? `<td>${(r.branches || r.areas || []).length}</td>` : ''}
                                         <td>${r.employeesCount}</td>
                                         <td>${fmt(r.target)}</td>
                                         <td>${fmt(r.achieve)}</td>
@@ -700,6 +727,8 @@
             if (emp) body = this.employeeDetailHTML(emp, bar);
             else if (branch) body = empTable(branch.employees);
             else if (area) body = groupTable(isArea ? 'فروع المنطقة' : `فروع ${esc(area.name)}`, 'الفرع', area.branches, 'branch', false);
+            else if (sup) body = groupTable(`مناطق ${esc(sup.name)}`, 'المنطقة', sup.areas, 'area', true);
+            else if (isRegional) body = groupTable('ترتيب مشرفي المناطق', 'المشرف', tree, 'sup', 'المناطق');
             else body = groupTable('ترتيب المناطق', 'المنطقة', tree, 'area', true);
 
             // AI analysis stays on the area manager's first screen only (his branches)
